@@ -1,0 +1,241 @@
+diff --git a/boards/Kconfig b/boards/Kconfig
+--- a/boards/Kconfig
++++ b/boards/Kconfig
+@@ -4138,6 +4138,6 @@
+ source "boards/arm/stm32h7/stm32h745i-disco/Kconfig"
+ endif
+-if ARCH_BOARD_STM32H750B_DB
++if ARCH_BOARD_STM32H750B_DK
+ source "boards/arm/stm32h7/stm32h750b-dk/Kconfig"
+ endif
+ if ARCH_BOARD_LINUM_STM32H753BI
+diff --git a/arch/arm/src/stm32h7/stm32_mpuinit.c b/arch/arm/src/stm32h7/stm32_mpuinit.c
+index a42fdc8ad09..e923d76f48e 100644
+--- a/arch/arm/src/stm32h7/stm32_mpuinit.c
++++ b/arch/arm/src/stm32h7/stm32_mpuinit.c
+@@ -50,6 +50,11 @@
+ #  endif
+ #endif
+ 
++#ifdef CONFIG_STM32H750B_DK_QSPI_BOOT
++#  define STM32_QSPI_BOOT_BASE 0x90000000
++#  define STM32_QSPI_BOOT_SIZE (128 * 1024 * 1024)
++#endif
++
+ /****************************************************************************
+  * Public Functions
+  ****************************************************************************/
+@@ -101,6 +106,12 @@ void stm32_mpuinitialize(void)
+   mpu_priv_shmem((uintptr_t)STM32_SHMEM_BASE, STM32_SHMEM_SIZE);
+ #endif
+ 
++#ifdef CONFIG_STM32H750B_DK_QSPI_BOOT
++  /* Keep the external QSPI XIP window executable after the MPU is enabled. */
++
++  mpu_priv_flash((uintptr_t)STM32_QSPI_BOOT_BASE, STM32_QSPI_BOOT_SIZE);
++#endif
++
+   /* Then enable the MPU */
+ 
+   mpu_control(true, false, true);
+diff --git a/boards/arm/stm32h7/stm32h750b-dk/Kconfig b/boards/arm/stm32h7/stm32h750b-dk/Kconfig
+index 68542f0f611..2f4389e6bb1 100644
+--- a/boards/arm/stm32h7/stm32h750b-dk/Kconfig
++++ b/boards/arm/stm32h7/stm32h750b-dk/Kconfig
+@@ -5,4 +5,15 @@
+ 
+ if ARCH_BOARD_STM32H750B_DK
+ 
++config STM32H750B_DK_QSPI_BOOT
++	bool "Link Cortex-M7 image for external QSPI boot"
++	default n
++	depends on ARCH_CHIP_STM32H7_CORTEXM7
++	---help---
++		Build the main NuttX image for the STM32H750B-DK external
++		dual-QSPI memory-mapped window at 0x90000000 instead of the
++		128 KiB on-die Flash at 0x08000000. This image needs a small
++		internal-Flash boot stub that initializes QSPI memory-mapped
++		mode before jumping to the external vector table.
++
+ endif # ARCH_BOARD_STM32H750B_DK
+diff --git a/boards/arm/stm32h7/stm32h750b-dk/scripts/Make.defs b/boards/arm/stm32h7/stm32h750b-dk/scripts/Make.defs
+index 77ce2f7a7c7..0613a257f33 100644
+--- a/boards/arm/stm32h7/stm32h750b-dk/scripts/Make.defs
++++ b/boards/arm/stm32h7/stm32h750b-dk/scripts/Make.defs
+@@ -23,7 +23,11 @@ include $(TOPDIR)/tools/Config.mk
+ include $(TOPDIR)/arch/arm/src/armv7-m/Toolchain.defs
+ 
+ ifeq ($(CONFIG_ARCH_CHIP_STM32H7_CORTEXM7),y)
+-  LDSCRIPT = flash.ld
++  ifeq ($(CONFIG_STM32H750B_DK_QSPI_BOOT),y)
++    LDSCRIPT = qspi_flash.ld
++  else
++    LDSCRIPT = flash.ld
++  endif
+ else
+   LDSCRIPT = flash_m4.ld
+ endif
+diff --git a/boards/arm/stm32h7/stm32h750b-dk/src/CMakeLists.txt b/boards/arm/stm32h7/stm32h750b-dk/src/CMakeLists.txt
+index fde7f720d27..784048d9dd5 100644
+--- a/boards/arm/stm32h7/stm32h750b-dk/src/CMakeLists.txt
++++ b/boards/arm/stm32h7/stm32h750b-dk/src/CMakeLists.txt
+@@ -53,7 +53,13 @@ endif()
+ target_sources(board PRIVATE ${SRCS})
+ 
+ if(CONFIG_ARCH_CHIP_STM32H7_CORTEXM7)
+-  set_property(GLOBAL PROPERTY LD_SCRIPT "${NUTTX_BOARD_DIR}/scripts/flash.ld")
++  if(CONFIG_STM32H750B_DK_QSPI_BOOT)
++    set_property(GLOBAL PROPERTY LD_SCRIPT
++                                 "${NUTTX_BOARD_DIR}/scripts/qspi_flash.ld")
++  else()
++    set_property(GLOBAL PROPERTY LD_SCRIPT
++                                 "${NUTTX_BOARD_DIR}/scripts/flash.ld")
++  endif()
+ else()
+   set_property(GLOBAL PROPERTY LD_SCRIPT
+                                "${NUTTX_BOARD_DIR}/scripts/flash_m4.ld")
+diff --git a/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld b/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld
+new file mode 100644
+index 00000000000..cf09f2753a2
+--- /dev/null
++++ b/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld
+@@ -0,0 +1,110 @@
++/****************************************************************************
++ * boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld
++ *
++ * Link the Cortex-M7 image for execution from the STM32H750B-DK external
++ * dual-QSPI memory window at 0x90000000. A small internal-Flash stub must
++ * initialize QSPI memory-mapped mode and jump to this image.
++ *
++ ****************************************************************************/
++
++#include <nuttx/config.h>
++
++MEMORY
++{
++  itcm  (rwx) : ORIGIN = 0x00000000, LENGTH =   64K
++  flash (rx)  : ORIGIN = 0x90000000, LENGTH =  128M
++  dtcm1 (rwx) : ORIGIN = 0x20000000, LENGTH =   64K
++  dtcm2 (rwx) : ORIGIN = 0x20010000, LENGTH =   64K
++  sram  (rwx) : ORIGIN = 0x24000000, LENGTH =  512K
++  sram1 (rwx) : ORIGIN = 0x30000000, LENGTH =  128K
++  sram2 (rwx) : ORIGIN = 0x30020000, LENGTH =  128K
++  sram3 (rwx) : ORIGIN = 0x30040000, LENGTH =   32K
++  sram4 (rwx) : ORIGIN = 0x38000000, LENGTH =   64K
++  bbram (rwx) : ORIGIN = 0x38800000, LENGTH =    4K
++  sdram (rwx) : ORIGIN = 0xD0000000, LENGTH =    8M
++}
++
++OUTPUT_ARCH(arm)
++EXTERN(_vectors)
++ENTRY(_stext)
++SECTIONS
++{
++    .text :
++    {
++        _stext = ABSOLUTE(.);
++        *(.vectors)
++        *(.text .text.*)
++        *(.fixup)
++        *(.gnu.warning)
++        *(.rodata .rodata.*)
++        *(.gnu.linkonce.t.*)
++        *(.glue_7)
++        *(.glue_7t)
++        *(.got)
++        *(.gcc_except_table)
++        *(.gnu.linkonce.r.*)
++        _etext = ABSOLUTE(.);
++    } > flash
++
++    .init_section :
++    {
++        _sinit = ABSOLUTE(.);
++        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
++        KEEP(*(.init_array EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o) .ctors))
++        _einit = ABSOLUTE(.);
++    } > flash
++
++    .ARM.extab :
++    {
++        *(.ARM.extab*)
++    } > flash
++
++    __exidx_start = ABSOLUTE(.);
++    .ARM.exidx :
++    {
++        *(.ARM.exidx*)
++    } > flash
++    __exidx_end = ABSOLUTE(.);
++
++    _eronly = ABSOLUTE(.);
++
++    .data :
++    {
++        _sdata = ABSOLUTE(.);
++        *(.data .data.*)
++        *(.gnu.linkonce.d.*)
++        CONSTRUCTORS
++        . = ALIGN(4);
++        _edata = ABSOLUTE(.);
++    } > sram AT > flash
++
++    .bss :
++    {
++        _sbss = ABSOLUTE(.);
++        *(.bss .bss.*)
++        *(.gnu.linkonce.b.*)
++        *(COMMON)
++        . = ALIGN(4);
++        _ebss = ABSOLUTE(.);
++    } > sram
++
++    .sram4_reserve (NOLOAD) :
++    {
++        *(.sram4)
++        . = ALIGN(4);
++        _sram4_heap_start = ABSOLUTE(.);
++    } > sram4
++
++    .stab 0 : { *(.stab) }
++    .stabstr 0 : { *(.stabstr) }
++    .stab.excl 0 : { *(.stab.excl) }
++    .stab.exclstr 0 : { *(.stab.exclstr) }
++    .stab.index 0 : { *(.stab.index) }
++    .stab.indexstr 0 : { *(.stab.indexstr) }
++    .comment 0 : { *(.comment) }
++    .debug_abbrev 0 : { *(.debug_abbrev) }
++    .debug_info 0 : { *(.debug_info) }
++    .debug_line 0 : { *(.debug_line) }
++    .debug_pubnames 0 : { *(.debug_pubnames) }
++    .debug_aranges 0 : { *(.debug_aranges) }
++}
+diff --git a/drivers/input/ft5x06.c b/drivers/input/ft5x06.c
+index be5db167865..3f3b9566008 100644
+--- a/drivers/input/ft5x06.c
++++ b/drivers/input/ft5x06.c
+@@ -945,6 +945,24 @@ static int ft5x06_ioctl(FAR struct file *filep, int cmd, unsigned long arg)
+         }
+         break;
+ 
++      case TSIOC_GETMAXPOINTS:  /* arg: Pointer to uint8_t maxpoint value */
++        {
++          FAR uint8_t *ptr = (FAR uint8_t *)((uintptr_t)arg);
++
++          if (ptr == NULL)
++            {
++              ret = -EINVAL;
++              break;
++            }
++
++#ifdef CONFIG_FT5X06_SINGLEPOINT
++          *ptr = 1;
++#else
++          *ptr = FT5X06_MAX_TOUCHES;
++#endif
++        }
++        break;
++
+      default:
+         ret = -ENOTTY;
+         break;

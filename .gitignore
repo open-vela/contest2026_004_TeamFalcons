@@ -1,0 +1,46 @@
+# Generated build artifacts
+/build/
+/out/
+/.debug/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+*.o
+*.a
+*.bin
+*.elf
+*.hex
+*.map
+
+# Language and test caches
+__pycache__/
+*.py[cod]
+.cache/
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# Editor settings: keep the shared VS Code project configuration.
+.vscode/*
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
+.idea/
+*.swp
+*~
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# openvela contest AI Coding logs are collaboration artifacts and must be
+# committed with the code they document.
+!logs/
+!logs/**
