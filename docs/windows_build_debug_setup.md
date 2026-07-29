@@ -1,5 +1,9 @@
 # Windows VS Code 编译、烧录与调试 STM32H750B-DK
 
+> **写代码（补全 / 跳转）请先看**
+> [windows_vscode_coding_setup.md](./windows_vscode_coding_setup.md)。
+> 本文侧重编译、QSPI 烧录与 Cortex-Debug；编辑窗口必须是 Remote - WSL。
+
 ## 方案边界
 
 STM32H750XBH6 只有 128 KiB 片内 Flash。超过该容量的 openvela 镜像采用：

@@ -1,0 +1,39 @@
+{
+  "C_Cpp.intelliSenseEngine": "default",
+  "C_Cpp.default.configurationProvider": null,
+  "C_Cpp.autocomplete": "default",
+  "C_Cpp.errorSquiggles": "enabled",
+  "C_Cpp.dimInactiveRegions": true,
+  "C_Cpp.workspaceParsingPriority": "highest",
+  "C_Cpp.files.exclude": {
+    "**/.git": true,
+    "**/.debug": true,
+    "**/logs": true,
+    "**/.trellis/tasks": true
+  },
+  "files.associations": {
+    "*.c": "c",
+    "*.h": "c",
+    "*.defs": "makefile",
+    "Make.defs": "makefile"
+  },
+  "files.watcherExclude": {
+    "**/.debug/**": true,
+    "**/logs/**": true,
+    "../nuttx/**/*.o": true,
+    "../apps/**/*.o": true
+  },
+  "search.exclude": {
+    "**/.debug": true,
+    "**/logs": true,
+    "../nuttx/**/*.o": true
+  },
+  "cmake.ignoreCMakeListsMissing": true,
+
+  // Windows-host debug tool paths (used later by Cortex-Debug / flash tasks).
+  // Edit these on the machine that owns ST-LINK; they are not required for
+  // IntelliSense in Remote - WSL.
+  "cortex-debug.openocdPath.windows": "D:/Develop/xpack-openocd-0.12.0-7/bin/openocd.exe",
+  "cortex-debug.armToolchainPath.windows": "D:/Develop/STM32CubeCLT/GNU-tools-for-STM32/bin",
+  "cortex-debug.gdbPath.windows": "D:/Develop/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gdb.exe"
+}

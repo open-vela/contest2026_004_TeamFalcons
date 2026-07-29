@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "openvela: attach only (scaffold)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/.debug/nuttx.elf",
+      "servertype": "openocd",
+      "configFiles": [
+        "board/stm32h750b-disco.cfg"
+      ],
+      "loadFiles": [],
+      "sourceFileMap": {
+        "/home/debian19y/openvela": "${workspaceFolder}/.."
+      },
+      "showDevDebugOutput": "none",
+      "svdFile": ""
+    }
+  ]
+}

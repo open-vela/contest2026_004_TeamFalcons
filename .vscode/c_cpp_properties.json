@@ -1,0 +1,56 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "openvela STM32H750 (WSL)",
+      "compilerPath": "${workspaceFolder}/../prebuilts/gcc/linux-x86_64/arm-none-eabi/bin/arm-none-eabi-gcc",
+      "compilerArgs": [
+        "-mcpu=cortex-m7",
+        "-mthumb",
+        "-ffreestanding"
+      ],
+      "cStandard": "gnu11",
+      "cppStandard": "gnu++17",
+      "intelliSenseMode": "linux-gcc-arm",
+      "forcedInclude": [
+        "${workspaceFolder}/../nuttx/include/nuttx/config.h"
+      ],
+      "includePath": [
+        "${workspaceFolder}/app",
+        "${workspaceFolder}/app/**",
+        "${workspaceFolder}/board",
+        "${workspaceFolder}/board/**",
+        "${workspaceFolder}/../nuttx/include",
+        "${workspaceFolder}/../nuttx/arch/arm/include",
+        "${workspaceFolder}/../nuttx/arch/arm/src/common",
+        "${workspaceFolder}/../nuttx/arch/arm/src/stm32h7",
+        "${workspaceFolder}/../nuttx/boards/arm/stm32h7/stm32h750b-dk/include",
+        "${workspaceFolder}/../apps/include",
+        "${workspaceFolder}/../apps/graphics/lvgl",
+        "${workspaceFolder}/../apps/graphics/lvgl/lvgl",
+        "${workspaceFolder}/../frameworks",
+        "${workspaceFolder}/../packages"
+      ],
+      "defines": [
+        "__NuttX__",
+        "NDEBUG"
+      ],
+      "browse": {
+        "path": [
+          "${workspaceFolder}/app",
+          "${workspaceFolder}/board",
+          "${workspaceFolder}/../nuttx/include",
+          "${workspaceFolder}/../nuttx/arch/arm",
+          "${workspaceFolder}/../nuttx/sched",
+          "${workspaceFolder}/../nuttx/fs",
+          "${workspaceFolder}/../nuttx/drivers",
+          "${workspaceFolder}/../nuttx/boards/arm/stm32h7/stm32h750b-dk",
+          "${workspaceFolder}/../apps",
+          "${workspaceFolder}/../frameworks",
+          "${workspaceFolder}/../packages"
+        ],
+        "limitSymbolsToIncludedHeaders": false
+      }
+    }
+  ]
+}

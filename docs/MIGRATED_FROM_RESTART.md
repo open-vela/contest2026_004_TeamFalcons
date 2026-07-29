@@ -26,9 +26,12 @@ branch `dev-ai-contest-2026`.
 | `docs/velaguard-expansion-board.md` | Hardware contract |
 | `docs/velaguard-mqtt-contract.md` | MQTT contract |
 | `docs/windows_build_debug_setup.md` | Windows/WSL build-debug notes |
+| `docs/windows_vscode_coding_setup.md` | Remote-WSL IntelliSense / coding env |
 | `docs/learn/*babysitter*` | First-led learning guide |
 | `scripts/apply-openvela-*.sh` + patches | Offline reference; **do not apply** until needed |
 | `scripts/windows_*.ps1` | Optional host tooling |
+| `scripts/prepare_wsl_intellisense.sh` | Generate NuttX headers for C/C++ IntelliSense |
+| `.vscode/*` (tracked subset) | Shared VS Code coding + scaffold build/flash tasks |
 
 ## What was intentionally NOT migrated
 
