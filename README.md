@@ -8,6 +8,12 @@
 
 ---
 
+## 依赖的公共仓 PR
+
+- [open-vela/nuttx#331](https://github.com/open-vela/nuttx/pull/331)：STM32H750B-DK 用户 LED 极性修复（LD1/LD2 低电平点亮、LD3 高电平点亮；`board_userled` 改为按极性表写入）。BSP 合入前不影响本仓代码编译与最小系统直烧验证。
+
+---
+
 ## 一、先读这些官方文档
 
 **通用（所有赛道必读）：**

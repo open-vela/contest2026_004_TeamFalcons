@@ -11,6 +11,10 @@ compile_commands.json
 *.elf
 *.hex
 *.map
+# NuttX app build markers generated in the source tree via manifest link
+.built
+.depend
+Make.dep
 
 # Language and test caches
 __pycache__/

@@ -4,11 +4,11 @@
 
 include $(APPDIR)/Make.defs
 
-PROGNAME  = hello_app
+PROGNAME  = velaguard_app
 PRIORITY  = SCHED_PRIORITY_DEFAULT
 STACKSIZE = 2048
-MODULE    = $(CONFIG_LVX_USE_DEMO_CONTEST2026_000_HELLO_APP)
+MODULE    = $(CONFIG_LVX_USE_DEMO_CONTEST2026_004_VELAGUARD_APP)
 
-MAINSRC = hello_app_main.c
+MAINSRC = velaguard.c
 
 include $(APPDIR)/Application.mk
