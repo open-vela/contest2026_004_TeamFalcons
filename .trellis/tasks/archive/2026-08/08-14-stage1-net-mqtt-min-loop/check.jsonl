@@ -1,0 +1,4 @@
+{"file": ".trellis/tasks/08-14-stage1-net-mqtt-min-loop/prd.md", "reason": "acceptance criteria source (AC1-AC5)"}
+{"file": ".trellis/tasks/08-14-stage1-net-mqtt-min-loop/design.md", "reason": "config symbol set + vgmqtt contract to verify"}
+{"file": "docs/velaguard-mqtt-contract.md", "reason": "status payload + LWT fields to verify"}
+{"file": "docs/velaguard-bringup-known-issues.md", "reason": "ps1 warning + /dev contract + patch idempotency precedent"}

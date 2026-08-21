@@ -1,0 +1,7 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Ping probe, TCP transport, and MQTT-C must share one active_egress."}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "Reuse icmp_ping, lesp_*, MQTT-C reconnect; do not vendor ESP_AT_Lib."}
+{"file": ".trellis/spec/backend/index.md", "reason": "Firmware/app layer checklist."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/ping-vs-mqtt-difficulty.md", "reason": "Failover TCP, not NSH ping; ping only probes RJ45."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/esp8266-vs-posix-dual-transport.md", "reason": "lesp handles are not POSIX fds."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/esp-at-lib-evaluation.md", "reason": "Do not import ESP_AT_Lib."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/acceptance-without-physical-unplug.md", "reason": "Host tests, not cable pulls."}

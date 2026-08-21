@@ -1,0 +1,6 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Single egress and tcp_backend must stay consistent."}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "Flag a second AT stack or NSH ping-over-ESP."}
+{"file": ".trellis/spec/backend/quality-guidelines.md", "reason": "Firmware quality-check pass."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/ping-vs-mqtt-difficulty.md", "reason": "Reject implementing failover as NSH ping over ESP."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/esp8266-vs-posix-dual-transport.md", "reason": "Reject passing lesp fds to POSIX pal."}
+{"file": ".trellis/tasks/08-18-rj45-esp01s-dual-stack-failover/research/acceptance-without-physical-unplug.md", "reason": "Do not require physical unplug."}

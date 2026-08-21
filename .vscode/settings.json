@@ -1,15 +1,17 @@
 {
-  "C_Cpp.intelliSenseEngine": "default",
-  "C_Cpp.default.configurationProvider": null,
-  "C_Cpp.autocomplete": "default",
-  "C_Cpp.errorSquiggles": "enabled",
-  "C_Cpp.dimInactiveRegions": true,
-  "C_Cpp.workspaceParsingPriority": "highest",
-  "C_Cpp.files.exclude": {
+  // Cursor cannot install ms-vscode.cpptools; use clangd + ../nuttx/compile_commands.json.
+  "C_Cpp.intelliSenseEngine": "disabled",
+  "clangd.path": "/home/debian19y/tools/clangd/clangd_22.1.6/bin/clangd",
+  "clangd.onConfigChanged": "restart",
+  "clangd.checkUpdates": false,
+  "clangd.arguments": [
+    "--background-index",
+    "--compile-commands-dir=${workspaceFolder}/../nuttx",
+    "--query-driver=${workspaceFolder}/../prebuilts/gcc/linux-x86_64/arm-none-eabi/bin/arm-none-eabi-*"
+  ],
+  "files.exclude": {
     "**/.git": true,
-    "**/.debug": true,
-    "**/logs": true,
-    "**/.trellis/tasks": true
+    "**/.debug": true
   },
   "files.associations": {
     "*.c": "c",
@@ -25,7 +27,6 @@
   },
   "search.exclude": {
     "**/.debug": true,
-    "**/logs": true,
     "../nuttx/**/*.o": true
   },
   "cmake.ignoreCMakeListsMissing": true,
@@ -35,5 +36,16 @@
   // IntelliSense in Remote - WSL.
   "cortex-debug.openocdPath.windows": "D:/Develop/xpack-openocd-0.12.0-7/bin/openocd.exe",
   "cortex-debug.armToolchainPath.windows": "D:/Develop/STM32CubeCLT/GNU-tools-for-STM32/bin",
-  "cortex-debug.gdbPath.windows": "D:/Develop/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gdb.exe"
+  "cortex-debug.gdbPath.windows": "D:/Develop/STM32CubeCLT/GNU-tools-for-STM32/bin/arm-none-eabi-gdb.exe",
+
+  // Single-window flow (Remote - WSL): Cortex-Debug running inside the WSL
+  // window. GDB is the native Linux gdb-multiarch (launched via
+  // scripts/wsl_gdb_launcher.sh so its bundled libs are found); OpenOCD is
+  // the Windows xPack build launched through WSL interop, so the ST-LINK USB
+  // stays on Windows. Requires WSL2 mirrored networking
+  // (C:\\Users\\19y\\.wslconfig -> networkingMode=mirrored) for Linux GDB to
+  // reach the Windows OpenOCD on shared localhost:3333.
+  "cortex-debug.gdbPath.linux": "${workspaceFolder}/scripts/wsl_gdb_launcher.sh",
+  "cortex-debug.armToolchainPath.linux": "${workspaceFolder}/../prebuilts/gcc/linux-x86_64/arm-none-eabi/bin",
+  "cortex-debug.openocdPath.linux": "${workspaceFolder}/scripts/wsl_openocd_launcher.sh"
 }

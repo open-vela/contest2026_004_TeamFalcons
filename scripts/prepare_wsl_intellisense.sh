@@ -69,31 +69,38 @@ if [[ ! -f include/nuttx/config.h ]]; then
   exit 1
 fi
 
-# Smoke-check the contest hello_app against the real NuttX headers.
-HELLO_APP="${REPO_DIR}/app/hello_app/hello_app_main.c"
-if [[ -f "${HELLO_APP}" ]]; then
-  echo "Syntax-checking ${HELLO_APP}..."
-  "${GCC_BIN}" -fsyntax-only \
-    -mcpu=cortex-m7 -mthumb -ffreestanding -std=gnu11 -D__NuttX__ \
-    -I"${NUTTX_DIR}/include" \
-    -I"${OPENVELA_ROOT}/apps/include" \
-    -I"${REPO_DIR}/app/hello_app" \
-    -include "${NUTTX_DIR}/include/nuttx/config.h" \
-    "${HELLO_APP}"
-fi
+# Smoke-check the contest app against the real NuttX headers.
+CONTEST_APP_DIR="${REPO_DIR}/app/velaguard"
+CONTEST_APPS=(velaguard.c velaguard_mqtt.c)
+for CONTEST_APP in "${CONTEST_APPS[@]}"; do
+  CONTEST_APP_PATH="${CONTEST_APP_DIR}/${CONTEST_APP}"
+  if [[ -f "${CONTEST_APP_PATH}" ]]; then
+    echo "Syntax-checking ${CONTEST_APP_PATH}..."
+    "${GCC_BIN}" -fsyntax-only \
+      -mcpu=cortex-m7 -mthumb -ffreestanding -std=gnu11 -D__NuttX__ \
+      -I"${NUTTX_DIR}/include" \
+      -I"${OPENVELA_ROOT}/apps/include" \
+      -I"${OPENVELA_ROOT}/apps/netutils/mqttc/MQTT-C/include" \
+      -I"${CONTEST_APP_DIR}" \
+      -include "${NUTTX_DIR}/include/nuttx/config.h" \
+      "${CONTEST_APP_PATH}"
+  fi
+done
 
 cat <<EOF
 
 IntelliSense prerequisites are ready.
 
-Next in VS Code (Remote - WSL):
-  1. Install ms-vscode.cpptools into the WSL side if prompted
-  2. Command Palette → "C/C++: Reset IntelliSense Database"
-  3. Command Palette → "Developer: Reload Window"
-  4. Open app/hello_app/hello_app_main.c and try Go to Definition on printf
+Next in Cursor (Remote - WSL):
+  1. Install llvm-vs-code-extensions.vscode-clangd when prompted
+     (ms-vscode.cpptools is unavailable in Cursor)
+  2. First clangd start: approve the bundled clangd download if asked
+  3. Command Palette → "clangd: Restart language server"
+  4. Command Palette → "Developer: Reload Window"
+  5. Open app/velaguard/velaguard.c and try Go to Definition on printf
 
 Architecture reminder:
-  edit/IntelliSense → VS Code Remote - WSL
-  compile          → WSL openvela toolchain (later)
-  flash/debug      → Windows CubeProgrammer + OpenOCD (later)
+  edit/IntelliSense → Cursor Remote - WSL + clangd
+  compile          → WSL openvela toolchain (tasks: openvela: Build)
+  flash/debug      → Windows CubeProgrammer + OpenOCD (Cortex-Debug)
 EOF

@@ -1,7 +1,9 @@
 {
   "recommendations": [
-    "ms-vscode-remote.remote-wsl",
-    "ms-vscode.cpptools",
+    "llvm-vs-code-extensions.vscode-clangd",
     "marus25.cortex-debug"
+  ],
+  "unwantedRecommendations": [
+    "ms-vscode.cpptools"
   ]
 }

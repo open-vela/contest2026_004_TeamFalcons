@@ -236,6 +236,6 @@ index be5db167865..3f3b9566008 100644
 +        }
 +        break;
 +
-      default:
+       default:
          ret = -ENOTTY;
          break;

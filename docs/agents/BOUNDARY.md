@@ -57,7 +57,7 @@ Local agent index: root `CLAUDE.md`.
 | C3 | **GitHub only** for contest submit (not Gitee/GitCode for submission). Flow: **fork team repo → commit → PR → self-merge OK**. |
 | C4 | **Deadline**: work submit by **2026-09-20**; then push revoked (clone/view still OK). |
 | C5 | **AI logs**: auto-write under workspace end-of-session to `logs/<github_login>/...`; **never auto-push**. Human/agent may `git add logs/` + commit; **do not rewrite/tamper JSONL** (cheat). Delete whole session file before commit if private content. |
-| C6 | **Supported AI tools for scored logs**: Claude Code, OpenCode, Codex, AIoT-IDE. Not Cursor / ChatGPT web / raw API. |
+| C6 | **Supported AI tools for scored logs**: Claude Code, OpenCode, Codex, AIoT-IDE. Team collector also captures Grok Build and Cursor IDE as `tool: grok-build` / `tool: cursor` (honest source labels; official scoring still follows committee rules). Do not relabel Cursor/Grok sessions as `claude-code`. |
 | C7 | **Apache 2.0**, original work; CLA for first upstream contrib; PR may run `cla/signature` (`/check-cla`). |
 | C8 | Track: **AI 硬件产品创新**. Product must run on openvela device; not pure cloud app; not pure chat bot. |
 | C9 | Track minima (evidence): firmware on hardware/sim, **≥1 custom Skill**, **≥1 proactive+execute scenario**, scenario docs. Prefer ai_agent capabilities where issues require. |

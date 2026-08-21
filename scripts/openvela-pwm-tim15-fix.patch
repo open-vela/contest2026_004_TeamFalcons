@@ -1,0 +1,13 @@
+diff --git a/arch/arm/src/stm32h7/stm32_pwm.c b/arch/arm/src/stm32h7/stm32_pwm.c
+index 6d426d9a8fe..6def1d0422d 100644
+--- a/arch/arm/src/stm32h7/stm32_pwm.c
++++ b/arch/arm/src/stm32h7/stm32_pwm.c
+@@ -1363,7 +1363,7 @@ static struct stm32_pwmchan_s g_pwm15channels[] =
+   {
+     .channel = 2,
+     .mode    = CONFIG_STM32H7_TIM15_CH2MODE,
+-#ifdef CONFIG_STM32H7_TIM12_CH2OUT
++#ifdef CONFIG_STM32H7_TIM15_CH2OUT
+     .out1    =
+     {
+       .in_use  = 1,

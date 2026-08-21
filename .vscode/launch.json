@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "openvela: attach only (scaffold)",
+      "name": "openvela: Debug",
       "type": "cortex-debug",
       "request": "attach",
       "cwd": "${workspaceFolder}",
@@ -11,12 +11,45 @@
       "configFiles": [
         "board/stm32h750b-disco.cfg"
       ],
-      "loadFiles": [],
-      "sourceFileMap": {
-        "/home/debian19y/openvela": "${workspaceFolder}/.."
+      "openOCDLaunchCommands": [
+        "gdb breakpoint_override hard"
+      ],
+      "preAttachCommands": [
+        "file ${workspaceFolder}/.debug/nuttx.elf",
+        "set mem inaccessible-by-default off",
+        "mem 0x90000000 0x97ffffff ro",
+        "set remote hardware-breakpoint-limit 8"
+      ],
+      "preLaunchTask": "openvela: Release ST-LINK (kill stale OpenOCD)",
+      "liveWatch": {
+        "enabled": false
       },
-      "showDevDebugOutput": "none",
-      "svdFile": ""
+      "showDevDebugOutput": "none"
+    },
+    {
+      "name": "openvela: Debug (Download first)",
+      "type": "cortex-debug",
+      "request": "attach",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/.debug/nuttx.elf",
+      "servertype": "openocd",
+      "configFiles": [
+        "board/stm32h750b-disco.cfg"
+      ],
+      "openOCDLaunchCommands": [
+        "gdb breakpoint_override hard"
+      ],
+      "preAttachCommands": [
+        "file ${workspaceFolder}/.debug/nuttx.elf",
+        "set mem inaccessible-by-default off",
+        "mem 0x90000000 0x97ffffff ro",
+        "set remote hardware-breakpoint-limit 8"
+      ],
+      "preLaunchTask": "openvela: Prepare Debug",
+      "liveWatch": {
+        "enabled": false
+      },
+      "showDevDebugOutput": "none"
     }
   ]
 }

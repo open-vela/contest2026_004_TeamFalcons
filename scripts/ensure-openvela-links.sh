@@ -11,11 +11,11 @@ fi
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTEST_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 OPENVELA_ROOT="$(cd "$1" && pwd)"
-SOURCE="$CONTEST_ROOT/app/velaguard_app"
-DESTINATION="$OPENVELA_ROOT/packages/demos/contest2026_004_velaguard_app"
+SOURCE="$CONTEST_ROOT/app/velaguard"
+DESTINATION="$OPENVELA_ROOT/packages/demos/contest2026_004_hello_app"
 
 if [ ! -d "$SOURCE" ]; then
-  echo "VelaGuard source directory is missing: $SOURCE" >&2
+  echo "Contest app source directory is missing: $SOURCE" >&2
   exit 1
 fi
 
@@ -28,9 +28,9 @@ fi
 
 if [ -L "$DESTINATION" ] &&
    [ "$(readlink -f "$DESTINATION")" = "$(readlink -f "$SOURCE")" ]; then
-  echo "VelaGuard openvela link is ready."
+  echo "Contest app openvela link is ready."
   exit 0
 fi
 
 ln -sfn "$SOURCE" "$DESTINATION"
-echo "Linked VelaGuard app: $DESTINATION -> $SOURCE"
+echo "Linked contest app: $DESTINATION -> $SOURCE"

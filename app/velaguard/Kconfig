@@ -9,3 +9,50 @@ config LVX_USE_DEMO_CONTEST2026_004_VELAGUARD_APP
     select ARCH_HAVE_LEDS
 	---help---
 		Enable the contest 2026 team 000 hello app demo.
+
+config VG_BRINGUP_TOOLS
+	bool "VelaGuard bring-up tools (vgpwm/vgrs485/vgesp/vgmqtt/vgmodbus/vgnet + entrypoint app)"
+	default LVX_USE_DEMO_CONTEST2026_004_VELAGUARD_APP
+	select ARCH_HAVE_LEDS
+	---help---
+		Build the VelaGuard system entrypoint (velaguard_app_main) and the
+		bring-up tools vgpwm/vgrs485/vgesp/vgmqtt/vgmodbus as NSH commands.
+		The entrypoint runs the main loop persistently and hosts an NSH
+		thread for shell debugging (board initialization runs once via
+		NSH_ARCHINIT). Defaults to the LVGL demo switch so the existing
+		Windows build path (ps1) keeps building them, while the
+		velaguard-min preset can enable them independently of LVGL/LVX
+		demo symbols.
+
+config VG_NET_FAILOVER
+	bool "VelaGuard TCP failover (RJ45 / ESP-01S)"
+	default n
+	depends on VG_BRINGUP_TOOLS && NET && NETUTILS_ESP8266 && NETUTILS_MQTTC && NETUTILS_PING
+	---help---
+		Start a background manager from velaguard_app_main. Ping eth0 to
+		detect RJ45 faults, auto-join ESP-01S Wi-Fi, and fail over TCP
+		(MQTT-C) to lesp_* sockets.
+
+if VG_NET_FAILOVER
+
+config VG_WIFI_SSID
+	string "ESP-01S Wi-Fi SSID"
+	default "xxx"
+
+config VG_WIFI_PASSWORD
+	string "ESP-01S Wi-Fi password"
+	default "1472583690"
+
+config VG_MQTT_BROKER_HOST
+	string "Failover MQTT broker host"
+	default "107.174.123.74"
+
+config VG_MQTT_BROKER_PORT
+	int "Failover MQTT broker port"
+	default 1883
+
+config VG_NET_PING_HOST
+	string "Ping target if DHCP gateway is empty"
+	default "1.1.1.1"
+
+endif

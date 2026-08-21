@@ -1,0 +1,15 @@
+diff --git a/boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-net/defconfig b/boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-net/defconfig
+--- a/boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-net/defconfig
++++ b/boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-net/defconfig
+@@ -41,6 +41,12 @@ CONFIG_NETUTILS_DHCPC=y
+ CONFIG_NETUTILS_DHCPC_BOOTP_FLAGS=0x8000
+ CONFIG_NETUTILS_MQTTC=y
++CONFIG_NETUTILS_ESP8266=y
++CONFIG_NETUTILS_ESP8266_DEV_PATH="/dev/ttyS1"
++CONFIG_NETUTILS_ESP8266_BAUDRATE=115200
++CONFIG_VG_NET_FAILOVER=y
++CONFIG_VG_WIFI_SSID="xxx"
++CONFIG_VG_WIFI_PASSWORD="1472583690"
+ CONFIG_NET_BROADCAST=y
+ CONFIG_NET_ETH_PKTSIZE=1500
+ CONFIG_NET_ICMP_SOCKET=y

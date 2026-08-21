@@ -2,73 +2,148 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "openvela: prepare IntelliSense headers (WSL)",
-      "type": "shell",
-      "command": "bash \"${workspaceFolder}/scripts/prepare_wsl_intellisense.sh\"",
-      "options": {
-        "cwd": "${workspaceFolder}"
+      "label": "openvela: Release ST-LINK (kill stale OpenOCD)",
+      "type": "process",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "exec bash ${workspaceFolder}/scripts/wsl_kill_openocd.sh"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "openvela: reopen workspace in WSL for IntelliSense (Cursor)",
+      "type": "process",
+      "windows": {
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}\\scripts\\windows_open_cursor_wsl.ps1"
+        ]
       },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
+      "linux": {
+        "command": "bash",
+        "args": [
+          "-lc",
+          "echo 'Already in WSL. Command Palette → Developer: Reload Window, then clangd: Restart language server.'"
+        ]
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "openvela: Build",
+      "type": "process",
+      "windows": {
+        "command": "wsl.exe",
+        "args": [
+          "-d",
+          "Debian",
+          "bash",
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh"
+        ]
+      },
+      "linux": {
+        "command": "bash",
+        "args": [
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh"
+        ]
       },
       "group": {
         "kind": "build",
         "isDefault": true
-      }
+      },
+      "problemMatcher": []
     },
     {
-      "label": "openvela: reopen workspace in WSL for IntelliSense",
-      "type": "shell",
-      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"$(wslpath -w \"${workspaceFolder}/scripts/windows_open_vscode_wsl.ps1\")\"",
-      "options": {
-        "cwd": "${workspaceFolder}"
+      "label": "openvela: Rebuild",
+      "type": "process",
+      "windows": {
+        "command": "wsl.exe",
+        "args": [
+          "-d",
+          "Debian",
+          "bash",
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh --clean"
+        ]
       },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
+      "linux": {
+        "command": "bash",
+        "args": [
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh --clean"
+        ]
       },
-      "detail": "Use when the folder was opened as a Windows UNC path instead of Remote - WSL."
+      "group": "build",
+      "problemMatcher": []
     },
     {
-      "label": "openvela: build firmware via Windows host script (scaffold)",
-      "type": "shell",
-      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"$(wslpath -w \"${workspaceFolder}/scripts/windows_build_openvela.ps1\")\"",
-      "options": {
-        "cwd": "${workspaceFolder}"
+      "label": "openvela: Build Debug",
+      "type": "process",
+      "windows": {
+        "command": "wsl.exe",
+        "args": [
+          "-d",
+          "Debian",
+          "bash",
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh --debug"
+        ]
       },
-      "problemMatcher": "$gcc",
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
+      "linux": {
+        "command": "bash",
+        "args": [
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/build.sh --debug"
+        ]
       },
-      "detail": "Scaffold: WSL compile bridged from the Windows host script. Product app selection will be adapted later."
+      "problemMatcher": []
     },
     {
-      "label": "openvela: flash firmware via CubeProgrammer (scaffold)",
-      "type": "shell",
-      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"$(wslpath -w \"${workspaceFolder}/scripts/windows_flash_cube.ps1\")\"",
-      "options": {
-        "cwd": "${workspaceFolder}"
+      "label": "openvela: Download",
+      "type": "process",
+      "windows": {
+        "command": "powershell.exe",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-File",
+          "${workspaceFolder}\\scripts\\flash.ps1"
+        ]
       },
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
+      "linux": {
+        "command": "bash",
+        "args": [
+          "-lc",
+          "exec bash ${workspaceFolder}/scripts/flash.sh"
+        ]
       },
-      "detail": "Scaffold: Windows CubeProgrammer QSPI path. Requires ST-LINK + STM32CubeProgrammer on Windows."
+      "problemMatcher": []
     },
     {
-      "label": "openvela: flash current artifacts only (scaffold)",
-      "type": "shell",
-      "command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"$(wslpath -w \"${workspaceFolder}/scripts/windows_flash_cube.ps1\")\" -NoBuild",
-      "options": {
-        "cwd": "${workspaceFolder}"
-      },
-      "problemMatcher": [],
-      "detail": "Scaffold: program existing .debug artifacts without rebuilding."
+      "label": "openvela: Prepare Debug",
+      "dependsOn": [
+        "openvela: Build Debug",
+        "openvela: Release ST-LINK (kill stale OpenOCD)",
+        "openvela: Download"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
+    },
+    {
+      "label": "openvela: Build & Download",
+      "dependsOn": [
+        "openvela: Build",
+        "openvela: Download"
+      ],
+      "dependsOrder": "sequence",
+      "problemMatcher": []
     }
   ]
 }

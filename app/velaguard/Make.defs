@@ -2,6 +2,6 @@
 # Contest 2026 team 000 hello app - Make.defs
 ############################################################################
 
-ifneq ($(CONFIG_LVX_USE_DEMO_CONTEST2026_004_VELAGUARD_APP),)
+ifneq ($(CONFIG_VG_BRINGUP_TOOLS),)
 CONFIGURED_APPS += $(APPDIR)/packages/demos/contest2026_004_hello_app
 endif

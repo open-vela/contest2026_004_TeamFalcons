@@ -1,0 +1,6 @@
+{"file": ".trellis/tasks/08-14-stage1-net-mqtt-min-loop/prd.md", "reason": "requirements + acceptance criteria"}
+{"file": ".trellis/tasks/08-14-stage1-net-mqtt-min-loop/design.md", "reason": "technical design + contracts"}
+{"file": ".trellis/tasks/08-14-stage1-net-mqtt-min-loop/implement.md", "reason": "execution checklist"}
+{"file": "docs/velaguard-mqtt-contract.md", "reason": "status/LWT/topic contract (v1)"}
+{"file": "docs/velaguard-bringup-known-issues.md", "reason": "preset/ps1 warning/network exclusion context"}
+{"file": "VelaGuard_推进方案.md", "reason": "stage-1 acceptance standards (§4.3) and first-key-gate criteria (§11.1)"}

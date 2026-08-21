@@ -25,6 +25,17 @@ __pycache__/
 .venv/
 venv/
 
+# Host-side unit-test binaries (sources and Makefiles stay tracked)
+app/velaguard/host_tests/test_net_policy
+
+# Local AI / editor tooling (do not submit; contest code lives in-tree)
+.claude
+.claude/
+.codex/
+.cursor/
+.grok/
+.clangd
+
 # Editor settings: keep the shared VS Code project configuration.
 .vscode/*
 !.vscode/extensions.json

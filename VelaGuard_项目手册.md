@@ -1,964 +1,496 @@
 # VelaGuard 项目手册
 
-## 1. 项目概述
+> 版本：v2（2026-08-20 设计评审后重写）
+> 上一版定位为「自然语言配置 + 手册解析 + AI 诊断 + 语音播报」的通用工业边缘网关。
+> 本版收窄为「RS485/Modbus 现场诊断网关」，AI 层从云端 Bridge 改为板载 ai_agent。
+> 被推翻的决策及理由记录在 `VelaGuard_推进方案.md` 第 2 章。
 
-### 1.1 项目名称
+---
 
-VelaGuard：基于 openvela 的工业边缘 AI-Agent 网关
+## 1. 项目定位
 
-### 1.2 一句话定位
+### 1.1 一句话定位
 
-VelaGuard 是一个运行在 STM32H750B-DK 上的独立工业边缘 AI 网关，用于接入 Modbus/工业传感器，完成本地采集、异常告警、自然语言配置、AI 诊断、音频提醒和安全确认。
+VelaGuard 是一台运行在 STM32H750B-DK + openvela 上的 **RS485/Modbus 现场诊断网关**。它的核心不是采集转发，而是一个**能自己发起总线实验的板载 AI Agent**：当链路质量劣化时自动进入诊断，通过一系列只读探测逐步收敛出故障归因，产出现场人员可以照着干的排查工单。
 
-### 1.3 项目目标
+### 1.2 要解决的真问题
 
-VelaGuard 的目标不是做一个普通 AI 聊天屏幕，而是做一个可以独立运行的工业现场网关：
+把一台设备接到一条陌生的 485 总线上，工程师面对的是一串没有说明书的问题：
 
-- 能直接接入工业传感器和设备。
-- 能通过 openvela 完成本地 HMI、网络、文件系统和任务管理。
-- 能通过 RJ45 或 ESP-01 Wi-Fi 接入云服务器 AI Bridge，并通过 MQTT 请求 MiMo 能力。
-- 能用自然语言生成传感器采集配置。
-- 能读取传感器用户手册并辅助生成寄存器配置。
-- 能在异常发生时主动告警，并给出 AI 诊断建议。
-- 能通过本地屏幕和音频提醒现场人员。
-- 能保证 AI 不直接控制设备，关键操作必须本地确认。
-- 能通过 MQTT-only OTA 完成受控固件升级，支持签名校验、staging 写入和失败回滚。
+- 总线上有几个从站？各自什么地址、什么波特率？
+- 某个寄存器读出来是 `0x41C8 0x0000`，这是 int32 还是 float32？字序是 ABCD 还是 CDAB？倍率是 0.1 还是 1？
+- 通信时好时坏，是终端电阻没装、A/B 反接、波特率轻微失配、还是某个从站释放总线太慢？
 
-### 1.4 目标用户
+前两类问题现在靠人拿着万用表和串口助手试；第三类问题现在靠老师傅的经验。VelaGuard 把前两类做成确定性算法，把第三类做成 agent 的自主实验。
 
-- 小型自动化现场运维人员
-- 实验室设备管理员
-- 工控/嵌入式系统集成调试人员
-- 工业传感器部署和维护人员
+### 1.3 目标用户
 
-### 1.5 核心价值
+**和作者同类的人**：需要在现场或实验室接入陌生 Modbus 设备的嵌入式工程师、自动化调试人员、系统集成人员。
 
-传统工业网关通常只能采集和转发数据。VelaGuard 在此基础上增加 AI-Agent 能力：
+明确**不面向**产线操作工和不懂总线的运维——那需要产线现场经验来验证需求，作者不具备，硬做会做成想象中的产品。
 
-- 把传感器用户手册转换为可执行采集配置。
-- 把自然语言需求转换为 Modbus 寄存器采集规则。
-- 把原始告警转换为可解释的排查建议。
-- 把边缘设备能力封装为可控工具，供 AI 安全调用。
-- 在断网或 AI 不可用时仍保留本地告警和基本诊断能力。
+### 1.4 核心价值
+
+| 能力 | 现状做法 | VelaGuard |
+|---|---|---|
+| 发现从站 | 手工试地址和波特率组合 | 自动扫描地址 × 波特率矩阵 |
+| 识别数据格式 | 人肉试四种字序，看哪个像 | 物理合理性 + 时间连续性约束求解 |
+| 定位通信故障 | 老师傅经验 + 反复试 | Agent 自主设计并执行只读探测实验 |
+| 生成点表 | 手写 JSON 或组态软件 | 探测结果直接生成，屏幕预览后确认 |
+
+### 1.5 openvela 能力落点
+
+| openvela 能力 | 使用方式 |
+|---|---|
+| ai_agent 框架 | 板载 ReAct 循环、自定义 C 工具、Markdown Skill、主动任务 |
+| LVGL 图形栈 | 现场 HMI（只读 + 确认） |
+| NuttX 串口子系统 | RS485 半双工 DIR 时序（含驱动级修复） |
+| NuttX 网络栈 | RJ45 + ESP-01 双栈、MQTT、mbedTLS |
+| NuttX 块设备与文件系统 | eMMC bring-up、掉电安全配置存储 |
+| OTA / bootctl | 片内 bootstub 从 eMMC 烧写 QSPI |
+
+---
 
 ## 2. 产品边界
 
 ### 2.1 系统形态
 
-VelaGuard 是独立网关，不依赖长期连接电脑运行。
-
-标准运行链路：
+独立网关，不依赖长期连接电脑运行。
 
 ```text
-工业传感器 / 设备
-  ↓ RS485 / Modbus RTU / 可选 CAN
+Modbus RTU 从站（温湿度 / 电表 / 流量计 …）
+  ↓ RS485 半双工
 STM32H750B-DK + openvela
-  ↓ RJ45 Ethernet 或 ESP-01 Wi-Fi
-MQTT Broker / AI Bridge 云服务器
-  ↓ HTTPS
-MiMo API / TTS / ASR / 云端手册解析服务
+  ├─ 板载 ai_agent（ReAct 循环 + Modbus 只读工具集）
+  ├─ LVGL 现场 HMI（只读 + 确认）
+  └─ RJ45 Ethernet（主） / ESP-01 Wi-Fi（备）
+       ↓ HTTPS                    ↓ MQTT
+     云端 LLM（MiMo）           MQTT Broker（遥测 / 告警 / OTA）
 ```
 
-开发和维护时可以保留 USB CDC 或 UART 调试口，但它不是正式运行依赖。
+USB CDC / UART 只作为开发调试和救援通道，不是正式运行链路。
 
-网络接入采用双模设计：
+### 2.2 联网与离线的分界线
 
-- RJ45 Ethernet：主网络，优先用于 MQTT、手机局域网访问和大文件下载。
-- ESP-01 Wi-Fi：备用网络，用 UART AT 指令或定制固件接入 Wi-Fi。
-- USB CDC / UART：只作为调试、日志和救援配置通道，不作为正式运行链路。
+**永远本地、永远不依赖网络**：
 
-无论网络是否可用，VelaGuard 都必须保持本地采集、规则判断、告警弹窗、日志保存和本地告警音可用。AI 诊断、自然语言配置、手册解析和 TTS 属于联网增强能力。OTA 属于受控维护能力，必须复用 MQTT/MQTTS 链路，不要求板端额外引入 HTTPS 下载器。
+- Modbus 周期采集
+- 帧级质量统计（CRC 错误率、超时率、响应延迟分布、帧间隔违规）
+- 阈值 / 突变 / 离线告警
+- 屏幕告警与状态显示
+- 配置读写与事件日志
+- 数字量输出的安全默认态
 
-### 2.2 AI 控制边界
+**需要网络**：
 
-AI 可以做：
+- Agent 的诊断推理（LLM 在云端）
+- 遥测与告警上云
+- OTA
 
-- 解析自然语言需求。
-- 生成传感器配置建议。
-- 解释传感器手册中的寄存器表。
-- 生成异常诊断报告。
-- 生成巡检报告。
-- 推荐排查步骤。
+**断网时的诚实口径**：诊断能力降级。v1 阶段降级为「网络不可用，无法进行故障归因」并展示原始帧级统计；规则库上线后（阶段 2）降级为确定性归因结论。
 
-AI 不可以直接做：
+这条边界要写进产品说明和答辩材料，**不回避、不粉饰**。假装本地能做云端推理是不诚实的；把边界说清楚比假装没有边界更专业。
 
-- 直接写入寄存器。
-- 直接修改采集配置。
-- 直接控制执行器。
-- 直接关闭告警。
-- 直接覆盖本地安全规则。
+### 2.3 Agent 的权限边界
 
-所有写入类动作必须经过：
+这是本项目最重要的安全设计。一个能对活着的工业总线下指令的 LLM 是危险品。
+
+**工具层硬约束**（在 C 代码的工具注册层实现，不依赖 prompt 约束）：
+
+- 只注册只读功能码：`0x01` `0x02` `0x03` `0x04`
+- 写功能码 `0x05` `0x06` `0x0F` `0x10` **在工具集里根本不存在**，无法被调用
+- 从站地址、寄存器地址、寄存器数量、超时时长均有硬上界，越界直接拒绝
+- 单位时间请求数限流，防止 agent 把总线打满
+- 只在「诊断模式」下激活，退出诊断模式后工具集失效
+- 每次工具调用写入结构化审计日志
+
+**Agent 输出的处置边界**：
+
+Agent 只产出**建议**。改波特率、换接线、加终端电阻、调整点表——全部需要现场人员在屏幕上确认后由本地代码执行。
 
 ```text
-AI 生成建议
+Agent 归因结论
 → 板端 schema 校验
-→ 风险检查
-→ LVGL 页面预览
-→ 用户本地确认
-→ 应用配置或执行动作
+→ 风险分级
+→ LVGL 展示（明确标注「AI 推测」）
+→ 现场人员确认
+→ 本地代码执行
 ```
 
-## 3. 硬件资源
+**Agent 不可以**：写任何寄存器、修改采集配置、控制数字量输出、清除告警、覆盖本地安全规则。
 
-### 3.1 主控平台
+### 2.4 明确不做的事
 
-| 资源 | 用途 |
+| 不做 | 理由 |
 |---|---|
-| STM32H750B-DK | 主控开发板，运行 openvela |
-| Cortex-M7 | 负责采集、规则、UI、网络、JSON 处理 |
-| SDRAM | LVGL framebuffer、网络缓冲、AI 响应缓存 |
-| QSPI Flash / eMMC | 固件、资源文件、配置、日志、音频片段、OTA staging image |
+| 语音输入输出（ASR/TTS） | 工控现场噪声环境下伪需求；官方明确 CLI 即可满足交互渠道要求；WM8994 codec 树内无驱动 |
+| 本地音频告警 | 同上，WM8994 需自写驱动；改用 LED + 屏幕告警 |
+| 传感器手册上传与解析 | 需要云端 OCR/文档解析服务，与嵌入式主线无关 |
+| 屏上编辑配置 | 现场人员需要「看」和「确认」，配置创作是办公室的事；屏上编辑意味着软键盘、输入校验、误操作回退，是无底洞 |
+| 自然语言创作点表 | 被自动扫描探测取代——后者更准、更快、不依赖网络 |
+| 板端跑本地大模型 | H750 上跑不动够格的模型，不自欺 |
+| AI 直接控制执行器 | 工业安全红线 |
 
-### 3.2 人机交互资源
+---
 
-| 外设 | 用途 |
+## 3. 硬件资源（实测基线）
+
+> 以下数字来自 `nuttx/boards/arm/stm32h7/stm32h750b-dk/` 与 2026-08-18 构建产物，
+> 不是数据手册标称值。板级 README 写「128MB SDRAM」是颗粒容量，实际布线只有一半可访问。
+
+### 3.1 存储与内存
+
+| 资源 | 实际容量 | 现状 |
+|---|---|---|
+| 片内 Flash | 128 KB @ `0x08000000` | 仅存 QSPI boot stub（720 B），余量 ~127 KB |
+| QSPI NOR (MT25QL512ABB) | 256 Mbit ≈ 32 MB | **主固件 XIP 执行**于 `0x90000000`，当前占 ~220 KB |
+| 外部 SDRAM | **8 MB**（16-bit 走线，非 128 MB） | FMC Bank6 `0xD0000000`，首 1 MB 预留，7 MB 已入堆 |
+| 片内 SRAM | ~1 MB | AXI 512 KB / SRAM1-3 288 KB / SRAM4 64 KB / DTCM 128 KB / ITCM 64 KB |
+| eMMC | 8 GB | SDMMC 接口，**默认未启用，板级驱动未实现** |
+| microSD | 卡槽 | SDMMC 接口，默认未启用；**本项目无卡，不使用** |
+
+**堆预算**：AXI 主堆约 450 KB（已吃满 AXI 剩余空间），扩展区 SRAM1-3 + SRAM4 + DTCM 约 464 KB，SDRAM 约 7 MB，合计约 **7.9 MB**。DTCM 不适合 DMA 缓冲。
+
+**关键约束**：固件从 QSPI XIP 执行，因此**运行期不能擦写 QSPI**——擦写必须退出 memory-mapped 模式，那一刻任何从 `0x90000000` 取指的代码（含中断服务程序）会当场失效。这直接决定了 OTA 的架构（见 §8.4）。
+
+### 3.2 外设
+
+| 外设 | 状态 | 用途 |
+|---|---|---|
+| 4.3" 480×272 RGB LCD (LTDC) | 可用，有本地显示加速补丁 | 现场 HMI |
+| FT5x06 电容触摸 (I2C4) | 可用 | 确认操作 |
+| LED | 可用 | 状态 / 告警指示 |
+| UART + RS485 收发器 | 可用（扩展板已焊接） | Modbus RTU 主站 |
+| RJ45 Ethernet | 可用 | 主网络 |
+| ESP-01 Wi-Fi (UART AT) | 已实现 | 备用网络 |
+| WM8994 音频 codec | **树内无驱动** | 不使用 |
+| eMMC / microSD (SDMMC) | **需自写板级驱动** | 持久化存储 |
+
+扩展板特性：**120 Ω 终端电阻为跳线可切**。这使得终端电阻缺失、波特率失配、地址冲突、从站离线、帧间隔违规等五类故障可以用真实硬件复现，规则库和 agent 的诊断能力因此可验证。
+
+### 3.3 当前软件基线
+
+| 组件 | 状态 |
 |---|---|
-| 4.3 寸 LCD | 工业仪表盘、告警详情、AI 诊断报告 |
-| 电容触摸屏 | 配置确认、页面切换、告警处理 |
-| 板载按键 | 快速确认、返回、静音、调试动作 |
-| LED | 正常、告警、联网、采集状态提示 |
+| defconfig | `stm32h750b-dk:velaguard-net`（`scripts/build.sh` 默认 `TARGET=net`） |
+| 固件体积 | text 208 KB / data 12 KB / bss 50 KB |
+| 网络栈 | 已启用（TCP/UDP/DHCP/DNS/Ethernet MII） |
+| MQTT | MQTT-C 已启用，**明文 1883** |
+| mbedTLS | **未启用** |
+| littlefs | **未启用**（但 `stm32_bringup.c` 已写好 RAMMTD + littlefs 挂载逻辑，两个 Kconfig 即可开） |
+| LVGL / LTDC | 当前 net 预设**未启用**（另有 `lvgl` 预设可参考） |
 
-### 3.3 工业接入资源
-
-| 外设 | 用途 |
-|---|---|
-| UART | 连接 RS485 收发器 |
-| RS485 模块 | 接入 Modbus RTU 传感器 |
-| CAN FD | 可选，用于工业 CAN 或车载协议扩展 |
-| GPIO | 告警输出、继电器控制、外部状态输入 |
-| I2C / SPI | 可选扩展本地传感器 |
-
-### 3.4 网络资源
-
-| 外设 | 用途 |
-|---|---|
-| Ethernet RJ45 | 主网络接入，DHCP、DNS、MQTT、手机局域网访问、音频/OTA 分片传输 |
-| ESP-01 Wi-Fi 模块 | 备用网络接入，通过 UART AT 指令或定制固件连接云服务器 |
-| USB CDC / UART | 调试日志、救援配置、开发期备用通信 |
-
-网络优先级建议：
-
-```text
-RJ45 Ethernet 可用
-  → 使用 RJ45
-RJ45 不可用且 ESP-01 Wi-Fi 可用
-  → 使用 Wi-Fi
-两者都不可用
-  → 进入离线模式，本地采集和告警继续运行
-```
-
-### 3.5 音频资源
-
-| 外设 | 用途 |
-|---|---|
-| 音频 Codec / SAI / I2S | 播放告警音和诊断播报 |
-| 本地 WAV/PCM 文件 | 离线告警提示音 |
-| 云端 TTS 音频 | 将 AI 诊断文本转换为语音播报 |
-
-音频不是核心判断链路。即使音频不可用，屏幕告警和日志仍必须正常工作。
+---
 
 ## 4. 总体架构
 
-### 4.1 架构总览
+### 4.1 分层
 
 ```text
-┌──────────────────────────────────────────────┐
-│                手机 / Web 配置端              │
-│  自然语言输入 / 上传手册 / 查看设备状态        │
-└───────────────────────┬──────────────────────┘
-                        │ HTTP / LAN
-                        ↓
-┌──────────────────────────────────────────────┐
-│        STM32H750B-DK + openvela 网关          │
-│                                              │
-│  ┌──────────────┐  ┌──────────────────────┐  │
-│  │  LVGL HMI    │  │  Audio Alert / TTS    │  │
-│  └──────┬───────┘  └──────────┬───────────┘  │
-│         │                     │              │
-│  ┌──────↓─────────────────────↓───────────┐  │
-│  │          VelaGuard Agent Runtime        │  │
-│  │  Tools / Skills / Safety Guard / JSON   │  │
-│  └──────┬──────────────┬──────────────┬───┘  │
-│         │              │              │      │
-│  ┌──────↓──────┐ ┌─────↓─────┐ ┌─────↓─────┐│
-│  │ Rule Engine │ │ Config DB │ │ Event Log ││
-│  └──────┬──────┘ └───────────┘ └───────────┘│
-│         │                                    │
-│  ┌──────↓────────────┐   ┌────────────────┐ │
-│  │ Modbus Collector  │   │ NetworkManager │ │
-│  └──────┬────────────┘   └───────┬────────┘ │
-└─────────┼────────────────────────┼──────────┘
-          │ RS485                  │ MQTT
-          ↓                        ↓
-┌──────────────────┐       ┌──────────────────┐
-│ 工业传感器/设备   │       │ AI Bridge 云服务  │
-└──────────────────┘       └──────────────────┘
+Application
+  hmi_app              LVGL 现场 HMI（只读 + 确认）
+  diagnostic_app       诊断模式编排、探查会话管理
+
+ai_agent（openvela packages/ai_agent）
+  ReAct loop           多轮工具调用（上限 10 轮）
+  tool_registry        自定义 C 工具注册
+  skills               /data/agent/skills/*.md
+  proactive task       阈值触发的主动诊断
+  llm_proxy            OpenAI 兼容 HTTPS
+
+VelaGuard Service
+  modbus_collector     周期采集
+  bus_prober           扫描 / 块探测 / 字序求解（确定性）
+  frame_stats          帧级质量统计
+  rule_engine          阈值 / 突变 / 离线告警
+  diag_rules           故障归因规则库（阶段 2）
+  agent_tools          Modbus 只读工具 + 沙箱
+  point_table          点表存储与热加载
+  config_store         双槽掉电安全配置
+  event_store          结构化事件日志
+  network_manager      RJ45 / ESP-01 单活动链路
+  mqtt_client          遥测 / 告警 / OTA
+  ota_service          镜像下载与暂存（烧写由 bootstub 执行）
+
+openvela / NuttX
+  task / pthread / VFS / FAT / SDMMC / sockets / mbedTLS
+  UART(RS485) / Ethernet / LTDC / Touch / GPIO
 ```
 
-### 4.2 板端软件分层
+### 4.2 Agent 与确定性逻辑的分工
 
-```text
-Application Layer
-  hmi_app
-  sensor_setup_app
-  diagnosis_app
-  web_config_app
+这是本项目的架构核心，必须分清楚：
 
-Agent Layer
-  vela_agent_runtime
-  tool_router
-  skill_manager
-  safety_guard
-  prompt_builder
+| 问题类型 | 性质 | 由谁做 |
+|---|---|---|
+| 这条总线上有哪些从站？ | 穷举搜索 | 确定性算法 |
+| 这几个寄存器是什么数据类型和字序？ | 约束求解 | 确定性算法 |
+| 当前链路质量如何？ | 统计 | 确定性算法 |
+| **下一步该做什么实验？** | **实验设计** | **Agent** |
+| 这组症状说明什么故障？ | 分类 | 规则库（阶段 2）+ Agent 补充 |
+| 现场人员该怎么办？ | 表达 | Agent |
 
-Service Layer
-  modbus_collector
-  rule_engine
-  sensor_registry
-  config_store
-  event_store
-  audio_service
-  network_manager
-  mqtt_client
-  ota_service
+**规则库是分类器**（有了证据给结论），**Agent 是实验设计者**（不知道该测什么时决定下一步测什么）。这是两个不同的问题，Agent 不可替代的地方只在后者。
 
-openvela / NuttX Layer
-  task / pthread
-  file system
-  sockets
-  mbedTLS
-  UART
-  Ethernet
-  LCD / Touch
-  Audio
-```
+### 4.3 字序与数据类型的约束求解
+
+不使用 LLM。这是个约束满足问题，算法比 LLM 可靠得多，因为它给的是证据而不是统计先验：
+
+1. 对候选排列 ABCD / BADC / CDAB / DCBA 分别解码
+2. **物理合理性筛选**：float32 解出 NaN / inf / 1e-38 量级直接排除；结合寄存器语义猜测的量纲范围筛选
+3. **时间连续性筛选**：连续多次采样，真实物理量变化平滑，错误字序解出的序列会剧烈跳变
+4. 数据类型（int16 / uint16 / int32 / float32）由寄存器数量、值域、有无负数、变化平滑度共同判定
+5. 倍率由值域相对典型量纲的数量级推断，供人确认
+
+两个约束联合通常唯一确定解。无法唯一确定时列出候选，交屏幕确认。
+
+---
 
 ## 5. 功能模块
 
-### 5.1 传感器注册中心
+### 5.1 总线自动探查（招牌功能，确定性）
 
-负责管理所有传感器和采集点。
+**地址与波特率扫描**
 
-主要能力：
+- 波特率候选：9600 / 19200 / 38400 / 57600 / 115200（可配）
+- 从站地址：1–247（可配范围）
+- 对每个组合发送最小请求，按响应与 CRC 判定存活
+- 扫描期间严格遵守 3.5 字符帧间隔，不打满总线
+- 输出存活从站列表及其通信参数
 
-- 新增传感器。
-- 删除传感器。
-- 启停传感器。
-- 查询传感器状态。
-- 维护寄存器映射。
-- 维护采样周期。
-- 维护单位、倍率、数据类型。
-- 维护报警规则。
+**寄存器块探测**
 
-传感器配置示例：
+- 对每个存活从站，按块试读 Holding / Input Register
+- 记录哪些地址段可读、哪些返回异常码
+- 输出可读寄存器区间图
 
-```json
-{
-  "device_id": "motor_temp_01",
-  "name": "Cooling Pump Temperature",
-  "protocol": "modbus_rtu",
-  "slave_addr": 1,
-  "serial": {
-    "port": "/dev/ttyS1",
-    "baudrate": 9600,
-    "parity": "N",
-    "data_bits": 8,
-    "stop_bits": 1
-  },
-  "registers": [
-    {
-      "key": "temperature",
-      "label": "Motor Temperature",
-      "function_code": 3,
-      "addr": 40001,
-      "data_type": "int16",
-      "scale": 0.1,
-      "offset": 0,
-      "unit": "C"
-    }
-  ],
-  "poll_interval_ms": 2000,
-  "rules": [
-    {
-      "rule_id": "temperature_high",
-      "expr": "temperature > 70",
-      "severity": "warning",
-      "message": "Motor temperature is too high"
-    }
-  ]
-}
-```
+**点表生成与确认**
 
-### 5.2 Modbus 采集服务
+- 探测结果 + 字序求解 → 候选点表
+- LVGL 展示点表预览（寄存器地址、推断的数据类型、字序、倍率、当前解码值）
+- 「测试读取」按钮触发一次实读，展示结果
+- 现场人员确认后点表落盘并进入采集循环
 
-负责从 RS485/Modbus RTU 设备读取数据。
+### 5.2 Modbus 采集
 
-Modbus RTU 协议栈优先基于 nanoMODBUS 实现。nanoMODBUS 只要求用户提供 transport read/write 回调，适合在 openvela/NuttX 上通过串口字符设备完成适配。
+基于 nanoMODBUS 实现 RTU 主站，`modbus_port_openvela.c` 提供 transport 回调。
 
-主要能力：
+- 周期读取 Holding / Input Register，支持多点位
+- 倍率、偏移、单位换算
+- 失败重试与离线判定
+- 采样结果分发给规则引擎、UI、帧统计与 MQTT
 
-- 周期读取 Holding Register。
-- 周期读取 Input Register。
-- 支持多个寄存器点位。
-- 支持倍率和偏移量换算。
-- 支持通信失败重试。
-- 支持离线检测。
-- 支持手动测试读取。
-- 将采样结果发布给规则引擎和 UI。
+**RS485 方向控制**：优先使用 NuttX 的 `TIOCSRS485` 驱动级 DIR 控制（基于 TC 中断），而非应用层延时。当前 NuttX 的 `tcdrain()` 不等待发送完成（TC）标志，会导致半双工提前切向而截断帧尾——这是 POSIX 语义偏离，应在驱动层修复并向上游提交 PR（见 §14.2）。
 
-openvela 适配结构：
+### 5.3 帧级质量统计
+
+Agent 诊断的证据来源，也是主动触发的依据。按从站分别统计：
+
+- CRC 错误率
+- 响应超时率
+- 响应延迟分布（min / p50 / p95 / max）
+- 帧间隔违规次数
+- 回声帧检测（收到自己发出的字节，指示 DIR 时序问题）
+- 异常码分布
+
+统计窗口滑动，可导出为 agent 工具的返回值。
+
+### 5.4 板载 AI Agent
+
+基于 openvela `packages/ai_agent`。
+
+**自定义 C 工具集**（通过 `tool_registry_register_provider()` 注册，全部只读）：
+
+| 工具 | 作用 |
+|---|---|
+| `modbus_scan(addr_range, baud)` | 扫描指定范围内的存活从站 |
+| `modbus_read(addr, fc, reg, count, timeout_ms)` | 单次只读请求（功能码限 01/02/03/04） |
+| `probe_register_block(addr, start, count)` | 探测寄存器块可读性 |
+| `get_frame_stats(addr, window_s)` | 取帧级质量统计 |
+| `set_probe_baudrate(baud)` | 临时改变探查波特率（不影响已确认点表） |
+| `get_point_table(addr)` | 读取当前点表 |
+| `get_bus_topology()` | 读取已知从站清单与参数 |
+
+所有工具受 §2.3 的沙箱约束。
+
+**Skill**（Markdown，存放于 `/data/agent/skills/`）：
+
+`rs485_fault_triage.md` —— 一份 485 故障排查的领域知识，告诉 agent 遇到什么症状应该设计什么实验。这是本项目提交给大赛的自定义 Skill。
+
+**主动任务**：帧错误率或超时率越过阈值时自动触发诊断会话（详见 §5.5）。
+
+**LLM 后端**：OpenAI 兼容 HTTPS。可直连 MiMo（`llm_proxy` 内置 `mimo` 预设），也可指向自建 Bridge 的 `/v1/chat/completions` 端点以便云侧热改 prompt、更换模型、集中日志，且 API key 不落设备。后者同时命中大赛「端云协作」加分项，但要求云侧具备自主性而不只是转发。
+
+### 5.5 主动诊断会话（主动 + 执行）
+
+对应大赛四类主动能力中的「**阈值主动**」。
 
 ```text
-modbus_collector
-  → nanoMODBUS client
-  → modbus_port_openvela.c
-  → /dev/ttySx
-  → UART
-  → RS485 transceiver
-  → Modbus sensor
+帧统计检测到某从站 CRC 错误率 / 超时率越过阈值
+→ 生成 degraded 告警（本地，不依赖网络）
+→ 自动启动诊断会话（若网络可用）
+→ Agent 在只读沙箱内自主设计并执行探测实验
+   降速重试 → 隔离测试 → 延长超时 → 换寄存器块 → …
+   每步观测结果决定下一步（ReAct 循环，上限 10 轮）
+→ 收敛出归因结论与置信描述
+→ 生成排查工单，推送到屏幕 + MQTT
+→ 处置动作等待现场人员确认
 ```
 
-`modbus_port_openvela.c` 负责：
+**自主诊断，人工处置**。探测全程只读且限流，因此自动触发是安全的；但 agent 建议的任何处置动作都需要人确认。
 
-- 打开串口设备。
-- 配置波特率、校验位、停止位。
-- 实现 nanoMODBUS 的 read/write 回调。
-- 处理读超时和字节超时。
-- 控制 RS485 DE/RE 方向脚，或调用系统提供的 RS485 ioctl。
-- 在发送后保留必要的总线静默时间。
+诊断会话可被现场人员通过屏幕「深度探查」按钮手动触发（可用性糖，非核心）。
 
-第一阶段只启用 Modbus client/master 能力。如果不需要板端作为从站，应禁用 nanoMODBUS server 代码以减小体积。
+### 5.6 规则引擎与告警
 
-采样数据示例：
+不依赖网络的本地实时判断：
 
-```json
-{
-  "device_id": "motor_temp_01",
-  "timestamp": "2026-06-23T10:30:00+08:00",
-  "values": {
-    "temperature": 82.4
-  },
-  "quality": "good"
-}
-```
-
-### 5.3 规则引擎
-
-负责本地实时判断，不依赖云端 AI。
-
-支持规则：
-
-- 超阈值
-- 低于阈值
+- 超阈值 / 低于阈值（触发与恢复均带持续时间窗口）
+- 数值突变（窗口差值 + 持续时间）
 - 通信离线
-- 数值突变
-- 持续异常
+- 链路劣化（帧统计越阈）
 - 恢复正常
 
-规则输出事件：
+告警模型见 §16.6。
 
-```json
-{
-  "event_id": "evt_0001",
-  "device_id": "motor_temp_01",
-  "type": "threshold_high",
-  "severity": "warning",
-  "title": "Motor temperature high",
-  "current_value": 82.4,
-  "rule": "temperature > 70",
-  "history": [65.1, 66.0, 72.8, 82.4],
-  "timestamp": "2026-06-23T10:30:00+08:00"
-}
-```
+### 5.7 故障归因规则库（阶段 2）
 
-### 5.4 AI-Agent Runtime
+Agent 的离线替代与交叉验证。485 故障模式可枚举，写成决策表：
 
-负责把本地能力封装成工具，并通过 MQTT 与云服务器 AI Bridge 安全交互。AI Bridge 再调用 MiMo API、TTS、ASR 和手册解析服务。
+| 现象 | 归因 |
+|---|---|
+| 全部从站不响应 | 接线 / 供电 / 全局波特率错 |
+| 单个从站不响应 | 该从站地址错、掉线或损坏 |
+| CRC 错随总线长度增加 | 终端电阻缺失或反射 |
+| 错误集中在长帧 | 波特率轻微失配或时钟漂移 |
+| 响应延迟抖动大 | 从站忙或总线竞争 |
+| 收到回声帧 | DIR 时序错，半双工回环 |
+| 帧间隔违规 | 主站发送过快，3.5T 不足 |
+| 仅在某从站响应后出错 | 该从站释放总线慢 |
+| 两个地址交替失联 | 地址冲突 |
 
-核心组成：
+规则库可单元测试，且扩展板的跳线、可配波特率、多从站使其中五类可用真实硬件复现验证。
 
-- `tool_router`：工具调用路由。
-- `skill_manager`：加载和管理 Skill。
-- `prompt_builder`：构造诊断和配置生成提示词。
-- `ai_bridge_client`：通过 MQTT 请求云服务器 AI Bridge。
-- `safety_guard`：校验 AI 输出。
-- `json_validator`：校验结构化配置。
+### 5.8 点表与配置存储
 
-可用工具：
+点表、网络配置、告警规则以 JSON 存储于 eMMC。**FAT 不是掉电安全的**，因此配置写入必须自行实现原子提交：双份互备 + CRC + 单调递增序号，启动时选 `seq` 最大且校验通过的一份，两份皆坏则回退出厂默认。详见 §16.8。
 
-```text
-list_sensors()
-read_sensor(device_id)
-read_history(device_id, minutes)
-get_alarm(event_id)
-validate_sensor_config(config_json)
-preview_sensor_config(config_json)
-apply_sensor_config(config_json)
-save_diagnosis(event_id, diagnosis_json)
-play_alert_sound(sound_id)
-```
+### 5.9 事件日志
 
-写入类工具必须经过本地确认：
+结构化事件写入 `events.jsonl`，人类可读日志滚动写入 `latest.log`。详见 §16.7。
 
-```text
-apply_sensor_config()
-clear_alarm()
-set_alarm_rule()
-write_device_register()
-```
+至少记录：告警产生与恢复、诊断会话全过程（含每次工具调用的审计记录）、配置变更及来源、用户确认、网络与 OTA 事件。
 
-### 5.5 自然语言添加传感器
+---
 
-用户可以通过触摸屏或手机页面输入自然语言。
+## 6. HMI 设计
 
-输入示例：
+### 6.1 设计原则
 
-```text
-添加一台 Modbus 温湿度传感器，地址 1，温度寄存器 40001，湿度寄存器 40002，每 2 秒采集一次，温度超过 70 度报警。
-```
+**只读 + 确认，屏上不做任何编辑。**
 
-处理流程：
+这不是妥协，而是符合现场实际：现场人员需要「看」和「确认」，配置创作是工程师在办公室干的事。屏上编辑意味着软键盘、输入校验、状态机、误操作回退，工作量差两三倍且价值可疑。
 
-```text
-用户输入自然语言
-→ 网关通过 MQTT 请求 AI Bridge
-→ MiMo 返回 sensor_config JSON
-→ 板端做 schema 校验
-→ 板端做风险校验
-→ LVGL 显示配置预览
-→ 用户点击测试读取
-→ 读取成功后用户确认添加
-→ 保存配置
-→ 开始采集
-```
+其余原则：
 
-板端必须检查：
-
-- 协议是否合法。
-- 从站地址是否合法。
-- 寄存器地址是否合法。
-- 功能码是否合法。
-- 采样周期是否过短。
-- 报警阈值是否合理。
-- 是否与已有设备冲突。
-
-### 5.6 上传传感器用户手册
-
-用户可以通过手机 Web 页面上传传感器用户手册。
-
-推荐处理方式：
-
-```text
-手机上传 PDF / 图片 / 文档
-→ 云端手册解析服务
-→ 提取通信参数和寄存器表
-→ 生成 register_map
-→ 网关拉取或接收 sensor_profile
-→ 用户选择要采集的字段
-→ MiMo 生成最终采集配置
-→ 网关校验并确认
-```
-
-手册解析结果示例：
-
-```json
-{
-  "manual_id": "manual_temp_humi_x1",
-  "sensor_name": "RS485 Temperature Humidity Sensor",
-  "protocol": "modbus_rtu",
-  "default_serial": {
-    "baudrate": 9600,
-    "parity": "N",
-    "data_bits": 8,
-    "stop_bits": 1
-  },
-  "register_map": [
-    {
-      "key": "temperature",
-      "label": "Temperature",
-      "function_code": 3,
-      "addr": 40001,
-      "data_type": "int16",
-      "scale": 0.1,
-      "unit": "C"
-    },
-    {
-      "key": "humidity",
-      "label": "Humidity",
-      "function_code": 3,
-      "addr": 40002,
-      "data_type": "int16",
-      "scale": 0.1,
-      "unit": "%"
-    }
-  ]
-}
-```
-
-### 5.7 AI 异常诊断
-
-异常发生后，用户可以点击 AI 诊断。
-
-AI 输入上下文：
-
-- 当前异常事件
-- 当前采样值
-- 最近历史数据
-- 传感器配置
-- 报警规则
-- 用户手册摘要
-- 设备说明
-
-AI 输出结构：
-
-```json
-{
-  "summary": "电机温度持续超过阈值",
-  "risk_level": "medium",
-  "possible_causes": [
-    "负载过高",
-    "散热异常",
-    "温度传感器安装松动"
-  ],
-  "recommended_actions": [
-    "检查电机负载是否异常",
-    "检查风扇或散热通道",
-    "复测温度传感器连接"
-  ],
-  "need_shutdown": false,
-  "confidence": 0.76
-}
-```
-
-### 5.8 音频提醒与播报
-
-音频功能包括：
-
-- 本地告警提示音。
-- 告警等级差异化提示音。
-- AI 诊断摘要播报。
-- 网络失败或采集失败提示音。
-
-音频链路：
-
-```text
-告警发生
-→ 播放本地 alert.wav
-→ AI 诊断完成
-→ 请求云端 TTS 生成音频
-→ AI Bridge 通过 MQTT 返回短音频或音频分片
-→ audio_service 播放
-```
-
-音频策略：
-
-- 告警音必须本地可播放。
-- TTS 播报失败不影响屏幕诊断结果。
-- 用户可以静音。
-- 高等级告警可以重复提示。
-- 板端不为 TTS 播放额外引入 HTTPS 下载链路，优先复用 MQTT/MQTTS。
-
-### 5.9 手机远程配置
-
-H750B-DK 通过以太网加入局域网后，可以提供一个轻量 Web 配置入口。
-
-手机端功能：
-
-- 查看当前设备状态。
-- 添加传感器。
-- 输入自然语言配置。
-- 上传用户手册。
-- 查看配置预览。
-- 查看告警日志。
-- 触发 AI 诊断。
-
-手机端的关键操作仍需本地安全策略保护。涉及设备写入或规则变更时，网关屏幕应显示确认页。
-
-### 5.10 日志和报告
-
-系统保存：
-
-- 采样摘要
-- 告警事件
-- AI 诊断结果
-- 配置变更记录
-- 手册解析记录
-- 网络调用错误
-- 用户确认记录
-
-事件日志示例：
-
-```json
-{
-  "log_id": "log_0001",
-  "type": "diagnosis",
-  "event_id": "evt_0001",
-  "device_id": "motor_temp_01",
-  "diagnosis_summary": "电机温度持续超过阈值",
-  "created_at": "2026-06-23T10:31:00+08:00",
-  "source": "mimo",
-  "saved": true
-}
-```
-
-### 5.11 MQTT-only OTA 固件升级
-
-OTA 用于远程维护 VelaGuard 固件，但不能破坏独立网关和本地安全闭环。OTA 协议采用 MQTT-only 拉取式分片传输，不在 H750B-DK 主流程中引入 HTTPS 固件下载器。
-
-OTA 链路：
-
-```text
-云端发布 OTA Offer
-→ VelaGuard 收到升级提示
-→ UI 显示版本、大小、签名、风险和变更摘要
-→ 用户本地确认或进入维护窗口
-→ VelaGuard 逐片请求 firmware chunk
-→ 云端通过 MQTT 返回 chunk data
-→ 板端写入 staging image
-→ 校验 sha256 + 数字签名
-→ 重启切换新固件
-→ 自检通过后 confirm
-→ 自检失败则 rollback
-```
-
-OTA 约束：
-
-- 固件包不通过 HTTPS 下载。
-- 固件包不由云端无节制推送，必须由设备拉取 chunk。
-- 每片 chunk 大小建议 4KB 或 8KB。
-- 每次只允许有限数量 inflight chunk，避免挤占 Modbus、UI 和告警任务。
-- OTA 必须校验 sha256 和数字签名，只有 hash 不够。
-- 高等级 active alarm、存储异常、供电不稳或本地安全状态异常时不允许升级。
-- 新固件启动后必须完成自检并标记 confirmed，否则回滚。
-- OTA 进度、失败原因、确认和回滚都必须写入结构化事件。
-
-## 6. UI 设计
-
-### 6.1 UI 设计原则
-
-- 工业风格，清晰、克制、信息密度适中。
-- 首页必须一眼看出设备是否正常。
-- 告警和诊断必须比配置入口更突出。
-- 不在屏幕上堆长说明文字。
-- 所有危险动作必须有二次确认。
-- 触摸控件尺寸要适合 4.3 寸屏。
-- 状态颜色统一：绿色正常、黄色预警、红色告警、灰色离线、蓝色联网/AI。
+- 工业风格，信息密度适中，首页一眼看出设备是否正常
+- 告警和诊断比配置入口更突出
+- 状态色统一：绿正常 / 黄预警 / 红告警 / 灰离线 / 蓝联网
+- 「AI 推测」与「确定性结论」在视觉上必须区分
+- 触摸控件尺寸适配 4.3 寸屏
 
 ### 6.2 页面结构
 
 ```text
 首页 / 总览
-  ├─ 设备详情
+  ├─ 从站详情（当前值、通信质量、点表、帧统计）
   ├─ 实时趋势
   ├─ 告警详情
-  │   └─ AI 诊断
-  ├─ 添加传感器
-  │   ├─ 自然语言输入
-  │   ├─ 手册导入结果
-  │   └─ 配置预览
-  ├─ 日志
-  ├─ 系统状态
-  └─ OTA 更新
+  │   └─ 诊断工单（含 AI 推测标注 + 探查过程回放）
+  ├─ 总线探查
+  │   ├─ 扫描进度与结果
+  │   ├─ 点表预览
+  │   └─ 测试读取与确认
+  ├─ 事件日志
+  └─ 系统状态
 ```
 
-### 6.3 首页 / 总览页
-
-显示内容：
-
-- 顶部状态栏：网络、MiMo、采集、音频、时间。
-- 设备状态卡片：设备名、当前值、状态、更新时间。
-- 告警摘要：当前告警数量、最高告警等级。
-- 快捷操作：添加传感器、查看日志、静音。
-
-布局示意：
+### 6.3 首页
 
 ```text
 ┌────────────────────────────────────┐
-│ VelaGuard   NET OK  MiMo OK  10:30 │
+│ VelaGuard   NET OK  AI OK   10:30  │
 ├────────────────────────────────────┤
-│ Cooling Pump Motor                 │
-│ Temp 82.4 C       WARNING          │
-│ Last update: 2s ago                │
+│ Slave 03  Cooling Pump             │
+│ Temp 82.4 C          WARNING       │
+│ CRC 0.2%  Timeout 0%   2s ago      │
 ├────────────────────────────────────┤
-│ Alarms: 1       Highest: Warning   │
+│ Slave 05  Flow Meter               │
+│ Flow 12.3 m3/h       DEGRADED      │
+│ CRC 31.4%  Timeout 8%  1s ago      │
+├────────────────────────────────────┤
+│ Alarms: 2      Highest: Warning    │
 ├───────────┬───────────┬────────────┤
-│ Details   │ Diagnose  │ Add Sensor │
+│  Details  │  Diagnose │  Scan Bus  │
 └───────────┴───────────┴────────────┘
 ```
 
-### 6.4 设备详情页
+### 6.4 诊断工单页
 
-显示内容：
+必须显示：现象摘要、归因结论、**结论来源标注（规则判定 / AI 推测）**、建议排查步骤、探查过程回放（agent 执行了哪些实验、观测到什么）。
 
-- 当前值
-- 通信质量
-- 采样周期
-- 寄存器地址
-- 阈值规则
-- 最近采样时间
+按钮：保存工单、标记已处理。**不提供任何「让 AI 直接修复」的入口。**
 
-### 6.5 实时趋势页
+### 6.5 总线探查页
 
-显示内容：
+扫描进度 → 存活从站列表 → 点表预览（寄存器地址、推断数据类型、字序、倍率、当前解码值、候选项）→ 测试读取 → 确认 / 返回 / 放弃。
 
-- 最近 1 分钟或 5 分钟曲线。
-- 阈值线。
-- 异常点标记。
-- 当前值大号显示。
+---
 
-### 6.6 告警详情页
+## 7. 典型场景
 
-显示内容：
+### 7.1 场景一：接入一条陌生总线
 
-- 告警标题。
-- 异常类型。
-- 当前值和阈值。
-- 持续时间。
-- 历史值片段。
-- 按钮：AI 诊断、静音、标记处理。
+接上 485 → 点「Scan Bus」→ 网关扫描地址 × 波特率矩阵，发现 3 个从站 → 逐个探测寄存器块 → 约束求解推断出「40001 是 0.1 倍率的 int16 温度」「40010-40011 是 CDAB 字序的 float32 流量」→ 屏幕出点表预览 → 点「测试读取」→ 现场人员确认 → 曲线开始跑。
 
-### 6.7 AI 诊断页
+### 7.2 场景二：链路劣化的自主诊断
 
-显示内容：
+从站 5 的 CRC 错误率爬到 30% → 本地生成 degraded 告警 → 自动启动诊断会话 → Agent 降速到 9600 重试（错误率降到 2%）→ 拉长超时（无改善）→ 改读短寄存器块（正常）→ 收敛结论「疑似波特率失配或总线反射，建议检查终端电阻跳线并确认从站实际波特率」→ 工单推到屏幕和 MQTT → 现场人员按工单处置。
 
-- 现象摘要。
-- 风险等级。
-- 可能原因。
-- 建议排查步骤。
-- 可信度。
-- 按钮：保存报告、播放语音、确认已处理。
+### 7.3 场景三：断网降级
 
-### 6.8 添加传感器页
+拔掉网线后触发链路劣化。系统行为：本地采集继续、帧统计继续、告警照常弹出、事件照常落盘；诊断页显示「网络不可用，无法进行故障归因」并展示原始帧级统计（阶段 2 之后：展示规则库的确定性归因）。网络恢复后可补做诊断。
 
-输入方式：
+---
 
-- 自然语言添加。
-- 从手册添加。
-- 手动添加。
+## 8. 网络与云端
 
-自然语言输入页：
+### 8.1 双栈网络
 
-```text
-┌────────────────────────────────────┐
-│ Add Sensor                         │
-├────────────────────────────────────┤
-│ "添加一台温湿度传感器..."          │
-│                                    │
-├────────────────────────────────────┤
-│ [Generate Config] [Cancel]         │
-└────────────────────────────────────┘
-```
+`network_manager` 统一管理 RJ45 与 ESP-01，**单活动链路**，RJ45 优先，恢复后需稳定窗口再切回。状态：`NET_DOWN` / `NET_CONNECTING` / `NET_ONLINE_RJ45` / `NET_ONLINE_WIFI` / `NET_DEGRADED`。
 
-配置预览页必须显示：
+重连采用指数退避：初始 1 s，倍率 2，上限 60 s，抖动 ±20%，稳定在线 5 分钟后重置。RJ45 与 Wi-Fi 分别维护退避状态；RJ45 物理 link 恢复可立即触发一次尝试。
 
-- 设备名称
-- 协议
-- 从站地址
-- 波特率
-- 寄存器列表
-- 单位和倍率
-- 报警规则
-- 测试读取结果
+**本模块已基本建成，进入冻结状态**：只做必要维护，不再投入优化。
 
-按钮：
+### 8.2 LLM 链路
 
-- 测试读取
-- 确认添加
-- 返回修改
-- 放弃
+板载 ai_agent 通过 HTTPS 调用 OpenAI 兼容端点。两种落法：
 
-### 6.9 系统状态页
+- **直连 MiMo**：`llm_proxy` 内置 `mimo` 预设（`api.xiaomimimo.com`），最简
+- **经自建 Bridge**：Bridge 暴露 `/v1/chat/completions` 透传端点。优点是 API key 不落设备、prompt 与模型可云侧热改无需烧板、日志集中；且可演化为「端云协作」加分项
 
-显示内容：
+v1 先直连打通，Bridge 化作为后续增强。
 
-- IP 地址
-- AI Bridge / MiMo 状态
-- 最近一次 API 延迟
-- RS485 状态
-- 文件系统状态
-- 音频状态
-- 固件版本
-- OTA 状态
-- 日志容量
+### 8.3 MQTT
 
-## 7. 交互流程
-
-### 7.1 正常采集流程
-
-```text
-设备上电
-→ openvela 启动
-→ 加载配置
-→ 初始化网络、LCD、触摸、音频、RS485
-→ 启动 Modbus 采集
-→ 首页显示实时状态
-→ 规则引擎持续判断
-```
-
-### 7.2 异常诊断流程
-
-```text
-采样值异常
-→ 规则引擎生成告警事件
-→ UI 弹出告警
-→ 播放本地告警音
-→ 用户点击 AI 诊断
-→ Agent 读取事件、历史、配置、手册摘要
-→ 通过 MQTT 请求 AI Bridge
-→ 返回结构化诊断
-→ UI 显示诊断页
-→ 用户保存或播放语音
-```
-
-### 7.3 自然语言添加传感器流程
-
-```text
-用户输入自然语言
-→ 网关通过 MQTT 请求 AI Bridge
-→ MiMo 返回候选配置
-→ 网关校验配置
-→ UI 展示配置预览
-→ 用户点击测试读取
-→ 读取成功
-→ 用户确认添加
-→ 配置落盘
-→ 传感器进入采集循环
-```
-
-### 7.4 上传手册添加传感器流程
-
-```text
-手机打开网关 Web 页面
-→ 上传传感器手册
-→ 云端解析手册
-→ 返回寄存器表
-→ 用户自然语言选择采集项
-→ MiMo 生成配置
-→ 网关校验
-→ 屏幕预览
-→ 用户确认
-→ 开始采集
-```
-
-### 7.5 音频播报流程
-
-```text
-告警触发
-→ 播放本地提示音
-→ AI 诊断完成
-→ 用户点击播放诊断
-→ 网关通过 MQTT 请求 TTS 音频
-→ AI Bridge 通过 MQTT 返回短音频或音频分片
-→ 网关接收后播放
-```
-
-### 7.6 MQTT-only OTA 流程
-
-```text
-云端发布 OTA Offer
-→ 网关通过 MQTT 收到升级信息
-→ UI 显示版本、大小、签名和风险
-→ 用户本地确认或维护窗口允许升级
-→ 网关请求 chunk
-→ 云端返回 chunk data
-→ 网关写入 staging image
-→ 校验 sha256 和数字签名
-→ 重启切换新固件
-→ 自检通过后 confirm
-→ 失败则 rollback 并记录事件
-```
-
-## 8. 网络与 API
-
-### 8.1 双模网络管理
-
-网关通过 `network_manager` 统一管理 RJ45 Ethernet 和 ESP-01 Wi-Fi。
-
-`network_manager` 对上层提供统一状态：
-
-```text
-NET_DOWN
-NET_CONNECTING
-NET_ONLINE_RJ45
-NET_ONLINE_WIFI
-NET_DEGRADED
-```
-
-职责：
-
-- 监测 RJ45 link 状态。
-- 管理 DHCP、DNS 和 IP 状态。
-- 管理 ESP-01 Wi-Fi 连接。
-- 在 RJ45 和 Wi-Fi 之间切换活动网络。
-- 维护 MQTT 长连接。
-- 网络断开后自动重连。
-- 向 UI 发布网络状态。
-- 向业务层发布 online/offline 事件。
-
-### 8.2 重连策略
-
-网络重连采用指数退避，并设置上限，避免网络故障时持续高频重连。
-
-推荐参数：
-
-```text
-初始退避：1 秒
-倍率：2
-最大退避：60 秒
-抖动：±20%
-稳定在线 5 分钟后重置退避
-```
-
-示例：
-
-```text
-1s → 2s → 4s → 8s → 16s → 32s → 60s → 60s ...
-```
-
-RJ45 和 Wi-Fi 分别维护退避状态。RJ45 检测到物理 link 恢复时，可以立即触发一次连接尝试；如果失败，再进入退避。
-
-### 8.3 MQTT 与 AI Bridge
-
-VelaGuard 不直接把复杂 MiMo HTTPS API 暴露给板端业务逻辑，而是通过 MQTT Broker 请求云服务器 AI Bridge。
-
-```text
-VelaGuard
-  ↓ MQTT
-MQTT Broker
-  ↓ MQTT
-AI Bridge
-  ↓ HTTPS
-MiMo API / TTS / ASR / 手册解析服务
-```
-
-板端需要支持：
-
-- DHCP
-- DNS
-- MQTT 长连接
-- MQTT QoS 0/1
-- MQTT retained / LWT 状态
-- 正式环境 MQTT over TLS；测试环境可在受控局域网使用明文 MQTT
-- JSON 请求/响应
-- 超时处理
-- 重试
-- 证书、用户名、密码或设备 Token 配置
-- API 调用日志
-
-推荐 Topic：
+承载遥测、告警、状态与 OTA 控制面。**不再承载 AI 请求响应、TTS 与语音分片**（这些已从项目中移除）。
 
 ```text
 vg/{device_id}/telemetry
 vg/{device_id}/alarm
-vg/{device_id}/ai/request
-vg/{device_id}/ai/response/{req_id}
-vg/{device_id}/tts/request
-vg/{device_id}/tts/response/{req_id}
-vg/{device_id}/voice/start
-vg/{device_id}/voice/chunk/{session_id}
-vg/{device_id}/voice/end/{session_id}
-vg/{device_id}/voice/result/{session_id}
+vg/{device_id}/diagnosis          诊断工单上报
+vg/{device_id}/status             retained
 vg/{device_id}/ota/offer
 vg/{device_id}/ota/accept
 vg/{device_id}/ota/chunk/request
@@ -966,429 +498,229 @@ vg/{device_id}/ota/chunk/data
 vg/{device_id}/ota/progress
 vg/{device_id}/ota/result
 vg/{device_id}/ota/confirm
-vg/{device_id}/config/candidate
-vg/{device_id}/status
 ```
 
-### 8.4 MiMo 调用类型
+QoS 与 retained 策略见 §16.2。
 
-调用场景：
+### 8.4 OTA 架构（因 XIP 而重新设计）
 
-- 自然语言生成传感器配置。
-- 手册寄存器表解释。
-- 异常诊断。
-- 巡检报告。
-- TTS 文本生成或音频生成请求。
-
-### 8.5 本地 Web API
-
-用于手机远程访问。
-
-示例接口：
+固件从 QSPI XIP 执行，运行期无法擦写 QSPI。因此**不能**在应用态直接写固件。正确形态是利用片内 Flash 中的 boot stub：
 
 ```text
-GET  /api/status
-GET  /api/sensors
-GET  /api/alarms
-POST /api/sensors/nl-generate
-POST /api/manuals/upload
-POST /api/diagnosis/run
-POST /api/audio/play
+应用通过 MQTT 分片下载新镜像
+→ 写入 eMMC（不是 QSPI）
+→ 校验 sha256 + 数字签名
+→ 置升级标志，重启
+→ 片内 Flash 的 boot stub（从片内执行，可自由擦写 QSPI）
+   校验镜像 → 擦写 QSPI → 跳转
+→ 新固件自检通过后 confirm
+→ 自检失败：从 eMMC 上保留的旧镜像回滚
 ```
 
-手机端提交的配置不能绕过板端安全确认。
+片内 128 KB Flash 当前只用了 720 B，装下这个 stub 绰绰有余；`frameworks/system/ota/` 的 bootctl 与 verify 可复用。
 
-### 8.6 MQTT-only OTA 协议
+**这是一个独立的 bootloader 工程，且硬依赖 eMMC 先跑通**，因此排在最后阶段。
 
-OTA 复用 MQTT/MQTTS，不在板端引入 HTTPS 固件下载。MQTT 负责控制面和固件分片数据面。
+其余 OTA 约束见 §16.9。
 
-推荐消息：
+---
 
-| Topic | 方向 | QoS | retained | 用途 |
-|---|---|---:|---|---|
-| `vg/{device_id}/ota/offer` | 云端 → 设备 | 1 | 否 | 通知可升级版本 |
-| `vg/{device_id}/ota/accept` | 设备 → 云端 | 1 | 否 | 本地确认后接受升级 |
-| `vg/{device_id}/ota/chunk/request` | 设备 → 云端 | 1 | 否 | 请求指定 chunk |
-| `vg/{device_id}/ota/chunk/data` | 云端 → 设备 | 1 | 否 | 返回固件分片 |
-| `vg/{device_id}/ota/progress` | 设备 → 云端 | 1 | 否 | 上报下载、校验、切换进度 |
-| `vg/{device_id}/ota/result` | 设备 → 云端 | 1 | 否 | 上报成功、失败或回滚结果 |
-| `vg/{device_id}/ota/confirm` | 设备 → 云端 | 1 | 否 | 新固件自检通过后确认 |
+## 9. 存储布局
 
-OTA Offer 至少包含：
-
-```json
-{
-  "ota_id": "ota_2026_001",
-  "version": "1.2.0",
-  "size": 524288,
-  "chunk_size": 4096,
-  "sha256": "",
-  "signature": "",
-  "min_bootloader_version": "1.0.0",
-  "release_notes": "",
-  "risk_level": "low|medium|high"
-}
-```
-
-设备端必须先确认 `device_id`、固件版本、硬件型号、签名策略和本地安全状态，再进入 chunk 拉取。
-
-## 9. 文件与数据存储
-
-建议目录结构：
+存储介质为板载 **8 GB eMMC**（SDMMC 接口，需自写板级驱动）。eMMC 是块设备而非 MTD，文件系统采用 FAT。
 
 ```text
+/data/agent/
+  skills/
+    rs485_fault_triage.md        大赛自定义 Skill
+  config/                        ai_agent 自身配置（含加密后的 LLM key）
+  sessions/
+
 /data/velaguard/
-  configs/
-    sensors.json
+  config/
+    point_table_a.json           双槽 + CRC + seq
+    point_table_b.json
     network.json
     rules.json
-  skills/
-    industrial_fault_diagnosis.md
-    sensor_config_generator.md
-  manuals/
-    manual_index.json
-    profiles/
   logs/
-    events.log
-    diagnosis.log
-    api.log
-  audio/
-    alert_warning.wav
-    alert_critical.wav
-    tts_cache.wav
+    latest.log
+    debug.log
+    archive/
+    events.jsonl
+  diagnosis/
+    tickets/                     诊断工单归档
   ota/
-    staging/
+    staging.img
     manifest.json
-    rollback.json
+    rollback.img
 ```
 
-### 9.1 配置存储原则
+**Skill 文件的开发期迭代**：本项目无 SD 卡，无法拔卡编辑。使用 PC 上的临时 HTTP 服务 + 板端 `wget` 拉取 Markdown 到 `/data/agent/skills/`（`NETUTILS_WEBCLIENT` 本就是 ai_agent 的依赖）。官方另提供 `com.agent.coapp` 安卓 App 可在局域网内推送技能，作为备选。
 
-- 配置必须 JSON schema 校验。
-- 写入前先保存临时文件。
-- 写入成功后再替换正式配置。
-- 启动时如果配置损坏，回退到最近备份。
-
-### 9.2 日志存储原则
-
-- 日志按大小滚动。
-- 告警日志优先保留。
-- API 调试日志可裁剪。
-- 用户确认记录不可随意覆盖。
-
-### 9.3 OTA 存储原则
-
-- OTA 固件先写入 staging image，不能直接覆盖当前运行固件。
-- OTA manifest、chunk 接收进度、校验结果和回滚状态必须可恢复。
-- staging image 校验失败时必须删除或标记为 invalid。
-- 新固件自检通过前，旧固件必须仍可回滚。
-- OTA 写入优先级低于 Modbus 采集、告警 UI 和本地日志。
+---
 
 ## 10. Skill 设计
 
-### 10.1 工业异常诊断 Skill
+### 10.1 `rs485_fault_triage.md`
 
-文件名：
+存放路径：`/data/agent/skills/rs485_fault_triage.md`（大赛要求的自定义 Skill 路径）
 
-```text
-/data/velaguard/skills/industrial_fault_diagnosis.md
-```
+**用途**：告诉 agent 在 485 链路劣化时该如何设计诊断实验。这是领域知识，不是工具——工具负责「能做事」，Skill 负责「知道怎么做」。
 
-用途：
+**内容骨架**：
 
-- 根据传感器事件、历史数据、阈值和设备说明生成诊断建议。
+1. 诊断目标与安全约束（只读、限流、不得建议在线写寄存器）
+2. 可用工具清单与各自的代价（扫描慢、改波特率会中断采集）
+3. 症状 → 候选假设的映射
+4. 各假设的鉴别实验设计（如何用一次只读探测区分「波特率失配」与「终端电阻缺失」）
+5. 收敛判据与何时停止
+6. 输出格式约定
 
-输出格式必须是 JSON：
+**输出结构**（供板端 schema 校验）：
 
 ```json
 {
   "summary": "",
   "risk_level": "low|medium|high",
+  "evidence": [],
   "possible_causes": [],
   "recommended_actions": [],
-  "need_shutdown": false,
-  "confidence": 0.0
+  "source": "rule|agent",
+  "unresolved": false
 }
 ```
 
-### 10.2 传感器配置生成 Skill
+已从上一版移除的字段及理由：
 
-文件名：
+- `need_shutdown` —— AI 不应参与停机决策，这是工业安全责任边界问题
+- `confidence` —— LLM 自报置信度不可信，会诱导现场人员误判；改用 `evidence` 列出实际观测到的证据，让人自己判断
 
-```text
-/data/velaguard/skills/sensor_config_generator.md
-```
+### 10.2 不再需要的 Skill
 
-用途：
+`sensor_config_generator.md` 随「自然语言创作点表」一并移除——自动扫描探测比它更准、更快、且不依赖网络。
 
-- 将自然语言和手册寄存器表转换为传感器配置。
-
-输出格式必须是 JSON：
-
-```json
-{
-  "device_id": "",
-  "name": "",
-  "protocol": "modbus_rtu",
-  "slave_addr": 1,
-  "serial": {},
-  "registers": [],
-  "poll_interval_ms": 2000,
-  "rules": []
-}
-```
+---
 
 ## 11. 安全设计
 
-### 11.1 操作安全
+### 11.1 Agent 工具沙箱
 
-安全原则：
+见 §2.3。这是本项目最有工程含量的安全设计，也是答辩的核心论点之一：**给 LLM 划一个碰不到写操作的边界**，而且边界在代码结构上成立，不依赖 prompt 约束。
 
-- AI 只生成建议，不直接执行。
-- 写入配置必须人工确认。
-- 控制设备必须二次确认。
-- 高风险操作默认禁用。
-- 所有配置变更必须记录日志。
+openvela ai_agent 的 `run_shell` 工具本身就有白名单 / Full 双模式设计，本项目的 Modbus 工具沙箱与之同源。
 
-### 11.2 数据安全
+注意：`tool_guard.c` 只做禁用检查、大小检查和限流，**不做 JSON Schema 运行时校验**，参数越界必须在自定义工具内部自行拦截。
 
-需要保护：
+### 11.2 操作安全
 
-- AI Bridge 设备 Token
-- 网络配置
-- 设备配置
-- 用户上传手册
-- 诊断日志
-- OTA 签名公钥、升级 manifest 和回滚状态
+- AI 只生成建议，不直接执行
+- 点表变更必须经测试读取 + 人工确认
+- 数字量输出有安全默认态，上电与故障时进入该状态
+- 高风险操作长按确认
+- 所有变更写入结构化事件并记录来源
 
-API Key 不应显示在 UI 中。日志中不记录完整密钥。
+### 11.3 数据安全
 
-### 11.3 工业安全
+需保护：LLM API key、MQTT token、网络配置、点表、诊断记录、OTA 签名公钥与回滚状态。
 
-对于可能影响设备运行的动作：
+Key 不在 UI、日志、串口输出或 MQTT payload 中出现完整值。
 
-- 显示风险等级。
-- 显示变更前后差异。
-- 要求本地触摸确认。
-- 允许取消。
-- 保留回滚配置。
-
-### 11.4 构建模式与 OTA 安全
-
-构建模式分为：
-
-- `test`：允许代码中覆盖 `DEVID`，允许局域网明文 MQTT 调试，允许开发签名 OTA。
-- `production`：不开放运行时修改 `device_id` 的接口，默认要求 MQTTS、token、ACL 和生产签名。
-
-OTA 安全要求：
-
-- 生产固件只接受生产签名。
-- 签名校验失败不得切换固件。
-- 高等级 active alarm 存在时不得开始固件切换。
-- OTA 操作必须写入结构化事件。
-- OTA 失败必须可回滚或保持当前固件继续运行。
+---
 
 ## 12. 异常与降级
 
-### 12.1 网络失败
+| 故障 | 系统行为 |
+|---|---|
+| 网络不可用 | 采集 / 统计 / 告警 / 日志全部继续；诊断降级（v1 显示原始统计，阶段 2 后走规则库）；指数退避重连 |
+| LLM 不可用或超时 | 诊断会话标记失败，展示已收集的帧统计与已执行的探测结果；不影响任何本地功能 |
+| Agent 输出非法 JSON | schema 校验拒绝，展示错误原因，允许重试，写调试日志 |
+| Agent 探查未收敛 | 达到 10 轮上限后强制收尾，输出 `unresolved: true` 与已排除的假设 |
+| Modbus 读取失败 | 重试 → 标记通信质量 → 超阈值生成 degraded / offline 告警 |
+| eMMC 故障 | 配置回退到内存中的最后一份有效副本；告警提示存储异常；禁止 OTA |
+| 配置双槽皆损坏 | 回退出厂默认，写 error 事件，UI 明确提示 |
+| OTA 各类失败 | 保持当前固件运行；标记 staging 无效；不影响采集、告警、UI、日志 |
 
-表现：
+---
 
-- RJ45 未连接或 DHCP 失败。
-- ESP-01 Wi-Fi 未连接或云服务器不可达。
-- MQTT 断开。
-- MiMo / AI Bridge 不可用。
-- 手册解析不可用。
-- TTS 不可用。
+## 13. 交付物
 
-系统行为：
+- openvela 应用源码（`app/velaguard/`）
+- ai_agent 的 STM32H750B-DK defconfig 与必要的 `fix_*.sh` 补丁脚本
+- Modbus 只读工具集与沙箱
+- `rs485_fault_triage.md` Skill
+- LVGL 现场 HMI
+- 板级 `stm32_sdmmc.c`（eMMC bring-up）
+- 上游 PR：NuttX RS485 `tcdrain` / DIR 时序修复
+- 上游 PR：ai_agent 新增开发板支持
+- README（产品说明 + 可复现的构建运行步骤）
+- 架构图、接线说明
+- 用户故事 / 功能清单 / openvela 能力使用说明
+- 演示视频（≤ 5 分钟）
+- AI Coding 日志
 
-- 本地采集继续。
-- 本地规则继续。
-- 屏幕告警继续。
-- 本地告警音继续。
-- 配置和日志继续读写。
-- 使用预置诊断模板。
-- 显示网络状态异常。
-- 进入自动重连状态，并按指数退避重试。
-- 将需要联网的诊断、TTS、手册解析请求标记为 pending 或 failed。
+---
 
-### 12.2 Modbus 失败
+## 14. 验收标准
 
-表现：
+### 14.1 功能
 
-- 读取超时。
-- CRC 错误。
-- 从站无响应。
+- H750B-DK 不依赖电脑独立运行
+- 接入陌生 485 总线后能自动扫描出存活从站及其波特率
+- 能探测寄存器块并推断数据类型与字序，屏幕出点表预览
+- 测试读取通过后确认，点表落盘并进入采集
+- 帧级统计可见（CRC 率、超时率、延迟分布、帧间隔违规）
+- 链路劣化越阈时**自动**启动诊断会话，无需人工干预
+- Agent 在只读沙箱内自主执行多轮探测并产出归因工单
+- 工单明确区分「规则判定」与「AI 推测」
+- 配置掉电不丢失，双槽任一损坏可恢复
+- 断网时采集、统计、告警、日志全部正常，诊断按 §2.2 降级
+- Agent 无法绕过确认修改任何配置或写任何寄存器
 
-系统行为：
+### 14.2 Agent 诊断的可证伪判据
 
-- 重试。
-- 标记通信质量。
-- 达到超时阈值后生成离线告警。
-- 在测试读取页提示可能原因。
+这条是防止「为展示而建」的关键。**不是演示一次成功，而是一个可能失败的数字**：
 
-### 12.3 AI 输出非法
+> 用扩展板可复现的 5 类故障（终端电阻缺失、波特率失配、地址冲突、从站离线、帧间隔违规）分别注入，记录 agent 自主探查在 ≤ 6 轮内收敛到正确归因的类数，以及全过程是否触发过任何写操作。
 
-表现：
+目标：≥ 3/5 收敛，写操作触发次数 = 0。达不到就如实记录并分析原因。
 
-- JSON 格式错误。
-- 字段缺失。
-- 寄存器地址非法。
-- 规则表达式非法。
+### 14.3 大赛赛道要求对照
 
-系统行为：
+| 官方要求 | 本项目落点 |
+|---|---|
+| Agent 在硬件设备上跑起来 | ai_agent 移植到 STM32H750B-DK（Cortex-M7 首例） |
+| 至少接入一个交互渠道 | CLI（官方明确 CLI 即可）+ LVGL |
+| ≥ 1 个自定义 Skill（Markdown，`/data/agent/skills/`） | `rs485_fault_triage.md` |
+| ≥ 1 个「主动 + 执行」场景 | 阈值主动：帧错误率越阈自动启动诊断并执行只读探测 |
+| 完整场景说明 | 用户故事 / 功能清单 / 技术实现 |
+| 加分：端云协作 | Bridge 化的 LLM 链路（后续增强） |
+| 加分：LVGL 自定义 UI | 现场 HMI |
 
-- 拒绝应用。
-- 显示错误原因。
-- 允许重新生成。
-- 保存调试日志。
+> 官方来源：`docs/zh-cn/contest_2026/ai_hardware/ai_hardware_track_guide.md` 与 `ai_agent_quickstart.md`（repo 管理的公共树，分支 `dev-ai-contest-2026`）。本地任何摘要文档均不具权威性，以官方文本为准。
 
-### 12.4 音频失败
+---
 
-表现：
+## 15. 待确认的前置阻塞项
 
-- 音频设备初始化失败。
-- TTS 下载失败。
-- 文件格式不支持。
+以下问题无法通过读文档解决，需向组委会确认。**在答复之前不启动 ai_agent 移植的正式开发**（20 小时探针除外）：
 
-系统行为：
+1. **STM32H750B-DK 是否属于 AI 硬件赛道的「指定硬件」？** 赛道指引写「烧录到指定硬件」，quickstart 写「具体型号待补充」，而 ai_agent 现有 defconfig 仅覆盖 goldfish 模拟器（arm64）、Gemini-S1（Cortex-A7）、ESP32-S3（Xtensa），无任何 Cortex-M 先例。
+2. **模式 A 如何满足「自定义 Skill」要求？** 赛道指引的模式 A 允许「基于设备通信协议和云端大模型独立开发」，但基础要求中的 Skill 定义完全是 ai_agent 术语。
 
-- 屏幕告警不受影响。
-- LED 或本地蜂鸣替代。
-- 记录音频错误。
+---
 
-### 12.5 OTA 失败
+## 16. 已确认架构决策
 
-表现：
-
-- OTA Offer 不合法。
-- chunk 丢失或校验失败。
-- staging image 写入失败。
-- sha256 或签名校验失败。
-- 新固件自检失败。
-
-系统行为：
-
-- 拒绝或中止升级。
-- 保持当前固件继续运行。
-- 标记 staging image 为 invalid。
-- 写入 error 日志和 `events.jsonl`。
-- 如果已经切换到新固件且自检失败，回滚到上一版固件。
-- OTA 失败不得影响本地采集、告警、UI 和日志。
-
-## 13. 典型演示场景
-
-### 13.1 场景一：自然语言添加温度传感器
-
-用户输入：
-
-```text
-添加一台 Modbus 温度传感器，从站地址 1，寄存器 40001，倍率 0.1，超过 70 度报警。
-```
-
-系统展示配置预览，测试读取成功后开始采集。
-
-### 13.2 场景二：上传手册添加采集项
-
-用户通过手机上传传感器手册，然后输入：
-
-```text
-根据手册采集温度和湿度，温度超过 70 度报警，湿度低于 30% 提醒。
-```
-
-系统从手册解析结果中找到寄存器表，生成配置，并要求用户确认。
-
-### 13.3 场景三：异常发生并 AI 诊断
-
-传感器温度升高至 82.4 C。
-
-系统行为：
-
-- 首页状态变为黄色或红色。
-- 播放告警音。
-- 弹出告警详情。
-- 用户点击 AI 诊断。
-- MiMo 返回原因和排查建议。
-- 用户保存诊断报告。
-
-### 13.4 场景四：网络失败降级
-
-断开网络后触发异常。
-
-系统行为：
-
-- 仍然完成本地告警。
-- 提示 MiMo 不可用。
-- 使用本地模板生成基础建议。
-- 网络恢复后可补充 AI 诊断。
-
-### 13.5 场景五：MQTT-only OTA 升级
-
-云端发布一个测试固件 OTA Offer。
-
-系统行为：
-
-- 系统状态页显示可升级版本。
-- 用户本地确认升级。
-- 设备通过 MQTT 拉取 chunk。
-- UI 显示下载、校验和切换进度。
-- 校验失败时拒绝升级。
-- 自检失败时回滚。
-
-## 14. 项目交付物
-
-项目最终应包含：
-
-- openvela 应用源码。
-- LVGL HMI。
-- Modbus 采集模块。
-- 规则引擎。
-- MQTT AI Bridge 客户端。
-- 自然语言传感器配置功能。
-- 手册解析对接功能。
-- AI 诊断 Skill。
-- 音频提醒功能。
-- MQTT-only OTA 功能。
-- 本地 Web 配置页面。
-- README。
-- 架构图。
-- 接线说明。
-- 演示视频。
-- AI Coding 日志。
-
-## 15. 验收标准
-
-系统应满足：
-
-- H750B-DK 不依赖电脑即可运行主流程。
-- 可通过 RS485 读取至少一个 Modbus 设备或模拟器。
-- 可通过 RJ45 或 ESP-01 Wi-Fi 连接 MQTT 云服务器。
-- 可通过自然语言生成传感器配置。
-- 可展示配置预览并要求用户确认。
-- 可检测超阈值、离线、突变异常。
-- 异常发生时 UI 主动告警。
-- 可生成结构化 AI 诊断报告。
-- 可保存告警和诊断日志。
-- 可播放本地告警音。
-- 可通过 MQTT-only OTA 接收升级 offer、拉取 chunk、校验签名并支持回滚。
-- MiMo 或网络失败时，本地采集和告警不受影响。
-- AI 不能绕过本地确认直接修改配置或控制设备。
-
-## 16. 已确认架构决策补充
-
-本章节记录设计评审中已经收敛的约束，后续实现以本章节为准。
+本章记录设计评审中已收敛的约束，实现以本章为准。
 
 ### 16.1 设备身份与 MQTT 鉴权
 
-设备身份规则：
+- 量产 `device_id = velaguard_{STM32_UID 派生短 ID}`
+- 测试阶段允许编译期宏 `DEVID` 覆盖
+- 量产固件不提供任何运行时修改 `device_id` 的接口
+- `display_name` 可改，仅用于 UI 展示，不参与权限边界
 
-- 量产默认 `device_id = velaguard_{STM32_UID 派生短 ID}`。
-- 测试阶段允许在代码中通过 `DEVID` 或等价编译期宏覆盖 `device_id`。
-- 量产固件不提供 UI、MQTT、串口 CLI、HTTP 等运行时修改 `device_id` 的接口。
-- `display_name` 可修改，仅用于 UI 展示和测试区分，不参与 MQTT 权限边界。
-
-MQTT token 采用带产品密钥的 HMAC 公式生成，不能使用普通 hash：
+MQTT token 使用带产品密钥的 HMAC，不能用普通 hash：
 
 ```text
 mqtt_token = base64url(
@@ -1396,323 +728,131 @@ mqtt_token = base64url(
 )
 ```
 
-正式环境必须支持 token 版本轮换：
+支持版本轮换（`v1` / `v2` 并存迁移），单台泄露时通过 Broker denylist 禁止该 `device_id` 登录。
 
-```text
-token_v1 = HMAC(PRODUCT_AUTH_SECRET_V1, "velaguard:mqtt:v1:" + device_id)
-token_v2 = HMAC(PRODUCT_AUTH_SECRET_V2, "velaguard:mqtt:v2:" + device_id)
-```
+### 16.2 MQTT 权限与 QoS
 
-云端可在迁移期同时接受新旧版本；单台设备泄露时通过 Broker denylist 禁止该 `device_id` 登录。
+正式环境：MQTT over TLS、每设备独立 token、Broker ACL 限制设备只能访问自己的 `vg/{device_id}/...`。测试环境可在受控局域网使用明文，量产固件关闭。
 
-### 16.2 Broker、AI Bridge 与 MQTT 权限
+Topic 根路径固定 `vg/{device_id}/...`，不加环境前缀。
 
-通信链路固定为：
-
-```text
-VelaGuard
-  ↓ MQTT
-MQTT Broker
-  ↓ MQTT
-AI Bridge
-  ↓ HTTPS
-MiMo API / TTS / ASR / 手册解析服务
-```
-
-VelaGuard 与 AI Bridge 不直接互连，二者都是 MQTT Broker 的客户端。
-
-正式环境策略：
-
-- MQTT over TLS。
-- 每设备独立账号或 token。
-- Broker ACL 限制设备只能访问自己的 `vg/{device_id}/...` topic。
-- AI Bridge 使用独立账号，只允许订阅请求 topic、发布响应 topic。
-- 测试环境可在局域网使用明文 MQTT，但量产固件应关闭。
-
-Topic 根路径使用：
-
-```text
-vg/{device_id}/...
-```
-
-不增加环境前缀。测试稳定后可通过 reset Broker 或更换 Broker 数据上线。
-
-QoS 策略：
-
-| 类型 | QoS | 说明 |
+| 类型 | QoS | retained |
 |---|---:|---|
-| `telemetry` | 0 | 常规遥测，允许丢少量数据 |
-| `trend` | 0 | 高频趋势数据，优先保持实时性 |
-| `status` | 0 | 当前状态，允许用 retained 保存最新值 |
-| `alarm` | 1 | 告警事件需要至少送达一次 |
-| `ai/request` / `ai/response` | 1 | AI 请求响应需要可重试 |
-| `config/candidate` | 1 | 候选配置不能静默丢失 |
-| `tts/request` / `tts/response` | 1 | TTS 任务需要明确结果 |
-| `voice/start` / `voice/chunk` / `voice/end` / `voice/result` | 1 | 语音上传需要分片确认 |
-| `ota/offer` / `ota/chunk` / `ota/result` / `ota/confirm` | 1 | OTA 控制与分片需要可靠送达 |
-| `ack/confirm` | 1 | 用户确认类事件需要可靠送达 |
+| `telemetry` / `trend` | 0 | 否 |
+| `status` | 0 | 是 |
+| `alarm` | 1 | 否 |
+| `diagnosis` | 1 | 否 |
+| `ota/*` | 1 | 否 |
+| `ack/confirm` | 1 | 否 |
 
-Retained 只用于当前状态类 topic，例如 `vg/{device_id}/status`。请求、响应、事件、遥测、趋势数据不使用 retained。
-
-MQTT 会话策略：
-
-- 固定 `client_id`。
-- v1 使用 `clean_session=true`。
-- 重连后重新订阅。
-- 使用 LWT 发布离线状态。
-- 关键事件依赖本地 pending 队列重发，而不是依赖持久 MQTT session。
+会话策略：固定 `client_id`，v1 用 `clean_session=true`，重连后重新订阅，使用 LWT 发布离线状态，关键事件依赖本地 pending 队列重发而非持久 session。
 
 ### 16.3 ID、时间戳与幂等
 
-ID 体系：
+- `req_id`：请求级，发起方生成，响应原样带回
+- `event_id`：事件级，设备生成并持久递增，云端据此去重
+- `alarm_id`：告警实例级，同一未恢复告警保持同一 ID
 
-- `req_id`：请求级 ID，发起方生成，响应必须原样带回。
-- `event_id`：事件级 ID，设备生成并持久递增，云端用它去重。
-- `alarm_id`：告警实例 ID，同一个未恢复告警保持同一个 ID，恢复后再次触发才生成新 ID。
+格式 `{device_id}-{boot_id}-{seq}`；`boot_id` 每次启动生成，`event_seq` 必须持久化以避免断电后重复。
 
-推荐格式：
-
-```text
-{device_id}-{boot_id}-{seq}
-```
-
-其中 `boot_id` 每次启动生成并写入日志，关键事件的 `event_seq` 需要持久化，避免断电后重复。
-
-时间字段统一使用 Unix 毫秒时间戳，并同时记录设备运行时长：
+时间统一 Unix 毫秒并同时记录运行时长：
 
 ```json
-{
-  "ts_ms": 1782450000000,
-  "uptime_ms": 345678,
-  "time_quality": "unknown|rtc|ntp|cloud"
-}
+{ "ts_ms": 0, "uptime_ms": 0, "time_quality": "unknown|rtc|ntp|cloud" }
 ```
 
-网络恢复后不回改历史事件时间；云端另存 `received_ts_ms`。
+网络恢复后不回改历史事件时间，云端另存 `received_ts_ms`。
 
-### 16.4 AI Bridge 超时、重试与大 payload
+### 16.4 LLM 请求约束
 
-所有 AI 请求必须包含：
+- 请求携带 `req_id`、`device_id`、`created_ts_ms`、`type`、`payload_hash`
+- 经 Bridge 时以 `req_id + payload_hash` 做幂等键
+- 诊断会话单轮超时 30–60 s；整个会话上限 10 轮
+- 上下文中必须包含帧级统计证据与本轮之前所有工具调用的结果
+- `llm_proxy` 响应缓冲最大可 realloc 至 512 KB，须确保分配落在 SDRAM 堆而非仅 450 KB 的 AXI 堆
 
-- `req_id`
-- `device_id`
-- `created_ts_ms`
-- `type`
-- `payload_hash`
+### 16.5 网络、ESP-01 与启动顺序
 
-AI Bridge 使用 `req_id + payload_hash` 做幂等键。重复请求的处理方式：
-
-- 已完成：重发同一个 response。
-- 处理中：返回或发布 `status=processing`。
-- 已失败：按失败类型决定是否允许重试。
-
-推荐超时：
-
-| 任务 | 超时 |
-|---|---:|
-| 自然语言配置 | 15-30 秒 |
-| 手册解析 | 60-180 秒，优先异步任务 |
-| ASR / TTS | 15-60 秒，按音频长度调整 |
-
-MQTT 只承载控制 JSON、小文本和短结果。音频、PDF、图片、完整手册不塞进单条 MQTT。
-
-H750B-DK 录音上传采用分片：
-
-- 每片 4KB 或 8KB。
-- QoS 1。
-- payload 优先使用二进制。
-- topic 示例：`vg/{device_id}/voice/chunk/{session_id}/{seq}`。
-- metadata 包含 `total_chunks`、`sha256`、`duration_ms`、`codec`。
-
-手册/PDF 推荐由手机或 Web 上传到云端，设备只接收解析后的 `manual_profile`。
-
-OTA 固件包属于例外的大 payload，但仍不使用板端 HTTPS 下载。OTA 采用设备拉取式 MQTT 分片，每片 4KB 或 8KB，并限制 inflight chunk 数量。
-
-### 16.5 网络、ESP-01 与启动降级
-
-网络只允许一个活动出口：
-
-- RJ45 优先。
-- ESP-01 作为备用链路。
-- 不做双链路同时发送。
-- RJ45 恢复后需要经过稳定窗口再切回。
-
-ESP-01 约束：
-
-- 独立 3.3V 稳压，峰值按 300-500mA 设计。
-- UART 独占，不与 Modbus RTU 共用。
-- AT 驱动做成状态机，不阻塞采集任务。
-- 失败后指数退避，退避上限可配置。
-- 连续失败达到阈值后通过 GPIO 硬复位或断电重启 ESP-01。
-- ESP-01 故障只能影响云端能力，不能影响采集、告警、UI 和本地日志。
+网络单活动链路，RJ45 优先，不做双链路并发。ESP-01 独立 3.3 V 供电（峰值按 300–500 mA 设计）、独占 UART（不与 Modbus 共用）、AT 状态机非阻塞、连续失败后 GPIO 硬复位。ESP-01 故障只能影响云端能力。
 
 启动顺序：
 
 ```text
-最小硬件 / 日志 / 看门狗 / 文件系统
-→ 加载配置，失败则默认配置
-→ Modbus 采集任务
+最小硬件 / 日志 / 看门狗
+→ eMMC + 文件系统
+→ 加载配置（失败则默认配置）
+→ Modbus 采集 + 帧统计
 → 本地告警规则
+→ 数字量输出进入安全默认态
 → LVGL UI
-→ 本地音频告警
-→ network_manager
-→ MQTT
-→ AI Bridge / 远程配置 / TTS / ASR
+→ network_manager → MQTT
+→ ai_agent
 ```
 
-增强模块失败不能拖垮本地安全闭环。
+增强模块失败不得拖垮本地安全闭环。
 
 ### 16.6 Modbus 状态与告警模型
 
-Modbus 状态：
+Modbus 状态：`online` / `degraded`（有错误未判离线）/ `offline`（低频探测，不清除既有告警）/ `recovering`（连续成功确认后才回 `online`）。
 
-- `online`：正常采集。
-- `degraded`：有错误但尚未判定离线。
-- `offline`：进入低频探测，不清除之前的传感器告警。
-- `recovering`：恢复确认模式，恢复全量读取，但需要连续成功后才回到 `online`。
+告警模型：允许多个 active alarm；首页显示最高优先级，详情页展示全部；`acknowledge` 不等于 `resolved`；同一未恢复告警更新同一 `alarm_id`。
 
-告警模型：
+时间字段：`first_seen_ts` / `last_seen_ts` / `ack_ts` / `resolved_ts`。
 
-- 系统内部允许多个 active alarm。
-- 首页显示最高优先级/主状态。
-- 告警详情页展示全部当前告警。
-- `acknowledge` 只表示用户已确认，不等于告警恢复。
-- 同一个未恢复告警重复触发时更新同一个 `alarm_id`，不创建重复告警。
-
-告警时间字段：
-
-- `first_seen_ts`：首次检测时间。
-- `last_seen_ts`：最近一次检测时间。
-- `ack_ts`：用户确认时间，可为 `null`。
-- `resolved_ts`：实际恢复时间，可为 `null`。
-
-阈值告警采用持续时间窗口，不默认使用回差：
+阈值告警使用持续时间窗口而非回差：
 
 ```text
 value > threshold 持续 trigger_duration_ms 后触发
 value <= threshold 持续 restore_duration_ms 后恢复
 ```
 
-突变告警采用窗口差值和持续时间：
-
-```text
-abs(current - value_N_seconds_ago) >= delta 持续 trigger_duration_ms 后触发
-```
+突变告警：`abs(current - value_N_seconds_ago) >= delta` 持续 `trigger_duration_ms` 后触发。
 
 ### 16.7 日志系统
 
-日志采用 Log4j2-inspired / Minecraft-like rolling logger 风格，不在嵌入式端引入真正 Log4j2。
+Log4j2-inspired 滚动日志风格，不引入真正的 Log4j2。
 
-日志文件：
+文件：`latest.log`（人类可读）、`debug.log`（可选）、`archive/*.log`（滚动归档）、`events.jsonl`（结构化业务事件）。
 
-- `latest.log`：当前人类可读日志。
-- `debug.log`：可选 debug 详细日志。
-- `archive/*.log`：滚动归档日志。
-- `events.jsonl`：结构化业务事件。
+事件模型：`timestamp + logger/category + level + message + key=value fields`，等级 `debug` / `info` / `warn` / `error`。
 
-日志事件模型：
+不同 appender（文件 / 串口 / UI / cloud）可设不同最小等级与 category filter。云端默认只上传结构化事件与关键 error/warn 摘要。
 
-```text
-timestamp + logger/category + level + message + key=value fields
-```
+**Agent 工具调用必须全量写入审计日志**：时间、工具名、入参、返回摘要、耗时。
 
-日志等级：
+### 16.8 配置与文件系统
 
-- `debug`
-- `info`
-- `warn`
-- `error`
+存储介质 eMMC + FAT。FAT 不提供掉电原子性，因此配置采用双槽提交：
 
-不同输出端可以有不同过滤规则：
+- `point_table_a.json` / `point_table_b.json`
+- 每份含 `schema_version`、`seq`、`crc32`、`committed=true`
+- 写入顺序：写非活动槽 → fsync → 更新 `seq` 与校验 → fsync → 标记 committed
+- 启动时选 `seq` 最大且校验通过者；皆坏则进出厂默认
 
-- 文件 appender。
-- 串口 appender。
-- UI appender。
-- cloud appender。
+配置版本：所有配置带 `schema_version`；固件声明 `min_supported_schema` 与 `current_schema`；旧版本走迁移函数；未来版本拒绝加载；缺字段补默认并写 warn；关键字段非法时禁用对应模块而不拖垮全系统。
 
-云端默认只上传结构化事件和关键 error/warn 摘要，不上传完整 `latest.log`。
+UI 权限：首页只展示状态与告警，不放危险操作；低风险普通确认，中风险二次确认，高风险长按确认；高等级告警存在时 UI 优先展示告警；所有变更写 `events.jsonl` 并记录来源（`local_ui` / `agent_suggestion` / `factory_default`）。
 
-### 16.8 配置、文件系统与 UI 确认
+### 16.9 OTA
 
-配置采用双槽提交：
+- 镜像经 MQTT 分片拉取，**下载到 eMMC**，不写 QSPI
+- chunk 4 KB 或 8 KB，限制 inflight 数量，不得挤占采集、告警、UI、日志
+- 必须校验 sha256 与数字签名，仅 hash 不够
+- QSPI 擦写由片内 Flash 的 boot stub 执行（应用态无法擦写 XIP 中的 QSPI）
+- 新固件启动后必须自检并 mark confirmed，否则回滚
+- 存在高等级 active alarm、存储异常或供电不稳时不允许升级
+- 生产固件只接受生产签名
+- OTA 全过程写结构化事件
 
-- `config_a.json`
-- `config_b.json`
-
-每份配置包含：
-
-- `schema_version`
-- `seq`
-- `crc32` 或 `sha256`
-- `committed=true`
-
-启动时选择 `seq` 最新且校验通过的配置；都损坏则进入 factory/default 配置。日志允许损坏截断，pending 队列可跳过坏记录，告警状态可从当前传感器值重建。
-
-配置版本：
-
-- 所有配置必须有 `schema_version`。
-- 固件声明 `min_supported_schema` 和 `current_schema`。
-- 旧版本通过迁移函数升级。
-- 未来版本拒绝加载。
-- 缺字段用默认值补齐并写 warn 日志。
-- 关键字段非法时禁用对应模块，不拖垮全系统。
-
-UI 权限：
-
-- 首页只显示状态和告警，不放危险操作。
-- 低风险操作普通确认。
-- 中风险操作二次确认。
-- 高风险操作长按确认或输入确认码。
-- 远程候选配置进入待确认列表，不抢占告警页面。
-- 高等级告警存在时 UI 优先展示告警。
-- 所有配置变更写入 `events.jsonl`，记录来源：`local_ui`、`remote_candidate`、`factory_default`。
-
-### 16.9 MQTT-only OTA
-
-OTA 采用 MQTT-only pull-based 方案：
-
-- MQTT/MQTTS 同时承担 OTA 控制面和固件 chunk 数据面。
-- 不在板端引入 HTTPS 固件下载器。
-- 云端只发布 OTA Offer，设备确认后主动请求 chunk。
-- 设备端控制 chunk 大小、请求节奏和 inflight 数量。
-- 固件写入 staging image，不能直接覆盖当前运行固件。
-- 完整镜像必须通过 sha256 和数字签名校验。
-- 新固件启动后必须自检并 mark confirmed。
-- 新固件未确认或自检失败时必须 rollback。
-- OTA 失败不得影响本地采集、告警、UI 和日志。
-
-推荐 OTA topic：
-
-```text
-vg/{device_id}/ota/offer
-vg/{device_id}/ota/accept
-vg/{device_id}/ota/chunk/request
-vg/{device_id}/ota/chunk/data
-vg/{device_id}/ota/progress
-vg/{device_id}/ota/result
-vg/{device_id}/ota/confirm
-```
-
-### 16.10 测试与量产构建边界
-
-构建模式必须显式区分：
+### 16.10 构建模式
 
 ```text
 VG_BUILD_MODE=test
 VG_BUILD_MODE=production
 ```
 
-`test` 构建允许：
+`test` 允许：编译期覆盖 `DEVID`、局域网明文 MQTT、详细 debug 日志、开发签名 OTA。
 
-- 通过代码或编译期宏覆盖 `DEVID`。
-- 使用局域网明文 MQTT 调试。
-- 输出更详细的 debug 日志。
-- 接受开发签名 OTA。
+`production` 要求：`device_id` 从 UID 派生、无运行时修改接口、MQTTS + token + ACL、生产签名 OTA。
 
-`production` 构建要求：
-
-- `device_id` 从 STM32 UID 派生。
-- 不开放运行时修改 `device_id` 的接口。
-- 默认使用 MQTTS、token 和 Broker ACL。
-- 不在 UI、日志、串口、MQTT payload 中暴露完整 token。
-- 只接受生产签名 OTA。
+完整 token、产品密钥、LLM API key、OTA 私钥不得出现在 UI、日志、串口输出或 MQTT payload 中。

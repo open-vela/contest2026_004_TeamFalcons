@@ -2,6 +2,7 @@
   "version": 4,
   "configurations": [
     {
+      "compileCommands": "${workspaceFolder}/../nuttx/compile_commands.json",
       "name": "openvela STM32H750 (WSL)",
       "compilerPath": "${workspaceFolder}/../prebuilts/gcc/linux-x86_64/arm-none-eabi/bin/arm-none-eabi-gcc",
       "compilerArgs": [
@@ -26,6 +27,7 @@
         "${workspaceFolder}/../nuttx/arch/arm/src/stm32h7",
         "${workspaceFolder}/../nuttx/boards/arm/stm32h7/stm32h750b-dk/include",
         "${workspaceFolder}/../apps/include",
+        "${workspaceFolder}/../apps/netutils/mqttc/MQTT-C/include",
         "${workspaceFolder}/../apps/graphics/lvgl",
         "${workspaceFolder}/../apps/graphics/lvgl/lvgl",
         "${workspaceFolder}/../frameworks",
@@ -49,8 +51,9 @@
           "${workspaceFolder}/../frameworks",
           "${workspaceFolder}/../packages"
         ],
-        "limitSymbolsToIncludedHeaders": false
+        "limitSymbolsToIncludedHeaders": true
       }
     }
   ]
+  
 }
