@@ -12,34 +12,32 @@
 #include <stdbool.h>
 
 /**
- * @brief 关闭当前 MQTT TCP，清除 online 标志。
- */
+  * @brief  关闭当前 MQTT TCP，清除 online 标志。
+  * @retval None
+  */
 void vg_mqtt_session_close(void);
 
 /**
- * @brief 在指定 backend 上建连、CONNECT，等待 CONNACK 后发 QoS0 retained status。
- *
- * @note 内部会先 close 旧会话。status.network 使用 net_name（rj45|esp01|none）。
- *       不做 TLS、不做 AI topic；vgmqtt 仍是一次性 POSIX 调试命令。
- *
- * @param backend  VG_TCP_POSIX 或 VG_TCP_LESP。
- * @param net_name 写入 status JSON 的 network 字段。
- * @retval 0  CONNACK 成功且已 publish status。
- * @retval -1 建连/CONNECT/CONNACK 失败（会话已关闭）。
- */
-int vg_mqtt_session_open(vg_tcp_backend_t backend, const char *net_name);
-
-/**
- * @brief 驱动 mqtt_sync；出错则关闭会话。
- * @note 由 net_mgr 周期调用；无在线会话时立即返回。
- */
+  * @brief  驱动 mqtt_sync；出错则关闭会话。
+  * @note   由 net_mgr 周期调用；无在线会话时立即返回。
+  * @retval None
+  */
 void vg_mqtt_session_poll(void);
 
 /**
- * @brief 当前会话是否已收到 CONNACK。
- * @retval true  在线。
- * @retval false 未连接或已关闭。
- */
+  * @brief  在指定 backend 上建连、CONNECT，等待 CONNACK 后发 QoS0 retained status。
+  * @param  backend   VG_TCP_POSIX 或 VG_TCP_LESP。
+  * @param  net_name  写入 status JSON 的 network 字段（rj45|esp01|none）。
+  * @retval 0   CONNACK 成功且已 publish status。
+  * @retval -1  建连/CONNECT/CONNACK 失败（会话已关闭）。
+  */
+int vg_mqtt_session_open(vg_tcp_backend_t backend, const char *net_name);
+
+/**
+  * @brief  当前会话是否已收到 CONNACK。
+  * @retval true   在线。
+  * @retval false  未连接或已关闭。
+  */
 bool vg_mqtt_session_online(void);
 
 #endif

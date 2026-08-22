@@ -12,8 +12,9 @@
 #include <arpa/inet.h>
 
 /**
- * @brief eth0 一拍采样结果。
- */
+  * @brief  eth0 一拍采样结果。
+  * @note   由 vg_eth_sample() 填充，供 vg_net_mgr 写入 vg_net_sample。
+  */
 struct vg_eth_sample
 {
   bool link;                         /**< IFF_RUNNING */
@@ -24,21 +25,22 @@ struct vg_eth_sample
 };
 
 /**
- * @brief 对 host 发 1 次 ICMP echo（绑定 eth0，若启用 BINDTODEVICE）。
- *
- * @param host 点分 IP 或主机名；NULL/空串返回 false。
- * @retval true  收到至少 1 个 reply。
- * @retval false 超时或失败。
- */
+  * @brief  对 host 发 1 次 ICMP echo（绑定 eth0，若启用 BINDTODEVICE）。
+  * @note   仅判定 RJ45 上游可达性；NSH `ping` 语义不变，也不会改走 ESP。
+  * @param  host  点分 IP 或主机名；NULL/空串返回 false。
+  * @retval true  收到至少 1 个 reply。
+  * @retval false 超时或失败。
+  */
 bool vg_eth_ping(FAR const char *host);
 
 /**
- * @brief 采样 link / IP / 网关；可选执行 ping。
- *
- * @param out      输出；不可为 NULL。
- * @param do_ping  true 时在有 link+IP 时 ping 网关（或 VG_NET_PING_HOST）。
- * @note do_ping=false 时 ping_ok 复用上次成功缓存，避免空转把失败 streak 打满。
- */
+  * @brief  采样 link / IP / 网关；可选执行 ping。
+  * @note   do_ping=false 时 ping_ok 复用上次成功缓存，
+  *         避免退避窗口内的空转把失败 streak 打满。
+  * @param  out      输出；不可为 NULL。
+  * @param  do_ping  true 时在有 link+IP 时 ping 网关（或 VG_NET_PING_HOST）。
+  * @retval None
+  */
 void vg_eth_sample(struct vg_eth_sample *out, bool do_ping);
 
 #endif

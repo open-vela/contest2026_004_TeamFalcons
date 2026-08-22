@@ -110,9 +110,20 @@ static int do_cmd(FAR const char *dev, FAR const char *cmd)
  * 公共函数
  ****************************************************************************/
 
+/**
+  * @brief  vgesp NSH 入口：手工 AT 自测。
+  * @note   CONFIG_VG_NET_FAILOVER 时若 net_mgr 已占用 /dev/ttyS1，
+  *         直接拒绝，避免与 lesp_* 争用同一 UART。
+  * @param  argc  参数个数。
+  * @param  argv  at | cmd <AT+...> [devpath]。
+  * @retval 0  PASS（响应含 OK）。
+  * @retval 1  用法错误、UART busy、或 FAIL。
+  */
 int main(int argc, FAR char *argv[])
 {
 #ifdef CONFIG_VG_NET_FAILOVER
+  /* Refuse when failover mgr already owns the ESP-01S AT port */
+
   if (vg_esp_uart_busy())
     {
       fprintf(stderr, "vgesp: ESP UART owned by net_mgr, skip\n");

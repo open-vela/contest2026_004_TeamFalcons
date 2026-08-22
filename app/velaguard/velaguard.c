@@ -30,21 +30,30 @@
 static int g_app_running = 0;
 
 /**
- * @brief NSH 线程入口：初始化后进入 nsh_consolemain REPL（正常不返回）。
- * @note 签名适配 pthread；nsh_consolemain 本身是任务式 main(argc,argv)。
- */
+  * @brief  NSH 线程入口：初始化后进入 nsh_consolemain REPL（正常不返回）。
+  * @note   签名适配 pthread；nsh_consolemain 本身是任务式 main(argc,argv)。
+  * @param  arg  未使用。
+  * @retval NULL（正常路径不返回）。
+  */
 static void *nsh_thread(void *arg)
 {
     (void)arg;
+
+    /* Board bring-up for tools lives under NSH_ARCHINIT once */
+
     nsh_initialize();
     nsh_consolemain(0, NULL);
     return NULL;
 }
 
 /**
- * @brief 系统入口 / NSH 命令 velaguard_app。
- * @note 防重入；拉起 NSH 与（可选）net_mgr 后进入 LED 主循环。
- */
+  * @brief  系统入口 / NSH 命令 velaguard_app。
+  * @note   防重入；拉起 NSH 与（可选）net_mgr 后进入 LED 主循环。
+  *         CONFIG_VG_NET_FAILOVER 时自动 vg_net_mgr_start()，不依赖敲 NSH。
+  * @param  argc  参数个数（入口/命令共用）。
+  * @param  argv  参数向量。
+  * @retval 0  防重入早退；主循环正常不返回。
+  */
 int main(int argc, char *argv[])
 {
     if (g_app_running)
@@ -59,10 +68,14 @@ int main(int argc, char *argv[])
 
     g_app_running = 1;
 
+    /* Spawn console shell on a side thread */
+
     pthread_t tid;
     pthread_create(&tid, NULL, nsh_thread, NULL);
 
 #ifdef CONFIG_VG_NET_FAILOVER
+    /* Start RJ45/ESP TCP failover manager (independent of NSH) */
+
     if (vg_net_mgr_start() != 0)
       {
         printf("vgnet: failover manager not started\n");
@@ -72,6 +85,8 @@ int main(int argc, char *argv[])
     uint8_t lednum = board_userled_initialize();
     printf("LED num: %d\r\n", lednum);
     printf("Hello from openvela contest 2026 team 004!\n");
+
+    /* Forever LED heartbeat; local Modbus/collection stays independent */
 
     for (;;)
     {

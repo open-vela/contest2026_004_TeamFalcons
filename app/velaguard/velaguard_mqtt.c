@@ -208,7 +208,7 @@ static int tcp_connect(FAR const char *host, FAR const char *port)
   /* 接收/发送超时 2s：mqtt_sync 的 recv 是阻塞的，没有超时会在
    * CONNACK/PUBACK 不到时无限卡死（见 mqtt_pal_recvall）。 */
 
-  tv.tv_sec  = 2;
+  tv.tv_sec  = 5;
   tv.tv_usec = 0;
   setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
   setsockopt(fd, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));

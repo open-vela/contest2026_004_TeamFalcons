@@ -29,30 +29,45 @@ config VG_NET_FAILOVER
 	default n
 	depends on VG_BRINGUP_TOOLS && NET && NETUTILS_ESP8266 && NETUTILS_MQTTC && NETUTILS_PING
 	---help---
-		Start a background manager from velaguard_app_main. Ping eth0 to
-		detect RJ45 faults, auto-join ESP-01S Wi-Fi, and fail over TCP
-		(MQTT-C) to lesp_* sockets.
+		Start vg_net_mgr from velaguard_app_main (no NSH required).
+		Ping eth0 only to judge RJ45 health; hot-standby join ESP-01S;
+		fail over the single MQTT-C TCP session to lesp_* when RJ45 is
+		unhealthy; reclaim RJ45 after the hold window. NSH ping is not
+		redirected to Wi-Fi.
 
 if VG_NET_FAILOVER
 
 config VG_WIFI_SSID
-	string "ESP-01S Wi-Fi SSID"
+	string "ESP-01S Wi-Fi SSID (hot-standby join)"
 	default "xxx"
+	---help---
+		Default AP SSID loaded into RAM at boot. Overridable at runtime
+		via "vgnet wifi <ssid> <psk>".
 
 config VG_WIFI_PASSWORD
 	string "ESP-01S Wi-Fi password"
 	default "1472583690"
+	---help---
+		Default AP PSK paired with VG_WIFI_SSID (test credentials).
 
 config VG_MQTT_BROKER_HOST
 	string "Failover MQTT broker host"
 	default "107.174.123.74"
+	---help---
+		Plaintext MQTT-C broker used as the first TCP client proving
+		the active egress. CONNACK marks the session online.
 
 config VG_MQTT_BROKER_PORT
 	int "Failover MQTT broker port"
 	default 1883
+	---help---
+		Broker TCP port (no TLS in this stage).
 
 config VG_NET_PING_HOST
 	string "Ping target if DHCP gateway is empty"
 	default "1.1.1.1"
+	---help---
+		Fallback ICMP target when eth0 has no DHCP gateway. Ping is
+		only an RJ45 health probe, not a traffic failover path.
 
 endif

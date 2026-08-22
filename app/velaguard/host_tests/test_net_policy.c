@@ -1,5 +1,7 @@
 /****************************************************************************
  * app/velaguard/host_tests/test_net_policy.c
+ *
+ * 主机侧策略单测（AC1–AC7）。直接链接 vg_net_policy.c，无 NuttX。
  ****************************************************************************/
 
 #include <stdio.h>
@@ -10,6 +12,12 @@
 
 static int g_fail;
 
+/**
+  * @brief  断言辅助：失败时累加 g_fail 并打印消息。
+  * @param  cond  非 0 为通过。
+  * @param  msg   失败说明。
+  * @retval None
+  */
 static void expect(int cond, const char *msg)
 {
   if (!cond)
@@ -19,6 +27,9 @@ static void expect(int cond, const char *msg)
     }
 }
 
+/**
+  * @brief  构造「仅 RJ45 健康」采样。
+  */
 static struct vg_net_sample s_rj45(void)
 {
   struct vg_net_sample s;
@@ -30,6 +41,9 @@ static struct vg_net_sample s_rj45(void)
   return s;
 }
 
+/**
+  * @brief  构造「RJ45 + Wi-Fi 皆可用」采样。
+  */
 static struct vg_net_sample s_both(void)
 {
   struct vg_net_sample s = s_rj45();
@@ -38,6 +52,9 @@ static struct vg_net_sample s_both(void)
   return s;
 }
 
+/**
+  * @brief  构造「仅 Wi-Fi 可用」采样。
+  */
 static struct vg_net_sample s_wifi_only(void)
 {
   struct vg_net_sample s;
@@ -48,6 +65,9 @@ static struct vg_net_sample s_wifi_only(void)
   return s;
 }
 
+/**
+  * @brief  构造「双挂」采样。
+  */
 static struct vg_net_sample s_none(void)
 {
   struct vg_net_sample s;
@@ -56,6 +76,10 @@ static struct vg_net_sample s_none(void)
   return s;
 }
 
+/**
+  * @brief  AC1：RJ45 ping 健康 → egress=rj45，tcp_backend=posix。
+  * @retval None
+  */
 static void test_ac1(void)
 {
   struct vg_net_policy p;
@@ -68,6 +92,11 @@ static void test_ac1(void)
   expect(p.tcp_backend == VG_TCP_POSIX, "AC1 posix");
 }
 
+/**
+  * @brief  AC2：连续 ping 失败且 Wi-Fi 可用 → egress=wifi，backend=lesp。
+  * @note   须置 tcp_reconnect；同时只选一条出口。
+  * @retval None
+  */
 static void test_ac2(void)
 {
   struct vg_net_policy p;
@@ -78,6 +107,8 @@ static void test_ac2(void)
   s = s_both();
   vg_net_policy_step(&p, 0, &s);
   expect(p.active_egress == VG_EGRESS_RJ45, "AC2 start rj45");
+
+  /* Drive fail streak to VG_NET_PING_FAIL_N */
 
   s = s_both();
   s.rj45_ping_ok = false;
@@ -92,6 +123,10 @@ static void test_ac2(void)
   expect(p.tcp_reconnect, "AC2 reconnect on switch");
 }
 
+/**
+  * @brief  AC3：双挂 → NET_DOWN，无 TCP。
+  * @retval None
+  */
 static void test_ac3(void)
 {
   struct vg_net_policy p;
@@ -109,6 +144,10 @@ static void test_ac3(void)
   expect(p.tcp_backend == VG_TCP_NONE, "AC3 no tcp");
 }
 
+/**
+  * @brief  AC4：恢复未满窗口保持 lesp；满窗口切回 posix；flap 不抖。
+  * @retval None
+  */
 static void test_ac4(void)
 {
   struct vg_net_policy p;
@@ -124,6 +163,8 @@ static void test_ac4(void)
 
   expect(p.active_egress == VG_EGRESS_WIFI, "AC4 on wifi");
 
+  /* Inside hold window: stay on Wi-Fi even though RJ45 looks healthy */
+
   s = s_both();
   vg_net_policy_step(&p, 5000, &s);
   expect(p.active_egress == VG_EGRESS_WIFI, "AC4 hold window");
@@ -134,7 +175,8 @@ static void test_ac4(void)
   expect(p.tcp_backend == VG_TCP_POSIX, "AC4 back posix");
   expect(p.tcp_reconnect, "AC4 reconnect on recover");
 
-  /* flap inside a new wifi period */
+  /* Flap inside a new wifi period must not thrash back to RJ45 */
+
   s = s_wifi_only();
   for (i = 0; i < VG_NET_PING_FAIL_N; i++)
     {
@@ -150,6 +192,10 @@ static void test_ac4(void)
   expect(p.active_egress == VG_EGRESS_WIFI, "AC4 flap stays wifi");
 }
 
+/**
+  * @brief  AC5：指数退避、link 上升沿立即探测、未采样不计 streak。
+  * @retval None
+  */
 static void test_ac5(void)
 {
   uint32_t b0 = vg_net_policy_backoff_ms(0, 0);
@@ -170,6 +216,8 @@ static void test_ac5(void)
   vg_net_policy_init(&p);
   vg_net_policy_step(&p, 0, &s);
   expect(p.next_rj45_probe_ms >= 1000, "AC5 schedules backoff");
+
+  /* Link rising edge clears deferred probe */
 
   s.rj45_link = true;
   vg_net_policy_step(&p, 100, &s);
@@ -208,6 +256,10 @@ static void test_ac5(void)
   expect(p.rj45_backoff_exp == exp, "AC5b wait does not raise exp");
 }
 
+/**
+  * @brief  AC6/AC7：Wi-Fi 失败达阈值 → request_esp_reset；切出口置 reconnect。
+  * @retval None
+  */
 static void test_ac6(void)
 {
   struct vg_net_policy p;
@@ -223,10 +275,16 @@ static void test_ac6(void)
   vg_net_policy_note_wifi_join(&p, false);
   expect(p.request_esp_reset, "AC6 reset at threshold");
 
+  /* Counter cleared after latching the reset request */
+
   vg_net_policy_note_wifi_join(&p, false);
   expect(!p.request_esp_reset, "AC6 counter cleared");
 }
 
+/**
+  * @brief  AC6/7 TCP：出口变化产生 tcp_reconnect，backend 切到 lesp。
+  * @retval None
+  */
 static void test_ac7_tcp(void)
 {
   struct vg_net_policy p;
@@ -251,6 +309,11 @@ static void test_ac7_tcp(void)
   expect(p.tcp_reconnect, "reconnect flag");
 }
 
+/**
+  * @brief  主机单测入口：跑 AC1–AC7。
+  * @retval 0  全部通过。
+  * @retval 1  有断言失败。
+  */
 int main(void)
 {
   test_ac1();
