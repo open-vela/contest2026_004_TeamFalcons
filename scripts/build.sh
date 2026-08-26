@@ -125,15 +125,17 @@ apply_target_patches()
 
   case "$TARGET" in
     net)
-      echo "[build] apply net patches (eth-mii + velaguard-net defconfig)..."
+      echo "[build] apply net patches (eth-mii + board pins + velaguard-net defconfig)..."
       bash "$SCRIPT_DIR/apply-openvela-eth-mii-patch.sh" "$OPENVELA_ROOT"
+      bash "$SCRIPT_DIR/apply-openvela-velaguard-board-pins-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-velaguard-net-defconfig-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-velaguard-net-esp8266-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-esp8266-lesp-compat-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-mqttc-pal-hook-patch.sh" "$OPENVELA_ROOT"
       ;;
     min)
-      echo "[build] apply min patches (pwm-tim15 + velaguard-min defconfig)..."
+      echo "[build] apply min patches (board pins + pwm-tim15 + velaguard-min defconfig)..."
+      bash "$SCRIPT_DIR/apply-openvela-velaguard-board-pins-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-pwm-tim15-patch.sh" "$OPENVELA_ROOT"
       bash "$SCRIPT_DIR/apply-openvela-velaguard-min-defconfig-patch.sh" "$OPENVELA_ROOT"
       ;;

@@ -38,6 +38,7 @@ tools/configure.sh -e stm32h750b-dk:lvgl            # 切回 UI 形态（后续�
 |---|---|
 | `scripts/openvela-velaguard-min-defconfig.patch` | 新增 `boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-min/defconfig` |
 | `scripts/apply-openvela-velaguard-min-defconfig-patch.sh` | 幂等 apply（二次执行输出 "already applied"） |
+| `scripts/openvela-velaguard-board-pins.patch` + `apply-openvela-velaguard-board-pins-patch.sh` | 扩展板 pinmux / bringup / TIM15 PWM（USART2、RS485 DIR、ESP EN/RST；`build.sh` min/net 自动 apply） |
 | `scripts/openvela-pwm-tim15-fix.patch` + `apply-openvela-pwm-tim15-patch.sh` | TIM15 守卫笔误修复（见第 1 节） |
 
 ### 2.2 日常入口与 Rebuild 复位
@@ -170,6 +171,7 @@ nuttx 侧交付物：
 |---|---|
 | `scripts/openvela-velaguard-net-defconfig.patch` + `apply-openvela-velaguard-net-defconfig-patch.sh` | velaguard-net 预设（幂等 apply） |
 | 依赖：`apply-openvela-eth-mii-patch.sh`（eth MII/PHY 轮询 + netinit carrier/DHCP 重连） | 必须先应用 |
+| 依赖：`apply-openvela-velaguard-board-pins-patch.sh`（USART2 / RS485 DIR / ESP GPIO；缺则 `GPIO_USART2_*` 编译失败） | `build.sh net` 在 eth-mii 之后自动 apply |
 
 ### 5.2 构建脚本多目标
 
@@ -242,8 +244,8 @@ nuttx / MQTT-C 侧交付物（contest 仓 patch，幂等 apply）：
 
 | 文件 | 作用 |
 |---|---|
-| `scripts/openvela-velaguard-net-esp8266.patch` + `apply-openvela-velaguard-net-esp8266-patch.sh` | `NETUTILS_ESP8266` ttyS1 115200 + `VG_NET_FAILOVER` / Wi-Fi 默认凭据 |
+| `scripts/openvela-velaguard-net-esp8266.patch` + `apply-openvela-velaguard-net-esp8266-patch.sh` | `NETUTILS_ESP8266` ttyS1 115200 + `VG_NET_FAILOVER` / Wi-Fi 默认凭据（hunk 须在 net-defconfig 之后可 apply；损坏 hunk 会报 `corrupt patch`） |
 | `scripts/openvela-mqttc-pal-hook.patch` + `apply-openvela-mqttc-pal-hook-patch.sh` | MQTT-C pal 弱符号 hook：tagged `lesp` fd 走 `lesp_send/recv`，未注册时 `vgmqtt` 仍 POSIX |
-| `scripts/openvela-esp8266-lesp-compat.patch` + `apply-openvela-esp8266-lesp-compat-patch.sh` | `esp8266.c` 仍用 `LESP_*`，头文件已改成 `lespSSID_SIZE` / `lesp_eMODE_*`；缺这层映射则 `NETUTILS_ESP8266` 编不过 |
+| `scripts/openvela-esp8266-lesp-compat.patch` + `apply-openvela-esp8266-lesp-compat-patch.sh` | `esp8266.c` 仍用 `LESP_*`，头文件已改成 `lespSSID_SIZE` / `lesp_eMODE_*`；缺这层映射则 `NETUTILS_ESP8266` 编不过；patch 内每一行新增宏须带 `+` 前缀 |
 
 主机单测：`make -C app/velaguard/host_tests test`。物理拔线不是完成门禁。
