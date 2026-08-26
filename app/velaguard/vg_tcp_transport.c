@@ -244,7 +244,8 @@ int vg_mqtt_pal_try_sendall(mqtt_pal_socket_handle fd, const void *buf,
 #ifdef CONFIG_NETUTILS_ESP8266
   const uint8_t *p = (const uint8_t *)buf;
   size_t sent = 0;
-  uint8_t retry = 0;
+  unsigned retries = 0;
+
   if (out == NULL || (fd & VG_MQTT_LESP_TAG) == 0)
     {
       return -1;
@@ -256,19 +257,26 @@ int vg_mqtt_pal_try_sendall(mqtt_pal_socket_handle fd, const void *buf,
   while (sent < len)
     {
       ssize_t n = lesp_send(fd & ~VG_MQTT_LESP_TAG, p + sent, len - sent,
-        flags);
-        if (errno == ETIMEDOUT&&n<1)
+                            flags);
+      if (n < 1)
         {
-          usleep(1000);
-          continue;
-        }
-        else
-        {
+          /* Transient AT/UART stalls: brief backoff, then fail. */
+          if ((errno == ETIMEDOUT || errno == EAGAIN ||
+               errno == EWOULDBLOCK) &&
+              retries < 50)
+            {
+              retries++;
+              usleep(1000);
+              continue;
+            }
+
           vg_esp_at_unlock();
           *out = MQTT_ERROR_SOCKET_ERROR;
           return 0;
-          sent += (size_t)n;
         }
+
+      sent += (size_t)n;
+      retries = 0;
     }
 
   vg_esp_at_unlock();
