@@ -3,7 +3,7 @@
   "team_id": "contest2026_004_TeamFalcons",
   "github_login": "Foleaf",
   "generator": "cursor-collector@1.4.0",
-  "updated_at": "2026-08-26T10:35:24.043Z",
+  "updated_at": "2026-08-26T15:35:05.041Z",
   "sessions": [
     {
       "session_id": "ses_11810bbcfffe563TbgE0tykfVz",
@@ -2145,9 +2145,9 @@
       "session_id": "e24fae72-c939-4bc0-b442-814f41a575e6",
       "tool": "cursor",
       "started_at": "2026-08-26T10:35:00.000Z",
-      "last_event_at": "2026-08-26T10:35:24.041Z",
-      "event_count": 4,
-      "raw_event_count": 4,
+      "last_event_at": "2026-08-26T15:35:05.017Z",
+      "event_count": 70,
+      "raw_event_count": 41,
       "file_path": "logs/Foleaf/2026-08-26/cursor__e24fae72-c939-4bc0-b442-814f41a575e6.jsonl",
       "collection_mode": "vscode_extension",
       "health": "ok",
