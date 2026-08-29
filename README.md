@@ -1,3 +1,61 @@
+# VelaGuard — openvela AI 硬件赛道作品
+
+> **团队**：contest2026_004 Team Falcons（FoLeaf）  
+> **赛道**：AI 硬件产品创新  
+> **硬件**：STM32H750B-DK + VelaGuard 扩展板（RS485 / RJ45 / ESP-01 备链 / LTDC 触控）  
+> **一句话**：运行在 openvela 上的 RS485/Modbus 现场诊断网关，板载 ai_agent 在链路劣化时主动发起只读探测实验。
+
+## 构建与烧录
+
+在 **openvela 工作区根目录**（含 `.repo/` 的父目录）同步 manifest 后，于本仓执行：
+
+```bash
+cd contest2026_004_TeamFalcons
+bash scripts/build.sh min    # 最小 bring-up（无网络）
+bash scripts/build.sh net    # 完整网络 + MQTT + ESP8266 备链
+```
+
+产物：`contest2026_004_TeamFalcons/.debug/nuttx.hex` 与 `qspi_bootstub.hex`（QSPI XIP 启动需两份 HEX 依次烧录）。
+
+**公共仓依赖（PR 待组委会合入前）**：`scripts/build.sh` 仍会通过 `scripts/openvela-*.patch` 自动打补丁到本地 `nuttx/`、`apps/`、`MQTT-C` 树，保证评委可一键复现。合入后可移除 patch，直接依赖上游 defconfig。
+
+## 公共仓 PR（VelaGuard 板级与网络改动）
+
+| 仓库 | 分支 | PR | CI |
+|------|------|-----|-----|
+| open-vela/nuttx | `velaguard/qspi-boot-stm32h750b-dk` | https://github.com/open-vela/nuttx/pull/350 | ✅ |
+| open-vela/nuttx | `velaguard/board-and-defconfigs` | https://github.com/open-vela/nuttx/pull/351 | ✅ |
+| open-vela/nuttx | `velaguard/eth-mii-stm32h750b-dk` | https://github.com/open-vela/nuttx/pull/352 | ✅ |
+| open-vela/nuttx | `velaguard/display-acceleration-stm32h750b-dk` | https://github.com/open-vela/nuttx/pull/353 | ✅ |
+| open-vela/nuttx | `velaguard/ui-performance-stm32h750b-dk` | https://github.com/open-vela/nuttx/pull/354 | ✅ |
+| open-vela/nuttx-apps | `velaguard/netinit-esp8266` | https://github.com/open-vela/nuttx-apps/pull/119 | ✅ |
+| open-vela/apps_netutils_mqttc_MQTT-C | `velaguard/mqtt-pal-hook` | https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1 | ✅ |
+
+Fork 远程：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`。本地集成分支（仅开发用）：`nuttx/velaguard/integration`。
+
+## AI 硬件赛道证据
+
+| 要求 | 实现 |
+|------|------|
+| 设备上运行 Agent | 板载 `packages/ai_agent` ReAct 循环 + Modbus 只读 C 工具 |
+| ≥1 自定义 Skill | `rs485_fault_triage.md`（`/data/agent/skills/`，见 `VelaGuard_项目手册.md` §10） |
+| ≥1 主动+执行场景 | 帧错误率/超时率越阈 → 自动启动只读诊断会话（§5.5） |
+| openvela 能力落地 | 图形（LVGL HMI）、AI（ai_agent + 云端 MiMo）、多媒体（触控 UI） |
+
+详细用户故事、功能清单与架构说明见 [`VelaGuard_项目手册.md`](VelaGuard_项目手册.md)。
+
+## AI Coding 日志
+
+路径：`logs/Foleaf/`（178 个已索引会话，`validate-log.py` 通过；Cursor/Grok 会话因官方 schema 暂未收录，保留为 orphan 文件）。
+
+校验：
+
+```bash
+python3 ../.claude/skills/contest-log-collector/tools/validate-log.py logs/
+```
+
+---
+
 # VelaGuard 项目手册 — Mermaid 图表总览
 
 > 基于 `VelaGuard_项目手册.md` v2（2026-08-20 设计评审后重写）整理

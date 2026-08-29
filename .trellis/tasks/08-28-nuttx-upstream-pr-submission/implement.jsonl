@@ -1,0 +1,3 @@
+{"file": "docs/agents/BOUNDARY.md", "reason": "竞赛硬边界：专属仓-only 开发、公共仓 fork+PR 路径、日志与截止时间"}
+{"file": "docs/velaguard-bringup-known-issues.md", "reason": "当前 patch 清单、defconfig 名称、nuttx 侧交付物与 bring-up 验证契约"}
+{"file": "../docs/zh-cn/contest_2026/code_submission_guide.md", "reason": "官方提交流程：fork、PR、公共仓规则、CLA、截止时间"}
