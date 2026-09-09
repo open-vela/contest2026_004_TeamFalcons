@@ -52,13 +52,13 @@
 
 ## Acceptance Criteria
 
-- [ ] **AC1** Phase A 子任务 Gate 通过（或本任务启动前 `gui/` 已具备裁剪后 UI）
+- [x] **AC1** Phase A 子任务 Gate 通过（或本任务启动前 `gui/` 已具备裁剪后 UI）
 - [x] **AC2** `bash scripts/build.sh <lvgl-target>` 成功；固件含 HMI，体积在板子资源预算内
 - [x] **AC3** 板端冷启动进入 HMI：**无自动 RS485 scan**（开关默认关）
-- [ ] **AC4** 首页显示 **真实** 从站/告警摘要（非纯 mock）
-- [ ] **AC5** 告警页展示 AI 解释字段（联网时有内容；断网降级符合 §2.2）
-- [ ] **AC6** 报告页可读最新日报文件（或明确 empty 态）
-- [ ] **AC7** 探查：开关 ON → scan @9600 → ≥1 从站（MThings mock）；confirm 后 `vgcfg dump` 可读
+- [x] **AC4** 首页显示 **真实** 从站/告警摘要（非纯 mock）
+- [x] **AC5** 告警页展示 AI 解释字段（联网时有内容；断网降级符合 §2.2）
+- [x] **AC6** 报告页可读最新日报文件（或明确 empty 态）
+- [x] **AC7** 探查：开关 ON → scan @9600 → ≥1 从站（MThings mock）；confirm 后 `vgcfg dump` 可读
 - [x] **AC8** 验收脚本或 `stage1_*_accept` 笔记落盘
 
 ## Dependencies

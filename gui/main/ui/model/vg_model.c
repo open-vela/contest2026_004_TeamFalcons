@@ -1144,6 +1144,20 @@ void vg_model_init(void)
     load_custom_types();
     seed_base_logs();
     apply_scenario(VG_SCENARIO_NORMAL);
+#ifdef VG_HMI_BOARD
+    {
+        const vg_ui_backend_t * be = vg_ui_backend_get();
+        vg_ui_slave_t slaves[VG_SENSOR_MAX];
+        int n;
+
+        if(be != NULL && be->get_slaves != NULL) {
+            n = be->get_slaves(slaves, VG_SENSOR_MAX);
+            if(n > 0) {
+                vg_model_import_discover_slaves(slaves, n);
+            }
+        }
+    }
+#endif
 }
 
 void vg_model_set_scenario(vg_scenario_t s)

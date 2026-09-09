@@ -11,7 +11,12 @@
   ],
   "files.exclude": {
     "**/.git": true,
-    "**/.debug": true
+    "**/.debug": true,
+    "**/build": true,
+    "**/*.o": true,
+    "**/.built": true,
+    "**/.depend": true,
+    "**/Make.dep": true
   },
   "files.associations": {
     "*.c": "c",
@@ -21,12 +26,16 @@
   },
   "files.watcherExclude": {
     "**/.debug/**": true,
+    "**/build/**": true,
     "**/logs/**": true,
+    "**/*.o": true,
     "../nuttx/**/*.o": true,
     "../apps/**/*.o": true
   },
   "search.exclude": {
     "**/.debug": true,
+    "**/build": true,
+    "**/*.o": true,
     "../nuttx/**/*.o": true
   },
   "cmake.ignoreCMakeListsMissing": true,

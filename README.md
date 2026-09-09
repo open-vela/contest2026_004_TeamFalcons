@@ -374,7 +374,7 @@ Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C
 
 ## AI Coding 日志
 
-路径：`logs/Foleaf/`（已索引会话经 `validate-log.py` 校验；Cursor/Grok 会话因官方 schema 暂未收录，保留为 orphan）。
+路径：`logs/Foleaf/`（已索引会话经 `validate-log.py` 校验；本地 schema 已收录 `cursor` / `grok-build`，以诚实标签入索引）。
 
 ```bash
 python3 ../.claude/skills/contest-log-collector/tools/validate-log.py logs/

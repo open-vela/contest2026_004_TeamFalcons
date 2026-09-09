@@ -84,6 +84,10 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *config_basedir,
                          bool confirm);
 
+/* Unique slave addrs from a committed points.json (hits[] first, else
+ * unique point "addr" fields). Returns count, 0 if missing/empty, <0 on I/O. */
+int vg_point_table_read_slaves(FAR const char *path, uint8_t *addrs, int max);
+
 int vg_discover_test_read(FAR const char *devpath, int baud,
                           uint8_t addr, uint16_t reg, uint16_t qty,
                           FAR uint16_t *out);

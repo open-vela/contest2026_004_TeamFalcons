@@ -72,13 +72,15 @@ PROGNAME += vghmi
 MAINSRC  += vg_hmi.c
 
 # Same sources as gui/CMakeLists.txt (Phase A); do not duplicate under app/velaguard.
+# Use basenames + VPATH so PREFIX objects stay flat under build/velaguard/
+# (absolute CSRCS would write .o next to gui sources).
 VG_CONTEST_ROOT := $(abspath $(CURDIR)/../..)
 VG_UI_DIR       := $(VG_CONTEST_ROOT)/gui/main/ui
 VG_UI_SUBDIRS   := app shell pages model theme widgets fonts
 VG_UI_CSRCS     := $(foreach _d,$(VG_UI_SUBDIRS),$(wildcard $(VG_UI_DIR)/$(_d)/*.c))
 VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/model/vg_ui_backend.c,$(VG_UI_CSRCS))
 
-CSRCS    += $(VG_UI_CSRCS)
+CSRCS    += $(notdir $(VG_UI_CSRCS))
 CSRCS    += vg_ui_backend_board.c
 VPATH    += $(foreach _d,$(VG_UI_SUBDIRS),:$(VG_UI_DIR)/$(_d))
 DEPPATH  += $(foreach _d,$(VG_UI_SUBDIRS),--dep-path $(VG_UI_DIR)/$(_d))
@@ -116,4 +118,25 @@ STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 
+# Contest app is symlinked into packages/demos; without PREFIX, NuttX writes
+# .o / .built / Make.dep into the contest source tree (and gui/ via absolute CSRCS).
+# Application.mk: PREFIX must exist and end with $(DELIM).
+VG_OBJDIR := $(abspath $(CURDIR)/../../build/velaguard)
+$(shell mkdir -p "$(VG_OBJDIR)")
+PREFIX := $(VG_OBJDIR)$(DELIM)
+
 include $(APPDIR)/Application.mk
+
+# Application.mk appends "--obj-path .". Replace that pair only — do not
+# filter-out the word "." or "--dep-path ." loses its argument and mkdep
+# treats the next token (our objdir) as the compiler.
+DEPPATH := $(subst --obj-path .,--obj-path $(VG_OBJDIR),$(DEPPATH))
+
+# Application.mk clean/distclean still delete unprefixed markers; also clear PREFIX.
+clean::
+	$(call DELFILE,$(PREFIX).built)
+	$(Q) rm -f $(PREFIX)*$(OBJEXT)
+
+distclean::
+	$(call DELFILE,$(PREFIX)Make.dep)
+	$(call DELFILE,$(PREFIX).depend)

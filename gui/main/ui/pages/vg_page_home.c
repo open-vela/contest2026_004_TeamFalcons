@@ -244,7 +244,10 @@ static void rebuild_list(bool force)
     n = vg_model_home_sensor_count();
     if(n == 0) {
         lv_obj_t * empty = lv_label_create(s_home.list);
-        lv_label_set_text(empty, "无匹配传感器");
+        /* Reuse discover-page CJK glyphs. ALL = no confirmed table yet. */
+        lv_label_set_text(empty,
+            vg_model_get_home_filter() == VG_HOME_FILTER_ALL ?
+            "未发现从站" : "无匹配传感器");
         vg_style_apply_label(empty, true);
         lv_obj_set_width(empty, lv_pct(100));
         lv_obj_set_style_text_align(empty, LV_TEXT_ALIGN_CENTER, 0);

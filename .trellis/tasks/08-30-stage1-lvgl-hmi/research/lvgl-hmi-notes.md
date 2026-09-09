@@ -31,7 +31,11 @@
 | `velaguard-lvgl` | 演示固件：`vghmi` + net/Agent/vgdiscover（一次烧录） |
 | `net` | 日常无 LVGL |
 
-## 待办
+## 2026-09-09 C1/C4
+
+- 冷启动从 `points.json` 导入首页舰队（非 mock 24）
+- `vghmi: home fleet n=32` + `/data/velaguard/hmi_fleet.txt`
+- `stage1_lvgl_hmi_accept.ps1` **14/14 PASS**（复位抓 boot）
 
 - [x] B1 板端：`vghmi` 点亮 480×272（串口 4/4；LCD 目视）
 - [x] B2 同源编译 `gui/main/ui`（flash ~407KB；SRAM ~74%；mock backend）

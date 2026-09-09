@@ -11,7 +11,8 @@ compile_commands.json
 *.elf
 *.hex
 *.map
-# NuttX app build markers generated in the source tree via manifest link
+# NuttX app intermediates: redirected to build/velaguard/ via Makefile PREFIX.
+# Keep these ignore rules as a safety net if PREFIX is unset or stale files linger.
 .built
 .depend
 Make.dep

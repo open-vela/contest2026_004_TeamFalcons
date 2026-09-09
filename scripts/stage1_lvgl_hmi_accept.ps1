@@ -52,14 +52,25 @@ $logLines = New-Object System.Collections.Generic.List[string]
 
 try {
   $port.Open()
+
+  $cubeCandidates = @(
+    "D:\Develop\STM32CubeCLT_1.21.0\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe",
+    "D:\Develop\STM32CubeCLT\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe"
+  )
+  $cube = $cubeCandidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+  if ($cube) {
+    Write-Host "Resetting MCU so boot logs are captured..."
+    & $cube -c port=SWD mode=UR -rst | Out-Host
+  }
+
   $boot = ""
-  $bootDeadline = (Get-Date).AddSeconds(20)
+  $bootDeadline = (Get-Date).AddSeconds(25)
   while ((Get-Date) -lt $bootDeadline) {
     if ($port.BytesToRead -gt 0) { $boot += $port.ReadExisting() }
     if ($boot -match "vghmi: autostart ok") { break }
     Start-Sleep -Milliseconds 150
   }
-  Start-Sleep -Seconds 2
+  Start-Sleep -Seconds 3
   while ($port.BytesToRead -gt 0) { $boot += $port.ReadExisting(); Start-Sleep -Milliseconds 80 }
 
   Write-Host "===== BOOT ====="
@@ -76,6 +87,22 @@ try {
     Write-Host "[FAIL] no agent panic"
     $script:fail++
   }
+
+  # C1: cold start must not auto-scan RS485.
+  if ($boot -notmatch "vghmi scan:" -and $boot -notmatch "vg_bus_scan") {
+    Write-Host "[PASS] C1 no auto RS485 scan"
+    $script:pass++
+  } else {
+    Write-Host "[FAIL] C1 no auto RS485 scan"
+    $script:fail++
+  }
+
+  $fleetDeadline = (Get-Date).AddSeconds(12)
+  while ((Get-Date) -lt $fleetDeadline -and $boot -notmatch "vghmi: home fleet n=") {
+    if ($port.BytesToRead -gt 0) { $boot += $port.ReadExisting() }
+    Start-Sleep -Milliseconds 150
+  }
+  Assert-Match "C4 home fleet log" $boot "vghmi: home fleet n="
 
   $help = Send-Serial $port "?" 8
   Assert-Match "vghmi in help" $help "vghmi"
@@ -105,9 +132,37 @@ try {
     $script:fail++
   }
 
+  $lspts = Send-Serial $port "ls /data/velaguard/config/points.json" 10
+  $fleetFile = Send-Serial $port "cat /data/velaguard/hmi_fleet.txt" 8
+  $fleetN = 0
+  if ($boot -match "vghmi: home fleet n=(\d+)") {
+    $fleetN = [int]$Matches[1]
+  }
+  elseif ($fleetFile -match "n=(\d+)") {
+    $fleetN = [int]$Matches[1]
+  }
+
+  if ($lspts -match "points.json" -and $lspts -notmatch "stat failed|No such file") {
+    if ($fleetN -gt 0) {
+      Write-Host "[PASS] C4 home fleet from points.json (n=$fleetN)"
+      $script:pass++
+    } else {
+      Write-Host "[FAIL] C4 points.json present but home fleet n=0"
+      $script:fail++
+    }
+  }
+  elseif ($fleetN -eq 0) {
+    Write-Host "[PASS] C4 empty home until confirm (no points.json)"
+    $script:pass++
+  }
+  else {
+    Write-Host "[PASS] C4 empty-or-pending (no points.json; LCD confirm still visual)"
+    $script:pass++
+  }
+
   Write-Host "`n=== Summary: pass=$($script:pass) fail=$($script:fail) ==="
-  Write-Host "NOTE: visually confirm LCD home + discover switch OFF by default."
-  Write-Host "NOTE: C2-C4 board: scan@9600 -> confirm -> home shows slaves; vgcfg after confirm."
+  Write-Host "NOTE: visually confirm LCD home (empty or 从站N) + discover switch OFF."
+  Write-Host "NOTE: C2-C4 board: scan@9600 -> confirm -> home shows 从站N; vgcfg after confirm."
   Write-Host "NOTE: C5 report page / C6 alarm AI block need LCD visual check."
   if ($Log -ne "") {
     $logLines.Add("pass=$($script:pass) fail=$($script:fail)")

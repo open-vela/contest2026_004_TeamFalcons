@@ -252,22 +252,57 @@ static int board_discover_apply_status(void)
 static int board_get_slaves(vg_ui_slave_t *out, int max)
 {
   FAR const struct vg_discover_summary *sum = vg_discover_state();
+  uint8_t persisted[VG_DISCOVER_MAX_SLAVES];
   int i;
   int n = 0;
+  int persisted_n = 0;
 
-  if(out == NULL || max <= 0 || sum == NULL) {
+  if(out == NULL || max <= 0) {
     return 0;
   }
 
-  for(i = 0; i < sum->n_hits && n < max; i++) {
-    if(!sum->hits[i].alive) {
-      continue;
+  if(sum != NULL) {
+    for(i = 0; i < sum->n_hits && n < max; i++) {
+      if(!sum->hits[i].alive) {
+        continue;
+      }
+
+      out[n].addr = sum->hits[i].addr;
+      out[n].probe_reg = sum->hits[i].probe_reg;
+      snprintf(out[n].label, sizeof(out[n].label), "addr=%u",
+               (unsigned)sum->hits[i].addr);
+      n++;
+    }
+  }
+
+  if(n > 0) {
+    return n;
+  }
+
+  /* Cold start: last confirmed table, not mock 24. Retry — FAT may
+   * still be settling when vghmi is task_create'd. */
+  for(i = 0; i < 10 && persisted_n <= 0; i++) {
+    persisted_n = vg_point_table_read_slaves(CONFIG_VG_DISCOVER_POINTS_PATH,
+                                            persisted, VG_DISCOVER_MAX_SLAVES);
+    if(persisted_n > 0) {
+      break;
     }
 
-    out[n].addr = sum->hits[i].addr;
-    out[n].probe_reg = sum->hits[i].probe_reg;
+    usleep(100000);
+  }
+  if(persisted_n <= 0) {
+    return 0;
+  }
+
+  if(persisted_n > max) {
+    persisted_n = max;
+  }
+
+  for(i = 0; i < persisted_n; i++) {
+    out[n].addr = persisted[i];
+    out[n].probe_reg = 0;
     snprintf(out[n].label, sizeof(out[n].label), "addr=%u",
-             (unsigned)sum->hits[i].addr);
+             (unsigned)persisted[i]);
     n++;
   }
 

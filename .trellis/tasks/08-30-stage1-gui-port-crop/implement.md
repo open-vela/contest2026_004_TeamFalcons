@@ -7,7 +7,7 @@
 - [x] I3 `vg_page_report.c` / `vg_page_discover.c`（扫描开关默认关）
 - [x] I4 `vg_page_home.c` 底栏裁剪；alarm 增「AI 推测」行
 - [x] I5 `scripts/setup_gui.sh` + `gui/README.md`
-- [ ] I6 WSL 构建验证（需 `libsdl2-dev`；Windows 见 README_CN）
+- [x] I6 WSL 构建验证（2026-09-02：`cmake --build gui/build` → `gui/bin/main` OK；无 sudo 时用 `$HOME/.local/opt/sdl2-src` 源码静态 SDL2 + 提取 X11 `.so`）
 
 ## 验证
 

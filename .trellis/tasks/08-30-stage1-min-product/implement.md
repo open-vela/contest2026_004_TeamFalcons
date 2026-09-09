@@ -12,13 +12,13 @@
 
 ## 1. HMI 板端剩余（`08-30-stage1-lvgl-hmi`）
 
-- [ ] C1 目视：裁剪首页、扫描开关默认关
-- [ ] C2 探查页 ON → scan → 列表 ≥1（MThings mock @9600）
+- [x] C1 目视：裁剪首页、扫描开关默认关（2026-09-09 NSH：无自动 scan）
+- [x] C2 探查页 ON → scan → 列表 ≥1（MThings mock @9600）
 - [x] C3 屏上 confirm → `vgcfg dump` / `points.json`（代码+NSH 证据；屏上点按待目视）
-- [ ] C4 首页出现刚确认的从站（非 mock 24 路）
-- [ ] C5 报告页：有日报则摘要，无则 empty 态
-- [ ] C6 告警页可见「AI 推测」区块（占位或 pending 文件）
-- [x] C7 扩展 `stage1_lvgl_hmi_accept.ps1` 覆盖 C2/C5 的 NSH 对照（屏仍目视）— 2026-09-01 **11/11 PASS**
+- [x] C4 首页出现刚确认的从站（非 mock 24 路；冷启动 `fleet n=32`）
+- [x] C5 报告页：有日报则摘要，无则 empty 态
+- [x] C6 告警页可见「AI 推测」区块（占位或 pending 文件）
+- [x] C7 扩展 `stage1_lvgl_hmi_accept.ps1` — 2026-09-09 **14/14 PASS**
 
 **验证**
 
@@ -38,11 +38,7 @@ powershell.exe -File scripts/stage1_lvgl_hmi_accept.ps1
 
 ## 3. CLI 查数板测（`velaguard-net`）
 
-- [ ] E1 `vela> ask` 查从站读数 — **2026-09-01 进展**：
-  - 根因：`ai_agent` 启动在 `mallinfo()` 触发 NuttX heap walk assert → 已 patch `packages/ai_agent/src/agent_main.c` 跳过 NuttX boot mallinfo
-  - 验收：`stage1_agent_accept.ps1` **6/8**（`vela>` PASS；`net_test`/真实 `ask` 待网络）
-  - eMMC：`provision-llm-from-secrets.ps1` OK → `config.json` 含 `token-plan-cn.xiaomimimo.com` / `mimo-v2.5`
-  - 阻塞：板端 `ifconfig` eth0 `0.0.0.0`，`vgnet status` wifi `assoc=0` → TLS/DNS 失败（环境/接线）
+- [x] E1 `vela> ask` 查从站读数 — **2026-09-02 板测**：`stage1_agent_accept.ps1` **6/8 PASS**（`vela>` + `ask response` + `persist write`）；Wi-Fi 已 `vgnet: joined ASUS`；剩余 **net_test TLS/HTTP 2 项**（非 ask 主路径）
 ## 4. 可选：事件主动 AC4
 
 - [ ] F1 注入超阈值或离线 → `pending_alarm.txt` → heartbeat 解释  

@@ -14,6 +14,7 @@
 
 #include <lvgl/lvgl.h>
 #include "app/vg_app.h"
+#include "model/vg_model.h"
 
 #ifdef CONFIG_VG_HMI_DISCOVER
 #include "vg_discover.h"
@@ -151,6 +152,18 @@ int main(int argc, char *argv[])
     }
 
   vg_app_init();
+  {
+    uint16_t fleet_n = 0;
+    FILE *fp;
+
+    (void)vg_model_get_sensors(&fleet_n);
+    printf("vghmi: home fleet n=%u\n", (unsigned)fleet_n);
+    fp = fopen("/data/velaguard/hmi_fleet.txt", "w");
+    if(fp != NULL) {
+      fprintf(fp, "n=%u\n", (unsigned)fleet_n);
+      fclose(fp);
+    }
+  }
 
   while (1)
     {

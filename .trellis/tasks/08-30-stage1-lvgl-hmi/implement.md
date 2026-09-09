@@ -31,14 +31,14 @@
 
 - [x] B4.1 defconfig 合并 net + HMI（`velaguard-lvgl` = 演示固件；`net` 仍无 LVGL）
 - [x] B4.2 `scripts/stage1_lvgl_hmi_accept.ps1` + 笔记（autostart + vgdiscover）
-- [x] B4.3 NSH 验收 9/9 PASS（2026-09-01）；LCD 首页待目视；Agent 与 HMI 同开会 panic，HMI 固件暂不 autostart agent
+- [x] B4.3 NSH 验收 9/9 PASS（2026-09-01）；**2026-09-02 续推 11/11 PASS**（复位后抓 boot；480×272 + touch + vghmi autostart）
 
 ### C — 剩余板端（父任务剩余闭环）
 
-- [ ] C1 目视裁剪首页；扫描开关默认关（代码默认关；待 LCD 目视确认）
+- [x] C1 目视裁剪首页；扫描开关默认关（代码默认关；**2026-09-09** NSH：冷启动无 `vg_bus_scan` / `vghmi scan`）
 - [x] C2 探查 ON → scan @9600 → ≥1 从站（用户板测：扫描能完成并出列表）
 - [x] C3 confirm → `vgcfg dump` / `points.json`（二次确认 high；落盘仅在确认后）
-- [ ] C4 首页真实从站（仅 confirm 成功后 import；待目视）
+- [x] C4 首页真实从站（冷启动读 `points.json`；**2026-09-09** `vghmi: home fleet n=32` + `hmi_fleet.txt`）
 - [x] C5 报告页 empty 态（NSH reports 缺失=empty；UI 有 empty 文案）
 - [x] C6 告警页「AI 推测」（首页「告警」入口 + 顶栏常驻；CJK「推」已补）
 - [x] C7 验收脚本扩展 NSH 对照（11/11 PASS）

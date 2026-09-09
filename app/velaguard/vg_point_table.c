@@ -349,3 +349,132 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
   printf("vgdiscover: applied %d points → %s\n", sum->n_points, points_path);
   return 0;
 }
+
+static int append_unique_addr(uint8_t *addrs, int *n, int max, unsigned v)
+{
+  int i;
+
+  if (v < 1 || v > 247 || *n >= max)
+    {
+      return 0;
+    }
+
+  for (i = 0; i < *n; i++)
+    {
+      if (addrs[i] == (uint8_t)v)
+        {
+          return 0;
+        }
+    }
+
+  addrs[(*n)++] = (uint8_t)v;
+  return 1;
+}
+
+static int parse_hits_array(FAR const char *json, uint8_t *addrs, int max)
+{
+  FAR const char *hits;
+  FAR const char *p;
+  char *end;
+  int n = 0;
+
+  hits = strstr(json, "\"hits\":");
+  if (hits == NULL)
+    {
+      return 0;
+    }
+
+  p = strchr(hits, '[');
+  if (p == NULL)
+    {
+      return 0;
+    }
+
+  p++;
+  while (*p != '\0' && *p != ']' && n < max)
+    {
+      while (*p == ' ' || *p == '\t' || *p == ',' || *p == '\n' || *p == '\r')
+        {
+          p++;
+        }
+
+      if (*p == ']' || *p == '\0')
+        {
+          break;
+        }
+
+      if (*p >= '0' && *p <= '9')
+        {
+          unsigned v = (unsigned)strtoul(p, &end, 10);
+          if (end == p)
+            {
+              break;
+            }
+
+          append_unique_addr(addrs, &n, max, v);
+          p = end;
+        }
+      else
+        {
+          p++;
+        }
+    }
+
+  return n;
+}
+
+static int parse_point_addrs(FAR const char *json, uint8_t *addrs, int max)
+{
+  FAR const char *p = json;
+  int n = 0;
+
+  while ((p = strstr(p, "\"addr\":")) != NULL && n < max)
+    {
+      char *end;
+      unsigned v;
+
+      p += 7;
+      v = (unsigned)strtoul(p, &end, 10);
+      if (end == p)
+        {
+          p++;
+          continue;
+        }
+
+      append_unique_addr(addrs, &n, max, v);
+      p = end;
+    }
+
+  return n;
+}
+
+int vg_point_table_read_slaves(FAR const char *path, uint8_t *addrs, int max)
+{
+  FILE *fp;
+  char buf[4096];
+  size_t nread;
+  int n;
+
+  if (path == NULL || path[0] == '\0' || addrs == NULL || max <= 0)
+    {
+      return -EINVAL;
+    }
+
+  fp = fopen(path, "r");
+  if (fp == NULL)
+    {
+      return -errno;
+    }
+
+  nread = fread(buf, 1, sizeof(buf) - 1, fp);
+  fclose(fp);
+  buf[nread] = '\0';
+
+  n = parse_hits_array(buf, addrs, max);
+  if (n <= 0)
+    {
+      n = parse_point_addrs(buf, addrs, max);
+    }
+
+  return n;
+}
