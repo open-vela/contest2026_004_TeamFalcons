@@ -19,7 +19,7 @@
  * Trend page is stage-2 / deferred. */
 #ifdef VG_HMI_BOARD
 #define VG_HISTORY_LEN 16
-#define VG_SENSOR_MAX 32
+#define VG_SENSOR_MAX 64
 #else
 #define VG_HISTORY_LEN 300
 #define VG_SENSOR_MAX 256
@@ -268,5 +268,7 @@ void vg_model_ota_retry(void);
 
 /* Discover / backend sync (Phase B) */
 void vg_model_import_discover_slaves(const vg_ui_slave_t * slaves, int n);
+void vg_model_import_mthings(void);
+bool vg_model_set_live(uint16_t idx, float value, bool online);
 
 #endif

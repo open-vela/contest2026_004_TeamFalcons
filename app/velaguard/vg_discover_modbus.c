@@ -248,6 +248,54 @@ int vg_discover_test_read(FAR const char *devpath, int baud,
   return (err == NMBS_ERROR_NONE) ? 0 : -EIO;
 }
 
+int vg_discover_poll_holding(FAR const char *devpath, int baud,
+                            const uint8_t *addr, const uint16_t *reg,
+                            uint16_t *raw, uint8_t *ok_out, int n,
+                            int inter_ms)
+{
+  struct vg_disc_nmbs s;
+  int i;
+
+  (void)baud;
+
+  if (devpath == NULL || addr == NULL || reg == NULL ||
+      raw == NULL || ok_out == NULL || n <= 0)
+    {
+      return -EINVAL;
+    }
+
+  if (vg_disc_nmbs_open(&s, devpath) != 0)
+    {
+      return -errno;
+    }
+
+  for (i = 0; i < n; i++)
+    {
+      nmbs_error err;
+
+      raw[i] = 0;
+      ok_out[i] = 0;
+      if (addr[i] == 0)
+        {
+          continue;
+        }
+
+      err = vg_disc_read_holding(&s, addr[i], reg[i], 1, &raw[i]);
+      if (err == NMBS_ERROR_NONE)
+        {
+          ok_out[i] = 1;
+        }
+
+      if (inter_ms > 0 && i + 1 < n)
+        {
+          usleep((useconds_t)inter_ms * 1000);
+        }
+    }
+
+  vg_disc_nmbs_close(&s);
+  return 0;
+}
+
 #define VG_DISC_RETRY_INTER_MS 100
 
 static bool vg_disc_hit_has(FAR const struct vg_discover_summary *sum,

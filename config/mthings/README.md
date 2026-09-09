@@ -35,7 +35,7 @@ python3 scripts/export_velaguard_modbus_slave.py   # WSL 或 Git Bash
 
 | 项 | 值 |
 |----|-----|
-| 串口 | **COM6**（PC USB-RS485）↔ 板 `/dev/rs485` |
+| 串口 | **COM4**（PC USB-RS485，与 `velaguard.mthings` 一致）↔ 板 `/dev/rs485` |
 | 波特率 | **9600** |
 | 格式 | **8N1**（Parity=0, StopBit=0, DataBit=0） |
 | 从站 | **1–32**（MThings 或 Modbus Slave mock，**二选一**，勿双开） |

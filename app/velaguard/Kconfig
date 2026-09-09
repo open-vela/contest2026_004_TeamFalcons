@@ -66,7 +66,7 @@ if VG_NET_FAILOVER
 
 config VG_WIFI_SSID
 	string "ESP-01S Wi-Fi SSID (hot-standby join)"
-	default "ASUS"
+	default "19y"
 	---help---
 		Default AP SSID loaded into RAM at boot. Overridable at runtime
 		via "vgnet wifi <ssid> <psk>".

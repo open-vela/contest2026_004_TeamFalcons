@@ -15,6 +15,7 @@
 #include <lvgl/lvgl.h>
 #include "app/vg_app.h"
 #include "model/vg_model.h"
+#include "model/vg_ui_backend.h"
 
 #ifdef CONFIG_VG_HMI_DISCOVER
 #include "vg_discover.h"
@@ -164,6 +165,7 @@ int main(int argc, char *argv[])
       fclose(fp);
     }
   }
+  vg_ui_backend_acq_start();
 
   while (1)
     {

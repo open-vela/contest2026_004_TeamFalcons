@@ -99,3 +99,12 @@ void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max)
         *addr_max = 32;
     }
 }
+
+void vg_ui_backend_acq_start(void)
+{
+}
+
+bool vg_ui_backend_apply_live(void)
+{
+    return false;
+}

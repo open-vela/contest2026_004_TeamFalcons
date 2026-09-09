@@ -251,6 +251,9 @@ rm -f "$STAGE_DIR/nuttx.hex" "$STAGE_DIR/nuttx.bin" "$STAGE_DIR/nuttx.elf"
 
 if [ "$MODE" = "--clean" ] || ! expect_dev_config; then
   echo "[build] 重新配置 ${DEFCONFIG} 预设（distclean）..."
+  # PREFIX objects live in the contest tree; nuttx distclean does not always
+  # rebuild them when only .config changes (stale velaguard.o skips HMI autostart).
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
   "$NUTTX_ROOT/tools/configure.sh" -E -e "stm32h750b-dk:${DEFCONFIG}"
 fi
 

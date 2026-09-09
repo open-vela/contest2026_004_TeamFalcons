@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <MThings>
 	<PORT_LIST>
-		<COM Name="COM6" Remarks="vgrs485 / VelaGuard RS485" Baund="9600" Parity="0" StopBit="0" DataBit="0" FlowCtrl="0" DTR="0" TransMode="0" BreakTime="10" DeviceType="2" Configured="1">
+		<COM Name="COM4" Remarks="vgrs485 / VelaGuard RS485" Baund="9600" Parity="0" StopBit="0" DataBit="0" FlowCtrl="0" DTR="0" TransMode="0" BreakTime="10" DeviceType="2" Configured="1">
 			<ProtocolPara CharType="0" />
 		</COM>
 	</PORT_LIST>
@@ -232,7 +232,7 @@
 	<DEVICE_LIST>
 		<DEVICE ID="1" Name="[S]温湿度-导轨V1.5" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="1" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -259,7 +259,7 @@
 		</DEVICE>
 		<DEVICE ID="2" Name="[S]水浸-V1.1" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="2" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -289,7 +289,7 @@
 		</DEVICE>
 		<DEVICE ID="3" Name="[S]PT100-FTX458" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="温度" Addr="3" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="温度" />
@@ -332,7 +332,7 @@
 		</DEVICE>
 		<DEVICE ID="4" Name="[S]烟雾-SD100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="消防" Addr="4" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="消防" />
@@ -351,7 +351,7 @@
 		</DEVICE>
 		<DEVICE ID="5" Name="[S]CO2-MH410" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="5" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -370,7 +370,7 @@
 		</DEVICE>
 		<DEVICE ID="6" Name="[S]PM2.5-AQ100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="6" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -397,7 +397,7 @@
 		</DEVICE>
 		<DEVICE ID="7" Name="[S]光照-LS200" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="7" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -416,7 +416,7 @@
 		</DEVICE>
 		<DEVICE ID="8" Name="[S]噪声-NS300" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="8" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -435,7 +435,7 @@
 		</DEVICE>
 		<DEVICE ID="9" Name="[S]气压-BP100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="9" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -454,7 +454,7 @@
 		</DEVICE>
 		<DEVICE ID="10" Name="[S]风速-WS500" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="气象" Addr="10" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="气象" />
@@ -481,7 +481,7 @@
 		</DEVICE>
 		<DEVICE ID="11" Name="[S]液位-LT400" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="过程" Addr="11" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="过程" />
@@ -500,7 +500,7 @@
 		</DEVICE>
 		<DEVICE ID="12" Name="[S]流量-FM200" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="过程" Addr="12" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="过程" />
@@ -527,7 +527,7 @@
 		</DEVICE>
 		<DEVICE ID="13" Name="[S]压力-PT300" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="过程" Addr="13" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="过程" />
@@ -546,7 +546,7 @@
 		</DEVICE>
 		<DEVICE ID="14" Name="[S]电表-DTS666" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="能源" Addr="14" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="能源" />
@@ -573,7 +573,7 @@
 		</DEVICE>
 		<DEVICE ID="15" Name="[S]UPS-UP500" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="动力" Addr="15" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="动力" />
@@ -600,7 +600,7 @@
 		</DEVICE>
 		<DEVICE ID="16" Name="[S]门禁-AC100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="安防" Addr="16" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="安防" />
@@ -631,7 +631,7 @@
 		</DEVICE>
 		<DEVICE ID="17" Name="[S]人体-PIR200" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="安防" Addr="17" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="安防" />
@@ -653,7 +653,7 @@
 		</DEVICE>
 		<DEVICE ID="18" Name="[S]振动-VS100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="机械" Addr="18" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="机械" />
@@ -680,7 +680,7 @@
 		</DEVICE>
 		<DEVICE ID="19" Name="[S]SF6-SF600" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="电力" Addr="19" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="电力" />
@@ -699,7 +699,7 @@
 		</DEVICE>
 		<DEVICE ID="20" Name="[S]臭氧-O3M100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="20" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -718,7 +718,7 @@
 		</DEVICE>
 		<DEVICE ID="21" Name="[S]甲醛-HCHO50" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="21" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -737,7 +737,7 @@
 		</DEVICE>
 		<DEVICE ID="22" Name="[S]TVOC-VOC300" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="环境" Addr="22" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="环境" />
@@ -756,7 +756,7 @@
 		</DEVICE>
 		<DEVICE ID="23" Name="[S]继电器-RLY8" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="控制" Addr="23" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="控制" />
@@ -775,7 +775,7 @@
 		</DEVICE>
 		<DEVICE ID="24" Name="[S]DI采集-IO16" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="控制" Addr="24" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="控制" />
@@ -794,7 +794,7 @@
 		</DEVICE>
 		<DEVICE ID="25" Name="[S]AI采集-AI8" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="控制" Addr="25" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="控制" />
@@ -821,7 +821,7 @@
 		</DEVICE>
 		<DEVICE ID="26" Name="[S]变频器-VFD750" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="驱动" Addr="26" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="驱动" />
@@ -848,7 +848,7 @@
 		</DEVICE>
 		<DEVICE ID="27" Name="[S]软启动-SS100" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="驱动" Addr="27" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="驱动" />
@@ -879,7 +879,7 @@
 		</DEVICE>
 		<DEVICE ID="28" Name="[S]空调-ACU200" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="暖通" Addr="28" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="暖通" />
@@ -906,7 +906,7 @@
 		</DEVICE>
 		<DEVICE ID="29" Name="[S]柴发-DG500" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="动力" Addr="29" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="动力" />
@@ -933,7 +933,7 @@
 		</DEVICE>
 		<DEVICE ID="30" Name="[S]BMS-BMS48" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="储能" Addr="30" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="储能" />
@@ -960,7 +960,7 @@
 		</DEVICE>
 		<DEVICE ID="31" Name="[S]逆变器-PV1000" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="能源" Addr="31" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="能源" />
@@ -987,7 +987,7 @@
 		</DEVICE>
 		<DEVICE ID="32" Name="[S]变压器-TT200" DeviceType="2" BindMode="0" BindDeviceID="0" p_invl="1" btime="0" BathReadMode="0" cGp="电力" Addr="32" mr_reg="125" mr_bit="2000" AddrUIMode="0" CRCByteOder="1" BlockBitOder="0" AddrOffset="0" PackWay="1" BitGap="0" RegGap="5" OneReg10="0" OneCoil0F="0" BCast1="0" BCast2="0" IsBCDevice="0">
 			<PORTS>
-				<port Name="COM6" />
+				<port Name="COM4" />
 			</PORTS>
 			<GROUPS>
 				<group Name="电力" />

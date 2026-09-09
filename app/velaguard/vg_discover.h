@@ -92,6 +92,12 @@ int vg_discover_test_read(FAR const char *devpath, int baud,
                           uint8_t addr, uint16_t reg, uint16_t qty,
                           FAR uint16_t *out);
 
+/* One open, then FC03 qty=1 for each (addr,reg). ok_out[i]=1 on success. */
+int vg_discover_poll_holding(FAR const char *devpath, int baud,
+                            const uint8_t *addr, const uint16_t *reg,
+                            uint16_t *raw, uint8_t *ok_out, int n,
+                            int inter_ms);
+
 int vg_discover_state_save(FAR const struct vg_discover_summary *sum,
                            FAR const char *path);
 

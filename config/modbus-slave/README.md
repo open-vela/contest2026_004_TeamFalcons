@@ -44,7 +44,22 @@ cd C:\...\contest2026_004_TeamFalcons
 - **addr=2 水浸**：qty=17，首点在 **reg2**（与扫描探针一致）
 - **addr=3–32**：qty 见 CSV，首点均在 **reg0**
 
-输出默认目录：`%USERPROFILE%\Documents\mthings\velaguard_slaveNN.mbs`。
+输出默认目录：`%USERPROFILE%\Documents\mthings\NN_<传感器名>.mbs`
+（例如 `01_温湿度-导轨V1.5.mbs`；名称来自 `velaguard.mthings` / CSV）。
+
+一键打开 32 个窗口（推荐）：
+
+```powershell
+.\scripts\open_velaguard_mbslaves.ps1
+# 或资源管理器双击：
+#   %USERPROFILE%\Documents\mthings\open_velaguard_mbslaves.cmd
+```
+
+连接总线时：
+
+```powershell
+.\scripts\open_velaguard_mbslaves.ps1 -OpenConnection -KeepOpenSeconds 3600
+```
 
 ### 手动接线（与 MThings 相同）
 

@@ -1,5 +1,6 @@
 #include "vg_model.h"
 #include "vg_ui_backend.h"
+#include "vg_mthings_points.h"
 #include "lvgl/lvgl.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -1145,7 +1146,8 @@ void vg_model_init(void)
     seed_base_logs();
     apply_scenario(VG_SCENARIO_NORMAL);
 #ifdef VG_HMI_BOARD
-    {
+    vg_model_import_mthings();
+    if(s_sensor_n == 0) {
         const vg_ui_backend_t * be = vg_ui_backend_get();
         vg_ui_slave_t slaves[VG_SENSOR_MAX];
         int n;
@@ -1267,6 +1269,7 @@ void vg_model_off_change(vg_model_change_cb_t cb, void * user)
 void vg_model_tick(void)
 {
     uint16_t i;
+    bool dirty = false;
     s_tick++;
 #ifndef VG_HMI_BOARD
     for(i = 0; i < s_sensor_n; i++) {
@@ -1276,16 +1279,20 @@ void vg_model_tick(void)
             s_sensors[i].age_sec = 1;
         }
     }
+    dirty = true;
 #else
-    /* Board: discover-only until net collector feeds live reads (no mock wiggle). */
+    dirty = vg_ui_backend_apply_live();
     (void)i;
 #endif
     if(s_alarm.active) {
         const vg_sensor_t * p = vg_model_get_sensor(s_alarm.sensor_id);
         if(p) s_alarm.value = p->value;
         s_alarm.duration_sec++;
+        dirty = true;
     }
-    notify_all();
+    if(dirty) {
+        notify_all();
+    }
 }
 
 const char * vg_severity_label_zh(vg_severity_t sev)
@@ -1430,4 +1437,104 @@ void vg_model_import_discover_slaves(const vg_ui_slave_t * slaves, int n)
 
     rebuild_filter();
     notify_all();
+}
+
+void vg_model_import_mthings(void)
+{
+    int i;
+    int n = vg_mthings_point_count;
+
+    if(n <= 0) {
+        return;
+    }
+    if(n > VG_SENSOR_MAX) {
+        n = VG_SENSOR_MAX;
+    }
+
+    s_sensor_n = (uint16_t)n;
+    for(i = 0; i < n; i++) {
+        vg_sensor_t * s = &s_sensors[i];
+        const vg_mthings_point_t * p = &vg_mthings_points[i];
+
+        memset(s, 0, sizeof(*s));
+        lv_snprintf(s->id, sizeof(s->id), "p%02u_%u",
+                    (unsigned)p->addr, (unsigned)p->reg);
+        lv_snprintf(s->name, sizeof(s->name), "%u·%s",
+                    (unsigned)p->addr, p->name);
+        strncpy(s->type, p->dev, sizeof(s->type) - 1);
+        strncpy(s->unit, p->unit, sizeof(s->unit) - 1);
+        lv_snprintf(s->formula, sizeof(s->formula), "R%u", (unsigned)p->reg);
+        s->function_code = 3;
+        s->length = 1;
+        s->data_format = p->is_signed ? VG_SENSOR_FMT_INT16 : VG_SENSOR_FMT_UINT16;
+        s->word_order = VG_SENSOR_ORDER_ABCD;
+        s->period_ms = 1000;
+        s->reg_addr = (int32_t)p->reg;
+        s->slave_addr = p->addr;
+        s->quality_pct = 0;
+        s->online = false;
+        s->age_sec = 0;
+        s->severity = VG_SEV_OFFLINE;
+        s->value = 0.0f;
+        s->base_value = 0.0f;
+        s->history_len = 0;
+        s->thr_low = 0;
+        s->thr_warn = 0;
+        s->thr_crit = 0;
+    }
+
+    if(s_selected_id[0] == '\0' && s_sensor_n > 0) {
+        strncpy(s_selected_id, s_sensors[0].id, sizeof(s_selected_id) - 1);
+    }
+
+#ifdef VG_HMI_BOARD
+    s_net.acq_ok = true;
+#endif
+
+    rebuild_filter();
+    notify_all();
+}
+
+bool vg_model_set_live(uint16_t idx, float value, bool online)
+{
+    vg_sensor_t * s;
+
+    if(idx >= s_sensor_n) {
+        return false;
+    }
+
+    s = &s_sensors[idx];
+    if(s->online == online) {
+        if(!online) {
+            return false;
+        }
+        if(s->value == value) {
+            return false;
+        }
+    }
+
+    s->online = online;
+    if(online) {
+        s->value = value;
+        s->base_value = value;
+        s->age_sec = 1;
+        s->quality_pct = 95;
+        s->severity = VG_SEV_OK;
+        if(s->history_len < VG_HISTORY_LEN) {
+            s->history[s->history_len++] = value;
+        }
+        else {
+            memmove(&s->history[0], &s->history[1],
+                    (VG_HISTORY_LEN - 1) * sizeof(float));
+            s->history[VG_HISTORY_LEN - 1] = value;
+        }
+    }
+    else {
+        if(s->age_sec < 100000) {
+            s->age_sec++;
+        }
+        s->quality_pct = 0;
+        s->severity = VG_SEV_OFFLINE;
+    }
+    return true;
 }

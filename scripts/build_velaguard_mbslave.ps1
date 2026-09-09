@@ -6,7 +6,8 @@
 #   .\scripts\build_velaguard_mbslave.ps1 -OpenConnection -KeepOpen
 #   .\scripts\build_velaguard_mbslave.ps1 -OpenConnection -KeepOpenSeconds 3600
 #
-# Output: %USERPROFILE%\Documents\mthings\velaguard_slaveNN.mbs
+# Output: %USERPROFILE%\Documents\mthings\NN_<sensor>.mbs
+#   e.g. 01_温湿度-导轨V1.5.mbs  (names from velaguard.mthings / CSV)
 
 param(
   [int]$ComPort = 6,
@@ -21,6 +22,17 @@ param(
 $ErrorActionPreference = "Stop"
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $csvPath = Join-Path $repoRoot "config\modbus-slave\velaguard_slaves.csv"
+
+function Get-SafeSensorName([string]$Name) {
+  $n = $Name -replace '^\[S\]', ''
+  $n = $n.Trim()
+  foreach ($c in @('<', '>', ':', '"', '/', '\', '|', '?', '*')) {
+    $n = $n.Replace($c, '_')
+  }
+  $n = $n -replace '\s+', ''
+  if ([string]::IsNullOrWhiteSpace($n)) { $n = 'sensor' }
+  return $n
+}
 
 if (-not (Test-Path $csvPath)) {
   throw "Missing $csvPath — run export from velaguard.mthings first."
@@ -51,7 +63,12 @@ foreach ($s in $slaves) {
   $addr = [int]$s.addr
   $qty = [int]$s.holding_qty
   $name = $s.name
-  $mbs = Join-Path $OutDir ("velaguard_slave{0:D2}.mbs" -f $addr)
+  $mbs = Join-Path $OutDir ("{0:D2}_{1}.mbs" -f $addr, (Get-SafeSensorName $name))
+  # Remove legacy numbered name if present so the folder stays tidy.
+  $legacy = Join-Path $OutDir ("velaguard_slave{0:D2}.mbs" -f $addr)
+  if ((Test-Path $legacy) -and ($legacy -ne $mbs)) {
+    Remove-Item -Force $legacy
+  }
 
   $doc = New-Object -ComObject Mbslave.Document
   $ok = $doc.SetupHoldingRegisters($addr, 0, $qty)
@@ -99,7 +116,7 @@ Write-Output ""
 Write-Output "Next steps:"
 Write-Output "  1. Close MThings (release COM$ComPort)"
 Write-Output "  2. Modbus Slave: Connection -> Serial COM$ComPort, $Baud 8N1, Parity=None"
-Write-Output "  3. File -> Open -> pick all velaguard_slave01..32.mbs (32 windows)"
+Write-Output "  3. Open all: .\scripts\open_velaguard_mbslaves.ps1   (or double-click open_velaguard_mbslaves.cmd)"
 Write-Output "  4. File -> Save Workspace -> $msw  (one-time, reuse later)"
 Write-Output "  5. Connection -> Connect"
 Write-Output ""

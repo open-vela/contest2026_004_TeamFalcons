@@ -103,6 +103,26 @@ try {
     Start-Sleep -Milliseconds 150
   }
   Assert-Match "C4 home fleet log" $boot "vghmi: home fleet n="
+  Assert-Match "C4 mthings fleet n=52" $boot "vghmi: home fleet n=52"
+  Assert-Match "acq thread start" $boot "vghmi: acq start ok points=52"
+
+  $liveDeadline = (Get-Date).AddSeconds(70)
+  while ((Get-Date) -lt $liveDeadline -and $boot -notmatch "vghmi: live ok=[1-9]") {
+    if ($port.BytesToRead -gt 0) { $boot += $port.ReadExisting() }
+    Start-Sleep -Milliseconds 200
+  }
+  Assert-Match "live acq log" $boot "vghmi: live ok="
+  $liveOk = 0
+  if ($boot -match "(?s).*vghmi: live ok=(\d+)/(\d+)") {
+    $liveOk = [int]$Matches[1]
+  }
+  if ($liveOk -gt 0) {
+    Write-Host "[PASS] live Modbus reads (ok=$liveOk)"
+    $script:pass++
+  } else {
+    Write-Host "[FAIL] live Modbus reads (need mock slave on USB-RS485; ok=$liveOk)"
+    $script:fail++
+  }
 
   $help = Send-Serial $port "?" 8
   Assert-Match "vghmi in help" $help "vghmi"
@@ -142,7 +162,11 @@ try {
     $fleetN = [int]$Matches[1]
   }
 
-  if ($lspts -match "points.json" -and $lspts -notmatch "stat failed|No such file") {
+  if ($fleetN -eq 52) {
+    Write-Host "[PASS] C4 home fleet from velaguard.mthings (n=$fleetN)"
+    $script:pass++
+  }
+  elseif ($lspts -match "points.json" -and $lspts -notmatch "stat failed|No such file") {
     if ($fleetN -gt 0) {
       Write-Host "[PASS] C4 home fleet from points.json (n=$fleetN)"
       $script:pass++

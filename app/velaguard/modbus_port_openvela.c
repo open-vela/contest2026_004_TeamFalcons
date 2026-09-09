@@ -38,9 +38,12 @@ static int32_t vg_modbus_now_ms(void)
   return (int32_t)(ts.tv_sec * 1000L + ts.tv_nsec / 1000000L);
 }
 
-/* 9600 8N1：3.5 字符时间 ≈ 4ms。tcdrain 已等 TC；此处仅为 RTU 帧间隔。 */
+/* After TC the transceiver DIR falls; a short settle then drop RX junk
+ * (0xFF/FE glitches) before waiting for the slave.  Do not sit  several
+ * ms with DIR=RX without flushing: those bytes prepend onto the next PDU
+ * and look like a CRC error in Modbus Slave. */
 
-#define VG_MODBUS_RTU_GAP_US 5000
+#define VG_MODBUS_DIR_SETTLE_US 500
 
 static int32_t vg_modbus_port_read(uint8_t *buf, uint16_t count,
                                    int32_t byte_timeout_ms, void *arg)
@@ -226,7 +229,8 @@ static int32_t vg_modbus_port_write(const uint8_t *buf, uint16_t count,
       return -1;
     }
 
-  usleep(VG_MODBUS_RTU_GAP_US);
+  usleep(VG_MODBUS_DIR_SETTLE_US);
+  tcflush(port->fd, TCIFLUSH);
   return sent;
 }
 
@@ -262,6 +266,8 @@ static void vg_modbus_port_flush(nmbs_t *nmbs, void *arg)
           break;
         }
     }
+
+  tcflush(port->fd, TCIFLUSH);
 }
 
 /****************************************************************************

@@ -10,11 +10,14 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 
 #include "model/vg_ui_backend.h"
+#include "model/vg_mthings_points.h"
+#include "model/vg_model.h"
 #include "vg_discover.h"
 
 #ifndef CONFIG_VG_HMI_RS485_DEVPATH
@@ -428,6 +431,138 @@ static const vg_ui_backend_t s_board_backend = {
   .get_slaves            = board_get_slaves,
   .read_latest_report    = board_read_latest_report,
 };
+
+#define VG_LIVE_MAX 64
+
+static float g_live_v[VG_LIVE_MAX];
+static uint8_t g_live_on[VG_LIVE_MAX];
+static volatile int g_live_n;
+static volatile bool g_acq_started;
+
+static bool board_bus_busy(void)
+{
+  return g_scan_thread_active || g_scan_status == VG_SCAN_RUNNING ||
+         g_apply_thread_active || g_apply_status == VG_SCAN_RUNNING;
+}
+
+static FAR void *vg_hmi_acq_thread(FAR void *arg)
+{
+  static int live_ok_logs;
+  (void)arg;
+
+  for(;;) {
+    int i;
+    int n = vg_mthings_point_count;
+    int ok = 0;
+    float a1 = 0.0f;
+
+    if(n > VG_LIVE_MAX) {
+      n = VG_LIVE_MAX;
+    }
+
+    if(board_bus_busy()) {
+      usleep(200000);
+      continue;
+    }
+
+    {
+      uint8_t addrs[VG_LIVE_MAX];
+      uint16_t regs[VG_LIVE_MAX];
+      uint16_t raws[VG_LIVE_MAX];
+      uint8_t oks[VG_LIVE_MAX];
+      int rc;
+
+      for(i = 0; i < n; i++) {
+        addrs[i] = vg_mthings_points[i].addr;
+        regs[i] = vg_mthings_points[i].reg;
+      }
+
+      rc = vg_discover_poll_holding(vg_hmi_rs485_devpath(),
+                                    CONFIG_VG_HMI_DISCOVER_BAUD,
+                                    addrs, regs, raws, oks, n,
+                                    CONFIG_VG_HMI_DISCOVER_INTER_MS);
+      if(rc != 0) {
+        printf("vghmi: live open failed rc=%d\n", rc);
+        usleep(500000);
+        continue;
+      }
+
+      for(i = 0; i < n; i++) {
+        const vg_mthings_point_t *p = &vg_mthings_points[i];
+
+        if(oks[i]) {
+          float v = p->is_signed ? ((float)(int16_t)raws[i] * p->scale)
+                                 : ((float)raws[i] * p->scale);
+          g_live_v[i] = v;
+          g_live_on[i] = 1;
+          ok++;
+          if(p->addr == 1 && p->reg == 0) {
+            a1 = v;
+          }
+        }
+        else {
+          g_live_on[i] = 0;
+        }
+      }
+    }
+
+    g_live_n = n;
+    if(live_ok_logs < 3) {
+      printf("vghmi: live ok=%d/%d a1=%.1f\n", ok, n, (double)a1);
+      live_ok_logs++;
+    }
+    usleep(200000);
+  }
+
+  return NULL;
+}
+
+void vg_ui_backend_acq_start(void)
+{
+  pthread_t tid;
+  pthread_attr_t attr;
+
+  if(g_acq_started) {
+    return;
+  }
+
+  g_acq_started = true;
+  pthread_attr_init(&attr);
+  pthread_attr_setstacksize(&attr, VG_HMI_SCAN_STACKSIZE);
+  if(pthread_create(&tid, &attr, vg_hmi_acq_thread, NULL) != 0) {
+    pthread_attr_destroy(&attr);
+    g_acq_started = false;
+    printf("vghmi: acq start failed\n");
+    return;
+  }
+
+  pthread_attr_destroy(&attr);
+  pthread_detach(tid);
+  printf("vghmi: acq start ok points=%d\n", vg_mthings_point_count);
+}
+
+bool vg_ui_backend_apply_live(void)
+{
+  int i;
+  int n = g_live_n;
+  bool changed = false;
+
+  if(n <= 0) {
+    return false;
+  }
+
+  if(n > VG_LIVE_MAX) {
+    n = VG_LIVE_MAX;
+  }
+
+  for(i = 0; i < n; i++) {
+    if(vg_model_set_live((uint16_t)i, g_live_v[i], g_live_on[i] != 0)) {
+      changed = true;
+    }
+  }
+
+  return changed;
+}
 
 const vg_ui_backend_t *vg_ui_backend_get(void)
 {
