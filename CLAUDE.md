@@ -8,7 +8,7 @@ Before doing contest work in this repository, read:
 - `CONTEXT.md` — VelaGuard terminology
 - the current issue under `.scratch/velaguard-independent-edge-ai-gateway/issues/`
 
-Do not duplicate contest rules in this file. Build from the parent openvela workspace, keep contest deliverables inside `contest2026_004_TeamFalcons/`, and use the official log validator documented in `BOUNDARY.md`.
+Do not duplicate contest rules in this file. Build from the parent openvela workspace. Keep contest product code inside `contest2026_004_TeamFalcons/`. Edit `nuttx/` / `apps/` / MQTT-C in those checkouts (no contest patches); see `BOUNDARY.md` C2. Use the official log validator documented in `BOUNDARY.md`.
 
 ## Development workflow
 

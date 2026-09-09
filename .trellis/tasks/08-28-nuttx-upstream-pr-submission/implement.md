@@ -90,24 +90,9 @@ gh pr create --repo open-vela/nuttx --base dev-ai-contest-2026 \
 
 ## Phase 3 — 构建脚本迁移（可在 PR 待审期间并行）
 
-- [ ] **3.1** 在 contest 仓新建分支 `chore/drop-nuttx-patches`（或合入 learn_vela）
-- [ ] **3.2** 验证无 patch 构建：
-
-```bash
-# 临时注释 build.sh 中 apply_target_patches 调用后：
-bash scripts/build.sh min
-bash scripts/build.sh net
-```
-
-- [ ] **3.3** PR 合入后删除：
-
-```text
-scripts/openvela-*.patch
-scripts/apply-openvela-*-patch.sh
-```
-
-- [ ] **3.4** 更新 `docs/velaguard-bringup-known-issues.md`：patch 表 → PR 链接表
-- [ ] **3.5** 若 PR 未合入：README 写 pin fork 说明，保留 patch 至合入日
+- [x] **3.1–3.3** 2026-09-09：参赛仓已删除 `scripts/openvela-*.patch` 与 `apply-openvela-*-patch.sh`。公共仓改动在 nuttx/apps/MQTT-C 树上直改；`build.sh` 只跑 `ensure-upstream-velaguard-trees.sh` 校验。
+- [x] **3.4** `docs/velaguard-bringup-known-issues.md` / `BOUNDARY.md` C2 / `AGENTS.md` 已改为直改 + PR
+- [ ] **3.5** 若上游 PR 未合入：README 写 pin fork 说明（不再保留 patch）
 
 ## Phase 4 — 专属仓最终提交
 

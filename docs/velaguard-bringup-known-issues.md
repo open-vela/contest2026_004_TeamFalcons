@@ -1,9 +1,9 @@
 # VelaGuard 扩展板 Bring-up 已知问题与挂账修复
 
-> 状态：2026-08-18 更新。记录 ESP-01S/RS485 bring-up 过程中发现、已固化/未固化的修复项，
+> 状态：2026-09-09 更新。记录 ESP-01S/RS485 bring-up 过程中发现、已固化/未固化的修复项，
 > 以及 `velaguard-min` 最小固件预设的使用说明。
-> 仓库规则：nuttx 公共仓零改动，所有 nuttx 侧修改必须固化为
-> `scripts/` 下的 `.patch` + `apply-*.sh`（参照 `apply-openvela-qspi-patch.sh` 的幂等写法）。
+> 仓库规则：nuttx / apps / MQTT-C **在对应 git 树上直接修改**（VelaGuard feature 分支 + PR）。
+> **不要**再新增或 apply `scripts/openvela-*.patch`。下文若仍提到历史 patch 文件名，只作溯源，以树上源码为准。
 
 ## 1. TIM15 CH2 输出引脚编译守卫笔误（NuttX 上游驱动 bug）
 
@@ -13,9 +13,9 @@
 | 文件 | `nuttx/arch/arm/src/stm32h7/stm32_pwm.c`（约 1366 行） |
 | 原代码 | `#ifdef CONFIG_STM32H7_TIM12_CH2OUT`（笔误，应为 TIM15） |
 | 现象 | TIM15 通道 2 的引脚配置块（`PWM_TIM15_CH2CFG` = PE6/AF4）被错误的宏守卫整体裁掉，`channels[].out1.in_use=0`，驱动不配置 PE6 → 定时器照跑但引脚无方波 → 蜂鸣器不响（命令打印正常、示波器无波形） |
-| 已应用修复 | 守卫改为 `#ifdef CONFIG_STM32H7_TIM15_CH2OUT` |
+| 已应用修复 | 守卫改为 `#ifdef CONFIG_STM32H7_TIM15_CH2OUT`（直接改 nuttx 树） |
 | 验证 | D6(PE6) 见 2.7kHz 方波；`examples/pwm` 与 `vgpwm` 均正常发声 |
-| 固化 | `scripts/openvela-pwm-tim15-fix.patch` + `scripts/apply-openvela-pwm-tim15-patch.sh`（幂等，二次执行输出 "already applied"）；已核查 TIM1/2/3/4/5/8/12/13/14/16/17 的守卫与自身一致，仅此一处笔误 |
+| 固化 | `nuttx/arch/arm/src/stm32h7/stm32_pwm.c` TIM15 channel 2 块；不要再 apply patch |
 
 ## 2. velaguard-min 最小固件预设
 
@@ -32,14 +32,13 @@ tools/configure.sh -e stm32h750b-dk:velaguard-min   # 最小 bring-up
 tools/configure.sh -e stm32h750b-dk:lvgl            # 切回 UI 形态（后续任务）
 ```
 
-切换后需全量重编（`make -j$(nproc)`）。nuttx 侧交付物：
+nuttx 侧交付物（在 nuttx 树，不走 patch）：
 
 | 文件 | 作用 |
 |---|---|
-| `scripts/openvela-velaguard-min-defconfig.patch` | 新增 `boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-min/defconfig` |
-| `scripts/apply-openvela-velaguard-min-defconfig-patch.sh` | 幂等 apply（二次执行输出 "already applied"） |
-| `scripts/openvela-velaguard-board-pins.patch` + `apply-openvela-velaguard-board-pins-patch.sh` | 扩展板 pinmux / bringup / TIM15 PWM（USART2、RS485 DIR、ESP EN/RST；`build.sh` min/net 自动 apply） |
-| `scripts/openvela-pwm-tim15-fix.patch` + `apply-openvela-pwm-tim15-patch.sh` | TIM15 守卫笔误修复（见第 1 节） |
+| `nuttx/boards/.../stm32h750b-dk/configs/velaguard-min/defconfig` | min 预设 |
+| 扩展板 pinmux / bringup / TIM15 PWM | `board.h` / `stm32_bringup.c` / `stm32_pwm.c` |
+| TIM15 守卫笔误修复 | `arch/arm/src/stm32h7/stm32_pwm.c`（见第 1 节） |
 
 ### 2.2 日常入口与 Rebuild 复位
 
@@ -164,13 +163,13 @@ tools/configure.sh -e stm32h750b-dk:velaguard-min   # 最小 bring-up（无网�
 tools/configure.sh -e stm32h750b-dk:lvgl            # 上游 UI 形态（无网络）
 ```
 
-nuttx 侧交付物：
+nuttx 侧交付物（在树上，不走 patch）：
 
 | 文件 | 作用 |
 |---|---|
-| `scripts/openvela-velaguard-net-defconfig.patch` + `apply-openvela-velaguard-net-defconfig-patch.sh` | velaguard-net 预设（幂等 apply） |
-| 依赖：`apply-openvela-eth-mii-patch.sh`（eth MII/PHY 轮询 + netinit carrier/DHCP 重连） | 必须先应用 |
-| 依赖：`apply-openvela-velaguard-board-pins-patch.sh`（USART2 / RS485 DIR / ESP GPIO；缺则 `GPIO_USART2_*` 编译失败） | `build.sh net` 在 eth-mii 之后自动 apply |
+| `nuttx/boards/.../stm32h750b-dk/configs/velaguard-net/defconfig` | velaguard-net 预设 |
+| `BOARD_ETH_PHY_POLL`（`board.h` + ethernet 驱动） | MII/PHY 链路轮询 |
+| USART2 / RS485 DIR / ESP GPIO | `board.h` / `stm32_bringup.c` |
 
 ### 5.2 构建脚本多目标
 
@@ -239,13 +238,13 @@ vgmqtt -h 107.174.123.74 -p 1883 -w 30
 | ESP_AT_Lib | 不用（已归档 Arduino C++，与 `lesp_*` 同构） |
 | 不做 | 不把 ESP 做成 NuttX netdev / PPP / SLIP |
 
-nuttx / MQTT-C 侧交付物（contest 仓 patch，幂等 apply）：
+nuttx / apps / MQTT-C 侧交付物（在对应 git 树上，不走 patch）：
 
-| 文件 | 作用 |
+| 位置 | 作用 |
 |---|---|
-| `scripts/openvela-velaguard-net-esp8266.patch` + `apply-openvela-velaguard-net-esp8266-patch.sh` | `NETUTILS_ESP8266` ttyS1 115200 + `VG_NET_FAILOVER` / Wi-Fi 默认凭据（hunk 须在 net-defconfig 之后可 apply；损坏 hunk 会报 `corrupt patch`） |
-| `scripts/openvela-mqttc-pal-hook.patch` + `apply-openvela-mqttc-pal-hook-patch.sh` | MQTT-C pal 弱符号 hook：tagged `lesp` fd 走 `lesp_send/recv`，未注册时 `vgmqtt` 仍 POSIX |
-| `scripts/openvela-esp8266-lesp-compat.patch` + `apply-openvela-esp8266-lesp-compat-patch.sh` | `esp8266.c` 仍用 `LESP_*`，头文件已改成 `lespSSID_SIZE` / `lesp_eMODE_*`；缺这层映射则 `NETUTILS_ESP8266` 编不过；patch 内每一行新增宏须带 `+` 前缀 |
+| nuttx `velaguard-net` defconfig | `NETUTILS_ESP8266` ttyS1 115200 + `VG_NET_FAILOVER` |
+| MQTT-C `mqtt_pal.c` | pal 弱符号 hook：tagged `lesp` fd 走 `lesp_send/recv` |
+| apps `esp8266.c` | `LESP_*` → `lespSSID_SIZE` / `lesp_eMODE_*` 映射 |
 
 主机单测：`make -C app/velaguard/host_tests test`。物理拔线不是完成门禁。
 

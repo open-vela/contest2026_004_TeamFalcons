@@ -14,7 +14,7 @@ Flash 作为启动 stub 的完整链路。重点不是“执行哪条命令”�
 
 - [build.sh](../scripts/build.sh)
 - [flash.sh](../scripts/flash.sh) / [flash.ps1](../scripts/flash.ps1)
-- [openvela-qspi-boot-stm32h750b-dk.patch](../scripts/openvela-qspi-boot-stm32h750b-dk.patch)
+- nuttx 树：`boards/arm/stm32h7/stm32h750b-dk`（`qspi_flash.ld`、`CONFIG_STM32H750B_DK_QSPI_BOOT`）与 `arch/arm/src/stm32h7/stm32_mpuinit.c`
 - [stm32h750b_qspi_bootstub.c](../scripts/qspi_boot_stub/stm32h750b_qspi_bootstub.c)
 - [stm32h750b_qspi_bootstub.ld](../scripts/qspi_boot_stub/stm32h750b_qspi_bootstub.ld)
 - [windows_build_debug_setup.md](./windows_build_debug_setup.md)
@@ -189,25 +189,21 @@ scripts/build.sh
   → 复制 nuttx.{hex,bin,elf} 到 .debug
 ~~~
 
-### 4.1 QSPI 补丁做了什么
+### 4.1 QSPI 启动改动在 nuttx 树上
 
-apply-openvela-qspi-patch.sh 会把
-openvela-qspi-boot-stm32h750b-dk.patch 应用到当前 NuttX checkout。
-它会先检查反向补丁和关键标记，因此重复构建不会反复应用同一补丁。
+QSPI-XIP 不是参赛仓 patch，而是 nuttx 板级/架构源码（VelaGuard feature 分支）。`build.sh` 通过 `ensure-upstream-velaguard-trees.sh` **校验**这些标记已在树里，不再 `git apply`。
 
-补丁包含几类改动：
+树上包含：
 
-1. 在板级 Kconfig 增加 CONFIG_STM32H750B_DK_QSPI_BOOT；
-2. 在 Make.defs 和 CMakeLists 中根据该配置选择 qspi_flash.ld；
-3. 在 STM32H7 MPU 初始化中把 0x90000000 到 0x98000000
-   标记为可执行的 Flash 区域；
-4. 增加 qspi_flash.ld；
-5. 保留项目当前需要的 FT5X06 触摸能力补丁。
+1. 板级 Kconfig 的 `CONFIG_STM32H750B_DK_QSPI_BOOT`；
+2. Make.defs / CMakeLists 按该配置选择 `qspi_flash.ld`；
+3. STM32H7 MPU 把 `0x90000000`–`0x98000000` 标成可执行 Flash；
+4. `boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld`。
 
-如果补丁没有应用，可能出现两种典型问题：
+若树里没有这些改动，可能出现：
 
 - Kconfig 中没有 QSPI 选项；
-- 主镜像仍使用普通 flash.ld，链接地址落在 0x0800xxxx。
+- 主镜像仍使用普通 `flash.ld`，链接地址落在 `0x0800xxxx`。
 
 ### 4.2 Kconfig 如何切换链接脚本
 

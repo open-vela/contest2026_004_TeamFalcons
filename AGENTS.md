@@ -39,3 +39,17 @@ Official contest rules override every local document. Durable local boundary: `d
 Priority inside that pack: **schematic PDF / SchDoc > ST BSP under `bsp/` > ST UM / data brief**.
 
 Files whose names contain `unofficial` are working notes only — useful for search; **cross-check** against schematic and/or BSP before coding. Non-hardware work (app logic, MQTT, Agent prompts, docs-only) does not require opening this pack.
+
+## Public trees (nuttx / apps / MQTT-C)
+
+Edit the sibling openvela git checkouts **directly**. Do **not** create, apply, or keep using `scripts/openvela-*.patch` / `scripts/apply-openvela-*-patch.sh`.
+
+| Tree | Typical local branch | Belongs here |
+|------|----------------------|--------------|
+| `../nuttx` | `velaguard/*` | board pinmux, drivers, defconfig, LTDC/FT5x06 |
+| `../apps` | `velaguard/netinit-esp8266` | netinit / ESP8266 compat |
+| MQTT-C | `velaguard/mqtt-pal-hook` | pal send/recv hooks |
+
+Contest repo holds product firmware (`app/`, `gui/`, `scripts/build.sh`). `scripts/configs/*.defconfig` may be copied onto the nuttx board config at build time — that installs a tree file, it is not a patch.
+
+`build.sh` only **verifies** those trees already contain VelaGuard changes. Submit public-tree work by committing on that repo’s feature branch and opening a PR to `dev-ai-contest-2026`. Canonical text: `docs/agents/BOUNDARY.md` C2.

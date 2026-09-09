@@ -33,7 +33,7 @@ scripts/flash.ps1         # Cube CLI + HEX 校验（改名并收缩自 windows_f
 scripts/wsl_kill_openocd.sh
 scripts/wsl_gdb_launcher.sh
 scripts/qspi_boot_stub/build_bootstub.sh
-scripts/apply-openvela-*.sh   # 已有，build.sh 按目标调用
+# 不要 apply-openvela-*.sh：公共仓直改，build.sh 只校验树
 ```
 
 删除：`scripts/windows_build_openvela.ps1`。

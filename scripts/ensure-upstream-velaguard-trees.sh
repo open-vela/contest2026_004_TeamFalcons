@@ -105,6 +105,8 @@ nuttx_lvgl_hmi_defconfig_ready() {
     grep -Fq 'CONFIG_VG_BUS_DISCOVER=y' "$dc" &&
     grep -Fq 'CONFIG_STM32H7_LTDC=y' "$dc" &&
     grep -Fq 'CONFIG_INPUT_FT5X06=y' "$dc" &&
+    grep -Fq '# CONFIG_FT5X06_POLLMODE is not set' "$dc" &&
+    grep -Fq 'CONFIG_LV_DEF_REFR_PERIOD=16' "$dc" &&
     grep -Fq 'CONFIG_STM32H750B_DK_QSPI_BOOT=y' "$dc"
 }
 
@@ -155,8 +157,9 @@ nuttx_emmc_ready() {
 }
 
 nuttx_pwm_tim15_ready() {
-  grep -Fq 'CONFIG_STM32H7_TIM15_CH2OUT' \
-    "$NUTTX_ROOT/arch/arm/src/stm32h7/stm32_pwm.c"
+  grep -A6 'CONFIG_STM32H7_TIM15_CHANNEL2' \
+    "$NUTTX_ROOT/arch/arm/src/stm32h7/stm32_pwm.c" |
+    grep -Fq 'CONFIG_STM32H7_TIM15_CH2OUT'
 }
 
 nuttx_display_ready() {
@@ -167,7 +170,14 @@ nuttx_display_ready() {
 
 nuttx_touch_ready() {
   test -f "$BOARD/src/stm32_ft5x06.c" &&
-    grep -Fq 'FT5X06_FREQUENCY 100000' "$BOARD/src/stm32_ft5x06.c"
+    grep -Fq 'GPIO_INPUT|GPIO_PULLUP' "$BOARD/src/stm32h750b-dk.h" &&
+    grep -Fq 'stm32_gpiosetevent(GPIO_FT5X06_INT, false, true, true,' \
+      "$BOARD/src/stm32_ft5x06.c" &&
+    grep -Fq '<nuttx/spinlock.h>' "$BOARD/src/stm32_ft5x06.c" &&
+    grep -Fq 'FT5X06_G_MODE_INTERRUPT_TRIGGER' \
+      "$NUTTX_ROOT/drivers/input/ft5x06.c" &&
+    grep -Fq 'deltay < CONFIG_FT5X06_THRESHY' \
+      "$NUTTX_ROOT/drivers/input/ft5x06.c"
 }
 
 apps_netinit_ready() {
@@ -201,6 +211,8 @@ verify_nuttx() {
       nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
       nuttx_emmc_ready || missing+=("nuttx/SDMMC+eMMC bringup")
       nuttx_lvgl_hmi_defconfig_ready || missing+=("nuttx/velaguard-lvgl defconfig")
+      nuttx_display_ready || missing+=("nuttx/LTDC display acceleration")
+      nuttx_touch_ready || missing+=("nuttx/FT5x06 touch performance")
       ;;
     min)
       nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")
@@ -238,6 +250,8 @@ verify_nuttx() {
         nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
         nuttx_emmc_ready || missing+=("nuttx/SDMMC+eMMC bringup")
         nuttx_lvgl_hmi_defconfig_ready || missing+=("nuttx/velaguard-lvgl defconfig")
+        nuttx_display_ready || missing+=("nuttx/LTDC display acceleration")
+        nuttx_touch_ready || missing+=("nuttx/FT5x06 touch performance")
         ;;
       min)
         nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")

@@ -40,8 +40,13 @@ app/velaguard/host_tests/test_discover
 !.cursor/hooks.json
 !.cursor/hooks/
 !.cursor/hooks/**
+!.cursor/rules/
+!.cursor/rules/**
 !.cursor/skills/
 !.cursor/skills/**
+
+# Accidental apt downloads (do not submit)
+*.deb
 .grok/
 # .clangd is committed (portable include flags for all machines)
 

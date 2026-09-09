@@ -28,7 +28,7 @@ branch `dev-ai-contest-2026`.
 | `docs/windows_build_debug_setup.md` | Windows/WSL build-debug notes |
 | `docs/windows_vscode_coding_setup.md` | Remote-WSL IntelliSense / coding env |
 | `docs/learn/*babysitter*` | First-led learning guide |
-| `scripts/apply-openvela-*.sh` + patches | Offline reference; **do not apply** until needed |
+| `scripts/build.sh` + `ensure-upstream-velaguard-trees.sh` | Verify public trees; **do not apply patches** |
 | `scripts/windows_*.ps1` | Optional host tooling |
 | `scripts/prepare_wsl_intellisense.sh` | Generate NuttX headers for C/C++ IntelliSense |
 | `.vscode/*` (tracked subset) | Shared VS Code coding + scaffold build/flash tasks |

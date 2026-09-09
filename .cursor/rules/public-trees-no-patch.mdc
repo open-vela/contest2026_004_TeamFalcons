@@ -1,0 +1,11 @@
+---
+description: nuttx/apps 公共仓直改，禁止参赛仓 patch
+alwaysApply: true
+---
+
+# 公共仓直改（禁止 patch）
+
+- `nuttx/`、`apps/`、MQTT-C：在 openvela 工作区对应 git 树上**直接改**，提交到该仓 VelaGuard feature 分支，再 PR 到 `dev-ai-contest-2026`。
+- **禁止**新增或调用 `scripts/openvela-*.patch`、`scripts/apply-openvela-*-patch.sh`。旧补丁内容已经（或应当）在树上。
+- 参赛仓只放产品代码（`app/`、`gui/`、`scripts/build.sh` 等）。`build.sh` 只校验公共树，不 apply patch。
+- 与旧文档「公共仓零改动 / 必须固化为 patch」冲突时：以本规则和 `docs/agents/BOUNDARY.md` C2 现行条文为准。
