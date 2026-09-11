@@ -10,8 +10,9 @@ Canonical text (Chinese, commands and reply lines): `docs/velaguard-host-nsh-pro
 
 - Transport: ST-LINK VCP → NSH (`nsh>`), one LF-terminated command per line. Not RS485, not MQTT, not a framed binary protocol.
 - Two tables: committed `/data/velaguard/config/points.json` (live poll + HMI + alarms); candidate `/data/velaguard/discover/point_table_candidate.json` (`add` / `set` / `del` / `test` only).
-- Verbs: `list`, `add`, `set`, `del`, `test`, `apply --confirm`, `abort`. `apply` without `--confirm` must `ERR code=need_confirm` (exit 1), not a successful dry-run. `apply --confirm` with an existing empty candidate file must write an empty committed table (`OK n=0`); missing candidate file still `no_candidate`.
-- Scripts parse only `vgpoint: OK`, `vgpoint: ERR`, `vgpoint: POINT`, `vgpoint: READ`. Wait for `nsh>` before the next command.
+- Verbs: `list`, `add`, `set`, `del`, `test`, `get`, `apply --confirm`, `abort`. `apply` without `--confirm` must `ERR code=need_confirm` (exit 1), not a successful dry-run. `apply --confirm` with an existing empty candidate file must write an empty committed table (`OK n=0`); missing candidate file still `no_candidate`.
+- `get` / `get <id>` reads the HMI poll snapshot (`/data/velaguard/live/values.txt`), not RS485. Must not call `vg_bus_try_lock`. Empty committed table → `OK n=0`; missing snapshot with a non-empty committed table → `ERR code=no_sample`. Stable line prefix is `vgpoint: VALUE` (not `READ`).
+- Scripts parse only `vgpoint: OK`, `vgpoint: ERR`, `vgpoint: POINT`, `vgpoint: READ`, `vgpoint: VALUE`. Wait for `nsh>` before the next command.
 - Host scripts must pause after `test` for a human, then send `apply --confirm` as its own line. Firmware must not auto-apply after `test`.
 - Agent must not run `vgpoint`, `vgdiscover apply`, or `vgcfg commit`.
 - Implementation (not this spec file): raise `CONFIG_NSH_LINELEN` to 128 and `CONFIG_NSH_MAXARGUMENTS` to 32 on `velaguard-lvgl`; command body max 120 bytes. A full `add` is ~26 tokens; NSH default 7 args is rejected before `vgpoint` runs.
@@ -30,4 +31,4 @@ Canonical text (Chinese, commands and reply lines): `docs/velaguard-host-nsh-pro
 ## Tests Required
 
 - Host: parse OK/ERR lines; candidate edits must not change the committed file until `--confirm`.
-- Board: COM3 script pause-then-apply; concurrent `test` vs HMI poll must not open RS485 twice.
+- Board: COM3 script pause-then-apply; concurrent `test` vs HMI poll must not open RS485 twice. Concurrent `get` vs HMI poll must not `bus_busy`.
