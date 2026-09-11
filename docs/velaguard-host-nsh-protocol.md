@@ -2,8 +2,8 @@
 
 | 项 | 内容 |
 |----|------|
-| 状态 | 规范；`vgpoint` 已实现。主键为 `id` + 显示名 `name`（`09-11-point-id-name-split`） |
-| 实现任务 | `09-11-point-id-name-split`（灌表骨架在 `09-10-host-nsh-vgpoint`；告警上屏仍在 `09-09-demo-threshold-alarm`） |
+| 状态 | 规范；`vgpoint` 已实现。主键为 `id` + 显示名 `name`；`get` 读采集快照（`09-11-host-point-live-query`） |
+| 实现任务 | `09-11-host-point-live-query`（主键拆分在 `09-11-point-id-name-split`；灌表骨架在 `09-10-host-nsh-vgpoint`） |
 | 固件 | 作品主线 `velaguard-lvgl` |
 | 依据 | BOUNDARY V5；现有 `vgdiscover` / `points.json` / COM3 验收脚本 |
 
@@ -13,9 +13,9 @@
 
 ## 1. 范围
 
-上位机经 ST-LINK 虚拟串口，向板载 NSH 按行发送文本命令，批量写入或修改运行时点表（从站地址、寄存器、倍率、比较方式、预警值、严重值）。
+上位机经 ST-LINK 虚拟串口，向板载 NSH 按行发送文本命令，批量写入或修改运行时点表（从站地址、寄存器、倍率、比较方式、预警值、严重值），并按 `id` 查询已确认点的当前值。
 
-本协议只覆盖**写点表**。不订阅实时曲线，不推送告警。告警仍由板端写入 `/data/velaguard/pending_alarm.txt`，屏幕自己读。
+写点表走候选/`apply`。查当前值走 `vgpoint get`，读 HMI 最近一次采集快照，不占用 RS485。不订阅实时曲线，不推送告警。告警仍由板端写入 `/data/velaguard/pending_alarm.txt`，屏幕自己读。
 
 RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发配置。
 
@@ -44,6 +44,7 @@ RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发�
 |----|------|------|
 | 已确认（committed） | `/data/velaguard/config/points.json` | 周期采集、首页、告警比较 |
 | 候选（candidate） | `/data/velaguard/discover/point_table_candidate.json` | 仅 `vgpoint` / `vgdiscover` 编辑与试读 |
+| 采集快照 | `/data/velaguard/live/values.txt` | 仅 `vgpoint get`；HMI 每轮采集结束后原子覆盖 |
 
 冷启动：等 `/data` 挂上后只加载已确认表。文件缺失或损坏则首页为空，**不**回退编译进镜像的 `vg_mthings_points[]`。
 
@@ -63,7 +64,7 @@ RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发�
 
 每个点两个身份字段：`id`（主键）和 `name`（显示名）。`id` 大小写敏感，同一张表里不得重复。`name` 可重复，可含中文。`addr`+`reg` 允许重复，不推荐。
 
-查找、去重、`set` / `del` / `test`、告警关联一律按 `id`。不得按 `name` 索引。旧字段 `tag` 不是身份字段：对象里只有 `tag`、没有合法 `id` 的点丢弃，不升成 `id`。
+查找、去重、`set` / `del` / `test` / `get`、告警关联一律按 `id`。不得按 `name` 索引。旧字段 `tag` 不是身份字段：对象里只有 `tag`、没有合法 `id` 的点丢弃，不升成 `id`。
 
 | 字段 | 类型 | 约束 | 缺省 |
 |------|------|------|------|
@@ -158,7 +159,22 @@ vgpoint test <id>
 
 某个点读失败：该点 `READ ... ok=0`，命令仍可 `OK`（部分失败）。候选为空则 `no_candidate`。全部点都读失败才 `test_fail`。
 
-### 5.6 `apply`
+### 5.6 `get`
+
+```text
+vgpoint get
+vgpoint get <id>
+```
+
+读已确认表对应的采集快照，不占用 RS485，不改候选或已确认 JSON。省略 id 则输出快照里全部点；给出 id 则只输出该点。
+
+已确认表为空（文件缺失或点数为 0）：`OK cmd=get table=committed n=0`，无 VALUE 行。带 id 且已确认表为空：`no_id`。
+
+已确认表非空但快照文件尚不存在（HMI 还未写出）：`no_sample`。给出的 id 不在快照中：`no_id`。全表 `get` 以快照为准，只列快照里的点。
+
+`get` 不得调用总线锁。现场读从站仍用 `vgmodbus` 或 `vgpoint test`。
+
+### 5.7 `apply`
 
 ```text
 vgpoint apply --confirm
@@ -171,7 +187,7 @@ vgpoint apply --confirm
 候选文件不存在：`no_candidate`（`msg=missing`）。
 候选文件存在但点数为 0：允许落盘，把已确认表写成空表，返回 `OK cmd=apply table=committed n=0`。这是「删光全部点再确认落盘」的合法结果。`test` 对空候选仍 `no_candidate`。
 
-### 5.7 `abort`
+### 5.8 `abort`
 
 ```text
 vgpoint abort
@@ -179,7 +195,7 @@ vgpoint abort
 
 丢掉候选文件（或覆盖成已确认表的副本）。采集不受影响。没有候选也可 `OK`（幂等）。
 
-### 5.8 确认步骤（9/20 口径）
+### 5.9 确认步骤（9/20 口径）
 
 确认在板端执行这条 `apply --confirm`。上位机脚本在 `test` 打出 `READ` 行之后**必须停下来等人**（PC 上回车，或人在 NSH 手打 `vgpoint apply --confirm`），再单独发 apply。
 
@@ -197,8 +213,9 @@ vgpoint abort
 - 失败收尾一行：`^vgpoint: ERR `
 - 列表：`^vgpoint: POINT `
 - 试读：`^vgpoint: READ `
+- 当前值：`^vgpoint: VALUE `
 
-每条命令**恰好一行** OK 或 ERR，放在其他 `POINT` / `READ` 之后、`nsh>` 之前。
+每条命令**恰好一行** OK 或 ERR，放在其他 `POINT` / `READ` / `VALUE` 之后、`nsh>` 之前。
 
 成功：
 
@@ -206,7 +223,7 @@ vgpoint abort
 vgpoint: OK cmd=<verb> table=candidate|committed n=<int>
 ```
 
-`n` 对 `list` / `add` / `set` / `del` / `abort` / `apply` 是该命令作用后那张表的点数；对 `test` 是 `ok=1` 的点数。`table`：改候选或只读候选时为 `candidate`；`list` 默认和 `apply` 成功后为 `committed`。
+`n` 对 `list` / `add` / `set` / `del` / `abort` / `apply` 是该命令作用后那张表的点数；对 `test` 是 `ok=1` 的点数；对 `get` 是输出的 VALUE 行数。`table`：改候选或只读候选时为 `candidate`；`list` 默认、`get` 和 `apply` 成功后为 `committed`。
 
 失败：
 
@@ -230,6 +247,15 @@ vgpoint: READ id=temp raw=401 value=40.1 ok=1
 
 `ok=0` 时 `raw=-`，`value=-`。
 
+当前值行（与 `READ` 分开；`get` 不读从站）：
+
+```text
+vgpoint: VALUE id=temp value=40.1 ok=1 unit=C age_ms=210
+vgpoint: VALUE id=flood value=- ok=0 unit=- age_ms=210
+```
+
+`ok=0` 时 `value=-`。`unit` 空则 `-`。`age_ms` 是整份快照的年龄（当前单调毫秒减写盘时的 `tick_ms`），同一条命令里各行相同。
+
 允许在稳定行之前打印人读日志（例如 `vgpoint: test bus=/dev/rs485`）。脚本不要依赖这些行。
 
 ---
@@ -242,8 +268,9 @@ vgpoint: READ id=temp raw=401 value=40.1 ok=1
 | `too_long` | 命令超过 120 字节 |
 | `full` | 候选已有 32 点还 `add` |
 | `dup_id` | `add` 的 id 已在候选中 |
-| `no_id` | `set` / `del` / 带 id 的 `test` 找不到该点 |
+| `no_id` | `set` / `del` / 带 id 的 `test` / 带 id 的 `get` 找不到该点 |
 | `no_candidate` | `test` 时候选为空或不存在；`apply` 时候选文件不存在 |
+| `no_sample` | `get` 时已确认表非空，但采集快照文件尚不存在 |
 | `need_confirm` | `apply` 未带 `--confirm` |
 | `bus_busy` | 试读时扫描或另一路总线操作占用 RS485 |
 | `test_fail` | `test` 时候选每个点都读失败 |
@@ -287,7 +314,7 @@ Agent 的 `run_shell` 白名单保持只读：`vgmodbus`、`vgstats`、`vgcfg du
 
 周期采集、总线扫描、`vgpoint test`、`vgdiscover test-read` 共用 `/dev/rs485`。任意时刻只允许一路占用。
 
-`test` 期间采集线程必须跳过本轮（忙则 `usleep` 再试）。`add` / `set` / `list` / `abort` 不占用总线。
+`test` 期间采集线程必须跳过本轮（忙则 `usleep` 再试）。`add` / `set` / `list` / `get` / `abort` 不占用总线。
 
 `apply` 写文件期间采集仍读内存里的旧已确认表，apply 成功后再切换指针或重新加载，避免读到半截 JSON。
 
