@@ -1,18 +1,7 @@
 {
   "schema_version": 1,
-  "bus": {
-    "device": "/dev/rs485",
-    "baud": 9600
-  },
-  "hits": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-  ],
+  "bus": {"device": "/dev/rs485", "baud": 9600},
+  "hits": [1, 2, 3, 4, 5, 6, 7],
   "points": [
     {
       "id": "temp",
@@ -129,7 +118,7 @@
     },
     {
       "id": "ups_soc",
-      "name": "UPS电量",
+      "name": "UPS电池",
       "addr": 5,
       "fc": 3,
       "reg": 1,
@@ -188,7 +177,7 @@
     },
     {
       "id": "energy_kwh",
-      "name": "电能",
+      "name": "正向电能",
       "addr": 6,
       "fc": 3,
       "reg": 2,
@@ -200,7 +189,7 @@
     },
     {
       "id": "door",
-      "name": "门禁",
+      "name": "门磁",
       "addr": 7,
       "fc": 3,
       "reg": 0,
