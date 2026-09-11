@@ -1,0 +1,5 @@
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "Canonical vgpoint commands; this task rewrites id/name fields and error tokens"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "Trellis contract: no second command table; alarms must not match by display name"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "JSON, NSH, RAM entry, runtime point, and HMI sensor must share id vs name"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "Agent still must not run vgpoint; identity split does not reopen config mutation"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Single product image velaguard-lvgl; do not raise NSH_LINELEN past 128"}

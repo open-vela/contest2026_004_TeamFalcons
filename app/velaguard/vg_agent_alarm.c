@@ -8,20 +8,23 @@
 #ifdef CONFIG_VG_AGENT_OPS
 
 #include "vg_agent_alarm.h"
-#include "vg_modbus_read.h"
 
+#ifndef CONFIG_VG_HMI
+#include "vg_modbus_read.h"
 #ifdef CONFIG_VG_FRAME_STATS
 #include "vg_frame_stats.h"
+#endif
+#include <pthread.h>
 #endif
 
 #include <errno.h>
 #include <fcntl.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
+#ifndef CONFIG_VG_HMI
 #ifndef CONFIG_VG_AGENT_ALARM_SLAVE
 #  define CONFIG_VG_AGENT_ALARM_SLAVE 1
 #endif
@@ -42,8 +45,9 @@
 #  define CONFIG_VG_AGENT_ALARM_OFFLINE_PCT 50
 #endif
 
-static volatile bool g_alarm_run;
+static volatile int g_alarm_run;
 static pthread_t g_alarm_tid;
+#endif
 
 static int ensure_reports_dir(void)
 {
@@ -75,6 +79,11 @@ static int write_pending(const char *body)
 {
   int fd;
 
+  if (body == NULL || body[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
   if (pending_exists())
     {
       return 0;
@@ -98,6 +107,12 @@ static int write_pending(const char *body)
   return 0;
 }
 
+int vg_pending_alarm_write(const char *body)
+{
+  return write_pending(body);
+}
+
+#ifndef CONFIG_VG_HMI
 static void check_offline(uint8_t slave)
 {
 #ifdef CONFIG_VG_FRAME_STATS
@@ -179,8 +194,17 @@ static void *alarm_thread(FAR void *arg)
   return NULL;
 }
 
+#endif /* !CONFIG_VG_HMI */
+
 int vg_agent_alarm_start(void)
 {
+#ifdef CONFIG_VG_HMI
+  /* HMI live path evaluates the committed table and writes pending.
+   * Do not start a second Modbus poller (slave 1 / hardcoded temp).
+   */
+  (void)ensure_reports_dir();
+  return 0;
+#else
   int ret;
 
   if (g_alarm_run)
@@ -198,6 +222,7 @@ int vg_agent_alarm_start(void)
     }
 
   return 0;
+#endif
 }
 
 #endif /* CONFIG_VG_AGENT_OPS */

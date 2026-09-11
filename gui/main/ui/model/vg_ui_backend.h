@@ -34,6 +34,7 @@ int vg_ui_backend_apply_last_result(void);
 void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max);
 void vg_ui_backend_acq_start(void);
 bool vg_ui_backend_apply_live(void);
+void vg_ui_backend_boot_points(void);
 
 #ifdef __cplusplus
 }

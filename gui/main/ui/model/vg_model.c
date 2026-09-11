@@ -2,6 +2,9 @@
 #include "vg_ui_backend.h"
 #include "vg_mthings_points.h"
 #include "lvgl/lvgl.h"
+#ifdef VG_HMI_BOARD
+#include "vg_alarm_eval.h"
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1146,19 +1149,7 @@ void vg_model_init(void)
     seed_base_logs();
     apply_scenario(VG_SCENARIO_NORMAL);
 #ifdef VG_HMI_BOARD
-    vg_model_import_mthings();
-    if(s_sensor_n == 0) {
-        const vg_ui_backend_t * be = vg_ui_backend_get();
-        vg_ui_slave_t slaves[VG_SENSOR_MAX];
-        int n;
-
-        if(be != NULL && be->get_slaves != NULL) {
-            n = be->get_slaves(slaves, VG_SENSOR_MAX);
-            if(n > 0) {
-                vg_model_import_discover_slaves(slaves, n);
-            }
-        }
-    }
+    vg_ui_backend_boot_points();
 #endif
 }
 
@@ -1495,31 +1486,151 @@ void vg_model_import_mthings(void)
     notify_all();
 }
 
+void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n)
+{
+    int i;
+
+    if(pts == NULL || n <= 0) {
+        s_sensor_n = 0;
+        s_selected_id[0] = '\0';
+        rebuild_filter();
+        notify_all();
+        return;
+    }
+
+    if(n > VG_SENSOR_MAX) {
+        n = VG_SENSOR_MAX;
+    }
+
+    s_sensor_n = (uint16_t)n;
+    for(i = 0; i < n; i++) {
+        vg_sensor_t * s = &s_sensors[i];
+        const vg_runtime_point_t * p = &pts[i];
+        int signed_v = (strcmp(p->dtype, "uint16") != 0);
+
+        memset(s, 0, sizeof(*s));
+        strncpy(s->id, p->id[0] ? p->id : "pt", sizeof(s->id) - 1);
+        strncpy(s->name,
+                p->name[0] ? p->name : (p->id[0] ? p->id : "pt"),
+                sizeof(s->name) - 1);
+        strncpy(s->type, "point", sizeof(s->type) - 1);
+        strncpy(s->unit, p->unit, sizeof(s->unit) - 1);
+        lv_snprintf(s->formula, sizeof(s->formula), "R%u", (unsigned)p->reg);
+        s->function_code = p->fc ? p->fc : 3;
+        s->length = 1;
+        s->data_format = signed_v ? VG_SENSOR_FMT_INT16 : VG_SENSOR_FMT_UINT16;
+        s->word_order = VG_SENSOR_ORDER_ABCD;
+        s->period_ms = 1000;
+        s->reg_addr = (int32_t)p->reg;
+        s->slave_addr = p->addr;
+        s->quality_pct = 0;
+        s->online = false;
+        s->age_sec = 0;
+        s->severity = VG_SEV_OFFLINE;
+        s->value = 0.0f;
+        s->base_value = 0.0f;
+        s->history_len = 0;
+        s->thr_low = 0;
+        s->thr_warn = p->has_warn ? p->warn : 0;
+        s->thr_crit = p->has_crit ? p->crit : 0;
+        strncpy(s->cmp, p->cmp, sizeof(s->cmp) - 1);
+        s->has_warn = p->has_warn;
+        s->has_crit = p->has_crit;
+        s->fail_n = (p->fail_n >= 1) ? p->fail_n : 3;
+        s->fail_streak = 0;
+    }
+
+    if(s_selected_id[0] == '\0' && s_sensor_n > 0) {
+        strncpy(s_selected_id, s_sensors[0].id, sizeof(s_selected_id) - 1);
+    }
+
+#ifdef VG_HMI_BOARD
+    s_net.acq_ok = true;
+#endif
+
+    rebuild_filter();
+    notify_all();
+}
+
 bool vg_model_set_live(uint16_t idx, float value, bool online)
 {
     vg_sensor_t * s;
+    bool changed = false;
 
     if(idx >= s_sensor_n) {
         return false;
     }
 
     s = &s_sensors[idx];
-    if(s->online == online) {
-        if(!online) {
-            return false;
-        }
-        if(s->value == value) {
-            return false;
-        }
-    }
-
-    s->online = online;
     if(online) {
+        if(s->fail_streak != 0) {
+            s->fail_streak = 0;
+            changed = true;
+        }
+        if(!s->online || s->value != value) {
+            changed = true;
+        }
+        s->online = true;
         s->value = value;
         s->base_value = value;
         s->age_sec = 1;
         s->quality_pct = 95;
+#ifdef VG_HMI_BOARD
+        s_net.acq_ok = true;
+        {
+            struct vg_alarm_rule rule;
+            enum vg_alarm_kind kind;
+            float thr = 0.0f;
+            vg_severity_t sev;
+            const char * title;
+            int rank;
+
+            memset(&rule, 0, sizeof(rule));
+            strncpy(rule.cmp, s->cmp, sizeof(rule.cmp) - 1);
+            rule.has_warn = s->has_warn;
+            rule.has_crit = s->has_crit;
+            rule.warn = s->thr_warn;
+            rule.crit = s->thr_crit;
+            rule.fail_n = s->fail_n;
+            kind = vg_alarm_eval(&rule, 1, 0, value, &thr);
+            if(kind == VG_ALARM_KIND_CRIT) {
+                sev = VG_SEV_CRIT;
+                title = "点表严重告警";
+            }
+            else if(kind == VG_ALARM_KIND_WARN) {
+                sev = VG_SEV_WARN;
+                title = "点表预警";
+            }
+            else {
+                sev = VG_SEV_OK;
+                title = NULL;
+            }
+            if(s->severity != sev) {
+                s->severity = sev;
+                changed = true;
+            }
+            rank = vg_alarm_kind_rank(kind);
+            if(title != NULL &&
+               (!s_alarm.active ||
+                strcmp(s_alarm.sensor_id, s->id) == 0 ||
+                rank > vg_alarm_kind_rank(
+                    s_alarm.severity == VG_SEV_CRIT ? VG_ALARM_KIND_CRIT :
+                    s_alarm.severity == VG_SEV_OFFLINE ? VG_ALARM_KIND_OFFLINE :
+                    s_alarm.severity == VG_SEV_WARN ? VG_ALARM_KIND_WARN :
+                    VG_ALARM_KIND_NONE))) {
+                char titled[VG_ALARM_TITLE_MAX];
+
+                lv_snprintf(titled, sizeof(titled), "%s %s", s->name, title);
+                set_alarm_from_sensor(s, sev, titled, thr,
+                                     s_alarm.active &&
+                                     strcmp(s_alarm.sensor_id, s->id) == 0 ?
+                                     s_alarm.duration_sec : 0);
+                changed = true;
+            }
+        }
+#else
         s->severity = VG_SEV_OK;
+#endif
         if(s->history_len < VG_HISTORY_LEN) {
             s->history[s->history_len++] = value;
         }
@@ -1530,11 +1641,62 @@ bool vg_model_set_live(uint16_t idx, float value, bool online)
         }
     }
     else {
+        uint8_t prev_streak = s->fail_streak;
+
+        if(s->fail_streak < 255) {
+            s->fail_streak++;
+        }
         if(s->age_sec < 100000) {
             s->age_sec++;
         }
         s->quality_pct = 0;
+#ifdef VG_HMI_BOARD
+        {
+            struct vg_alarm_rule rule;
+            enum vg_alarm_kind kind;
+            float thr = 0.0f;
+
+            memset(&rule, 0, sizeof(rule));
+            strncpy(rule.cmp, s->cmp, sizeof(rule.cmp) - 1);
+            rule.has_warn = s->has_warn;
+            rule.has_crit = s->has_crit;
+            rule.warn = s->thr_warn;
+            rule.crit = s->thr_crit;
+            rule.fail_n = s->fail_n;
+            kind = vg_alarm_eval(&rule, 0, s->fail_streak, s->value, &thr);
+            if(kind == VG_ALARM_KIND_OFFLINE) {
+                if(s->online || s->severity != VG_SEV_OFFLINE) {
+                    changed = true;
+                }
+                s->online = false;
+                s->severity = VG_SEV_OFFLINE;
+                if(!s_alarm.active ||
+                   strcmp(s_alarm.sensor_id, s->id) == 0 ||
+                   vg_alarm_kind_rank(VG_ALARM_KIND_OFFLINE) >
+                   vg_alarm_kind_rank(
+                       s_alarm.severity == VG_SEV_CRIT ? VG_ALARM_KIND_CRIT :
+                       s_alarm.severity == VG_SEV_OFFLINE ? VG_ALARM_KIND_OFFLINE :
+                       s_alarm.severity == VG_SEV_WARN ? VG_ALARM_KIND_WARN :
+                       VG_ALARM_KIND_NONE)) {
+                    char titled[VG_ALARM_TITLE_MAX];
+
+                    lv_snprintf(titled, sizeof(titled), "%s 离线", s->name);
+                    set_alarm_from_sensor(s, VG_SEV_OFFLINE, titled, 0.0f,
+                                         s_alarm.active &&
+                                         strcmp(s_alarm.sensor_id, s->id) == 0 ?
+                                         s_alarm.duration_sec : 0);
+                    changed = true;
+                }
+            }
+            else if(prev_streak == 0) {
+                changed = true;
+            }
+        }
+#else
+        s->online = false;
         s->severity = VG_SEV_OFFLINE;
+        changed = true;
+#endif
     }
-    return true;
+    return changed;
 }

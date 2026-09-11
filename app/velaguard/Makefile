@@ -55,8 +55,8 @@ CFLAGS += -DCONFIG_VG_AGENT_OPS=1
 endif
 
 ifeq ($(CONFIG_VG_BUS_DISCOVER),y)
-PROGNAME += vgdiscover
-MAINSRC  += vgdiscover.c
+PROGNAME += vgdiscover vgpoint
+MAINSRC  += vgdiscover.c vgpoint.c
 CSRCS    += vg_discover_modbus.c vg_point_table.c
 CFLAGS   += -DCONFIG_VG_BUS_DISCOVER=1
 endif
@@ -81,7 +81,7 @@ VG_UI_CSRCS     := $(foreach _d,$(VG_UI_SUBDIRS),$(wildcard $(VG_UI_DIR)/$(_d)/*
 VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/model/vg_ui_backend.c,$(VG_UI_CSRCS))
 
 CSRCS    += $(notdir $(VG_UI_CSRCS))
-CSRCS    += vg_ui_backend_board.c
+CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c
 VPATH    += $(foreach _d,$(VG_UI_SUBDIRS),:$(VG_UI_DIR)/$(_d))
 DEPPATH  += $(foreach _d,$(VG_UI_SUBDIRS),--dep-path $(VG_UI_DIR)/$(_d))
 
@@ -112,9 +112,11 @@ VG_STACK_DEFAULT := 4096
 VG_HMI_STACK := $(if $(CONFIG_VG_HMI_STACKSIZE),$(CONFIG_VG_HMI_STACKSIZE),49152)
 VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 
+# vgpoint list/add/test keep vg_discover_summary (~3K) on-stack; JSON read is
+# heap-allocated. 16K leaves room for fopen + nanomodbus on test.
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
-  $(if $(filter vgdiscover vgscan,$(p)),8192,$(VG_STACK_DEFAULT)))))
+  $(if $(filter vgdiscover vgscan vgpoint,$(p)),16384,$(VG_STACK_DEFAULT)))))
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 

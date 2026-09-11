@@ -20,6 +20,8 @@
 #define VG_DISCOVER_MAX_POINTS   32
 #define VG_DISCOVER_BLOCK_STEP   16
 #define VG_DISCOVER_PROBE_QTY    16
+#define VG_POINT_ID_MAX          24
+#define VG_POINT_NAME_MAX        48
 
 struct vg_scan_hit
 {
@@ -43,10 +45,17 @@ struct vg_point_entry
   uint8_t  fc;
   uint16_t reg;
   uint16_t qty;
-  char     tag[24];
+  char     id[VG_POINT_ID_MAX];
+  char     name[VG_POINT_NAME_MAX];
   char     dtype[16];
   float    scale;
   char     unit[8];
+  char     cmp[4];      /* ge / le / eq, or empty */
+  uint8_t  has_warn;
+  uint8_t  has_crit;
+  float    warn;
+  float    crit;
+  uint8_t  fail_n;      /* 1..20, default 3 */
 };
 
 struct vg_discover_summary
@@ -79,10 +88,40 @@ int vg_point_table_infer(FAR struct vg_discover_summary *sum);
 int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
                                    FAR const char *path);
 
+int vg_point_table_read(FAR struct vg_discover_summary *sum,
+                        FAR const char *path);
+
+int vg_point_table_find_id(FAR const struct vg_discover_summary *sum,
+                           FAR const char *id);
+
+int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,
+                                    FAR const char *cand_path,
+                                    FAR const char *committed_path);
+
 int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *points_path,
                          FAR const char *config_basedir,
                          bool confirm);
+
+int vg_bus_try_lock(void);
+void vg_bus_unlock(void);
+int vg_bus_is_locked(void);
+
+int vg_live_points_load(FAR const char *path);
+int vg_live_points_replace(FAR const struct vg_discover_summary *sum);
+uint32_t vg_live_points_gen(void);
+int vg_live_points_copy(FAR struct vg_discover_summary *out);
+
+int vg_point_validate_id(FAR const char *id);
+int vg_point_validate_name(FAR const char *name);
+int vg_point_cmdline_len(int argc, char *argv[]);
+int vg_point_format_point(FAR char *buf, size_t bufsz,
+                          FAR const struct vg_point_entry *p);
+int vg_point_format_ok(FAR char *buf, size_t bufsz,
+                       FAR const char *cmd, FAR const char *table, int n);
+int vg_point_format_err(FAR char *buf, size_t bufsz,
+                        FAR const char *cmd, FAR const char *code,
+                        FAR const char *msg);
 
 /* Unique slave addrs from a committed points.json (hits[] first, else
  * unique point "addr" fields). Returns count, 0 if missing/empty, <0 on I/O. */
@@ -96,6 +135,11 @@ int vg_discover_test_read(FAR const char *devpath, int baud,
 int vg_discover_poll_holding(FAR const char *devpath, int baud,
                             const uint8_t *addr, const uint16_t *reg,
                             uint16_t *raw, uint8_t *ok_out, int n,
+                            int inter_ms);
+
+int vg_discover_poll_points(FAR const char *devpath, int baud,
+                            FAR const struct vg_point_entry *pts, int n,
+                            FAR uint16_t *raw, FAR uint8_t *ok_out,
                             int inter_ms);
 
 int vg_discover_state_save(FAR const struct vg_discover_summary *sum,

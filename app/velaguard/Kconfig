@@ -146,6 +146,7 @@ config VG_BUS_DISCOVER
 	---help---
 		NSH tool vgdiscover: fixed-9600 address scan, register block probe,
 		candidate point table JSON, and apply to /data/velaguard/config.
+		NSH tool vgpoint: host serial add/set/test/apply --confirm.
 
 if VG_BUS_DISCOVER
 
@@ -247,6 +248,6 @@ endif
 
 config VG_HMI_REPORT_DIR
 	string "Agent daily report directory"
-	default "/data/agent/reports"
+	default "/data/velaguard/reports"
 
 endif

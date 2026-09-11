@@ -58,7 +58,7 @@ static int mock_read_report(char *body, size_t body_sz, char *path, size_t path_
         "最高温: 82.4 C @ 从站 3\n";
 
     if(path != NULL && path_sz > 0) {
-        lv_snprintf(path, path_sz, "/data/agent/reports/daily-20260830.md");
+        lv_snprintf(path, path_sz, "/data/velaguard/reports/daily-20260830.md");
     }
     if(body != NULL && body_sz > 0) {
         lv_snprintf(body, body_sz, "%s", mock_body);
@@ -107,4 +107,8 @@ void vg_ui_backend_acq_start(void)
 bool vg_ui_backend_apply_live(void)
 {
     return false;
+}
+
+void vg_ui_backend_boot_points(void)
+{
 }

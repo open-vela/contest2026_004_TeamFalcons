@@ -48,9 +48,9 @@ int main(void)
       {
         fputs("{\"schema_version\":1,\"bus\":{\"device\":\"/dev/rs485\","
               "\"baud\":9600},\"hits\":[3,7,3],\"points\":["
-              "{\"tag\":\"t1\",\"addr\":3,\"fc\":3,\"reg\":0,\"qty\":1,"
+              "{\"id\":\"t1\",\"addr\":3,\"fc\":3,\"reg\":0,\"qty\":1,"
               "\"dtype\":\"int16\",\"scale\":0.100,\"unit\":\"C\"},"
-              "{\"tag\":\"t2\",\"addr\":7,\"fc\":3,\"reg\":2,\"qty\":1,"
+              "{\"id\":\"t2\",\"addr\":7,\"fc\":3,\"reg\":2,\"qty\":1,"
               "\"dtype\":\"int16\",\"scale\":0.100,\"unit\":\"C\"}]}\n",
               fp);
         fclose(fp);
@@ -66,11 +66,11 @@ int main(void)
     if (fp != NULL)
       {
         fputs("{\"schema_version\":1,\"points\":["
-              "{\"tag\":\"a\",\"addr\":11,\"fc\":3,\"reg\":0,\"qty\":1,"
+              "{\"id\":\"a\",\"addr\":11,\"fc\":3,\"reg\":0,\"qty\":1,"
               "\"dtype\":\"int16\",\"scale\":0.100,\"unit\":\"C\"},"
-              "{\"tag\":\"b\",\"addr\":11,\"fc\":3,\"reg\":2,\"qty\":1,"
+              "{\"id\":\"b\",\"addr\":11,\"fc\":3,\"reg\":2,\"qty\":1,"
               "\"dtype\":\"int16\",\"scale\":0.100,\"unit\":\"C\"},"
-              "{\"tag\":\"c\",\"addr\":12,\"fc\":3,\"reg\":0,\"qty\":1,"
+              "{\"id\":\"c\",\"addr\":12,\"fc\":3,\"reg\":0,\"qty\":1,"
               "\"dtype\":\"int16\",\"scale\":0.100,\"unit\":\"C\"}]}\n",
               fp);
         fclose(fp);

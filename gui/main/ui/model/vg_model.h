@@ -82,6 +82,11 @@ typedef struct {
     float thr_warn;
     float thr_crit;
     float thr_low;
+    char cmp[4];
+    uint8_t has_warn;
+    uint8_t has_crit;
+    uint8_t fail_n;
+    uint8_t fail_streak;
     vg_severity_t severity;
     int32_t age_sec;
     int32_t period_ms;
@@ -269,6 +274,25 @@ void vg_model_ota_retry(void);
 /* Discover / backend sync (Phase B) */
 void vg_model_import_discover_slaves(const vg_ui_slave_t * slaves, int n);
 void vg_model_import_mthings(void);
+
+typedef struct {
+    char id[VG_SENSOR_ID_MAX];
+    char name[VG_SENSOR_NAME_MAX];
+    uint8_t addr;
+    uint8_t fc;
+    uint16_t reg;
+    char unit[8];
+    char dtype[16];
+    float scale;
+    char cmp[4];
+    uint8_t has_warn;
+    uint8_t has_crit;
+    float warn;
+    float crit;
+    uint8_t fail_n;
+} vg_runtime_point_t;
+
+void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n);
 bool vg_model_set_live(uint16_t idx, float value, bool online);
 
 #endif
