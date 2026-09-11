@@ -20,6 +20,8 @@ This directory contains guidelines for backend development. Fill in each file wi
 | [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
 | [Logging Guidelines](./logging-guidelines.md) | Structured logging, log levels | To fill |
 | [VelaGuard config store](./vg-config-store.md) | Dual-slot FAT commit/load (`seq`/CRC/`vgcfg`) | Active |
+| [Contest firmware mainline](./firmware-mainline.md) | One product image: `velaguard-lvgl` | Active |
+| [Host NSH vgpoint protocol](./host-nsh-protocol.md) | ST-LINK NSH point-table commands; canonical doc in `docs/` | Active |
 
 ---
 
