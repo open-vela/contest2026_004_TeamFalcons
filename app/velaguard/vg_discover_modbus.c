@@ -296,6 +296,75 @@ int vg_discover_poll_holding(FAR const char *devpath, int baud,
   return 0;
 }
 
+int vg_discover_poll_points(FAR const char *devpath, int baud,
+                            FAR const struct vg_point_entry *pts, int n,
+                            FAR uint16_t *raw, FAR uint8_t *ok_out,
+                            int inter_ms)
+{
+  struct vg_disc_nmbs s;
+  int i;
+
+  (void)baud;
+
+  if (devpath == NULL || pts == NULL || raw == NULL ||
+      ok_out == NULL || n <= 0)
+    {
+      return -EINVAL;
+    }
+
+  if (vg_disc_nmbs_open(&s, devpath) != 0)
+    {
+      return -errno;
+    }
+
+  for (i = 0; i < n; i++)
+    {
+      nmbs_error err;
+      uint16_t qty = pts[i].qty;
+      uint16_t tmp[VG_DISC_MAX_REGS];
+
+      raw[i] = 0;
+      ok_out[i] = 0;
+      if (pts[i].addr == 0)
+        {
+          continue;
+        }
+
+      if (qty < 1)
+        {
+          qty = 1;
+        }
+
+      if (qty > VG_DISC_MAX_REGS)
+        {
+          qty = VG_DISC_MAX_REGS;
+        }
+
+      if (pts[i].fc == 4)
+        {
+          err = vg_disc_read_input(&s, pts[i].addr, pts[i].reg, qty, tmp);
+        }
+      else
+        {
+          err = vg_disc_read_holding(&s, pts[i].addr, pts[i].reg, qty, tmp);
+        }
+
+      if (err == NMBS_ERROR_NONE)
+        {
+          raw[i] = tmp[0];
+          ok_out[i] = 1;
+        }
+
+      if (inter_ms > 0 && i + 1 < n)
+        {
+          usleep((useconds_t)inter_ms * 1000);
+        }
+    }
+
+  vg_disc_nmbs_close(&s);
+  return 0;
+}
+
 #define VG_DISC_RETRY_INTER_MS 100
 
 static bool vg_disc_hit_has(FAR const struct vg_discover_summary *sum,
