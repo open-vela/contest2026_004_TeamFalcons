@@ -1,0 +1,7 @@
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "Canonical vgpoint commands, replies, errors, two-table rules"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "Trellis-side contract: no second command table, need_confirm is fail"}
+{"file": ".trellis/spec/backend/vg-config-store.md", "reason": "apply --confirm must use dual-slot vg_config_commit"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Only velaguard-lvgl; NSH_LINELEN lives on that defconfig"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "JSON file, NSH, RAM table, HMI home, and host script share one schema"}
+{"file": ".trellis/tasks/09-10-host-nsh-vgpoint/research/existing-stack.md", "reason": "Current write-only JSON, in-process bus flag, vg_mthings_points live source"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "V5: Agent must not mutate point table or config apply"}

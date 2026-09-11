@@ -1,0 +1,28 @@
+{
+  "id": "host-nsh-vgpoint",
+  "name": "host-nsh-vgpoint",
+  "title": "板端与上位机 vgpoint 通信",
+  "description": "按 docs/velaguard-host-nsh-protocol.md 实现 NSH vgpoint 与 COM3 上位机批量写点表（候选/试读/确认落盘）",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-10",
+  "completedAt": null,
+  "branch": "learn_vela",
+  "base_branch": "learn_vela",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-09-pre-920-score-play",
+  "relatedFiles": [],
+  "notes": "2026-09-10 板测：list 栈溢出已改堆上 JSON + 16K 栈；NSH_MAXARGUMENTS=32。无人值守 COM3 抽检 9/9。完整 apply --confirm 需人回车。",
+  "meta": {
+    "notes": "2026-09-11：编码收口，不要再扩功能。完整 apply --confirm 与擦表看空首页，放到 demo-threshold-alarm 板测顺带做。本任务暂不归档（AC5 未目视）。"
+  }
+}

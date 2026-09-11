@@ -1,0 +1,6 @@
+{"file": ".trellis/tasks/09-10-host-nsh-vgpoint/prd.md", "reason": "AC1-AC8: verbs, candidate isolation, need_confirm, host pause, empty home"}
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "Stable lines OK/ERR/POINT/READ and error tokens"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "Do not copy vgdiscover dry-run exit 0; do not poll vg_mthings_points"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "Agent denylist and local confirmation on device/serial"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Build/flash the single product image"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Committed table must match home fleet after apply"}
