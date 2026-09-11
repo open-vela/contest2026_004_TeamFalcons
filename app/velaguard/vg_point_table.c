@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 
 #ifdef __NuttX__
@@ -121,6 +122,27 @@ static int mkdir_p(FAR const char *path)
     }
 
   return mkdir(tmp, 0755);
+}
+
+static int mkdir_parent(FAR const char *filepath)
+{
+  char tmp[160];
+  char *slash;
+
+  if (filepath == NULL || filepath[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
+  snprintf(tmp, sizeof(tmp), "%s", filepath);
+  slash = strrchr(tmp, '/');
+  if (slash == NULL || slash == tmp)
+    {
+      return 0;
+    }
+
+  *slash = '\0';
+  return mkdir_p(tmp);
 }
 
 int vg_discover_state_save(FAR const struct vg_discover_summary *sum,
@@ -770,6 +792,253 @@ int vg_point_format_point(FAR char *buf, size_t bufsz,
            warn_s, crit_s,
            (unsigned)((p->fail_n >= 1) ? p->fail_n : 3));
   return 0;
+}
+
+int vg_point_format_value(FAR char *buf, size_t bufsz,
+                          FAR const char *id, float value, int ok,
+                          FAR const char *unit, uint32_t age_ms)
+{
+  char value_s[32];
+  FAR const char *unit_s;
+
+  if (buf == NULL || bufsz == 0)
+    {
+      return -EINVAL;
+    }
+
+  if (ok)
+    {
+      snprintf(value_s, sizeof(value_s), "%.6g", (double)value);
+    }
+  else
+    {
+      snprintf(value_s, sizeof(value_s), "-");
+    }
+
+  if (unit != NULL && unit[0] != '\0' && strcmp(unit, "-") != 0)
+    {
+      unit_s = unit;
+    }
+  else
+    {
+      unit_s = "-";
+    }
+
+  snprintf(buf, bufsz, "vgpoint: VALUE id=%s value=%s ok=%d unit=%s age_ms=%u",
+           (id != NULL && id[0] != '\0') ? id : "-",
+           value_s, ok ? 1 : 0, unit_s, (unsigned)age_ms);
+  return 0;
+}
+
+uint32_t vg_live_now_ms(void)
+{
+  struct timespec ts;
+
+  if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
+    {
+      return 0;
+    }
+
+  return (uint32_t)((uint64_t)ts.tv_sec * 1000ull +
+                    (uint64_t)ts.tv_nsec / 1000000ull);
+}
+
+uint32_t vg_live_age_ms(uint32_t tick_ms, uint32_t now_ms)
+{
+  return now_ms - tick_ms;
+}
+
+int vg_live_snapshot_write(FAR const char *path,
+                           FAR const struct vg_live_snapshot *snap)
+{
+  char tmp[160];
+  FILE *fp;
+  int i;
+  int n;
+
+  if (path == NULL || path[0] == '\0' || snap == NULL)
+    {
+      return -EINVAL;
+    }
+
+  n = snap->n;
+  if (n < 0)
+    {
+      n = 0;
+    }
+
+  if (n > VG_DISCOVER_MAX_POINTS)
+    {
+      n = VG_DISCOVER_MAX_POINTS;
+    }
+
+  (void)mkdir_parent(path);
+  snprintf(tmp, sizeof(tmp), "%s.tmp", path);
+  fp = fopen(tmp, "w");
+  if (fp == NULL)
+    {
+      return -errno;
+    }
+
+  if (fprintf(fp, "tick_ms=%u\nn=%d\n", (unsigned)snap->tick_ms, n) < 0)
+    {
+      fclose(fp);
+      unlink(tmp);
+      return -EIO;
+    }
+
+  for (i = 0; i < n; i++)
+    {
+      FAR const struct vg_live_sample *s = &snap->samples[i];
+      FAR const char *unit = (s->unit[0] != '\0') ? s->unit : "-";
+      int rc;
+
+      if (s->ok)
+        {
+          rc = fprintf(fp, "id=%s value=%.6g ok=1 unit=%s\n",
+                       s->id[0] ? s->id : "-", (double)s->value, unit);
+        }
+      else
+        {
+          rc = fprintf(fp, "id=%s value=- ok=0 unit=%s\n",
+                       s->id[0] ? s->id : "-", unit);
+        }
+
+      if (rc < 0)
+        {
+          fclose(fp);
+          unlink(tmp);
+          return -EIO;
+        }
+    }
+
+  if (fflush(fp) != 0)
+    {
+      fclose(fp);
+      unlink(tmp);
+      return -EIO;
+    }
+
+  fclose(fp);
+  if (rename(tmp, path) != 0)
+    {
+      int err = errno;
+
+      unlink(tmp);
+      return -err;
+    }
+
+  return 0;
+}
+
+int vg_live_snapshot_read(FAR const char *path,
+                          FAR struct vg_live_snapshot *snap)
+{
+  FILE *fp;
+  char line[128];
+  int declared_n = -1;
+
+  if (path == NULL || path[0] == '\0' || snap == NULL)
+    {
+      return -EINVAL;
+    }
+
+  memset(snap, 0, sizeof(*snap));
+  fp = fopen(path, "r");
+  if (fp == NULL)
+    {
+      return (errno == ENOENT) ? -ENOENT : -errno;
+    }
+
+  while (fgets(line, sizeof(line), fp) != NULL)
+    {
+      size_t len = strlen(line);
+      unsigned tick;
+      unsigned ok;
+      char id[VG_POINT_ID_MAX];
+      char valstr[32];
+      char unit[8];
+      struct vg_live_sample *s;
+
+      while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+        {
+          line[--len] = '\0';
+        }
+
+      if (len == 0 || line[0] == '#')
+        {
+          continue;
+        }
+
+      if (sscanf(line, "tick_ms=%u", &tick) == 1)
+        {
+          snap->tick_ms = tick;
+          continue;
+        }
+
+      if (sscanf(line, "n=%d", &declared_n) == 1)
+        {
+          continue;
+        }
+
+      if (sscanf(line, "id=%23s value=%31s ok=%u unit=%7s",
+                 id, valstr, &ok, unit) != 4)
+        {
+          continue;
+        }
+
+      if (!vg_point_validate_id(id) || snap->n >= VG_DISCOVER_MAX_POINTS)
+        {
+          continue;
+        }
+
+      s = &snap->samples[snap->n];
+      memset(s, 0, sizeof(*s));
+      snprintf(s->id, sizeof(s->id), "%s", id);
+      if (unit[0] != '\0' && strcmp(unit, "-") != 0)
+        {
+          snprintf(s->unit, sizeof(s->unit), "%s", unit);
+        }
+
+      if (ok != 0 && strcmp(valstr, "-") != 0)
+        {
+          char *end = NULL;
+          float v = strtof(valstr, &end);
+
+          if (end != valstr && end != NULL && *end == '\0' && v == v)
+            {
+              s->ok = 1;
+              s->value = v;
+            }
+        }
+
+      snap->n++;
+    }
+
+  fclose(fp);
+  (void)declared_n;
+  return 0;
+}
+
+int vg_live_snapshot_find_id(FAR const struct vg_live_snapshot *snap,
+                             FAR const char *id)
+{
+  int i;
+
+  if (snap == NULL || id == NULL)
+    {
+      return -1;
+    }
+
+  for (i = 0; i < snap->n; i++)
+    {
+      if (strcmp(snap->samples[i].id, id) == 0)
+        {
+          return i;
+        }
+    }
+
+  return -1;
 }
 
 int vg_point_table_find_id(FAR const struct vg_discover_summary *sum,

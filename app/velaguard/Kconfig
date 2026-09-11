@@ -182,6 +182,13 @@ config VG_DISCOVER_POINTS_PATH
 	string "Applied points JSON path"
 	default "/data/velaguard/config/points.json"
 
+config VG_LIVE_VALUES_PATH
+	string "HMI live values snapshot path"
+	default "/data/velaguard/live/values.txt"
+	---help---
+		Atomic text snapshot written after each HMI poll round.
+		vgpoint get reads this file and must not take the RS485 lock.
+
 endif
 
 config VG_HMI

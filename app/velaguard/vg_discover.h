@@ -73,6 +73,21 @@ struct vg_discover_summary
   struct vg_point_entry points[VG_DISCOVER_MAX_POINTS];
 };
 
+struct vg_live_sample
+{
+  char     id[VG_POINT_ID_MAX];
+  char     unit[8];
+  float    value;
+  uint8_t  ok;
+};
+
+struct vg_live_snapshot
+{
+  uint32_t tick_ms;
+  int      n;
+  struct vg_live_sample samples[VG_DISCOVER_MAX_POINTS];
+};
+
 void vg_discover_reset(struct vg_discover_summary *sum);
 
 int vg_bus_scan(FAR struct vg_discover_summary *sum,
@@ -122,6 +137,18 @@ int vg_point_format_ok(FAR char *buf, size_t bufsz,
 int vg_point_format_err(FAR char *buf, size_t bufsz,
                         FAR const char *cmd, FAR const char *code,
                         FAR const char *msg);
+int vg_point_format_value(FAR char *buf, size_t bufsz,
+                          FAR const char *id, float value, int ok,
+                          FAR const char *unit, uint32_t age_ms);
+
+uint32_t vg_live_now_ms(void);
+uint32_t vg_live_age_ms(uint32_t tick_ms, uint32_t now_ms);
+int vg_live_snapshot_write(FAR const char *path,
+                           FAR const struct vg_live_snapshot *snap);
+int vg_live_snapshot_read(FAR const char *path,
+                          FAR struct vg_live_snapshot *snap);
+int vg_live_snapshot_find_id(FAR const struct vg_live_snapshot *snap,
+                             FAR const char *id);
 
 /* Unique slave addrs from a committed points.json (hits[] first, else
  * unique point "addr" fields). Returns count, 0 if missing/empty, <0 on I/O. */
