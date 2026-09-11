@@ -1,0 +1,7 @@
+{"file": ".trellis/spec/guides/index.md", "reason": "Cross-layer triggers before F1 threshold fields"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Point table codegen → live → HMI alarm → pending file"}
+{"file": ".trellis/spec/backend/vg-config-store.md", "reason": "eMMC paths; do not invent a third reports dir"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/research/score-gap-2026-09-09.md", "reason": "Scoring holes and what not to rebuild"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/research/same-firmware-hmi-agent.md", "reason": "Same-firmware spike limits; mallinfo; skip heartbeat"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/design.md", "reason": "Firmware roles, alarm flow, report path, fallback"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "C4 deadline, C9 Agent evidence, V5 no mutate"}

@@ -1,0 +1,34 @@
+{
+  "id": "pre-920-score-play",
+  "name": "pre-920-score-play",
+  "title": "9/20前最佳拿分大招",
+  "description": "截止日前按官方六维评分收敛可拍演示闭环与评委交付物，不做新月坑功能",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-09",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "learn_vela",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-09-demo-threshold-alarm",
+    "09-09-samefw-agent-spike",
+    "09-09-judge-submit-pack",
+    "09-10-host-nsh-vgpoint",
+    "09-11-point-id-name-split"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-09-10：点表改由上位机批量写入。Agent 与界面目标仍是同一套带屏固件；无屏固件只是启动失败时的拍摄退路。",
+  "meta": {
+    "notes": "2026-09-11：仓外 F:\\Project\\uppercomputer 已能 vgpoint 写入；不改 9/20 固件顺序。下一步仍是 demo-threshold-alarm。不把 GUI 收进专属仓。"
+  }
+}

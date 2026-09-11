@@ -1,0 +1,5 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Alarm and report path must match across firmware"}
+{"file": ".trellis/spec/backend/vg-config-store.md", "reason": "Pending/report files stay under /data/velaguard"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/prd.md", "reason": "AC-F1 AC-Path AC-Agent AC-Spike gates"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/research/same-firmware-hmi-agent.md", "reason": "Spike must stop at 8h; no boot dual autostart"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "C5 logs honest; C6 no relabel Cursor"}
