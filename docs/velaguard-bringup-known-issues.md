@@ -42,7 +42,7 @@ nuttx 侧交付物（在 nuttx 树，不走 patch）：
 
 ### 2.2 日常入口与 Rebuild 复位
 
-日常按钮（`openvela: Build` / `Rebuild`）固定 `velaguard-net`，不弹预设。
+日常按钮（`openvela: Build` / `Rebuild`）固定作品主线 `velaguard-lvgl`，不弹预设。
 需要最小固件时用命令行 `bash scripts/build.sh min`（**不是** 父目录
 openvela 的 `./build.sh`）。
 
@@ -173,13 +173,13 @@ nuttx 侧交付物（在树上，不走 patch）：
 
 ### 5.2 构建脚本多目标
 
-`scripts/build.sh [net|min|lvgl] [--clean]`（默认 net）：
+`scripts/build.sh [velaguard|min|lvgl|ai-probe|emmc] [--clean]`（默认 `velaguard-lvgl`）：
 
 - 按目标校验 `.config` 形态，不匹配自动 distclean；
 - `--clean`（任务 `openvela: Rebuild`）会复位到所选预设，未保存的
   `.config` 改动会被丢掉；
 - 构建前清空 `.debug` 旧主镜像，失败时 Download 直接报缺文件，杜绝烧旧固件；
-- `.vscode/tasks.json` 的 Build/Rebuild 固定 velaguard-net，不弹选择器；Download 固定烧 `.debug/nuttx.hex`。
+- `.vscode/tasks.json` 的 Build/Rebuild 固定 velaguard-lvgl，不弹选择器；Download 固定烧 `.debug/nuttx.hex`。
 
 ### 5.3 vgmqtt 用法与验收
 

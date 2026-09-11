@@ -173,13 +173,13 @@ Agent 解释 / 报告
 
 | 组件 | 状态 |
 |---|---|
-| defconfig | `stm32h750b-dk:velaguard-net`（`scripts/build.sh` 默认 `TARGET=net`） |
-| 固件体积 | text 208 KB / data 12 KB / bss 50 KB |
+| defconfig | `stm32h750b-dk:velaguard-lvgl`（`scripts/build.sh` 默认作品主线） |
+| 固件体积 | 以当前 `.debug` 构建为准 |
 | 网络栈 | 已启用（TCP/UDP/DHCP/DNS/Ethernet MII） |
-| MQTT | MQTT-C 已启用，**明文 1883** |
-| mbedTLS | **未启用** |
-| littlefs | **未启用**（但 `stm32_bringup.c` 已写好 RAMMTD + littlefs 挂载逻辑，两个 Kconfig 即可开） |
-| LVGL / LTDC | 当前 net 预设**未启用**（另有 `lvgl` 预设可参考） |
+| MQTT | MQTT-C 已启用 |
+| mbedTLS | 已启用（Agent HTTPS） |
+| littlefs | 不作为产品主存储（eMMC FAT：`/data/velaguard`） |
+| LVGL / LTDC | 已启用（人机界面 + 触摸） |
 
 ---
 

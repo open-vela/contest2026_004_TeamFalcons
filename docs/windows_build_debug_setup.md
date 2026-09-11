@@ -94,47 +94,47 @@ Shortcuts`，搜索 `ctrl+shift+b`，删掉 Browser 那一行，只保留
 
 | Keil | 任务 | 脚本 | 做什么 |
 |------|------|------|--------|
-| Build | `openvela: Build`（默认） | `scripts/build.sh` | 增量 `make`（velaguard-net），刷新 `.debug/nuttx.{hex,bin,elf}`，不烧录 |
-| Rebuild | `openvela: Rebuild` | `scripts/build.sh --clean` | distclean 后复位到 velaguard-net 并全量编译，不烧录 |
+| Build | `openvela: Build`（默认） | `scripts/build.sh` | 增量 `make`（velaguard-lvgl），刷新 `.debug/nuttx.{hex,bin,elf}`，不烧录 |
+| Rebuild | `openvela: Rebuild` | `scripts/build.sh --clean` | distclean 后复位到 velaguard-lvgl 并全量编译，不烧录 |
 | Download | `openvela: Download` | `scripts/flash.sh` | 只烧当前 `.debug` 产物并复位，不编译 |
 | Debug | F5 `openvela: Debug` | 只杀 OpenOCD 再 attach | 基于当前板上固件，不编译、不烧录 |
 | （可选） | `openvela: Debug (Download first)` | `build.sh --debug` → Download → attach | 需要先刷带 `-g3/-Og` 的符号固件时用 |
 | （可选） | `openvela: Build & Download` | Build 成功后再 Download | 改代码后一键编译+烧录 |
 
-Build / Rebuild / Download / F5 **不再弹预设选择**，一律 `velaguard-net`。
+Build / Rebuild / Download / F5 **不再弹预设选择**，一律作品主线 `velaguard-lvgl`。
 Download 固定烧 `.debug/nuttx.hex` + `.debug/qspi_bootstub.hex`。
-若偶尔需要 `min` / `lvgl`，只走命令行，不要改任务按钮。
+若偶尔需要 `min` / 上游 `lvgl` 演示预设，只走命令行，不要改任务按钮。
 
 命令行等价：
 
 ```bash
 # 在参赛仓根目录（contest2026_004_TeamFalcons/）
-bash scripts/build.sh               # 增量 velaguard-net 发布构建（按钮等同这条）
+bash scripts/build.sh               # 增量 velaguard-lvgl 发布构建（按钮等同这条）
 bash scripts/build.sh --debug       # 带 -g3/-Og 符号；F5 不自动跑这条
-bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-net 发布配置
+bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-lvgl 发布配置
 bash scripts/flash.sh               # Download
 bash scripts/flash.sh -ValidateOnly # 只校验 HEX 地址，不碰硬件
-# 非日常：bash scripts/build.sh min|lvgl [--clean]
+# 非日常：bash scripts/build.sh min [--clean]
 ```
 
 ### Rebuild 会丢掉什么
 
 `configure.sh -E` 会 `make distclean`，再从板级 defconfig 生成新的
 `nuttx/.config`。未 `savedefconfig` 回预设的本地 menuconfig / kconfig
-改动会被丢掉。参赛仓里的 `velaguard-net` / `velaguard-min` 补丁文件
-不会被 distclean 删除。这是有意行为：用来从被污染的 `.config` 恢复。
-若改动要长期保留，应写进对应 defconfig 补丁。
+改动会被丢掉。参赛仓里的 `scripts/configs/velaguard-lvgl.defconfig` 不会被
+distclean 删除。这是有意行为：用来从被污染的 `.config` 恢复。
+若改动要长期保留，应写进该 defconfig。
 
 ### 构建脚本会做什么
 
-`scripts/build.sh` 在 configure 前幂等补齐 velaguard-net 所需内容（干净树不必先跑
+`scripts/build.sh` 在 configure 前校验公共仓树并安装作品主线 defconfig（干净树不必先跑
 其它脚本）：
 
 1. `ensure-openvela-links.sh`，并重生 `packages/demos/Kconfig`；
-2. apply：QSPI + ETH-MII + velaguard-net defconfig；
+2. `ensure-upstream-velaguard-trees.sh` 校验 nuttx / apps / MQTT-C，并安装 `velaguard-lvgl` defconfig；
 3. 缺少 `.debug/qspi_bootstub.hex` 或 `--clean` 时构建 boot stub；
 4. 清空 `.debug` 里的旧主镜像，避免失败后 Download 烧到旧固件；
-5. 形态不匹配或 `--clean` 时 `configure.sh -E -e stm32h750b-dk:<preset>`；
+5. 形态不匹配或 `--clean` 时 `configure.sh -E -e stm32h750b-dk:velaguard-lvgl`；
 6. `make -j`，把 `nuttx.{hex,bin,elf}` 拷到 `.debug/`。
 
 判断编译正确不要只看任务退出码，还应确认 `.debug/nuttx.hex` 时间戳已更新，
