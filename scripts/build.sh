@@ -4,14 +4,13 @@
 #
 # 用法：
 #   bash scripts/build.sh [TARGET] [--clean] [--debug]
-#   TARGET: net | min | lvgl | velaguard-lvgl | ai-probe | emmc   （默认 net）
-#   net = stage1 日常入口（网络 + eMMC + vgcfg + vgstats，无 LVGL）
-#   velaguard-lvgl = 演示固件（net 能力 + LTDC HMI + Agent）
+#   作品主线（默认）：velaguard | velaguard-lvgl | net（后两个与 velaguard 相同）
+#   仅 bring-up / 探针：min | lvgl | ai-probe | emmc
 #
 #   示例：
-#     bash scripts/build.sh               # 增量发布构建（net，无调试符号）
+#     bash scripts/build.sh               # 增量发布构建（velaguard-lvgl）
 #     bash scripts/build.sh --debug       # 增量调试构建（-g3 -Og，F5 走这条）
-#     bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-net 发布配置
+#     bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-lvgl 发布配置
 #     bash scripts/build.sh emmc --clean  # eMMC bring-up 预设
 #     bash scripts/build.sh --clean --debug
 #
@@ -30,10 +29,13 @@
 # 缺少 nuttx.hex 直接报错，而不是把上一次的旧固件烧到板子上。
 set -euo pipefail
 
-TARGET="net"
+TARGET="velaguard-lvgl"
 MODE="build"
 DEBUG=0
 SYNC_UPSTREAM=0
+
+# shellcheck source=vg_mainline_target.sh
+. "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
 
 for arg in "$@"; do
   case "$arg" in
@@ -46,15 +48,17 @@ for arg in "$@"; do
     --sync-upstream)
       SYNC_UPSTREAM=1
       ;;
-    net|min|lvgl|velaguard-lvgl|ai-probe|emmc)
-      TARGET="$arg"
+    net|min|lvgl|velaguard|velaguard-lvgl|ai-probe|emmc)
+      TARGET="$(vg_normalize_build_target "$arg")"
       ;;
     *)
-      echo "error: 未知参数 '$arg'（用法: build.sh [net|min|lvgl|velaguard-lvgl|ai-probe|emmc] [--clean] [--debug]）" >&2
+      echo "error: 未知参数 '$arg'（用法: build.sh [velaguard|min|lvgl|ai-probe|emmc] [--clean] [--debug]）" >&2
       exit 1
       ;;
   esac
 done
+
+TARGET="$(vg_normalize_build_target "$TARGET")"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTEST_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -68,9 +72,6 @@ export PATH="$OPENVELA_ROOT/prebuilts/tools/python/bin:$OPENVELA_ROOT/prebuilts/
 export PYTHONPATH="$OPENVELA_ROOT/prebuilts/tools/python/dist-packages/kconfiglib:$OPENVELA_ROOT/prebuilts/tools/python/dist-packages:${PYTHONPATH:-}"
 
 case "$TARGET" in
-  net)
-    DEFCONFIG="velaguard-net"
-    ;;
   min)
     DEFCONFIG="velaguard-min"
     ;;
@@ -87,7 +88,7 @@ case "$TARGET" in
     DEFCONFIG="velaguard-emmc"
     ;;
   *)
-    echo "error: 未知目标 '$TARGET'（可选 net|min|lvgl|velaguard-lvgl|ai-probe|emmc）" >&2
+    echo "error: 未知目标 '$TARGET'（可选 velaguard|min|lvgl|ai-probe|emmc）" >&2
     exit 1
     ;;
 esac
@@ -106,28 +107,6 @@ expect_dev_config()
         ! grep -q '^CONFIG_GRAPHICS_LVGL=' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_NET=' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_BRINGUP_TOOLS=y' "$NUTTX_ROOT/.config"
-      ;;
-
-    net)
-      grep -q 'CONFIG_INIT_ENTRYPOINT="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
-        grep -q 'CONFIG_INIT_ENTRYNAME="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
-        ! grep -q '^CONFIG_GRAPHICS_LVGL=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_NET=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_NETUTILS_MQTTC=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_NETUTILS_ESP8266=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_VG_NET_FAILOVER=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_VG_BRINGUP_TOOLS=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_STM32H7_SDMMC1=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_MMCSD=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_MMCSD_MMCSUPPORT=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_FS_FAT=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_FAT_LFN=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_VG_CONFIG_STORE=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_VG_FRAME_STATS=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_EXAMPLES_AI_AGENT_VELA=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_CRYPTO_MBEDTLS=y' "$NUTTX_ROOT/.config" &&
-        grep -q '^CONFIG_DEV_URANDOM=y' "$NUTTX_ROOT/.config" &&
-        ! grep -q '^CONFIG_STM32H7_SDMMC_IDMA=y' "$NUTTX_ROOT/.config"
       ;;
 
     lvgl)

@@ -5,11 +5,14 @@
 # Optional sync: VG_SYNC_UPSTREAM=1 or build.sh --sync-upstream
 #
 #   nuttx  → velaguard/integration
-#   apps   → velaguard/netinit-esp8266   (net target)
-#   MQTT-C → velaguard/mqtt-pal-hook      (net target)
+#   apps   → velaguard/netinit-esp8266
+#   MQTT-C → velaguard/mqtt-pal-hook
 set -euo pipefail
 
-TARGET="${1:-net}"
+# shellcheck source=vg_mainline_target.sh
+. "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
+
+TARGET="$(vg_normalize_build_target "${1:-velaguard-lvgl}")"
 OPENVELA_ROOT="${2:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SYNC="${VG_SYNC_UPSTREAM:-0}"
 
@@ -30,7 +33,7 @@ fail() {
   echo "  bash scripts/build.sh --sync-upstream ${TARGET}" >&2
   echo >&2
   echo "  git -C nuttx checkout ${NUTTX_BRANCH}" >&2
-  if [[ "$TARGET" == "net" ]]; then
+  if [[ "$TARGET" == "velaguard-lvgl" || "$TARGET" == "ai-probe" || "$TARGET" == "emmc" ]]; then
     echo "  git -C apps checkout ${APPS_BRANCH}" >&2
     echo "  git -C apps/netutils/mqttc/MQTT-C checkout ${MQTTC_BRANCH}" >&2
   fi
@@ -200,12 +203,6 @@ verify_nuttx() {
   local missing=()
   nuttx_qspi_ready || missing+=("nuttx/QSPI boot")
   case "$TARGET" in
-    net)
-      nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")
-      nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
-      nuttx_emmc_ready || missing+=("nuttx/SDMMC+eMMC bringup")
-      nuttx_net_defconfig_ready || missing+=("nuttx/velaguard-net defconfig")
-      ;;
     velaguard-lvgl)
       nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")
       nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
@@ -239,12 +236,6 @@ verify_nuttx() {
     missing=()
     nuttx_qspi_ready || missing+=("nuttx/QSPI boot")
     case "$TARGET" in
-      net)
-        nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")
-        nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
-        nuttx_emmc_ready || missing+=("nuttx/SDMMC+eMMC bringup")
-        nuttx_net_defconfig_ready || missing+=("nuttx/velaguard-net defconfig")
-        ;;
       velaguard-lvgl)
         nuttx_board_pins_ready || missing+=("nuttx/board pins+bringup")
         nuttx_eth_mii_ready || missing+=("nuttx/Ethernet MII PHY poll")
@@ -305,7 +296,7 @@ if [[ ! -d "$NUTTX_ROOT/.git" && ! -f "$NUTTX_ROOT/.git" ]]; then
 fi
 
 verify_nuttx
-if [[ "$TARGET" == "net" || "$TARGET" == "velaguard-lvgl" || "$TARGET" == "ai-probe" || "$TARGET" == "emmc" ]]; then
+if [[ "$TARGET" == "velaguard-lvgl" || "$TARGET" == "ai-probe" || "$TARGET" == "emmc" ]]; then
   verify_apps_net
   verify_mqttc
 fi
