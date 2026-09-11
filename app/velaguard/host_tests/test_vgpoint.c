@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -177,6 +178,68 @@ int main(void)
 
   vg_live_points_replace(&sum);
   fails += expect_true(vg_live_points_gen() != 0, "live gen");
+
+  vg_point_format_value(line, sizeof(line), "temp", 40.1f, 1, "C", 210);
+  fails += expect_true(strstr(line, "vgpoint: VALUE id=temp") != NULL,
+                       "value prefix");
+  fails += expect_true(strstr(line, "value=40.1") != NULL, "value number");
+  fails += expect_true(strstr(line, "ok=1") != NULL, "value ok");
+  fails += expect_true(strstr(line, "unit=C") != NULL, "value unit");
+  fails += expect_true(strstr(line, "age_ms=210") != NULL, "value age");
+  vg_point_format_value(line, sizeof(line), "flood", 0.0f, 0, "", 5);
+  fails += expect_true(strstr(line, "value=-") != NULL, "fail value dash");
+  fails += expect_true(strstr(line, "ok=0") != NULL, "fail ok");
+  fails += expect_true(strstr(line, "unit=-") != NULL, "empty unit dash");
+
+  {
+    const char *livep = "vgpoint_live_values.txt";
+    struct vg_live_snapshot snap;
+    struct vg_live_snapshot loaded;
+    uint32_t now;
+    int live_idx;
+
+    memset(&snap, 0, sizeof(snap));
+    snap.tick_ms = 1000;
+    snap.n = 2;
+    snprintf(snap.samples[0].id, sizeof(snap.samples[0].id), "temp");
+    snprintf(snap.samples[0].unit, sizeof(snap.samples[0].unit), "C");
+    snap.samples[0].ok = 1;
+    snap.samples[0].value = 40.1f;
+    snprintf(snap.samples[1].id, sizeof(snap.samples[1].id), "flood");
+    snap.samples[1].ok = 0;
+    fails += expect_true(vg_live_snapshot_write(livep, &snap) == 0,
+                         "write snapshot");
+    memset(&loaded, 0, sizeof(loaded));
+    fails += expect_true(vg_live_snapshot_read(livep, &loaded) == 0,
+                         "read snapshot");
+    fails += expect_true(loaded.n == 2, "snapshot n");
+    fails += expect_true(loaded.tick_ms == 1000, "snapshot tick");
+    fails += expect_true(loaded.samples[0].ok &&
+                         loaded.samples[0].value > 40.0f &&
+                         loaded.samples[0].value < 40.2f,
+                         "temp sample");
+    fails += expect_true(!loaded.samples[1].ok, "flood ok=0");
+    fails += expect_true(vg_live_snapshot_find_id(&loaded, "temp") == 0,
+                         "find temp sample");
+    live_idx = vg_live_snapshot_find_id(&loaded, "missing");
+    fails += expect_true(live_idx < 0, "missing sample id");
+    now = 1210;
+    fails += expect_true(vg_live_age_ms(loaded.tick_ms, now) == 210,
+                         "age_ms");
+    vg_point_format_value(line, sizeof(line), loaded.samples[0].id,
+                          loaded.samples[0].value, loaded.samples[0].ok,
+                          loaded.samples[0].unit,
+                          vg_live_age_ms(loaded.tick_ms, now));
+    fails += expect_true(strstr(line, "id=temp") != NULL &&
+                         strstr(line, "ok=1") != NULL, "format from snap");
+    remove(livep);
+    remove("vgpoint_live_values.txt.tmp");
+  }
+
+  fails += expect_true(vg_live_snapshot_read("no-such-live-values.txt",
+                                             &(struct vg_live_snapshot){0})
+                       == -ENOENT,
+                       "missing snapshot");
 
   {
     const char *emptyp = "vgpoint_empty.json";
