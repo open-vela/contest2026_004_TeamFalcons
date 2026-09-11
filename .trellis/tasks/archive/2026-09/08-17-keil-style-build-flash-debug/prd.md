@@ -24,7 +24,7 @@ Debug（先 Download 再 attach）。脚本去掉 `minimal` 等历史后缀，�
   `MT25TL01G_STM32H750B-DISCO.stldr` 写 QSPI。
 - NuttX `configure.sh -E` 会 `make distclean` 再从板级 defconfig 生成新的
   `nuttx/.config`（`nuttx/tools/configure.sh:207-209`）。参赛仓里的
-  `velaguard-net` / `velaguard-min` 补丁文件不会被 distclean 删掉。
+  `scripts/configs/velaguard-lvgl.defconfig` 不会被 distclean 删掉。
 - 删除 ps1 后，QSPI/ETH 等 apply 脚本与 bootstub 构建不再有自动调用方；
   `build.sh` 必须接过这些职责，否则干净树或 nuttx 复位后 Build 会缺补丁/缺 stub。
 
@@ -32,7 +32,7 @@ Debug（先 Download 再 attach）。脚本去掉 `minimal` 等历史后缀，�
 
 - R1 四个一等动作，语义对标 Keil：
   - Build：增量 `make`，不烧录、不启动调试。
-  - Rebuild：`configure.sh -E -e` 复位到默认 `velaguard-net` 后全量编译，不烧录。
+  - Rebuild：`configure.sh -E -e` 复位到默认 `velaguard-lvgl` 后全量编译，不烧录。
     未 `savedefconfig` 回预设的本地 `nuttx/.config` / menuconfig 改动会被丢掉；
     参赛仓 defconfig 补丁保留。这是有意行为，用来从污染的 `.config` 恢复。
   - Download：只烧当前 `.debug` 产物（QSPI 主镜像 + 片内 stub + reset），不编译、不调试。
@@ -55,15 +55,15 @@ Debug（先 Download 再 attach）。脚本去掉 `minimal` 等历史后缀，�
   操作说明加一句现用名即可。
 - R7 不改 contest 公共仓；改动限制在参赛仓 `scripts/`、`.vscode/`、`docs/`。
 - R8 快捷键：不新增仓库级 `keybindings.json`。Build = Ctrl+Shift+B；Debug = F5；
-  Rebuild / Download 走任务面板。Build / Rebuild **不弹** `net|min|lvgl` 选择器，
-  固定默认 `velaguard-net`。
+  Rebuild / Download 走任务面板。Build / Rebuild **不弹** 预设选择器，
+  固定默认 `velaguard-lvgl`。
 
 ## Acceptance Criteria
 
 - [ ] AC1 Remote - WSL 执行 Build：`scripts/build.sh` 增量编译成功，刷新
       `.debug/nuttx.{hex,bin,elf}`，不访问 ST-LINK。仓库日常入口不再指向
       `build_minimal.sh`。
-- [ ] AC2 同一窗口执行 Rebuild：distclean 后按 **velaguard-net** 重新 configure 并全量编译；
+- [ ] AC2 同一窗口执行 Rebuild：distclean 后按 **velaguard-lvgl** 重新 configure 并全量编译；
       HEX 地址范围仍为 QSPI 主镜像 + 片内 stub。本地未保存的 `.config` 改动被预设覆盖。
       任务不弹出预设选择器。
 - [ ] AC3 同一窗口执行 Download：只烧当前 `.debug` 产物并复位；缺文件则失败且不烧旧固件。
@@ -100,5 +100,5 @@ Debug（先 Download 再 attach）。脚本去掉 `minimal` 等历史后缀，�
 5. Rebuild = distclean + 按所选预设重新 configure。丢掉的是未写回 defconfig 的本地
    `.config`；预设补丁是配置源，不会丢。
 6. 不新增 `keybindings.json`。
-7. Build / Rebuild / Download / F5 **不弹预设选择器**，一律 `velaguard-net`。
+7. Build / Rebuild / Download / F5 **不弹预设选择器**，一律 `velaguard-lvgl`。
    `min` / `lvgl` 只留 `scripts/build.sh` 命令行。

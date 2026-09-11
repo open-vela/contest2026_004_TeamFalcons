@@ -78,7 +78,7 @@
 - [ ] **AC2** nuttx PR 已创建，包含全部 VelaGuard 板级/defconfig/驱动改动，目标分支 `dev-ai-contest-2026`，PR 描述含构建验证命令。
 - [ ] **AC3** apps PR 已创建（netinit + esp8266），目标 `dev-ai-contest-2026`。
 - [ ] **AC4** MQTT-C PR 已创建（mqtt_pal hook），目标 `dev-ai-contest-2026`。
-- [ ] **AC5** 三仓 PR 合入后（或 PR 待审期间 README 注明 fork 分支 pin），`bash scripts/build.sh net` 与 `min` 在无 patch apply 情况下构建通过。
+- [ ] **AC5** 三仓 PR 合入后（或 PR 待审期间 README 注明 fork 分支 pin），`bash scripts/build.sh` 与 `min` 在无 patch apply 情况下构建通过。
 - [ ] **AC6** contest 仓 `learn_vela`（或约定分支）已 commit + push + PR 合入 `dev-ai-contest-2026`，含产品代码、`logs/Foleaf/`、更新后 README。
 - [ ] **AC7** 提交清单文档（任务内 `submission-checklist.md`）逐项打勾，含仓外交付物提醒。
 - [ ] **AC8** 已弃用或归档的 patch 脚本有明确说明，不会与 PR 内容双轨漂移。

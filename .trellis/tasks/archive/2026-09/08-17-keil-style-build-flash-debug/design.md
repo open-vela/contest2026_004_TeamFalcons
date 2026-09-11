@@ -14,14 +14,14 @@ Remote - WSL Cursor：
 
 | Keil | 本仓 | 实现 |
 |------|------|------|
-| Build | 任务 `openvela: Build`（默认 Ctrl+Shift+B） | `scripts/build.sh`（固定 velaguard-net） |
+| Build | 任务 `openvela: Build`（默认 Ctrl+Shift+B） | `scripts/build.sh`（固定 velaguard-lvgl） |
 | Rebuild | 任务 `openvela: Rebuild` | `scripts/build.sh --clean` |
 | Download | 任务 `openvela: Download` | `scripts/flash.sh` |
 | Debug | F5 默认 launch `openvela: Debug` | 只杀 OpenOCD 再 attach，不编译、不烧录 |
 | （可选） | `openvela: Debug (Download first)` | `build.sh --debug` → 杀 OpenOCD → Download → attach |
 | （可选） | `openvela: Build & Download` | Build 成功后再 Download |
 
-按钮不弹预设：一律 `velaguard-net`。`min` / `lvgl` 只留 CLI。
+按钮不弹预设：一律 `velaguard-lvgl`。`min` / 上游 `lvgl` 只留 CLI。
 Download 固定烧 `.debug/nuttx.hex` + `.debug/qspi_bootstub.hex`。
 
 ## Scripts

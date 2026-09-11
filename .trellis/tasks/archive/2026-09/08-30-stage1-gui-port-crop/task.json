@@ -3,7 +3,7 @@
   "name": "stage1-gui-port-crop",
   "title": "移植 velaguard_gui 并按手册裁剪 UI",
   "description": "从 FoLeaf/velaguard_gui 移植 LVGL HMI 至 contest 仓，按项目手册 §6 裁剪页面与交互（扫描开关默认关）",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "19y",
   "assignee": "19y",
   "createdAt": "2026-08-30",
-  "completedAt": null,
+  "completedAt": "2026-09-11",
   "branch": "learn_vela",
   "base_branch": "learn_vela",
   "worktree_path": null,
@@ -22,5 +22,7 @@
   "parent": "08-30-stage1-lvgl-hmi",
   "relatedFiles": [],
   "notes": "",
-  "meta": {}
+  "meta": {
+    "notes": "2026-09-11 整理：I1–I6 全绿，PC Gate 不阻塞板端。归档。"
+  }
 }

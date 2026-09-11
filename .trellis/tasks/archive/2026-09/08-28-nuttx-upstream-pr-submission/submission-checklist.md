@@ -63,4 +63,4 @@
 - [x] `gh auth status` OK
 - [x] CLA 已签 + `/check-cla` 通过（7/7 PR）
 - [ ] `bash scripts/build.sh min` 通过
-- [ ] `bash scripts/build.sh net` 通过
+- [ ] `bash scripts/build.sh` 通过（作品主线 velaguard-lvgl）

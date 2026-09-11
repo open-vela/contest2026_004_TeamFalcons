@@ -3,7 +3,7 @@
   "name": "stage1-lvgl-hmi",
   "title": "最简 LVGL HMI",
   "description": "Phase B：openvela LTDC 上板 + vg_ui_backend 实装 + 板端验收；Phase A 见子任务 gui-port-crop",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "19y",
   "assignee": "19y",
   "createdAt": "2026-08-30",
-  "completedAt": null,
+  "completedAt": "2026-09-11",
   "branch": "learn_vela",
   "base_branch": "learn_vela",
   "worktree_path": null,
@@ -24,5 +24,7 @@
   "parent": "08-30-stage1-min-product",
   "relatedFiles": [],
   "notes": "",
-  "meta": {}
+  "meta": {
+    "notes": "2026-09-11 整理：B1–B4 与 C1–C7 已完成（NSH 11/11）。剩余演示 MVP 改由 09-09-pre-920-score-play 承接。归档。"
+  }
 }

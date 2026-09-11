@@ -1,0 +1,28 @@
+{
+  "id": "nsh-vgpoint-host-editor",
+  "name": "nsh-vgpoint-host-editor",
+  "title": "NSH vgpoint：COM3 上位机加点/改阈值",
+  "description": "已由 09-10-host-nsh-vgpoint 接替，不要 start。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-09",
+  "completedAt": "2026-09-11",
+  "branch": null,
+  "base_branch": "learn_vela",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "2026-09-10：由 09-10-host-nsh-vgpoint 接替。不要 start。",
+  "meta": {
+    "notes": "2026-09-11 整理：已被 09-10-host-nsh-vgpoint 接替，不要 start。归档以免与通信任务并列。"
+  }
+}

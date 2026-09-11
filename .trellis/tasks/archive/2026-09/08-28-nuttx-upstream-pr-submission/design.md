@@ -156,7 +156,7 @@ README 注明 PR 链接        manifest/repo 指向上游
 ```bash
 repo sync -b dev-ai-contest-2026
 cd nuttx && tools/configure.sh -e stm32h750b-dk:velaguard-net
-cd ../contest2026_004_TeamFalcons && bash scripts/build.sh net
+cd ../contest2026_004_TeamFalcons && bash scripts/build.sh
 ```
 
 ### 方案 B — PR 待审（pin fork）
@@ -182,7 +182,7 @@ repo sync
 
 1. 产品名 / 赛道（AI 硬件产品创新）
 2. 硬件：STM32H750B-DK + 扩展板
-3. 构建：`bash scripts/build.sh net`（注明 openvela 根目录）
+3. 构建：`bash scripts/build.sh`（注明 openvela 根目录）
 4. 公共仓 PR 链接表格（nuttx / apps / MQTT-C）
 5. Skill + 主动场景简述 + 演示步骤
 6. AI 日志位置 `logs/Foleaf/`

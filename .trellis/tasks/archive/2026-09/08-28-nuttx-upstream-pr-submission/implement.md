@@ -124,7 +124,7 @@ gh pr create --repo open-vela/contest2026_004_TeamFalcons \
 | 检查 | 命令 |
 |------|------|
 | min 构建 | `bash scripts/build.sh min` |
-| net 构建 | `bash scripts/build.sh net` |
+| velaguard 构建 | `bash scripts/build.sh` |
 | 日志校验 | `validate-log.py logs/` |
 | checklist | 全部 AC 打勾 |
 

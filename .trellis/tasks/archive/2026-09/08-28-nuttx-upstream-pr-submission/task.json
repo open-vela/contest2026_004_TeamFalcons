@@ -3,7 +3,7 @@
   "name": "nuttx-upstream-pr-submission",
   "title": "NuttX 公共仓 PR 迁移与竞赛提交整理",
   "description": "按竞赛规则整理全部提交物；弃用 patch，在 nuttx/apps/MQTT-C 直改并提 PR；用 gh 完成专属仓与公共仓 commit/push/PR",
-  "status": "in_progress",
+  "status": "completed",
   "dev_type": null,
   "scope": null,
   "package": null,
@@ -11,7 +11,7 @@
   "creator": "19y",
   "assignee": "19y",
   "createdAt": "2026-08-28",
-  "completedAt": null,
+  "completedAt": "2026-09-11",
   "branch": "chore/upstream-pr-migration",
   "base_branch": "learn_vela",
   "worktree_path": null,
@@ -22,5 +22,7 @@
   "parent": null,
   "relatedFiles": [],
   "notes": "",
-  "meta": {}
+  "meta": {
+    "notes": "2026-09-11 整理：7 个公共仓 PR 均 CI 全绿。专属仓合入与评委材料改由 09-09-judge-submit-pack 承接。归档。"
+  }
 }
