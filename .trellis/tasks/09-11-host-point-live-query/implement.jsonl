@@ -1,0 +1,5 @@
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "Canonical vgpoint verbs; this task adds get/VALUE/no_sample"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "Query must not take RS485; index by id only"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "HMI poll snapshot file must match NSH get and host parser"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "Agent still must not run vgpoint, including get"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Single product image velaguard-lvgl"}

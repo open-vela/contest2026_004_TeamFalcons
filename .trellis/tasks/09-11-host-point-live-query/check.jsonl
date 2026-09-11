@@ -1,0 +1,5 @@
+{"file": ".trellis/tasks/09-11-host-point-live-query/prd.md", "reason": "AC1-AC6: protocol, no bus lock, id filter, no_sample, tests, build"}
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "VALUE lines vs READ; get does not mutate tables"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "Snapshot query must not bus_busy HMI poll"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Committed ids in snapshot must match get output"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Build the single product image"}

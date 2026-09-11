@@ -23,7 +23,8 @@
     "09-09-samefw-agent-spike",
     "09-09-judge-submit-pack",
     "09-10-host-nsh-vgpoint",
-    "09-11-point-id-name-split"
+    "09-11-point-id-name-split",
+    "09-11-host-point-live-query"
   ],
   "parent": null,
   "relatedFiles": [],
