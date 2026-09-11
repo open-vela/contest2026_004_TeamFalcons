@@ -3,7 +3,7 @@
 
 #include "lvgl/lvgl.h"
 
-/* Generated subset: ASCII + UI CJK (cjk_symbols.txt).
+/* Generated subset: ASCII + GB2312 L1 CJK + UI extras (cjk_symbols.txt).
  * Regen: bash gui/main/ui/fonts/regen_cjk_font.sh
  */
 extern const lv_font_t vg_font_ui_14;
