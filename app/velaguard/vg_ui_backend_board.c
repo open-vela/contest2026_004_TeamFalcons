@@ -54,6 +54,10 @@
 #  define CONFIG_VG_CONFIG_BASEDIR "/data/velaguard/config"
 #endif
 
+#ifndef CONFIG_VG_LIVE_VALUES_PATH
+#  define CONFIG_VG_LIVE_VALUES_PATH "/data/velaguard/live/values.txt"
+#endif
+
 #define VG_HMI_SCAN_STACKSIZE 8192
 
 #define VG_SCAN_IDLE     0
@@ -453,6 +457,7 @@ static uint8_t g_live_on[VG_LIVE_MAX];
 static volatile int g_live_n;
 static volatile bool g_acq_started;
 static uint32_t g_imported_gen;
+static struct vg_live_snapshot g_live_snap_out;
 
 static void import_live_to_model(void)
 {
@@ -515,6 +520,37 @@ static bool board_bus_busy(void)
          g_apply_thread_active || g_apply_status == VG_SCAN_RUNNING;
 }
 
+static void write_live_snapshot(FAR const struct vg_discover_summary *live,
+                                int n)
+{
+  int i;
+
+  memset(&g_live_snap_out, 0, sizeof(g_live_snap_out));
+  g_live_snap_out.tick_ms = vg_live_now_ms();
+  if(n < 0) {
+    n = 0;
+  }
+  if(n > VG_DISCOVER_MAX_POINTS) {
+    n = VG_DISCOVER_MAX_POINTS;
+  }
+
+  g_live_snap_out.n = n;
+  for(i = 0; i < n; i++) {
+    FAR const struct vg_point_entry *p = &live->points[i];
+
+    snprintf(g_live_snap_out.samples[i].id,
+             sizeof(g_live_snap_out.samples[i].id), "%s", p->id);
+    snprintf(g_live_snap_out.samples[i].unit,
+             sizeof(g_live_snap_out.samples[i].unit), "%s", p->unit);
+    if(g_live_on[i]) {
+      g_live_snap_out.samples[i].ok = 1;
+      g_live_snap_out.samples[i].value = g_live_v[i];
+    }
+  }
+
+  (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
+}
+
 static FAR void *vg_hmi_acq_thread(FAR void *arg)
 {
   static int live_ok_logs;
@@ -542,6 +578,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
 
     if(n <= 0) {
       g_live_n = 0;
+      write_live_snapshot(&live, 0);
       usleep(500000);
       continue;
     }
@@ -564,6 +601,11 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
       vg_bus_unlock();
       if(rc != 0) {
         printf("vghmi: live open failed rc=%d\n", rc);
+        for(i = 0; i < n; i++) {
+          g_live_on[i] = 0;
+        }
+        g_live_n = n;
+        write_live_snapshot(&live, n);
         usleep(500000);
         continue;
       }
@@ -589,6 +631,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
     }
 
     g_live_n = n;
+    write_live_snapshot(&live, n);
     if(ok > 0) {
       if(live_ok_logs < 8) {
         printf("vghmi: live ok=%d/%d a1=%.1f\n", ok, n, (double)a1);
