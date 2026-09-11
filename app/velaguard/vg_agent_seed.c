@@ -35,7 +35,8 @@ static const char g_modbus_query_skill[] =
 "vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0\n"
 "```\n"
 "\n"
-"禁止写操作、禁止 mkfs/reboot。只读。\n";
+"禁止写操作、禁止 mkfs/reboot。只读。\n"
+"禁止调用 vgpoint、vgdiscover apply、vgcfg commit。\n";
 
 static const char g_alarm_interpretation_skill[] =
 "# 告警解释（VelaGuard）\n"
@@ -56,6 +57,7 @@ static const char g_alarm_interpretation_skill[] =
 "## 约束\n"
 "\n"
 "- 只读；禁止写寄存器、改阈值、mkfs、reboot\n"
+"- 禁止 run_shell：vgpoint、vgdiscover apply、vgcfg commit\n"
 "- 信息不足时设 unresolved=true，不要编造点位\n";
 
 static const char g_operations_report_skill[] =
@@ -78,7 +80,8 @@ static const char g_operations_report_skill[] =
 "## 约束\n"
 "\n"
 "- 指标必须来自 run_shell 输出，禁止编造\n"
-"- 只读；禁止写 Modbus/配置\n";
+"- 只读；禁止写 Modbus/配置\n"
+"- 禁止 run_shell：vgpoint、vgdiscover apply、vgcfg commit\n";
 
 static const char g_heartbeat_md[] =
 "# VelaGuard Heartbeat\n"
@@ -90,7 +93,8 @@ static const char g_heartbeat_md[] =
 "- [ ] 若今日 /data/velaguard/reports/daily-YYYYMMDD.md 尚不存在：按 "
 "operations_report Skill 生成日报（YYYYMMDD 用 get_current_time）\n"
 "\n"
-"工具仅限 run_shell：vgmodbus、vgstats、vgcfg、vgnet。\n";
+"工具仅限 run_shell：vgmodbus、vgstats、vgcfg dump、vgnet。\n"
+"禁止 vgpoint、vgdiscover apply、vgcfg commit。\n";
 
 static int write_if_missing(const char *path, const char *body)
 {
