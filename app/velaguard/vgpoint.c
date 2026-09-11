@@ -1,7 +1,7 @@
 /****************************************************************************
  * app/velaguard/vgpoint.c
  *
- * NSH: host serial point-table editor (candidate / test / apply --confirm).
+ * NSH: host serial point-table editor (candidate / test / get / apply).
  ****************************************************************************/
 
 #include <errno.h>
@@ -41,6 +41,10 @@
 
 #ifndef CONFIG_VG_CONFIG_BASEDIR
 #  define CONFIG_VG_CONFIG_BASEDIR "/data/velaguard/config"
+#endif
+
+#ifndef CONFIG_VG_LIVE_VALUES_PATH
+#  define CONFIG_VG_LIVE_VALUES_PATH "/data/velaguard/live/values.txt"
 #endif
 
 #define VGPOINT_CMDLEN_MAX 120
@@ -713,6 +717,89 @@ static int cmd_test(int argc, char *argv[])
   return 0;
 }
 
+static int cmd_get(int argc, char *argv[])
+{
+  struct vg_discover_summary committed;
+  struct vg_live_snapshot snap;
+  FAR const char *id = NULL;
+  char line[160];
+  uint32_t age;
+  int i;
+  int rc;
+  int n_out = 0;
+  int idx;
+
+  if (argc >= 3 && argv[2][0] != '-')
+    {
+      id = argv[2];
+      if (!vg_point_validate_id(id))
+        {
+          return reply_err("get", "bad_arg", "bad_id");
+        }
+    }
+
+  rc = vg_point_table_read(&committed, CONFIG_VG_DISCOVER_POINTS_PATH);
+  if (rc != 0)
+    {
+      memset(&committed, 0, sizeof(committed));
+    }
+
+  if (committed.n_points <= 0)
+    {
+      if (id != NULL)
+        {
+          return reply_err("get", "no_id", "not_found");
+        }
+
+      reply_ok("get", "committed", 0);
+      return 0;
+    }
+
+  rc = vg_live_snapshot_read(CONFIG_VG_LIVE_VALUES_PATH, &snap);
+  if (rc == -ENOENT)
+    {
+      return reply_err("get", "no_sample", "missing");
+    }
+
+  if (rc != 0)
+    {
+      return reply_err("get", "io", "read_fail");
+    }
+
+  age = vg_live_age_ms(snap.tick_ms, vg_live_now_ms());
+  if (id != NULL)
+    {
+      idx = vg_live_snapshot_find_id(&snap, id);
+      if (idx < 0)
+        {
+          return reply_err("get", "no_id", "not_found");
+        }
+
+      vg_point_format_value(line, sizeof(line),
+                            snap.samples[idx].id,
+                            snap.samples[idx].value,
+                            snap.samples[idx].ok,
+                            snap.samples[idx].unit, age);
+      printf("%s\n", line);
+      reply_ok("get", "committed", 1);
+      return 0;
+    }
+
+  for (i = 0; i < snap.n; i++)
+    {
+      vg_point_format_value(line, sizeof(line),
+                            snap.samples[i].id,
+                            snap.samples[i].value,
+                            snap.samples[i].ok,
+                            snap.samples[i].unit, age);
+      printf("%s\n", line);
+      n_out++;
+    }
+
+  reply_ok("get", "committed", n_out);
+  return 0;
+}
+
 static int cmd_apply(int argc, char *argv[])
 {
   struct vg_discover_summary sum;
@@ -817,6 +904,11 @@ int main(int argc, char *argv[])
   if (strcmp(verb, "test") == 0)
     {
       return cmd_test(argc, argv);
+    }
+
+  if (strcmp(verb, "get") == 0)
+    {
+      return cmd_get(argc, argv);
     }
 
   if (strcmp(verb, "apply") == 0)
