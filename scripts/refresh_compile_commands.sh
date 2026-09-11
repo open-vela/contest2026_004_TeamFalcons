@@ -31,7 +31,7 @@ if ! command -v bear >/dev/null 2>&1; then
 fi
 
 if [[ ! -f "${NUTTX_DIR}/.config" ]]; then
-  echo "error: ${NUTTX_DIR}/.config missing; run scripts/build.sh net first" >&2
+  echo "error: ${NUTTX_DIR}/.config missing; run scripts/build.sh first" >&2
   exit 1
 fi
 

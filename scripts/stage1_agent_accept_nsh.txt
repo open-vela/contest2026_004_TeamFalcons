@@ -1,5 +1,6 @@
-# Stage1 ai_agent 板端验收（net 预设，含 ai_agent + eMMC）
-# 固件：bash scripts/build.sh net --clean && bash scripts/flash.sh
+# Stage1 ai_agent 板端验收（作品主线 velaguard-lvgl，含 ai_agent + eMMC + HMI）
+# 固件：bash scripts/build.sh --clean && bash scripts/flash.sh
+# 开机不自动启动 Agent；等界面和网络起来后再执行 ai_agent
 # 前提：RJ45 出网；MiMo token 可用（探针同款 set_llm）
 
 # --- §1 布局 ---
@@ -23,7 +24,7 @@ quit
 
 # 方式 B：构建时固化（secrets/agent_llm.key 单行 token，勿提交 git）
 #   cp secrets/agent_llm.key.example secrets/agent_llm.key
-#   bash scripts/build.sh net && bash scripts/flash.sh
+#   bash scripts/build.sh && bash scripts/flash.sh
 # 冷复位后 config.json 仍在，无需重设 set_llm
 
 # --- §5 持久化探针 ---

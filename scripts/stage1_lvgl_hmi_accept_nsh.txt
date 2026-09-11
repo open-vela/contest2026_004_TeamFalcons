@@ -1,5 +1,5 @@
-# Stage1 LVGL HMI 板端验收（velaguard-lvgl = net + HMI 演示固件）
-# 烧录: bash scripts/build.sh velaguard-lvgl --clean && powershell.exe -File scripts/flash.ps1
+# Stage1 LVGL HMI 板端验收（作品主线 velaguard-lvgl）
+# 烧录: bash scripts/build.sh --clean && powershell.exe -File scripts/flash.ps1
 # 目视: 冷启动后 LCD 进裁剪首页（无需敲 vghmi）；扫描开关默认关
 
 ?

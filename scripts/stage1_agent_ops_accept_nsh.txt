@@ -1,5 +1,5 @@
-# Stage1 agent-ops 板端验收（net + VG_AGENT_OPS + VG_AGENT_AUTOSTART）
-# 固件：bash scripts/build.sh net --clean && bash scripts/flash.sh
+# Stage1 agent-ops 板端验收（velaguard-lvgl；开机不自动启动 Agent）
+# 固件：bash scripts/build.sh --clean && bash scripts/flash.sh
 #
 # autostart 以 --daemon 后台跑 cron/heartbeat；交互需：
 #   nsh> ai_agent    → 进入 vela>（附着 daemon，不会双实例）

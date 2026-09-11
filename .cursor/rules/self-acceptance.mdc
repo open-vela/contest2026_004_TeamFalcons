@@ -9,10 +9,10 @@ alwaysApply: true
 
 ## 必须自行执行（按可用性）
 
-1. **编译**：`bash scripts/build.sh net`（或任务指定 preset）
+1. **编译**：`bash scripts/build.sh`（作品主线 `velaguard-lvgl`；任务另有指定时用该 preset）
 2. **Host 单测**：`make -C app/velaguard/host_tests test`
 3. **Contest log 校验**（若改动 logs）：`.claude/skills/contest-log-collector` 中的 `validate-log.py`
-4. **板端 NSH 验收**：若 Windows COM3 可用，用 `powershell.exe -ExecutionPolicy Bypass -File scripts/*_accept.ps1`；需要先烧录时先 `bash scripts/build.sh net` + `scripts/flash.ps1`（或 `stage1_flash_and_accept.ps1`）
+4. **板端 NSH 验收**：若 Windows COM3 可用，用 `powershell.exe -ExecutionPolicy Bypass -File scripts/*_accept.ps1`；需要先烧录时先 `bash scripts/build.sh` + `scripts/flash.ps1`（或 `stage1_flash_and_accept.ps1`）
 5. **PR CI**：创建/更新 PR 后检查 `gh pr checks` 直至结论明确
 
 ## 仅在这些情况才请用户介入

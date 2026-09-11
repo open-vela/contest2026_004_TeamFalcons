@@ -6,8 +6,8 @@ $root = Split-Path -Parent $PSScriptRoot
 $wsl = "wsl.exe"
 $distro = "Debian"
 
-Write-Host "[recover-hmi] build velaguard-lvgl..."
-& $wsl -d $distro bash -lc "cd '$($root -replace '\\','/')' && bash scripts/build.sh velaguard-lvgl"
+Write-Host "[recover-hmi] build velaguard-lvgl (作品主线)..."
+& $wsl -d $distro bash -lc "cd '$($root -replace '\\','/')' && bash scripts/build.sh"
 if ($LASTEXITCODE -ne 0) { throw "build failed" }
 
 Write-Host "[recover-hmi] flash..."

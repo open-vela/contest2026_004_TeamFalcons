@@ -46,7 +46,7 @@ try {
   Write-Output $buf
 
   if ($buf -notmatch "vgdiscover") {
-    Write-Output "[FAIL] vgdiscover not in firmware (flash velaguard-net or enable VG_BUS_DISCOVER)"
+    Write-Output "[FAIL] vgdiscover not in firmware (flash velaguard-lvgl or enable VG_BUS_DISCOVER)"
     exit 2
   }
 

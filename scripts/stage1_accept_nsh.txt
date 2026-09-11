@@ -1,5 +1,5 @@
-# Stage1 板端验收（net 预设 = 网络 + eMMC + vgcfg + vgstats）
-# 在 COM3 NSH 逐段粘贴；固件：bash scripts/build.sh net --clean && bash scripts/flash.sh
+# Stage1 板端验收（作品主线 velaguard-lvgl = 网络 + eMMC + vgcfg + vgstats + HMI）
+# 在 COM3 NSH 逐段粘贴；固件：bash scripts/build.sh --clean && bash scripts/flash.sh
 # MThings：COM6 9600 8N1，从站仿真开、采集关（Modbus 段需要）
 
 # --- §1 /data 布局 ---
