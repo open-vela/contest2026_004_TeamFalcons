@@ -69,6 +69,6 @@ void vg_page_report_create(lv_obj_t * parent, const void * args)
     }
     else {
         lv_label_set_text(s_report.body_lab,
-            "暂无日报。\n\n(板端: /data/agent/reports/daily-*.md)");
+            "暂无日报。\n\n(板端: /data/velaguard/reports/daily-*.md)");
     }
 }
