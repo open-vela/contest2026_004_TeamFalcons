@@ -151,3 +151,17 @@ vg_frame_stats ring window + vgstats NSH; vgmodbus hook; host tests pass; emmc b
 ### Status
 
 [OK] **Completed**
+
+## Session: park vgpoint, lock demo MVP
+
+**Date**: 2026-09-09
+**Task**: `08-30-stage1-min-product` (active child still `08-30-stage1-lvgl-hmi`)
+**Branch**: `learn_vela`
+
+### Summary
+
+COM3/NSH `vgpoint` 上位机写入待办 `09-09-nsh-vgpoint-host-editor`（P2，未 start）。9/20 演示 MVP 收成：CSV 点表阈值 → 注入水浸或离线 → HMI 告警 + `pending_alarm.txt`；双固件演示。不做运行时加点。
+
+### Status
+
+[OK] Backlog written; F1 not implemented this turn.
