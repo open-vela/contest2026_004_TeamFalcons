@@ -31,6 +31,10 @@ OUT_PATH = NUTTX_DIR / "compile_commands.json"
 
 INCLUDE_DIRS = [
     REPO_DIR / "app",
+    REPO_DIR / "app/velaguard",
+    REPO_DIR / "app/velaguard/nanomodbus",
+    REPO_DIR / "gui/main/ui",
+    REPO_DIR / "gui/main/inc",
     REPO_DIR / "board",
     NUTTX_DIR / "include",
     NUTTX_DIR / "arch/arm/include",
@@ -52,6 +56,7 @@ COMMON_FLAGS = [
     "-std=gnu11",
     "-D__NuttX__",
     "-DNDEBUG",
+    "-DNMBS_SERVER_DISABLED",
     f"-include{CONFIG_H}",
 ]
 
@@ -81,7 +86,7 @@ def main() -> int:
         return 1
 
     sources: list[Path] = []
-    for pattern in ("app/**/*.c", "board/**/*.c"):
+    for pattern in ("app/**/*.c", "board/**/*.c", "gui/main/ui/**/*.c"):
         sources.extend(sorted(REPO_DIR.glob(pattern)))
 
     if not sources:
