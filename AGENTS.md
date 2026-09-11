@@ -18,6 +18,10 @@ If you're using Codex or another agent-capable tool, additional project-scoped h
 
 Project-local skills (also mirrored under `.cursor/skills/` for Cursor):
 - `mthings-automation-config-skill` — generate or modify MThings `.mthings` from Modbus/S7/DL/T645/CJ/T188/DL/T698.45 point tables; trigger when importing registers, building SCADA pages/widgets, or validating `.mthings` XML.
+- `velaguard-board-inner-loop` — compile velaguard-lvgl, QSPI flash, COM3 NSH self-accept.
+- `velaguard-candidate-confirm` — vgpoint candidate table, test-read, human `apply --confirm`.
+- `velaguard-alarm-to-screen` — local threshold/offline alarm on the HMI and `pending_alarm.txt`.
+- `velaguard-board-hw` — H750B-DK schematic-first pinmux/driver work.
 
 Managed by Trellis. Edits outside this block are preserved; edits inside may be overwritten by a future `trellis update`.
 
