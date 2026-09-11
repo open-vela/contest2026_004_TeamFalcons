@@ -1,0 +1,28 @@
+{
+  "id": "demo-threshold-alarm",
+  "name": "demo-threshold-alarm",
+  "title": "演示MVP：点表阈值告警上屏",
+  "description": "编译期阈值驱动本地告警上屏并写 pending_alarm；对齐日报目录",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-09",
+  "completedAt": null,
+  "branch": "learn_vela",
+  "base_branch": "learn_vela",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-09-pre-920-score-play",
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {
+    "notes": "2026-09-11：手册规定的下一步。vgpoint 编码已收口；板测顺带 apply --confirm。不要并行开 samefw 或评委包。"
+  }
+}

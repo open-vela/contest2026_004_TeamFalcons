@@ -1,0 +1,3 @@
+{"file": ".trellis/tasks/09-09-demo-threshold-alarm/prd.md", "reason": "AC: alarm page, pending file, report dir"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "No name-based alarm branches left"}
+{"file": "docs/agents/BOUNDARY.md", "reason": "Local alarm must work offline; Agent must not mutate"}

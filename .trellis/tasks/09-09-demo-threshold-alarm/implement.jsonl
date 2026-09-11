@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "Threshold fields flow codegen to HMI alarm"}
+{"file": ".trellis/spec/backend/vg-config-store.md", "reason": "pending and reports under /data/velaguard"}
+{"file": ".trellis/tasks/09-09-pre-920-score-play/design.md", "reason": "F1 data flow and report path"}
+{"file": ".trellis/tasks/09-09-demo-threshold-alarm/design.md", "reason": "Child design for threshold compare"}
