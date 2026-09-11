@@ -28,6 +28,8 @@
   ],
   "parent": null,
   "relatedFiles": [],
-  "notes": "2026-09-01 Q1=B：HMI+Agent 同机为尽力项；出口主战场 lvgl-hmi AC4–AC7 + net CLI 查数。",
-  "meta": {}
+  "notes": "2026-09-09：剩余=演示MVP（F1点表阈值+注入告警上屏）。vgpoint/COM3上位机拆到 09-09-nsh-vgpoint-host-editor，不阻塞归档。Q1=B 仍有效。",
+  "meta": {
+    "notes": "2026-09-11 再整理：6/6 子任务已归档。本父任务停工，不要再平行开工。9/20 剩余只走 09-09-pre-920-score-play → 下一步 09-09-demo-threshold-alarm。闭环后再归档本目录。"
+  }
 }

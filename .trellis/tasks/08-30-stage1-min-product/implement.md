@@ -1,7 +1,7 @@
 # 实施计划：阶段 1 剩余闭环
 
-> 父任务不写产品代码。下列清单按顺序在 **已有子任务** 上执行。  
-> 下一步实施目标：已 `in_progress` 的 `08-30-stage1-lvgl-hmi`（批准本规划后继续该子任务；**勿** `task.py start` 本父任务）。
+> 父任务不写产品代码。6 个子任务已归档。本目录停工，勿 `task.py start`。  
+> 9/20 下一步：`09-09-demo-threshold-alarm`（父任务 `09-09-pre-920-score-play`）。
 
 ## 0. 规划卫生（本步，无固件）
 
@@ -39,18 +39,37 @@ powershell.exe -File scripts/stage1_lvgl_hmi_accept.ps1
 ## 3. CLI 查数板测（`velaguard-net`）
 
 - [x] E1 `vela> ask` 查从站读数 — **2026-09-02 板测**：`stage1_agent_accept.ps1` **6/8 PASS**（`vela>` + `ask response` + `persist write`）；Wi-Fi 已 `vgnet: joined ASUS`；剩余 **net_test TLS/HTTP 2 项**（非 ask 主路径）
-## 4. 可选：事件主动 AC4
 
-- [ ] F1 注入超阈值或离线 → `pending_alarm.txt` → heartbeat 解释  
-  跳过则父 AC「事件主动」保持可选，§14.2 告警比例不填数字。
+## 4. 演示 MVP（已移交，本父任务不要再平行开工）
+
+2026-09-10 起点表改由上位机写入，不再用 CSV 编译期 codegen。F1 / 手册对照 / 提交材料由 `09-09-pre-920-score-play` 承接。本父任务保持 planning，等 9/20 闭环后再归档。
+
+推进方案 §10「最小可演示闭环」仍有效：**本地告警必须看得见**。执行清单见子任务，不要在这里再写一套：
+
+- F1a/F1b → `09-09-demo-threshold-alarm`（下一步）
+- F1c 同机 Agent → `09-09-samefw-agent-spike`（告警板测通过后再开）
+- 提交材料 → `09-09-judge-submit-pack`
+
+演示点表由上位机 JSON 下发（规范第 4 节 temp/flood 一类），不写进固件。
 
 ## 5. 父出口
 
-- [ ] 对照手册 §14.1 逐条
-- [ ] 日报 §14.2 沿用 2026-08-30 证据；写操作 = 0
-- [ ] `task.py archive 08-30-stage1-min-product`（全部子任务归档后）
+对照手册与归档仍等 `09-09-pre-920-score-play` 的告警板测 + 评委包有结论后再做。不要为了清待办提前归档本父任务。
+
+- [ ] 对照手册 §14.1 逐条（演示子集；未做项标明阶段）— 执行在 `09-09-judge-submit-pack`
+- [ ] 日报 §14.2 沿用 2026-08-30 证据；写操作 = 0；告警解释比例未板测则笔记跳过
+- [ ] `task.py archive 08-30-stage1-min-product`（9/20 闭环后；**不要**在告警上屏完成前归档）
+
+## 6. 明确不做（已另立待办）
+
+| 项 | 去向 |
+|----|------|
+| NSH `vgpoint` / COM3 上位机加点改阈值 | 编码已在 `09-10-host-nsh-vgpoint`；告警比较在 `09-09-demo-threshold-alarm` |
+| Windows 配置 GUI、屏上编辑点表 | 9/20 后 |
+| HMI `VG_AGENT_AUTOSTART` | D2，非出口；同机试验见 `09-09-samefw-agent-spike` |
+| 阶段 2 规则库、阶段 3 OTA、Bridge | 手册已裁出 9/20 |
 
 ## Rollback
 
-- 烧 `velaguard-net` 回到无屏闭环
+- 修同一套 `velaguard-lvgl`；开机仍不自动启动 Agent
 - HMI confirm 只写 inactive slot；`vgcfg damage` 可回 factory

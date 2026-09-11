@@ -2,7 +2,8 @@
 
 > 依据 `VelaGuard_推进方案.md` §6、§9.2；手册 §14。  
 > **前置**：阶段 0 已验收（2026-08-30）；ai_agent 探针 AC1–4 已通过。  
-> **规划刷新**：2026-09-01（Q1=B：HMI+Agent 同机为尽力项）。
+> **规划刷新**：2026-09-01（Q1=B：HMI+Agent 同机为尽力项）。  
+> **2026-09-10**：作品只留一套固件 `velaguard-lvgl`。告警与 Agent 试验见 `09-09-pre-920-score-play`，不再用 `velaguard-net` 作演示或拍摄退路。
 
 ## Goal
 
@@ -21,7 +22,7 @@
 | 告警解释代码 | agent-ops AC4 代码就绪 | 板测可选，不阻塞出口 |
 | Modbus 扫描/探测/点表/`apply` | `vgdiscover` 板测 **32/32** @9600 | NSH 完成，任务未归档 |
 | HMI 冷启动 480×272 | `velaguard-lvgl`；`stage1_lvgl_hmi_accept.ps1` **9/9** | 点亮完成；AC4–AC7 未板测 |
-| 演示预设 | `bash scripts/build.sh velaguard-lvgl`；日常 `net` 无 LVGL | 已定案 |
+| 演示预设 | `bash scripts/build.sh`（`velaguard-lvgl`） | 2026-09-10 起唯一作品镜像 |
 | HMI + `ai_agent` 同 autostart | 2026-09-01 assert 拖死整机；HMI 固件 skip agent autostart | 同机不作为出口硬门槛（Q1=B） |
 | CLI `vela> ask` | 日报链路已用过 | 「查从站实时读数」专项板测未做 |
 
@@ -39,7 +40,8 @@
 
 ## Decisions
 
-- **Q1=B（2026-09-01 用户确认）**：阶段 1 出口 **不**要求一张 `velaguard-lvgl` 同时跑 HMI + `ai_agent`。HMI 用当前 lvgl 固件（skip agent autostart）；日报与 CLI 查数用 `velaguard-net`。同机不 panic 为尽力项，失败则双固件演示并写笔记。
+- **Q1=B（2026-09-01）**：阶段 1 出口不要求开机同时自动启动界面和 Agent。  
+- **2026-09-10**：只烧 `velaguard-lvgl`。同机 Agent 改由 `09-09-samefw-agent-spike` 限时试验，失败也不改烧无屏镜像。
 
 ## Remaining requirements（出口必须）
 
@@ -50,6 +52,7 @@
 - R-rem5（尽力）HMI 存活时 `ai_agent &` 不 panic；失败不阻塞出口
 - R-rem6 `vela> ask` 问从站读数，日志含工具调用与数值（在 `net` 上验）
 - R-rem7 对照手册 §14.1；§14.2 日报证据沿用已有板测；告警比例若未板测则笔记标明跳过；写操作 = 0
+- R-rem8 **演示 MVP**：点表阈值驱动本地告警；水浸=1 或拔从站 → HMI 告警页 + `pending_alarm.txt`。2026-09-10 起改由上位机写入点表；执行权在 `09-09-demo-threshold-alarm`，本父任务不再平行开工。
 
 ## Out of Scope
 
@@ -58,6 +61,8 @@
 - PC 模拟器 Windows 路径（不阻塞板端）
 - 趋势/诊断/日志/系统完整页
 - 单固件 HMI+Agent autostart 作为出口条件
+- Windows 配置 GUI、在屏幕上编辑点表 → 9/20 后
+- NSH `vgpoint` / COM3 上位机加点 → 已由 `09-10-host-nsh-vgpoint` 编码落地；告警比较仍在 `09-09-demo-threshold-alarm`
 
 ## Acceptance Criteria
 
@@ -67,9 +72,10 @@
 - [x] 9/20：Modbus NSH 扫描 + 点表（32/32）
 - [x] 9/20：最简 LVGL（AC4–AC7）
 - [x] 9/20：CLI 自然语言查实时读数（`net` 专项板测）
-- [ ] 对照手册 §14.1
+- [ ] **演示 MVP**：点表阈值 → 注入超阈或离线 → HMI 告警 + `pending_alarm.txt`（推进方案 §10）
+- [ ] 对照手册 §14.1（演示子集；未做项标明阶段）
 - [ ] §14.2：日报 ≥90% 已有一次证据；写操作 = 0；告警解释 ≥70% 若未板测则笔记跳过
-- [ ] （可选）事件主动告警解释板测
+- [ ] （尽力，`velaguard-net`）事件主动告警解释板测
 - [ ] （尽力）HMI 运行时手动 `ai_agent &` 不拖死整机
 
 ## References
