@@ -19,6 +19,10 @@
       "includePath": [
         "${workspaceFolder}/app",
         "${workspaceFolder}/app/**",
+        "${workspaceFolder}/app/velaguard",
+        "${workspaceFolder}/app/velaguard/nanomodbus",
+        "${workspaceFolder}/gui/main/ui",
+        "${workspaceFolder}/gui/main/inc",
         "${workspaceFolder}/board",
         "${workspaceFolder}/board/**",
         "${workspaceFolder}/../nuttx/include",
@@ -35,7 +39,8 @@
       ],
       "defines": [
         "__NuttX__",
-        "NDEBUG"
+        "NDEBUG",
+        "NMBS_SERVER_DISABLED"
       ],
       "browse": {
         "path": [

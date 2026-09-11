@@ -22,7 +22,12 @@
     "*.c": "c",
     "*.h": "c",
     "*.defs": "makefile",
-    "Make.defs": "makefile"
+    "Make.defs": "makefile",
+    "Kconfig": "plaintext",
+    "**/Kconfig": "plaintext",
+    "Kconfig.*": "plaintext",
+    "defconfig": "plaintext",
+    "*.defconfig": "plaintext"
   },
   "files.watcherExclude": {
     "**/.debug/**": true,
