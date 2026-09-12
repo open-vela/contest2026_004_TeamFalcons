@@ -20,6 +20,14 @@
 #define VG_OTA_STEP_PCT 5
 #define VG_MOCK_SEED 24
 
+/* Offline needs this many failed polls inside the last 8 polls (one bit
+ * per poll, 200 ms per poll on board), so scattered bus glitches stop
+ * flipping a point offline while an unplug still trips in about 1 s. */
+#define VG_OFFLINE_WIN_TICKS 8
+#ifndef VG_OFFLINE_MIN_FAILS
+#define VG_OFFLINE_MIN_FAILS 5
+#endif
+
 typedef struct {
     vg_model_change_cb_t cb;
     void * user;
@@ -1558,6 +1566,38 @@ void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n)
     notify_all();
 }
 
+#ifdef VG_HMI_BOARD
+static void vg_offline_win_push(vg_sensor_t * s, bool failed)
+{
+    uint8_t mask = (uint8_t)(1u << (s->failwin_pos % VG_OFFLINE_WIN_TICKS));
+
+    if(s->failwin_bits & mask) {
+        s->failwin_fails--;
+    }
+    if(failed) {
+        s->failwin_bits |= mask;
+        s->failwin_fails++;
+    }
+    else {
+        s->failwin_bits &= (uint8_t)~mask;
+    }
+    s->failwin_pos = (uint8_t)((s->failwin_pos + 1) % VG_OFFLINE_WIN_TICKS);
+}
+
+static bool vg_offline_win_down(const vg_sensor_t * s)
+{
+    uint8_t need = VG_OFFLINE_MIN_FAILS;
+
+    if(s->fail_n > need) {
+        need = s->fail_n;
+    }
+    if(need > VG_OFFLINE_WIN_TICKS) {
+        need = VG_OFFLINE_WIN_TICKS;
+    }
+    return s->failwin_fails >= need;
+}
+#endif
+
 bool vg_model_set_live(uint16_t idx, float value, bool online)
 {
     vg_sensor_t * s;
@@ -1583,6 +1623,7 @@ bool vg_model_set_live(uint16_t idx, float value, bool online)
         s->quality_pct = 95;
 #ifdef VG_HMI_BOARD
         s_net.acq_ok = true;
+        vg_offline_win_push(s, false);
         {
             struct vg_alarm_rule rule;
             enum vg_alarm_kind kind;
@@ -1680,7 +1721,8 @@ bool vg_model_set_live(uint16_t idx, float value, bool online)
             rule.crit = s->thr_crit;
             rule.fail_n = s->fail_n;
             kind = vg_alarm_eval(&rule, 0, s->fail_streak, s->value, &thr);
-            if(kind == VG_ALARM_KIND_OFFLINE) {
+            vg_offline_win_push(s, true);
+            if(kind == VG_ALARM_KIND_OFFLINE && vg_offline_win_down(s)) {
                 if(s->online || s->severity != VG_SEV_OFFLINE) {
                     changed = true;
                 }

@@ -18,7 +18,7 @@ description: "VelaGuard 本地告警上屏：按已确认点表阈值或离线�
 - `cmp` 为空，或 `ge`/`le` 且 `warn` 与 `crit` 都空：只采集，不做模拟量告警。
 - `eq`：用 `crit` 做等于判定（例如水浸等于 1）。`warn` 可空。
 - `ge` / `le`：有 `warn` 则预警，有 `crit` 则严重。两者都有时，`ge` 要求 `warn <= crit`，`le` 要求 `warn >= crit`。
-- 连续读失败达到 `fail_n` 次（默认 3，范围 1..20）：该点记 Offline，告警种类为离线。
+- 离线按滑窗失败率判定：最近 8 轮采集（板端一轮约 200 ms）内失败达 `max(fail_n, 5)` 轮（上限 8）才记 Offline，告警种类为离线；零星抖动不误判，拔线约 1 s 触发。
 - 严重优先于离线，离线优先于预警（`vg_alarm_kind_rank`）。
 
 HMI 在 `vg_model_set_live` 路径上调用 `vg_alarm_eval`，命中则 `vg_pending_alarm_write`。

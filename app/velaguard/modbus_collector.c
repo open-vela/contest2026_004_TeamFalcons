@@ -25,6 +25,8 @@
 
 #include "modbus_port_openvela.h"
 
+#include "vg_discover.h"
+
 #ifdef CONFIG_VG_FRAME_STATS
 #include "vg_frame_stats.h"
 #endif
@@ -285,25 +287,54 @@ int main(int argc, FAR char *argv[])
   for (; ; )
     {
       uint16_t regs[VGMODBUS_MAX_REGS];
+      unsigned int waits = 0;
+      bool locked;
 #ifdef CONFIG_VG_FRAME_STATS
       int32_t t0 = now_ms();
 #endif
 
       memset(regs, 0, sizeof(regs));
-      err = do_read(&nmbs, &cfg, regs);
-#ifdef CONFIG_VG_FRAME_STATS
-      record_frame(cfg.addr, err, t0);
-#endif
-      if (err == NMBS_ERROR_NONE)
+
+      /* Serialize with the HMI acq poller / vgpoint: a collision on the
+       * half-duplex bus shows up as failures on both sides. */
+
+      while (vg_bus_try_lock() != 0)
         {
-          fails = 0;
-          print_regs(cfg.addr, cfg.start, cfg.qty, regs);
+          if (++waits > 50)
+            {
+              break;
+            }
+
+          usleep(20000);
+        }
+
+      locked = (waits <= 50);
+      if (!locked)
+        {
+          printf("vgmodbus: bus busy, skip round\n");
         }
       else
         {
-          fails++;
-          printf("read failed: %s (fails=%lu)\n",
-                 nmbs_strerror(err), (unsigned long)fails);
+          err = do_read(&nmbs, &cfg, regs);
+          vg_bus_unlock();
+#ifdef CONFIG_VG_FRAME_STATS
+          record_frame(cfg.addr, err, t0);
+#endif
+        }
+
+      if (locked)
+        {
+          if (err == NMBS_ERROR_NONE)
+            {
+              fails = 0;
+              print_regs(cfg.addr, cfg.start, cfg.qty, regs);
+            }
+          else
+            {
+              fails++;
+              printf("read failed: %s (fails=%lu)\n",
+                     nmbs_strerror(err), (unsigned long)fails);
+            }
         }
 
       n++;

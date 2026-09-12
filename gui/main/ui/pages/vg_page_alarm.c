@@ -140,7 +140,7 @@ static void refresh_alarm(void * user)
         }
         else if(a->severity == VG_SEV_OFFLINE) {
             lv_snprintf(buf, sizeof(buf),
-                        "【规则摘要】连续读失败达 fail_n，离线已持续 %d 秒。",
+                        "【规则摘要】滑窗读失败达阈值，离线已持续 %d 秒。",
                         a->duration_sec);
         }
         else {

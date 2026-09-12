@@ -169,7 +169,7 @@ Agent 只产出解释与建议。点表写入、配置提交只能由人在板�
 | 总线接入 | 字序 / 倍率联合约束求解、波特率矩阵 | 阶段 2 | 手册 §4.3、§5.1 |
 | 采集与统计 | nanoMODBUS RTU 主站 `vgmodbus`；HMI 周期轮询并写实时快照 | 已落地 | `vg_modbus_read.c`、`vg_ui_backend_board.c` |
 | 采集与统计 | 帧级质量统计：CRC / 超时 / 回显 / 延迟，按从站滑窗，`vgstats` | 已落地 | `vg_frame_stats.c` |
-| 告警 | 阈值（warn / crit）与离线（连续失败）判定，HMI 告警页 | 已落地 | `vg_alarm_eval.c`、`vg_page_alarm.c` |
+| 告警 | 阈值（warn / crit）与离线（滑窗失败率）判定，HMI 告警页 | 已落地 | `vg_alarm_eval.c`、`vg_page_alarm.c` |
 | 告警 | 告警 → `pending_alarm.txt` 交 Agent 解释（事件主动） | 已落地 | `vg_agent_alarm.c` |
 | 告警 | 告警页直接显示 Agent 解释 | 部分：当前显示本地规则摘要并标「规则摘要」，Agent 解释在 `last_alarm.md` | `vg_page_alarm.c` |
 | 告警 | 485 故障归因规则库 | 阶段 2 | 手册 §5.8 |

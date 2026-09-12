@@ -16,6 +16,11 @@
 - [ ] 板测时点一遍 DIAGNOSIS / OTA / TREND 页：确认板端没有入口触发 PC 模拟器的 mock 场景（`vg_model.c:1009` OTA 报价 9.2.0、「开始 AI 诊断」定时器）；有则屏蔽，拍片不进这些页
 - [ ] 拔线→告警页离线→插回→告警恢复，完整走一遍并录屏留证
 
+## 2026-09-12 追加：离线判定改滑窗失败率
+
+- [x] 离线判定由连续 `fail_n` 轮失败改为滑窗失败率：最近 8 轮（约 1.6 s）内失败达 `max(fail_n, 5)` 轮才判 Offline（`vg_model.c` 滑窗 ring；零星抖动不再误判，拔线约 1 s 触发，仍满足分镜 <2 s 节拍）
+- [x] `vgmodbus` 读取串行化：读前拿 `vg_bus_lock`（有界等待 1 s），消除与 HMI 采集并发时的半双工碰撞（此前碰撞会两边同时失败，是误判离线的真实来源之一）
+
 ```bash
 bash scripts/build.sh
 powershell.exe -ExecutionPolicy Bypass -File scripts/flash.ps1

@@ -87,6 +87,9 @@ typedef struct {
     uint8_t has_crit;
     uint8_t fail_n;
     uint8_t fail_streak;
+    uint8_t failwin_bits;   /* last-8-poll failure ring, bit=1 failed */
+    uint8_t failwin_pos;    /* next ring slot to overwrite */
+    uint8_t failwin_fails;  /* failures currently inside the window */
     vg_severity_t severity;
     int32_t age_sec;
     int32_t period_ms;
