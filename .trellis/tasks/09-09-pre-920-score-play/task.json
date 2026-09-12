@@ -24,7 +24,11 @@
     "09-09-judge-submit-pack",
     "09-10-host-nsh-vgpoint",
     "09-11-point-id-name-split",
-    "09-11-host-point-live-query"
+    "09-11-host-point-live-query",
+    "09-12-time-sync-beijing",
+    "09-12-statusbar-live-sync",
+    "09-12-agent-autostart-at-boot",
+    "09-12-heartbeat-llm-round-system-wedge"
   ],
   "parent": null,
   "relatedFiles": [],
