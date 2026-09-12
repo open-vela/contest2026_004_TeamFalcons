@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="440" viewBox="0 0 1200 440" role="img" aria-labelledby="title desc">
   <title id="title">VelaGuard 系统形态</title>
-  <desc id="desc">现场 Modbus 从站经 RS485 进入 STM32H750B-DK 网关；网关内部分为永远本地的采集告警环、LVGL HMI 与板载 ai_agent；网络侧连接云端 MiMo LLM 与 MQTT。</desc>
+  <desc id="desc">现场 Modbus 从站经 RS485 半双工进入 STM32H750B-DK 网关；网关内部分为永远本地的确定性环（周期采集、帧质量统计、阈值/离线告警、双槽配置存储）、LVGL 现场 HMI 与板载 ai_agent 运营助手；网络侧经 RJ45 主链路或 ESP-01S 备链路连接 MQTT Broker（状态上报）与 MiMo LLM（OpenAI 兼容 HTTPS 直连）。断网时采集、告警、统计、配置照常，Agent 不生成解释与报告。</desc>
 
   <defs>
     <marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -9,72 +9,82 @@
     <marker id="ma" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0 1 L9 5 L0 9" fill="none" stroke="#2EC4B6" stroke-width="1.4"/>
     </marker>
+    <marker id="mo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 1 L9 5 L0 9" fill="none" stroke="#F4A261" stroke-width="1.4"/>
+    </marker>
   </defs>
 
-  <rect width="1200" height="420" rx="20" fill="#0E1317"/>
+  <rect width="1200" height="440" rx="20" fill="#0E1317"/>
 
-  <text x="48" y="48" fill="#7E8F9A" font-size="16" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif" letter-spacing="1">SYSTEM MAP</text>
-  <text x="48" y="86" fill="#F2F6F8" font-size="32" font-weight="700" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">现场 → 网关 → 云端</text>
-  <text x="48" y="118" fill="#C5D0D7" font-size="18" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">USB CDC / UART 仅作调试救援；独立网关不依赖长期连电脑。</text>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <text x="48" y="48" fill="#7E8F9A" font-size="16" letter-spacing="1.2">SYSTEM MAP</text>
+    <text x="48" y="88" fill="#F2F6F8" font-size="32" font-weight="700">现场 → 网关 → 云端</text>
+    <text x="48" y="120" fill="#C5D0D7" font-size="18">独立网关，不依赖长期连接电脑；USB CDC / UART 仅作调试与救援通道。</text>
+  </g>
 
   <!-- field column -->
-  <g transform="translate(48 150)" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="200" height="210" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="1.5"/>
-    <text x="100" y="34" text-anchor="middle" fill="#7E8F9A" font-size="16">现场 Modbus 从站</text>
-    <g font-size="16" fill="#C5D0D7" text-anchor="middle">
-      <rect x="24" y="56" width="152" height="36" rx="6" fill="#1E2A33" stroke="#3A4A56"/>
-      <text x="100" y="79">温湿度 / 电表</text>
-      <rect x="24" y="104" width="152" height="36" rx="6" fill="#1E2A33" stroke="#3A4A56"/>
-      <text x="100" y="127">流量计等</text>
-      <rect x="24" y="152" width="152" height="36" rx="6" fill="#1E2A33" stroke="#F4A261"/>
-      <text x="100" y="175" fill="#F4A261">RS485 半双工</text>
+  <g transform="translate(48 150)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <rect width="220" height="220" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="1.5"/>
+    <text x="110" y="36" text-anchor="middle" fill="#7E8F9A" font-size="18">现场 Modbus 从站</text>
+    <g font-size="18" fill="#C5D0D7" text-anchor="middle">
+      <rect x="24" y="58" width="172" height="40" rx="8" fill="#1E2A33" stroke="#3A4A56"/>
+      <text x="110" y="85">温湿度 / 电表</text>
+      <rect x="24" y="110" width="172" height="40" rx="8" fill="#1E2A33" stroke="#3A4A56"/>
+      <text x="110" y="137">流量计 / 水浸</text>
+      <rect x="24" y="162" width="172" height="40" rx="8" fill="#1E2A33" stroke="#F4A261"/>
+      <text x="110" y="189" fill="#F4A261">RS485 半双工 · 9600</text>
     </g>
   </g>
 
-  <path d="M248 255 H292" stroke="#F4A261" stroke-width="2.5" marker-end="url(#m)" fill="none"/>
+  <path d="M268 260 H306" stroke="#F4A261" stroke-width="2.5" marker-end="url(#mo)" fill="none"/>
 
   <!-- gateway -->
-  <g transform="translate(292 140)" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="460" height="230" rx="12" fill="#172027" stroke="#F4A261" stroke-width="2"/>
-    <text x="230" y="36" text-anchor="middle" fill="#F4A261" font-size="20" font-weight="600">STM32H750B-DK + openvela</text>
+  <g transform="translate(310 140)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <rect width="450" height="240" rx="12" fill="#172027" stroke="#F4A261" stroke-width="2"/>
+    <text x="225" y="38" text-anchor="middle" fill="#F4A261" font-size="20" font-weight="600">STM32H750B-DK + openvela</text>
 
-    <rect x="20" y="56" width="200" height="150" rx="10" fill="#1E2A33" stroke="#F4A261" stroke-width="1.5"/>
-    <text x="120" y="84" text-anchor="middle" fill="#F4A261" font-size="17" font-weight="600">永远本地</text>
-    <g fill="#C5D0D7" font-size="15" text-anchor="middle">
-      <text x="120" y="114">Modbus 周期采集</text>
-      <text x="120" y="140">帧质量统计</text>
-      <text x="120" y="166">阈值 / 突变 / 离线告警</text>
-      <text x="120" y="192">配置与事件日志</text>
+    <rect x="20" y="58" width="210" height="162" rx="10" fill="#1E2A33" stroke="#F4A261" stroke-width="1.5"/>
+    <text x="125" y="88" text-anchor="middle" fill="#F4A261" font-size="18" font-weight="600">永远本地（C，确定性）</text>
+    <g fill="#C5D0D7" font-size="18" text-anchor="middle">
+      <text x="125" y="120">Modbus 周期采集</text>
+      <text x="125" y="148">帧质量统计</text>
+      <text x="125" y="176">阈值 / 离线告警</text>
+      <text x="125" y="204">双槽配置存储</text>
     </g>
 
-    <rect x="236" y="56" width="204" height="68" rx="10" fill="#1E2A33" stroke="#3A4A56"/>
-    <text x="338" y="88" text-anchor="middle" fill="#F2F6F8" font-size="16" font-weight="600">LVGL 现场 HMI</text>
-    <text x="338" y="112" text-anchor="middle" fill="#8B9BA6" font-size="14">只读展示 + 人工确认</text>
+    <rect x="246" y="58" width="184" height="72" rx="10" fill="#1E2A33" stroke="#3A4A56"/>
+    <text x="338" y="88" text-anchor="middle" fill="#F2F6F8" font-size="18" font-weight="600">LVGL 现场 HMI</text>
+    <text x="338" y="116" text-anchor="middle" fill="#8B9BA6" font-size="18">只读展示 + 人工确认</text>
 
-    <rect x="236" y="138" width="204" height="68" rx="10" fill="#1E2A33" stroke="#2EC4B6" stroke-width="1.5"/>
-    <text x="338" y="170" text-anchor="middle" fill="#2EC4B6" font-size="16" font-weight="600">ai_agent 运营助手</text>
-    <text x="338" y="194" text-anchor="middle" fill="#8B9BA6" font-size="14">解释 / 日报 / NL 查数</text>
+    <rect x="246" y="148" width="184" height="72" rx="10" fill="#1E2A33" stroke="#2EC4B6" stroke-width="1.5"/>
+    <text x="338" y="178" text-anchor="middle" fill="#2EC4B6" font-size="18" font-weight="600">ai_agent 运营助手</text>
+    <text x="338" y="206" text-anchor="middle" fill="#8B9BA6" font-size="18">解释 · 日报 · 查数</text>
   </g>
 
-  <!-- network arrows -->
+  <!-- network links -->
   <g fill="none" stroke-width="2">
-    <path d="M752 210 H808" stroke="#8B9BA6" stroke-dasharray="5 4" marker-end="url(#m)"/>
-    <path d="M752 278 H808" stroke="#2EC4B6" marker-end="url(#ma)"/>
+    <path d="M760 210 H856" stroke="#8B9BA6" stroke-dasharray="5 4" marker-end="url(#m)"/>
+    <path d="M760 310 H856" stroke="#2EC4B6" marker-end="url(#ma)"/>
   </g>
-  <text x="780" y="192" text-anchor="middle" fill="#8B9BA6" font-size="13" font-family="-apple-system, 'Segoe UI', 'PingFang SC', sans-serif">RJ45/ESP-01</text>
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" fill="#8B9BA6" text-anchor="middle">
+    <text x="808" y="250">RJ45 主</text>
+    <text x="808" y="272">ESP-01S 备</text>
+  </g>
 
   <!-- cloud -->
-  <g transform="translate(808 150)" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="344" height="210" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="1.5"/>
-    <text x="172" y="34" text-anchor="middle" fill="#7E8F9A" font-size="16">云端（需要网络）</text>
+  <g transform="translate(860 150)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <rect width="292" height="220" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="1.5"/>
+    <text x="146" y="36" text-anchor="middle" fill="#7E8F9A" font-size="18">云端（需要网络）</text>
 
-    <rect x="24" y="56" width="296" height="56" rx="10" fill="#1E2A33" stroke="#3A4A56"/>
-    <text x="172" y="90" text-anchor="middle" fill="#C5D0D7" font-size="16">MQTT Broker · 遥测 / 告警 / OTA</text>
+    <rect x="24" y="58" width="244" height="72" rx="10" fill="#1E2A33" stroke="#3A4A56"/>
+    <text x="146" y="88" text-anchor="middle" fill="#C5D0D7" font-size="18" font-weight="600">MQTT Broker · 状态上报</text>
+    <text x="146" y="116" text-anchor="middle" fill="#8B9BA6" font-size="18">遥测 / OTA 规划中</text>
 
-    <rect x="24" y="128" width="296" height="56" rx="10" fill="#1E2A33" stroke="#2EC4B6" stroke-width="1.5"/>
-    <text x="172" y="162" text-anchor="middle" fill="#2EC4B6" font-size="16">MiMo LLM · OpenAI 兼容 HTTPS</text>
+    <rect x="24" y="148" width="244" height="72" rx="10" fill="#1E2A33" stroke="#2EC4B6" stroke-width="1.5"/>
+    <text x="146" y="178" text-anchor="middle" fill="#2EC4B6" font-size="18" font-weight="600">MiMo LLM</text>
+    <text x="146" y="206" text-anchor="middle" fill="#8B9BA6" font-size="18">OpenAI 兼容 HTTPS 直连</text>
   </g>
 
-  <!-- bottom note -->
-  <text x="48" y="400" fill="#7E8F9A" font-size="16" font-family="-apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">断网：采集 / 告警 / 统计 / 日志照常；Agent 降级为规则引擎原始信息，不假装还能 AI 诊断。</text>
+  <!-- offline note -->
+  <text x="48" y="418" fill="#7E8F9A" font-size="18" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">断网：采集 / 告警 / 统计 / 配置照常；Agent 不生成解释与报告，HMI 只显示规则引擎的原始信息。</text>
 </svg>
