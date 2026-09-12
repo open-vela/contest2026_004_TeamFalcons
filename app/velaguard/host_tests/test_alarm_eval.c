@@ -64,6 +64,24 @@ int main(void)
   k = vg_alarm_eval(&temp, 0, 3, 0.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "fail streak 3");
 
+  /* Recovery sequences mirroring vg_model_set_live: the HMI clears the
+   * active alarm only when the owning point evaluates NONE again. */
+  k = vg_alarm_eval(&flood, 1, 0, 1.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_CRIT, "flood trip");
+  k = vg_alarm_eval(&flood, 1, 0, 0.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_NONE, "flood recovered to none");
+
+  k = vg_alarm_eval(&temp, 0, 3, 0.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "temp offline");
+  k = vg_alarm_eval(&temp, 1, 0, 25.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_NONE, "temp recovered after offline");
+
+  /* Contract: streak < fail_n stays NONE so a brief read failure never
+   * clears the active alarm (vg_model recovery runs on the online branch
+   * only; the offline branch keeps the existing alarm). */
+  k = vg_alarm_eval(&temp, 0, 1, 0.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_NONE, "brief failure no recovery");
+
   fails += expect_true(vg_alarm_fail_n(&empty) == 3, "default fail_n");
   fails += expect_true(vg_alarm_kind_rank(VG_ALARM_KIND_CRIT) >
                        vg_alarm_kind_rank(VG_ALARM_KIND_OFFLINE),

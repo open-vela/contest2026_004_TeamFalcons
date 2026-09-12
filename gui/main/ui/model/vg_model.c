@@ -1493,6 +1493,7 @@ void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n)
     if(pts == NULL || n <= 0) {
         s_sensor_n = 0;
         s_selected_id[0] = '\0';
+        memset(&s_alarm, 0, sizeof(s_alarm));
         rebuild_filter();
         notify_all();
         return;
@@ -1548,6 +1549,11 @@ void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n)
     s_net.acq_ok = true;
 #endif
 
+    if(s_alarm.active && vg_model_get_sensor(s_alarm.sensor_id) == NULL) {
+        memset(&s_alarm, 0, sizeof(s_alarm));
+        vg_model_append_log(VG_LOG_ALARM, VG_SEV_INFO, "告警清除: 点表已更新");
+    }
+
     rebuild_filter();
     notify_all();
 }
@@ -1593,6 +1599,16 @@ bool vg_model_set_live(uint16_t idx, float value, bool online)
             rule.crit = s->thr_crit;
             rule.fail_n = s->fail_n;
             kind = vg_alarm_eval(&rule, 1, 0, value, &thr);
+            /* Recovery: this point owns the active alarm and reads normal */
+            if(kind == VG_ALARM_KIND_NONE && s_alarm.active &&
+               strcmp(s_alarm.sensor_id, s->id) == 0) {
+                char logbuf[96];
+
+                lv_snprintf(logbuf, sizeof(logbuf), "告警恢复: %s", s->name);
+                memset(&s_alarm, 0, sizeof(s_alarm));
+                vg_model_append_log(VG_LOG_ALARM, VG_SEV_OK, logbuf);
+                changed = true;
+            }
             if(kind == VG_ALARM_KIND_CRIT) {
                 sev = VG_SEV_CRIT;
                 title = "点表严重告警";

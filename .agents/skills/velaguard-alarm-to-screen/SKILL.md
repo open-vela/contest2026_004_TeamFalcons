@@ -28,6 +28,7 @@ HMI 在 `vg_model_set_live` 路径上调用 `vg_alarm_eval`，命中则 `vg_pend
 - 告警正文：`/data/velaguard/pending_alarm.txt`
 - 屏幕自己读这份文件并弹出告警页；不要走 MQTT、不要等 Agent
 - 日报 / 报告页读 `/data/velaguard/reports`，与待处理告警不是同一条路径
+- 告警所属点恢复正常（在线读数回 `NONE`）时，HMI 清 `s_alarm` 并 `unlink` 待处理文件；Agent HEARTBEAT 也会删同一文件，两边都删不算错
 
 ## 明确不做
 

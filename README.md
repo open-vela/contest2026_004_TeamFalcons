@@ -171,7 +171,7 @@ Agent 只产出解释与建议。点表写入、配置提交只能由人在板�
 | 采集与统计 | 帧级质量统计：CRC / 超时 / 回显 / 延迟，按从站滑窗，`vgstats` | 已落地 | `vg_frame_stats.c` |
 | 告警 | 阈值（warn / crit）与离线（连续失败）判定，HMI 告警页 | 已落地 | `vg_alarm_eval.c`、`vg_page_alarm.c` |
 | 告警 | 告警 → `pending_alarm.txt` 交 Agent 解释（事件主动） | 已落地 | `vg_agent_alarm.c` |
-| 告警 | 告警页直接显示 Agent 解释 | 部分：当前显示本地草稿并标「AI 推测」，Agent 解释在 `last_alarm.md` | `vg_page_alarm.c` |
+| 告警 | 告警页直接显示 Agent 解释 | 部分：当前显示本地规则摘要并标「规则摘要」，Agent 解释在 `last_alarm.md` | `vg_page_alarm.c` |
 | 告警 | 485 故障归因规则库 | 阶段 2 | 手册 §5.8 |
 | Agent | `ai_agent` 在 Cortex-M7 运行，CLI `vela>`，MiMo OpenAI 兼容 HTTPS 直连 | 已落地 | `packages/ai_agent`（fork 分支） |
 | Agent | 3 个 Skill + `HEARTBEAT.md` 首启写入；日报落盘并在 LVGL 报告页显示 | 已落地 | `vg_agent_seed.c`、`vg_page_report.c` |

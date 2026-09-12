@@ -64,7 +64,7 @@ static void refresh_alarm(void * user)
     if(a == NULL) {
         lv_label_set_text(s_alarm_ui.title, "无活动告警");
         vg_status_chip_set(s_alarm_ui.chip, "正常", VG_SEV_OK);
-        set_ai_text("【AI 推测】暂无告警上下文。联网后 Agent 可解释活动告警。");
+        set_ai_text("【规则摘要】暂无告警上下文。");
         return;
     }
 
@@ -133,21 +133,19 @@ static void refresh_alarm(void * user)
 
         if(as != NULL && a->severity != VG_SEV_OFFLINE) {
             lv_snprintf(buf, sizeof(buf),
-                        "【AI 推测】%s 当前 %.1f%s，阈值 %.1f%s，已持续 %d 秒。"
-                        "建议先核实现场与 RS485；非确定性结论。",
+                        "【规则摘要】%s 当前 %.1f%s，阈值 %.1f%s，已持续 %d 秒。"
+                        "判定来自点表 cmp/阈值，本地规则引擎。",
                         as->name, (double)a->value, as->unit,
                         (double)a->threshold, as->unit, a->duration_sec);
         }
         else if(a->severity == VG_SEV_OFFLINE) {
             lv_snprintf(buf, sizeof(buf),
-                        "【AI 推测】设备离线已持续 %d 秒。"
-                        "建议检查供电、接线与总线占用；非确定性结论。",
+                        "【规则摘要】连续读失败达 fail_n，离线已持续 %d 秒。",
                         a->duration_sec);
         }
         else {
             lv_snprintf(buf, sizeof(buf),
-                        "【AI 推测】有活动告警，但本地尚无传感器读数。"
-                        "确认点表或等待采集后再解释。");
+                        "【规则摘要】有活动告警，但本地尚无该点读数。");
         }
         set_ai_text(buf);
 
@@ -178,7 +176,7 @@ static void refresh_alarm(void * user)
         vg_metric_row_set_value(s_alarm_ui.rows[4], as ? as->name : "--");
         vg_metric_row_set_value(s_alarm_ui.rows[5], "无");
         lv_label_set_text(s_alarm_ui.hist_lab, "历史: --");
-        set_ai_text("【AI 推测】当前无活动告警。出现告警后将在此给出解释草稿。");
+        set_ai_text("【规则摘要】当前无活动告警。");
         if(s_alarm_ui.btn_ack) lv_obj_add_state(s_alarm_ui.btn_ack, LV_STATE_DISABLED);
         if(s_alarm_ui.btn_mute) lv_obj_add_state(s_alarm_ui.btn_mute, LV_STATE_DISABLED);
     }
@@ -275,7 +273,7 @@ void vg_page_alarm_create(lv_obj_t * parent, const void * args)
     s_alarm_ui.ai_head = lv_label_create(body);
     vg_style_apply_label(s_alarm_ui.ai_head, false);
     lv_obj_set_style_text_color(s_alarm_ui.ai_head, vg_color_info(), 0);
-    lv_label_set_text(s_alarm_ui.ai_head, "AI 推测");
+    lv_label_set_text(s_alarm_ui.ai_head, "规则摘要");
 
     s_alarm_ui.ai_lab = lv_label_create(body);
     lv_label_set_long_mode(s_alarm_ui.ai_lab, LV_LABEL_LONG_WRAP);
@@ -283,7 +281,7 @@ void vg_page_alarm_create(lv_obj_t * parent, const void * args)
     vg_style_apply_label(s_alarm_ui.ai_lab, true);
     lv_obj_set_style_text_font(s_alarm_ui.ai_lab, vg_font_small(), 0);
     lv_label_set_text(s_alarm_ui.ai_lab,
-                      "【AI 推测】当前无活动告警。出现告警后将在此给出解释草稿。");
+                      "【规则摘要】当前无活动告警。");
 
     s_alarm_ui.rows[0] = vg_metric_row_create(body, "类型", "--");
     s_alarm_ui.rows[1] = vg_metric_row_create(body, "当前值", "--");

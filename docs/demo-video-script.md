@@ -34,7 +34,7 @@ powershell.exe -ExecutionPolicy Bypass -File scripts/flash.ps1
 
 ### 彩排规则
 
-- 每次彩排后 **手动删除** `pending_alarm.txt`（固件当前不清，见 `09-09-demo-threshold-alarm` 追加项；若已修则不必）。
+- 彩排前手动清一次 `pending_alarm.txt`；恢复后固件会自动删除（9/12 起恢复即 unlink，见 `09-09-demo-threshold-alarm`）。
 - 彩排两遍再正式拍。正式拍以"一次开机不重启"为目标；实在接不上再分段。
 
 ---
@@ -124,8 +124,6 @@ nsh> vgpoint get
 **旁白**：
 > 水浸触发了。判定是规则引擎在本地做的：比较方式 eq、阈值 1，全部来自刚才那张点表，没有任何按点名称写死的逻辑。告警同时落盘成待处理文件，给 Agent 用。
 > 现在拔掉温度从站——三次读失败，判离线。插回去，恢复。这一整段没有网络参与。
-
-**若恢复逻辑未修**：删掉第 5 步和对应旁白，不要拍插回。
 
 ---
 

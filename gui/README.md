@@ -2,7 +2,7 @@
 
 自 [FoLeaf/velaguard_gui](https://github.com/FoLeaf/velaguard_gui) `release/v9.1` 迁入 contest 仓，并按 `VelaGuard_项目手册.md` §6 **裁剪**：
 
-- 保留：首页、从站详情、告警（含 AI 推测）、**运行报告**、**总线探查**（扫描开关默认关）
+- 保留：首页、从站详情、告警（含规则摘要）、**运行报告**、**总线探查**（扫描开关默认关）
 - 占位 toast：OTA →「阶段 3 提供」；趋势/诊断/日志/系统/添加 →「阶段 2 提供」
 
 ## WSL / Linux

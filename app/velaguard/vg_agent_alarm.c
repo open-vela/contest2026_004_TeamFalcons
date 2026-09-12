@@ -112,6 +112,16 @@ int vg_pending_alarm_write(const char *body)
   return write_pending(body);
 }
 
+int vg_pending_alarm_clear(void)
+{
+  if (unlink("/data/velaguard/pending_alarm.txt") < 0)
+    {
+      return (errno == ENOENT) ? 0 : -errno;
+    }
+
+  return 0;
+}
+
 #ifndef CONFIG_VG_HMI
 static void check_offline(uint8_t slave)
 {

@@ -3,11 +3,16 @@
 
 #ifdef CONFIG_VG_AGENT_OPS
 int vg_pending_alarm_write(const char *body);
+int vg_pending_alarm_clear(void);
 int vg_agent_alarm_start(void);
 #else
 static inline int vg_pending_alarm_write(const char *body)
 {
   (void)body;
+  return 0;
+}
+static inline int vg_pending_alarm_clear(void)
+{
   return 0;
 }
 static inline int vg_agent_alarm_start(void) { return 0; }

@@ -702,9 +702,11 @@ bool vg_ui_backend_apply_live(void)
 
 #ifdef CONFIG_VG_AGENT_OPS
   {
+    static bool prev_active;
     const vg_alarm_t *a = vg_model_get_active_alarm();
+    bool now_active = (a != NULL && a->active);
 
-    if(a != NULL && a->active) {
+    if(now_active) {
       const vg_sensor_t *s = vg_model_get_sensor(a->sensor_id);
       char buf[256];
       const char *type = (a->severity == VG_SEV_OFFLINE) ? "offline"
@@ -722,6 +724,11 @@ bool vg_ui_backend_apply_live(void)
                (double)a->threshold);
       (void)vg_pending_alarm_write(buf);
     }
+    else if(prev_active) {
+      (void)vg_pending_alarm_clear();
+    }
+
+    prev_active = now_active;
   }
 #endif
 
