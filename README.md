@@ -173,7 +173,7 @@ Agent 只产出解释与建议。点表写入、配置提交只能由人在板�
 | 告警 | 告警 → `pending_alarm.txt` 交 Agent 解释（事件主动） | 已落地 | `vg_agent_alarm.c` |
 | 告警 | 告警页直接显示 Agent 解释 | 部分：当前显示本地规则摘要并标「规则摘要」，Agent 解释在 `last_alarm.md` | `vg_page_alarm.c` |
 | 告警 | 485 故障归因规则库 | 阶段 2 | 手册 §5.8 |
-| Agent | `ai_agent` 在 Cortex-M7 运行，CLI `vela>`，MiMo OpenAI 兼容 HTTPS 直连 | 已落地 | `packages/ai_agent`（fork 分支） |
+| Agent | `ai_agent` 在 Cortex-M7 运行，CLI `vela>`，MiMo OpenAI 兼容 HTTPS 直连 | 已落地 | `packages/ai_agent`（PR #32） |
 | Agent | 3 个 Skill + `HEARTBEAT.md` 首启写入；日报落盘并在 LVGL 报告页显示 | 已落地 | `vg_agent_seed.c`、`vg_page_report.c` |
 | Agent | C 工具层只读守卫：`run_shell` 允许表 + 文件路径沙箱 | 已落地 | `packages/ai_agent/src/tools/` |
 | Agent | LLM 密钥加密存 eMMC（`vgprovision`），不进固件、不进 git | 已落地 | `vg_provision*.c`、`scripts/provision-llm-from-secrets.*` |
@@ -283,8 +283,9 @@ make -C app/velaguard/host_tests test
 | open-vela/nuttx | `velaguard/ui-performance-stm32h750b-dk` | [#354](https://github.com/open-vela/nuttx/pull/354) |
 | open-vela/nuttx-apps | `velaguard/netinit-esp8266` | [#119](https://github.com/open-vela/nuttx-apps/pull/119) |
 | open-vela/apps_netutils_mqttc_MQTT-C | `velaguard/mqtt-pal-hook` | [#1](https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1) |
+| open-vela/packages_ai_agent | `velaguard/stm32h750b-dk-hmi-agent` | [#32](https://github.com/open-vela/packages_ai_agent/pull/32) |
 
-Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`；本地集成分支 `nuttx/velaguard/integration` 仅开发用。
+Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`、`FoLeaf/packages_ai_agent`；本地集成分支 `nuttx/velaguard/integration` 仅开发用。
 
 首次向仓库提 PR 会触发 `cla/signature` 检查：先在 [openvela 官网签署 CLA](https://openvela.com/#/community/cla)，再在原 PR 下评论 `/check-cla` 复检。
 

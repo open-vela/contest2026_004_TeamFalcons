@@ -12,7 +12,7 @@
 
 ```text
 <openvela-workspace>/                      # openvela workspace root (.repo/ present)
-├── nuttx/ apps/ packages/ vendor/ ...    # PUBLIC — edit nuttx/apps/MQTT-C on VelaGuard branches; PR. No contest patches.
+├── nuttx/ apps/ packages/ vendor/ ...    # PUBLIC — edit nuttx/apps/MQTT-C/packages on VelaGuard branches; PR. No contest patches.
 ├── .claude/                              # official AI skills (open-vela ai-skills)
 └── contest2026_004_TeamFalcons/          # OUR ONLY contest repo (Team 004)
     ├── .claude -> ../.claude             # symlink to official skills
@@ -53,7 +53,7 @@ Local agent index: root `CLAUDE.md`.
 | # | Rule |
 |---|------|
 | C1 | **Only develop contest deliverables inside `contest2026_004_TeamFalcons/`.** |
-| C2 | **Product code only in** `contest2026_004_TeamFalcons/`. Public trees `nuttx/`, `apps/`, MQTT-C: **edit those git checkouts directly** on VelaGuard feature branches, then PR to `dev-ai-contest-2026` (committee review). **Do not** add or apply `scripts/openvela-*.patch` / `apply-openvela-*-patch.sh` — patches are not a development or submission path. Leave `packages/` and `vendor/` alone except via contest `<linkfile>`. |
+| C2 | **Product code only in** `contest2026_004_TeamFalcons/`. Public trees `nuttx/`, `apps/`, MQTT-C: **edit those git checkouts directly** on VelaGuard feature branches, then PR to `dev-ai-contest-2026` (committee review). **Do not** add or apply `scripts/openvela-*.patch` / `apply-openvela-*-patch.sh` — patches are not a development or submission path. `packages/` follows the same rule (edit its own checkout on a VelaGuard feature branch, then PR); `vendor/` stays untouched except via contest `<linkfile>`. |
 | C3 | **GitHub only** for contest submit (not Gitee/GitCode for submission). Flow: **fork team repo → commit → PR → self-merge OK**. |
 | C4 | **Deadline**: work submit by **2026-09-20**; then push revoked (clone/view still OK). |
 | C5 | **AI logs**: auto-write under workspace end-of-session to `logs/<github_login>/...`; **never auto-push**. Human/agent may `git add logs/` + commit; **do not rewrite/tamper JSONL** (cheat). Delete whole session file before commit if private content. |
@@ -160,7 +160,7 @@ VelaGuard contest evidence (handbook §14.3): `alarm_interpretation.md` + `opera
 
 ## 7. Working loop (every non-trivial turn)
 
-1. Confirm work path: product code under **contest repo**; nuttx/apps/MQTT-C edits in those checkouts (then public-repo PR). Never contest `.patch` files.
+1. Confirm work path: product code under **contest repo**; nuttx/apps/MQTT-C/packages edits in those checkouts (then public-repo PR). Never contest `.patch` files.
 2. If the work depends on **real board circuitry** (drivers, pinmux, peripheral bring-up, etc.): open **BOUNDARY V11** local pack (schematic > BSP > UM); do not rely on `*_unofficial*` alone.
 3. If product scope: confirm against **`VelaGuard_项目手册.md`** (handbook wins over this summary for product detail).
 4. If product code: current issue in `.scratch/.../issues/` + ADR/CONTEXT if architecture.

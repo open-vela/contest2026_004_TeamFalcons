@@ -44,7 +44,7 @@ Priority inside that pack: **schematic PDF / SchDoc > ST BSP under `bsp/` > ST U
 
 Files whose names contain `unofficial` are working notes only — useful for search; **cross-check** against schematic and/or BSP before coding. Non-hardware work (app logic, MQTT, Agent prompts, docs-only) does not require opening this pack.
 
-## Public trees (nuttx / apps / MQTT-C)
+## Public trees (nuttx / apps / MQTT-C / packages)
 
 Edit the sibling openvela git checkouts **directly**. Do **not** create, apply, or keep using `scripts/openvela-*.patch` / `scripts/apply-openvela-*-patch.sh`.
 
@@ -53,6 +53,7 @@ Edit the sibling openvela git checkouts **directly**. Do **not** create, apply, 
 | `../nuttx` | `velaguard/*` | board pinmux, drivers, defconfig, LTDC/FT5x06 |
 | `../apps` | `velaguard/netinit-esp8266` | netinit / ESP8266 compat |
 | MQTT-C | `velaguard/mqtt-pal-hook` | pal send/recv hooks |
+| `../packages` | `velaguard/*` | ai_agent fixes (heap/stack safety on HMI build) |
 
 Contest repo holds product firmware (`app/`, `gui/`, `scripts/build.sh`). `scripts/configs/*.defconfig` may be copied onto the nuttx board config at build time — that installs a tree file, it is not a patch.
 
