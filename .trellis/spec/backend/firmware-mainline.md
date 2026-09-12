@@ -11,7 +11,7 @@ Use when compiling, flashing, writing accept scripts, or telling judges which im
 - VS Code / Cursor Build and Rebuild call `scripts/build.sh` with no args, so they follow the same default.
 - Bring-up only (not the product image): `min`, `lvgl` (upstream demo), `ai-probe`, `emmc`.
 - Do not tell judges or agents to flash a second `velaguard-net` image for demo, video, or Agent fallback.
-- Boot must not autostart HMI and Agent together. After HMI and network are up, start Agent with `ai_agent --daemon`.
+- Boot chain: NSH → net_mgr → HMI autostart → Agent autostart (`CONFIG_VG_AGENT_AUTOSTART=y`, starts `ai_agent --daemon` 3s after the HMI task). Do not instruct judges or scripts to start the Agent manually; `ai_agent` (no flag) attaches an interactive CLI and re-running `ai_agent --daemon` is safe (reentry guard).
 
 `.trellis/scripts/` is Trellis workflow (`task.py`, `get_context.py`). It has no firmware targets; this spec is the Trellis-side contract.
 

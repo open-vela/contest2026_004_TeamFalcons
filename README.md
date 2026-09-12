@@ -123,7 +123,7 @@ HEARTBEAT.md：若今日 daily-YYYYMMDD.md 不存在
 
 ```text
 nsh> ls /data/agent/skills                 # 三个 Skill 由固件首启写入
-nsh> ai_agent --daemon &                    # 守护：HEARTBEAT + cron（不带屏预设由固件自动拉起）
+nsh> ai_agent --daemon &                    # 守护：HEARTBEAT + cron（主线固件开机已自启，重跑有防重护栏）
 nsh> ai_agent                               # 交互：附着到守护进程，进入 vela>
 vela> ask 按 operations_report Skill 生成今日运营日报，写入 /data/velaguard/reports/
 vela> quit
@@ -248,7 +248,7 @@ bash scripts/provision-llm-from-secrets.sh COM3
 #    或在板上一次性配置：vela> set_llm https://token-plan-cn.xiaomimimo.com/v1 mimo-v2.5 <TOKEN>
 ```
 
-上电后冷启动自动进入 LVGL 首页；串口 NSH（115200）可执行 `vgdiscover` / `vgcfg dump` / `ai_agent`。带屏主线固件不自动拉起 Agent，在 NSH 执行 `ai_agent --daemon &`；不带屏预设由固件自动拉起。
+上电后冷启动自动进入 LVGL 首页；串口 NSH（115200）可执行 `vgdiscover` / `vgcfg dump` / `ai_agent`。带屏主线固件开机自动拉起 Agent（HMI 之后延迟 3s 启动 `ai_agent --daemon`）；不带屏预设同样由固件自动拉起。
 
 **板端验收脚本**（真实命令序列）：`scripts/stage1_modbus_discovery_accept_nsh.txt`（总线探查）、`stage1_lvgl_hmi_accept_nsh.txt`（HMI）、`stage1_agent_accept_nsh.txt`（Agent + LLM）、`stage1_agent_ops_accept_nsh.txt`（Skill 与主动任务）；对应 `.ps1` 可自动走串口执行。
 
@@ -284,7 +284,7 @@ make -C app/velaguard/host_tests test
 | open-vela/nuttx-apps | `velaguard/netinit-esp8266` | [#119](https://github.com/open-vela/nuttx-apps/pull/119) |
 | open-vela/apps_netutils_mqttc_MQTT-C | `velaguard/mqtt-pal-hook` | [#1](https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1) |
 
-Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`；本地集成分支 `nuttx/velaguard/integration` 仅开发用。`ai_agent` 工具层改动（允许表、路径沙箱、守护附着）在 fork `FoLeaf/packages_ai_agent` 上开发，本表暂未收录。
+Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`；本地集成分支 `nuttx/velaguard/integration` 仅开发用。
 
 首次向仓库提 PR 会触发 `cla/signature` 检查：先在 [openvela 官网签署 CLA](https://openvela.com/#/community/cla)，再在原 PR 下评论 `/check-cla` 复检。
 

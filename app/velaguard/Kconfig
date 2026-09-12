@@ -136,8 +136,11 @@ config VG_AGENT_AUTOSTART
 	bool "Auto-start ai_agent task at boot"
 	default y
 	---help---
-		Spawn ai_agent in a background task so cron/heartbeat can run
-		without manual "ai_agent &". NSH remains on the console thread.
+		Spawn ai_agent --daemon in a background task so heartbeat/cron
+		(e.g. daily report, pending alarm pickup) run without manual
+		"ai_agent &". With VG_HMI_AUTOSTART on, the agent starts after
+		the HMI task with a 3s settle delay. NSH remains on the console
+		thread; "ai_agent" without --daemon attaches an interactive CLI.
 
 config VG_AGENT_ALARM_SLAVE
 	int "Alarm monitor Modbus slave address"

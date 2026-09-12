@@ -133,7 +133,7 @@ nsh> vgpoint get
 
 **画面**：串口终端全屏，字大。
 
-**前置**：在拍第 1 拍之前或第 4 拍之后，`ai_agent --daemon &`，等 syslog 出 `Agent loop started (HMI fixed buffers)`（分支 A 也可以把这个启动日志剪进来，说明"界面就绪后再拉 Agent"）。
+**前置**：无需手动拉起，主线固件开机自启 `ai_agent --daemon`（HMI 之后 3s），boot 日志可见 `vgagent: ai_agent autostart ok`；重拍前可用 `ps` 确认，或重跑 `ai_agent --daemon &`（有防重护栏）。
 
 **动作**：
 ```text

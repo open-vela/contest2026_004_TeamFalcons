@@ -1,14 +1,15 @@
-# Stage1 agent-ops 板端验收（velaguard-lvgl；开机不自动启动 Agent）
+# Stage1 agent-ops 板端验收（velaguard-lvgl；开机自启 ai_agent --daemon）
 # 固件：bash scripts/build.sh --clean && bash scripts/flash.sh
 #
-# autostart 以 --daemon 后台跑 cron/heartbeat；交互需：
-#   nsh> ai_agent    → 进入 vela>（附着 daemon，不会双实例）
-#   quit             → 只退出 vela>，daemon 继续跑
+# 主线开机链：NSH → net_mgr → HMI → 3s 后 ai_agent --daemon。
+# 重跑 ai_agent --daemon & 有防重护栏，不会双实例。交互附着：
+#   nsh> ai_agent              → 进入 vela>（附着 daemon）
+#   quit                       → 只退出 vela>，daemon 继续跑
 # NSH 命令（ls/cat）在 nsh> 下执行，无需 quit daemon。
 
 # --- §1 启动日志 ---
-# 应含：vgagent: ai_agent autostart ok
-#       nsh_commands skipped (daemon mode)
+# 应含：vghmi: autostart ok
+#       vgagent: ai_agent autostart ok
 
 ls /data/agent/skills
 cat /data/agent/HEARTBEAT.md

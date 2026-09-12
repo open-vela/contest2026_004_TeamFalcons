@@ -10,6 +10,8 @@
  *   若开启 CONFIG_VG_NET_FAILOVER：在 NSH 之后调用 vg_net_mgr_start()，
  *   由独立线程做 RJ45/ESP TCP 故障转移；不依赖敲 NSH。
  *   若开启 CONFIG_VG_HMI_AUTOSTART：等待 /dev/fb0 后 task_create vghmi。
+ *   若开启 CONFIG_VG_AGENT_AUTOSTART：在 HMI 之后拉起 ai_agent --daemon，
+ *   心跳/日报无需手动启动；ai_agent（不带参数）只附着交互 CLI。
  *
  * velaguard.c 的 main 经 Makefile -Dmain 重命名为 velaguard_app_main，
  * 并注册为 NSH 命令 velaguard_app；若在 shell 里重复启动，防重护栏
@@ -40,6 +42,14 @@ extern int vghmi_main(int argc, char *argv[]);
 
 #ifdef CONFIG_VG_NET_FAILOVER
 #include "vg_net_mgr.h"
+#endif
+
+#ifdef CONFIG_VG_TIME_SYNC
+#include "vg_time_sync.h"
+#endif
+
+#ifdef CONFIG_VG_HEAP_WATCH
+#include "vg_heapwatch.h"
 #endif
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
@@ -113,6 +123,16 @@ int main(int argc, char *argv[])
       }
 #endif
 
+#ifdef CONFIG_VG_TIME_SYNC
+    /* Wall-time persist + SNTP sync (waits for eMMC mount internally) */
+
+    vg_time_sync_start();
+#endif
+
+#ifdef CONFIG_VG_HEAP_WATCH
+    vg_heapwatch_start();
+#endif
+
 #ifdef CONFIG_VG_CONFIG_STORE
     {
       struct vg_config cfg;
@@ -158,34 +178,6 @@ int main(int argc, char *argv[])
     vg_agent_alarm_start();
 #endif
 
-#ifdef CONFIG_VG_AGENT_AUTOSTART
-#ifndef CONFIG_VG_HMI
-    {
-      char *ai_argv[] = { "ai_agent", "--daemon", NULL };
-      int astack = 16384;
-
-#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE
-      astack = CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE;
-#endif
-
-      /* Let eMMC/net settle before TLS-heavy agent (boot race → assert). */
-      sleep(3);
-
-      if (task_create("ai_agent", SCHED_PRIORITY_DEFAULT,
-                      astack, ai_agent_main, ai_argv) < 0)
-        {
-          printf("vgagent: ai_agent autostart failed\n");
-        }
-      else
-        {
-          printf("vgagent: ai_agent autostart ok (stack=%d)\n", astack);
-        }
-    }
-#else
-    printf("vgagent: skip autostart with HMI (run \"ai_agent &\" after UI is up)\n");
-#endif
-#endif
-
 #ifdef CONFIG_VG_HMI_AUTOSTART
     {
       struct stat st;
@@ -218,6 +210,32 @@ int main(int argc, char *argv[])
       else
         {
           printf("vghmi: autostart ok\n");
+        }
+    }
+#endif
+
+#ifdef CONFIG_VG_AGENT_AUTOSTART
+    {
+      char *ai_argv[] = { "ai_agent", "--daemon", NULL };
+      int astack = 16384;
+
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE
+      astack = CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE;
+#endif
+
+      /* UI task up first; settle eMMC/net before the TLS-heavy agent
+       * (boot race → assert). The agent loop retries network on its own. */
+
+      sleep(3);
+
+      if (task_create("ai_agent", SCHED_PRIORITY_DEFAULT,
+                      astack, ai_agent_main, ai_argv) < 0)
+        {
+          printf("vgagent: ai_agent autostart failed\n");
+        }
+      else
+        {
+          printf("vgagent: ai_agent autostart ok (stack=%d)\n", astack);
         }
     }
 #endif
