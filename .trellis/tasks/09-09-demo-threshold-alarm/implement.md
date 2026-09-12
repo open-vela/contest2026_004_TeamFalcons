@@ -20,6 +20,7 @@
 
 - [x] 离线判定由连续 `fail_n` 轮失败改为滑窗失败率：最近 8 轮（约 1.6 s）内失败达 `max(fail_n, 5)` 轮才判 Offline（`vg_model.c` 滑窗 ring；零星抖动不再误判，拔线约 1 s 触发，仍满足分镜 <2 s 节拍）
 - [x] `vgmodbus` 读取串行化：读前拿 `vg_bus_lock`（有界等待 1 s），消除与 HMI 采集并发时的半双工碰撞（此前碰撞会两边同时失败，是误判离线的真实来源之一）
+- [x] 报告纯文本化：operations_report / alarm_interpretation Skill 改为禁止 Markdown 语法（LVGL label 渲染不了 #、*、|）；`write_if_missing` 升级为 `write_seed_file`（内容变更即覆盖，新 Skill 文案能落到已刷机的板）；报告页 `board_read_latest_report` 读取时兜底剥离残留 Markdown 装饰
 
 ```bash
 bash scripts/build.sh

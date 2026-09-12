@@ -18,6 +18,9 @@
 #include "model/vg_ui_backend.h"
 #include "model/vg_model.h"
 #include "vg_discover.h"
+#ifdef CONFIG_VG_NET_FAILOVER
+#include "vg_net_mgr.h"
+#endif
 #ifdef CONFIG_VG_AGENT_OPS
 #include "vg_agent_alarm.h"
 #endif
@@ -372,6 +375,67 @@ static int pick_latest_daily(FAR char *path, size_t path_sz)
   return 0;
 }
 
+/* The 480x272 label cannot render markdown; reports are plain text now,
+ * but older agent output may still carry decorations — drop them here. */
+
+static void strip_markdown(char *s)
+{
+  char *r = s;
+  char *w = s;
+
+  while(*r != '\0') {
+    char *e = strchr(r, '\n');
+    const char *line_end = (e != NULL) ? e : r + strlen(r);
+    const char *p = r;
+    bool fence_line;
+
+    while(p < line_end && *p == ' ') {
+      p++;
+    }
+    fence_line = (line_end - p >= 3 &&
+                  p[0] == '`' && p[1] == '`' && p[2] == '`');
+    if(!fence_line) {
+      bool table_sep = false;
+
+      while(p < line_end && *p == '#') {
+        p++;
+      }
+      while(p < line_end && *p == ' ') {
+        p++;
+      }
+      if(p < line_end && *p == '|') {
+        const char *q;
+
+        table_sep = true;
+        for(q = p; q < line_end; q++) {
+          if(*q != '|' && *q != '-' && *q != ':' && *q != ' ' &&
+             *q != '\t') {
+            table_sep = false;
+            break;
+          }
+        }
+      }
+      if(!table_sep) {
+        for(; p < line_end; p++) {
+          if(*p == '*' || *p == '`') {
+            continue;
+          }
+          *w++ = (*p == '|') ? ' ' : *p;
+        }
+      }
+    }
+
+    if(e != NULL) {
+      *w++ = '\n';
+      r = e + 1;
+    }
+    else {
+      r = line_end;
+    }
+  }
+  *w = '\0';
+}
+
 static int board_read_latest_report(char *body, size_t body_sz,
                                     char *path, size_t path_sz)
 {
@@ -416,6 +480,7 @@ static int board_read_latest_report(char *body, size_t body_sz,
 
   close(fd);
   body[total] = '\0';
+  strip_markdown(body);
   return 0;
 }
 
@@ -733,6 +798,39 @@ bool vg_ui_backend_apply_live(void)
 #endif
 
   return changed;
+}
+
+bool vg_ui_backend_poll_net(vg_ui_net_live_t *out)
+{
+  if(out == NULL) {
+    return false;
+  }
+
+  memset(out, 0, sizeof(*out));
+
+  /* Alarm buzzer path: /dev/pwm0 (DO1) provisioned by the board pack */
+
+  out->aud_ok = (access("/dev/pwm0", R_OK) == 0);
+
+#ifdef CONFIG_VG_NET_FAILOVER
+  {
+    struct vg_net_live_status st;
+
+    /* net_mgr caches its latest samples; this read does no AT UART IO */
+
+    if(vg_net_mgr_status(&st) == 0) {
+      out->rj45_has_ip = st.rj45_has_ip;
+      out->wifi_assoc = st.wifi_assoc;
+      out->wifi_has_ip = st.wifi_has_ip;
+      out->mqtt_online = st.mqtt_online;
+      out->egress = (int)st.egress;
+      snprintf(out->ip, sizeof(out->ip), "%s", st.ip);
+      return true;
+    }
+  }
+#endif
+
+  return false;
 }
 
 const vg_ui_backend_t *vg_ui_backend_get(void)

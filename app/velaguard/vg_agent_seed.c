@@ -51,7 +51,8 @@ static const char g_alarm_interpretation_skill[] =
 "2. run_shell `vgstats dump <slave>` 查通信质量\n"
 "3. run_shell `vgmodbus -a <slave> -r 0 -c 4 -n 1 -i 0` 查实时值\n"
 "4. run_shell `vgcfg dump` 了解设备名/配置\n"
-"5. 输出 JSON 风格解释：summary、evidence、suggested_attention\n"
+"5. 输出纯文本解释：摘要、证据、建议关注各一段，逐行短句\n"
+"   禁止 Markdown 语法（不用 #、*、|、表格、代码块）\n"
 "6. write_file /data/velaguard/reports/last_alarm.md 保存解释\n"
 "\n"
 "## 约束\n"
@@ -74,7 +75,8 @@ static const char g_operations_report_skill[] =
 "2. run_shell `vgstats dump 1`（及已配置从站）\n"
 "3. run_shell `vgmodbus -a 1 -r 0 -c 4 -n 1 -i 0` 采样关键寄存器\n"
 "4. run_shell `vgcfg dump`\n"
-"5. 汇总为 Markdown：告警摘要、通信质量、关键指标、建议关注\n"
+"5. 汇总为纯文本：告警摘要、通信质量、关键指标、建议关注\n"
+"   禁止 Markdown 语法（不用 #、*、|、表格、代码块），用普通行文和编号\n"
 "6. write_file /data/velaguard/reports/daily-YYYYMMDD.md\n"
 "\n"
 "## 约束\n"
@@ -96,24 +98,58 @@ static const char g_heartbeat_md[] =
 "工具仅限 run_shell：vgmodbus、vgstats、vgcfg dump、vgnet。\n"
 "禁止 vgpoint、vgdiscover apply、vgcfg commit。\n";
 
-static int write_if_missing(const char *path, const char *body)
+static int write_seed_file(const char *path, const char *body)
 {
+  size_t len = strlen(body);
+  bool same = false;
+  struct stat st;
   int fd;
+
+  /* Refresh in place when eMMC already holds an older seed text, so
+   * firmware-side wording changes land on previously provisioned boards. */
 
   fd = open(path, O_RDONLY);
   if (fd >= 0)
     {
+      if (fstat(fd, &st) == 0 && st.st_size == (off_t)len)
+        {
+          char chunk[128];
+          size_t off;
+
+          same = true;
+          for (off = 0; off < len && same; off += sizeof(chunk))
+            {
+              size_t want = len - off;
+              ssize_t got;
+
+              if (want > sizeof(chunk))
+                {
+                  want = sizeof(chunk);
+                }
+
+              got = read(fd, chunk, want);
+              if (got != (ssize_t)want ||
+                  memcmp(chunk, body + off, want) != 0)
+                {
+                  same = false;
+                }
+            }
+        }
+
       close(fd);
-      return 0;
+      if (same)
+        {
+          return 0;
+        }
     }
 
-  fd = open(path, O_WRONLY | O_CREAT | O_EXCL, 0644);
+  fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (fd < 0)
     {
       return -errno;
     }
 
-  if (write(fd, body, strlen(body)) != (ssize_t)strlen(body))
+  if (write(fd, body, len) != (ssize_t)len)
     {
       close(fd);
       return -EIO;
@@ -142,17 +178,17 @@ static void wait_for_data_mount(void)
 void vg_agent_seed_content(void)
 {
   wait_for_data_mount();
-  (void)write_if_missing("/data/agent/skills/modbus_query.md",
+  (void)write_seed_file("/data/agent/skills/modbus_query.md",
                           g_modbus_query_skill);
   /* LLM config: run `vgprovision apply` after encrypted provision (not at boot). */
 
 #ifdef CONFIG_VG_AGENT_OPS
   (void)mkdir("/data/velaguard/reports", 0755);
-  (void)write_if_missing("/data/agent/skills/alarm_interpretation.md",
+  (void)write_seed_file("/data/agent/skills/alarm_interpretation.md",
                           g_alarm_interpretation_skill);
-  (void)write_if_missing("/data/agent/skills/operations_report.md",
+  (void)write_seed_file("/data/agent/skills/operations_report.md",
                           g_operations_report_skill);
-  (void)write_if_missing("/data/agent/HEARTBEAT.md", g_heartbeat_md);
+  (void)write_seed_file("/data/agent/HEARTBEAT.md", g_heartbeat_md);
 #endif
 }
 

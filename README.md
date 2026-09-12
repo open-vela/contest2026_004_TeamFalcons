@@ -91,7 +91,7 @@
 → 告警检测器写 /data/velaguard/pending_alarm.txt（vg_agent_alarm.c、HMI 后端）
 → ai_agent --daemon 每 30 分钟读 HEARTBEAT.md，发现 pending 告警
 → 按 alarm_interpretation Skill：vgstats dump / vgmodbus 读实时值 / vgcfg dump 取证据
-→ 写 /data/velaguard/reports/last_alarm.md（summary · evidence · suggested_attention）
+→ 写 /data/velaguard/reports/last_alarm.md（纯文本：摘要 · 证据 · 建议关注）
 → 不清告警、不改配置；信息不足时 unresolved=true，不编造点位
 ```
 
