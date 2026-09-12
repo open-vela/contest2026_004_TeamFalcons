@@ -59,6 +59,11 @@ CSRCS += vg_sntp.c vg_time_sync.c
 CFLAGS += -DCONFIG_VG_TIME_SYNC=1
 endif
 
+ifeq ($(CONFIG_VG_HEAP_WATCH),y)
+CSRCS += vg_heapwatch.c
+CFLAGS += -DCONFIG_VG_HEAP_WATCH=1
+endif
+
 ifeq ($(CONFIG_VG_BUS_DISCOVER),y)
 PROGNAME += vgdiscover vgpoint
 MAINSRC  += vgdiscover.c vgpoint.c

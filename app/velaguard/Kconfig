@@ -108,6 +108,15 @@ config VG_AGENT_OPS
 		HEARTBEAT.md; run a background alarm detector writing
 		/data/velaguard/pending_alarm.txt for Agent pickup.
 
+config VG_HEAP_WATCH
+	bool "DEBUG: watch SDRAM heap region first node (corruption hunt)"
+	default n
+	depends on VG_BRINGUP_TOOLS
+	---help---
+		Temporary debug aid. Spawns a thread polling the first heap
+		node of the SDRAM region (0xd0100000) and dumping context
+		bytes on change. Do not enable in release builds.
+
 config VG_TIME_SYNC
 	bool "VelaGuard wall-time persist + SNTP sync (Beijing)"
 	default n
