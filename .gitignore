@@ -33,6 +33,7 @@ app/velaguard/host_tests/test_config_store
 app/velaguard/host_tests/test_discover
 app/velaguard/host_tests/test_vgpoint
 app/velaguard/host_tests/test_alarm_eval
+app/velaguard/host_tests/test_time_sync
 
 # Local AI / editor tooling (do not submit; contest code lives in-tree)
 .claude

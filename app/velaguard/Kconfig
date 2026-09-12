@@ -108,6 +108,28 @@ config VG_AGENT_OPS
 		HEARTBEAT.md; run a background alarm detector writing
 		/data/velaguard/pending_alarm.txt for Agent pickup.
 
+config VG_TIME_SYNC
+	bool "VelaGuard wall-time persist + SNTP sync (Beijing)"
+	default n
+	depends on VG_BRINGUP_TOOLS
+	---help---
+		No battery RTC on the DK board: restore wall time from eMMC
+		clock.txt at boot, persist it every 3 minutes (tmp + rename),
+		and SNTP-sync to Beijing time (UTC+8 wall clock) whenever the
+		RJ45 egress has an IP. With VG_NET_FAILOVER off the thread only
+		restores/persists; SNTP requires the failover manager.
+
+if VG_TIME_SYNC
+
+config VG_TIME_SYNC_PATH
+	string "Wall-time persistence file"
+	default "/data/velaguard/clock.txt"
+	---help---
+		eMMC file holding the last known wall time (seconds since
+		epoch, Beijing wall clock). tmp + rename for power-fail safety.
+
+endif
+
 if VG_AGENT_OPS
 
 config VG_AGENT_AUTOSTART

@@ -21,13 +21,17 @@ test_vgpoint: test_vgpoint.c ../vg_point_table.c ../vg_discover.h
 test_alarm_eval: test_alarm_eval.c ../vg_alarm_eval.c ../vg_alarm_eval.h
 	$(CC) $(CFLAGS) -o $@ test_alarm_eval.c ../vg_alarm_eval.c
 
-test: test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval
+test_time_sync: test_time_sync.c ../vg_sntp.c ../vg_sntp.h
+	$(CC) $(CFLAGS) -o $@ test_time_sync.c ../vg_sntp.c
+
+test: test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
 	./test_discover
 	./test_vgpoint
 	./test_alarm_eval
+	./test_time_sync
 
 clean:
-	rm -f test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval
+	rm -f test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync

@@ -1,0 +1,2 @@
+{"file": "app/velaguard/vg_time_sync.c", "reason": "持久化+恢复+SNTP线程主体"}
+{"file": "app/velaguard/vg_sntp.c", "reason": "SNTP报文纯函数(host可测)"}

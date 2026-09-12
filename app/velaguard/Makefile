@@ -54,6 +54,11 @@ CSRCS += vg_agent_alarm.c vg_modbus_read.c
 CFLAGS += -DCONFIG_VG_AGENT_OPS=1
 endif
 
+ifeq ($(CONFIG_VG_TIME_SYNC),y)
+CSRCS += vg_sntp.c vg_time_sync.c
+CFLAGS += -DCONFIG_VG_TIME_SYNC=1
+endif
+
 ifeq ($(CONFIG_VG_BUS_DISCOVER),y)
 PROGNAME += vgdiscover vgpoint
 MAINSRC  += vgdiscover.c vgpoint.c
