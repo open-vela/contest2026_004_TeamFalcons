@@ -16,6 +16,22 @@
 - 提醒准备作品介绍文档、不超过 5 分钟的视频、专属仓库合入提交分支
 - 校验 AI 日志目录；不要改会话文件正文
 
+## 2026-09-11 核对代码后追加：README 里没落地的 claim
+
+以下句子当前代码里不存在对应实现，收口时改措辞或标「后续阶段」，不要让评委去找：
+
+- 「每次调用写审计日志」「`events.jsonl` 记 `agent_suggestion`」→ 实际只有 syslog（`tool_registry.c` 每次工具调用打 `Executing tool`，拦截打 `Tool blocked`）。改为「工具调用与拦截经 syslog 输出，可在串口日志中审计」
+- 「字序约束求解」「物理合理性 + 时间连续性」→ 未实现，标后续阶段或删
+- 「确定性规则库（阶段 2）」「周报」→ 标后续阶段
+- 「本地告警音」→ 板测确认有没有；没有则删
+- 「Agent 自动启动解释会话」→ 带屏固件心跳关闭，按 samefw 试验结论写成「操作员触发」或「自动」
+- 「输出侧 schema 校验 → 风险分级」→ 核对 `packages/ai_agent` 是否有实现；没有则删
+- 「MQTT 主题形如 `vg/{device_id}/telemetry|status|alarm|diagnosis|ota/...`」→ 实际只有 `vg/{DEVID}/status`（retained + LWT，`vg_mqtt_session.c`），且明文无 TLS。改为「当前发布 status/LWT 主题；telemetry/alarm/OTA 主题为后续阶段」。不为 9/20 新增上云主题
+- 赛道对照表里「加分：端云协作 → Bridge 化 LLM」→ 官方加分项定义是「设备端 Agent 与电脑端 Agent 配合完成任务，体现任务拆分」，与 Bridge/MQTT 遥测无关；要么删这行，要么改写成真实存在的 PC 端生成配置 → 板端试读确认 → 板端 Agent 解释 的分工（需核实 PC 端生成链路是否真有）
+- 赛道对照表每行补一个仓内证据链接（脚本、日志、文件路径），不只写口号
+
+视频分镜：`docs/demo-video-script.md`（含 Agent 试验成功 / 失败两条分支）。
+
 ## 本次不做
 
 新功能、亲自拍成片、再向公共仓库开新的 Pull Request。
