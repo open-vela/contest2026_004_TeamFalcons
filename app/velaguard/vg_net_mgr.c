@@ -30,6 +30,11 @@ static bool g_started;
 static uint64_t g_next_mqtt_ms;
 static char g_reason[80];
 
+/* Latest bearer samples from the manager loop; readers must hold g_lock */
+
+static struct vg_eth_sample g_eth_last;
+static struct vg_esp_sample g_esp_last;
+
 /**
   * @brief  读取单调时钟毫秒。
   * @retval 自开机起的毫秒数（CLOCK_MONOTONIC）。
@@ -126,6 +131,13 @@ static void *vg_net_thread(void *arg)
 
       vg_eth_sample(&eth, do_ping);
       vg_esp_sample(&esp);
+
+      /* Publish the samples for vg_net_mgr_status() readers */
+
+      pthread_mutex_lock(&g_lock);
+      g_eth_last = eth;
+      g_esp_last = esp;
+      pthread_mutex_unlock(&g_lock);
 
       memset(&sample, 0, sizeof(sample));
       sample.rj45_link         = eth.link;
@@ -247,6 +259,46 @@ int vg_net_mgr_start(void)
   pthread_detach(tid);
   g_started = true;
   printf("vgnet: manager started\n");
+  return 0;
+}
+
+/**
+  * @brief  读取最近一拍的网络状态快照。
+  * @note   只读 net_mgr 线程缓存的采样与策略字段，不做 IO、不碰 AT
+  *         UART，HMI 周期任务可安全调用。net_mgr 未启动时全为默认值。
+  * @param  out  输出；不可为 NULL。
+  * @retval 0    成功。
+  * @retval -1   参数非法。
+  */
+int vg_net_mgr_status(struct vg_net_live_status *out)
+{
+  if (out == NULL)
+    {
+      return -1;
+    }
+
+  memset(out, 0, sizeof(*out));
+
+  pthread_mutex_lock(&g_lock);
+  out->rj45_link    = g_eth_last.link;
+  out->rj45_has_ip  = g_eth_last.has_ip;
+  out->rj45_ping_ok = g_eth_last.ping_ok;
+  out->wifi_assoc   = g_esp_last.assoc;
+  out->wifi_has_ip  = g_esp_last.has_ip;
+  out->mqtt_online  = vg_mqtt_session_online();
+  out->egress       = g_policy.active_egress;
+  out->state        = g_policy.state;
+
+  if (g_eth_last.ip[0] != '\0')
+    {
+      snprintf(out->ip, sizeof(out->ip), "%s", g_eth_last.ip);
+    }
+  else if (g_esp_last.ip[0] != '\0')
+    {
+      snprintf(out->ip, sizeof(out->ip), "%s", g_esp_last.ip);
+    }
+  pthread_mutex_unlock(&g_lock);
+
   return 0;
 }
 

@@ -45,7 +45,8 @@ typedef enum {
 
 typedef struct {
     bool net_ok;
-    bool mimo_ok;
+    bool wifi_ok;      /* ESP STA assoc + IP (board); mirrors net on sim */
+    bool mimo_ok;      /* AI bridge: MQTT session online */
     bool acq_ok;
     bool aud_ok;
     bool ota_active;

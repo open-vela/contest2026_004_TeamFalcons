@@ -15,6 +15,17 @@ typedef struct {
     char     label[32];
 } vg_ui_slave_t;
 
+/* Board live net snapshot for the status bar (no IO on the caller side) */
+typedef struct {
+    bool rj45_has_ip;
+    bool wifi_assoc;
+    bool wifi_has_ip;
+    bool mqtt_online;   /* MiMo bridge: MQTT CONNACK received */
+    bool aud_ok;        /* /dev/pwm0 (alarm buzzer) accessible */
+    int  egress;        /* vg_egress_t: 0 none, 1 rj45, 2 wifi */
+    char ip[16];        /* active egress IP, empty when none */
+} vg_ui_net_live_t;
+
 /* discover_*_status: 0 idle, 1 running, 2 done, <0 error */
 typedef struct {
     int (*discover_scan_start)(int addr_min, int addr_max);
@@ -35,6 +46,10 @@ void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max);
 void vg_ui_backend_acq_start(void);
 bool vg_ui_backend_apply_live(void);
 void vg_ui_backend_boot_points(void);
+
+/* Real net/buzzer state for the status bar. Returns false when the
+ * platform has no live source (PC sim) — model keeps scenario values. */
+bool vg_ui_backend_poll_net(vg_ui_net_live_t *out);
 
 #ifdef __cplusplus
 }

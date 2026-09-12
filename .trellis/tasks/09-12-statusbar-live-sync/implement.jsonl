@@ -1,0 +1,2 @@
+{"file": "gui/main/ui/model/vg_model.c", "reason": "board tick 轮询真实网络状态并推导 ACQ"}
+{"file": "gui/main/ui/shell/vg_shell.c", "reason": "新增 WiFi chip 与状态映射"}

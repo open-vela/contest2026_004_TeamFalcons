@@ -112,3 +112,10 @@ bool vg_ui_backend_apply_live(void)
 void vg_ui_backend_boot_points(void)
 {
 }
+
+bool vg_ui_backend_poll_net(vg_ui_net_live_t *out)
+{
+    (void)out;
+    /* PC sim: status bar stays scenario-driven (keys 1-6) */
+    return false;
+}

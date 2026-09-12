@@ -10,6 +10,26 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "vg_net_policy.h"
+
+/**
+  * @brief  对外的实时网络状态快照（HMI 状态栏 / 时间同步共用）。
+  * @note   取自 net_mgr 线程最近一拍缓存的 eth/esp 采样，
+  *         查询方不做 IO，不碰 AT UART。
+  */
+struct vg_net_live_status
+{
+  bool rj45_link;                    /**< eth0 IFF_RUNNING */
+  bool rj45_has_ip;                  /**< DHCP/静态 IPv4 非 0 */
+  bool rj45_ping_ok;                 /**< 最近一次 ping 结果 */
+  bool wifi_assoc;                   /**< ESP STA 已关联（非零 IP 推断） */
+  bool wifi_has_ip;                  /**< ESP STA IPv4 可用 */
+  bool mqtt_online;                  /**< MQTT 已收 CONNACK */
+  vg_egress_t egress;                /**< 活动出口 */
+  vg_net_state_t state;              /**< 策略状态机 */
+  char ip[16];                       /**< 活动出口 IP；无则空串 */
+};
+
 /**
   * @brief  启动 net_mgr 后台线程（幂等）。
   * @note   由 velaguard_app_main 在 NSH 线程之后调用；不依赖 NSH。
@@ -18,6 +38,16 @@
   * @retval -1  pthread_create 失败。
   */
 int vg_net_mgr_start(void);
+
+/**
+  * @brief  读取最近一拍的网络状态快照。
+  * @note   线程安全性：eth/esp 采样副本与策略字段在 g_lock 内读取。
+  *         net_mgr 未启动时各字段为 false/none，仍返回 0。
+  * @param  out  输出；不可为 NULL。
+  * @retval 0    成功。
+  * @retval -1   参数非法。
+  */
+int vg_net_mgr_status(struct vg_net_live_status *out);
 
 /**
   * @brief  打印当前策略与承载状态到 out（供 NSH `vgnet status`）。

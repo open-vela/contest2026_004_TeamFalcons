@@ -20,6 +20,7 @@ static lv_obj_t * s_root;
 static lv_obj_t * s_status_bar;
 static lv_obj_t * s_title;
 static lv_obj_t * s_chip_net;
+static lv_obj_t * s_chip_wifi;
 static lv_obj_t * s_chip_mimo;
 static lv_obj_t * s_chip_acq;
 static lv_obj_t * s_chip_aud;
@@ -158,8 +159,10 @@ void vg_shell_create(void)
     lv_obj_set_height(spacer, 1);
     lv_obj_remove_flag(spacer, LV_OBJ_FLAG_SCROLLABLE);
 
-    /* NET/MiMo use info token when healthy (design: link/AI) */
+    /* NET/WiFi use info token when healthy (design: link); WiFi is
+     * muted while the hot-standby bearer is not joined. */
     s_chip_net = make_chip(s_status_bar, "NET", VG_SEV_INFO);
+    s_chip_wifi = make_chip(s_status_bar, "WiFi", VG_SEV_INFO);
     s_chip_mimo = make_chip(s_status_bar, "MiMo", VG_SEV_INFO);
     s_chip_acq = make_chip(s_status_bar, "ACQ", VG_SEV_OK);
     s_chip_aud = make_chip(s_status_bar, "AUD", VG_SEV_OK);
@@ -225,10 +228,31 @@ void vg_shell_set_title(const char * title)
     }
 }
 
+/* WiFi chip: styled like NET when ESP has IP; muted when not associated —
+ * the hot standby being idle is not a fault. */
+static void set_wifi_chip(bool ok)
+{
+    lv_obj_t * lab;
+
+    if(s_chip_wifi == NULL) return;
+    lab = (lv_obj_t *)lv_obj_get_user_data(s_chip_wifi);
+
+    if(ok) {
+        set_chip(s_chip_wifi, "WiFi", VG_SEV_INFO);
+        if(lab) lv_obj_set_style_text_color(lab, vg_color_info(), 0);
+        return;
+    }
+
+    set_chip(s_chip_wifi, "WiFi", VG_SEV_INFO);
+    lv_obj_set_style_bg_opa(s_chip_wifi, LV_OPA_TRANSP, 0);
+    if(lab) lv_obj_set_style_text_color(lab, vg_color_muted(), 0);
+}
+
 void vg_shell_set_status(const vg_net_status_t * net)
 {
     if(net == NULL) return;
     set_chip(s_chip_net, net->net_ok ? "NET" : "NET!", net->net_ok ? VG_SEV_INFO : VG_SEV_CRIT);
+    set_wifi_chip(net->wifi_ok);
     if(net->ota_active) {
         set_chip(s_chip_mimo, "OTA", VG_SEV_INFO);
     }

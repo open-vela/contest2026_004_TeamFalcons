@@ -1040,6 +1040,7 @@ static void apply_scenario(vg_scenario_t s)
 
 #ifdef VG_HMI_BOARD
     s_net.net_ok = false;
+    s_net.wifi_ok = false;
     s_net.mimo_ok = false;
     s_net.acq_ok = (s_sensor_n > 0);
     s_net.aud_ok = true;
@@ -1048,6 +1049,7 @@ static void apply_scenario(vg_scenario_t s)
     s_net.ip[0] = '\0';
 #else
     s_net.net_ok = true;
+    s_net.wifi_ok = true;
     s_net.mimo_ok = true;
     s_net.acq_ok = true;
     s_net.aud_ok = true;
@@ -1265,6 +1267,66 @@ void vg_model_off_change(vg_model_change_cb_t cb, void * user)
     }
 }
 
+#ifdef VG_HMI_BOARD
+/* Status bar sync: NET/WIFI/MiMo/AUD come from the board backend
+ * (net_mgr cached samples + buzzer device), ACQ derives from live
+ * point online states. Only state changes mark dirty. */
+static bool vg_model_board_poll_net(void)
+{
+    vg_ui_net_live_t live;
+    uint16_t i;
+    uint16_t online_n = 0;
+    bool dirty = false;
+    bool b;
+
+    if(!vg_ui_backend_poll_net(&live)) {
+        return false;
+    }
+
+    b = live.rj45_has_ip || live.wifi_has_ip;
+    if(s_net.net_ok != b) {
+        s_net.net_ok = b;
+        dirty = true;
+    }
+
+    if(s_net.mimo_ok != live.mqtt_online) {
+        s_net.mimo_ok = live.mqtt_online;
+        dirty = true;
+    }
+
+    b = live.wifi_assoc && live.wifi_has_ip;
+    if(s_net.wifi_ok != b) {
+        s_net.wifi_ok = b;
+        dirty = true;
+    }
+
+    if(s_net.aud_ok != live.aud_ok) {
+        s_net.aud_ok = live.aud_ok;
+        dirty = true;
+    }
+
+    if(strcmp(s_net.ip, live.ip) != 0) {
+        strncpy(s_net.ip, live.ip, sizeof(s_net.ip) - 1);
+        s_net.ip[sizeof(s_net.ip) - 1] = '\0';
+        dirty = true;
+    }
+
+    /* ACQ honest state: configured points all offline -> acquisition down */
+    for(i = 0; i < s_sensor_n; i++) {
+        if(s_sensors[i].online) online_n++;
+    }
+    if(s_sensor_n > 0) {
+        b = (online_n > 0);
+        if(s_net.acq_ok != b) {
+            s_net.acq_ok = b;
+            dirty = true;
+        }
+    }
+
+    return dirty;
+}
+#endif
+
 void vg_model_tick(void)
 {
     uint16_t i;
@@ -1281,6 +1343,7 @@ void vg_model_tick(void)
     dirty = true;
 #else
     dirty = vg_ui_backend_apply_live();
+    dirty |= vg_model_board_poll_net();
     (void)i;
 #endif
     if(s_alarm.active) {
