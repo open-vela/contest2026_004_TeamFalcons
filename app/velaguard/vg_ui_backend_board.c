@@ -49,6 +49,15 @@
 #  define CONFIG_VG_HMI_REPORT_DIR "/data/velaguard/reports"
 #endif
 
+/* Heartbeat poke file consumed by the ai_agent daemon (packages/ai_agent
+ * heartbeat.c). Keep in sync with CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR. */
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR
+#  define VG_AGENT_DATA_DIR CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR
+#else
+#  define VG_AGENT_DATA_DIR "/data/agent"
+#endif
+#define VG_AGENT_HEARTBEAT_POKE VG_AGENT_DATA_DIR "/HEARTBEAT.poke"
+
 #ifndef CONFIG_VG_DISCOVER_POINTS_PATH
 #  define CONFIG_VG_DISCOVER_POINTS_PATH "/data/velaguard/config/points.json"
 #endif
@@ -506,6 +515,25 @@ void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max)
   }
 }
 
+/* Poke the agent daemon: heartbeat.c consumes HEARTBEAT.poke within its
+ * 5 s slice and runs HEARTBEAT.md tasks, regenerating the missing daily
+ * report per the operations_report Skill. */
+static bool board_request_daily_report(void)
+{
+#ifdef CONFIG_VG_AGENT_OPS
+  int fd;
+
+  fd = open(VG_AGENT_HEARTBEAT_POKE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+  if(fd < 0) {
+    return false;
+  }
+  close(fd);
+  return true;
+#else
+  return false;
+#endif
+}
+
 static const vg_ui_backend_t s_board_backend = {
   .discover_scan_start   = board_discover_scan_start,
   .discover_scan_status  = board_discover_scan_status,
@@ -513,6 +541,7 @@ static const vg_ui_backend_t s_board_backend = {
   .discover_apply_status = board_discover_apply_status,
   .get_slaves            = board_get_slaves,
   .read_latest_report    = board_read_latest_report,
+  .request_daily_report  = board_request_daily_report,
 };
 
 #define VG_LIVE_MAX 64

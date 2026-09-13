@@ -35,6 +35,9 @@ typedef struct {
     int (*get_slaves)(vg_ui_slave_t *out, int max);
     int (*read_latest_report)(char *body, size_t body_sz,
                               char *path, size_t path_sz);
+    /* Ask the on-device agent to generate today's daily report (MiMo).
+     * Returns false when the platform has no agent backend. */
+    bool (*request_daily_report)(void);
 } vg_ui_backend_t;
 
 const vg_ui_backend_t *vg_ui_backend_get(void);

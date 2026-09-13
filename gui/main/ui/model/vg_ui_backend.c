@@ -66,6 +66,12 @@ static int mock_read_report(char *body, size_t body_sz, char *path, size_t path_
     return 0;
 }
 
+static bool mock_request_daily_report(void)
+{
+    /* PC sim has no on-device agent to poke. */
+    return false;
+}
+
 static const vg_ui_backend_t s_mock_backend = {
     .discover_scan_start  = mock_discover_scan_start,
     .discover_scan_status = mock_discover_scan_status,
@@ -73,6 +79,7 @@ static const vg_ui_backend_t s_mock_backend = {
     .discover_apply_status = mock_discover_apply_status,
     .get_slaves           = mock_get_slaves,
     .read_latest_report   = mock_read_report,
+    .request_daily_report = mock_request_daily_report,
 };
 
 const vg_ui_backend_t *vg_ui_backend_get(void)
