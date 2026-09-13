@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "唯一规范构建目标 velaguard-lvgl 与 bash scripts/build.sh 验证方式，块 1 历史深度改动后按此验证"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "点位以 id 为键、name 仅展示的规则来源；下拉选点必须按 id 索引；含栈/内存预算教训"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "块 2 趋势页消费 vg_sensor_t.history 数据，需按跨层数据流清单核对渲染层不重定义契约"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "块 2 新增下拉与量程逻辑前先核对 vg_page_home/vg_theme 现有组件与样式助手，避免重复造轮子"}

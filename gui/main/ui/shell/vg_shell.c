@@ -398,7 +398,6 @@ static void create_page(vg_page_id_t id, const void * args)
 static bool nav_allowed(vg_page_id_t id, const char ** toast_out)
 {
     switch(id) {
-        case VG_PAGE_TREND:
         case VG_PAGE_DIAGNOSIS:
         case VG_PAGE_LOGS:
         case VG_PAGE_SYSTEM:

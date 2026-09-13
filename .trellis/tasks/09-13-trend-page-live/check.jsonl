@@ -1,0 +1,4 @@
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "检查项：板端验证必须用 scripts/build.sh 单一镜像，BSS 对比留档"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "检查项：下拉与切换不得按 name 查找/去重点位"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "检查项：跨层边界——页面只读 vg_sensor_t 快照，不在渲染层改动数据契约"}
+{"file": ".trellis/tasks/09-13-trend-page-live/design.md", "reason": "检查项：窗口语义、Y 轴量程与内存预算按 design.md 执行"}

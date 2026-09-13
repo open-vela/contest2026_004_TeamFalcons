@@ -14,11 +14,14 @@
 #define VG_SENSOR_REG_HEX_MAX 5
 #define VG_CUSTOM_TYPE_MAX 12
 #define VG_UNIT_MAX 12
-/* PC sim keeps a 5 min trend window. Board BSS must leave room for
- * NET + mbedTLS + Agent when velaguard-lvgl merges the net stack.
- * Trend page is stage-2 / deferred. */
+/* PC sim keeps a 5 min trend window (300 @1 Hz). Board keeps 128 samples
+ * per point: ~29 KB BSS (4 B x 64 points x 128). nuttx.map baseline is
+ * .data+.bss ~186 KB inside the 512 KB AXI sram region, and the LTDC
+ * framebuffer lives on external memory (0xd0000000), so the net stack /
+ * mbedTLS heap has room. If board heap pressure shows up, fall back to 64
+ * (~12 KB BSS) before shrinking further. */
 #ifdef VG_HMI_BOARD
-#define VG_HISTORY_LEN 16
+#define VG_HISTORY_LEN 128
 #define VG_SENSOR_MAX 64
 #else
 #define VG_HISTORY_LEN 300
