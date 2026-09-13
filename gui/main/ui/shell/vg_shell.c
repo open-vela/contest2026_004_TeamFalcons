@@ -19,6 +19,7 @@ typedef struct {
 static lv_obj_t * s_root;
 static lv_obj_t * s_status_bar;
 static lv_obj_t * s_title;
+static lv_obj_t * s_date_lab;
 static lv_obj_t * s_chip_net;
 static lv_obj_t * s_chip_wifi;
 static lv_obj_t * s_chip_mimo;
@@ -51,7 +52,7 @@ static void toast_hide_cb(lv_timer_t * t)
 
 static void clock_cb(lv_timer_t * t)
 {
-    char buf[16];
+    char buf[24];
     time_t now;
     struct tm * tm_info;
     LV_UNUSED(t);
@@ -60,6 +61,12 @@ static void clock_cb(lv_timer_t * t)
     if(tm_info) {
         lv_snprintf(buf, sizeof(buf), "%02d:%02d", tm_info->tm_hour, tm_info->tm_min);
         if(s_time_lab) lv_label_set_text(s_time_lab, buf);
+        /* Date rides on the per-page title: VelaGuard|26-9-13 on Home,
+         * 设备详情|26-9-13 on subpages. */
+        lv_snprintf(buf, sizeof(buf), "|%d-%d-%d",
+                    (tm_info->tm_year + 1900) % 100,
+                    tm_info->tm_mon + 1, tm_info->tm_mday);
+        if(s_date_lab) lv_label_set_text(s_date_lab, buf);
     }
 }
 
@@ -151,6 +158,11 @@ void vg_shell_create(void)
     lv_label_set_text(s_title, "VelaGuard");
     lv_obj_set_style_text_font(s_title, vg_font_ui(), 0);
     lv_obj_set_style_text_color(s_title, vg_color_text(), 0);
+
+    s_date_lab = lv_label_create(s_status_bar);
+    lv_label_set_text(s_date_lab, "");
+    lv_obj_set_style_text_font(s_date_lab, vg_font_small(), 0);
+    lv_obj_set_style_text_color(s_date_lab, vg_color_muted(), 0);
 
     lv_obj_t * spacer = lv_obj_create(s_status_bar);
     lv_obj_set_flex_grow(spacer, 1);
