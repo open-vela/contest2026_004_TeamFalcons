@@ -1,0 +1,1 @@
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Single product image velaguard-lvgl; build via scripts/build.sh; boot chain places ai_agent daemon after HMI"}
