@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="860" viewBox="0 0 480 860" role="img" aria-labelledby="title desc">
+  <title id="title">VelaGuard Agent 的访问范围</title>
+  <desc id="desc">拒绝 vgpoint 和 vgdiscover，vgcfg 仅允许 dump。文件访问限于 /data/agent 与 /data/velaguard。点表由人试读后单独确认。vgstats 与 vgnet 的子命令级限制尚未补齐，整个允许表不能视为严格只读。</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; fill: #18181b; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+    .muted { fill: #71717a; }
+    .restricted { fill: #047857; }
+    .warning { fill: #b91c1c; }
+  </style>
+
+  <rect width="480" height="860" fill="#ffffff"/>
+  <text x="24" y="38" class="muted" font-size="18">02 / AGENT BOUNDARY</text>
+  <text x="24" y="90" font-size="30" font-weight="600">Agent 的访问范围</text>
+  <text x="24" y="128" class="muted" font-size="20">点表提交由人确认。</text>
+
+  <g id="access-matrix">
+    <path d="M24 238H456 M24 338H456 M24 470H456 M24 602H456" fill="none" stroke="#e4e4e7"/>
+
+    <text x="24" y="178" class="mono" font-size="22">run_shell</text>
+    <text x="456" y="178" class="warning" font-size="20" text-anchor="end">拒绝</text>
+    <text x="24" y="214" class="mono" font-size="20">vgpoint / vgdiscover</text>
+
+    <text x="24" y="278" class="mono" font-size="22">vgcfg</text>
+    <text x="456" y="278" class="restricted" font-size="20" text-anchor="end">仅查询</text>
+    <text x="24" y="314" font-size="20">仅允许 dump</text>
+
+    <text x="24" y="378" font-size="22">文件工具</text>
+    <text x="456" y="378" class="restricted" font-size="20" text-anchor="end">路径限制</text>
+    <text x="24" y="414" class="mono" font-size="20">/data/agent</text>
+    <text x="24" y="448" class="mono" font-size="20">/data/velaguard</text>
+
+    <text x="24" y="510" font-size="22">点表变更</text>
+    <text x="24" y="546" font-size="20">test 后，由人单独执行</text>
+    <text x="24" y="580" class="mono" font-size="22">apply --confirm</text>
+  </g>
+
+  <g id="known-gap">
+    <rect x="24" y="628" width="432" height="160" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+    <text x="44" y="664" class="warning" font-size="22" font-weight="600">待补强：vgstats / vgnet</text>
+    <text x="44" y="700" class="warning" font-size="20">尚未按子命令限制。</text>
+    <text x="44" y="732" class="warning" font-size="20">inject / reset / wifi 会改变状态，</text>
+    <text x="44" y="764" class="warning" font-size="20">不能将整个允许表视为严格只读。</text>
+  </g>
+  <text x="24" y="830" class="muted" font-size="18">解释与日报是建议，不代表处置已完成。</text>
+</svg>

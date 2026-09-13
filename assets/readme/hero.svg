@@ -1,54 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
-  <title id="title">VelaGuard — 运行在 openvela 上的 RS485/Modbus 现场网关，板载 ai_agent 运营助手</title>
-  <desc id="desc">左侧为项目名称与定位：采集、告警、统计由本地确定性 C 代码完成，Agent 只读已采集数据并只产出解释与建议。右侧为板端「主动 + 执行」的真实文件链路：本地规则引擎写入 pending_alarm.txt；ai_agent 守护进程按 HEARTBEAT 每 30 分钟执行 alarm_interpretation 与 operations_report 两个 Skill；解释与日报落盘到 reports/ 后由 LVGL 报告页与 CLI 展示。</desc>
+  <title id="title">VelaGuard | RS485 / Modbus 现场网关</title>
+  <desc id="desc">运行在 STM32H750B-DK 与 openvela 上的独立现场网关。本地采集与告警，板载 Agent 解释告警与生成日报，点表变更由人确认。三个查询入口为 vgpoint get、vgstats dump 与 ai_agent。</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+    .foreground { fill: #fafafa; }
+    .muted { fill: #a1a1aa; }
+    .prompt { fill: #6ee7b7; }
+  </style>
 
-  <rect width="1200" height="420" rx="20" fill="#0E1317"/>
-
-  <!-- title block -->
-  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <text x="56" y="62" fill="#7E8F9A" font-size="16" letter-spacing="1.2">openvela · AI 硬件产品创新 · contest2026_004 Team Falcons</text>
-    <text x="56" y="128" fill="#F2F6F8" font-size="60" font-weight="700">VelaGuard</text>
-    <text x="56" y="172" fill="#F2F6F8" font-size="26" font-weight="600">RS485 / Modbus 现场网关</text>
-    <text x="56" y="206" fill="#2EC4B6" font-size="21" font-weight="600">板载 ai_agent：解释告警 · 生成日报 · 查数</text>
-    <text x="56" y="250" fill="#C5D0D7" font-size="20">采集、告警、统计由本地确定性 C 代码完成，断网照常；</text>
-    <text x="56" y="280" fill="#C5D0D7" font-size="20">Agent 只读数据、只给解释与建议，写操作须人工确认。</text>
-    <text x="56" y="322" fill="#7E8F9A" font-size="16" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">STM32H750B-DK · openvela/NuttX · LVGL · MiMo HTTPS</text>
+  <rect width="1200" height="420" fill="#09090b"/>
+  <g id="identity">
+    <text x="56" y="52" class="muted" font-size="18">openvela / FIELD GATEWAY</text>
+    <text x="1144" y="52" class="mono muted" font-size="18" text-anchor="end">STM32H750B-DK</text>
+    <text x="56" y="152" class="foreground" font-size="76" font-weight="650">VelaGuard</text>
+    <text x="56" y="214" class="foreground" font-size="32" font-weight="500">RS485 / Modbus 现场网关</text>
+    <text x="56" y="262" class="muted" font-size="23">本地采集与告警 · Agent 解释与日报 · 点表人工确认</text>
   </g>
 
-  <!-- proactive + execute: real on-board file chain -->
-  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <text x="620" y="62" fill="#7E8F9A" font-size="16" letter-spacing="1.2">主动 + 执行 · 板端真实文件链路</text>
-
-    <g transform="translate(620 80)">
-      <rect width="532" height="80" rx="12" fill="#172027" stroke="#F4A261" stroke-width="2"/>
-      <text x="20" y="33" fill="#F4A261" font-size="20" font-weight="600">① 本地规则引擎（C）  阈值 / 离线告警</text>
-      <text x="20" y="62" fill="#C5D0D7" font-size="18" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">写入 /data/velaguard/pending_alarm.txt</text>
+  <g id="command-entrypoints" xml:space="preserve">
+    <path d="M56 308H1144 M392 340V390 M768 340V390" fill="none" stroke="#27272a" stroke-width="1.5"/>
+    <g transform="translate(56 0)">
+      <text y="348" class="muted" font-size="18">读取采集快照</text>
+      <text y="386" class="mono foreground" font-size="23"><tspan class="prompt">nsh&gt; </tspan>vgpoint get</text>
     </g>
-
-    <path d="M876 168 L886 180 L896 168" fill="none" stroke="#2EC4B6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-    <g transform="translate(620 188)">
-      <rect width="532" height="80" rx="12" fill="#172027" stroke="#2EC4B6" stroke-width="2"/>
-      <text x="20" y="33" fill="#2EC4B6" font-size="20" font-weight="600">② ai_agent 守护 · HEARTBEAT 每 30 分钟</text>
-      <text x="20" y="62" fill="#C5D0D7" font-size="18" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">alarm_interpretation · operations_report</text>
+    <g transform="translate(432 0)">
+      <text y="348" class="muted" font-size="18">检查通信质量</text>
+      <text y="386" class="mono foreground" font-size="23"><tspan class="prompt">nsh&gt; </tspan>vgstats dump</text>
     </g>
-
-    <path d="M876 276 L886 288 L896 276" fill="none" stroke="#7E8F9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-
-    <g transform="translate(620 296)">
-      <rect width="532" height="80" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="2"/>
-      <text x="20" y="33" fill="#F2F6F8" font-size="20" font-weight="600">③ 解释与日报落盘 → LVGL 报告页 / CLI</text>
-      <text x="20" y="62" fill="#C5D0D7" font-size="18" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">reports/last_alarm.md · daily-YYYYMMDD.md</text>
+    <g transform="translate(808 0)">
+      <text y="348" class="muted" font-size="18">进入运营助手</text>
+      <text y="386" class="mono foreground" font-size="23"><tspan class="prompt">nsh&gt; </tspan>ai_agent</text>
     </g>
-  </g>
-
-  <!-- legend: the two-lane motif -->
-  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="16" fill="#7E8F9A">
-    <line x1="56" y1="394" x2="84" y2="394" stroke="#F4A261" stroke-width="3"/>
-    <text x="92" y="399">本地确定性：断网照常</text>
-    <line x1="300" y1="394" x2="328" y2="394" stroke="#2EC4B6" stroke-width="3"/>
-    <text x="336" y="399">AI 解释层：需网络</text>
-    <line x1="520" y1="394" x2="548" y2="394" stroke="#7E8F9A" stroke-width="2" stroke-dasharray="5 4"/>
-    <text x="556" y="399">网络 / MQTT</text>
   </g>
 </svg>

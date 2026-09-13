@@ -1,87 +1,52 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" role="img" aria-labelledby="title desc">
-  <title id="title">Agent 安全边界</title>
-  <desc id="desc">AI Agent 通过 ai_agent 的 C 工具层访问板端：run_shell 采用允许表并默认拒绝，拒绝 shell 元字符，vgpoint 与 vgdiscover 一律拒绝，vgcfg 仅允许 dump；文件工具限定在 /data/agent 与 /data/velaguard 路径沙箱内。允许的只读 NSH 工具为 vgmodbus、vgstats、vgcfg dump、vgnet；写点表、改配置、提交等操作不在允许表中，须由人在设备上执行 apply --confirm。Agent 输出只落盘为解释与日报，LVGL 标注「AI 推测」。调用限流与审计日志为手册规划项。</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="668" viewBox="0 0 1200 668" role="img" aria-labelledby="title desc">
+  <title id="title">VelaGuard Agent 的访问范围</title>
+  <desc id="desc">C 工具层拒绝 vgpoint 和 vgdiscover，vgcfg 只允许 dump，文件工具限定在 /data/agent 与 /data/velaguard。点表变更须由人试读后单独执行 apply --confirm。当前 vgstats 和 vgnet 尚未按子命令限制，inject、reset、wifi 会改变状态，不能将整个允许表视为严格只读。</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; fill: #18181b; }
+    .mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; }
+    .muted { fill: #71717a; }
+    .restricted { fill: #047857; }
+    .warning { fill: #b91c1c; }
+    .rule { fill: none; stroke: #e4e4e7; stroke-width: 1.5; }
+  </style>
 
-  <defs>
-    <marker id="ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 1 L9 5 L0 9" fill="none" stroke="#2EC4B6" stroke-width="1.4"/>
-    </marker>
-    <marker id="block" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 1 L9 5 L0 9" fill="none" stroke="#F4A261" stroke-width="1.4"/>
-    </marker>
-  </defs>
-
-  <rect width="1200" height="400" rx="20" fill="#0E1317"/>
-
-  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <text x="48" y="48" fill="#7E8F9A" font-size="16" letter-spacing="1.2">SAFETY BOUNDARY</text>
-    <text x="48" y="88" fill="#F2F6F8" font-size="30" font-weight="700">能对活着的工业总线下指令的 LLM 是危险品</text>
-    <text x="48" y="120" fill="#C5D0D7" font-size="18">只读约束落在 ai_agent 的 C 工具层（run_shell 允许表 + 文件路径沙箱）；Skill 文本只是第二道。</text>
+  <rect width="1200" height="668" fill="#ffffff"/>
+  <g id="heading">
+    <text x="48" y="46" class="muted" font-size="18">02 / AGENT BOUNDARY</text>
+    <text x="48" y="102" font-size="40" font-weight="600">Agent 的访问范围</text>
+    <text x="48" y="144" class="muted" font-size="22">点表提交由人确认，解释与日报只作为建议。</text>
   </g>
 
-  <!-- Agent -->
-  <g transform="translate(48 150)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="190" height="200" rx="12" fill="#172027" stroke="#2EC4B6" stroke-width="2"/>
-    <text x="95" y="46" text-anchor="middle" fill="#2EC4B6" font-size="20" font-weight="600">AI Agent</text>
-    <text x="95" y="82" text-anchor="middle" fill="#C5D0D7" font-size="18">ReAct 循环</text>
-    <text x="95" y="110" text-anchor="middle" fill="#C5D0D7" font-size="18">解释 · 日报 · 查数</text>
-    <text x="95" y="146" text-anchor="middle" fill="#8B9BA6" font-size="18">Skill：只读</text>
-  </g>
-
-  <path d="M238 250 H272" stroke="#2EC4B6" stroke-width="2" marker-end="url(#ok)" fill="none"/>
-
-  <!-- C-level guard -->
-  <g transform="translate(276 150)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="300" height="200" rx="12" fill="#172027" stroke="#F4A261" stroke-width="2"/>
-    <text x="150" y="40" text-anchor="middle" fill="#F4A261" font-size="20" font-weight="600">C 工具层守卫</text>
-    <g fill="#C5D0D7" font-size="18">
-      <text x="18" y="76">run_shell 允许表，默认拒绝</text>
-      <text x="18" y="104">拒绝 shell 元字符（| &gt; ;）</text>
-      <text x="18" y="132">vgpoint · vgdiscover 拒绝</text>
-      <text x="18" y="160">vgcfg 仅允许 dump</text>
-      <text x="18" y="188">路径沙箱：/data/velaguard</text>
+  <g id="access-matrix">
+    <rect x="48" y="190" width="1104" height="48" fill="#fafafa"/>
+    <g font-size="20">
+      <text x="72" y="222" class="muted">入口</text>
+      <text x="344" y="222" class="muted">当前规则</text>
+      <text x="928" y="222" class="muted">边界</text>
     </g>
+    <path d="M48 238H1152 M48 308H1152 M48 378H1152 M48 448H1152 M48 518H1152" class="rule"/>
+
+    <text x="72" y="282" class="mono" font-size="24">run_shell</text>
+    <text x="344" y="282" font-size="22">拒绝 vgpoint / vgdiscover</text>
+    <text x="928" y="282" class="warning" font-size="22">禁止调用</text>
+
+    <text x="72" y="352" class="mono" font-size="24">vgcfg</text>
+    <text x="344" y="352" font-size="22">仅允许 dump</text>
+    <text x="928" y="352" class="restricted" font-size="22">仅查询</text>
+
+    <text x="72" y="422" font-size="24">文件工具</text>
+    <text x="344" y="422" class="mono" font-size="20">/data/agent · /data/velaguard</text>
+    <text x="928" y="422" class="restricted" font-size="22">路径限制</text>
+
+    <text x="72" y="492" font-size="24">点表变更</text>
+    <text x="344" y="492" font-size="22">试读后，人工 apply --confirm</text>
+    <text x="928" y="492" font-size="22">人工确认</text>
   </g>
 
-  <!-- allowed -->
-  <path d="M576 202 H612" stroke="#2EC4B6" stroke-width="2" marker-end="url(#ok)" fill="none"/>
-  <text x="594" y="192" text-anchor="middle" fill="#2EC4B6" font-size="16" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">允许</text>
-
-  <g transform="translate(616 160)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="290" height="84" rx="10" fill="#1E2A33" stroke="#2EC4B6"/>
-    <text x="145" y="28" text-anchor="middle" fill="#2EC4B6" font-size="18" font-weight="600">只读 NSH 工具</text>
-    <g fill="#C5D0D7" font-size="18" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
-      <text x="145" y="52">vgmodbus · vgstats</text>
-      <text x="145" y="74">vgcfg dump · vgnet</text>
-    </g>
-  </g>
-
-  <!-- blocked -->
-  <path d="M576 304 H612" stroke="#F4A261" stroke-width="2" marker-end="url(#block)" fill="none"/>
-  <text x="594" y="294" text-anchor="middle" fill="#F4A261" font-size="16" font-family="-apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif">拒绝</text>
-
-  <g transform="translate(616 262)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="290" height="84" rx="10" fill="#1E2A33" stroke="#F4A261" stroke-dasharray="4 3"/>
-    <text x="145" y="28" text-anchor="middle" fill="#F4A261" font-size="18" font-weight="600">写点表 / 改配置 / 提交</text>
-    <g fill="#C5D0D7" font-size="18" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
-      <text x="145" y="52">vgpoint · vgdiscover</text>
-      <text x="145" y="74">vgcfg commit</text>
-    </g>
-  </g>
-
-  <path d="M906 202 H944" stroke="#2EC4B6" stroke-width="2" marker-end="url(#ok)" fill="none"/>
-  <path d="M906 304 H944" stroke="#F4A261" stroke-width="2" marker-end="url(#block)" fill="none"/>
-
-  <!-- output & disposition -->
-  <g transform="translate(948 150)" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
-    <rect width="204" height="200" rx="12" fill="#172027" stroke="#3A4A56" stroke-width="1.5"/>
-    <text x="102" y="40" text-anchor="middle" fill="#F2F6F8" font-size="20" font-weight="600">输出与处置</text>
-    <g fill="#C5D0D7" font-size="18" text-anchor="middle">
-      <text x="102" y="76">解释 / 日报只落盘</text>
-      <text x="102" y="104">标注「AI 推测」</text>
-      <text x="102" y="132" fill="#F4A261">处置由人在板上确认</text>
-      <text x="102" y="158" fill="#F4A261" font-size="16" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">apply --confirm</text>
-      <text x="102" y="186" fill="#7E8F9A" font-size="16">规划：限流 · 审计日志</text>
-    </g>
+  <g id="known-gap">
+    <rect x="48" y="548" width="1104" height="96" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+    <text x="72" y="582" class="warning" font-size="22" font-weight="600">待补强</text>
+    <text x="210" y="582" class="warning" font-size="22">vgstats / vgnet 尚未按子命令限制</text>
+    <text x="72" y="620" class="warning" font-size="20">inject / reset / wifi 会改变统计或网络状态，不能将整个允许表视为严格只读。</text>
   </g>
 </svg>

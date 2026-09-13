@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="864" viewBox="0 0 480 864" role="img" aria-labelledby="title desc">
+  <title id="title">VelaGuard 系统形态示意</title>
+  <desc id="desc">现场 Modbus 从站连接 STM32H750B-DK。板端独立采集、统计、告警、存储与显示；联网后 ai_agent 访问 MiMo，MQTT 上报在线状态。RJ45 主链路，ESP-01S 备链路。</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; fill: #18181b; }
+    .muted { fill: #71717a; }
+    .local { fill: #047857; }
+    .network { fill: #0369a1; }
+    .node { fill: #ffffff; stroke: #d4d4d8; stroke-width: 1.5; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M2 1L6 5L2 9" fill="none" stroke="#71717a" stroke-width="1.5"/>
+    </marker>
+  </defs>
+
+  <rect width="480" height="864" fill="#ffffff"/>
+  <text x="24" y="38" class="muted" font-size="18">01 / SYSTEM</text>
+  <text x="24" y="84" font-size="28" font-weight="600">现场、板端与联网服务</text>
+  <text x="24" y="122" class="muted" font-size="20">本地采集和告警不依赖网络。</text>
+
+  <g id="field">
+    <rect x="24" y="152" width="432" height="112" rx="8" class="node"/>
+    <text x="48" y="194" font-size="24" font-weight="600">Modbus 从站</text>
+    <text x="48" y="232" class="muted" font-size="20">RS485 · 9600 baud · FC03 / FC04</text>
+  </g>
+  <path d="M240 274V298" fill="none" stroke="#71717a" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <g id="gateway">
+    <rect x="24" y="308" width="432" height="244" rx="8" class="node"/>
+    <text x="48" y="352" font-size="24" font-weight="600">STM32H750B-DK</text>
+    <text x="48" y="384" class="local" font-size="20">openvela / NuttX</text>
+    <text x="48" y="422" font-size="20">采集 · 帧统计 · 阈值 / 离线告警</text>
+    <text x="48" y="454" font-size="20">配置存储 · LVGL HMI · NSH</text>
+    <path d="M48 474H432" fill="none" stroke="#e4e4e7"/>
+    <text x="48" y="514" class="network" font-size="20">ai_agent：解释告警、日报与查数</text>
+  </g>
+  <path d="M240 562V590" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+
+  <g id="network-services">
+    <rect x="24" y="600" width="432" height="144" rx="8" class="node"/>
+    <text x="48" y="642" class="network" font-size="22" font-weight="600">MiMo LLM / HTTPS</text>
+    <text x="48" y="680" font-size="22" font-weight="600">MQTT Broker / 在线状态</text>
+    <text x="48" y="718" class="muted" font-size="18">遥测 / OTA 规划中</text>
+  </g>
+  <text x="24" y="792" font-size="20">RJ45 主链路 / ESP-01S 备链路</text>
+  <text x="24" y="830" class="local" font-size="20">断网时，HMI 显示本地规则信息。</text>
+</svg>
