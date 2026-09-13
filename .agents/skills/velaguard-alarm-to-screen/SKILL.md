@@ -23,12 +23,22 @@ description: "VelaGuard 本地告警上屏：按已确认点表阈值或离线�
 
 HMI 在 `vg_model_set_live` 路径上调用 `vg_alarm_eval`，命中则 `vg_pending_alarm_write`。
 
+HMI 在 `vg_model_set_live` 路径上调用 `vg_alarm_eval`，命中则给该点开启告警期。
+
+## 多点同时告警
+
+- 告警期状态挂在每个点（`vg_sensor_t` 的 `al_active` / `al_acked` / `al_muted` / `al_duration_sec`）；`s_alarm` 是主告警（严重 > 离线 > 预警）的派生视图，不是唯一告警。
+- 告警页每个活动告警一个分栏（点名 + 摘要 + 静音 + 标记处理），点选分栏在下方详情区看该点完整指标。标记处理只记录已知晓（Acknowledgement），分栏保留到恢复条件满足（Resolution）。
+- 状态栏告警 chip 在全部活动告警均被处理或静音后才变暗；首页快捷静音作用于全部活动告警。
+- `pending_alarm.txt` 只写主告警一条，格式不变；主告警换点或换种类时重写，**全部**活动告警恢复才 `unlink`（单点恢复不动文件）。
+
 ## 落盘与上屏
 
 - 告警正文：`/data/velaguard/pending_alarm.txt`
 - 屏幕自己读这份文件并弹出告警页；不要走 MQTT、不要等 Agent
 - 日报 / 报告页读 `/data/velaguard/reports`，与待处理告警不是同一条路径
-- 告警所属点恢复正常（在线读数回 `NONE`）时，HMI 清 `s_alarm` 并 `unlink` 待处理文件；Agent HEARTBEAT 也会删同一文件，两边都删不算错
+- 全部活动告警恢复（在线读数回 `NONE`）时，HMI `unlink` 待处理文件；Agent HEARTBEAT 也会删同一文件，两边都删不算错
+- 无头渲染验收：`gui/headless/alarm_check_main.c`（离屏渲染告警页 + 脚本化点击 + 模型断言，产物 PPM 转 PNG 目检），编译与运行方式见文件头注释
 
 ## 明确不做
 

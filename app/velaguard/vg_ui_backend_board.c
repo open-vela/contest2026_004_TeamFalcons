@@ -811,33 +811,42 @@ bool vg_ui_backend_apply_live(void)
 
 #ifdef CONFIG_VG_AGENT_OPS
   {
-    static bool prev_active;
+    /* pending_alarm.txt mirrors the primary alarm only (Agent contract:
+     * single record, format unchanged). Rewrite when the primary flips to
+     * a different point/kind; clear only when the LAST alarm resolves so
+     * a recovering point never wipes a still-active neighbor's record. */
+    static char prev_tag[40];
     const vg_alarm_t *a = vg_model_get_active_alarm();
-    bool now_active = (a != NULL && a->active);
+    const uint16_t n_active = vg_model_active_alarm_count();
+    char tag[40];
 
-    if(now_active) {
+    if(n_active > 0 && a != NULL && a->active) {
       const vg_sensor_t *s = vg_model_get_sensor(a->sensor_id);
       char buf[256];
       const char *type = (a->severity == VG_SEV_OFFLINE) ? "offline"
                                                         : "threshold";
 
-      snprintf(buf, sizeof(buf),
-               "type=%s\ntag=%s\nslave=%u\nreg=%ld\nvalue=%.4g\n"
-               "threshold=%.4g\n"
-               "hint=use alarm_interpretation skill\n",
-               type,
-               a->sensor_id,
-               s ? (unsigned)s->slave_addr : 0u,
-               s ? (long)s->reg_addr : 0L,
-               (double)a->value,
-               (double)a->threshold);
-      (void)vg_pending_alarm_write(buf);
+      snprintf(tag, sizeof(tag), "%s/%s", a->sensor_id, type);
+      if(strcmp(tag, prev_tag) != 0) {
+        snprintf(buf, sizeof(buf),
+                 "type=%s\ntag=%s\nslave=%u\nreg=%ld\nvalue=%.4g\n"
+                 "threshold=%.4g\n"
+                 "hint=use alarm_interpretation skill\n",
+                 type,
+                 a->sensor_id,
+                 s ? (unsigned)s->slave_addr : 0u,
+                 s ? (long)s->reg_addr : 0L,
+                 (double)a->value,
+                 (double)a->threshold);
+        (void)vg_pending_alarm_clear();
+        (void)vg_pending_alarm_write(buf);
+        snprintf(prev_tag, sizeof(prev_tag), "%s", tag);
+      }
     }
-    else if(prev_active) {
+    else if(prev_tag[0] != '\0') {
       (void)vg_pending_alarm_clear();
+      prev_tag[0] = '\0';
     }
-
-    prev_active = now_active;
   }
 #endif
 

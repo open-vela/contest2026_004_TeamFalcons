@@ -1,0 +1,3 @@
+{"file": ".agents/skills/velaguard-alarm-to-screen/SKILL.md", "reason": "检查告警契约是否被破坏"}
+{"file": "CONTEXT.md", "reason": "检查术语与文案口径"}
+{"file": ".trellis/spec/guides/index.md", "reason": "跨层一致性检查指南"}

@@ -95,6 +95,10 @@ typedef struct {
     uint8_t failwin_pos;    /* next ring slot to overwrite */
     uint8_t failwin_fails;  /* failures currently inside the window */
     vg_severity_t severity;
+    bool al_active;       /* alarm episode live: triggered, restore not met */
+    bool al_acked;        /* acknowledged (awareness, not resolution) */
+    bool al_muted;
+    int32_t al_duration_sec;
     int32_t age_sec;
     int32_t period_ms;
     int32_t reg_addr;
@@ -238,6 +242,13 @@ void vg_model_set_selected_sensor(const char * id);
 const char * vg_model_get_selected_sensor_id(void);
 const vg_sensor_t * vg_model_get_selected_sensor(void);
 const vg_alarm_t * vg_model_get_active_alarm(void);
+/* Per-point alarm episodes: crit > offline > warn ordering */
+uint16_t vg_model_collect_alarms(vg_alarm_t * out, uint16_t max);
+uint16_t vg_model_active_alarm_count(void);
+bool vg_model_alarms_all_quieted(void);
+void vg_model_ack_alarm_id(const char * id);
+void vg_model_mute_alarm_id(const char * id);
+void vg_model_mute_all_alarms(void);
 const vg_net_status_t * vg_model_get_net(void);
 void vg_model_on_change(vg_model_change_cb_t cb, void * user);
 void vg_model_off_change(vg_model_change_cb_t cb, void * user);

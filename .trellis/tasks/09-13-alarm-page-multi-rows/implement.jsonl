@@ -1,0 +1,4 @@
+{"file": ".agents/skills/velaguard-alarm-to-screen/SKILL.md", "reason": "本地安全环契约:告警判定口径、pending_alarm.txt 语义、恢复清 s_alarm 约定"}
+{"file": "CONTEXT.md", "reason": "术语口径:Acknowledgement/Resolution/Offline/Recovering,UI 文案须遵循"}
+{"file": ".trellis/spec/guides/index.md", "reason": "代码复用与跨层思维指南(首页 signature 重建模式复用)"}
+{"file": ".trellis/spec/frontend/index.md", "reason": "GUI 层规范入口"}

@@ -309,18 +309,25 @@ static void on_nav(lv_event_t * e)
     vg_nav_goto(id, NULL);
 }
 
-/* Manual 6.3 quick action: mute the active alarm from home */
+/* Manual 6.3 quick action: mute ALL active alarms from home (per-alarm
+ * mute lives on the alarm page rows) */
 static void on_mute(lv_event_t * e)
 {
-    const vg_alarm_t * a;
+    uint16_t n;
+    char buf[24];
     LV_UNUSED(e);
-    a = vg_model_get_active_alarm();
-    if(a && a->active) {
-        vg_model_mute_alarm();
+    n = vg_model_active_alarm_count();
+    if(n == 0) {
+        vg_shell_toast("当前无活动告警");
+        return;
+    }
+    vg_model_mute_all_alarms();
+    if(n == 1) {
         vg_shell_toast("已静音");
     }
     else {
-        vg_shell_toast("当前无活动告警");
+        lv_snprintf(buf, sizeof(buf), "已静音 %u 个告警", (unsigned)n);
+        vg_shell_toast(buf);
     }
 }
 

@@ -316,7 +316,9 @@ static void refresh_alarm_chip(void)
     }
 
     set_chip(s_chip_alarm, "告警!", a->severity);
-    if(a->acked || a->muted) {
+    /* Dim only when every active alarm was acked/muted (multi-alarm rows
+     * each carry their own flag; severity comes from the primary alarm) */
+    if(vg_model_alarms_all_quieted()) {
         lv_obj_set_style_bg_opa(s_chip_alarm, LV_OPA_TRANSP, 0);
         if(lab) lv_obj_set_style_text_color(lab, vg_color_muted(), 0);
     }
