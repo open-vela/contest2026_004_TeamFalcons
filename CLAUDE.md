@@ -1,14 +1,9 @@
-# CLAUDE.md — Agent entry
+@AGENTS.md
 
-> Official contest rules override every local document and workflow.
+# Claude Code
 
-Before doing contest work in this repository, read:
-
-- `docs/agents/BOUNDARY.md` — the single local contest and product boundary reference
-- `CONTEXT.md` — VelaGuard terminology
-- the current issue under `.scratch/velaguard-independent-edge-ai-gateway/issues/`
-
-Do not duplicate contest rules in this file. Build from the parent openvela workspace. Keep contest product code inside `contest2026_004_TeamFalcons/`. Edit `nuttx/` / `apps/` / MQTT-C in those checkouts (no contest patches); see `BOUNDARY.md` C2. Use the official log validator documented in `BOUNDARY.md`.
+The root rules are imported above. This file only adds Claude-specific workflow
+instructions; it does not maintain a separate contest or product rule body.
 
 ## Development workflow
 

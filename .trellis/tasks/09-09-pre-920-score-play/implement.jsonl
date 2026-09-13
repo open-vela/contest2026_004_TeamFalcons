@@ -4,4 +4,4 @@
 {"file": ".trellis/tasks/09-09-pre-920-score-play/research/score-gap-2026-09-09.md", "reason": "Scoring holes and what not to rebuild"}
 {"file": ".trellis/tasks/09-09-pre-920-score-play/research/same-firmware-hmi-agent.md", "reason": "Same-firmware spike limits; mallinfo; skip heartbeat"}
 {"file": ".trellis/tasks/09-09-pre-920-score-play/design.md", "reason": "Firmware roles, alarm flow, report path, fallback"}
-{"file": "docs/agents/BOUNDARY.md", "reason": "C4 deadline, C9 Agent evidence, V5 no mutate"}
+{"file": "AGENTS.md", "reason": "C4 deadline, C9 Agent evidence, V5 no mutate"}

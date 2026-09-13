@@ -4,4 +4,4 @@
 {"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "Only velaguard-lvgl; NSH_LINELEN lives on that defconfig"}
 {"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "JSON file, NSH, RAM table, HMI home, and host script share one schema"}
 {"file": ".trellis/tasks/09-10-host-nsh-vgpoint/research/existing-stack.md", "reason": "Current write-only JSON, in-process bus flag, vg_mthings_points live source"}
-{"file": "docs/agents/BOUNDARY.md", "reason": "V5: Agent must not mutate point table or config apply"}
+{"file": "AGENTS.md", "reason": "V5: Agent must not mutate point table or config apply"}
