@@ -198,3 +198,50 @@ COM3/NSH `vgpoint` 上位机写入待办 `09-09-nsh-vgpoint-host-editor`（P2，
 ### Next Steps
 
 - LCD人工目视趋势页与下拉选择；落盘持久化另开任务评估
+
+
+## Session 8: 现场测试修复与告警页多分栏归档
+<!-- trellis-session: v=2 fp=94fb684c6b5f4017 -->
+
+**Date**: 2026-09-13
+**Task**: 现场测试修复与告警页多分栏归档
+**Branch**: `integrate-learn-vela-0912`
+
+### Summary
+
+Session summary was not supplied.
+
+### Main Changes
+
+- field-test-fixes-0913：在线抖动（字节超时 50ms + 单次重试 + 周期去重）、首页告警列表原地刷新、报告页刷新按钮经 HEARTBEAT.poke 触发 MiMo 再生成日报、状态栏标题后附日期
+- alarm-page-multi-rows：模型层告警期挂到每个点并派生主告警，告警页多点分栏显示，逐点标记处理与静音，首页快捷静音作用于全部活动告警；pending_alarm.txt 保持单条主告警格式，全部活动告警恢复才 unlink
+- 新增无头渲染验收 gui/headless/alarm_check_main.c（离屏 480x272 + 脚本化点击 + PPM 出图），LVGL 9 可点击卡片内普通容器吞点击的坑与无头工具用法沉淀进 frontend spec
+- 边界规则正文并入根 AGENTS.md，docs/agents/BOUNDARY.md 缩为来源索引；README 修正未落地 claim、新增 NSH 命令速查与三张移动端 SVG
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `8a75c1e` | fix(velaguard): stop live online/offline flapping (retry + per-cycle apply) |
+| `c3b0429` | fix(gui): rebuild home filter index on live changes |
+| `604b389` | feat(gui): report page refresh button pokes agent heartbeat |
+| `77ab678` | feat(gui): append date to the status bar title |
+| `6694b1c` | docs(agents): consolidate boundary rules into root AGENTS.md |
+| `938c98b` | feat(gui): multi-row alarm page with per-point ack and mute |
+| `728ec4c` | docs(readme): honest claims, NSH command quick reference, mobile SVGs |
+| `701cfe4` | docs(task): add field-test-fixes-0913 task files |
+| `5f2fbd7` | chore(logs): collect AI coding sessions 09-12/09-13 |
+
+### Testing
+
+- [OK] make -C app/velaguard/host_tests test 本次复跑 7 项全绿
+- [OK] bash scripts/build.sh（velaguard-lvgl）本次复跑编译通过并产出 nuttx.hex
+- [OK] PC 模拟器冒烟与板端 COM3 验收以任务 implement.md 记录为准，本次未复跑
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- 板端真机过一遍告警页多分栏 AC1-AC6；09-11-host-point-live-query 状态 done 但未归档，需确认后归档
