@@ -165,3 +165,36 @@ COM3/NSH `vgpoint` 上位机写入待办 `09-09-nsh-vgpoint-host-editor`（P2，
 ### Status
 
 [OK] Backlog written; F1 not implemented this turn.
+
+
+## Session 7: 点表数据趋势页恢复与增强（trend-page-live）
+<!-- trellis-session: v=2 fp=2c1a951ee5db371a -->
+
+**Date**: 2026-09-13
+**Task**: 点表数据趋势页恢复与增强（trend-page-live）
+**Branch**: `integrate-learn-vela-0912`
+
+### Summary
+
+解锁阶段2门禁的趋势页：板上点历史16到128（BSS实测+28.6KB，sram占41.4%），页内lv_dropdown按id选点并显示点位名，窗口改为最近60点/全部样本语义，无阈值点位Y轴自适应量程；新增无头验证gui/headless/trend_check_main.c全PASS（告警页回归ALL PASS）；板端build+烧录+hmi验收pass=15/fail=3（均为环境项）；LCD目视确认待人工
+
+### Git Commits
+
+| Hash | Message |
+|------|---------|
+| `a274607` | feat(gui): raise board point history to 128 samples for trend page |
+| `9af83a1` | feat(gui): trend page point dropdown, sample-count windows, auto Y range |
+| `056ec87` | docs(task): record trend-page-live verification results |
+| `de6bb55` | chore(task): archive trend-page-live |
+
+### Testing
+
+- [OK] bash scripts/build.sh; /tmp/trend_check 全PASS; stage1_lvgl_hmi_accept pass=15 fail=3(环境项); make -C app/velaguard/host_tests 未跑(无点表协议变更)
+
+### Status
+
+[OK] **Completed**
+
+### Next Steps
+
+- LCD人工目视趋势页与下拉选择；落盘持久化另开任务评估
