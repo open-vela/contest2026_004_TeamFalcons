@@ -21,3 +21,12 @@ Use when compiling, flashing, writing accept scripts, or telling judges which im
 bash scripts/build.sh
 # expect: TARGET=velaguard-lvgl preset=stm32h750b-dk:velaguard-lvgl
 ```
+
+## Measurement builds (CONFIG_VG_HMI_PERF)
+
+`bash scripts/build.sh --hmi-perf` builds the same single `velaguard-lvgl` mainline with the bounded HMI performance counters enabled (task 09-13-hmi-performance-baseline). It is a temporary measurement configuration, not a second product image:
+
+- Only valid for `velaguard-lvgl`; other targets are rejected.
+- The flag is injected into the installed `.config` at build time; the source defconfig stays off, and a plain default build rejects the leftover `=y` and reconfigures itself back to the closed state.
+- `vghmi perf` on the measurement firmware is a read-only NSH diagnostic; it never starts a second HMI.
+- After measuring, run `bash scripts/build.sh` and flash the default image to restore the product firmware.

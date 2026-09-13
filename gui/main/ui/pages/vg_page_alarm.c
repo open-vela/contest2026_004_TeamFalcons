@@ -40,7 +40,46 @@ typedef struct {
 
 static alarm_ctx_t s_alarm_ui;
 
+typedef struct {
+    char id[VG_SENSOR_ID_MAX];
+    uint32_t alarm_epoch;
+    uint32_t structure_version;
+    uint32_t page_gen;
+    bool valid;
+} alarm_press_t;
+
+static alarm_press_t s_alarm_press;
+
 static void refresh_alarm(void * user);
+
+static void alarm_press_bind(int idx)
+{
+    const vg_sensor_t * s;
+
+    memset(&s_alarm_press, 0, sizeof(s_alarm_press));
+    if(idx < 0 || idx >= s_alarm_ui.row_n) return;
+    strncpy(s_alarm_press.id, s_alarm_ui.row_id[idx], sizeof(s_alarm_press.id) - 1);
+    s = vg_model_get_sensor(s_alarm_press.id);
+    if(s != NULL) s_alarm_press.alarm_epoch = s->al_epoch;
+    s_alarm_press.structure_version = vg_model_structure_version();
+    s_alarm_press.page_gen = vg_shell_page_generation();
+    s_alarm_press.valid = true;
+}
+
+static bool alarm_press_ok(int idx)
+{
+    const vg_sensor_t * s;
+
+    if(!s_alarm_press.valid) return false;
+    if(idx < 0 || idx >= s_alarm_ui.row_n) return false;
+    if(s_alarm_press.page_gen != vg_shell_page_generation()) return false;
+    if(s_alarm_press.structure_version != vg_model_structure_version()) return false;
+    if(strcmp(s_alarm_press.id, s_alarm_ui.row_id[idx]) != 0) return false;
+    s = vg_model_get_sensor(s_alarm_press.id);
+    if(s == NULL || !s->al_active) return false;
+    if(s->al_epoch != s_alarm_press.alarm_epoch) return false;
+    return true;
+}
 
 static void fmt_f1(char * buf, size_t n, float v)
 {
@@ -83,8 +122,12 @@ static void on_row_mute(lv_event_t * e)
 {
     int idx = (int)(intptr_t)lv_event_get_user_data(e);
 
-    if(idx < 0 || idx >= s_alarm_ui.row_n) return;
-    vg_model_mute_alarm_id(s_alarm_ui.row_id[idx]);
+    if(!alarm_press_ok(idx)) {
+        s_alarm_press.valid = false;
+        return;
+    }
+    vg_model_mute_alarm_id(s_alarm_press.id);
+    s_alarm_press.valid = false;
     vg_shell_toast("已静音");
 }
 
@@ -92,9 +135,19 @@ static void on_row_ack(lv_event_t * e)
 {
     int idx = (int)(intptr_t)lv_event_get_user_data(e);
 
-    if(idx < 0 || idx >= s_alarm_ui.row_n) return;
-    vg_model_ack_alarm_id(s_alarm_ui.row_id[idx]);
+    if(!alarm_press_ok(idx)) {
+        s_alarm_press.valid = false;
+        return;
+    }
+    vg_model_ack_alarm_id(s_alarm_press.id);
+    s_alarm_press.valid = false;
     vg_shell_toast("已标记处理");
+}
+
+static void on_row_btn_pressed(lv_event_t * e)
+{
+    int idx = (int)(intptr_t)lv_event_get_user_data(e);
+    alarm_press_bind(idx);
 }
 
 static lv_obj_t * make_row_btn(lv_obj_t * parent, const char * text, bool primary,
@@ -112,6 +165,7 @@ static lv_obj_t * make_row_btn(lv_obj_t * parent, const char * text, bool primar
     lv_label_set_text(lab, text);
     lv_obj_set_style_text_font(lab, vg_font_small(), 0);
     lv_obj_center(lab);
+    lv_obj_add_event_cb(btn, on_row_btn_pressed, LV_EVENT_PRESSED, (void *)(intptr_t)idx);
     lv_obj_add_event_cb(btn, cb, LV_EVENT_CLICKED, (void *)(intptr_t)idx);
     return btn;
 }
@@ -523,4 +577,66 @@ void vg_page_alarm_create(lv_obj_t * parent, const void * args)
 
     vg_model_on_change(refresh_alarm, NULL);
     refresh_alarm(NULL);
+}
+
+void vg_page_alarm_nav_capture(vg_nav_state_t * st)
+{
+    uint16_t n = 0;
+    const vg_sensor_t * sensors;
+
+    if(st == NULL) return;
+    if(s_alarm_ui.sel_id[0] != '\0') {
+        strncpy(st->alarm_id, s_alarm_ui.sel_id, sizeof(st->alarm_id) - 1);
+    }
+    if(s_alarm_ui.body != NULL && lv_obj_is_valid(s_alarm_ui.body)) {
+        st->scroll_y = lv_obj_get_scroll_y(s_alarm_ui.body);
+    }
+    sensors = vg_model_get_sensors(&n);
+    if(sensors != NULL && st->alarm_id[0] != '\0') {
+        uint16_t i;
+        for(i = 0; i < n; i++) {
+            if(strcmp(sensors[i].id, st->alarm_id) == 0) {
+                st->alarm_epoch = sensors[i].al_epoch;
+                break;
+            }
+        }
+    }
+}
+
+void vg_page_alarm_nav_restore(const vg_nav_state_t * st)
+{
+    uint16_t n = 0;
+    vg_alarm_t list[ALARM_LIST_MAX];
+    uint16_t i;
+    bool found = false;
+
+    if(st == NULL) return;
+    if(s_alarm_ui.root == NULL || !lv_obj_is_valid(s_alarm_ui.root)) return;
+
+    n = vg_model_collect_alarms(list, ALARM_LIST_MAX);
+    if(st->alarm_id[0] != '\0') {
+        for(i = 0; i < n; i++) {
+            if(strcmp(list[i].sensor_id, st->alarm_id) == 0) {
+                found = true;
+                break;
+            }
+        }
+    }
+
+    if(found) {
+        strncpy(s_alarm_ui.sel_id, st->alarm_id, sizeof(s_alarm_ui.sel_id) - 1);
+    }
+    else if(n > 0) {
+        /* Original alarm recovered: pick current highest-priority active. */
+        strncpy(s_alarm_ui.sel_id, list[0].sensor_id, sizeof(s_alarm_ui.sel_id) - 1);
+    }
+    else {
+        s_alarm_ui.sel_id[0] = '\0';
+    }
+
+    refresh_alarm(NULL);
+    if(s_alarm_ui.body != NULL && lv_obj_is_valid(s_alarm_ui.body) && found) {
+        lv_obj_update_layout(s_alarm_ui.body);
+        lv_obj_scroll_to_y(s_alarm_ui.body, st->scroll_y, LV_ANIM_OFF);
+    }
 }

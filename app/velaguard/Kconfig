@@ -236,6 +236,17 @@ config VG_HMI
 
 if VG_HMI
 
+config VG_HMI_PERF
+	bool "VelaGuard HMI performance stats (measurement builds only)"
+	default n
+	---help---
+		Build the bounded six-metric HMI performance counters
+		(vg_hmi_perf) and the read-only "vghmi perf" diagnostic.
+		Measurement builds only: the shipping defconfig keeps this off
+		and the default build rejects a leftover =y. Observation adds
+		no business behavior change and stays under an 8 KiB static
+		budget.
+
 config VG_HMI_PRIORITY
 	int "vghmi task priority"
 	default 100

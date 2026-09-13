@@ -1,0 +1,6 @@
+{"file":"AGENTS.md","reason":"最终检查不得扩大产品范围或绕过确认权限，证据必须真实"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"UI 对象、触摸传递和无头像素验证"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"核对同一作品固件，不能用其他构建替代 Agent 压力验收"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"核对跨子任务的状态、身份、资源生命周期与错误传播"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"避免把历史说明、模拟器能力和配置值当成当前真机证据"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"最终性能与业务兼容的统一判定依据"}

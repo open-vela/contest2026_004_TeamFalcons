@@ -56,6 +56,12 @@ static lv_timer_t * s_ota_tmr;
 static vg_sys_status_t s_sys;
 static vg_home_filter_t s_home_filter = VG_HOME_FILTER_ALL;
 static char s_selected_id[VG_SENSOR_ID_MAX];
+static uint32_t s_structure_version = 1;
+
+uint32_t vg_model_structure_version(void)
+{
+    return s_structure_version;
+}
 
 static void cancel_add_timer(void);
 static void cancel_ota_timer(void);
@@ -119,6 +125,7 @@ static void fill_sensor_history(vg_sensor_t * s, float base, float amp, float no
         s->history[i] = base + amp * approx_sin(t) + n;
     }
     s->value = s->history[VG_HISTORY_LEN - 1];
+    s->history_version++;
 }
 
 static int sev_rank(vg_severity_t sev)
@@ -135,6 +142,14 @@ static int sev_rank(vg_severity_t sev)
 static void rebuild_filter(void)
 {
     uint16_t i, j;
+    uint16_t old_filt_n = s_filt_n;
+    uint16_t old_filt_idx[VG_SENSOR_MAX];
+    bool changed = false;
+
+    if(s_filt_n > 0 && s_filt_n <= VG_SENSOR_MAX) {
+        memcpy(old_filt_idx, s_filt_idx, s_filt_n * sizeof(uint16_t));
+    }
+
     s_filt_n = 0;
     for(i = 0; i < s_sensor_n; i++) {
         const vg_sensor_t * s = &s_sensors[i];
@@ -171,6 +186,16 @@ static void rebuild_filter(void)
             j--;
         }
         s_filt_idx[j] = key;
+    }
+
+    if(s_filt_n != old_filt_n) {
+        changed = true;
+    }
+    else if(s_filt_n > 0 && memcmp(old_filt_idx, s_filt_idx, s_filt_n * sizeof(uint16_t)) != 0) {
+        changed = true;
+    }
+    if(changed) {
+        s_structure_version++;
     }
 }
 
@@ -1057,6 +1082,7 @@ static void sensor_alarm_begin(vg_sensor_t * s, vg_severity_t sev)
     s->al_active = true;
     s->al_acked = false;
     s->al_muted = false;
+    s->al_epoch++;
     s->al_duration_sec = 0;
     lv_snprintf(logbuf, sizeof(logbuf), "告警触发: %s", s->name);
     vg_model_append_log(VG_LOG_ALARM, sev, logbuf);
@@ -1266,6 +1292,7 @@ uint16_t vg_model_home_sensor_count(void) { return s_filt_n; }
 
 void vg_model_set_home_filter(vg_home_filter_t f)
 {
+    if(s_home_filter == f) return;
     s_home_filter = f;
     rebuild_filter();
     notify_all();
@@ -1318,6 +1345,12 @@ void vg_model_on_change(vg_model_change_cb_t cb, void * user)
     s_listeners[s_listener_n].cb = cb;
     s_listeners[s_listener_n].user = user;
     s_listener_n++;
+}
+
+int vg_model_debug_listener_count(void)
+{
+    /* Read-only debug query for the HMI perf snapshot (HMI thread only). */
+    return s_listener_n;
 }
 
 void vg_model_off_change(vg_model_change_cb_t cb, void * user)
@@ -1783,6 +1816,7 @@ void vg_model_import_runtime_points(const vg_runtime_point_t * pts, int n)
     /* memset(s) above reset every per-point alarm episode; re-derive the
      * (now empty) primary alarm from the fresh table. */
     derive_primary_alarm();
+    s_structure_version++;
     rebuild_filter();
     notify_all();
 }
@@ -1895,6 +1929,7 @@ bool vg_model_set_live(uint16_t idx, float value, bool online)
                     (VG_HISTORY_LEN - 1) * sizeof(float));
             s->history[VG_HISTORY_LEN - 1] = value;
         }
+        s->history_version++;
     }
     else {
         uint8_t prev_streak = s->fail_streak;

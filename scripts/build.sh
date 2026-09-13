@@ -33,6 +33,7 @@ TARGET="velaguard-lvgl"
 MODE="build"
 DEBUG=0
 SYNC_UPSTREAM=0
+HMI_PERF=0
 
 # shellcheck source=vg_mainline_target.sh
 . "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
@@ -48,6 +49,9 @@ for arg in "$@"; do
     --sync-upstream)
       SYNC_UPSTREAM=1
       ;;
+    --hmi-perf)
+      HMI_PERF=1
+      ;;
     net|min|lvgl|velaguard|velaguard-lvgl|ai-probe|emmc)
       TARGET="$(vg_normalize_build_target "$arg")"
       ;;
@@ -59,6 +63,11 @@ for arg in "$@"; do
 done
 
 TARGET="$(vg_normalize_build_target "$TARGET")"
+
+if [ "$HMI_PERF" = 1 ] && [ "$TARGET" != "velaguard-lvgl" ]; then
+  echo "error: --hmi-perf 仅适用于作品主线 velaguard-lvgl，不适用于 $TARGET" >&2
+  exit 1
+fi
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONTEST_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -126,7 +135,8 @@ expect_dev_config()
         grep -q '^CONFIG_EXAMPLES_AI_AGENT_VELA=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H7_LTDC=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_INPUT_FT5X06=y' "$NUTTX_ROOT/.config" &&
-        ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config"
+        ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config" &&
+        ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config"
       ;;
 
     ai-probe)
@@ -234,6 +244,15 @@ if [ "$MODE" = "--clean" ] || ! expect_dev_config; then
   # rebuild them when only .config changes (stale velaguard.o skips HMI autostart).
   rm -rf "$SCRIPT_DIR/../build/velaguard"
   "$NUTTX_ROOT/tools/configure.sh" -E -e "stm32h750b-dk:${DEFCONFIG}"
+fi
+
+if [ "$HMI_PERF" = 1 ]; then
+  echo "[build] measurement build: enabling CONFIG_VG_HMI_PERF (not saved to the defconfig)"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_HMI_PERF
+  make -C "$NUTTX_ROOT" olddefconfig
+  # App objects compile with -DVG_HMI_PERF_ENABLED; drop stale objects so
+  # the toggle cannot leave half-old binaries behind.
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 
 need_clean=0

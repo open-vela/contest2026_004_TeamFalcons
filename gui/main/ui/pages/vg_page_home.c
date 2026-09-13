@@ -30,6 +30,27 @@ typedef struct {
 
 static home_ctx_t s_home;
 
+typedef struct {
+    char id[VG_SENSOR_ID_MAX];
+    uint32_t structure_version;
+    uint32_t page_gen;
+    bool valid;
+} home_press_t;
+
+static home_press_t s_home_press;
+
+static void on_row_pressed(lv_event_t * e)
+{
+    const char * id = (const char *)lv_event_get_user_data(e);
+
+    memset(&s_home_press, 0, sizeof(s_home_press));
+    if(id == NULL || id[0] == '\0') return;
+    strncpy(s_home_press.id, id, sizeof(s_home_press.id) - 1);
+    s_home_press.structure_version = vg_model_structure_version();
+    s_home_press.page_gen = vg_shell_page_generation();
+    s_home_press.valid = true;
+}
+
 static void fmt_value_unit(char * buf, size_t n, float v, const char * unit, bool online)
 {
     int vi = (int)v;
@@ -81,11 +102,19 @@ static void refresh_filter_chips(void)
 static void on_row(lv_event_t * e)
 {
     const char * id = (const char *)lv_event_get_user_data(e);
-    if(id) vg_model_set_selected_sensor(id);
+
+    if(!s_home_press.valid) return;
+    if(s_home_press.page_gen != vg_shell_page_generation()) return;
+    if(s_home_press.structure_version != vg_model_structure_version()) return;
+    if(id == NULL || strcmp(id, s_home_press.id) != 0) return;
+    if(vg_model_get_sensor(s_home_press.id) == NULL) return;
+
+    vg_model_set_selected_sensor(s_home_press.id);
+    s_home_press.valid = false;
     vg_nav_goto(VG_PAGE_DEVICE, NULL);
 }
 
-/* Signature of visible set: filter + ids (order). Values change every tick — not in sig. */
+/* Signature of visible set: filter + ids (order) + structure version. */
 static void build_list_sig(char * out, size_t n)
 {
     uint16_t cnt = vg_model_home_sensor_count();
@@ -93,7 +122,8 @@ static void build_list_sig(char * out, size_t n)
     size_t used = 0;
     int w;
 
-    w = lv_snprintf(out, n, "%d:%u|", (int)vg_model_get_home_filter(), (unsigned)cnt);
+    w = lv_snprintf(out, n, "%d:%u:%u|", (int)vg_model_get_home_filter(), (unsigned)cnt,
+                    (unsigned)vg_model_structure_version());
     if(w < 0) {
         out[0] = '\0';
         return;
@@ -157,6 +187,7 @@ static lv_obj_t * make_sensor_tile(lv_obj_t * parent, const vg_sensor_t * s, uin
     lv_obj_set_flex_flow(tile, LV_FLEX_FLOW_ROW);
     lv_obj_set_flex_align(tile, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
     lv_obj_set_style_pad_column(tile, 6, 0);
+    lv_obj_add_event_cb(tile, on_row_pressed, LV_EVENT_PRESSED, (void *)s->id);
     lv_obj_add_event_cb(tile, on_row, LV_EVENT_CLICKED, (void *)s->id);
 
     name = lv_label_create(tile);
@@ -234,8 +265,10 @@ static void rebuild_list(bool force)
     if(s_home.list == NULL || !lv_obj_is_valid(s_home.list)) return;
 
     build_list_sig(sig, sizeof(sig));
-    if(!force && s_home.list_n > 0 && strcmp(sig, s_home.list_sig) == 0) {
-        update_tile_texts();
+    if(!force && strcmp(sig, s_home.list_sig) == 0) {
+        if(s_home.list_n > 0) {
+            update_tile_texts();
+        }
         return;
     }
 
@@ -285,22 +318,18 @@ static void refresh_home(void * user)
 static void on_filter(lv_event_t * e)
 {
     vg_home_filter_t f = (vg_home_filter_t)(intptr_t)lv_event_get_user_data(e);
+    if(vg_model_get_home_filter() == f) return;
     vg_model_set_home_filter(f);
-    /* Force rebuild so filter switch is immediate */
-    rebuild_list(true);
-    refresh_filter_chips();
+    /* New filter starts at top of the list. */
+    if(s_home.list != NULL && lv_obj_is_valid(s_home.list)) {
+        lv_obj_scroll_to_y(s_home.list, 0, LV_ANIM_OFF);
+    }
 }
 
 static void on_detail(lv_event_t * e)
 {
     LV_UNUSED(e);
     vg_nav_goto(VG_PAGE_DEVICE, NULL);
-}
-
-static void on_trend(lv_event_t * e)
-{
-    LV_UNUSED(e);
-    vg_nav_goto(VG_PAGE_TREND, NULL);
 }
 
 static void on_nav(lv_event_t * e)
@@ -450,4 +479,22 @@ void vg_page_home_create(lv_obj_t * parent, const void * args)
 
     vg_model_on_change(refresh_home, NULL);
     refresh_home(NULL);
+}
+
+void vg_page_home_nav_capture(vg_nav_state_t * st)
+{
+    if(st == NULL) return;
+    st->home_filter = vg_model_get_home_filter();
+    if(s_home.list != NULL && lv_obj_is_valid(s_home.list)) {
+        st->scroll_y = lv_obj_get_scroll_y(s_home.list);
+    }
+}
+
+void vg_page_home_nav_restore(const vg_nav_state_t * st)
+{
+    if(st == NULL) return;
+    if(s_home.list == NULL || !lv_obj_is_valid(s_home.list)) return;
+    /* Filter already applied in create_page; restore scroll after layout. */
+    lv_obj_update_layout(s_home.list);
+    lv_obj_scroll_to_y(s_home.list, st->scroll_y, LV_ANIM_OFF);
 }

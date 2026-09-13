@@ -1,0 +1,35 @@
+{
+  "id": "hmi-ux-performance",
+  "name": "hmi-ux-performance",
+  "title": "LVGL HMI体验与性能优化",
+  "description": "保留现有HMI风格与安全边界，分阶段建立性能基线、优化页面运行与刷新、改善触摸交互并完成真机验收；本轮仅创建供其他Agent实施的详细任务包。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": "hmi",
+  "package": null,
+  "priority": "P1",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-13",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "integrate-learn-vela-0912",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-13-hmi-performance-baseline",
+    "09-13-hmi-runtime-render",
+    "09-13-hmi-touch-acceptance"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "父任务仍管集成验收。子任务 1/2 已实施并复核为 done；子任务 3 待实施。详见 research/progress-tracker.md。代码未 commit。",
+  "meta": {
+    "created_as_handoff_only": true,
+    "implementation_authorized_at_creation": false,
+    "progress_tracker": "research/progress-tracker.md",
+    "children_done": "2/3"
+  }
+}

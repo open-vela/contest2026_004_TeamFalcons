@@ -1,0 +1,6 @@
+{"file":"AGENTS.md","reason":"竞赛、产品安全、人工确认、仓库归属和中文输出的最高项目约束"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"现有 LVGL 点击传递和无头验证约定，版本差异按任务研究核实"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"保持 velaguard-lvgl 单一作品固件和本仓构建入口"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"检查采集、模型、后台文件操作和 UI 的数据所有权"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"已核查的源码证据、版本、容量、历史说明差异与前置成果"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"所有子任务统一的计时、样本、负载和安全验收契约"}

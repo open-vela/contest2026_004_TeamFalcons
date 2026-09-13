@@ -24,7 +24,16 @@ test_alarm_eval: test_alarm_eval.c ../vg_alarm_eval.c ../vg_alarm_eval.h
 test_time_sync: test_time_sync.c ../vg_sntp.c ../vg_sntp.h
 	$(CC) $(CFLAGS) -o $@ test_time_sync.c ../vg_sntp.c
 
-test: test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync
+test_hmi_perf: test_hmi_perf.c ../vg_hmi_perf.c ../vg_hmi_perf.h
+	$(CC) $(CFLAGS) -pthread -DVG_HMI_PERF_ENABLED=1 -o $@ test_hmi_perf.c ../vg_hmi_perf.c
+
+test_runtime_render: test_runtime_render.c ../vg_point_table.c ../vg_discover.h
+	$(CC) $(CFLAGS) -o $@ test_runtime_render.c ../vg_point_table.c
+
+test_hmi_sched: test_hmi_sched.c ../vg_hmi_sched.h
+	$(CC) $(CFLAGS) -o $@ test_hmi_sched.c
+
+test: test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -32,6 +41,9 @@ test: test_net_policy test_config_store test_frame_stats test_discover test_vgpo
 	./test_vgpoint
 	./test_alarm_eval
 	./test_time_sync
+	./test_hmi_perf
+	./test_runtime_render
+	./test_hmi_sched
 
 clean:
-	rm -f test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync
+	rm -f test_net_policy test_config_store test_frame_stats test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched

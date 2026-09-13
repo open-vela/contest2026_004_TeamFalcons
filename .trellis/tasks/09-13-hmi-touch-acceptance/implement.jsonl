@@ -1,0 +1,9 @@
+{"file":"AGENTS.md","reason":"交互优化不得引入自动确认、自动扫描或设备端写权限"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"真实 pointer 输入、点击传递和像素验证"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"最终体验验收保持同固件完整产品能力"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"按下 ID、告警期、页面代次和后台结果的跨层契约"}
+{"file":".agents/skills/velaguard-board-inner-loop/SKILL.md","reason":"未来构建、烧录及板端自验收路径"}
+{"file":".agents/skills/velaguard-candidate-confirm/SKILL.md","reason":"性能测试的点表准备和确认边界"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"保持输入硬件配置和既有界面容量"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"完整性能指标、负载和原始证据要求"}
+{"file":".trellis/tasks/09-13-hmi-touch-acceptance/research/interaction-cases.md","reason":"24 个具体交互、安全和资源回归场景"}

@@ -1,0 +1,3 @@
+bc60dbe805ba667a32bb0e3abcc44d72  .debug/nuttx.hex
+19fb2432b9e3aaa059ee5ef990416bbc  .debug/nuttx.bin
+build: bash scripts/build.sh --hmi-perf 2026-09-13T14:08:38+08:00

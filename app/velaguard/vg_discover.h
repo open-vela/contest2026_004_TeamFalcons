@@ -126,6 +126,7 @@ int vg_live_points_load(FAR const char *path);
 int vg_live_points_replace(FAR const struct vg_discover_summary *sum);
 uint32_t vg_live_points_gen(void);
 int vg_live_points_copy(FAR struct vg_discover_summary *out);
+int vg_live_points_copy_versioned(FAR struct vg_discover_summary *out, FAR uint32_t *generation);
 
 int vg_point_validate_id(FAR const char *id);
 int vg_point_validate_name(FAR const char *name);

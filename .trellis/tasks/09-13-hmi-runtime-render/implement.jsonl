@@ -1,0 +1,9 @@
+{"file":"AGENTS.md","reason":"保持已确认表、本地安全环、Agent 只读边界和正确仓库归属"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"页面对象、点击传递和无头 harness 的现有约定"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"阶段验证必须使用本仓 velaguard-lvgl 构建入口"}
+{"file":".trellis/spec/backend/host-nsh-protocol.md","reason":"新增内部快照接口不得改变对外 NSH 点表协议"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"明确 worker、模型、采集、页面的身份和生命周期"}
+{"file":".trellis/spec/guides/code-reuse-thinking-guide.md","reason":"复用后台 helper 和 widgets，不做无关模型重构"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"页面清理、同步 I/O、轮次和历史版本的代码依据"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"业务频率、失败窗口、持久化及阶段性性能要求"}
+{"file":".trellis/tasks/09-13-hmi-runtime-render/research/lifecycle-dataflow.md","reason":"具体调用链、竞态及异步迁移风险"}

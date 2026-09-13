@@ -26,6 +26,26 @@ typedef struct {
     char ip[16];        /* active egress IP, empty when none */
 } vg_ui_net_live_t;
 
+typedef enum {
+    VG_UI_REPORT_IDLE = 0,
+    VG_UI_REPORT_READING,
+    VG_UI_REPORT_GENERATING,
+    VG_UI_REPORT_READY,
+    VG_UI_REPORT_EMPTY,
+    VG_UI_REPORT_ERROR
+} vg_ui_report_status_t;
+
+typedef struct {
+    uint32_t request_id;
+    uint32_t version;
+    vg_ui_report_status_t status;
+    int err;
+    uint32_t elapsed_s;
+    char path[128];
+    char body[1024];
+    bool truncated;
+} vg_ui_report_snapshot_t;
+
 /* discover_*_status: 0 idle, 1 running, 2 done, <0 error */
 typedef struct {
     int (*discover_scan_start)(int addr_min, int addr_max);
@@ -38,9 +58,14 @@ typedef struct {
     /* Ask the on-device agent to generate today's daily report (MiMo).
      * Returns false when the platform has no agent backend. */
     bool (*request_daily_report)(void);
+    int (*report_request)(bool allow_generate, uint32_t *request_id);
+    bool (*report_snapshot)(vg_ui_report_snapshot_t *out);
 } vg_ui_backend_t;
 
 const vg_ui_backend_t *vg_ui_backend_get(void);
+
+int vg_ui_report_request(bool allow_generate, uint32_t *request_id);
+bool vg_ui_report_snapshot(vg_ui_report_snapshot_t *out);
 
 /* Board discover: vg_bus_scan / apply return or negative errno */
 int vg_ui_backend_scan_last_result(void);

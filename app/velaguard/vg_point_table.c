@@ -634,6 +634,22 @@ int vg_live_points_copy(FAR struct vg_discover_summary *out)
   return g_live.n_points;
 }
 
+int vg_live_points_copy_versioned(FAR struct vg_discover_summary *out,
+                                 FAR uint32_t *generation)
+{
+  if (out == NULL)
+    {
+      return -EINVAL;
+    }
+
+  memcpy(out, &g_live, sizeof(*out));
+  if (generation != NULL)
+    {
+      *generation = g_live_gen;
+    }
+  return g_live.n_points;
+}
+
 int vg_point_validate_id(FAR const char *id)
 {
   size_t n;

@@ -20,13 +20,16 @@
  * framebuffer lives on external memory (0xd0000000), so the net stack /
  * mbedTLS heap has room. If board heap pressure shows up, fall back to 64
  * (~12 KB BSS) before shrinking further. */
-#ifdef VG_HMI_BOARD
+#if defined(VG_HMI_BOARD) || defined(VG_MODEL_BOARD_CAPACITY)
 #define VG_HISTORY_LEN 128
 #define VG_SENSOR_MAX 64
 #else
 #define VG_HISTORY_LEN 300
 #define VG_SENSOR_MAX 256
 #endif
+/* VG_MODEL_BOARD_CAPACITY: test-only switch for headless board-capacity
+ * profiles (64 points / 128 history without the board backend). Product
+ * builds never define it; they use VG_HMI_BOARD or the PC defaults. */
 #define VG_ALARM_TITLE_MAX 64
 #define VG_LOG_MAX 24
 
@@ -98,6 +101,7 @@ typedef struct {
     bool al_active;       /* alarm episode live: triggered, restore not met */
     bool al_acked;        /* acknowledged (awareness, not resolution) */
     bool al_muted;
+    uint32_t al_epoch;    /* increments on each alarm begin; press identity */
     int32_t al_duration_sec;
     int32_t age_sec;
     int32_t period_ms;
@@ -106,6 +110,7 @@ typedef struct {
     bool online;
     float history[VG_HISTORY_LEN];
     uint16_t history_len;
+    uint32_t history_version;
 } vg_sensor_t;
 
 typedef struct {
@@ -237,6 +242,7 @@ const vg_sensor_t * vg_model_home_sensor_at(uint16_t i);
 uint16_t vg_model_home_sensor_count(void);
 void vg_model_set_home_filter(vg_home_filter_t f);
 vg_home_filter_t vg_model_get_home_filter(void);
+uint32_t vg_model_structure_version(void);
 void vg_model_count_by_filter(uint16_t * all, uint16_t * alarm, uint16_t * offline, uint16_t * ok);
 void vg_model_set_selected_sensor(const char * id);
 const char * vg_model_get_selected_sensor_id(void);
@@ -252,6 +258,8 @@ void vg_model_mute_all_alarms(void);
 const vg_net_status_t * vg_model_get_net(void);
 void vg_model_on_change(vg_model_change_cb_t cb, void * user);
 void vg_model_off_change(vg_model_change_cb_t cb, void * user);
+/* Read-only debug query for the HMI perf snapshot (HMI thread only). */
+int vg_model_debug_listener_count(void);
 void vg_model_tick(void);
 const char * vg_severity_label_zh(vg_severity_t sev);
 const char * vg_scenario_label(vg_scenario_t s);

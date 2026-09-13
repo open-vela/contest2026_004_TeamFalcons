@@ -89,3 +89,26 @@ Key implementation facts (LVGL 9.3):
 - `lv_indev_create()` takes no arguments in 9.3; use `lv_indev_set_type()` + `lv_indev_set_read_cb()`.
 
 **When to use**: any page-layout or interaction change to `gui/main/ui` before flashing the board.
+
+**Standalone build (since 09-13-hmi-performance-baseline)**: `gui/headless/CMakeLists.txt` builds these checks without SDL and runs them under CTest. Knobs: `VG_LVGL_DIR` (default: firmware checkout `../apps/graphics/lvgl/lvgl`), `VG_HEADLESS_COLOR_DEPTH` (16=RGB565 board-like / 32=PC), `VG_HEADLESS_PROFILE` (pc or board capacity via the test-only `VG_MODEL_BOARD_CAPACITY` macro). Shared plumbing lives in `harness_common.c` (format-aware buffer sizing and RGB565/XRGB8888 decode — never `sizeof(lv_color_t)`); `fixture_check_main.c` imports deterministic point tables through `vg_model_import_runtime_points` / `vg_model_set_live`.
+
+```bash
+cmake -S gui/headless -B .debug/hmi-headless -DVG_LVGL_DIR="$PWD/../apps/graphics/lvgl/lvgl" -DVG_HEADLESS_COLOR_DEPTH=16
+cmake --build .debug/hmi-headless && ctest --test-dir .debug/hmi-headless --output-on-failure
+```
+
+Both LVGL checkouts report version 9.1 via `lvgl.h` macros (the spec text above mentioning 9.3 predates this verification); verify API facts against the actual checkout.
+
+### Common Mistake: quantized histogram keyed into a too-small array
+
+**Symptom**: a "compare pixel distribution" helper corrupts unrelated globals and the crash surfaces later inside LVGL (e.g. in style/event code), pointing at the wrong module.
+
+**Cause**: packing 8-bit RGB into a 4-bit-per-channel key produces 4096 values; indexing a 256-entry histogram silently writes past the array.
+
+**Fix**: size the histogram for the full key space (4096) or reduce the key to 8 bits. Caught by ASAN as global-buffer-overflow — run harnesses under `-fsanitize=address` when they crash far from the changed code.
+
+### Common Mistake: trend full-window assertion without switching the window
+
+**Symptom**: headless trend assertions expect `当前 <VG_HISTORY_LEN> 点` but read `当前 60 点`.
+
+**Cause**: the trend page defaults to the 60-sample recent window; the full-window label only appears after clicking the `全部` toggle. Full-window sample counts follow `VG_HISTORY_LEN` (300 PC / 128 board capacity), so assert against the macro, not a literal.

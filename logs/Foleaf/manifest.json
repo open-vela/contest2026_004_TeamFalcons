@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "team_id": "contest2026_004_TeamFalcons",
   "github_login": "Foleaf",
-  "generator": "zcode-collector@1.4.0",
-  "updated_at": "2026-09-13T04:04:28.251Z",
+  "generator": "cursor-collector@1.4.0",
+  "updated_at": "2026-09-13T09:37:49.459Z",
   "sessions": [
     {
       "session_id": "ses_11810bbcfffe563TbgE0tykfVz",
@@ -3051,6 +3051,42 @@
       "collection_mode": "cli",
       "health": "ok",
       "model": "GLM-5.3-Flash"
+    },
+    {
+      "session_id": "sess_6dc2eb4f-cb75-41dd-a539-f743e1b849ce",
+      "tool": "zcode",
+      "started_at": "2026-09-13T04:18:09.604Z",
+      "last_event_at": "2026-09-13T04:28:12.213Z",
+      "event_count": 94,
+      "raw_event_count": 49,
+      "file_path": "logs/Foleaf/2026-09-13/zcode__sess_6dc2eb4f-cb75-41dd-a539-f743e1b849ce.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "GLM-5.3-Flash"
+    },
+    {
+      "session_id": "16300798-d8df-4bd7-8774-150972c14cb9",
+      "tool": "cursor",
+      "started_at": "2026-09-13T08:47:00.000Z",
+      "last_event_at": "2026-09-13T08:50:53.469Z",
+      "event_count": 29,
+      "raw_event_count": 11,
+      "file_path": "logs/Foleaf/2026-09-13/cursor__16300798-d8df-4bd7-8774-150972c14cb9.jsonl",
+      "collection_mode": "vscode_extension",
+      "health": "ok",
+      "model": "default"
+    },
+    {
+      "session_id": "0bbb3b90-7d2d-4a84-b8d7-0c85846f7824",
+      "tool": "cursor",
+      "started_at": "2026-09-13T09:25:00.000Z",
+      "last_event_at": "2026-09-13T09:37:49.456Z",
+      "event_count": 170,
+      "raw_event_count": 47,
+      "file_path": "logs/Foleaf/2026-09-13/cursor__0bbb3b90-7d2d-4a84-b8d7-0c85846f7824.jsonl",
+      "collection_mode": "vscode_extension",
+      "health": "ok",
+      "model": "default"
     }
   ]
 }

@@ -21,9 +21,7 @@
 #ifdef CONFIG_VG_NET_FAILOVER
 #include "vg_net_mgr.h"
 #endif
-#ifdef CONFIG_VG_AGENT_OPS
 #include "vg_agent_alarm.h"
-#endif
 
 #ifndef CONFIG_VG_HMI_RS485_DEVPATH
 #  define CONFIG_VG_HMI_RS485_DEVPATH "/dev/rs485"
@@ -534,6 +532,207 @@ static bool board_request_daily_report(void)
 #endif
 }
 
+#define VG_HMI_FILE_WORKER_STACKSIZE 8192
+
+typedef enum {
+  VG_ASYNC_ALARM_NONE = 0,
+  VG_ASYNC_ALARM_CLEAR,
+  VG_ASYNC_ALARM_WRITE,
+} vg_async_alarm_op_t;
+
+typedef struct {
+  vg_async_alarm_op_t op;
+  uint32_t req_id;
+  char buf[256];
+} vg_async_alarm_req_t;
+
+static pthread_mutex_t g_file_worker_lock = PTHREAD_MUTEX_INITIALIZER;
+static bool g_file_worker_started = false;
+
+static vg_async_alarm_req_t g_alarm_req;
+static uint32_t g_alarm_req_id = 0;
+static uint32_t g_alarm_done_id = 0;
+
+static vg_ui_report_snapshot_t g_report_snap;
+static bool g_report_req_pending = false;
+static bool g_report_allow_gen = false;
+static uint32_t g_report_req_counter = 1;
+static uint32_t g_report_gen_start_ms = 0;
+
+static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
+{
+  uint32_t last_gen_poll_ms = 0;
+  (void)arg;
+
+  for(;;) {
+    vg_async_alarm_req_t alarm_work;
+    bool do_alarm = false;
+    bool do_report_read = false;
+    bool do_report_check_gen = false;
+    bool allow_gen = false;
+    uint32_t now_ms = vg_live_now_ms();
+
+    pthread_mutex_lock(&g_file_worker_lock);
+
+    if(g_alarm_req.op != VG_ASYNC_ALARM_NONE && g_alarm_req.req_id != g_alarm_done_id) {
+      alarm_work = g_alarm_req;
+      do_alarm = true;
+    }
+
+    if(g_report_req_pending) {
+      g_report_req_pending = false;
+      allow_gen = g_report_allow_gen;
+      do_report_read = true;
+    }
+    else if(g_report_snap.status == VG_UI_REPORT_GENERATING) {
+      uint32_t elapsed_s = (now_ms - g_report_gen_start_ms) / 1000;
+      g_report_snap.elapsed_s = elapsed_s;
+      if(elapsed_s >= 180) {
+        g_report_snap.status = VG_UI_REPORT_ERROR;
+        g_report_snap.err = -ETIMEDOUT;
+        g_report_snap.version++;
+      }
+      else if(now_ms - last_gen_poll_ms >= 2000) {
+        last_gen_poll_ms = now_ms;
+        do_report_check_gen = true;
+      }
+    }
+
+    pthread_mutex_unlock(&g_file_worker_lock);
+
+    if(do_alarm) {
+      int rc = 0;
+      if(alarm_work.op == VG_ASYNC_ALARM_CLEAR) {
+        rc = vg_pending_alarm_clear();
+      }
+      else if(alarm_work.op == VG_ASYNC_ALARM_WRITE) {
+        (void)vg_pending_alarm_clear();
+        rc = vg_pending_alarm_write(alarm_work.buf);
+      }
+      pthread_mutex_lock(&g_file_worker_lock);
+      if(rc == 0 || alarm_work.op == VG_ASYNC_ALARM_CLEAR) {
+        g_alarm_done_id = alarm_work.req_id;
+      }
+      pthread_mutex_unlock(&g_file_worker_lock);
+    }
+
+    if(do_report_read || do_report_check_gen) {
+      char body[1024];
+      char path[128];
+      int rc;
+
+      rc = board_read_latest_report(body, sizeof(body), path, sizeof(path));
+
+      pthread_mutex_lock(&g_file_worker_lock);
+      if(rc == 0) {
+        snprintf(g_report_snap.body, sizeof(g_report_snap.body), "%s", body);
+        snprintf(g_report_snap.path, sizeof(g_report_snap.path), "%s", path);
+        g_report_snap.status = VG_UI_REPORT_READY;
+        g_report_snap.err = 0;
+        g_report_snap.version++;
+      }
+      else if(do_report_read) {
+        if(rc == -ENOENT) {
+          if(allow_gen) {
+            bool ok = board_request_daily_report();
+            if(ok) {
+              g_report_snap.status = VG_UI_REPORT_GENERATING;
+              g_report_gen_start_ms = vg_live_now_ms();
+              g_report_snap.elapsed_s = 0;
+              g_report_snap.err = 0;
+              g_report_snap.version++;
+              last_gen_poll_ms = g_report_gen_start_ms;
+            }
+            else {
+              g_report_snap.status = VG_UI_REPORT_EMPTY;
+              g_report_snap.err = -ENOSYS;
+              g_report_snap.version++;
+            }
+          }
+          else {
+            g_report_snap.status = VG_UI_REPORT_EMPTY;
+            g_report_snap.err = -ENOENT;
+            g_report_snap.version++;
+          }
+        }
+        else {
+          g_report_snap.status = VG_UI_REPORT_ERROR;
+          g_report_snap.err = rc;
+          g_report_snap.version++;
+        }
+      }
+      else {
+        g_report_snap.version++;
+      }
+      pthread_mutex_unlock(&g_file_worker_lock);
+    }
+
+    usleep(100000);
+  }
+
+  return NULL;
+}
+
+static void ensure_file_worker_started(void)
+{
+  pthread_t tid;
+  pthread_attr_t attr;
+
+  pthread_mutex_lock(&g_file_worker_lock);
+  if(g_file_worker_started) {
+    pthread_mutex_unlock(&g_file_worker_lock);
+    return;
+  }
+  g_file_worker_started = true;
+  pthread_attr_init(&attr);
+  pthread_attr_setstacksize(&attr, VG_HMI_FILE_WORKER_STACKSIZE);
+  if(pthread_create(&tid, &attr, vg_hmi_file_worker_thread, NULL) != 0) {
+    pthread_attr_destroy(&attr);
+    g_file_worker_started = false;
+    printf("vghmi: file worker start failed\n");
+    pthread_mutex_unlock(&g_file_worker_lock);
+    return;
+  }
+  pthread_attr_destroy(&attr);
+  pthread_detach(tid);
+  pthread_mutex_unlock(&g_file_worker_lock);
+}
+
+static int board_report_request(bool allow_generate, uint32_t *request_id)
+{
+  ensure_file_worker_started();
+  pthread_mutex_lock(&g_file_worker_lock);
+  if(g_report_snap.status == VG_UI_REPORT_GENERATING && !allow_generate) {
+    if(request_id) {
+      *request_id = g_report_snap.request_id;
+    }
+    pthread_mutex_unlock(&g_file_worker_lock);
+    return 0;
+  }
+
+  g_report_snap.request_id = ++g_report_req_counter;
+  if(request_id) {
+    *request_id = g_report_snap.request_id;
+  }
+  g_report_snap.status = VG_UI_REPORT_READING;
+  g_report_snap.version++;
+  g_report_snap.err = 0;
+  g_report_req_pending = true;
+  g_report_allow_gen = allow_generate;
+  pthread_mutex_unlock(&g_file_worker_lock);
+  return 0;
+}
+
+static bool board_report_snapshot(vg_ui_report_snapshot_t *out)
+{
+  if(out == NULL) return false;
+  ensure_file_worker_started();
+  pthread_mutex_lock(&g_file_worker_lock);
+  *out = g_report_snap;
+  pthread_mutex_unlock(&g_file_worker_lock);
+  return true;
+}
+
 static const vg_ui_backend_t s_board_backend = {
   .discover_scan_start   = board_discover_scan_start,
   .discover_scan_status  = board_discover_scan_status,
@@ -542,10 +741,13 @@ static const vg_ui_backend_t s_board_backend = {
   .get_slaves            = board_get_slaves,
   .read_latest_report    = board_read_latest_report,
   .request_daily_report  = board_request_daily_report,
+  .report_request        = board_report_request,
+  .report_snapshot       = board_report_snapshot,
 };
 
 #define VG_LIVE_MAX 64
 
+static pthread_mutex_t g_live_lock = PTHREAD_MUTEX_INITIALIZER;
 static float g_live_v[VG_LIVE_MAX];
 static uint8_t g_live_on[VG_LIVE_MAX];
 static volatile int g_live_n;
@@ -563,8 +765,9 @@ static void import_live_to_model(void)
   vg_runtime_point_t pts[VG_DISCOVER_MAX_POINTS];
   int i;
   int n;
+  uint32_t gen = 0;
 
-  n = vg_live_points_copy(&live);
+  n = vg_live_points_copy_versioned(&live, &gen);
   if(n < 0) {
     n = 0;
   }
@@ -594,7 +797,7 @@ static void import_live_to_model(void)
   }
 
   vg_model_import_runtime_points(pts, n);
-  g_imported_gen = vg_live_points_gen();
+  g_imported_gen = gen;
 }
 
 void vg_ui_backend_boot_points(void)
@@ -660,13 +863,14 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
     int n;
     int ok = 0;
     float a1 = 0.0f;
+    uint32_t poll_gen = 0;
 
     if(board_bus_busy()) {
       usleep(200000);
       continue;
     }
 
-    n = vg_live_points_copy(&live);
+    n = vg_live_points_copy_versioned(&live, &poll_gen);
     if(n < 0) {
       n = 0;
     }
@@ -675,8 +879,10 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
     }
 
     if(n <= 0) {
+      pthread_mutex_lock(&g_live_lock);
       g_live_n = 0;
       write_live_snapshot(&live, 0);
+      pthread_mutex_unlock(&g_live_lock);
       usleep(500000);
       continue;
     }
@@ -699,39 +905,45 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
       vg_bus_unlock();
       if(rc != 0) {
         printf("vghmi: live open failed rc=%d\n", rc);
+        pthread_mutex_lock(&g_live_lock);
         for(i = 0; i < n; i++) {
           g_live_on[i] = 0;
         }
         g_live_n = n;
         write_live_snapshot(&live, n);
         g_live_cycle++;
+        pthread_mutex_unlock(&g_live_lock);
         usleep(500000);
         continue;
       }
 
-      for(i = 0; i < n; i++) {
-        FAR const struct vg_point_entry *p = &live.points[i];
-        int signed_v = (strcmp(p->dtype, "uint16") != 0);
+      pthread_mutex_lock(&g_live_lock);
+      if(vg_live_points_gen() == poll_gen) {
+        for(i = 0; i < n; i++) {
+          FAR const struct vg_point_entry *p = &live.points[i];
+          int signed_v = (strcmp(p->dtype, "uint16") != 0);
 
-        if(oks[i]) {
-          float v = signed_v ? ((float)(int16_t)raws[i] * p->scale)
-                             : ((float)raws[i] * p->scale);
-          g_live_v[i] = v;
-          g_live_on[i] = 1;
-          ok++;
-          if(p->addr == 1 && p->reg == 0) {
-            a1 = v;
+          if(oks[i]) {
+            float v = signed_v ? ((float)(int16_t)raws[i] * p->scale)
+                               : ((float)raws[i] * p->scale);
+            g_live_v[i] = v;
+            g_live_on[i] = 1;
+            ok++;
+            if(p->addr == 1 && p->reg == 0) {
+              a1 = v;
+            }
+          }
+          else {
+            g_live_on[i] = 0;
           }
         }
-        else {
-          g_live_on[i] = 0;
-        }
+        g_live_n = n;
+        write_live_snapshot(&live, n);
+        g_live_cycle++;
       }
+      pthread_mutex_unlock(&g_live_lock);
     }
 
-    g_live_n = n;
-    write_live_snapshot(&live, n);
-    g_live_cycle++;
     if(ok > 0) {
       if(live_ok_logs < 8) {
         printf("vghmi: live ok=%d/%d a1=%.1f\n", ok, n, (double)a1);
@@ -778,7 +990,10 @@ void vg_ui_backend_acq_start(void)
 bool vg_ui_backend_apply_live(void)
 {
   int i;
-  int n = g_live_n;
+  int local_n;
+  float local_v[VG_LIVE_MAX];
+  uint8_t local_on[VG_LIVE_MAX];
+  uint32_t cur_cycle;
   bool changed = false;
   static uint32_t applied_cycle;
 
@@ -787,24 +1002,30 @@ bool vg_ui_backend_apply_live(void)
     changed = true;
   }
 
-  /* The acq cycle is slower than the 1 Hz tick (14 points at 9600 baud take
-   * seconds per round); apply each completed poll exactly once so the
-   * offline window counts every real sample a single time. */
-  if(g_live_cycle == applied_cycle) {
+  pthread_mutex_lock(&g_live_lock);
+  cur_cycle = g_live_cycle;
+  if(cur_cycle == applied_cycle) {
+    pthread_mutex_unlock(&g_live_lock);
     return changed;
   }
-  applied_cycle = g_live_cycle;
+  applied_cycle = cur_cycle;
 
-  if(n <= 0) {
+  local_n = g_live_n;
+  if(local_n > VG_LIVE_MAX) {
+    local_n = VG_LIVE_MAX;
+  }
+  if(local_n > 0) {
+    memcpy(local_v, g_live_v, sizeof(float) * local_n);
+    memcpy(local_on, g_live_on, sizeof(uint8_t) * local_n);
+  }
+  pthread_mutex_unlock(&g_live_lock);
+
+  if(local_n <= 0) {
     return changed;
   }
 
-  if(n > VG_LIVE_MAX) {
-    n = VG_LIVE_MAX;
-  }
-
-  for(i = 0; i < n; i++) {
-    if(vg_model_set_live((uint16_t)i, g_live_v[i], g_live_on[i] != 0)) {
+  for(i = 0; i < local_n; i++) {
+    if(vg_model_set_live((uint16_t)i, local_v[i], local_on[i] != 0)) {
       changed = true;
     }
   }
@@ -838,13 +1059,22 @@ bool vg_ui_backend_apply_live(void)
                  s ? (long)s->reg_addr : 0L,
                  (double)a->value,
                  (double)a->threshold);
-        (void)vg_pending_alarm_clear();
-        (void)vg_pending_alarm_write(buf);
+        ensure_file_worker_started();
+        pthread_mutex_lock(&g_file_worker_lock);
+        g_alarm_req.op = VG_ASYNC_ALARM_WRITE;
+        g_alarm_req.req_id = ++g_alarm_req_id;
+        snprintf(g_alarm_req.buf, sizeof(g_alarm_req.buf), "%s", buf);
+        pthread_mutex_unlock(&g_file_worker_lock);
         snprintf(prev_tag, sizeof(prev_tag), "%s", tag);
       }
     }
     else if(prev_tag[0] != '\0') {
-      (void)vg_pending_alarm_clear();
+      ensure_file_worker_started();
+      pthread_mutex_lock(&g_file_worker_lock);
+      g_alarm_req.op = VG_ASYNC_ALARM_CLEAR;
+      g_alarm_req.req_id = ++g_alarm_req_id;
+      g_alarm_req.buf[0] = '\0';
+      pthread_mutex_unlock(&g_file_worker_lock);
       prev_tag[0] = '\0';
     }
   }
@@ -890,3 +1120,22 @@ const vg_ui_backend_t *vg_ui_backend_get(void)
 {
   return &s_board_backend;
 }
+
+int vg_ui_report_request(bool allow_generate, uint32_t *request_id)
+{
+  const vg_ui_backend_t *be = vg_ui_backend_get();
+  if(be && be->report_request) {
+    return be->report_request(allow_generate, request_id);
+  }
+  return -1;
+}
+
+bool vg_ui_report_snapshot(vg_ui_report_snapshot_t *out)
+{
+  const vg_ui_backend_t *be = vg_ui_backend_get();
+  if(be && be->report_snapshot) {
+    return be->report_snapshot(out);
+  }
+  return false;
+}
+

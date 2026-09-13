@@ -6,7 +6,7 @@
 #include "vg_display.h"
 #include <string.h>
 
-#define REPORT_POLL_PERIOD_MS 2000
+#define REPORT_POLL_PERIOD_MS 100
 #define REPORT_GEN_TIMEOUT_S  180
 #define REPORT_BODY_HINT \
     "暂无日报。\n\n(板端: /data/velaguard/reports/daily-*.md)\n点右上角刷新可请求 MiMo 生成。"
@@ -15,49 +15,13 @@ typedef struct {
     lv_obj_t * root;
     lv_obj_t * title_lab;
     lv_obj_t * body_lab;
+    lv_obj_t * body_card;
     lv_obj_t * refresh_btn;
     lv_timer_t * poll_tmr;
-    uint32_t poll_count;
+    uint32_t last_version;
 } report_ctx_t;
 
 static report_ctx_t s_report;
-
-/* True only when a real daily report body was read; the board backend fills
- * hint text and returns -ENOENT when the reports dir has no daily-*.md. */
-static bool report_read(char * body, size_t body_sz, char * path, size_t path_sz)
-{
-    const vg_ui_backend_t * be = vg_ui_backend_get();
-
-    body[0] = '\0';
-    path[0] = '\0';
-    if(be == NULL || be->read_latest_report == NULL) {
-        return false;
-    }
-    if(be->read_latest_report(body, body_sz, path, path_sz) != 0) {
-        return false;
-    }
-    return body[0] != '\0';
-}
-
-/* Title keeps the filename only: the full path would truncate its own date */
-static void report_render(const char * path, const char * body)
-{
-    const char * base;
-
-    if(s_report.title_lab == NULL || s_report.body_lab == NULL) {
-        return;
-    }
-
-    base = (path != NULL) ? strrchr(path, '/') : NULL;
-    base = (base != NULL) ? base + 1 : path;
-    if(base != NULL && base[0] != '\0') {
-        lv_label_set_text_fmt(s_report.title_lab, "最新日报 · %s", base);
-    }
-    else {
-        lv_label_set_text(s_report.title_lab, "运行报告");
-    }
-    lv_label_set_text(s_report.body_lab, body);
-}
 
 static void report_set_refresh_enabled(bool enabled)
 {
@@ -72,103 +36,90 @@ static void report_set_refresh_enabled(bool enabled)
     }
 }
 
-static void report_poll_stop(void)
+static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
 {
-    if(s_report.poll_tmr != NULL) {
-        lv_timer_del(s_report.poll_tmr);
-        s_report.poll_tmr = NULL;
-    }
-}
+    const char * base;
+    char buf[1024];
 
-static void gen_poll_cb(lv_timer_t * t)
-{
-    char body[1024];
-    char path[128];
-    uint32_t elapsed;
-
-    LV_UNUSED(t);
-    if(s_report.poll_tmr == NULL) {
+    if(s_report.title_lab == NULL || s_report.body_lab == NULL) {
         return;
     }
 
-    s_report.poll_count++;
-    elapsed = s_report.poll_count * (REPORT_POLL_PERIOD_MS / 1000);
-
-    if(report_read(body, sizeof(body), path, sizeof(path))) {
-        report_poll_stop();
-        report_set_refresh_enabled(true);
-        report_render(path, body);
-        return;
-    }
-
-    if(elapsed >= REPORT_GEN_TIMEOUT_S) {
-        report_poll_stop();
-        report_set_refresh_enabled(true);
-        report_render(NULL,
-            "日报生成超时。\n\n请检查 MiMo 服务与网络(状态栏 MiMo),稍后点刷新重试。");
-        return;
-    }
-
-    lv_snprintf(body, sizeof(body),
-                "日报生成中(MiMo)…\n\n已等待 %us / %us,完成后自动显示。\n"
-                "也可先返回其他页面,生成后回到本页点刷新。",
-                (unsigned)elapsed, (unsigned)REPORT_GEN_TIMEOUT_S);
-    lv_label_set_text(s_report.body_lab, body);
-}
-
-static void report_reload(void)
-{
-    char body[1024];
-    char path[128];
-
-    if(report_read(body, sizeof(body), path, sizeof(path))) {
-        report_render(path, body);
+    base = (snap->path[0] != '\0') ? strrchr(snap->path, '/') : NULL;
+    base = (base != NULL) ? base + 1 : snap->path;
+    if(base != NULL && base[0] != '\0') {
+        lv_label_set_text_fmt(s_report.title_lab, "最新日报 · %s", base);
     }
     else {
-        report_render(NULL, REPORT_BODY_HINT);
+        lv_label_set_text(s_report.title_lab, "运行报告");
+    }
+
+    switch(snap->status) {
+        case VG_UI_REPORT_READY:
+            lv_label_set_text(s_report.body_lab, snap->body[0] ? snap->body : REPORT_BODY_HINT);
+            report_set_refresh_enabled(true);
+            break;
+        case VG_UI_REPORT_GENERATING:
+            lv_snprintf(buf, sizeof(buf),
+                        "日报生成中(MiMo)…\n\n已等待 %us / %us,完成后自动显示。\n"
+                        "也可先返回其他页面,生成后回到本页点刷新。",
+                        (unsigned)snap->elapsed_s, (unsigned)REPORT_GEN_TIMEOUT_S);
+            lv_label_set_text(s_report.body_lab, buf);
+            report_set_refresh_enabled(false);
+            break;
+        case VG_UI_REPORT_READING:
+            lv_label_set_text(s_report.body_lab, "正在读取最新日报…");
+            report_set_refresh_enabled(false);
+            break;
+        case VG_UI_REPORT_EMPTY:
+            lv_label_set_text(s_report.body_lab, REPORT_BODY_HINT);
+            report_set_refresh_enabled(true);
+            break;
+        case VG_UI_REPORT_ERROR:
+        default:
+            lv_label_set_text(s_report.body_lab,
+                              "日报读取或生成失败。\n\n请检查网络与 MiMo 状态，稍后点刷新重试。");
+            report_set_refresh_enabled(true);
+            break;
     }
 }
 
-static void report_refresh(void)
+static void report_poll_cb(lv_timer_t * t)
 {
-    const vg_ui_backend_t * be = vg_ui_backend_get();
-    char body[1024];
-    char path[128];
+    vg_ui_report_snapshot_t snap;
+    LV_UNUSED(t);
 
-    if(s_report.poll_tmr != NULL) {
-        return; /* generation already running */
-    }
-
-    if(report_read(body, sizeof(body), path, sizeof(path))) {
-        report_render(path, body);
+    if(s_report.root == NULL) {
         return;
     }
 
-    if(be == NULL || be->request_daily_report == NULL ||
-       !be->request_daily_report()) {
-        report_render(NULL, REPORT_BODY_HINT);
-        return;
+    if(vg_ui_report_snapshot(&snap)) {
+        if(snap.version != s_report.last_version) {
+            s_report.last_version = snap.version;
+            apply_snapshot(&snap);
+        }
     }
-
-    lv_snprintf(body, sizeof(body),
-                "日报生成中(MiMo)…\n\n已通知后台 Agent 按运营日报 Skill 采集数据,\n"
-                "请保持设备联网,完成后自动显示。");
-    report_render(NULL, body);
-    report_set_refresh_enabled(false);
-    s_report.poll_count = 0;
-    s_report.poll_tmr = lv_timer_create(gen_poll_cb, REPORT_POLL_PERIOD_MS, NULL);
 }
 
 static void on_refresh_clicked(lv_event_t * e)
 {
+    vg_ui_report_snapshot_t snap;
     LV_UNUSED(e);
-    report_refresh();
+
+    (void)vg_ui_report_request(true, NULL);
+    if(vg_ui_report_snapshot(&snap)) {
+        s_report.last_version = snap.version;
+        apply_snapshot(&snap);
+    }
 }
 
 static void on_report_delete(lv_event_t * e)
 {
     LV_UNUSED(e);
-    report_poll_stop();
+    if(s_report.poll_tmr != NULL) {
+        lv_timer_del(s_report.poll_tmr);
+        s_report.poll_tmr = NULL;
+    }
     memset(&s_report, 0, sizeof(s_report));
 }
 
@@ -177,6 +128,7 @@ void vg_page_report_create(lv_obj_t * parent, const void * args)
     lv_obj_t * head;
     lv_obj_t * card;
     lv_obj_t * refresh_lab;
+    vg_ui_report_snapshot_t snap;
     LV_UNUSED(args);
 
     memset(&s_report, 0, sizeof(s_report));
@@ -187,7 +139,7 @@ void vg_page_report_create(lv_obj_t * parent, const void * args)
     lv_obj_set_style_pad_row(parent, 6, 0);
     lv_obj_remove_flag(parent, LV_OBJ_FLAG_SCROLLABLE);
 
-    /* Head row: title left, manual refresh right (trend-page pattern) */
+    /* Head row: title left, manual refresh right */
     head = lv_obj_create(parent);
     lv_obj_remove_flag(head, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_style_bg_opa(head, LV_OPA_TRANSP, 0);
@@ -223,6 +175,7 @@ void vg_page_report_create(lv_obj_t * parent, const void * args)
     lv_obj_set_style_min_height(card, 0, 0);
     lv_obj_add_flag(card, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_set_scroll_dir(card, LV_DIR_VER);
+    s_report.body_card = card;
 
     s_report.body_lab = lv_label_create(card);
     lv_label_set_long_mode(s_report.body_lab, LV_LABEL_LONG_WRAP);
@@ -230,5 +183,35 @@ void vg_page_report_create(lv_obj_t * parent, const void * args)
     vg_style_apply_label(s_report.body_lab, true);
     lv_obj_set_style_text_font(s_report.body_lab, vg_font_small(), 0);
 
-    report_reload();
+    /* Submit initial read request if idle, and sample latest snapshot */
+    (void)vg_ui_report_request(false, NULL);
+    if(vg_ui_report_snapshot(&snap)) {
+        s_report.last_version = snap.version;
+        apply_snapshot(&snap);
+    }
+    else {
+        lv_label_set_text(s_report.body_lab, REPORT_BODY_HINT);
+    }
+
+    s_report.poll_tmr = lv_timer_create(report_poll_cb, REPORT_POLL_PERIOD_MS, NULL);
+}
+
+void vg_page_report_nav_capture(vg_nav_state_t * st)
+{
+    if(st == NULL) return;
+    st->report_version = s_report.last_version;
+    if(s_report.body_card != NULL && lv_obj_is_valid(s_report.body_card)) {
+        st->scroll_y = lv_obj_get_scroll_y(s_report.body_card);
+    }
+}
+
+void vg_page_report_nav_restore(const vg_nav_state_t * st)
+{
+    if(st == NULL) return;
+    if(s_report.body_card == NULL || !lv_obj_is_valid(s_report.body_card)) return;
+    /* Same report version keeps scroll; new content starts at top. */
+    if(st->report_version != 0 && st->report_version == s_report.last_version) {
+        lv_obj_update_layout(s_report.body_card);
+        lv_obj_scroll_to_y(s_report.body_card, st->scroll_y, LV_ANIM_OFF);
+    }
 }

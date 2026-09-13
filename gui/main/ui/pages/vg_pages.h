@@ -16,4 +16,15 @@ void vg_page_ota_create(lv_obj_t * parent, const void * args);
 void vg_page_report_create(lv_obj_t * parent, const void * args);
 void vg_page_discover_create(lv_obj_t * parent, const void * args);
 
+/* Navigation capture/restore (touch-acceptance T2). Safe no-ops when the
+ * page is not the live instance. */
+void vg_page_home_nav_capture(vg_nav_state_t * st);
+void vg_page_home_nav_restore(const vg_nav_state_t * st);
+void vg_page_trend_nav_capture(vg_nav_state_t * st);
+void vg_page_trend_nav_restore(const vg_nav_state_t * st);
+void vg_page_alarm_nav_capture(vg_nav_state_t * st);
+void vg_page_alarm_nav_restore(const vg_nav_state_t * st);
+void vg_page_report_nav_capture(vg_nav_state_t * st);
+void vg_page_report_nav_restore(const vg_nav_state_t * st);
+
 #endif

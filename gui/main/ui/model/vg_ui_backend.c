@@ -72,6 +72,33 @@ static bool mock_request_daily_report(void)
     return false;
 }
 
+static int mock_report_request(bool allow_generate, uint32_t *request_id)
+{
+    static uint32_t s_req_id = 1;
+    (void)allow_generate;
+    if(request_id) {
+        *request_id = s_req_id++;
+    }
+    return 0;
+}
+
+static bool mock_report_snapshot(vg_ui_report_snapshot_t *out)
+{
+    if(out == NULL) return false;
+    memset(out, 0, sizeof(*out));
+    out->request_id = 1;
+    out->version = 1;
+    out->status = VG_UI_REPORT_READY;
+    lv_snprintf(out->path, sizeof(out->path), "/data/velaguard/reports/daily-20260830.md");
+    lv_snprintf(out->body, sizeof(out->body),
+                "2026-08-30 08:00 运营日报\n"
+                "\n"
+                "告警: 2 (WARNING 1 / OFFLINE 1)\n"
+                "RS485: 14/32 从站在线 (mock)\n"
+                "最高温: 82.4 C @ 从站 3\n");
+    return true;
+}
+
 static const vg_ui_backend_t s_mock_backend = {
     .discover_scan_start  = mock_discover_scan_start,
     .discover_scan_status = mock_discover_scan_status,
@@ -80,11 +107,31 @@ static const vg_ui_backend_t s_mock_backend = {
     .get_slaves           = mock_get_slaves,
     .read_latest_report   = mock_read_report,
     .request_daily_report = mock_request_daily_report,
+    .report_request       = mock_report_request,
+    .report_snapshot      = mock_report_snapshot,
 };
 
 const vg_ui_backend_t *vg_ui_backend_get(void)
 {
     return &s_mock_backend;
+}
+
+int vg_ui_report_request(bool allow_generate, uint32_t *request_id)
+{
+    const vg_ui_backend_t *be = vg_ui_backend_get();
+    if(be && be->report_request) {
+        return be->report_request(allow_generate, request_id);
+    }
+    return -1;
+}
+
+bool vg_ui_report_snapshot(vg_ui_report_snapshot_t *out)
+{
+    const vg_ui_backend_t *be = vg_ui_backend_get();
+    if(be && be->report_snapshot) {
+        return be->report_snapshot(out);
+    }
+    return false;
 }
 
 int vg_ui_backend_scan_last_result(void)

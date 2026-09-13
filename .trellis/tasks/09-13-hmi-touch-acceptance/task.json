@@ -1,0 +1,31 @@
+{
+  "id": "hmi-touch-acceptance",
+  "name": "hmi-touch-acceptance",
+  "title": "HMI触摸交互与整体验收",
+  "description": "优化触摸读取与休眠上限、滚动防误触、稳定ID操作和返回状态恢复，完成高密度点表与后台负载下的真机体验和安全回归验收。",
+  "status": "in_progress",
+  "dev_type": null,
+  "scope": "hmi",
+  "package": null,
+  "priority": "P1",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-13",
+  "completedAt": null,
+  "branch": "integrate-learn-vela-0912",
+  "base_branch": "integrate-learn-vela-0912",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": "09-13-hmi-ux-performance",
+  "relatedFiles": [],
+  "notes": "第 3 个实施子任务。代码侧前置（基线工具 + runtime 接口）已满足；实体触摸最终证据与 L3 Agent 压力仍待本任务完成。2026-09-13 接手会话获「继续推进」授权后启动。",
+  "meta": {
+    "created_as_handoff_only": true,
+    "implementation_authorized_at_creation": false,
+    "sequence": 3,
+    "prereq_code_ready": true
+  }
+}

@@ -1,0 +1,8 @@
+{"file":"AGENTS.md","reason":"检查规则、人工确认、告警语义与真实运行证据"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"检查失效对象、点击传递和无头行为回归"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"使用同一作品固件，不更换为简化镜像"}
+{"file":".trellis/spec/backend/host-nsh-protocol.md","reason":"确认内部同步改动不破坏点表协议和上下文"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"重点检查短锁、完整快照、请求版本和错误处理"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"保留已有轮次去重、容量和多告警成果"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"核对安全回归、资源计数和真实阶段对照"}
+{"file":".trellis/tasks/09-13-hmi-runtime-render/research/lifecycle-dataflow.md","reason":"验证根因修复而非仅用有效指针判断掩盖问题"}

@@ -81,6 +81,11 @@ ifeq ($(CONFIG_VG_HMI),y)
 PROGNAME += vghmi
 MAINSRC  += vg_hmi.c
 
+ifeq ($(CONFIG_VG_HMI_PERF),y)
+CSRCS  += vg_hmi_perf.c
+CFLAGS += -DVG_HMI_PERF_ENABLED=1
+endif
+
 # Same sources as gui/CMakeLists.txt (Phase A); do not duplicate under app/velaguard.
 # Use basenames + VPATH so PREFIX objects stay flat under build/velaguard/
 # (absolute CSRCS would write .o next to gui sources).

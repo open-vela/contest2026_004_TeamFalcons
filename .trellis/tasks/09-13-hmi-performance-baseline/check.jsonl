@@ -1,0 +1,8 @@
+{"file":"AGENTS.md","reason":"禁止伪造运行证据、增加设备端权限或改写日志"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"检查颜色格式、stride、触摸事件链和截图"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"验证统计开关不污染默认主线"}
+{"file":".trellis/spec/guides/cross-layer-thinking-guide.md","reason":"观察代码不得改变业务行为、线程所有权或等待方式"}
+{"file":".agents/skills/velaguard-candidate-confirm/SKILL.md","reason":"板端测试表不能自动代答确认"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"检查版本和事实，不误将帧缓冲提交算作物理显示"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"检查完整样本、原始证据、未测项和负载一致性"}
+{"file":".trellis/tasks/09-13-hmi-performance-baseline/research/instrumentation-notes.md","reason":"检查近窗统计和实体时延的区别"}

@@ -34,6 +34,9 @@ app/velaguard/host_tests/test_discover
 app/velaguard/host_tests/test_vgpoint
 app/velaguard/host_tests/test_alarm_eval
 app/velaguard/host_tests/test_time_sync
+app/velaguard/host_tests/test_hmi_perf
+app/velaguard/host_tests/test_hmi_sched
+app/velaguard/host_tests/test_runtime_render
 
 # Local AI / editor tooling (do not submit; contest code lives in-tree)
 .claude

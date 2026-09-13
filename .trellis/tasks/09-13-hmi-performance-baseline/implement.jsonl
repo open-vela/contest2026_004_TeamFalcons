@@ -1,0 +1,9 @@
+{"file":"AGENTS.md","reason":"只读设备权限、主线构建、人工点表确认及证据真实性"}
+{"file":".trellis/spec/frontend/component-guidelines.md","reason":"复用现有无头渲染和 pointer indev 验证方式"}
+{"file":".trellis/spec/backend/firmware-mainline.md","reason":"测量配置不能新增第二个产品固件主线"}
+{"file":".trellis/spec/guides/code-reuse-thinking-guide.md","reason":"复用现有测试入口与 LVGL 回调，避免另造追踪框架"}
+{"file":".agents/skills/velaguard-board-inner-loop/SKILL.md","reason":"未来基线采集的构建、烧录和串口验收流程"}
+{"file":".agents/skills/velaguard-candidate-confirm/SKILL.md","reason":"32 点测试数据准备必须经过人工确认"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/current-state.md","reason":"真实 LVGL 版本、双缓冲、tick、板端与 PC 配置区别"}
+{"file":".trellis/tasks/09-13-hmi-ux-performance/research/acceptance-contract.md","reason":"统一基线与后续对照所用的指标和场景"}
+{"file":".trellis/tasks/09-13-hmi-performance-baseline/research/instrumentation-notes.md","reason":"观察点选择、统计误差和禁止提前优化的边界"}

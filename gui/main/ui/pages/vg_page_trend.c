@@ -24,6 +24,10 @@ typedef struct {
     lv_obj_t * point_dd;
     uint16_t dd_count;            /* sensors listed when options were built */
     uint8_t window_recent;        /* 1 = last 60 samples, 0 = full history */
+    char last_sensor_id[VG_SENSOR_ID_MAX];
+    uint32_t last_history_version;
+    uint8_t last_window_recent;
+    uint16_t last_history_len;
 } trend_ctx_t;
 
 static trend_ctx_t s_trend;
@@ -171,6 +175,19 @@ static void refresh_trend(void * user)
     }
     lv_label_set_text(s_trend.value_lab, buf);
     lv_obj_set_style_text_color(s_trend.value_lab, vg_color_severity(s->severity), 0);
+
+    bool chart_dirty = (strcmp(s->id, s_trend.last_sensor_id) != 0 ||
+                        s->history_version != s_trend.last_history_version ||
+                        s_trend.window_recent != s_trend.last_window_recent ||
+                        s->history_len != s_trend.last_history_len);
+    if(!chart_dirty) {
+        return;
+    }
+
+    strncpy(s_trend.last_sensor_id, s->id, sizeof(s_trend.last_sensor_id) - 1);
+    s_trend.last_history_version = s->history_version;
+    s_trend.last_window_recent = s_trend.window_recent;
+    s_trend.last_history_len = s->history_len;
 
     count = window_count();
     offset = window_offset(count);
@@ -404,5 +421,30 @@ void vg_page_trend_create(lv_obj_t * parent, const void * args)
     rebuild_point_options();
     refresh_win_btns();
     vg_model_on_change(refresh_trend, NULL);
+    refresh_trend(NULL);
+}
+
+void vg_page_trend_nav_capture(vg_nav_state_t * st)
+{
+    const char * sel;
+
+    if(st == NULL) return;
+    st->trend_window_recent = s_trend.window_recent;
+    sel = vg_model_get_selected_sensor_id();
+    if(sel != NULL && sel[0] != '\0') {
+        strncpy(st->sensor_id, sel, sizeof(st->sensor_id) - 1);
+    }
+}
+
+void vg_page_trend_nav_restore(const vg_nav_state_t * st)
+{
+    if(st == NULL) return;
+    if(s_trend.root == NULL || !lv_obj_is_valid(s_trend.root)) return;
+    if(st->sensor_id[0] != '\0') {
+        vg_model_set_selected_sensor(st->sensor_id);
+    }
+    s_trend.window_recent = st->trend_window_recent ? 1 : 0;
+    rebuild_point_options();
+    refresh_win_btns();
     refresh_trend(NULL);
 }
