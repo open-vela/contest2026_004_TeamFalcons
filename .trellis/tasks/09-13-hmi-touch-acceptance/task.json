@@ -21,7 +21,7 @@
   "children": [],
   "parent": "09-13-hmi-ux-performance",
   "relatedFiles": [],
-  "notes": "第 3 个实施子任务。代码侧前置（基线工具 + runtime 接口）已满足；实体触摸最终证据与 L3 Agent 压力仍待本任务完成。2026-09-13 接手会话获「继续推进」授权后启动。",
+  "notes": "T1–T4 自动部分已落地并有 final-results.md；T5 实体触摸/L1+/30min/L3 未测，任务不得关闭。2026-09-13 授权继续推进。",
   "meta": {
     "created_as_handoff_only": true,
     "implementation_authorized_at_creation": false,

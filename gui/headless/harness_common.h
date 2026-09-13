@@ -41,6 +41,10 @@ void hg_queue_click(int x, int y);
  * intermediate points, then release. Used to verify scroll cancels click. */
 void hg_queue_drag(int x0, int y0, int x1, int y1, int steps);
 
+/* Press and hold for `hold_frames` pump reads, then release. Useful for
+ * mid-press navigation (I16 wait_release) without finishing a click. */
+void hg_queue_press_hold(int x, int y, int hold_frames);
+
 /* Widget search + click helpers driving the real pointer indev. */
 lv_obj_t * hg_find_obj(bool (*match)(lv_obj_t * o, void * user), void * user,
                        int * cx, int * cy);

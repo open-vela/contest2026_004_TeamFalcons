@@ -6,9 +6,13 @@
  *   I02 press + drag cancels navigation
  *   I11 filter preserved across navigation
  *   I12 trend window restore
+ *   I13 deleted device point returns home
+ *   I16 mid-press nav + wait_release does not open old target
  *   I17 bounded nav stack
  *   I18 confirm closes before page back
  *   I19 discover scan defaults off
+ *   I22 32-point fleet + alarm list cap
+ *   I24 trend history advances without leaving page
  */
 
 #include "harness_common.h"
@@ -18,19 +22,21 @@
 #include <stdio.h>
 #include <string.h>
 
-static void seed_points(int n)
+static void seed_points_range(int start, int n)
 {
     vg_runtime_point_t pts[32];
     int i;
 
     if(n > 32) n = 32;
+    if(start < 0) start = 0;
     memset(pts, 0, sizeof(pts));
     for(i = 0; i < n; i++) {
-        snprintf(pts[i].id, sizeof(pts[i].id), "PT%02d", i);
-        snprintf(pts[i].name, sizeof(pts[i].name), "Sensor%02d", i);
+        int id = start + i;
+        snprintf(pts[i].id, sizeof(pts[i].id), "PT%02d", id);
+        snprintf(pts[i].name, sizeof(pts[i].name), "Sensor%02d", id);
         pts[i].addr = 1;
         pts[i].fc = 3;
-        pts[i].reg = (uint16_t)(100 + i);
+        pts[i].reg = (uint16_t)(100 + id);
         snprintf(pts[i].unit, sizeof(pts[i].unit), "C");
         snprintf(pts[i].dtype, sizeof(pts[i].dtype), "uint16");
         pts[i].scale = 1.0f;
@@ -39,9 +45,14 @@ static void seed_points(int n)
     }
     vg_model_import_runtime_points(pts, (uint16_t)n);
     for(i = 0; i < n; i++) {
-        vg_model_set_live(i, 20.0f + (float)i, true);
+        vg_model_set_live(i, 20.0f + (float)(start + i), true);
     }
     hg_pump(8);
+}
+
+static void seed_points(int n)
+{
+    seed_points_range(0, n);
 }
 
 static bool click_home_tile(const char * name_sub)
@@ -83,11 +94,35 @@ static bool drag_home_tile(const char * name_sub)
     return true;
 }
 
+static bool press_hold_home_tile(const char * name_sub, int hold_frames)
+{
+    int cx = 0, cy = 0;
+    lv_obj_t * lab = hg_find_obj(hg_match_label_sub, (void *)name_sub, &cx, &cy);
+    lv_obj_t * tile;
+    lv_area_t a;
+
+    if(lab == NULL) {
+        printf("FAIL find tile label '%s' for hold\n", name_sub);
+        return false;
+    }
+    tile = lv_obj_get_parent(lab);
+    if(tile == NULL) return false;
+    lv_obj_get_coords(tile, &a);
+    hg_queue_press_hold((a.x1 + a.x2) / 2, (a.y1 + a.y2) / 2, hold_frames);
+    return true;
+}
+
 int main(int argc, char ** argv)
 {
     const char * out_dir = (argc > 1) ? argv[1] : ".";
     bool ok = true;
     int i;
+    uint16_t home_n;
+    vg_alarm_t alarms[16];
+    uint16_t alarm_n;
+    const vg_sensor_t * s0;
+    uint32_t hist_v1;
+    uint32_t hist_v2;
 
     (void)out_dir;
     hg_init();
@@ -132,6 +167,27 @@ int main(int argc, char ** argv)
     vg_nav_back();
     hg_pump(8);
     ok &= hg_expect(vg_nav_current() == VG_PAGE_TREND, "I12 back restores trend page");
+
+    /* I13: leave device, delete that point, back must land on home */
+    vg_nav_goto(VG_PAGE_HOME, NULL);
+    hg_pump(4);
+    ok &= hg_expect(click_home_tile("Sensor00"), "I13 open device for PT00");
+    ok &= hg_expect(vg_nav_current() == VG_PAGE_DEVICE, "I13 on device");
+    seed_points_range(1, 15); /* drop PT00 / Sensor00 */
+    ok &= hg_expect(vg_model_get_sensor("PT00") == NULL, "I13 PT00 removed");
+    vg_nav_back();
+    hg_pump(8);
+    ok &= hg_expect(vg_nav_current() == VG_PAGE_HOME,
+                    "I13 deleted point returns home, not another device");
+    seed_points(16);
+
+    /* I16: mid-press navigation + wait_release must not open the old tile */
+    ok &= hg_expect(press_hold_home_tile("Sensor01", 40), "I16 queue hold");
+    hg_pump(4); /* press latched */
+    vg_nav_goto(VG_PAGE_ALARM, NULL);
+    hg_pump(50); /* hold completes + release under wait_release */
+    ok &= hg_expect(vg_nav_current() == VG_PAGE_ALARM,
+                    "I16 stays on alarm after mid-press release");
 
     /* I17: bounded stack */
     for(i = 0; i < 12; i++) {
@@ -185,6 +241,43 @@ int main(int argc, char ** argv)
     ok &= hg_expect(hg_click_btn("开始扫描 1-32"), "tap scan without enabling switch");
     ok &= hg_expect(vg_nav_current() == VG_PAGE_DISCOVER,
                     "I19 scan without switch stays on page");
+
+    /* I22: 32-point fleet; alarm UI collects at most 8 rows */
+    vg_nav_goto(VG_PAGE_HOME, NULL);
+    hg_pump(4);
+    seed_points(32);
+    home_n = vg_model_home_sensor_count();
+    ok &= hg_expect(home_n == 32, "I22 home shows 32 points");
+    vg_model_set_scenario(VG_SCENARIO_CRIT);
+    vg_nav_goto(VG_PAGE_ALARM, NULL);
+    hg_pump(20);
+    alarm_n = vg_model_collect_alarms(alarms, 16);
+    ok &= hg_expect(alarm_n > 0 && alarm_n <= 8,
+                    "I22 alarm collect stays within 8-row display cap");
+    ok &= hg_expect(vg_model_active_alarm_count() >= alarm_n,
+                    "I22 active count is at least displayed rows");
+    vg_model_set_scenario(VG_SCENARIO_NORMAL);
+    hg_pump(8);
+
+    /* I24: identical live samples advance history on trend without leaving */
+    seed_points(4);
+    vg_model_set_selected_sensor("PT00");
+    vg_nav_goto(VG_PAGE_TREND, NULL);
+    hg_pump(10);
+    s0 = vg_model_get_sensor("PT00");
+    ok &= hg_expect(s0 != NULL && vg_nav_current() == VG_PAGE_TREND,
+                    "I24 on trend with PT00");
+    if(s0 != NULL) {
+        hist_v1 = s0->history_version;
+        for(i = 0; i < 5; i++) {
+            vg_model_set_live(0, 42.0f, true);
+            hg_pump(4);
+        }
+        hist_v2 = s0->history_version;
+        ok &= hg_expect(hist_v2 > hist_v1, "I24 history advances on same value");
+        ok &= hg_expect(vg_nav_current() == VG_PAGE_TREND,
+                        "I24 trend page stays mounted");
+    }
 
     printf("interaction_check: %s (%d failures)\n",
            ok && hg_failures() == 0 ? "ALL PASS" : "FAIL", hg_failures());

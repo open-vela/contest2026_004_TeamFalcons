@@ -59,6 +59,15 @@ void hg_queue_drag(int x0, int y0, int x1, int y1, int steps)
     hg_push_step(x1, y1, 0);
 }
 
+void hg_queue_press_hold(int x, int y, int hold_frames)
+{
+    int hold = hold_frames;
+
+    if(hold < 1) hold = 1;
+    hg_push_step(x, y, hold);
+    hg_push_step(x, y, 0);
+}
+
 static void indev_read_cb(lv_indev_t * indev, lv_indev_data_t * data)
 {
     LV_UNUSED(indev);
