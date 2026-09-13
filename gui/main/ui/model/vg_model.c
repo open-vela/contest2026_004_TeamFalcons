@@ -1353,6 +1353,10 @@ void vg_model_tick(void)
         dirty = true;
     }
     if(dirty) {
+        /* Live severity/online changes never rebuild the cached home filter
+         * index on their own; refresh it so the home list matches the live
+         * chip counts (e.g. a point recovering drops out of the 告警 list). */
+        rebuild_filter();
         notify_all();
     }
 }
