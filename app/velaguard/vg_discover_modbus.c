@@ -16,9 +16,12 @@
 #include "nanomodbus.h"
 
 #define VG_DISC_READ_TO_MS   500
-#define VG_DISC_BYTE_TO_MS   20
+/* Match the alarm reader (VG_ALARM_BYTE_TO_MS): 20 ms drops whole frames
+ * whenever the simulator gaps between bytes, producing fake fail samples. */
+#define VG_DISC_BYTE_TO_MS   50
 #define VG_DISC_MAX_REGS     16
 #define VG_DISC_SCAN_TO_MS   400
+#define VG_DISC_RETRY_INTER_MS 100
 
 struct vg_disc_nmbs
 {
@@ -320,6 +323,7 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
   for (i = 0; i < n; i++)
     {
       nmbs_error err;
+      int attempt;
       uint16_t qty = pts[i].qty;
       uint16_t tmp[VG_DISC_MAX_REGS];
 
@@ -340,13 +344,30 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
           qty = VG_DISC_MAX_REGS;
         }
 
-      if (pts[i].fc == 4)
+      /* One immediate retry: a single missed frame must not count as an
+       * offline sample in the HMI's sliding-window detection. */
+      err = NMBS_ERROR_TRANSPORT;
+      for (attempt = 0; attempt < 2; attempt++)
         {
-          err = vg_disc_read_input(&s, pts[i].addr, pts[i].reg, qty, tmp);
-        }
-      else
-        {
-          err = vg_disc_read_holding(&s, pts[i].addr, pts[i].reg, qty, tmp);
+          if (attempt > 0)
+            {
+              usleep((useconds_t)VG_DISC_RETRY_INTER_MS * 1000);
+            }
+
+          if (pts[i].fc == 4)
+            {
+              err = vg_disc_read_input(&s, pts[i].addr, pts[i].reg, qty, tmp);
+            }
+          else
+            {
+              err = vg_disc_read_holding(&s, pts[i].addr, pts[i].reg, qty,
+                                         tmp);
+            }
+
+          if (err == NMBS_ERROR_NONE)
+            {
+              break;
+            }
         }
 
       if (err == NMBS_ERROR_NONE)
@@ -364,8 +385,6 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
   vg_disc_nmbs_close(&s);
   return 0;
 }
-
-#define VG_DISC_RETRY_INTER_MS 100
 
 static bool vg_disc_hit_has(FAR const struct vg_discover_summary *sum,
                             uint8_t addr)

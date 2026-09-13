@@ -522,6 +522,10 @@ static uint8_t g_live_on[VG_LIVE_MAX];
 static volatile int g_live_n;
 static volatile bool g_acq_started;
 static uint32_t g_imported_gen;
+/* Bumped by the acq thread after each completed poll; the 1 Hz model tick
+ * must apply each poll snapshot exactly once, otherwise one failed poll
+ * counts 2-5x in the offline sliding window and the counts flap. */
+static volatile uint32_t g_live_cycle;
 static struct vg_live_snapshot g_live_snap_out;
 
 static void import_live_to_model(void)
@@ -671,6 +675,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
         }
         g_live_n = n;
         write_live_snapshot(&live, n);
+        g_live_cycle++;
         usleep(500000);
         continue;
       }
@@ -697,6 +702,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
 
     g_live_n = n;
     write_live_snapshot(&live, n);
+    g_live_cycle++;
     if(ok > 0) {
       if(live_ok_logs < 8) {
         printf("vghmi: live ok=%d/%d a1=%.1f\n", ok, n, (double)a1);
@@ -745,11 +751,20 @@ bool vg_ui_backend_apply_live(void)
   int i;
   int n = g_live_n;
   bool changed = false;
+  static uint32_t applied_cycle;
 
   if(vg_live_points_gen() != g_imported_gen) {
     import_live_to_model();
     changed = true;
   }
+
+  /* The acq cycle is slower than the 1 Hz tick (14 points at 9600 baud take
+   * seconds per round); apply each completed poll exactly once so the
+   * offline window counts every real sample a single time. */
+  if(g_live_cycle == applied_cycle) {
+    return changed;
+  }
+  applied_cycle = g_live_cycle;
 
   if(n <= 0) {
     return changed;
