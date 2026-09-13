@@ -26,6 +26,10 @@ typedef struct {
     vg_home_filter_t list_filter;
     uint16_t list_n;
     char list_sig[160];
+    bool scrolling;
+    bool struct_pending;
+    char anchor_id[VG_SENSOR_ID_MAX];
+    int32_t anchor_y;
 } home_ctx_t;
 
 static home_ctx_t s_home;
@@ -256,6 +260,91 @@ static void update_tile_texts(void)
     }
 }
 
+static void home_capture_anchor(void)
+{
+    uint16_t n;
+    uint16_t i;
+    int32_t sy;
+
+    s_home.anchor_id[0] = '\0';
+    s_home.anchor_y = 0;
+    if(s_home.list == NULL || !lv_obj_is_valid(s_home.list)) return;
+    sy = lv_obj_get_scroll_y(s_home.list);
+    s_home.anchor_y = sy;
+    n = vg_model_home_sensor_count();
+    for(i = 0; i < n; i++) {
+        const vg_sensor_t * s = vg_model_home_sensor_at(i);
+        lv_obj_t * pair = lv_obj_get_child(s_home.list, (int32_t)(i >> 1));
+        lv_obj_t * tile;
+        int32_t y;
+
+        if(s == NULL || pair == NULL) continue;
+        tile = lv_obj_get_child(pair, (int32_t)(i & 1));
+        if(tile == NULL) continue;
+        y = lv_obj_get_y(pair) - sy;
+        if(y + VG_MIN_TOUCH_H > 0) {
+            strncpy(s_home.anchor_id, s->id, sizeof(s_home.anchor_id) - 1);
+            s_home.anchor_y = y;
+            return;
+        }
+    }
+}
+
+static void home_restore_anchor(void)
+{
+    uint16_t n;
+    uint16_t i;
+
+    if(s_home.list == NULL || !lv_obj_is_valid(s_home.list)) return;
+    lv_obj_update_layout(s_home.list);
+    if(s_home.anchor_id[0] == '\0') {
+        lv_obj_scroll_to_y(s_home.list, 0, LV_ANIM_OFF);
+        return;
+    }
+    n = vg_model_home_sensor_count();
+    for(i = 0; i < n; i++) {
+        const vg_sensor_t * s = vg_model_home_sensor_at(i);
+        lv_obj_t * pair;
+        int32_t target;
+
+        if(s == NULL || strcmp(s->id, s_home.anchor_id) != 0) continue;
+        pair = lv_obj_get_child(s_home.list, (int32_t)(i >> 1));
+        if(pair == NULL) break;
+        target = lv_obj_get_y(pair) - s_home.anchor_y;
+        if(target < 0) target = 0;
+        lv_obj_scroll_to_y(s_home.list, target, LV_ANIM_OFF);
+        return;
+    }
+    /* Anchor gone: keep clamped current scroll. */
+}
+
+static bool home_gesture_active(void)
+{
+    return s_home.scrolling || s_home_press.valid;
+}
+
+static void rebuild_list(bool force);
+
+static void on_home_scroll_begin(lv_event_t * e)
+{
+    LV_UNUSED(e);
+    s_home.scrolling = true;
+    home_capture_anchor();
+    /* A drag that starts scrolling cancels any pending tile click. */
+    s_home_press.valid = false;
+}
+
+static void on_home_scroll_end(lv_event_t * e)
+{
+    LV_UNUSED(e);
+    s_home.scrolling = false;
+    if(s_home.struct_pending) {
+        s_home.struct_pending = false;
+        rebuild_list(true);
+        home_restore_anchor();
+    }
+}
+
 static void rebuild_list(bool force)
 {
     char sig[160];
@@ -269,6 +358,12 @@ static void rebuild_list(bool force)
         if(s_home.list_n > 0) {
             update_tile_texts();
         }
+        return;
+    }
+
+    /* During scroll/press: keep geometry, apply the newest structure once later. */
+    if(!force && home_gesture_active()) {
+        s_home.struct_pending = true;
         return;
     }
 
@@ -303,6 +398,7 @@ static void rebuild_list(bool force)
     s_home.list_n = n;
     s_home.list_filter = vg_model_get_home_filter();
     lv_snprintf(s_home.list_sig, sizeof(s_home.list_sig), "%s", sig);
+    s_home.struct_pending = false;
 }
 
 static void refresh_home(void * user)
@@ -453,6 +549,8 @@ void vg_page_home_create(lv_obj_t * parent, const void * args)
     lv_obj_set_scroll_dir(s_home.list, LV_DIR_VER);
     lv_obj_set_scrollbar_mode(s_home.list, LV_SCROLLBAR_MODE_AUTO);
     lv_obj_remove_flag(s_home.list, LV_OBJ_FLAG_SCROLL_ELASTIC);
+    lv_obj_add_event_cb(s_home.list, on_home_scroll_begin, LV_EVENT_SCROLL_BEGIN, NULL);
+    lv_obj_add_event_cb(s_home.list, on_home_scroll_end, LV_EVENT_SCROLL_END, NULL);
 
     /*
      * Actions — fixed, no grow. Active-alarm path: the status-bar

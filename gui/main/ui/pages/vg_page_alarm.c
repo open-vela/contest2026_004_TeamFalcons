@@ -36,6 +36,11 @@ typedef struct {
     lv_obj_t * ai_lab;
     lv_obj_t * metric_rows[6];
     lv_obj_t * hist_lab;
+    bool scrolling;
+    bool struct_pending;
+    char pending_sig[VG_SENSOR_ID_MAX * ALARM_LIST_MAX + 16];
+    char anchor_id[VG_SENSOR_ID_MAX];
+    int32_t anchor_y;
 } alarm_ctx_t;
 
 static alarm_ctx_t s_alarm_ui;
@@ -79,6 +84,80 @@ static bool alarm_press_ok(int idx)
     if(s == NULL || !s->al_active) return false;
     if(s->al_epoch != s_alarm_press.alarm_epoch) return false;
     return true;
+}
+
+static bool alarm_gesture_active(void)
+{
+    return s_alarm_ui.scrolling || s_alarm_press.valid;
+}
+
+static void alarm_capture_anchor(void)
+{
+    int i;
+    int32_t sy;
+
+    s_alarm_ui.anchor_id[0] = '\0';
+    s_alarm_ui.anchor_y = 0;
+    if(s_alarm_ui.body == NULL || !lv_obj_is_valid(s_alarm_ui.body)) return;
+    sy = lv_obj_get_scroll_y(s_alarm_ui.body);
+    s_alarm_ui.anchor_y = sy;
+    for(i = 0; i < s_alarm_ui.row_n; i++) {
+        lv_obj_t * row = s_alarm_ui.row_obj[i];
+        int32_t y;
+
+        if(row == NULL || !lv_obj_is_valid(row)) continue;
+        y = lv_obj_get_y(row) - sy;
+        if(y + VG_MIN_TOUCH_H > 0) {
+            strncpy(s_alarm_ui.anchor_id, s_alarm_ui.row_id[i],
+                    sizeof(s_alarm_ui.anchor_id) - 1);
+            s_alarm_ui.anchor_y = y;
+            return;
+        }
+    }
+}
+
+static void alarm_restore_anchor(void)
+{
+    int i;
+
+    if(s_alarm_ui.body == NULL || !lv_obj_is_valid(s_alarm_ui.body)) return;
+    lv_obj_update_layout(s_alarm_ui.body);
+    if(s_alarm_ui.anchor_id[0] == '\0') return;
+    for(i = 0; i < s_alarm_ui.row_n; i++) {
+        lv_obj_t * row;
+        int32_t target;
+
+        if(strcmp(s_alarm_ui.row_id[i], s_alarm_ui.anchor_id) != 0) continue;
+        row = s_alarm_ui.row_obj[i];
+        if(row == NULL || !lv_obj_is_valid(row)) break;
+        target = lv_obj_get_y(row) - s_alarm_ui.anchor_y;
+        if(target < 0) target = 0;
+        lv_obj_scroll_to_y(s_alarm_ui.body, target, LV_ANIM_OFF);
+        return;
+    }
+}
+
+static void on_alarm_scroll_begin(lv_event_t * e)
+{
+    LV_UNUSED(e);
+    s_alarm_ui.scrolling = true;
+    alarm_capture_anchor();
+    s_alarm_press.valid = false;
+}
+
+static void refresh_alarm(void * user);
+
+static void on_alarm_scroll_end(lv_event_t * e)
+{
+    LV_UNUSED(e);
+    s_alarm_ui.scrolling = false;
+    if(s_alarm_ui.struct_pending) {
+        s_alarm_ui.struct_pending = false;
+        /* Force signature mismatch path by clearing, then refresh. */
+        s_alarm_ui.sig[0] = '\0';
+        refresh_alarm(NULL);
+        alarm_restore_anchor();
+    }
 }
 
 static void fmt_f1(char * buf, size_t n, float v)
@@ -452,24 +531,51 @@ static void refresh_alarm(void * user)
     if(s_alarm_ui.list == NULL || !lv_obj_is_valid(s_alarm_ui.list)) return;
     build_sig(newsig, sizeof(newsig), list, n);
     if(strcmp(newsig, s_alarm_ui.sig) != 0) {
-        strncpy(s_alarm_ui.sig, newsig, sizeof(s_alarm_ui.sig) - 1);
-        s_alarm_ui.sig[sizeof(s_alarm_ui.sig) - 1] = '\0';
-        rebuild_rows(list, n);
-    }
-
-    for(i = 0; i < n && i < s_alarm_ui.row_n; i++) {
-        set_row_texts(i, &list[i]);
-        if(sel == NULL && s_alarm_ui.sel_id[0] != '\0' &&
-           strcmp(s_alarm_ui.sel_id, list[i].sensor_id) == 0) {
-            sel = &list[i];
+        if(alarm_gesture_active()) {
+            /* Keep geometry; apply once when the gesture ends. */
+            strncpy(s_alarm_ui.pending_sig, newsig, sizeof(s_alarm_ui.pending_sig) - 1);
+            s_alarm_ui.pending_sig[sizeof(s_alarm_ui.pending_sig) - 1] = '\0';
+            s_alarm_ui.struct_pending = true;
+        }
+        else {
+            strncpy(s_alarm_ui.sig, newsig, sizeof(s_alarm_ui.sig) - 1);
+            s_alarm_ui.sig[sizeof(s_alarm_ui.sig) - 1] = '\0';
+            rebuild_rows(list, n);
+            s_alarm_ui.struct_pending = false;
         }
     }
-    if(sel == NULL && n > 0) {
-        strncpy(s_alarm_ui.sel_id, list[0].sensor_id, sizeof(s_alarm_ui.sel_id) - 1);
-        s_alarm_ui.sel_id[sizeof(s_alarm_ui.sel_id) - 1] = '\0';
-        sel = &list[0];
-        if(s_alarm_ui.row_obj[0] && lv_obj_is_valid(s_alarm_ui.row_obj[0])) {
-            set_row_texts(0, &list[0]);
+
+    if(!s_alarm_ui.struct_pending) {
+        for(i = 0; i < n && i < s_alarm_ui.row_n; i++) {
+            set_row_texts(i, &list[i]);
+            if(sel == NULL && s_alarm_ui.sel_id[0] != '\0' &&
+               strcmp(s_alarm_ui.sel_id, list[i].sensor_id) == 0) {
+                sel = &list[i];
+            }
+        }
+        if(sel == NULL && n > 0) {
+            strncpy(s_alarm_ui.sel_id, list[0].sensor_id, sizeof(s_alarm_ui.sel_id) - 1);
+            s_alarm_ui.sel_id[sizeof(s_alarm_ui.sel_id) - 1] = '\0';
+            sel = &list[0];
+            if(s_alarm_ui.row_obj[0] && lv_obj_is_valid(s_alarm_ui.row_obj[0])) {
+                set_row_texts(0, &list[0]);
+            }
+        }
+    }
+    else {
+        /* Structure frozen: still refresh same-ID rows in place; skip reorder. */
+        for(i = 0; i < s_alarm_ui.row_n; i++) {
+            int j;
+            for(j = 0; j < n; j++) {
+                if(strcmp(s_alarm_ui.row_id[i], list[j].sensor_id) == 0) {
+                    set_row_texts(i, &list[j]);
+                    if(sel == NULL && s_alarm_ui.sel_id[0] != '\0' &&
+                       strcmp(s_alarm_ui.sel_id, list[j].sensor_id) == 0) {
+                        sel = &list[j];
+                    }
+                    break;
+                }
+            }
         }
     }
 
@@ -533,6 +639,8 @@ void vg_page_alarm_create(lv_obj_t * parent, const void * args)
     lv_obj_set_scroll_dir(body, LV_DIR_VER);
     lv_obj_set_scrollbar_mode(body, LV_SCROLLBAR_MODE_AUTO);
     s_alarm_ui.body = body;
+    lv_obj_add_event_cb(body, on_alarm_scroll_begin, LV_EVENT_SCROLL_BEGIN, NULL);
+    lv_obj_add_event_cb(body, on_alarm_scroll_end, LV_EVENT_SCROLL_END, NULL);
 
     /* Rows host: bare container inside the scrollable card so detail
      * widgets below survive row rebuilds. */

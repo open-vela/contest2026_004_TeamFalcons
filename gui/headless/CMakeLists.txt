@@ -108,7 +108,7 @@ endif()
 # ---------------------------------------------------------------------------
 # Checks
 # ---------------------------------------------------------------------------
-foreach(check alarm_check trend_check fixture_check lifecycle_render_check)
+foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check)
   add_executable(${check} ${check}_main.c harness_common.c)
   target_link_libraries(${check} PRIVATE vg_ui lvgl lvgl::thorvg m)
   target_compile_options(${check} PRIVATE -Wall -Wextra)
@@ -119,7 +119,7 @@ foreach(check alarm_check trend_check fixture_check lifecycle_render_check)
 endforeach()
 
 enable_testing()
-foreach(check alarm_check trend_check fixture_check lifecycle_render_check)
+foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")
   add_test(NAME ${check}
            COMMAND ${check} "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")

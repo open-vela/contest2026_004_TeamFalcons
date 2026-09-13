@@ -74,6 +74,10 @@
   - 主机单测：`make -C app/velaguard/host_tests test`（全部 9 项测试通过）。
   - 固件发布构建：`bash scripts/build.sh` 编译通过，生成 `.debug/nuttx.hex`。
   - 固件性能监控构建：`bash scripts/build.sh --hmi-perf` 编译通过。
+- 板端优化后 L0（2026-09-13，父任务落盘）：
+  - 原始：`.debug/hmi-post-opt/perf_transcript.txt`；对照说明：`.trellis/tasks/09-13-hmi-ux-performance/research/final-results.md`。
+  - 同口径约 80 s 静止首页：commits **158 → 9**；objects 仍 71/2/6；冷启动 render max 仍约 140 ms。
+  - L1+ 交互对照仍归触摸验收 T5。
 
 ## 架构变更与接口汇总
 

@@ -37,6 +37,10 @@ bool hg_expect_not_blank(const char * what);
 /* Scripted pointer input: press at (x,y) held 3 pump frames, then release. */
 void hg_queue_click(int x, int y);
 
+/* Scripted vertical/horizontal drag: press at start, move across `steps`
+ * intermediate points, then release. Used to verify scroll cancels click. */
+void hg_queue_drag(int x0, int y0, int x1, int y1, int steps);
+
 /* Widget search + click helpers driving the real pointer indev. */
 lv_obj_t * hg_find_obj(bool (*match)(lv_obj_t * o, void * user), void * user,
                        int * cx, int * cy);

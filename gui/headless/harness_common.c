@@ -16,43 +16,91 @@ static int s_failures;
 /* ---------------- scripted pointer indev ---------------- */
 
 typedef struct {
-    int x, y;
-} click_t;
+    int x;
+    int y;
+    int hold_frames; /* >0 pressed; 0 = release at this point */
+} hg_step_t;
 
-static click_t s_queue[16];
-static int s_queue_n;
-static click_t s_active;
-static int s_hold_frames;
+static hg_step_t s_steps[48];
+static int s_step_n;
+static int s_step_i;
+static int s_hold_left;
 static bool s_pressed;
+static int s_cur_x;
+static int s_cur_y;
+
+static void hg_push_step(int x, int y, int hold_frames)
+{
+    if(s_step_n >= 48) return;
+    s_steps[s_step_n].x = x;
+    s_steps[s_step_n].y = y;
+    s_steps[s_step_n].hold_frames = hold_frames;
+    s_step_n++;
+}
 
 void hg_queue_click(int x, int y)
 {
-    if(s_queue_n >= 16) return;
-    s_queue[s_queue_n].x = x;
-    s_queue[s_queue_n].y = y;
-    s_queue_n++;
+    hg_push_step(x, y, 3);
+    hg_push_step(x, y, 0);
+}
+
+void hg_queue_drag(int x0, int y0, int x1, int y1, int steps)
+{
+    int i;
+    int n = steps;
+
+    if(n < 2) n = 2;
+    hg_push_step(x0, y0, 2);
+    for(i = 1; i <= n; i++) {
+        int x = x0 + (x1 - x0) * i / n;
+        int y = y0 + (y1 - y0) * i / n;
+        hg_push_step(x, y, 1);
+    }
+    hg_push_step(x1, y1, 0);
 }
 
 static void indev_read_cb(lv_indev_t * indev, lv_indev_data_t * data)
 {
     LV_UNUSED(indev);
-    if(!s_pressed && s_queue_n > 0) {
-        s_active = s_queue[0];
-        memmove(&s_queue[0], &s_queue[1], sizeof(click_t) * (unsigned)(s_queue_n - 1));
-        s_queue_n--;
-        s_pressed = true;
-        s_hold_frames = 3;
-    }
-    if(s_pressed) {
-        data->point.x = s_active.x;
-        data->point.y = s_active.y;
-        data->state = LV_INDEV_STATE_PRESSED;
-        if(--s_hold_frames <= 0) {
+
+    if(!s_pressed && s_step_i < s_step_n) {
+        s_cur_x = s_steps[s_step_i].x;
+        s_cur_y = s_steps[s_step_i].y;
+        if(s_steps[s_step_i].hold_frames > 0) {
+            s_pressed = true;
+            s_hold_left = s_steps[s_step_i].hold_frames;
+        }
+        else {
+            /* Explicit release step. */
             s_pressed = false;
+            s_step_i++;
+        }
+    }
+
+    if(s_pressed) {
+        data->point.x = s_cur_x;
+        data->point.y = s_cur_y;
+        data->state = LV_INDEV_STATE_PRESSED;
+        if(--s_hold_left <= 0) {
+            s_step_i++;
+            if(s_step_i < s_step_n && s_steps[s_step_i].hold_frames > 0) {
+                s_cur_x = s_steps[s_step_i].x;
+                s_cur_y = s_steps[s_step_i].y;
+                s_hold_left = s_steps[s_step_i].hold_frames;
+            }
+            else if(s_step_i < s_step_n && s_steps[s_step_i].hold_frames == 0) {
+                s_pressed = false;
+                s_step_i++;
+            }
+            else {
+                s_pressed = false;
+            }
         }
     }
     else {
         data->state = LV_INDEV_STATE_RELEASED;
+        data->point.x = s_cur_x;
+        data->point.y = s_cur_y;
     }
 }
 
