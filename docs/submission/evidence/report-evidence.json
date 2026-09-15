@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-09-15T06:10:56.410859+00:00",
+  "captured_at": "2026-09-15T08:52:11.412912+00:00",
   "note": "Read-only collection. Historical results are not new test runs.",
   "sources": {
     "AGENTS.md": {
@@ -8,9 +8,9 @@
       "sha256": "55897c1820ba057eb95b19db56eb2d6afd10678d2c3527475daea9602df83ffe"
     },
     "docs/submission/REQUIREMENTS.md": {
-      "bytes": 8674,
-      "mtime": "2026-09-14T18:31:45.846366+08:00",
-      "sha256": "983fa27effc9a5eebd04b52b2fa82eb3d1046b740d7278b8cb48591b97e23c02"
+      "bytes": 9075,
+      "mtime": "2026-09-15T14:49:45.274376+08:00",
+      "sha256": "760bf92aa78066e4f21bfd8433f75ab03f2cc4c83dcc760693a59290f5ebbeb8"
     },
     "app/velaguard/vgpoint.c": {
       "bytes": 18532,
@@ -44,7 +44,7 @@
     },
     "app/velaguard/vg_agent_seed.c": {
       "bytes": 5219,
-      "mtime": "2026-09-13T22:37:28.539976+08:00",
+      "mtime": "2026-09-13T22:37:28.539977+08:00",
       "sha256": "5a862ac40606d2f41041344d7f9aeb1b6056936dc87ef800dec2eb20022a00b0"
     },
     "app/velaguard/vg_provision.c": {
@@ -69,7 +69,7 @@
     },
     "scripts/configs/velaguard-lvgl.defconfig": {
       "bytes": 5609,
-      "mtime": "2026-09-14T10:56:28.287710+08:00",
+      "mtime": "2026-09-15T16:05:14.881517+08:00",
       "sha256": "e6751baa7dffb62d6d65880b91c1ba8c2b0ed0aa8186cc417f6523b0bd4344a5"
     },
     "gui/main/ui/model/vg_model.c": {
@@ -129,7 +129,7 @@
     },
     "../packages/ai_agent/src/tools/tool_files.c": {
       "bytes": 13845,
-      "mtime": "2026-09-15T12:39:32.035862+08:00",
+      "mtime": "2026-09-15T16:02:28.049550+08:00",
       "sha256": "235758b38bc6c40c0ec3fc928e519b785a76547b77f3946e93e703d447197792"
     }
   },
@@ -507,9 +507,9 @@
   },
   "coding_sessions_total": 270,
   "source_line_inventory": {
-    "files": 166,
-    "physical_lines": 32120,
-    "nonempty_lines": 27639
+    "files": 167,
+    "physical_lines": 32195,
+    "nonempty_lines": 27707
   },
   "pull_requests": [
     {
@@ -581,6 +581,16 @@
       "merged_at": null,
       "base": "dev-ai-contest-2026",
       "head_sha": "4dbb7f321ceeed47822171787e0742df2ddb4959"
+    },
+    {
+      "repo": "packages_ai_agent",
+      "number": 29,
+      "url": "https://github.com/open-vela/packages_ai_agent/pull/29",
+      "title": "fix(ai_agent): VelaGuard board daemon attach and tool reliability",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "3aabf4d1afb68616bc8bd75f9edb87e9495a68ed"
     },
     {
       "repo": "packages_ai_agent",

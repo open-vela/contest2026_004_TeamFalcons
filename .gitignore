@@ -96,9 +96,20 @@ logs/**/errors/
 /app/velaguard/host_tests/test_*
 !/app/velaguard/host_tests/test_*.c
 
-# Report build leftovers: bundled font copy is unused (figures read system
-# fonts), the preview zip is a local packaging step, and REQUIREMENTS.md holds
-# internal wording that is not part of the submission.
+# Report authoring stays out of the repository. The submission directory keeps
+# the deliverable (DOCX/PDF/poster), its figures and the raw evidence the report
+# cites; the scripts that generate them, the styling pipeline, the regression
+# tests and the internal wording notes are local build tooling. They remain on
+# the authoring machine so the report can still be rebuilt, but they are not
+# part of the product repository.
+/docs/submission/*.py
+/docs/submission/*.ps1
+/docs/submission/*.mjs
+/docs/submission/BUILD.md
+/docs/submission/gongwen/
+/docs/plan-917-submission.md
+# Bundled font copy is unused (figures read system fonts); the preview zip is a
+# local packaging step.
 /docs/submission/fonts/
 /docs/submission/TeamFalcons-*-PREVIEW.zip
 /docs/submission/REQUIREMENTS.md
