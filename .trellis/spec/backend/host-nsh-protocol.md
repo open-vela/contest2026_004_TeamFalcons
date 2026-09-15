@@ -10,7 +10,7 @@ Canonical text (Chinese, commands and reply lines): `docs/velaguard-host-nsh-pro
 
 - Transport: ST-LINK VCP → NSH (`nsh>`), one LF-terminated command per line. Not RS485, not MQTT, not a framed binary protocol.
 - Two tables: committed `/data/velaguard/config/points.json` (live poll + HMI + alarms); candidate `/data/velaguard/discover/point_table_candidate.json` (`add` / `set` / `del` / `test` only).
-- Verbs: `list`, `add`, `set`, `del`, `test`, `get`, `apply --confirm`, `abort`. `apply` without `--confirm` must `ERR code=need_confirm` (exit 1), not a successful dry-run. `apply --confirm` with an existing empty candidate file must write an empty committed table (`OK n=0`); missing candidate file still `no_candidate`.
+- Verbs: `list`, `add`, `set`, `del`, `test`, `get`, `apply --confirm`, `abort`. `apply` without `--confirm` must `ERR code=need_confirm` (exit 1), not a successful dry-run. `apply --confirm` with an existing empty candidate file must write an empty committed table (`OK n=0`); missing candidate file still `no_candidate`. Successful confirm also calls `vg_mqtt_notify_point_table` so the dashboard retained snapshot can update; empty tables are not published.
 - `get` / `get <id>` reads the HMI poll snapshot (`/data/velaguard/live/values.txt`), not RS485. Must not call `vg_bus_try_lock`. Empty committed table → `OK n=0`; missing snapshot with a non-empty committed table → `ERR code=no_sample`. Stable line prefix is `vgpoint: VALUE` (not `READ`).
 - Scripts parse only `vgpoint: OK`, `vgpoint: ERR`, `vgpoint: POINT`, `vgpoint: READ`, `vgpoint: VALUE`. Wait for `nsh>` before the next command.
 - Host scripts must pause after `test` for a human, then send `apply --confirm` as its own line. Firmware must not auto-apply after `test`.

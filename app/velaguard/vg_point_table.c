@@ -26,6 +26,8 @@
 
 #include "vg_discover.h"
 
+void vg_mqtt_notify_point_table(void) __attribute__((weak));
+
 #ifdef CONFIG_VG_CONFIG_STORE
 #include "vg_config_store.h"
 #endif
@@ -396,6 +398,10 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
 
   printf("vgdiscover: applied %d points → %s\n", sum->n_points, points_path);
   (void)vg_live_points_replace(sum);
+  if (vg_mqtt_notify_point_table != NULL)
+    {
+      vg_mqtt_notify_point_table();
+    }
   return 0;
 }
 

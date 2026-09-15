@@ -52,14 +52,16 @@ int vg_mqtt_pal_try_sendall(int fd, const void *buf, size_t len, int flags,
                             ssize_t *out);
 
 /**
-  * @brief  MQTT-C pal weak hook：lesp_recv 版本；语义同 try_sendall。
+  * @brief  MQTT-C pal weak hook：LESP TAG 走 lesp_recv，否则 POSIX recv。
+  * @note   NuttX SO_RCVTIMEO 的 ETIMEDOUT 映射为 0 字节，避免 mqtt_sync
+  *         在 recv-before-send 时把空闲套接字当成断线。
   * @param  fd     mqtt_pal_socket_handle（可能带 TAG）。
   * @param  buf    接收缓冲。
   * @param  bufsz  缓冲大小。
-  * @param  flags  传给 lesp_recv。
-  * @param  out    成功时写入已收字节；失败写 MQTT_ERROR_SOCKET_ERROR。
+  * @param  flags  传给 recv / lesp_recv。
+  * @param  out    已收字节；对端关闭或硬错误时为 MQTT_ERROR_SOCKET_ERROR。
   * @retval 0   本 hook 已处理。
-  * @retval -1  非 lesp fd。
+  * @retval -1  参数非法。
   */
 int vg_mqtt_pal_try_recvall(int fd, void *buf, size_t bufsz, int flags,
                             ssize_t *out);

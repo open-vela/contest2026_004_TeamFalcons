@@ -3,6 +3,7 @@
  ****************************************************************************/
 
 #include "vg_provision.h"
+#include "vg_device_id.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -106,16 +107,7 @@ static int json_get_string(const char *json, const char *key,
 
 int vg_provision_read_uid(uint8_t uid[VG_PROVISION_UID_LEN])
 {
-#ifdef __NuttX__
-  const volatile uint32_t *base =
-    (const volatile uint32_t *)0x1ff1e800;
-
-  memcpy(uid, base, VG_PROVISION_UID_LEN);
-  return 0;
-#else
-  memset(uid, 0xab, VG_PROVISION_UID_LEN);
-  return 0;
-#endif
+  return vg_device_id_read_uid(uid);
 }
 
 int vg_provision_parse_endpoint(const char *endpoint,

@@ -91,3 +91,14 @@ app/velaguard/agent_secrets.h
 !logs/**
 # Collector local failure dumps (not scored session transcripts)
 logs/**/errors/
+
+# Host test binaries built by `make -C app/velaguard/host_tests test`
+/app/velaguard/host_tests/test_*
+!/app/velaguard/host_tests/test_*.c
+
+# Report build leftovers: bundled font copy is unused (figures read system
+# fonts), the preview zip is a local packaging step, and REQUIREMENTS.md holds
+# internal wording that is not part of the submission.
+/docs/submission/fonts/
+/docs/submission/TeamFalcons-*-PREVIEW.zip
+/docs/submission/REQUIREMENTS.md

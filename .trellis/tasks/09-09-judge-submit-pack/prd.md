@@ -26,7 +26,7 @@
 - 「本地告警音」→ 板测确认有没有；没有则删
 - 「Agent 自动启动解释会话」→ 带屏固件心跳关闭，按 samefw 试验结论写成「操作员触发」或「自动」
 - 「输出侧 schema 校验 → 风险分级」→ 核对 `packages/ai_agent` 是否有实现；没有则删
-- 「MQTT 主题形如 `vg/{device_id}/telemetry|status|alarm|diagnosis|ota/...`」→ 实际只有 `vg/{DEVID}/status`（retained + LWT，`vg_mqtt_session.c`），且明文无 TLS。改为「当前发布 status/LWT 主题；telemetry/alarm/OTA 主题为后续阶段」。不为 9/20 新增上云主题
+- 「MQTT 主题形如 `vg/{device_id}/telemetry|status|alarm|diagnosis|ota/...`」→ 现行固件发布 `status` / `telemetry` / `alarm` / `point_table`（`docs/velaguard-mqtt-contract.md` v2），明文测试 Broker；`diagnosis` / `ota` 仍为后续。README 按四主题已落地写，不要再写成只发 status。
 - 赛道对照表里「加分：端云协作 → Bridge 化 LLM」→ 官方加分项定义是「设备端 Agent 与电脑端 Agent 配合完成任务，体现任务拆分」，与 Bridge/MQTT 遥测无关；要么删这行，要么改写成真实存在的 PC 端生成配置 → 板端试读确认 → 板端 Agent 解释 的分工（需核实 PC 端生成链路是否真有）
 - 赛道对照表每行补一个仓内证据链接（脚本、日志、文件路径），不只写口号
 
@@ -41,3 +41,28 @@
 - [ ] README、分镜和带屏试验的结论互相一致
 - [ ] 手册对照笔记放在本任务目录或 `docs/`
 - [ ] 提交清单里仓库内的项目已勾选，或写明需要你本人执行的合入步骤
+
+## 2026-09-14 获准执行：技术报告从零重建
+
+用户已批准本轮只重做技术报告。需求依据为
+`docs/submission/REQUIREMENTS.md` 与 F 盘官方空模板；旧版正文、
+图表、生成脚本和结论仅供参考，不作为事实依据。
+
+本轮要求：
+
+- 按官方模板第二节保留信息表、摘要和 3.1-3.7，移除填写提示与水印。
+- 从代码、配置、原始验收记录重新核对声明，区分设计目标、已实现、
+  历史板测和当前尚未验证的能力。
+- 重新撰写正文、重画三张图，原生 Word 表格和可点击证据引用。
+- 一份结构化内容同步生成 Markdown、DOCX 和 PDF，导出失败不得沿用旧 PDF。
+- 仓内 `docs/submission/` 与 `F:\Documents\velaguard作品提交` 的成品一致。
+- 不修改固件、公共树、README、海报、视频或 AI Coding 日志；不板测，
+  不打包上传，不 commit/push，也不因本轮完成而关闭整个提交资料任务。
+
+本轮验收：
+
+- [ ] 官方必填内容完整，摘要不超过 300 字，固定身份与选题信息一致。
+- [ ] 三组摘要数字和性能表均有日期、条件及可追溯证据。
+- [ ] 不将会话数作为 Token 用量，不宣称完整只读限制或输出校验已落实。
+- [ ] DOCX/PDF 每页视觉检查通过，无方块字、重叠、裁切及 Markdown 表格源码。
+- [ ] 模板字节未变，双目录成品一致，生成脚本回归测试通过。

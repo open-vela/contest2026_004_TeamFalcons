@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="648" viewBox="0 0 1200 648" role="img" aria-labelledby="title desc">
   <title id="title">VelaGuard 系统形态示意</title>
-  <desc id="desc">Modbus 从站经 RS485 进入 STM32H750B-DK。openvela 在本地执行周期采集、帧统计、阈值与离线告警、配置存储和 LVGL 显示。板载 ai_agent 经 HTTPS 访问 MiMo，MQTT Broker 接收在线状态。RJ45 为主链路，ESP-01S 为备链路；断网不影响本地采集与告警。</desc>
+  <desc id="desc">Modbus 从站经 RS485 进入 STM32H750B-DK。openvela 在本地执行周期采集、帧统计、阈值与离线告警、配置存储和 LVGL 显示。板载 ai_agent 经 HTTPS 访问 MiMo，做解释、运行报告与查数。MQTT Broker 接收明文在线状态。RJ45 为主链路，ESP-01S 为备链路；断网不影响本地采集与告警。</desc>
   <style>
     text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; fill: #18181b; }
     .muted { fill: #71717a; }
@@ -19,7 +19,7 @@
   <g id="heading">
     <text x="48" y="46" class="muted" font-size="18">01 / SYSTEM</text>
     <text x="48" y="102" font-size="40" font-weight="600">现场到云端，各自负责什么</text>
-    <text x="48" y="144" class="muted" font-size="22">采集、告警与显示在板上运行，联网后再生成解释与日报。</text>
+    <text x="48" y="144" class="muted" font-size="22">采集、告警与显示在板上运行；解释、运行报告与查数走云端 MiMo。</text>
   </g>
 
   <g id="field">
@@ -42,7 +42,7 @@
     <text x="396" y="406" font-size="22">LVGL HMI · NSH</text>
     <path d="M396 426H788" class="rule"/>
     <text x="396" y="456" class="network" font-size="22" font-weight="600">ai_agent</text>
-    <text x="528" y="456" font-size="20">解释 · 日报 · 查数</text>
+    <text x="528" y="456" font-size="20">解释 / 运行报告 / 查数</text>
   </g>
 
   <g id="network-services">
@@ -52,8 +52,8 @@
     <text x="896" y="310" font-size="22">HTTPS 直连</text>
     <path d="M896 342H1128" class="rule"/>
     <text x="896" y="388" font-size="26" font-weight="600">MQTT Broker</text>
-    <text x="896" y="426" font-size="22">在线状态上报</text>
-    <text x="896" y="474" class="muted" font-size="18">遥测 / OTA 规划中</text>
+    <text x="896" y="426" font-size="22">在线状态上报（明文）</text>
+    <text x="896" y="474" class="muted" font-size="18">遥测加密与 OTA 规划中</text>
   </g>
 
   <g id="connections" fill="none" stroke="#71717a" stroke-width="1.5" marker-end="url(#arrow)">

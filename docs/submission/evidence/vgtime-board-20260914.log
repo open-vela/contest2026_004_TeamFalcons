@@ -1,0 +1,24 @@
+# 板端时间同步与连续观察记录（摘自 .debug/board_watch.log）
+# 原始文件 sha256: 1d515ec7756b791c5db92e197dc2f1c6e1154632770cb8ad18512e26770b71a9
+# 原始文件字节数: 28256
+# 观察时段: 2026-09-14 16:16:20 至 2026-09-14 21:17:17，串口连续观察
+# 背景: 板端无电池 RTC，断电后从 eMMC 的 /data/velaguard/clock.txt 恢复时间，
+#       在线时按 SNTP 校时。详细实现见 app/velaguard/vg_sntp.c 与 vg_time_sync.c。
+
+vgtime 校时成功次数: 11
+
+ 1. vgtime: synced 2026-09-14 16:16:20
+ 2. vgtime: synced 2026-09-14 16:46:25
+ 3. vgtime: synced 2026-09-14 17:16:31
+ 4. vgtime: synced 2026-09-14 17:46:37
+ 5. vgtime: synced 2026-09-14 18:16:43
+ 6. vgtime: synced 2026-09-14 18:46:48
+ 7. vgtime: synced 2026-09-14 19:16:54
+ 8. vgtime: synced 2026-09-14 19:47:00
+ 9. vgtime: synced 2026-09-14 20:17:06
+10. vgtime: synced 2026-09-14 20:47:11
+11. vgtime: synced 2026-09-14 21:17:17
+
+同段日志中的断言失败或 panic 行数: 0
+说明: 日志里出现的 HARDFAULT 字样均来自 board-health 任务的循环提示词文本，
+      不是实际故障；上行的计数按实际 panic 行统计。

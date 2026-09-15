@@ -1,0 +1,4 @@
+{"file":"AGENTS.md","reason":"竞赛、产品边界、日志保护和中文文风"}
+{"file":"docs/submission/REQUIREMENTS.md","reason":"报告唯一需求入口与已确认信息"}
+{"file":".trellis/tasks/09-09-judge-submit-pack/design.md","reason":"本轮仅重做技术报告的已批准设计"}
+{"file":".trellis/spec/guides/code-reuse-thinking-guide.md","reason":"一份结构化正文生成 Markdown 与 DOCX"}

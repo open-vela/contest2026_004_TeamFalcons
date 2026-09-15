@@ -1,8 +1,8 @@
 # 当前后端接口文档
 
-> 适用范围：当前仓库中的 VelaGuard AI Bridge。  
-> 核对时间：2026-08-16。  
-> 接口形态：MQTT 请求/响应，不是 HTTP REST。
+> **历史快照。** 本文描述已从产品移除的 MQTT AI Bridge。现行 LLM 为板载 `ai_agent` HTTPS 直连 MiMo；现行 MQTT 上报见 `docs/velaguard-mqtt-contract.md` v2 与看板 `dashboard-api.md`。仓库内没有 Bridge 服务端代码。
+>
+> 原适用范围：VelaGuard AI Bridge。核对时间：2026-08-16。接口形态：MQTT 请求/响应，不是 HTTP REST。
 
 本文只描述代码已经实现的后端边界。规划中的 TTS、ASR、手册解析、OTA、设备本地 HTTP API 等能力不属于当前接口。
 

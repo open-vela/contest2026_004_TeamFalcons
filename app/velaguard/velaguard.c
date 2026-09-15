@@ -217,7 +217,9 @@ int main(int argc, char *argv[])
 #ifdef CONFIG_VG_AGENT_AUTOSTART
     {
       char *ai_argv[] = { "ai_agent", "--daemon", NULL };
-      int astack = 16384;
+      /* Default 32 KiB: 16 KiB overflowed into heap on HMI builds (see
+       * packages/ai_agent agent_config.h CONFIG_VG_HMI note / wedge task). */
+      int astack = 32768;
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE
       astack = CONFIG_EXAMPLES_AI_AGENT_VELA_STACKSIZE;

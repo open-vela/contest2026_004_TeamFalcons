@@ -22,6 +22,7 @@ struct vg_fs_bucket
   uint8_t           len;
   uint16_t          pos;
   struct vg_fs_event ring[VG_FS_WINDOW];
+  struct vg_fs_boot_summary boot;
 };
 
 static struct vg_fs_bucket g_buckets[VG_FS_MAX_SLAVES];
@@ -57,6 +58,7 @@ static struct vg_fs_bucket *find_bucket(uint8_t slave, bool create)
 
   memset(free_slot, 0, sizeof(*free_slot));
   free_slot->slave = slave;
+  free_slot->boot.lat_min_ms = UINT32_MAX;
   return free_slot;
 }
 
@@ -70,6 +72,8 @@ static void bucket_reset(struct vg_fs_bucket *b)
   b->len = 0;
   b->pos = 0;
   memset(b->ring, 0, sizeof(b->ring));
+  memset(&b->boot, 0, sizeof(b->boot));
+  b->boot.lat_min_ms = UINT32_MAX;
 }
 
 const char *vg_fs_result_name(enum vg_fs_result result)
@@ -127,6 +131,41 @@ int vg_fs_record(uint8_t slave, enum vg_fs_result result, uint32_t latency_ms)
   if (b->len < VG_FS_WINDOW)
     {
       b->len++;
+    }
+
+  b->boot.total++;
+  switch (result)
+    {
+      case VG_FS_OK:
+        b->boot.ok++;
+        if (latency_ms < b->boot.lat_min_ms)
+          {
+            b->boot.lat_min_ms = latency_ms;
+          }
+
+        if (latency_ms > b->boot.lat_max_ms)
+          {
+            b->boot.lat_max_ms = latency_ms;
+          }
+
+        b->boot.lat_sum_ms += latency_ms;
+        break;
+
+      case VG_FS_CRC:
+        b->boot.crc_err++;
+        break;
+
+      case VG_FS_TIMEOUT:
+        b->boot.timeout++;
+        break;
+
+      case VG_FS_ECHO:
+        b->boot.echo++;
+        break;
+
+      default:
+        b->boot.other++;
+        break;
     }
 
   return 0;
@@ -206,6 +245,75 @@ static void aggregate_bucket(const struct vg_fs_bucket *b,
     {
       out->lat_avg_ms = lat_sum / lat_cnt;
     }
+}
+
+int vg_fs_boot_summary(uint8_t slave, struct vg_fs_boot_summary *out)
+{
+  struct vg_fs_bucket *b;
+
+  if (out == NULL)
+    {
+      return -EINVAL;
+    }
+
+  if (!g_inited)
+    {
+      vg_fs_init();
+    }
+
+  memset(out, 0, sizeof(*out));
+  b = find_bucket(slave, false);
+  if (b == NULL)
+    {
+      return 0;
+    }
+
+  *out = b->boot;
+  if (out->ok == 0)
+    {
+      out->lat_min_ms = 0;
+      out->lat_max_ms = 0;
+      out->lat_sum_ms = 0;
+    }
+  else if (out->lat_min_ms == UINT32_MAX)
+    {
+      out->lat_min_ms = 0;
+    }
+
+  return 0;
+}
+
+uint8_t vg_fs_slave_at(int idx)
+{
+  int n = 0;
+  int i;
+
+  if (!g_inited)
+    {
+      vg_fs_init();
+    }
+
+  if (idx < 0)
+    {
+      return 0;
+    }
+
+  for (i = 0; i < VG_FS_MAX_SLAVES; i++)
+    {
+      if (g_buckets[i].slave == 0)
+        {
+          continue;
+        }
+
+      if (n == idx)
+        {
+          return g_buckets[i].slave;
+        }
+
+      n++;
+    }
+
+  return 0;
 }
 
 int vg_fs_summary(uint8_t slave, struct vg_fs_summary *out)

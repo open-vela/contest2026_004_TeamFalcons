@@ -102,6 +102,7 @@ static void *vg_net_thread(void *arg)
   struct vg_net_sample sample;
   uint64_t t;
   bool do_ping;
+  bool skip_esp_hammer;
 
   (void)arg;
   vg_net_policy_init(&g_policy);
@@ -132,6 +133,13 @@ static void *vg_net_thread(void *arg)
       vg_eth_sample(&eth, do_ping);
       vg_esp_sample(&esp);
 
+      /* RJ45 already carrying MQTT: skip ESP join/reset. The AT storm
+       * sat on the stack of a 2026-09-14 wd_start HARDFAULT after ~1h.
+       */
+
+      skip_esp_hammer = (eth.link && eth.has_ip &&
+                         vg_mqtt_session_online());
+
       /* Publish the samples for vg_net_mgr_status() readers */
 
       pthread_mutex_lock(&g_lock);
@@ -146,13 +154,12 @@ static void *vg_net_thread(void *arg)
       sample.rj45_ping_sampled = do_ping && eth.link && eth.has_ip;
       sample.wifi_assoc        = esp.assoc;
       sample.wifi_has_ip       = esp.has_ip;
-//26821 读到这
       pthread_mutex_lock(&g_lock);
       vg_net_policy_step(&g_policy, t, &sample);
 
       /* Soft-reset ESP when join failures hit policy threshold */
 
-      if (g_policy.request_esp_reset)
+      if (g_policy.request_esp_reset && !skip_esp_hammer)
         {
           g_policy.request_esp_reset = false;
           pthread_mutex_unlock(&g_lock);
@@ -173,7 +180,7 @@ static void *vg_net_thread(void *arg)
 
       /* Retry join while disassociated and backoff elapsed */
 
-      if (!esp.assoc && vg_esp_ssid()[0] != '\0' &&
+      if (!skip_esp_hammer && !esp.assoc && vg_esp_ssid()[0] != '\0' &&
           t >= g_policy.next_wifi_join_ms)
         {
           pthread_mutex_unlock(&g_lock);
@@ -243,10 +250,10 @@ int vg_net_mgr_start(void)
       return 0;
     }
 
-  /* 8 KiB stack: join/ping/MQTT sync need headroom beyond default */
+  /* 12 KiB: MQTT drain + live snapshot format need headroom beyond 8K */
 
   pthread_attr_init(&attr);
-  pthread_attr_setstacksize(&attr, 8192);
+  pthread_attr_setstacksize(&attr, 12288);
   if (pthread_create(&tid, &attr, vg_net_thread, NULL) != 0)
     {
       pthread_attr_destroy(&attr);

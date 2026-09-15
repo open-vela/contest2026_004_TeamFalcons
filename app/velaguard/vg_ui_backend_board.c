@@ -13,6 +13,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 #include "model/vg_ui_backend.h"
@@ -22,6 +23,9 @@
 #include "vg_net_mgr.h"
 #endif
 #include "vg_agent_alarm.h"
+#ifdef CONFIG_VG_FRAME_STATS
+#include "vg_runtime.h"
+#endif
 
 #ifndef CONFIG_VG_HMI_RS485_DEVPATH
 #  define CONFIG_VG_HMI_RS485_DEVPATH "/dev/rs485"
@@ -46,15 +50,6 @@
 #ifndef CONFIG_VG_HMI_REPORT_DIR
 #  define CONFIG_VG_HMI_REPORT_DIR "/data/velaguard/reports"
 #endif
-
-/* Heartbeat poke file consumed by the ai_agent daemon (packages/ai_agent
- * heartbeat.c). Keep in sync with CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR. */
-#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR
-#  define VG_AGENT_DATA_DIR CONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR
-#else
-#  define VG_AGENT_DATA_DIR "/data/agent"
-#endif
-#define VG_AGENT_HEARTBEAT_POKE VG_AGENT_DATA_DIR "/HEARTBEAT.poke"
 
 #ifndef CONFIG_VG_DISCOVER_POINTS_PATH
 #  define CONFIG_VG_DISCOVER_POINTS_PATH "/data/velaguard/config/points.json"
@@ -340,6 +335,26 @@ static int board_get_slaves(vg_ui_slave_t *out, int max)
   return n;
 }
 
+static int pick_runtime_report(FAR char *path, size_t path_sz)
+{
+  char candidate[128];
+  int fd;
+
+  snprintf(candidate, sizeof(candidate), "%s/runtime-report.md",
+           CONFIG_VG_HMI_REPORT_DIR);
+  fd = open(candidate, O_RDONLY);
+  if(fd < 0) {
+    return -errno;
+  }
+
+  close(fd);
+  if(path != NULL && path_sz > 0) {
+    snprintf(path, path_sz, "%s", candidate);
+  }
+
+  return 0;
+}
+
 static int pick_latest_daily(FAR char *path, size_t path_sz)
 {
   DIR *dir;
@@ -380,6 +395,15 @@ static int pick_latest_daily(FAR char *path, size_t path_sz)
   }
 
   return 0;
+}
+
+static int pick_latest_report(FAR char *path, size_t path_sz)
+{
+  if(pick_runtime_report(path, path_sz) == 0) {
+    return 0;
+  }
+
+  return pick_latest_daily(path, path_sz);
 }
 
 /* The 480x272 label cannot render markdown; reports are plain text now,
@@ -451,13 +475,14 @@ static int board_read_latest_report(char *body, size_t body_sz,
   ssize_t n;
   size_t total = 0;
 
-  if(pick_latest_daily(file_path, sizeof(file_path)) != 0) {
+  if(pick_latest_report(file_path, sizeof(file_path)) != 0) {
     if(path != NULL && path_sz > 0) {
-      snprintf(path, path_sz, "%s/daily-*.md", CONFIG_VG_HMI_REPORT_DIR);
+      snprintf(path, path_sz, "%s/runtime-report.md", CONFIG_VG_HMI_REPORT_DIR);
     }
     if(body != NULL && body_sz > 0) {
       snprintf(body, body_sz,
-               "暂无日报文件。\n\n路径: %s\n(需 net+emmc 预设落盘)",
+               "暂无运行报告。\n\n路径: %s/runtime-report.md\n"
+               "点右上角刷新可更新本次上电以来的运行概况。",
                CONFIG_VG_HMI_REPORT_DIR);
     }
     return -ENOENT;
@@ -513,23 +538,12 @@ void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max)
   }
 }
 
-/* Poke the agent daemon: heartbeat.c consumes HEARTBEAT.poke within its
- * 5 s slice and runs HEARTBEAT.md tasks, regenerating the missing daily
- * report per the operations_report Skill. */
+/* Do not create HEARTBEAT.poke. ReAct after poke HARDFAULTs the board
+ * (mm_forcefree in ai_agent, 2026-09-14). Firmware already writes
+ * runtime-report.md in the file worker above. */
 static bool board_request_daily_report(void)
 {
-#ifdef CONFIG_VG_AGENT_OPS
-  int fd;
-
-  fd = open(VG_AGENT_HEARTBEAT_POKE, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-  if(fd < 0) {
-    return false;
-  }
-  close(fd);
   return true;
-#else
-  return false;
-#endif
 }
 
 #define VG_HMI_FILE_WORKER_STACKSIZE 8192
@@ -557,20 +571,16 @@ static vg_ui_report_snapshot_t g_report_snap;
 static bool g_report_req_pending = false;
 static bool g_report_allow_gen = false;
 static uint32_t g_report_req_counter = 1;
-static uint32_t g_report_gen_start_ms = 0;
 
 static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
 {
-  uint32_t last_gen_poll_ms = 0;
   (void)arg;
 
   for(;;) {
     vg_async_alarm_req_t alarm_work;
     bool do_alarm = false;
     bool do_report_read = false;
-    bool do_report_check_gen = false;
     bool allow_gen = false;
-    uint32_t now_ms = vg_live_now_ms();
 
     pthread_mutex_lock(&g_file_worker_lock);
 
@@ -583,19 +593,6 @@ static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
       g_report_req_pending = false;
       allow_gen = g_report_allow_gen;
       do_report_read = true;
-    }
-    else if(g_report_snap.status == VG_UI_REPORT_GENERATING) {
-      uint32_t elapsed_s = (now_ms - g_report_gen_start_ms) / 1000;
-      g_report_snap.elapsed_s = elapsed_s;
-      if(elapsed_s >= 180) {
-        g_report_snap.status = VG_UI_REPORT_ERROR;
-        g_report_snap.err = -ETIMEDOUT;
-        g_report_snap.version++;
-      }
-      else if(now_ms - last_gen_poll_ms >= 2000) {
-        last_gen_poll_ms = now_ms;
-        do_report_check_gen = true;
-      }
     }
 
     pthread_mutex_unlock(&g_file_worker_lock);
@@ -616,52 +613,43 @@ static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
       pthread_mutex_unlock(&g_file_worker_lock);
     }
 
-    if(do_report_read || do_report_check_gen) {
-      char body[1024];
+    if(do_report_read) {
+      char body[sizeof(g_report_snap.body)];
       char path[128];
       int rc;
 
-      rc = board_read_latest_report(body, sizeof(body), path, sizeof(path));
+#ifdef CONFIG_VG_FRAME_STATS
+      snprintf(path, sizeof(path), "%s/runtime-report.md",
+               CONFIG_VG_HMI_REPORT_DIR);
+      (void)mkdir(CONFIG_VG_HMI_REPORT_DIR, 0755);
+      rc = vg_runtime_write_report(path);
+      if(rc != 0) {
+        printf("vghmi: runtime report write %d\n", rc);
+      }
+#endif
+      if(allow_gen) {
+        (void)board_request_daily_report();
+      }
 
+      rc = board_read_latest_report(body, sizeof(body), path, sizeof(path));
       pthread_mutex_lock(&g_file_worker_lock);
       if(rc == 0) {
         snprintf(g_report_snap.body, sizeof(g_report_snap.body), "%s", body);
         snprintf(g_report_snap.path, sizeof(g_report_snap.path), "%s", path);
         g_report_snap.status = VG_UI_REPORT_READY;
         g_report_snap.err = 0;
+        g_report_snap.truncated =
+          (strlen(body) + 1 >= sizeof(g_report_snap.body));
         g_report_snap.version++;
       }
-      else if(do_report_read) {
-        if(rc == -ENOENT) {
-          if(allow_gen) {
-            bool ok = board_request_daily_report();
-            if(ok) {
-              g_report_snap.status = VG_UI_REPORT_GENERATING;
-              g_report_gen_start_ms = vg_live_now_ms();
-              g_report_snap.elapsed_s = 0;
-              g_report_snap.err = 0;
-              g_report_snap.version++;
-              last_gen_poll_ms = g_report_gen_start_ms;
-            }
-            else {
-              g_report_snap.status = VG_UI_REPORT_EMPTY;
-              g_report_snap.err = -ENOSYS;
-              g_report_snap.version++;
-            }
-          }
-          else {
-            g_report_snap.status = VG_UI_REPORT_EMPTY;
-            g_report_snap.err = -ENOENT;
-            g_report_snap.version++;
-          }
-        }
-        else {
-          g_report_snap.status = VG_UI_REPORT_ERROR;
-          g_report_snap.err = rc;
-          g_report_snap.version++;
-        }
+      else if(rc == -ENOENT) {
+        g_report_snap.status = VG_UI_REPORT_EMPTY;
+        g_report_snap.err = -ENOENT;
+        g_report_snap.version++;
       }
       else {
+        g_report_snap.status = VG_UI_REPORT_ERROR;
+        g_report_snap.err = rc;
         g_report_snap.version++;
       }
       pthread_mutex_unlock(&g_file_worker_lock);
@@ -1029,6 +1017,48 @@ bool vg_ui_backend_apply_live(void)
       changed = true;
     }
   }
+
+#ifdef CONFIG_VG_FRAME_STATS
+  {
+    uint16_t sn = 0;
+    const vg_sensor_t *sensors = vg_model_get_sensors(&sn);
+    uint16_t j;
+
+    vg_runtime_init();
+    for(j = 0; j < sn; j++) {
+      enum vg_runtime_kind kind = VG_RUNTIME_KIND_NONE;
+      float thr = 0.0f;
+
+      if(!sensors[j].online) {
+        kind = VG_RUNTIME_KIND_OFFLINE;
+      }
+      else if(sensors[j].al_active &&
+              sensors[j].severity == VG_SEV_OFFLINE) {
+        kind = VG_RUNTIME_KIND_OFFLINE;
+      }
+      else if(sensors[j].al_active) {
+        kind = VG_RUNTIME_KIND_THRESHOLD;
+        if(sensors[j].severity == VG_SEV_CRIT && sensors[j].has_crit) {
+          thr = sensors[j].thr_crit;
+        }
+        else if(sensors[j].has_warn) {
+          thr = sensors[j].thr_warn;
+        }
+        else if(sensors[j].has_crit) {
+          thr = sensors[j].thr_crit;
+        }
+      }
+
+      vg_runtime_note_sample(sensors[j].id, sensors[j].slave_addr,
+                             sensors[j].online, sensors[j].value, kind,
+                             thr, sensors[j].cmp,
+                             sensors[j].severity == VG_SEV_CRIT ? "crit" :
+                             sensors[j].severity == VG_SEV_WARN ? "warn" :
+                             sensors[j].severity == VG_SEV_OFFLINE ?
+                               "offline" : NULL);
+    }
+  }
+#endif
 
 #ifdef CONFIG_VG_AGENT_OPS
   {

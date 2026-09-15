@@ -48,8 +48,9 @@ config VG_FRAME_STATS
 	default n
 	depends on VG_BRINGUP_TOOLS
 	---help---
-		Build vg_frame_stats and NSH tool vgstats.  vgmodbus records
-		CRC/timeout/latency into a per-slave sliding window.
+		Build vg_frame_stats, NSH tools vgstats/vgruntime, and since-boot
+		runtime accounting.  HMI poll and vgmodbus record CRC/timeout/latency
+		into a per-slave sliding window plus boot cumulative counters.
 
 config VG_NET_FAILOVER
 	bool "VelaGuard TCP failover (RJ45 / ESP-01S)"
@@ -78,17 +79,45 @@ config VG_WIFI_PASSWORD
 		Default AP PSK paired with VG_WIFI_SSID (test credentials).
 
 config VG_MQTT_BROKER_HOST
-	string "Failover MQTT broker host"
-	default "107.174.123.74"
+	string "Dashboard MQTT broker host"
+	default "8.148.67.174"
 	---help---
-		Plaintext MQTT-C broker used as the first TCP client proving
-		the active egress. CONNACK marks the session online.
+		Plaintext MQTT-C broker for status/telemetry/alarm/point_table.
+		CONNACK marks the session online.
 
 config VG_MQTT_BROKER_PORT
-	int "Failover MQTT broker port"
+	int "Dashboard MQTT broker port"
 	default 1883
 	---help---
 		Broker TCP port (no TLS in this stage).
+
+config VG_MQTT_USERNAME
+	string "MQTT username (TEST)"
+	default "velaguard"
+	---help---
+		Plaintext TEST credentials for the dashboard broker.
+		Rotate after the contest. Do not print this in logs.
+
+config VG_MQTT_PASSWORD
+	string "MQTT password (TEST)"
+	default "a9e68005c2ba5a81c7181fdd2dd74b92"
+	---help---
+		Plaintext TEST password. Goes into the contest git tree.
+		Rotate after the contest. Do not print this in logs.
+
+config VG_MQTT_KEEPALIVE
+	int "MQTT keepalive seconds"
+	default 60
+	range 10 600
+	---help---
+		CONNECT keepalive. LWT fires after about 1.5x this period.
+
+config VG_MQTT_DEVICE_ID
+	string "Override device_id / MQTT client_id"
+	default ""
+	---help---
+		Empty: vg- + STM32 96-bit UID hex. Non-empty overrides
+		(host tests / a known demo id). Runtime cannot change it.
 
 config VG_NET_PING_HOST
 	string "Ping target if DHCP gateway is empty"

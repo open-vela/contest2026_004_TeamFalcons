@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">VelaGuard alarm and report data flow</title>
+  <desc id="desc">Acquire, evaluate, write pending alarm, Skill, then screen reads files.</desc>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; letter-spacing: 0; fill: #18181b; }
+    .muted { fill: #71717a; }
+    .local { fill: #047857; }
+    .network { fill: #0369a1; }
+    .node { fill: #ffffff; stroke: #d4d4d8; stroke-width: 1.5; }
+    .rule { fill: none; stroke: #e4e4e7; stroke-width: 1.5; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M2 1L6 5L2 9" fill="none" stroke="#71717a" stroke-width="1.5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="#ffffff"/>
+  <text x="48" y="46" class="muted" font-size="18">03 / DATA FLOW</text>
+  <text x="48" y="92" font-size="32" font-weight="600">采集到屏幕，中间经过哪些文件</text>
+  <text x="48" y="128" class="muted" font-size="20">规则在板内判定。Agent 只读写约定目录里的文件，不改点表。</text>
+  <g id="boxes">
+    <rect x="48" y="168" width="200" height="132" rx="8" class="node"/>
+    <text x="68" y="216" font-size="22" font-weight="600">周期采集</text>
+    <text x="68" y="250" class="muted" font-size="18">Modbus / RS485</text>
+    <text x="68" y="276" class="local" font-size="16">本地</text>
+    <rect x="288" y="168" width="200" height="132" rx="8" class="node"/>
+    <text x="308" y="216" font-size="22" font-weight="600">规则判定</text>
+    <text x="308" y="250" class="muted" font-size="18">vg_alarm_eval</text>
+    <text x="308" y="276" class="local" font-size="16">本地</text>
+    <rect x="528" y="168" width="220" height="132" rx="8" class="node"/>
+    <text x="548" y="208" font-size="22" font-weight="600">待处理告警</text>
+    <text x="548" y="242" class="muted" font-size="16">pending_alarm.txt</text>
+    <text x="548" y="268" class="muted" font-size="16">告警页立即弹出</text>
+    <text x="548" y="292" class="local" font-size="16">本地 · 断网仍写</text>
+    <rect x="788" y="168" width="164" height="132" rx="8" class="node"/>
+    <text x="808" y="216" font-size="22" font-weight="600">Skill</text>
+    <text x="808" y="250" class="muted" font-size="16">解释 / 报告 / 查数</text>
+    <text x="808" y="276" class="network" font-size="16">需网络 · MiMo</text>
+    <rect x="992" y="168" width="160" height="132" rx="8" class="node"/>
+    <text x="1012" y="216" font-size="22" font-weight="600">屏幕再读</text>
+    <text x="1012" y="250" class="muted" font-size="16">last_alarm.md</text>
+    <text x="1012" y="276" class="muted" font-size="16">runtime-report.md</text>
+  </g>
+  <g fill="none" stroke="#71717a" stroke-width="1.5" marker-end="url(#arrow)">
+    <path d="M248 234H280"/>
+    <path d="M488 234H520"/>
+    <path d="M748 234H780"/>
+    <path d="M952 234H984"/>
+  </g>
+  <path d="M48 332H1152" class="rule"/>
+  <text x="48" y="372" class="local" font-size="20">点表要生效：候选表试读后，人执行 vgpoint apply --confirm。Agent 调不到 vgpoint。</text>
+  <text x="48" y="402" class="muted" font-size="18">无 last_alarm.md 时，告警页只显示规则摘要，不标成 AI 推测。</text>
+</svg>

@@ -7,9 +7,10 @@
 #include <string.h>
 
 #define REPORT_POLL_PERIOD_MS 100
-#define REPORT_GEN_TIMEOUT_S  180
+#define REPORT_GEN_TIMEOUT_S  300
 #define REPORT_BODY_HINT \
-    "暂无日报。\n\n(板端: /data/velaguard/reports/daily-*.md)\n点右上角刷新可请求 MiMo 生成。"
+    "暂无运行报告。\n\n(板端: /data/velaguard/reports/runtime-report.md)\n" \
+    "点右上角刷新可更新本次上电以来的运行概况。"
 
 typedef struct {
     lv_obj_t * root;
@@ -48,7 +49,7 @@ static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
     base = (snap->path[0] != '\0') ? strrchr(snap->path, '/') : NULL;
     base = (base != NULL) ? base + 1 : snap->path;
     if(base != NULL && base[0] != '\0') {
-        lv_label_set_text_fmt(s_report.title_lab, "最新日报 · %s", base);
+        lv_label_set_text_fmt(s_report.title_lab, "运行报告 · %s", base);
     }
     else {
         lv_label_set_text(s_report.title_lab, "运行报告");
@@ -61,14 +62,14 @@ static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
             break;
         case VG_UI_REPORT_GENERATING:
             lv_snprintf(buf, sizeof(buf),
-                        "日报生成中(MiMo)…\n\n已等待 %us / %us,完成后自动显示。\n"
+                        "运行报告生成中(MiMo)…\n\n已等待 %us / %us,完成后自动显示。\n"
                         "也可先返回其他页面,生成后回到本页点刷新。",
                         (unsigned)snap->elapsed_s, (unsigned)REPORT_GEN_TIMEOUT_S);
             lv_label_set_text(s_report.body_lab, buf);
             report_set_refresh_enabled(false);
             break;
         case VG_UI_REPORT_READING:
-            lv_label_set_text(s_report.body_lab, "正在读取最新日报…");
+            lv_label_set_text(s_report.body_lab, "正在读取运行报告…");
             report_set_refresh_enabled(false);
             break;
         case VG_UI_REPORT_EMPTY:
@@ -78,7 +79,7 @@ static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
         case VG_UI_REPORT_ERROR:
         default:
             lv_label_set_text(s_report.body_lab,
-                              "日报读取或生成失败。\n\n请检查网络与 MiMo 状态，稍后点刷新重试。");
+                              "运行报告读取或生成失败。\n\n请检查网络与 MiMo 状态，稍后点刷新重试。");
             report_set_refresh_enabled(true);
             break;
     }

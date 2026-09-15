@@ -22,6 +22,7 @@ This directory contains guidelines for backend development. Fill in each file wi
 | [VelaGuard config store](./vg-config-store.md) | Dual-slot FAT commit/load (`seq`/CRC/`vgcfg`) | Active |
 | [Contest firmware mainline](./firmware-mainline.md) | One product image: `velaguard-lvgl` | Active |
 | [Host NSH vgpoint protocol](./host-nsh-protocol.md) | ST-LINK NSH point-table commands; canonical doc in `docs/` | Active |
+| [MQTT dashboard publish](../../../docs/velaguard-mqtt-contract.md) | Board publish of status/telemetry/alarm/point_table | Active |
 
 ---
 

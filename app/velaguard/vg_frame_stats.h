@@ -39,11 +39,31 @@ struct vg_fs_summary
   uint32_t lat_avg_ms;
 };
 
+/* Since-boot cumulative counters (not windowed). Latency fields cover OK
+ * frames only, same as the sliding window summary. */
+struct vg_fs_boot_summary
+{
+  uint32_t total;
+  uint32_t ok;
+  uint32_t crc_err;
+  uint32_t timeout;
+  uint32_t echo;
+  uint32_t other;
+  uint32_t lat_min_ms;
+  uint32_t lat_max_ms;
+  uint32_t lat_sum_ms; /* for avg = sum/ok when ok>0 */
+};
+
 void vg_fs_init(void);
 
 int vg_fs_record(uint8_t slave, enum vg_fs_result result, uint32_t latency_ms);
 
 int vg_fs_summary(uint8_t slave, struct vg_fs_summary *out);
+
+int vg_fs_boot_summary(uint8_t slave, struct vg_fs_boot_summary *out);
+
+/* Iterate occupied slave buckets. *idx starts at 0; returns slave addr or 0. */
+uint8_t vg_fs_slave_at(int idx);
 
 int vg_fs_reset(uint8_t slave);
 

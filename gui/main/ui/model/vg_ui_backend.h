@@ -42,7 +42,7 @@ typedef struct {
     int err;
     uint32_t elapsed_s;
     char path[128];
-    char body[1024];
+    char body[1536];
     bool truncated;
 } vg_ui_report_snapshot_t;
 

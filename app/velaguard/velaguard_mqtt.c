@@ -3,20 +3,17 @@
  *
  * vgmqtt - VelaGuard MQTT-C bring-up tool (NSH command).
  *
- * 用途：M2 里程碑的调试工具。连接云 Broker（明文测试端口），发布 retained
- * status 消息，并携带 LWT 遗嘱（同 topic, {"online":false}, retained），
- * 用于验证"设备掉线后云侧立即感知"。
+ * 一次性调试：连看板 Broker，发 retained status + LWT（同主题，
+ * {"device_id","online":false}）。常驻上报走 vg_mqtt_session，不靠本命令。
  *
  * 用法（NSH）：
- *   vgmqtt -h <broker> [-p <port>] [-u <user>] [-P <pass>]
+ *   vgmqtt [-h <broker>] [-p <port>] [-u <user>] [-P <pass>]
  *          [-t <topic>] [-m <json>] [-q <0|1|2>] [-r] [-w <secs>]
  *
- * 缺省：port=1883, topic=vg/{DEVID}/status, payload=合同 §4.1 status JSON,
- *       QoS=0（合同 §3：status 用 QoS0 + retained）, retain=on, 等待 0 秒。
- *       -q 可覆盖为 1/2（仅供调试；QoS1 需等 PUBACK，回程不稳时会超时）。
- * -w <secs>：发布后保持连接 sleep（用于 LWT 演示：等待期间拔网线/断电，
- *   云侧即可收到遗嘱 {"online":false}；正常退出属优雅断开，不触发 LWT）。
- * DEVID 可在编译期用 -DDEVID="xxx" 覆盖（test 构建，手册 §16.1）。
+ * 缺省：Kconfig Broker/用户，topic=vg/{uid}/status，QoS0 retained。
+ * client_id 来自芯片 UID（CONFIG_VG_MQTT_DEVICE_ID 可覆盖）。
+ * -w：保持连接以便拔线触发 LWT；正常退出不触发 LWT。
+ * 不要在日志里打印密码。
  ****************************************************************************/
 
 #include <nuttx/config.h>
@@ -33,13 +30,20 @@
 
 #include <mqtt.h>
 
-#ifndef DEVID
-#  define DEVID "vg-test-01"
+#include "vg_device_id.h"
+#include "vg_mqtt_payload.h"
+
+#ifndef CONFIG_VG_MQTT_BROKER_HOST
+#  define CONFIG_VG_MQTT_BROKER_HOST "8.148.67.174"
+#endif
+#ifndef CONFIG_VG_MQTT_BROKER_PORT
+#  define CONFIG_VG_MQTT_BROKER_PORT 1883
+#endif
+#ifndef CONFIG_VG_MQTT_KEEPALIVE
+#  define CONFIG_VG_MQTT_KEEPALIVE 60
 #endif
 
 #define VGMQTT_DEFAULT_PORT "1883"
-#define VGMQTT_TOPIC        "vg/" DEVID "/status"
-#define VGMQTT_WILL_MSG     "{\"online\":false}"
 #define VGMQTT_TXBUFSZ      512
 #define VGMQTT_RXBUFSZ      512
 
@@ -79,8 +83,8 @@ static void show_usage(FAR const char *prog)
   fprintf(stderr,
           "Usage: %s -h <broker> [-p <port>] [-u <user>] [-P <pass>]\n"
           "       [-t <topic>] [-m <json>] [-q <0|1|2>] [-r]\n"
-          "Defaults: port=%s topic=%s QoS=0 retain=on\n",
-          prog, VGMQTT_DEFAULT_PORT, VGMQTT_TOPIC);
+          "Defaults: host=%s port=%s topic=vg/{uid}/status QoS=0 retain=on\n",
+          prog, CONFIG_VG_MQTT_BROKER_HOST, VGMQTT_DEFAULT_PORT);
 }
 
 /* 解析命令行参数（沿用 vg* 工具风格，getopt） */
@@ -91,8 +95,24 @@ static int parse_args(int argc, FAR char *argv[],
   int opt;
 
   memset(cfg, 0, sizeof(*cfg));
+#ifdef CONFIG_VG_MQTT_BROKER_HOST
+  cfg->host   = CONFIG_VG_MQTT_BROKER_HOST;
+#else
+  cfg->host   = NULL;
+#endif
+#ifdef CONFIG_VG_MQTT_USERNAME
+  if (CONFIG_VG_MQTT_USERNAME[0] != '\0')
+    {
+      cfg->user = CONFIG_VG_MQTT_USERNAME;
+    }
+#endif
+#ifdef CONFIG_VG_MQTT_PASSWORD
+  if (CONFIG_VG_MQTT_PASSWORD[0] != '\0')
+    {
+      cfg->pass = CONFIG_VG_MQTT_PASSWORD;
+    }
+#endif
   cfg->port   = VGMQTT_DEFAULT_PORT;
-  cfg->topic  = VGMQTT_TOPIC;
   cfg->qos    = 0;
   cfg->retain = true;
   cfg->wait_secs = 0;
@@ -143,7 +163,7 @@ static int parse_args(int argc, FAR char *argv[],
         }
     }
 
-  if (cfg->host == NULL)
+  if (cfg->host == NULL || cfg->host[0] == '\0')
     {
       fprintf(stderr, "ERROR: broker host (-h) is required\n");
       show_usage(argv[0]);
@@ -220,9 +240,7 @@ static int tcp_connect(FAR const char *host, FAR const char *port)
 static void build_status_payload(FAR char *buf, size_t bufsz)
 {
   struct timespec mono;
-  struct timespec real;
   long long uptime_ms = 0;
-  long long ts_ms = 0;
 
   if (clock_gettime(CLOCK_MONOTONIC, &mono) == 0)
     {
@@ -230,18 +248,8 @@ static void build_status_payload(FAR char *buf, size_t bufsz)
                   mono.tv_nsec / 1000000LL;
     }
 
-  if (clock_gettime(CLOCK_REALTIME, &real) == 0)
-    {
-      ts_ms = (long long)real.tv_sec * 1000LL +
-              real.tv_nsec / 1000000LL;
-    }
-
-  snprintf(buf, bufsz,
-           "{\"device_id\":\"%s\",\"online\":true,"
-           "\"firmware\":\"0.1.0\",\"build_mode\":\"TEST\","
-           "\"network\":\"rj45\",\"uptime_ms\":%lld,\"ts_ms\":%lld,"
-           "\"time_quality\":\"unknown\"}",
-           DEVID, uptime_ms, ts_ms);
+  vg_mqtt_format_status(buf, bufsz, vg_device_id(), "rj45", uptime_ms,
+                        0);
 }
 
 /****************************************************************************
@@ -255,6 +263,9 @@ int main(int argc, FAR char *argv[])
   static uint8_t sendbuf[VGMQTT_TXBUFSZ];
   static uint8_t recvbuf[VGMQTT_RXBUFSZ];
   char payload[256];
+  char topic[VG_MQTT_TOPIC_MAX];
+  char will[96];
+  const char *devid;
   uint8_t pubflags;
   uint8_t connflags;
   long long start_ms;
@@ -263,6 +274,24 @@ int main(int argc, FAR char *argv[])
 
   if (parse_args(argc, argv, &cfg) != OK)
     {
+      return ERROR;
+    }
+
+  devid = vg_device_id();
+  if (cfg.topic == NULL)
+    {
+      if (vg_mqtt_topic(topic, sizeof(topic), devid, "status") != 0)
+        {
+          fprintf(stderr, "ERROR: topic\n");
+          return ERROR;
+        }
+
+      cfg.topic = topic;
+    }
+
+  if (vg_mqtt_format_lwt(will, sizeof(will), devid) != 0)
+    {
+      fprintf(stderr, "ERROR: lwt\n");
       return ERROR;
     }
 
@@ -293,11 +322,12 @@ int main(int argc, FAR char *argv[])
               MQTT_CONNECT_WILL_QOS_0 |
               MQTT_CONNECT_WILL_RETAIN;
 
-  /* keepalive 15s：LWT 演示时云侧约 1.5x 周期内判定掉线 */
+  /* keepalive 60s：与常驻会话一致 */
 
-  ret = mqtt_connect(&client, DEVID, cfg.topic,
-                     VGMQTT_WILL_MSG, strlen(VGMQTT_WILL_MSG),
-                     cfg.user, cfg.pass, connflags, 15);
+  ret = mqtt_connect(&client, devid, cfg.topic,
+                     will, strlen(will),
+                     cfg.user, cfg.pass, connflags,
+                     (uint16_t)CONFIG_VG_MQTT_KEEPALIVE);
   if (ret != MQTT_OK)
     {
       fprintf(stderr, "ERROR: mqtt_connect failed: %s\n",
@@ -325,7 +355,7 @@ int main(int argc, FAR char *argv[])
       return ERROR;
     }
 
-  printf("vgmqtt: connected (client_id=%s)\n", DEVID);
+  printf("vgmqtt: connected (client_id=%s)\n", devid);
 
   /* cfg.qos 存数字 0/1/2，MQTT-C 发布标志需要编码值（qos << 1） */
 

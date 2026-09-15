@@ -39,8 +39,9 @@ static void set_timeo(int fd, bool lesp)
   struct timeval tv;
   /* lesp recv blocks until rcv_timeo on empty FIFO; keep short so
    * mqtt_sync (recv-before-send) can poll CONNACK without stalling. */
-  tv.tv_sec  = lesp ? 0 : 2;
-  tv.tv_usec = lesp ? 500000 : 0;
+  /* Keep POSIX recv timeout short: mqtt_sync recvs before send. */
+  tv.tv_sec  = 0;
+  tv.tv_usec = lesp ? 500000 : 200000;
 #ifdef CONFIG_NETUTILS_ESP8266
   if (lesp)
     {
@@ -307,40 +308,80 @@ int vg_mqtt_pal_try_sendall(mqtt_pal_socket_handle fd, const void *buf,
 int vg_mqtt_pal_try_recvall(mqtt_pal_socket_handle fd, void *buf,
                             size_t bufsz, int flags, ssize_t *out)
 {
-#ifdef CONFIG_NETUTILS_ESP8266
-  ssize_t n;
+  uint8_t *p;
+  size_t left;
+  ssize_t ntot;
 
-  if (out == NULL || (fd & VG_MQTT_LESP_TAG) == 0)
+  if (out == NULL || buf == NULL)
     {
       return -1;
     }
 
-  vg_esp_at_lock();
-  n = lesp_recv(fd & ~VG_MQTT_LESP_TAG, (FAR uint8_t *)buf, bufsz, flags);
-  vg_esp_at_unlock();
-  if (n < 0)
+#ifdef CONFIG_NETUTILS_ESP8266
+  if ((fd & VG_MQTT_LESP_TAG) != 0)
     {
-      /* lesp_recv uses -1 for rcv_timeo expiry too; MQTT-C mqtt_sync recv's
-       * before send, so an empty FIFO on the first poll must not abort CONNECT.
-       * Match POSIX mqtt_pal_recvall: timeout => 0 bytes, not socket error. */
-      if (errno == ETIMEDOUT || errno == EAGAIN || errno == EWOULDBLOCK)
+      ssize_t n;
+
+      vg_esp_at_lock();
+      n = lesp_recv(fd & ~VG_MQTT_LESP_TAG, (FAR uint8_t *)buf, bufsz, flags);
+      vg_esp_at_unlock();
+      if (n < 0)
         {
-          *out = 0;
+          /* lesp_recv uses -1 for rcv_timeo expiry too; MQTT-C mqtt_sync
+           * recvs before send, so an empty FIFO must not abort CONNECT. */
+          if (errno == ETIMEDOUT || errno == EAGAIN ||
+              errno == EWOULDBLOCK || errno == EINTR)
+            {
+              *out = 0;
+              return 0;
+            }
+
+          *out = MQTT_ERROR_SOCKET_ERROR;
+          return 0;
+        }
+
+      *out = n;
+      return 0;
+    }
+#endif
+
+  /* POSIX: MQTT-C pal treats ETIMEDOUT as a hard socket error. NuttX
+   * SO_RCVTIMEO commonly returns ETIMEDOUT; mqtt_sync would then skip
+   * __mqtt_send and never flush PUBLISH. Drain like pal, but map timeout
+   * to 0 bytes. */
+
+  p = (uint8_t *)buf;
+  left = bufsz;
+  ntot = 0;
+  do
+    {
+      ssize_t rv = recv(fd, p, left, flags);
+      if (rv > 0)
+        {
+          p += (size_t)rv;
+          left -= (size_t)rv;
+          ntot += rv;
+          continue;
+        }
+
+      if (rv == 0)
+        {
+          *out = (ntot > 0) ? ntot : (ssize_t)MQTT_ERROR_SOCKET_ERROR;
+          return 0;
+        }
+
+      if (errno == EAGAIN || errno == EWOULDBLOCK || errno == ETIMEDOUT ||
+          errno == EINTR)
+        {
+          *out = ntot;
           return 0;
         }
 
       *out = MQTT_ERROR_SOCKET_ERROR;
       return 0;
     }
+  while (left > 0);
 
-  *out = n;
+  *out = ntot;
   return 0;
-#else
-  (void)fd;
-  (void)buf;
-  (void)bufsz;
-  (void)flags;
-  (void)out;
-  return -1;
-#endif
 }

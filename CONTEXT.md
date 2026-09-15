@@ -17,11 +17,11 @@ The cloud service that subscribes to VelaGuard MQTT requests, calls MiMo or rela
 _Avoid_: sidecar, MiMo API, broker
 
 **MQTT Broker**:
-The message broker that connects VelaGuard and AI Bridge; it routes topics and enforces client access rules.
+The message broker between VelaGuard and cloud consumers (dashboard, optional future OTA). It routes topics and enforces client access rules. Current contest broker is plaintext `8.148.67.174:1883`.
 _Avoid_: AI Bridge, cloud API
 
 **Device ID**:
-The stable identity used in MQTT topics, authentication, logs, and cloud routing for one physical VelaGuard device.
+The stable identity used in MQTT topics, authentication, logs, and cloud routing for one physical VelaGuard device. Current firmware uses `vg-` plus 24 lowercase hex digits of the STM32 96-bit unique ID; MQTT `client_id` is the same string.
 _Avoid_: display name, sensor id
 
 **Display Name**:

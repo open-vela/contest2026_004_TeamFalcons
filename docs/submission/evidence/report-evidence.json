@@ -1,0 +1,596 @@
+{
+  "captured_at": "2026-09-15T06:10:56.410859+00:00",
+  "note": "Read-only collection. Historical results are not new test runs.",
+  "sources": {
+    "AGENTS.md": {
+      "bytes": 19486,
+      "mtime": "2026-09-13T10:37:49.148955+08:00",
+      "sha256": "55897c1820ba057eb95b19db56eb2d6afd10678d2c3527475daea9602df83ffe"
+    },
+    "docs/submission/REQUIREMENTS.md": {
+      "bytes": 8674,
+      "mtime": "2026-09-14T18:31:45.846366+08:00",
+      "sha256": "983fa27effc9a5eebd04b52b2fa82eb3d1046b740d7278b8cb48591b97e23c02"
+    },
+    "app/velaguard/vgpoint.c": {
+      "bytes": 18532,
+      "mtime": "2026-09-14T10:29:59.619664+08:00",
+      "sha256": "a616937c8178d513553bed2146d61927b3975ac9e9faa76522081f0f8bc11536"
+    },
+    "app/velaguard/vg_point_table.c": {
+      "bytes": 28609,
+      "mtime": "2026-09-14T10:29:53.144884+08:00",
+      "sha256": "2c462d6c340e22aaf8bb45f5c4d8a05007ba012ac841a62097cace777b04bada"
+    },
+    "app/velaguard/vg_alarm_eval.c": {
+      "bytes": 3054,
+      "mtime": "2026-09-11T15:29:00.516049+08:00",
+      "sha256": "bc864271978e3eba24cf709fea1cfdcd72cd7d8a37800466e92c8d6ec8dc206d"
+    },
+    "app/velaguard/vg_frame_stats.c": {
+      "bytes": 6449,
+      "mtime": "2026-09-13T20:57:46.785944+08:00",
+      "sha256": "df9b7f935d24b8d0dcfef2457186abd2005b8ffde1f45918b88cd8b605252e5b"
+    },
+    "app/velaguard/vg_runtime.c": {
+      "bytes": 24952,
+      "mtime": "2026-09-14T10:29:23.599104+08:00",
+      "sha256": "470e1629d37cfc5275c9783d973b1c2929f7bc833b546eacd0d04922a10e2232"
+    },
+    "app/velaguard/vg_ui_backend_board.c": {
+      "bytes": 29753,
+      "mtime": "2026-09-14T15:40:43.526699+08:00",
+      "sha256": "81eb53aec7eff9c276277801d6bf812049dccfcb60f44226c8d37d66339467ef"
+    },
+    "app/velaguard/vg_agent_seed.c": {
+      "bytes": 5219,
+      "mtime": "2026-09-13T22:37:28.539976+08:00",
+      "sha256": "5a862ac40606d2f41041344d7f9aeb1b6056936dc87ef800dec2eb20022a00b0"
+    },
+    "app/velaguard/vg_provision.c": {
+      "bytes": 8879,
+      "mtime": "2026-09-14T10:30:07.421697+08:00",
+      "sha256": "b17d3f5cf0a5182a9bd596d87d35aea90d902c8bddb90171e4dd943e3270ff5b"
+    },
+    "app/velaguard/vg_net_mgr.c": {
+      "bytes": 11080,
+      "mtime": "2026-09-14T14:16:02.499041+08:00",
+      "sha256": "c881af69c7e195b6494860cde33d8b907463c23f8d0e88bf82c8a389c1366f2a"
+    },
+    "app/velaguard/vg_mqtt_session.c": {
+      "bytes": 13629,
+      "mtime": "2026-09-14T15:07:50.745879+08:00",
+      "sha256": "0043fd62dea0cfeee932c1404f5a4687bfd306694cd6f8c0f7710ccfa327c0a5"
+    },
+    "app/velaguard/velaguard.c": {
+      "bytes": 6921,
+      "mtime": "2026-09-13T18:44:02.342574+08:00",
+      "sha256": "cd3709ce4a37611d44e4c6debf1528b24c7d372f14aa9fef1d1629f916ede573"
+    },
+    "scripts/configs/velaguard-lvgl.defconfig": {
+      "bytes": 5609,
+      "mtime": "2026-09-14T10:56:28.287710+08:00",
+      "sha256": "e6751baa7dffb62d6d65880b91c1ba8c2b0ed0aa8186cc417f6523b0bd4344a5"
+    },
+    "gui/main/ui/model/vg_model.c": {
+      "bytes": 64186,
+      "mtime": "2026-09-13T17:30:09.817072+08:00",
+      "sha256": "6d4a868a27763a38339346359a57aa209acd7947e247b6a122f0a2851d11020f"
+    },
+    "gui/main/ui/pages/vg_page_alarm.c": {
+      "bytes": 26975,
+      "mtime": "2026-09-13T18:07:09.727650+08:00",
+      "sha256": "59f733a18cc53eb9af548281d96fde1f9681da2b6a13a399a1b435320389aa6b"
+    },
+    "docs/velaguard-host-nsh-protocol.md": {
+      "bytes": 14062,
+      "mtime": "2026-09-14T10:34:58.185044+08:00",
+      "sha256": "60b408b29b0da795042dd270bf1a12e944c414e02c5d908ba3803564deec20f7"
+    },
+    "docs/velaguard-mqtt-contract.md": {
+      "bytes": 3439,
+      "mtime": "2026-09-14T15:08:21.537883+08:00",
+      "sha256": "8173530d653b2c90cc9ef73ca25aba63823e5db18ffe04f67500c670feeee3b2"
+    },
+    "docs/velaguard-expansion-board.md": {
+      "bytes": 12021,
+      "mtime": "2026-08-29T15:44:38.329771+08:00",
+      "sha256": "9f1363c5cf7a56a3fdfafdf79e1e0423d423337ace957e3df41ef41169d3b5fd"
+    },
+    ".trellis/tasks/09-13-hmi-runtime-render/research/runtime-results.md": {
+      "bytes": 8829,
+      "mtime": "2026-09-13T18:22:34.063696+08:00",
+      "sha256": "3ff76424daadf0b75fe61a05eef98926617404bca1b6e6743ed44fe301f726dc"
+    },
+    ".trellis/tasks/09-13-hmi-ux-performance/research/final-results.md": {
+      "bytes": 2246,
+      "mtime": "2026-09-13T18:21:34.199437+08:00",
+      "sha256": "62fd668afcd24525c93e05a39b0d1725e8f1d6fb2e00fd2ae96d3c6f6d489108"
+    },
+    ".trellis/tasks/09-12-heartbeat-llm-round-system-wedge/prd.md": {
+      "bytes": 5057,
+      "mtime": "2026-09-12T22:02:05.052606+08:00",
+      "sha256": "2432122ce0215cc21d7a7337b3627c4219813419a20a4fe846da908183881561"
+    },
+    ".trellis/tasks/archive/2026-08/08-30-stage1-agent-ops/research/agent-ops-notes.md": {
+      "bytes": 2601,
+      "mtime": "2026-08-30T13:29:50.707939+08:00",
+      "sha256": "e3fc38213915b6e60cbfd875d51052dbda79023bfcb07caa68a1ff112ebc3b66"
+    },
+    "../packages/ai_agent/include/agent_config.h": {
+      "bytes": 19640,
+      "mtime": "2026-09-14T18:58:57.631651+08:00",
+      "sha256": "cadde640afb29211f26dad922ea37e39dd9fc9486fddb9d011a4836e2dbe20b5"
+    },
+    "../packages/ai_agent/src/tools/tool_shell.c": {
+      "bytes": 19048,
+      "mtime": "2026-09-14T18:58:57.633132+08:00",
+      "sha256": "c36bf1c738180c564bb93cbbbcad7eb5402314679fa7faa2bf8a6769f43ed5ee"
+    },
+    "../packages/ai_agent/src/tools/tool_files.c": {
+      "bytes": 13845,
+      "mtime": "2026-09-15T12:39:32.035862+08:00",
+      "sha256": "235758b38bc6c40c0ec3fc928e519b785a76547b77f3946e93e703d447197792"
+    }
+  },
+  "performance": [
+    {
+      "path": ".debug/hmi-baseline/perf_transcript.txt",
+      "bytes": 11686,
+      "mtime": "2026-09-13T14:13:05.516753+08:00",
+      "sha256": "70f85b4e9a6229ec3fb1e8c529331840d2ad5e076eed64fb339f08c2f148d80f",
+      "excerpts": [
+        {
+          "line": 44,
+          "text": "vgagent: ai_agent autostart ok (stack=32768)"
+        },
+        {
+          "line": 150,
+          "text": "vghmi perf: state=running uptime_ms=6890 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 155,
+          "text": "render: n=7 total_us=340000 max_us=140000 win_n=7 p50_us=10000 p95_us=140000 incomplete=0"
+        },
+        {
+          "line": 156,
+          "text": "flush: n=12 total_us=20000 max_us=10000 win_n=12 p50_us=0 p95_us=10000 incomplete=0"
+        },
+        {
+          "line": 157,
+          "text": "nav: n=1 total_us=190000 max_us=190000 win_n=1 p50_us=190000 p95_us=190000 incomplete=0"
+        },
+        {
+          "line": 158,
+          "text": "submit: commits=12 last_commit_ms=6210"
+        },
+        {
+          "line": 159,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 160,
+          "text": "heap: used=263616 free=579429168"
+        },
+        {
+          "line": 167,
+          "text": "NuttX  0.0.0 18bec160782 Sep 13 2026 14:06:37 arm stm32h750b-dk"
+        },
+        {
+          "line": 173,
+          "text": "NuttX version 0.0.0 18bec160782 Sep 13 2026 14:06:37 stm32h750b-dk:velaguard-lvgl-dirty"
+        },
+        {
+          "line": 175,
+          "text": "nsh> \u001b[Kvghmi: live ok=0/14 a1=0.0"
+        },
+        {
+          "line": 181,
+          "text": "vghmi perf: state=running uptime_ms=46200 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 186,
+          "text": "render: n=46 total_us=980000 max_us=140000 win_n=46 p50_us=10000 p95_us=140000 incomplete=0"
+        },
+        {
+          "line": 187,
+          "text": "flush: n=88 total_us=20000 max_us=10000 win_n=88 p50_us=0 p95_us=0 incomplete=0"
+        },
+        {
+          "line": 188,
+          "text": "nav: n=1 total_us=190000 max_us=190000 win_n=1 p50_us=190000 p95_us=190000 incomplete=0"
+        },
+        {
+          "line": 189,
+          "text": "submit: commits=88 last_commit_ms=45590"
+        },
+        {
+          "line": 190,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 191,
+          "text": "heap: used=263656 free=579429128"
+        },
+        {
+          "line": 200,
+          "text": "vghmi perf: state=running uptime_ms=81350 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 205,
+          "text": "render: n=81 total_us=1330000 max_us=140000 win_n=81 p50_us=10000 p95_us=20000 incomplete=0"
+        },
+        {
+          "line": 206,
+          "text": "flush: n=158 total_us=20000 max_us=10000 win_n=158 p50_us=0 p95_us=0 incomplete=0"
+        },
+        {
+          "line": 207,
+          "text": "nav: n=1 total_us=190000 max_us=190000 win_n=1 p50_us=190000 p95_us=190000 incomplete=0"
+        },
+        {
+          "line": 208,
+          "text": "submit: commits=158 last_commit_ms=80940"
+        },
+        {
+          "line": 209,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 210,
+          "text": "heap: used=263656 free=579429128"
+        }
+      ]
+    },
+    {
+      "path": ".debug/hmi-post-opt/perf_transcript.txt",
+      "bytes": 14514,
+      "mtime": "2026-09-13T18:20:41.154041+08:00",
+      "sha256": "1fcb0f997a2b39bcff591386351cc6b249466bc75a47caaa6918e25fd5e90460",
+      "excerpts": [
+        {
+          "line": 86,
+          "text": "vgagent: ai_agent autostart ok (stack=327[agent] AI Agent - Vela AI Agent starting (build: 2026-09-13 18:12:4768)"
+        },
+        {
+          "line": 193,
+          "text": "vghmi perf: state=running uptime_ms=5990 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 198,
+          "text": "render: n=2 total_us=260000 max_us=130000 win_n=2 p50_us=130000 p95_us=130000 incomplete=0"
+        },
+        {
+          "line": 199,
+          "text": "flush: n=2 total_us=0 max_us=0 win_n=2 p50_us=0 p95_us=0 incomplete=0"
+        },
+        {
+          "line": 200,
+          "text": "nav: n=1 total_us=200000 max_us=200000 win_n=1 p50_us=200000 p95_us=200000 incomplete=0"
+        },
+        {
+          "line": 201,
+          "text": "submit: commits=2 last_commit_ms=1330"
+        },
+        {
+          "line": 202,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 203,
+          "text": "heap: used=264224 free=-1417062972"
+        },
+        {
+          "line": 210,
+          "text": "NuttX  0.0.0 18bec160782 Sep 13 2026 18:17:19 arm stm32h750b-dk"
+        },
+        {
+          "line": 215,
+          "text": "NuttX version 0.0.0 18bec160782 Sep 13 2026 18:17:19 stm32h750b-dk:velaguard-lvgl-dirty"
+        },
+        {
+          "line": 218,
+          "text": "vghmi: live ok=0/14 a1=0.0"
+        },
+        {
+          "line": 223,
+          "text": "vghmi perf: state=running uptime_ms=45280 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 228,
+          "text": "render: n=5 total_us=660000 max_us=140000 win_n=5 p50_us=130000 p95_us=140000 incomplete=0"
+        },
+        {
+          "line": 229,
+          "text": "flush: n=5 total_us=10000 max_us=10000 win_n=5 p50_us=0 p95_us=10000 incomplete=0"
+        },
+        {
+          "line": 230,
+          "text": "nav: n=1 total_us=200000 max_us=200000 win_n=1 p50_us=200000 p95_us=200000 incomplete=0"
+        },
+        {
+          "line": 231,
+          "text": "submit: commits=5 last_commit_ms=19330"
+        },
+        {
+          "line": 232,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 233,
+          "text": "heap: used=264304 free=-1417063052"
+        },
+        {
+          "line": 244,
+          "text": "vghmi perf: state=running uptime_ms=80430 clock_res_us=10000 gran_us=10000 dropped=0 budget=6416 metrics=6 window=256"
+        },
+        {
+          "line": 249,
+          "text": "render: n=9 total_us=940000 max_us=140000 win_n=9 p50_us=130000 p95_us=140000 incomplete=0"
+        },
+        {
+          "line": 250,
+          "text": "flush: n=9 total_us=10000 max_us=10000 win_n=9 p50_us=0 p95_us=10000 incomplete=0"
+        },
+        {
+          "line": 251,
+          "text": "nav: n=1 total_us=200000 max_us=200000 win_n=1 p50_us=200000 p95_us=200000 incomplete=0"
+        },
+        {
+          "line": 252,
+          "text": "submit: commits=9 last_commit_ms=68360"
+        },
+        {
+          "line": 253,
+          "text": "page: id=0 objects=71 listeners=2 timers_total=6 shell_timers=2"
+        },
+        {
+          "line": 254,
+          "text": "heap: used=264272 free=-1417063020"
+        }
+      ]
+    }
+  ],
+  "agent_20260830": {
+    "path": "logs/Foleaf/2026-08-30/cursor__5c92cac5-619d-4584-8c7f-3a6ae56c3286.jsonl",
+    "bytes": 1698557,
+    "mtime": "2026-09-09T16:10:19.674088+08:00",
+    "sha256": "4492c4d2610a16201526a6d78e1a0b90b159778542933218b152697d8c98fc49",
+    "jsonl_line": 868,
+    "seq": 867,
+    "ts": "2026-08-30T05:27:00.000Z",
+    "role": "user",
+    "provenance": "原开发会话中由用户粘贴的板端串口输出，原 JSONL 未改动。",
+    "excerpts": [
+      {
+        "message_line": 332,
+        "text": "[agent] Tool call: write_file args={\"path\": \"/data/velaguard/reports/daily-20260228.md\", \"content\": \"# VelaGuard 运营日报 — 2026-02-28\\n\\n> 生成时间：2026-02-28 18:40 CST | 配置：schema=1, committed=1, name=stage1\\n\\n---\\n\\n## 1. 告警摘要\\n\\n| 类别 | 数量 | 说明 |\\n|------|------|------|\\n| CRC 错误 | 0 | slave 1–3 均无 CRC 告警 |\\n| 超时 | 0 | 无超时记录 |\\n| 其他异常 | 0 | 无 |\\n\\n**结论：本日无告警。**\\n\\n---\\n\\n## 2. 通信质量（Modbus Stats）\\n\\n| Slave | Window | Tota"
+      },
+      {
+        "message_line": 338,
+        "text": "[tool_files] write_file: /data/velaguard/reports/daily-20260228.md (1796 bytes)"
+      },
+      {
+        "message_line": 341,
+        "text": "[trace:69a2c60d00000000] END status=ok iters=6 tools=6 llm_ms=109330 elapsed=115s backend=0"
+      },
+      {
+        "message_line": 346,
+        "text": "[Agent]: OK:[agent] [Agent]: OK: wrote 1796 bytes to /data/velaguard/reports/daily-20260228.md"
+      },
+      {
+        "message_line": 347,
+        "text": " wrote 1796 bytes to /data/velaguard/reports/daily-20260228.md"
+      },
+      {
+        "message_line": 370,
+        "text": " daily-20260228.md"
+      },
+      {
+        "message_line": 384,
+        "text": "cat /data/velaguard/reports/daily-20260228.md.md"
+      },
+      {
+        "message_line": 387,
+        "text": "cat /data/velaguard/reports/daily-20260228.md.md"
+      },
+      {
+        "message_line": 395,
+        "text": "cat /data/velaguard/reports/daily-20260228.md"
+      },
+      {
+        "message_line": 398,
+        "text": "cat /data/velaguard/reports/daily-20260228.md"
+      }
+    ]
+  },
+  "headless_20260913": {
+    "path": ".debug/hmi-headless/Testing/Temporary/LastTest.log",
+    "bytes": 8531,
+    "mtime": "2026-09-13T18:28:37.299713+08:00",
+    "sha256": "72e515a89f78ead693871e09ea5be315418bdd932d31bce751c6d2cf6831dff8",
+    "excerpts": [
+      {
+        "line": 1,
+        "text": "Start testing: Sep 13 18:28 CST"
+      },
+      {
+        "line": 3,
+        "text": "1/5 Testing: alarm_check"
+      },
+      {
+        "line": 48,
+        "text": "Test time =   0.05 sec"
+      },
+      {
+        "line": 50,
+        "text": "Test Passed."
+      },
+      {
+        "line": 55,
+        "text": "2/5 Testing: trend_check"
+      },
+      {
+        "line": 84,
+        "text": "Test time =   0.05 sec"
+      },
+      {
+        "line": 86,
+        "text": "Test Passed."
+      },
+      {
+        "line": 91,
+        "text": "3/5 Testing: fixture_check"
+      },
+      {
+        "line": 123,
+        "text": "Test time =   0.10 sec"
+      },
+      {
+        "line": 125,
+        "text": "Test Passed."
+      },
+      {
+        "line": 130,
+        "text": "4/5 Testing: lifecycle_render_check"
+      },
+      {
+        "line": 152,
+        "text": "Test time =   3.39 sec"
+      },
+      {
+        "line": 154,
+        "text": "Test Passed."
+      },
+      {
+        "line": 159,
+        "text": "5/5 Testing: interaction_check"
+      },
+      {
+        "line": 203,
+        "text": "Test time =   0.20 sec"
+      },
+      {
+        "line": 205,
+        "text": "Test Passed."
+      },
+      {
+        "line": 210,
+        "text": "End testing: Sep 13 18:28 CST"
+      }
+    ]
+  },
+  "firmware_files": {
+    "nuttx.bin": {
+      "bytes": 1233724,
+      "mtime": "2026-09-14T15:44:47.344139+08:00",
+      "sha256": "4bb3aae9ae8ea344cca7f58a6f908a6cd236e4a7d994510784c8ceeefce592ed"
+    },
+    "nuttx.hex": {
+      "bytes": 3470222,
+      "mtime": "2026-09-14T15:44:47.340572+08:00",
+      "sha256": "c5f56ae30f01cb1d66667118581c830d7fc9012de0744de987d343fb1d8da198"
+    },
+    "qspi_bootstub.hex": {
+      "bytes": 2076,
+      "mtime": "2026-09-12T19:57:37.394847+08:00",
+      "sha256": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e"
+    }
+  },
+  "coding_sessions_by_tool": {
+    "claude-code": 64,
+    "codex": 64,
+    "cursor": 60,
+    "grok-build": 21,
+    "opencode": 50,
+    "zcode": 11
+  },
+  "coding_sessions_total": 270,
+  "source_line_inventory": {
+    "files": 166,
+    "physical_lines": 32120,
+    "nonempty_lines": 27639
+  },
+  "pull_requests": [
+    {
+      "repo": "nuttx",
+      "number": 350,
+      "url": "https://github.com/open-vela/nuttx/pull/350",
+      "title": "boards/stm32h750b-dk: add QSPI XIP boot support",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "14583d66c1ca1361a7171873ea3a65be926e698a"
+    },
+    {
+      "repo": "nuttx",
+      "number": 351,
+      "url": "https://github.com/open-vela/nuttx/pull/351",
+      "title": "boards/stm32h750b-dk: add VelaGuard extension board and defconfigs",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "d173438f7fbbe1597bedb128f3e3ea9f80e40b91"
+    },
+    {
+      "repo": "nuttx",
+      "number": 352,
+      "url": "https://github.com/open-vela/nuttx/pull/352",
+      "title": "stm32h750b-dk: VelaGuard net/eMMC/RS485/Ethernet bring-up",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "8792b0c2744845fcbf8144b8bd54a4a50df5e1a7"
+    },
+    {
+      "repo": "nuttx",
+      "number": 353,
+      "url": "https://github.com/open-vela/nuttx/pull/353",
+      "title": "arch/stm32h7: LTDC display acceleration for STM32H750B-DK",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "6444971c9ec0223b682b49cc85be7f11c339e18a"
+    },
+    {
+      "repo": "nuttx",
+      "number": 354,
+      "url": "https://github.com/open-vela/nuttx/pull/354",
+      "title": "drivers/input: improve ft5x06 touch polling performance",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "b47cb29d06a3d53fa89b42119ddc5e86a1ed6766"
+    },
+    {
+      "repo": "nuttx-apps",
+      "number": 119,
+      "url": "https://github.com/open-vela/nuttx-apps/pull/119",
+      "title": "netutils: carrier poll DHCP renew and ESP8266 LESP compat",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "0ea954b79740756318ce1f0b13271dd94235fe2a"
+    },
+    {
+      "repo": "apps_netutils_mqttc_MQTT-C",
+      "number": 1,
+      "url": "https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1",
+      "title": "mqtt_pal: add weak hooks for tagged LESP send/recv",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "4dbb7f321ceeed47822171787e0742df2ddb4959"
+    },
+    {
+      "repo": "packages_ai_agent",
+      "number": 32,
+      "url": "https://github.com/open-vela/packages_ai_agent/pull/32",
+      "title": "ai_agent: SRAM-tight HMI mode and VelaGuard tool allow-list for STM32H750B-DK",
+      "state": "open",
+      "merged_at": null,
+      "base": "dev-ai-contest-2026",
+      "head_sha": "2701d0363e4b97c9def6dc22f520b101a1618234"
+    }
+  ]
+}

@@ -29,10 +29,12 @@ MAINSRC  += vgcfg.c
 CSRCS    += vg_config_store.c
 endif
 
+CSRCS    += vg_device_id.c vg_mqtt_payload.c
+
 ifeq ($(CONFIG_VG_FRAME_STATS),y)
-PROGNAME += vgstats
-MAINSRC  += vgstats.c
-CSRCS    += vg_frame_stats.c
+PROGNAME += vgstats vgruntime
+MAINSRC  += vgstats.c vgruntime.c
+CSRCS    += vg_frame_stats.c vg_runtime.c
 CFLAGS   += -DCONFIG_VG_FRAME_STATS=1
 endif
 
@@ -131,7 +133,7 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 # heap-allocated. 16K leaves room for fopen + nanomodbus on test.
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
-  $(if $(filter vgdiscover vgscan vgpoint,$(p)),16384,$(VG_STACK_DEFAULT)))))
+  $(if $(filter vgdiscover vgscan vgpoint vgruntime,$(p)),16384,$(VG_STACK_DEFAULT)))))
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 

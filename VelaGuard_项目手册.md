@@ -542,8 +542,9 @@ v1 先直连打通，Bridge 化作为后续增强。
 ```text
 vg/{device_id}/telemetry
 vg/{device_id}/alarm
-vg/{device_id}/diagnosis          告警解释 / 报告摘要上报
 vg/{device_id}/status             retained
+vg/{device_id}/point_table        retained；看板自动同步点表
+vg/{device_id}/diagnosis          告警解释 / 报告摘要上报（未做）
 vg/{device_id}/ota/offer
 vg/{device_id}/ota/accept
 vg/{device_id}/ota/chunk/request
@@ -553,7 +554,7 @@ vg/{device_id}/ota/result
 vg/{device_id}/ota/confirm
 ```
 
-QoS 与 retained 策略见 §16.2。
+现行固件发布前四个主题（见 `docs/velaguard-mqtt-contract.md` v2）。`diagnosis` 与 `ota/*` 未实现。QoS 与 retained 策略见 §16.2。
 
 ### 8.4 OTA 架构（因 XIP 而重新设计）
 
@@ -783,8 +784,8 @@ Key 不在 UI、日志、串口输出或 MQTT payload 中出现完整值。
 
 ### 16.1 设备身份与 MQTT 鉴权
 
-- 量产 `device_id = velaguard_{STM32_UID 派生短 ID}`
-- 测试阶段允许编译期宏 `DEVID` 覆盖
+- 量产与现行试验构建：`device_id = vg-` + STM32 96 位 UID 的 24 位小写 hex（与 MQTT `client_id` 相同，运行时不可改）
+- 测试可用 `CONFIG_VG_MQTT_DEVICE_ID` 覆盖；空字符串表示自动派生
 - 量产固件不提供任何运行时修改 `device_id` 的接口
 - `display_name` 可改，仅用于 UI 展示，不参与权限边界
 
@@ -806,14 +807,14 @@ Topic 根路径固定 `vg/{device_id}/...`，不加环境前缀。
 
 | 类型 | QoS | retained |
 |---|---:|---|
-| `telemetry` / `trend` | 0 | 否 |
-| `status` | 0 | 是 |
+| `telemetry` | 0 | 否 |
+| `status` | 0 | 是（含 LWT） |
 | `alarm` | 1 | 否 |
-| `diagnosis` | 1 | 否 |
-| `ota/*` | 1 | 否 |
-| `ack/confirm` | 1 | 否 |
+| `point_table` | 1 | 是 |
+| `diagnosis` | 1 | 否（未做） |
+| `ota/*` | 1 | 否（未做） |
 
-会话策略：固定 `client_id`，v1 用 `clean_session=true`，重连后重新订阅，使用 LWT 发布离线状态，关键事件依赖本地 pending 队列重发而非持久 session。
+会话策略：`client_id` 等于 `device_id`，`clean_session=true`，keepalive 60 s，LWT 发离线 status。告警 RAM 队列 8 条，MQTT 恢复后补发；断电不补（eMMC pending 未做）。
 
 ### 16.3 ID、时间戳与幂等
 

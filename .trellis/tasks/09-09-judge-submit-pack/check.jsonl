@@ -1,0 +1,4 @@
+{"file":"AGENTS.md","reason":"不改固件、日志和未经授权的提交材料"}
+{"file":"docs/submission/REQUIREMENTS.md","reason":"逐项核查官方结构、固定口径和交付要求"}
+{"file":".trellis/tasks/09-09-judge-submit-pack/prd.md","reason":"本轮验收标准与其他任务保留项"}
+{"file":".trellis/tasks/09-09-judge-submit-pack/implement.md","reason":"结构检查、失败导出和逐页视觉验收"}

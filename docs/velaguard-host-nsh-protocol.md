@@ -15,7 +15,7 @@
 
 上位机经 ST-LINK 虚拟串口，向板载 NSH 按行发送文本命令，批量写入或修改运行时点表（从站地址、寄存器、倍率、比较方式、预警值、严重值），并按 `id` 查询已确认点的当前值。
 
-写点表走候选/`apply`。查当前值走 `vgpoint get`，读 HMI 最近一次采集快照，不占用 RS485。不订阅实时曲线，不推送告警。告警仍由板端写入 `/data/velaguard/pending_alarm.txt`，屏幕自己读。
+写点表走候选/`apply`。查当前值走 `vgpoint get`，读 HMI 最近一次采集快照，不占用 RS485。不订阅实时曲线，不经 NSH 推送告警。告警仍由板端写入 `/data/velaguard/pending_alarm.txt`，屏幕自己读。`apply --confirm` 成功后，若 MQTT 在线，会把已确认 `points.json` 发到 `vg/{device_id}/point_table`（空表不发）。
 
 RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发配置。
 

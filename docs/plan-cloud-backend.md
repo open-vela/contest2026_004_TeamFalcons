@@ -11,21 +11,22 @@
 
 9/20 前云端唯一可选动作：如果 ESP-01 已通且手边有 broker，用 MQTT Explorer 拍 10 秒 retained status 的 `network` 字段从 `rj45` 变 `esp01`。不通就不拍。
 
-## 2. 现状盘点（2026-09-12 核对代码）
+## 2. 现状盘点（2026-09-14 核对代码）
 
 | 项 | 文档怎么写 | 代码里真实状态 |
 |---|---|---|
-| `vg/{id}/status` | 手册 §8.3、合同 §4.1 | **已实现**：`app/velaguard/vg_mqtt_session.c`，QoS0 retained，LWT 同主题；`vg_net_mgr` 开机自动建连（`CONFIG_VG_NET_FAILOVER=y`） |
-| `telemetry` / `alarm` / `diagnosis` | 手册 §8.3、README | **不存在** |
-| `ota/*` 七个主题 | 手册 §8.3、§8.4、ADR-0005 | **不存在**；boot stub 只做 QSPI XIP 跳转（nuttx PR #350），无 eMMC 暂存、签名、回滚 |
-| TLS / HMAC token / ACL | 手册 §16.1–16.2 | **不存在**：明文，`CONFIG_VG_MQTT_BROKER_HOST` 编译期，`DEVID` 编译期宏 |
-| `ai/request` / `ai/response` / `tts/*` | `docs/velaguard-mqtt-contract.md` v1 | **已从产品移除**（手册 v3.1 §8.3）；合同 v1 过期 |
-| AI Bridge（Python） | `docs/backend-api.md` 描述得很细 | **仓库里没有这份代码**（restart 时未迁移，见 `docs/MIGRATED_FROM_RESTART.md`）；文档是历史快照 |
-| LLM 链路 | ADR-0002 说经 Bridge | **实际直连 MiMo**（手册 §8.2 v1、BOUNDARY V4）：板载 ai_agent HTTPS，key 加密在 eMMC。ADR-0002 已被事实推翻但没有 superseding ADR |
-| `events.jsonl` 结构化事件 | 手册 §16.7、README | **不存在**；工具调用审计只有 syslog |
-| `pending` 队列重发 | 手册 §16.2 | **不存在** |
+| `vg/{id}/status` | 手册 §8.3、看板契约 | **已实现**：QoS0 retained + LWT（含 `device_id`）；CONNACK / 切网 / 30 s |
+| `telemetry` | 看板契约 §2.2 | **已实现**：QoS0，30 s，最新一帧；读 `values.txt` |
+| `alarm` | 看板契约 §2.3 | **已实现**：QoS1，`vg_runtime` 边沿，RAM 8 条补发；**无** eMMC pending |
+| `point_table` | 看板契约 §2.4 | **已实现**：QoS1 retained；空表不发；`apply --confirm` 与 CONNACK 触发 |
+| `ota/*` 七个主题 | 手册 §8.3、§8.4、ADR-0005 | **不存在** |
+| TLS / HMAC token / ACL | 手册 §16.1–16.2 | **部分**：明文 + 共享测试用户 `velaguard`；`device_id` 已从 UID 派生 |
+| `ai/request` / `tts/*` | 旧合同 v1 | **已从产品移除** |
+| LLM 链路 | ADR-0002 说经 Bridge | **实际直连 MiMo** |
+| `events.jsonl` | 手册 §16.7 | **不存在** |
+| eMMC alarm pending | 手册 §16.2 | **不存在**（仅 RAM 队列） |
 
-结论：云端能力目前 = 一个 retained 状态主题。其余全是规划。README 与手册的措辞收口见 `.trellis/tasks/09-09-judge-submit-pack/prd.md`。
+结论：看板四主题板端已发。未做 MQTTS、每设备 token、断电补发、OTA。合同见 `docs/velaguard-mqtt-contract.md` v2。
 
 ## 3. 9/20 后路线（按价值/成本排序）
 
@@ -33,7 +34,7 @@
 
 ### C0 文档对齐（半天，先做）
 
-- [ ] `docs/velaguard-mqtt-contract.md` 改 v2：删 `ai/*`、`tts/*`、`config/candidate`；主题树对齐手册 §8.3；标明每个主题的实现状态
+- [x] `docs/velaguard-mqtt-contract.md` 改 v2：删 `ai/*`、`tts/*`、`config/candidate`；主题树对齐看板契约；标明实现状态
 - [ ] `docs/backend-api.md` 顶部加「历史快照，代码不在本仓」，或移到 `docs/history/`
 - [ ] 新 ADR-0006：LLM 直连 MiMo 取代 ADR-0002；Bridge 降为可选增强
 - [ ] 手册 §16.7 `events.jsonl` 要么实现要么改成 syslog
@@ -43,11 +44,12 @@
 目标：云端能看到设备当前值和告警，为商业叙事补「多设备集中监控」。
 
 板端：
-- [ ] `vg/{id}/telemetry` QoS0：复用 `/data/velaguard/live/values.txt` 快照，周期（默认 30 s）发一条 JSON，`{id,value,ok,age_ms}` 数组
-- [ ] `vg/{id}/alarm` QoS1：`vg_model_set_live` 告警触发/恢复处发 `{ts,id,kind,value,thr,state:raised|cleared}`
-- [ ] Pending 队列：断网期间告警写 `/data/velaguard/pending/alarm-*.json`，上线后重发（手册 §16.2「关键事件依赖本地 pending 队列」）
-- [ ] 不发 `diagnosis`：Agent 输出留在板上，云端不做二次消费
-- [ ] 采集线程不因 MQTT 阻塞：发布走 `vg_net_mgr` 线程，队列满则丢 telemetry、保 alarm
+- [x] `vg/{id}/telemetry` QoS0：复用 `/data/velaguard/live/values.txt` 快照，周期 30 s，`{id,value,ok,age_ms}` 数组
+- [x] `vg/{id}/alarm` QoS1：`vg_runtime` 边沿发 `{ts,id,kind,value,thr,state:raised|cleared}`，另加 `level`
+- [ ] Pending 队列：断网期间告警写 `/data/velaguard/pending/alarm-*.json`，上线后重发（当前仅 RAM 8 条）
+- [x] 不发 `diagnosis`：Agent 输出留在板上
+- [x] 采集线程不因 MQTT 阻塞：发布走 `vg_net_mgr` 线程，队列满则丢 telemetry、保 alarm
+- [x] `vg/{id}/point_table` QoS1 retained
 
 云端：
 - [ ] Mosquitto（docker compose）+ 一个订阅落库脚本（SQLite 即可）+ 最简看板（Grafana 或静态页）

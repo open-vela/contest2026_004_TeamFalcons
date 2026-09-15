@@ -15,6 +15,11 @@
 #include "modbus_port_openvela.h"
 #include "nanomodbus.h"
 
+#ifdef CONFIG_VG_FRAME_STATS
+#  include "vg_frame_stats.h"
+#  include <time.h>
+#endif
+
 #define VG_DISC_READ_TO_MS   500
 /* Match the alarm reader (VG_ALARM_BYTE_TO_MS): 20 ms drops whole frames
  * whenever the simulator gaps between bytes, producing fake fail samples. */
@@ -347,6 +352,15 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
       /* One immediate retry: a single missed frame must not count as an
        * offline sample in the HMI's sliding-window detection. */
       err = NMBS_ERROR_TRANSPORT;
+#ifdef CONFIG_VG_FRAME_STATS
+      {
+        struct timespec t0;
+        struct timespec t1;
+        uint32_t lat_ms = 0;
+        enum vg_fs_result fs = VG_FS_OTHER;
+
+        clock_gettime(CLOCK_MONOTONIC, &t0);
+#endif
       for (attempt = 0; attempt < 2; attempt++)
         {
           if (attempt > 0)
@@ -369,6 +383,33 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
               break;
             }
         }
+
+#ifdef CONFIG_VG_FRAME_STATS
+        clock_gettime(CLOCK_MONOTONIC, &t1);
+        if (t1.tv_sec > t0.tv_sec ||
+            (t1.tv_sec == t0.tv_sec && t1.tv_nsec >= t0.tv_nsec))
+          {
+            lat_ms = (uint32_t)((t1.tv_sec - t0.tv_sec) * 1000L +
+                                (t1.tv_nsec - t0.tv_nsec) / 1000000L);
+          }
+
+        if (err == NMBS_ERROR_NONE)
+          {
+            fs = VG_FS_OK;
+          }
+        else if (err == NMBS_ERROR_CRC)
+          {
+            fs = VG_FS_CRC;
+          }
+        else if (err == NMBS_ERROR_TIMEOUT)
+          {
+            fs = VG_FS_TIMEOUT;
+          }
+
+        (void)vg_fs_record(pts[i].addr, fs,
+                           (err == NMBS_ERROR_NONE) ? lat_ms : 0);
+      }
+#endif
 
       if (err == NMBS_ERROR_NONE)
         {

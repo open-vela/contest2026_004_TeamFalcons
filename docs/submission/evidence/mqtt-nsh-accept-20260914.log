@@ -1,0 +1,178 @@
+[1/4] Opening COM3 ...
+[2/4] Flashing ...
+[3/4] Waiting boot ...
+vgnet: manager started
+vgtime: sync started
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-09-14 11:08:30
+vgcfg: OK seq=19 name=vgpoint
+vghmi: autostart ok
+[User]	(1.500, +1500)	 check_stack_size: tid: 9, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.510, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.510, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.520, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.520, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.520, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.530, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(1.530, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.540, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.550, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.560, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.560, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.570, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.580, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.580, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.590, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.600, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.600, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.610, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.610, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.620, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.630, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.640, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.640, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.650, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.650, +0)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(1.670, +20)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(1.670, +0)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(1.680, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED num[:agent] AI Agent - Vela AI Agent starting (build: 2026-09-13 18:21:26)
+ 3[agent] [boot +
+H10ms] P0: timezone set
+ello from openvela contest 2026 team 004!
+[agent] [boot +150ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +350ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +360ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +710ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +720ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +830ms] P2: http_proxy_init (rc=0)
+
+[PASS] nsh prompt after flash
+[4/4] Wait 25s for DHCP/MQTT then probe ...
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1180ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1440ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Registered tool: web_search
+[tools] Registered tool: news_search
+[tools] Registered tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Registered tool: edit_file
+[tools] Registered tool: list_dir
+[tools] Registered tool: cron_add
+[tools] Registered tool: cron_list
+[tools] Registered tool: cron_remove
+[tools] Registered tool: fetch_url
+[tools] Registered tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Registered tool: get_battery
+[tools] Registered tool: get_wear_state
+[tools] Registered tool: get_screen_state
+[tools] Registered tool: get_heartrate
+[tools] Registered tool: get_steps
+[tools] Registered tool: vibrate
+[tools] Registered tool: feishu_doc_create
+[tools] Registered tool: feishu_doc_write
+[tools] Registered tool: feishu_doc_read
+[tools] Registered tool: feishu_doc_list
+[tools] Registered tool: feishu_chat_members
+[tools] Registered tool: feishu_send_mention
+[tools] Registered tool: music_search
+[tools] Registered tool: music_play
+[tools] Registered tool: music_pause
+[tools] Registered tool: music_resume
+[tools] Registered tool: music_stop
+[tools] Registered tool: music_seek
+[tools] Registered tool: music_set_volume
+[tools] Registered tool: music_status
+[tools] Registered tool: launch_quickapp
+[tools] Registered tool: exit_quickapp
+[tools] Tools JSON built (36 builtin + 0 providers)
+[tools] Tool registry initialized
+[agent] [boot +1730ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1740ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2230ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2240ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2310ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2320ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2320ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2330ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2340ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2350ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2350ms] P5: network_watch thread started (async)
+[agent] [boot +2360ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2360ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.47
+[netmgr] Network connected: 192.168.137.47
+[netmgr] Found iface eth0 addr 192.168.137.47
+[agent] Network connected: 192.168.137.47
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+vgnet: join 19y failed
+
+
+=== vgprovision uid ===
+vgprovision uid
+vgprovision: uid=09001a800451383430303835
+nsh> [K
+[PASS] vgprovision uid hex
+
+=== vgnet status ===
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.47 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+[PASS] vgnet mqtt field
+
+=== ifconfig ===
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.47 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+nsh> [K
+[PASS] mqtt online log or vgnet mqtt=up
+
+PASS=4 FAIL=0
