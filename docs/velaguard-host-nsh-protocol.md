@@ -51,6 +51,9 @@ RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发�
 `add` / `set` / `del` 只改候选。采集在 `apply --confirm` 成功之前仍用已确认表。
 
 第一次改候选时：若候选文件不存在，则把已确认表复制过去；已确认也没有，则从空表开始。
+这里的「不存在」只指文件缺失。候选或已确认表**存在但读不出来**（损坏、I/O 错、存储根
+不可达）时不从空表开始，直接回 `ERR code=io`——否则一次 `apply --confirm` 就会拿空表
+覆盖掉已确认表。
 
 `vgdiscover apply --confirm` 写出的旧表没有阈值字段。读入时 `cmp` / `warn` / `crit` 视为空：采集可用，不做模拟量告警，直到上位机 `set` 补上。
 
@@ -116,6 +119,13 @@ vgpoint list -c
 
 默认打印已确认表。`-c` 打印候选。只读。
 
+表文件不存在、**且存储根还在**时回 `OK n=0`（空表是合法状态，演示流程要拍这一拍）。
+其余情况都回 `ERR code=io msg=<token>`，不再把存储故障显示成 0 点，token 见第 7.1 节：
+
+- 文件在但读不出来（内容损坏、I/O 错、空间不足、堆不足）；
+- 文件不存在且存储根不可达——`/data` 软链接悬空、eMMC 没挂上、或写入落进了 RAM
+  伪文件系统（`msg=enodev`，重启即丢，不算可用存储）。
+
 ### 5.2 `add`
 
 只写候选。`id` 已存在则 `dup_id`，表满则 `full`。
@@ -157,7 +167,7 @@ vgpoint test <id>
 
 试读时必须占用总线忙标志，让周期采集让路（实现时复用 `board_bus_busy()` 一类状态）。总线已被扫描/落盘占用则 `bus_busy`，不要硬抢 `/dev/rs485`。
 
-某个点读失败：该点 `READ ... ok=0`，命令仍可 `OK`（部分失败）。候选为空则 `no_candidate`。全部点都读失败才 `test_fail`。
+某个点读失败：该点 `READ ... ok=0`，命令仍可 `OK`（部分失败）。候选为空、缺失或读不出来则 `no_candidate`。全部点都读失败才 `test_fail`。
 
 ### 5.6 `get`
 
@@ -168,7 +178,7 @@ vgpoint get <id>
 
 读已确认表对应的采集快照，不占用 RS485，不改候选或已确认 JSON。省略 id 则输出快照里全部点；给出 id 则只输出该点。
 
-已确认表为空（文件缺失或点数为 0）：`OK cmd=get table=committed n=0`，无 VALUE 行。带 id 且已确认表为空：`no_id`。
+已确认表为空（文件缺失且存储根可达，或点数为 0）：`OK cmd=get table=committed n=0`，无 VALUE 行。带 id 且已确认表为空：`no_id`。读不出来或存储根不可达：`ERR code=io msg=<token>`，规则与 5.1 相同。
 
 已确认表非空但快照文件尚不存在（HMI 还未写出）：`no_sample`。给出的 id 不在快照中：`no_id`。全表 `get` 以快照为准，只列快照里的点。
 
@@ -184,7 +194,7 @@ vgpoint apply --confirm
 
 没有 `--confirm`：**必须** `ERR code=need_confirm`，退出码 1。不要做成 dry-run 却返回成功，以免脚本误判。
 
-候选文件不存在：`no_candidate`（`msg=missing`）。
+候选文件不存在或读不出来（含内容损坏）：`no_candidate`（`msg=missing`），不会拿一张空表覆盖已确认表。
 候选文件存在但点数为 0：允许落盘，把已确认表写成空表，返回 `OK cmd=apply table=committed n=0`。这是「删光全部点再确认落盘」的合法结果。`test` 对空候选仍 `no_candidate`。
 
 ### 5.8 `abort`
@@ -269,13 +279,43 @@ vgpoint: VALUE id=flood value=- ok=0 unit=- age_ms=210
 | `full` | 候选已有 32 点还 `add` |
 | `dup_id` | `add` 的 id 已在候选中 |
 | `no_id` | `set` / `del` / 带 id 的 `test` / 带 id 的 `get` 找不到该点 |
-| `no_candidate` | `test` 时候选为空或不存在；`apply` 时候选文件不存在 |
+| `no_candidate` | `test` 时候选为空、不存在或读不出来；`apply` 时候选不存在或读不出来（含内容损坏） |
 | `no_sample` | `get` 时已确认表非空，但采集快照文件尚不存在 |
 | `need_confirm` | `apply` 未带 `--confirm` |
 | `bus_busy` | 试读时扫描或另一路总线操作占用 RS485 |
 | `test_fail` | `test` 时候选每个点都读失败 |
 | `io` | 写 eMMC / 读文件 / `vg_config_commit` 失败 |
 | `denied` | 预留：调用方被拒绝（见第 8 节；NSH 人工调用不走这条） |
+
+### 7.1 `io` 的 `msg`
+
+`list` / `get` 读取点表失败、以及 `add` / `set` / `del` 准备候选表失败时，`msg` 是病因
+token，由板端 errno 映射而来。errno 数值随平台变化，token 才是稳定可检索的：
+
+| token | 含义 |
+| --- | --- |
+| `enoent` | 路径不存在：`/data` 软链接悬空、目录没建起来 |
+| `erofs` | 只读文件系统 |
+| `enospc` | eMMC 没有空间 |
+| `enomem` | 内存不足 |
+| `eacces` | 权限不足 |
+| `efbig` | 文件超过点表 JSON 上限 |
+| `einval` | 文件存在但内容不是合法点表 |
+| `enodev` | 存储根落在 RAM 伪文件系统上，重启即丢 |
+| `eio` | 其他，含未识别的 errno |
+
+其余 `io` 的 `msg` 仍是操作名（`write_fail` / `write_points` / `commit_fail` /
+`unlink_fail` / `read_fail`），用来区分是哪一个写或读失败。
+
+文件不存在不算故障：`list` / `get` 对已确认表文件缺失回 `OK n=0`。`test` / `apply`
+只要候选读不出来就回 `no_candidate`，缺失和内容损坏都在内，`msg` 沿用操作名的
+`empty` / `missing`，不带 token。
+
+回 `io` 且带 token 的是这几处：`list` / `get` 读表失败（含文件缺失但存储根不可达），
+`add` / `set` / `del` 准备候选表（读既有表、建父目录、打开文件、写盘）失败。
+
+`list` / `get` 打 `enoent` 表示存储根本身不可达，不是「表还是空的」；判路径断在哪一段用
+`vgcfg probe`。
 
 ---
 

@@ -18,6 +18,16 @@ Canonical text (Chinese, commands and reply lines): `docs/velaguard-host-nsh-pro
 - Implementation (not this spec file): raise `CONFIG_NSH_LINELEN` to 128 and `CONFIG_NSH_MAXARGUMENTS` to 32 on `velaguard-lvgl`; command body max 120 bytes. A full `add` is ~26 tokens; NSH default 7 args is rejected before `vgpoint` runs.
 - `vg_point_table_read` must heap-allocate the JSON buffer. Putting `VG_POINTS_JSON_MAX` (8K) on the NSH `vgpoint` stack plus `vg_discover_summary` overflows and panics (seen as IDLE assertion).
 
+### Storage errors must stay visible
+
+The store is `/data` (a symlink to the eMMC volume). Everything below it can vanish between boots, so "the table is empty" and "the store is gone" must never produce the same wire line.
+
+- `vg_point_table_read` returns `-ENOENT` only for a genuinely missing file, `-EINVAL` when the file opens but carries no `"points"` array, `-EIO` on a mid-read failure (`ferror`), `-EFBIG` past `VG_POINTS_JSON_MAX`, otherwise `-errno`.
+- Missing table counts as empty only while the store root is reachable. `vg_point_store_root_ok(root)` returns `-ENOENT` when the path does not resolve (dangling `/data`, eMMC not mounted) and `-ENODEV` when `statfs().f_type == PROC_SUPER_MAGIC` — NuttX accepts `mkdir()` and file creation on the pseudo filesystem, so a store that fell back to RAM answers every write until reboot.
+- `vg_point_table_ensure_candidate` may seed from the committed table or start empty **only** on `-ENOENT`. Any other read error returns immediately: resetting to an empty table there lets the next `apply --confirm` overwrite the committed points.
+- `cmd_list` / `cmd_get` reply `ERR code=io msg=<token>` for anything but "missing file with a healthy store root"; `cmd_add` / `cmd_set` / `cmd_del` use the same token in `msg` in place of the old literal `candidate_io`. `code` values do not change.
+- Never report success for a write that did not land: check `ferror` / `fclose`, and `unlink` the half-written file. A truncated table reads back as a smaller valid table and can be confirmed over the real one.
+
 ## Wrong vs Correct
 
 - Wrong: treat `vgdiscover apply` dry-run (exit 0 without `--confirm`) as the `vgpoint apply` pattern.
@@ -27,8 +37,12 @@ Canonical text (Chinese, commands and reply lines): `docs/velaguard-host-nsh-pro
 - Wrong: analog alarms by matching point names (水浸 / 烟雾).
 - Correct: empty committed table → empty home; missing `cmp`/`warn`/`crit` → poll still runs, no analog alarm.
 - Correct: HMI live path calls `vg_alarm_eval` on the committed table (`cmp` / `fail_n`) and writes `/data/velaguard/pending_alarm.txt` once. Report page reads `/data/velaguard/reports`.
+- Wrong: `if (read(...) != 0) memset(&sum, 0, ...)` and then report `OK n=0`. That is how a dead eMMC was mistaken for an empty table (2026-09-15: every `vgpoint add` answered `ERR code=io msg=candidate_io` while `list` cheerfully said `n=0`).
+- Wrong: `mkdir_p("/data/velaguard/discover")` hard-coded inside the writer, ignoring the return value, while the caller passes a path under `/data/velaguard/config`. Derive the parent from the path actually handed in (`mkdir_parent(out)`); treat an existing leaf as success, not as `-EEXIST`.
+- Correct: `/data` is a symlink the board re-creates at every boot. A missing eMMC leaves it dangling rather than absent, so "the file is not there" is not by itself evidence that the table is empty.
 
 ## Tests Required
 
 - Host: parse OK/ERR lines; candidate edits must not change the committed file until `--confirm`.
+- Host (`host_tests/test_vgpoint.c`, asserts on the exact return value): a file without `"points"` reads as `-EINVAL`, not as an empty table; `ensure_candidate` returns `-EINVAL` for a corrupt candidate and leaves the committed path untouched; `vg_point_store_root_ok` is `< 0` for a missing root, `0` for a plain directory, `-ENODEV` for a RAM-backed one (`/proc` on the desktop); a write that fails mid-stream returns `-EIO` and leaves no file behind. Verify each by reverting the corresponding branch — the assertions must fail.
 - Board: COM3 script pause-then-apply; concurrent `test` vs HMI poll must not open RS485 twice. Concurrent `get` vs HMI poll must not `bus_busy`.
