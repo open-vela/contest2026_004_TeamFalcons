@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <sys/statfs.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -34,6 +35,14 @@ void vg_mqtt_notify_point_table(void) __attribute__((weak));
 
 #define VG_DISC_STATE_MAGIC  0x56474453u
 #define VG_DISC_STATE_PATH   "/data/velaguard/discover/discover_state.bin"
+
+/* NuttX declares this in <sys/statfs.h>; the desktop libc used by the host
+ * tests does not, and the value is the same on both.
+ */
+
+#ifndef PROC_SUPER_MAGIC
+#  define PROC_SUPER_MAGIC 0x9fa0
+#endif
 
 struct vg_disc_state_file
 {
@@ -123,7 +132,17 @@ static int mkdir_p(FAR const char *path)
         }
     }
 
-  return mkdir(tmp, 0755);
+  /* An existing leaf directory is success, not failure.  Callers use the
+   * return value to tell "cannot create" apart from "already there"; the
+   * raw mkdir() result cannot express that.
+   */
+
+  if (mkdir(tmp, 0755) != 0 && errno != EEXIST)
+    {
+      return -errno;
+    }
+
+  return 0;
 }
 
 static int mkdir_parent(FAR const char *filepath)
@@ -289,6 +308,7 @@ int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
 {
   FILE *fp;
   int i;
+  int ret;
   FAR const char *out = path;
 
   if (sum == NULL || out == NULL)
@@ -296,7 +316,16 @@ int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
       return -EINVAL;
     }
 
-  mkdir_p("/data/velaguard/discover");
+  /* Create the parent of the path we were actually handed.  The candidate
+   * and the committed table live in different directories, so a hard-wired
+   * path here silently made one of them depend on board bring-up.
+   */
+
+  ret = mkdir_parent(out);
+  if (ret != 0)
+    {
+      return ret;
+    }
 
   fp = fopen(out, "w");
   if (fp == NULL)
@@ -349,7 +378,25 @@ int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
     }
 
   fprintf(fp, "]}\n");
-  fclose(fp);
+
+  /* A full or dying medium used to report success, leaving a truncated
+   * table that later read back as zero points.  Drop the half-written file
+   * instead of publishing it.
+   */
+
+  if (ferror(fp) != 0)
+    {
+      fclose(fp);
+      unlink(out);
+      return -EIO;
+    }
+
+  if (fclose(fp) != 0)
+    {
+      unlink(out);
+      return -EIO;
+    }
+
   return 0;
 }
 
@@ -769,6 +816,65 @@ int vg_point_format_err(FAR char *buf, size_t bufsz,
            (code != NULL) ? code : "bad_arg",
            (msg != NULL) ? msg : "-");
   return 0;
+}
+
+int vg_point_store_root_ok(FAR const char *root)
+{
+  struct statfs st;
+
+  if (root == NULL || root[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
+  if (statfs(root, &st) != 0)
+    {
+      return (errno != 0) ? -errno : -EIO;
+    }
+
+  /* The pseudo filesystem accepts mkdir() and file creation, backed by RAM.
+   * A store that fell back there - eMMC not mounted, /data never linked -
+   * answers every write until the next reboot discards it.
+   */
+
+  return (st.f_type == PROC_SUPER_MAGIC) ? -ENODEV : 0;
+}
+
+FAR const char *vg_point_table_err_token(int ret)
+{
+  /* Stable tokens, not numbers: errno values differ across the board, the
+   * host and the desktop tests.  Only [A-Za-z0-9_.-] may appear here.
+   */
+
+  switch (-ret)
+    {
+      case ENOENT:
+        return "enoent";
+
+      case EROFS:
+        return "erofs";
+
+      case ENOSPC:
+        return "enospc";
+
+      case ENOMEM:
+        return "enomem";
+
+      case EACCES:
+        return "eacces";
+
+      case ENODEV:
+        return "enodev";
+
+      case EFBIG:
+        return "efbig";
+
+      case EINVAL:
+        return "einval";
+
+      default:
+        return "eio";
+    }
 }
 
 int vg_point_format_point(FAR char *buf, size_t bufsz,
@@ -1352,11 +1458,24 @@ int vg_point_table_read(FAR struct vg_discover_summary *sum,
   fp = fopen(path, "r");
   if (fp == NULL)
     {
-      ret = -errno;
+      ret = (errno != 0) ? -errno : -EIO;
       goto out;
     }
 
   nread = fread(buf, 1, VG_POINTS_JSON_MAX - 1, fp);
+
+  /* A medium that fails mid-read gives a short count, not a short file.
+   * Without this the buffer just ends early and parses as a damaged table,
+   * which hides the I/O error behind a content complaint.
+   */
+
+  if (ferror(fp) != 0)
+    {
+      fclose(fp);
+      ret = -EIO;
+      goto out;
+    }
+
   fclose(fp);
   buf[nread] = '\0';
   if (nread == VG_POINTS_JSON_MAX - 1)
@@ -1375,15 +1494,23 @@ int vg_point_table_read(FAR struct vg_discover_summary *sum,
       sum->baud = (int)baud;
     }
 
+  /* The file opened but carries no points array: it is truncated or not a
+   * point table at all.  Reporting that as a successful empty table let a
+   * damaged store masquerade as "no points", and let apply overwrite the
+   * committed table with zero points.
+   */
+
   arr = strstr(buf, "\"points\"");
   if (arr == NULL)
     {
+      ret = -EINVAL;
       goto out;
     }
 
   arr = strchr(arr, '[');
   if (arr == NULL)
     {
+      ret = -EINVAL;
       goto out;
     }
 
@@ -1460,12 +1587,28 @@ int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,
       return 0;
     }
 
+  /* Only "no candidate yet" falls through to seeding from the committed
+   * table.  A candidate that exists but cannot be read must not be treated
+   * as an empty one: the caller would hand back a fresh table, and the next
+   * apply --confirm would write it over the committed points.
+   */
+
+  if (ret != -ENOENT)
+    {
+      return ret;
+    }
+
   if (committed_path != NULL)
     {
       ret = vg_point_table_read(sum, committed_path);
       if (ret == 0)
         {
           return vg_point_table_write_candidate(sum, cand_path);
+        }
+
+      if (ret != -ENOENT)
+        {
+          return ret;
         }
     }
 

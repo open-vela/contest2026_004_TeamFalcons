@@ -37,6 +37,14 @@ void vg_mqtt_notify_point_table(void) __attribute__((weak));
           "/data/velaguard/discover/point_table_candidate.json"
 #endif
 
+/* Root of the point-table store.  Probed to tell "no table yet" apart from
+ * "the store is gone".  /data is a symlink to the eMMC volume.
+ */
+
+#ifndef CONFIG_VG_STORE_ROOT
+#  define CONFIG_VG_STORE_ROOT "/data"
+#endif
+
 #ifndef CONFIG_VG_DISCOVER_POINTS_PATH
 #  define CONFIG_VG_DISCOVER_POINTS_PATH "/data/velaguard/config/points.json"
 #endif
@@ -456,9 +464,24 @@ static int cmd_list(int argc, char *argv[])
     }
 
   ret = vg_point_table_read(&sum, path);
+  if (ret == -ENOENT)
+    {
+      /* A missing table counts as a legitimately empty one only while the
+       * store is really there.  A dangling /data symlink, or a store that
+       * fell back to RAM, also answers "no such file" - and a table that
+       * does not survive a reboot is a failure, not zero points.
+       */
+
+      ret = vg_point_store_root_ok(CONFIG_VG_STORE_ROOT);
+      if (ret == 0)
+        {
+          memset(&sum, 0, sizeof(sum));
+        }
+    }
+
   if (ret != 0)
     {
-      memset(&sum, 0, sizeof(sum));
+      return reply_err("list", "io", vg_point_table_err_token(ret));
     }
 
   for (i = 0; i < sum.n_points; i++)
@@ -489,7 +512,7 @@ static int cmd_add(int argc, char *argv[])
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
-      return reply_err("add", "io", "candidate_io");
+      return reply_err("add", "io", vg_point_table_err_token(rc));
     }
 
   if (vg_point_table_find_id(&sum, id) >= 0)
@@ -562,7 +585,7 @@ static int cmd_set(int argc, char *argv[])
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
-      return reply_err("set", "io", "candidate_io");
+      return reply_err("set", "io", vg_point_table_err_token(rc));
     }
 
   idx = vg_point_table_find_id(&sum, id);
@@ -605,7 +628,7 @@ static int cmd_del(int argc, char *argv[])
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
-      return reply_err("del", "io", "candidate_io");
+      return reply_err("del", "io", vg_point_table_err_token(rc));
     }
 
   idx = vg_point_table_find_id(&sum, id);
@@ -741,9 +764,22 @@ static int cmd_get(int argc, char *argv[])
     }
 
   rc = vg_point_table_read(&committed, CONFIG_VG_DISCOVER_POINTS_PATH);
+  if (rc == -ENOENT)
+    {
+      /* Same rule as list: an absent table is empty only if the store is
+       * still there.  See cmd_list.
+       */
+
+      rc = vg_point_store_root_ok(CONFIG_VG_STORE_ROOT);
+      if (rc == 0)
+        {
+          memset(&committed, 0, sizeof(committed));
+        }
+    }
+
   if (rc != 0)
     {
-      memset(&committed, 0, sizeof(committed));
+      return reply_err("get", "io", vg_point_table_err_token(rc));
     }
 
   if (committed.n_points <= 0)

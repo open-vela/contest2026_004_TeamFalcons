@@ -118,6 +118,9 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *config_basedir,
                          bool confirm);
 
+FAR const char *vg_point_table_err_token(int ret);
+int vg_point_store_root_ok(FAR const char *root);
+
 int vg_bus_try_lock(void);
 void vg_bus_unlock(void);
 int vg_bus_is_locked(void);
