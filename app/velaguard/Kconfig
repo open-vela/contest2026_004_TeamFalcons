@@ -100,7 +100,7 @@ config VG_MQTT_USERNAME
 
 config VG_MQTT_PASSWORD
 	string "MQTT password (TEST)"
-	default "a9e68005c2ba5a81c7181fdd2dd74b92"
+	default "2f4505862d80e2ccb8fd5ff0739e172f"
 	---help---
 		Plaintext TEST password. Goes into the contest git tree.
 		Rotate after the contest. Do not print this in logs.
