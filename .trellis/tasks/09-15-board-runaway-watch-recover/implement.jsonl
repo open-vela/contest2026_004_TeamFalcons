@@ -1,0 +1,3 @@
+{"file": ".trellis/tasks/09-15-board-runaway-watch-recover/research/runaway-signature.md", "reason": "本任务的全部实测证据：崩溃 PC/LR 符号解析、remaining 下溢值、事件时序、监控实测"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "作品主线 velaguard-lvgl 的构建与验证入口"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "点表协议口径；本任务验收要用 vgpoint list / vgcfg probe 判断 eMMC 是否可用"}

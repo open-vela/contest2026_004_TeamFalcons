@@ -273,7 +273,6 @@
     ".claude/hooks/inject-subagent-context.py": "022d41a9b6f5dba45bc284a466206fbefedf93f2504a6fe30141ec91c3fbc1ae",
     ".claude/hooks/inject-workflow-state.py": "71ef1aa1ed1051a697cae3c9ebffa518958a3bbd4d147434f382348829915f8c",
     ".claude/hooks/session-start.py": "c399c59cfeb88f1fc2b962cbeaf288f2a89f99ec627fc7e7974586ebe918a35f",
-    ".claude/hooks/statusline.py": "edbd8d1443ac8e7bb4f8cce61cb21812a8b0e17c59e1bc5c0e3ad03ea1f69adb",
     ".trellis/.runtime/sessions/cursor_8fd0bcb8-d050-4f95-a57a-ca893dad75a1.json": "25a48970e37c10e6a0f47eee91eb8f156637ea50248184b7802b1fa8ed781f40",
     ".trellis/.runtime/sessions/cursor_b6555a1f-f23a-409d-812c-c2cff300b85f.json": "df9e5bf4c0cfd521d247ac8dac8c391ae75258fe2f8551c459496452efd2ad30",
     ".trellis/.runtime/sessions/cursor_d58f5df2-b8df-4d91-b494-019c9afa14e1.json": "09336008eb02d3109a7d2e81b1dc6d3d6807f5b4ffda205d191b80c34837e5e6",
@@ -359,6 +358,15 @@
     ".trellis/.runtime/update-check-cursor_16300798-d8df-4bd7-8774-150972c14cb9.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
     ".trellis/.runtime/update-check-ppid-49215.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
     ".trellis/.runtime/update-check-ppid-79768.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
-    ".trellis/.runtime/update-check-ppid-89056.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124"
+    ".trellis/.runtime/update-check-ppid-89056.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/sessions/cursor_0bbb3b90-7d2d-4a84-b8d7-0c85846f7824.json": "4a8f9423cb2ea66bafb1c0d0352f6c9f3d080ffe44c670fac293cb26fe7f524b",
+    ".trellis/.runtime/update-check-cursor_0bbb3b90-7d2d-4a84-b8d7-0c85846f7824.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_11eae734-ef73-4002-9ea7-ca3d95390950.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_38f692b4-95a4-4dd3-9d77-892d3d99cbd5.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_476b3de6-f4f0-4f77-998e-1b21fb71acee.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_69cd128b-cb1d-409e-8cde-82b59e1b1aa5.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_6cc1e61d-6f23-4a9b-b946-89e94cf5350e.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-cursor_f35289d6-5f51-4725-adb4-e7387801b192.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124",
+    ".trellis/.runtime/update-check-ppid-147726.marker": "77c2ca150b61c7330da139378ffd3940d093f1bd74a1294689345d27e15b5124"
   }
 }

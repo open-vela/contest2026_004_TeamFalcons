@@ -1,0 +1,32 @@
+{
+  "id": "discovery-robustness",
+  "name": "discovery-robustness",
+  "title": "探查功能健壮性加固",
+  "description": "修正 vgdiscover/vgscan/vgpoint 探查链路中会静默毁数据、绕过总线互斥、丢失发现结果的缺陷，让空表覆盖、字段写坏、截断无提示这类问题在协议层可见",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P2",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-15",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "integrate-learn-vela-0912",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-15-discover-table-write-safety",
+    "09-15-discover-bus-exclusion",
+    "09-15-discover-probe-correctness",
+    "09-15-discover-hmi-scan-apply",
+    "09-15-discover-io-consistency"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {}
+}

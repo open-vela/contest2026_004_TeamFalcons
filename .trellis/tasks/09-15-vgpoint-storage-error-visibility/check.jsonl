@@ -1,0 +1,3 @@
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "核对改后的实际输出与第 5.1 / 第 7 节是否一致"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "核对错误码与 msg 的约定没有被破坏"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认验收命令仍是主线构建与 host_tests"}

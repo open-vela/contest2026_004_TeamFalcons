@@ -1,0 +1,4 @@
+{"file": "docs/velaguard-host-nsh-protocol.md", "reason": "命令与稳定应答的唯一口径；第 5.1 节和第 7 节要改，其余命令语义以此为准"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "本仓对 NSH vgpoint 协议的工程约定，含与 docs/ 的对应关系"}
+{"file": ".trellis/spec/backend/vg-config-store.md", "reason": "/data 下双槽配置的提交与加载约定，vgcfg probe 的探测语义"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "作品主线固件 velaguard-lvgl 的构建与验证入口"}

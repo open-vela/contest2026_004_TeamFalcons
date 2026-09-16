@@ -1,0 +1,2 @@
+{"file": ".trellis/tasks/09-15-board-runaway-watch-recover/research/runaway-signature.md", "reason": "核对崩溃特征与 AC3/AC4 的判据是否与实测一致"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认验收命令仍是主线构建"}
