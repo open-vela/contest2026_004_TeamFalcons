@@ -2,8 +2,8 @@
   "schema_version": "1.0",
   "team_id": "contest2026_004_TeamFalcons",
   "github_login": "Foleaf",
-  "generator": "cursor-collector@1.4.0",
-  "updated_at": "2026-09-14T11:43:46.325Z",
+  "generator": "claude-code-collector@1.4.0",
+  "updated_at": "2026-09-15T15:30:22.296Z",
   "sessions": [
     {
       "session_id": "ses_11810bbcfffe563TbgE0tykfVz",
@@ -3092,9 +3092,9 @@
       "session_id": "38f692b4-95a4-4dd3-9d77-892d3d99cbd5",
       "tool": "cursor",
       "started_at": "2026-09-14T01:51:00.000Z",
-      "last_event_at": "2026-09-14T07:59:41.247Z",
-      "event_count": 902,
-      "raw_event_count": 473,
+      "last_event_at": "2026-09-15T08:05:47.554Z",
+      "event_count": 1231,
+      "raw_event_count": 801,
       "file_path": "logs/Foleaf/2026-09-14/cursor__38f692b4-95a4-4dd3-9d77-892d3d99cbd5.jsonl",
       "collection_mode": "vscode_extension",
       "health": "ok",
@@ -3159,6 +3159,78 @@
       "collection_mode": "vscode_extension",
       "health": "ok",
       "model": "grok-4.6"
+    },
+    {
+      "session_id": "6e4f26b0-288d-4f7c-ae42-8a76431161b5",
+      "tool": "cursor",
+      "started_at": "2026-09-15T08:58:00.000Z",
+      "last_event_at": "2026-09-15T09:01:31.274Z",
+      "event_count": 12,
+      "raw_event_count": 8,
+      "file_path": "logs/Foleaf/2026-09-15/cursor__6e4f26b0-288d-4f7c-ae42-8a76431161b5.jsonl",
+      "collection_mode": "vscode_extension",
+      "health": "ok",
+      "model": "default"
+    },
+    {
+      "session_id": "41f82a76-8ad1-4d40-8b16-5020bbc1497a",
+      "tool": "claude-code",
+      "started_at": "2026-09-15T09:57:30.682Z",
+      "last_event_at": "2026-09-15T12:44:03.270Z",
+      "event_count": 893,
+      "raw_event_count": 1608,
+      "file_path": "logs/Foleaf/2026-09-15/claude-code__41f82a76-8ad1-4d40-8b16-5020bbc1497a.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
+    },
+    {
+      "session_id": "5d39b526-af3c-4e31-831f-0288dbc76120",
+      "tool": "claude-code",
+      "started_at": "2026-09-15T10:21:17.427Z",
+      "last_event_at": "2026-09-15T10:29:37.877Z",
+      "event_count": 36,
+      "raw_event_count": 82,
+      "file_path": "logs/Foleaf/2026-09-15/claude-code__5d39b526-af3c-4e31-831f-0288dbc76120.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
+    },
+    {
+      "session_id": "3aa99af2-e232-4d64-8f70-25619bbe2404",
+      "tool": "claude-code",
+      "started_at": "2026-09-15T12:44:03.209Z",
+      "last_event_at": "2026-09-15T12:44:03.209Z",
+      "event_count": 178,
+      "raw_event_count": 304,
+      "file_path": "logs/Foleaf/2026-09-15/claude-code__3aa99af2-e232-4d64-8f70-25619bbe2404.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
+    },
+    {
+      "session_id": "4441558d-018a-4886-94e3-47b2450ea2df",
+      "tool": "claude-code",
+      "started_at": "2026-09-15T14:39:04.152Z",
+      "last_event_at": "2026-09-15T15:03:42.555Z",
+      "event_count": 58,
+      "raw_event_count": 114,
+      "file_path": "logs/Foleaf/2026-09-15/claude-code__4441558d-018a-4886-94e3-47b2450ea2df.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
+    },
+    {
+      "session_id": "02ca4d76-6cd6-40a9-bc1d-25b940053a01",
+      "tool": "claude-code",
+      "started_at": "2026-09-15T14:48:43.475Z",
+      "last_event_at": "2026-09-15T15:30:22.289Z",
+      "event_count": 264,
+      "raw_event_count": 502,
+      "file_path": "logs/Foleaf/2026-09-15/claude-code__02ca4d76-6cd6-40a9-bc1d-25b940053a01.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
     }
   ]
 }
