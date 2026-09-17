@@ -1,0 +1,70 @@
+########## boot settle len=3422 ##########
+[llm] Response: 57 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=57, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6aabc65203cd357a] iter=1 tool=run_shell latency=86490ms llm=ok backend=0
+[tools] Executing tool: run_shell
+[shell] Executing: vgstats dump
+[shell] popen(vgstats dump) exit=-1, 721 bytes
+[shell] Result: 755 bytes (exit=0)
+[tools] Executing tool: run_shell
+[shell] Executing: vgcfg dump
+[shell] popen(vgcfg dump) exit=-1, 51 bytes
+[shell] Result: 79 bytes (exit=0)
+[agent] Tool run_shell result: 755 bytes
+[agent] Tool run_shell result: 79 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 22603 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789642495
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 2)
+[trace:6aabc65203cd357a] iter=2 tool=(none) latency=120ms llm=fail backend=0
+[trace:6aabc65203cd357a] END status=fail iters=3 tools=2 llm_ms=171580 elapsed=174s backend=0
+[agent] Processing message from cli:console
+[agent] Dispatching response → local_client:velaguard
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aabc7082746feb7] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 18978 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789642504
+[agent] Dispatching response → cli:console
+
+[Agent]: 正?[agent] [Agent]: 正在思考中...
+?思考中...
+vela> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aabc7082746feb7] iter=0 tool=(none) latency=60ms llm=fail backend=0
+[trace:6aabc7082746feb7] END status=fail iters=1 tools=0 llm_ms=60 elapsed=0s backend=0
+[agent] Processing message from cli:console
+[agent] Dispatching response → cli:console
+
+[Agent]: Sorry, I enc[agent] [Agent]: Sorry, I encountered an error.
+ountered an error.
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aabc7120830f44a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 18950 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789642514
+[agent] Dispatching response → cli:console
+
+[Agent]: 正在分析.[agent] [Agent]: 正在分析...
+..
+vela> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aabc7120830f44a] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6aabc7120830f44a] END status=fail iters=1 tools=0 llm_ms=40 elapsed=0s backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: Sorr[agent] [Agent]: Sorry, I encountered an error.
+y, I encountered an error.
+vela> 

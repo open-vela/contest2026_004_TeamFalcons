@@ -10,7 +10,7 @@
 
 | 门槛 | 判据 | 影响的拍 |
 |---|---|---|
-| G1 Agent 能调工具 | `ask` 之后串口出现至少一次 `Executing tool:`，并返回中文回答 | 5 |
+| G1 Agent 能调工具 | 注入一条告警后，串口出现 `[vgadvice] asked for N alarms` 与至少一次 `Executing tool:`，并在 `/data/velaguard/reports/alarm_advice.txt` 里看到产物 | 5 |
 | G2 工具层会拒绝 | 让 Agent 改点表时出现被拦截的记录 | 6 |
 | G3 报告为 Agent 产出 | 报告页标题显示「AI 日报 · OPENVELACLAW」，来源行写明经只读工具生成 | 7 |
 

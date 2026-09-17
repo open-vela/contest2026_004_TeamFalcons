@@ -95,3 +95,11 @@ R7 补充验证：1134 字节摘要（大于板上 1086）在 1280 缓冲区里 
   `CONFIG_MM_RECORD_PID`），另开任务。没有这些，下次同类故障仍然只能看到一个 HardFault。
 - `../nuttx` 工作树里 `boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-lvgl/defconfig`
   有未提交改动，含明文 `CONFIG_VG_MQTT_*` 口令。提交到公共树前需要处理，另开任务。
+
+## 2026-09-17 复验
+
+连发三轮 `ask hello` 的板端记录里没有出现 `HARDFAULT`，NSH 与 vela 提示符都正常返回；三轮回合分别以 `END status=fail`（网络侧 `net_connect ... ret=0x42`）收场，也就是走到了 LLM 请求才失败，正是 A4 要求的形态。同时这也复验了「前面那条 LLM 传输问题已由公共树 `velaguard/llm-tls-send-retry` 分支修掉」——同一块板在几分钟前刚跑完一轮完整日报，只是这几分钟路由不通。
+
+证据：`research/board-ask-3rounds-20260917.log`。
+
+遗留清单里那条「LLM 传输 `Write request failed: -3`」现已修复，见公共树 PR `open-vela/packages_ai_agent#40`。

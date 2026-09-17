@@ -13,7 +13,7 @@
 
 ## 2、摘要
 
-VelaGuard 是 STM32H750B-DK 上的 Modbus 现场值守网关，同板用 openvela 运行 LVGL 界面与 openvelaClaw。采集、判定、告警与显示由本地 C 代码完成，断网照常；联网后 openvelaClaw 按 Skill 解释告警，并经 MQTT 四类主题上报云看板。重点是本地安全环、滑窗失败率判定、试读后人工确认与边界明确的工具。已提交公共仓 PR 9 个；带屏静止首页在约 80 秒窗口内的界面提交由 158 次降至 9 次；板端自主发起的一轮日报在带屏固件上耗时 194 秒，完成 4 次工具调用并写出日报文件，告警逐点建议同样由板端发起并经 C 校验后上屏。
+VelaGuard 是 STM32H750B-DK 上的 Modbus 现场值守网关，同板用 openvela 运行 LVGL 界面与 openvelaClaw。采集、判定、告警与显示由本地 C 代码完成，断网照常；联网后 openvelaClaw 按 Skill 解释告警，并经 MQTT 四类主题上报云看板。重点是本地安全环、滑窗失败率判定、试读后人工确认与边界明确的工具。已提交公共仓 PR 9 个；带屏静止首页在约 80 秒窗口内的界面提交由 158 次降至 9 次；板端自主发起的一轮日报与一番告警建议都在带屏固件上跑通并落盘，把互不依赖的取证命令并到一条消息后，一轮由四次迭代降到两次，端到端约 105 到 115 秒。
 
 专属仓为 [contest2026_004_TeamFalcons](https://github.com/open-vela/contest2026_004_TeamFalcons)。
 
@@ -318,7 +318,8 @@ XIP 指程序直接从外部闪存取指执行，QSPI 启动解决片内启动�
 | MQTT 四主题板验<br>2026-09-14 11:14 | 板端串口脚本断言 | PASS=4 FAIL=0：设备标识由 UID 派生、vgnet 显示 mqtt=up、eth0 取得 192.168.137.47、运行日志出现 mqtt online。[20](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/velaguard-mqtt-contract.md)[21](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/mqtt-nsh-accept-20260914.log) |
 | 板端时间同步<br>2026-09-14 | 串口连续观察记录 | 16:16 至 21:17 约 5 小时，vgtime 校时成功 11 次，同段日志无断言失败或 panic。[22](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/vgtime-board-20260914.log) |
 | 带屏 openvelaClaw 自启<br>2026-09-13 | 启动串口日志 | 出现 ai_agent autostart ok、32768 字节栈和 daemon 启动信息；只证明服务自启。[11](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/report-evidence.json) |
-| 板端自主生成日报<br>2026-09-16 23:2x | 带屏固件，无人工提问 | 板端自行发起：日志 `vghmi: daily report requested` 与 `round submitted: 124 bytes`，工具行依次为 read_file、get_current_time、run_shell、run_shell、write_file，`END status=ok iters=4 tools=4 elapsed=194s`，产出 `daily-2026-09-16.md`（824 B），`vgagent status` 的 gen 由 0 增至 1。证据见本报告引用的任务 research 目录与串口记录。 |
+| 板端自主生成日报<br>2026-09-16 23:2x | 带屏固件，无人工提问 | 板端自行发起：日志 `vghmi: daily report requested` 与 `round submitted: 124 bytes`，工具行依次为 read_file、get_current_time、run_shell、run_shell、write_file，`END status=ok iters=4 tools=4 elapsed=194s`，产出 `daily-2026-09-16.md`（824 B），`vgagent status` 的 gen 由 0 增至 1。串口记录见 `.trellis/tasks/09-16-ai-contract-request-channel/research/board-driven-daily-20260916-r1.log`。 |
+| 轮次耗时对比<br>2026-09-17 10:5x | 审计日志的单调时间戳 | 改造前一轮 4 次迭代、端到端 194 秒；把互不依赖的取证命令并到同一条消息后，一条建议轮的三个 `run_shell` 集中在 8 秒内发完、约 107 秒后写文件，整轮约 115 秒；日报轮两次迭代、约 104 秒。 |
 | 告警逐点建议<br>2026-09-16 23:0x | 带屏固件，从站 1 离线告警 | Agent 写的 `alarm_advice.txt` 1840 B，首行 `VGADV1`、`boot=30bda344 req=15 n=8`，8 条均为 `sev=offline`，`sum`/`ev`/`att` 三字段齐全且引用了 vgstats 与 vgmodbus 的实际观测；板端另有 `agent_tools.log` 记录每次工具调用。 |
 | 历史 openvelaClaw 日报<br>2026-08-30 | 无屏板端，手动 ask | END status=ok；6 轮、6 次工具调用，产生 1796 B 日报文件。[11](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/report-evidence.json)[12](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/archive/2026-08/08-30-stage1-agent-ops/research/agent-ops-notes.md)[31](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/logs/Foleaf/2026-08-30/cursor__5c92cac5-619d-4584-8c7f-3a6ae56c3286.jsonl) |
 | 点表确认与本地告警<br>2026-09-14 核查 | 代码、协议及历史用例 | 候选分离与 --confirm 检查存在，点表上限 32 点；完整人工试读确认与物理注入录像仍待补充。[1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c)[2](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vgpoint.c)[10](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/velaguard-host-nsh-protocol.md) |
