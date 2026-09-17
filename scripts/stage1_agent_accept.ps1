@@ -1,4 +1,4 @@
-# Stage1 ai_agent 板端冒烟（COM3）。先关其它 COM3 占用。
+﻿# Stage1 ai_agent 板端冒烟（COM3）。先关其它 COM3 占用。
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage1_agent_accept.ps1
 
 param(
@@ -66,6 +66,7 @@ function Assert-Match {
 }
 
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = $Baud
 $port.ReadTimeout = 8000

@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "model/vg_ui_backend.h"
@@ -22,7 +23,11 @@
 #ifdef CONFIG_VG_NET_FAILOVER
 #include "vg_net_mgr.h"
 #endif
+#include "vg_advice.h"
 #include "vg_agent_alarm.h"
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+#include "vg_agent_round.h"
+#endif
 #ifdef CONFIG_VG_FRAME_STATS
 #include "vg_runtime.h"
 #endif
@@ -355,55 +360,59 @@ static int pick_runtime_report(FAR char *path, size_t path_sz)
   return 0;
 }
 
-static int pick_latest_daily(FAR char *path, size_t path_sz)
+/* Today's local date, formatted as prefix<YYYY-MM-DD>suffix.
+ * Returns false while the clock is still unsynced: "today" would be
+ * meaningless then, and the daily report must not be keyed off it. */
+
+static bool report_stamp(FAR char *out, size_t out_sz,
+                         const char *prefix, const char *suffix)
 {
-  DIR *dir;
-  struct dirent *ent;
-  char best[64];
+  time_t now = time(NULL);
+  struct tm tmv;
+  char date[16];
+
+  if(now < (time_t)1704067200) {   /* before 2024-01-01: not synced */
+    return false;
+  }
+
+  if(localtime_r(&now, &tmv) == NULL) {
+    return false;
+  }
+
+  if(strftime(date, sizeof(date), "%Y-%m-%d", &tmv) == 0) {
+    return false;
+  }
+
+  snprintf(out, out_sz, "%s%s%s", prefix, date, suffix);
+  return true;
+}
+
+/* The Agent's report for the current local day, or -ENOENT.
+ *
+ * This replaces a "largest daily-*.md wins" scan, which would happily serve
+ * last week's file as today's report. Only the exact name for today counts. */
+
+static int pick_agent_daily(FAR char *path, size_t path_sz)
+{
+  char want[64];
   char candidate[128];
 
-  best[0] = '\0';
-
-  dir = opendir(CONFIG_VG_HMI_REPORT_DIR);
-  if(dir == NULL) {
-    return -errno;
-  }
-
-  while((ent = readdir(dir)) != NULL) {
-    if(strncmp(ent->d_name, "daily-", 6) != 0) {
-      continue;
-    }
-    if(strstr(ent->d_name, ".md") == NULL) {
-      continue;
-    }
-    if(best[0] == '\0' || strcmp(ent->d_name, best) > 0) {
-      strncpy(best, ent->d_name, sizeof(best) - 1);
-      best[sizeof(best) - 1] = '\0';
-    }
-  }
-
-  closedir(dir);
-
-  if(best[0] == '\0') {
+  if(!report_stamp(want, sizeof(want), "daily-", ".md")) {
     return -ENOENT;
   }
 
   snprintf(candidate, sizeof(candidate), "%s/%s",
-           CONFIG_VG_HMI_REPORT_DIR, best);
+           CONFIG_VG_HMI_REPORT_DIR, want);
+
+  if(access(candidate, R_OK) != 0) {
+    return -errno;
+  }
+
   if(path != NULL && path_sz > 0) {
     snprintf(path, path_sz, "%s", candidate);
   }
 
   return 0;
-}
-
-static int pick_latest_report(FAR char *path, size_t path_sz)
-{
-  if(pick_runtime_report(path, path_sz) == 0) {
-    return 0;
-  }
-
-  return pick_latest_daily(path, path_sz);
 }
 
 /* The 480x272 label cannot render markdown; reports are plain text now,
@@ -416,7 +425,7 @@ static void strip_markdown(char *s)
 
   while(*r != '\0') {
     char *e = strchr(r, '\n');
-    const char *line_end = (e != NULL) ? e : r + strlen(r);
+    char *line_end = (e != NULL) ? e : r + strlen(r);
     const char *p = r;
     bool fence_line;
 
@@ -467,42 +476,18 @@ static void strip_markdown(char *s)
   *w = '\0';
 }
 
-static int board_read_latest_report(char *body, size_t body_sz,
-                                    char *path, size_t path_sz)
+static int read_whole_file(const char *file_path, char *body, size_t body_sz)
 {
-  char file_path[128];
   int fd;
   ssize_t n;
   size_t total = 0;
 
-  if(pick_latest_report(file_path, sizeof(file_path)) != 0) {
-    if(path != NULL && path_sz > 0) {
-      snprintf(path, path_sz, "%s/runtime-report.md", CONFIG_VG_HMI_REPORT_DIR);
-    }
-    if(body != NULL && body_sz > 0) {
-      snprintf(body, body_sz,
-               "暂无运行报告。\n\n路径: %s/runtime-report.md\n"
-               "点右上角刷新可更新本次上电以来的运行概况。",
-               CONFIG_VG_HMI_REPORT_DIR);
-    }
-    return -ENOENT;
-  }
-
-  if(path != NULL && path_sz > 0) {
-    snprintf(path, path_sz, "%s", file_path);
-  }
-
-  if(body == NULL || body_sz == 0) {
-    return 0;
-  }
-
   fd = open(file_path, O_RDONLY);
   if(fd < 0) {
-    snprintf(body, body_sz, "无法打开: %s (%d)", file_path, errno);
     return -errno;
   }
 
-  while(total + 1 < body_sz) {
+  while(body != NULL && body_sz > 0 && total + 1 < body_sz) {
     n = read(fd, body + total, body_sz - 1 - total);
     if(n <= 0) {
       break;
@@ -511,8 +496,124 @@ static int board_read_latest_report(char *body, size_t body_sz,
   }
 
   close(fd);
-  body[total] = '\0';
-  strip_markdown(body);
+
+  if(body != NULL && body_sz > 0) {
+    body[total] = '\0';
+  }
+
+  return 0;
+}
+
+/* Pick the report to show and say where it came from.
+ *
+ * Order matters.  The firmware report is rewritten on every request, so any
+ * "which file is newer" comparison would always pick it; the Agent's report
+ * wins purely on being today's and on passing vg_ai_report_validate().  When
+ * it is absent, stale, or rejected, the firmware statistics are shown with
+ * from_agent false, which is what keeps the offline behaviour honest. */
+
+/* Today's agent report, read off eMMC and put through the board-side
+ * validator.  Returns 0 only for a report the page may show as Agent output.
+ * Kept separate from the page path so the scheduler can ask the same
+ * question: "is today's report done?" means "validated", not "a file with
+ * that name exists". */
+
+#define VG_HMI_DAILY_RAW 1600
+
+static int agent_daily_load(char *body, size_t body_sz,
+                            char *path, size_t path_sz)
+{
+  static char raw[VG_HMI_DAILY_RAW];
+  char file_path[128];
+  char today[16];
+  struct stat st;
+
+  if(!report_stamp(today, sizeof(today), "", "") ||
+     pick_agent_daily(file_path, sizeof(file_path)) != 0) {
+    return -ENOENT;
+  }
+
+  if(read_whole_file(file_path, raw, sizeof(raw)) != 0 ||
+     stat(file_path, &st) != 0) {
+    return -EIO;
+  }
+
+  /* The validator works on the C string, so a byte that the file has but
+   * strlen() does not see would leave the tail unexamined.  Anything that
+   * does not match the file size is either an embedded NUL or a file larger
+   * than the buffer, and both are rejected outright. */
+
+  if((size_t)st.st_size != strlen(raw)) {
+    return -EINVAL;
+  }
+
+  if(vg_ai_report_validate(raw, strlen(raw), today,
+                           (long)st.st_mtime, (long)time(NULL)) != VG_AI_OK) {
+    return -EINVAL;
+  }
+
+  if(body != NULL && body_sz > 0) {
+    snprintf(body, body_sz, "%s", raw);
+  }
+
+  if(path != NULL && path_sz > 0) {
+    snprintf(path, path_sz, "%s", file_path);
+  }
+
+  return 0;
+}
+
+static int board_read_latest_report(char *body, size_t body_sz,
+                                    char *path, size_t path_sz,
+                                    bool *from_agent)
+{
+  char file_path[128];
+  bool ok = false;
+
+  if(from_agent != NULL) {
+    *from_agent = false;
+  }
+
+  if(body != NULL && body_sz > 0 &&
+     agent_daily_load(body, body_sz, file_path, sizeof(file_path)) == 0) {
+    ok = true;
+    if(path != NULL && path_sz > 0) {
+      snprintf(path, path_sz, "%s", file_path);
+    }
+    if(from_agent != NULL) {
+      *from_agent = true;
+    }
+  }
+
+  if(!ok) {
+    if(pick_runtime_report(file_path, sizeof(file_path)) != 0) {
+      if(path != NULL && path_sz > 0) {
+        snprintf(path, path_sz, "%s/runtime-report.md",
+                 CONFIG_VG_HMI_REPORT_DIR);
+      }
+      if(body != NULL && body_sz > 0) {
+        snprintf(body, body_sz,
+                 "暂无运行报告。\n\n路径: %s/runtime-report.md\n"
+                 "点右上角刷新可更新本次上电以来的运行概况。",
+                 CONFIG_VG_HMI_REPORT_DIR);
+      }
+      return -ENOENT;
+    }
+
+    if(path != NULL && path_sz > 0) {
+      snprintf(path, path_sz, "%s", file_path);
+    }
+
+    if(body != NULL && body_sz > 0 && read_whole_file(file_path, body, body_sz) != 0) {
+      snprintf(body, body_sz, "无法打开: %s (%d)", file_path, errno);
+      return -errno;
+    }
+  }
+
+  if(body != NULL && body_sz > 0) {
+    strip_markdown(body);
+  }
+
   return 0;
 }
 
@@ -538,12 +639,128 @@ void vg_ui_backend_scan_progress(int *cur_addr, int *addr_max)
   }
 }
 
-/* Do not create HEARTBEAT.poke. ReAct after poke HARDFAULTs the board
- * (mm_forcefree in ai_agent, 2026-09-14). Firmware already writes
- * runtime-report.md in the file worker above. */
+/* Ask the board agent to write today's report.
+ *
+ * The old body was a stub that only returned true, because a ReAct round
+ * from the heartbeat poke used to HARDFAULT the board.  That root cause (an
+ * unbounded offset accumulation in the skill summary) was fixed on
+ * 2026-09-16, and the round is now driven from this file worker through
+ * vg_agent_round rather than from the heartbeat, so nothing pokes the agent
+ * behind the scheduler's back.  The firmware report is still written and
+ * still read whenever the agent's answer is missing or fails validation. */
+
+#ifndef VG_HMI_DAILY_REQUEST
+#  define VG_HMI_DAILY_REQUEST \
+    "请按 /data/agent/skills/operations_report.md 生成今日运行日报，" \
+    "写入 /data/velaguard/reports/%s"
+#endif
+
+/* Returns the queue result rather than a bool: -EBUSY means the channel is
+ * momentarily held by the other flow and is worth retrying on the next tick,
+ * while anything else means the request never reached the agent and should
+ * cost a full retry interval. */
+
+static int daily_round_submit(void)
+{
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+  char req[224];
+  char want[64];
+
+  /* Pin the exact filename here.  The board knows today's date from its own
+   * clock; leaving the model to translate a date into a path is one more
+   * place for an otherwise good round to land on the wrong name. */
+
+  if(!report_stamp(want, sizeof(want), "daily-", ".md")) {
+    return -ENODEV;
+  }
+
+  snprintf(req, sizeof(req), VG_HMI_DAILY_REQUEST, want);
+  return vg_agent_round_queue_owned(req, VG_AGENT_ROUND_OWNER_DAILY);
+#else
+  return -ENODEV;
+#endif
+}
+
 static bool board_request_daily_report(void)
 {
-  return true;
+  return (daily_round_submit() == 0);
+}
+
+#define VG_DAILY_RETRY_MS 300000u
+
+/* Ask for today's report once, then leave the channel alone.
+ *
+ * "Already have it" means today's file is there and passes the board-side
+ * validator, so no marker file is needed, a bad report does not silence the
+ * flow for the rest of the day, and a failed attempt (offline, or the agent
+ * erroring out) simply retries after VG_DAILY_RETRY_MS. */
+
+static void daily_maybe_request(void)
+{
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+  static uint32_t last_try_ms;
+  char want[64];
+  char path[128];
+  struct stat st;
+  uint32_t now = vg_agent_round_now_ms();
+
+  /* Our own round is over.  The artifact is the file, so there is nothing to
+   * read from the reply here; releasing the channel is all this flow owes,
+   * and the advice flow must not be handed a round it did not ask for. */
+
+  if(vg_agent_round_owner() == VG_AGENT_ROUND_OWNER_DAILY) {
+    enum vg_agent_round_state rst = vg_agent_round_state();
+    if(rst == VG_AGENT_ROUND_DONE || rst == VG_AGENT_ROUND_ERROR) {
+      vg_agent_round_clear();
+    }
+  }
+
+  /* Same reason as in the advice flow: an unclaimed finished round blocks
+   * the strict queue, and nothing else will ever release it. */
+
+  vg_agent_round_reclaim(VG_AGENT_ROUND_OWNER_DAILY, VG_AGENT_ROUND_RECLAIM_MS);
+
+  if(!report_stamp(want, sizeof(want), "daily-", ".md")) {
+    return;                    /* local clock not usable yet */
+  }
+
+  /* "Already have it" means today's report is there and passes validation.
+   * Keying off the file name alone would let one bad report — wrong date
+   * line, missing marker — silence the flow for the rest of the day while
+   * the page quietly shows the firmware fallback. */
+
+  snprintf(path, sizeof(path), "%s/%s", CONFIG_VG_HMI_REPORT_DIR, want);
+  if(stat(path, &st) == 0 && agent_daily_load(NULL, 0, NULL, 0) == 0) {
+    return;
+  }
+
+  if(vg_agent_round_busy()) {
+    return;                    /* an advice round owns the channel */
+  }
+
+  if(last_try_ms != 0 && now - last_try_ms < VG_DAILY_RETRY_MS) {
+    return;
+  }
+
+  /* Only a request that took the channel, or one the agent never received,
+   * counts as an attempt.  -EBUSY means the advice flow still owns an
+   * unconsumed result, which clears within a tick, so it must not cost five
+   * minutes of backoff; a delivery failure must, or the daily flow would
+   * retry every tick and fill the agent's queue by itself. */
+
+  {
+    int rc = daily_round_submit();
+
+    if(rc == 0) {
+      last_try_ms = now;
+      printf("vghmi: daily report requested\n");
+    }
+    else if(rc != -EBUSY) {
+      last_try_ms = now;
+      printf("vghmi: daily report not delivered (%d)\n", rc);
+    }
+  }
+#endif /* CONFIG_EXAMPLES_AI_AGENT_VELA */
 }
 
 #define VG_HMI_FILE_WORKER_STACKSIZE 8192
@@ -616,6 +833,7 @@ static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
     if(do_report_read) {
       char body[sizeof(g_report_snap.body)];
       char path[128];
+      bool from_agent = false;
       int rc;
 
 #ifdef CONFIG_VG_FRAME_STATS
@@ -631,13 +849,15 @@ static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
         (void)board_request_daily_report();
       }
 
-      rc = board_read_latest_report(body, sizeof(body), path, sizeof(path));
+      rc = board_read_latest_report(body, sizeof(body), path, sizeof(path),
+                                    &from_agent);
       pthread_mutex_lock(&g_file_worker_lock);
       if(rc == 0) {
         snprintf(g_report_snap.body, sizeof(g_report_snap.body), "%s", body);
         snprintf(g_report_snap.path, sizeof(g_report_snap.path), "%s", path);
         g_report_snap.status = VG_UI_REPORT_READY;
         g_report_snap.err = 0;
+        g_report_snap.from_agent = from_agent;
         g_report_snap.truncated =
           (strlen(body) + 1 >= sizeof(g_report_snap.body));
         g_report_snap.version++;
@@ -645,15 +865,32 @@ static FAR void *vg_hmi_file_worker_thread(FAR void *arg)
       else if(rc == -ENOENT) {
         g_report_snap.status = VG_UI_REPORT_EMPTY;
         g_report_snap.err = -ENOENT;
+        g_report_snap.from_agent = false;
         g_report_snap.version++;
       }
       else {
         g_report_snap.status = VG_UI_REPORT_ERROR;
         g_report_snap.err = rc;
+        g_report_snap.from_agent = false;
         g_report_snap.version++;
       }
       pthread_mutex_unlock(&g_file_worker_lock);
     }
+
+    /* Agent rounds are driven from here, not from the heartbeat: the HMI
+     * build keeps heartbeat_send() gated, and a second unsynchronised
+     * trigger would race with this scheduler for the single callback slot. */
+
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+    vg_agent_round_tick();
+#endif
+    /* The daily report asks at most once a day and is a hard requirement for
+     * the report page, so it gets first refusal on the channel; a long
+     * running alarm set would otherwise keep re-asking for advice and never
+     * let the daily through. */
+
+    daily_maybe_request();
+    vg_advice_tick();
 
     usleep(100000);
   }
@@ -1109,6 +1346,12 @@ bool vg_ui_backend_apply_live(void)
     }
   }
 #endif
+
+  /* Hand the alarm set to the advice worker.  This function runs on the UI
+   * thread, which owns vg_model; the worker reads the snapshot instead of
+   * the model so it cannot race with a live acquisition update. */
+
+  vg_advice_note_alarms();
 
   return changed;
 }

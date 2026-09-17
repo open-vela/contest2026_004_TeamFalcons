@@ -1,0 +1,97 @@
+
+########## round 1 : sending ask hello ##########
+ask hello
+[netmgr] Found iface eth0 addr 192.168.137.30
+Ask queued; age[agent] ask: hello
+nt_loop st[agent] Processing message from cli:console
+arting in background...
+Sent to agent: hello
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm_router] All backends backed off, using fallback 0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aaaec5f0830f44a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 16546 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789586527
+[agent] Dispatching response ??? cli:console
+
+[Agent]: ???[agent] [Agent]: ????????????...
+?????????...
+vela> [vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] Write request failed: -3
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 5 (backoff 16)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aaaec5f0830f44a] iter=0 tool=(none) latency=980ms llm=fail backend=0
+[trace:6aaaec5f0830f44a] END status=fail iters=1 tools=0 llm_ms=980 elapsed=1s backend=0
+[agent] Dispatching response ??? cli:console
+
+[Agent]: Sorry, I e[agent] [Agent]: Sorry, I encountered an error.
+ncountered an error.
+vela> 
+
+########## round 2 : sending ask hello ##########
+ask hello
+[netmgr] Found iface eth0 addr 192.168.137.30
+Ask queued; [agent] ask: aghello
+ent_loop starting in background...[
+agent] Processing message from cli:console
+Sent to agent: hello
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aaaec8c73b6c3ea] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 16546 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789586572
+[agent] Dispatching response ??? cli:console
+
+[Agent]: ???[agent] [Agent]: ???????????????...
+????????????...
+vela> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 6 (backoff 32)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aaaec8c73b6c3ea] iter=0 tool=(none) latency=50ms llm=fail backend=0
+[trace:6aaaec8c73b6c3ea] END status=fail iters=1 tools=0 llm_ms=50 elapsed=0s backend=0
+[agent] Dispatching response ??? cli:console
+
+[Agent]:[agent Sorry, I encountered an error.
+vela] [Agent]: >Sorry, I encountered an error.
+ [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## round 3 : sending ask hello ##########
+ask hello
+[netmgr] Found iface eth0 addr 192.168.137.30
+Ask queued; [agent] ask: helloag
+ent_loop starting in ba[cagent] Processing message from cli:console
+kground...
+Sent to agent: hello
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aaaecba76c64bb0] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 16546 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789586618
+[agent] Dispatching response ??? cli:console
+
+[Agent]: ???[agen???????????????...t] [Agent]: ??????????????????...
+
+vela> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 7 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aaaecba76c64bb0] iter=0 tool=(none) latency=50ms llm=fail backend=0
+[trace:6aaaecba76c64bb0] END status=fail iters=1 tools=0 llm_ms=50 elapsed=0s backend=0
+[agent] Dispatching response ??? cli:console
+
+[Agent]: Sorr[agent] [Agent]: Sorry, yI encountered an error.
+, I encountered an error.
+vela> 
+
+########## done ##########

@@ -1,4 +1,4 @@
-# Build Modbus Slave workspace for VelaGuard 32-slave mock bus.
+﻿# Build Modbus Slave workspace for VelaGuard 32-slave mock bus.
 # Requires Modbus Slave (Mbslave.Application COM) on Windows.
 #
 # Usage (PowerShell):

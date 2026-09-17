@@ -1,0 +1,3 @@
+{"file": "AGENTS.md", "reason": "核对降级路径是否真的不伪造 AI 文本、标注是否符合 V5、是否误改工作树其他未提交改动"}
+{"file": ".trellis/spec/frontend/component-guidelines.md", "reason": "按 LVGL 点击与刷新约定核对新增行标签不破坏行选中与滚动锚点"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "核对 epoch 身份从模型到后端缓存到页面命中三段一致"}

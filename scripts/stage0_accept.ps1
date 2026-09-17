@@ -1,4 +1,4 @@
-# Stage0 板端验收：经 COM3 NSH 批量执行 stage0-acceptance.md 核心命令。
+﻿# Stage0 板端验收：经 COM3 NSH 批量执行 stage0-acceptance.md 核心命令。
 # 用法（先关闭其它占用 COM3 的串口监视器）：
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage0_accept.ps1
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage0_accept.ps1 -Port COM3 -Log stage0-ac.log
@@ -22,6 +22,7 @@ function Wait-NshPrompt {
 }
 
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = $Baud
 $port.Parity = [System.IO.Ports.Parity]::None

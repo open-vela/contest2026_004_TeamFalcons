@@ -1,4 +1,4 @@
-# 先抢占 COM3，再烧录，再板测（避免烧录后监视器抢端口）。
+﻿# 先抢占 COM3，再烧录，再板测（避免烧录后监视器抢端口）。
 # 用法：先关闭 Cursor/SSCOM 等 COM3 监视器，然后：
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage1_flash_and_accept.ps1
 
@@ -17,6 +17,7 @@ $acceptPs1 = Join-Path $ContestRoot "scripts\stage1_agent_accept.ps1"
 
 Write-Host "[1/3] Opening $ComPort (close other serial monitors first)..."
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = 115200
 $port.ReadTimeout = 8000

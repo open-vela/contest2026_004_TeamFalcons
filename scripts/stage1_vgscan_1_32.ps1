@@ -8,6 +8,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 $port = New-Object System.IO.Ports.SerialPort $ComPort, $Baud
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.ReadTimeout = 5000
 $port.WriteTimeout = 3000
 $port.NewLine = "`n"

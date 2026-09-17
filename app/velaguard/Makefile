@@ -46,9 +46,14 @@ CSRCS    += vg_net_policy.c vg_eth.c vg_esp_bearer.c vg_tcp_transport.c \
 endif
 
 ifeq ($(CONFIG_EXAMPLES_AI_AGENT_VELA),y)
-CSRCS += vg_agent_seed.c vg_provision.c vg_provision_crypto.c
-PROGNAME += vgprovision
-MAINSRC += vgprovision.c
+CSRCS += vg_agent_seed.c vg_agent_round.c vg_provision.c vg_provision_crypto.c
+PROGNAME += vgprovision vgagent
+MAINSRC += vgprovision.c vgagent.c
+# Local agent IPC (velaclaw/client.h). packages/ sits next to apps/ in the
+# openvela workspace; derive it from APPDIR rather than $(CURDIR), which may
+# be reached through the packages/demos symlink.
+VG_AI_AGENT_INC := $(abspath $(APPDIR)/../packages/ai_agent/include)
+CFLAGS += ${INCDIR_PREFIX}$(VG_AI_AGENT_INC)
 endif
 
 ifeq ($(CONFIG_VG_AGENT_OPS),y)
@@ -98,7 +103,7 @@ VG_UI_CSRCS     := $(foreach _d,$(VG_UI_SUBDIRS),$(wildcard $(VG_UI_DIR)/$(_d)/*
 VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/model/vg_ui_backend.c,$(VG_UI_CSRCS))
 
 CSRCS    += $(notdir $(VG_UI_CSRCS))
-CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c
+CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c vg_ai_contract.c
 VPATH    += $(foreach _d,$(VG_UI_SUBDIRS),:$(VG_UI_DIR)/$(_d))
 DEPPATH  += $(foreach _d,$(VG_UI_SUBDIRS),--dep-path $(VG_UI_DIR)/$(_d))
 
@@ -133,7 +138,7 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 # heap-allocated. 16K leaves room for fopen + nanomodbus on test.
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
-  $(if $(filter vgdiscover vgscan vgpoint vgruntime,$(p)),16384,$(VG_STACK_DEFAULT)))))
+  $(if $(filter vgdiscover vgscan vgpoint vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT)))))
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 

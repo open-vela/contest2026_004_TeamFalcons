@@ -1,4 +1,4 @@
-# Stage1 modbus-discovery 板端验收（COM3 NSH；从站经 RS485）。
+﻿# Stage1 modbus-discovery 板端验收（COM3 NSH；从站经 RS485）。
 # 前置：Modbus Slave @COM6 9600 8N1（推荐）
 #   .\scripts\build_velaguard_mbslave.ps1 -OpenConnection -KeepOpenSeconds 900
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage1_modbus_discovery_accept.ps1
@@ -56,6 +56,7 @@ function Assert-Match {
 }
 
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = $Baud
 $port.ReadTimeout = 8000

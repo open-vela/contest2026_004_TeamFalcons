@@ -38,6 +38,8 @@ powershell.exe -ExecutionPolicy Bypass -File scripts/<name>.ps1
 | 网口 / MQTT 最小环 | `stage1_net_full_accept.ps1` |
 | 运营 Skill / 日报落盘 | `stage1_agent_ops_accept.ps1` |
 | 阶段 0 bring-up | `stage0_accept.ps1` |
+| 手工发一条或多条 NSH 命令 | `serial_cmd.ps1 -Commands "a;b"`（分号分隔） |
+| 按预设问题问一轮 Agent | `serial_ask_probe.ps1` |
 
 对应 `*_accept_nsh.txt` 是手工 NSH 步骤，脚本不可用时按文件做。
 

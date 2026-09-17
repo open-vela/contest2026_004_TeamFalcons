@@ -1,0 +1,98 @@
+
+=== vgprovision status === len=70
+vgprovision status
+Unknown command: vgprovision (type 'help')
+vela> 
+
+=== ai_agent --daemon & === len=126
+ai_agent --daemon &
+Unknown command: ai_agent (type 'help')
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+=== ai_agent === len=57
+ai_agent
+Unknown command: ai_agent (type 'help')
+vela> 
+
+=== net_status === len=202
+net_status
+[netmgr] Found iface eth0 addr 192.168.137.194
+Network connected: yes[netmgr] Found ifac
+e eth0 addr 192.168.137.194
+IP: 192.168.137.194
+vela> vgtime: sync failed (servers unreachable)
+
+
+=== config_show === len=940
+config_show
+=== Current Configuration ===
+  Feishu AppID  : (not set)
+  Feishu Secret : (not set)
+  API Key       : tp-c****
+  Model         : mimo-v2.5
+  LLM Host      : token-plan-cn.xiaomimimo.com
+  LLM Path      : /v1/chat/completions
+  Vision Model  : (not set)
+  Vision Host   : (not set)
+  Vision Key    : (not set)
+  Proxy Host    : (not set)
+  Proxy Port    : (not set)
+  SerpAPI Key   : (not set)
+  Exa Key       : (not set)
+  Tavily Key    : (not set)
+  News Key      : (not set)
+  Tavily Key    : (not set)
+  Gateway       : (not set)
+  GW Port       : (not set)
+  GW Token      : (not set)
+  MQTT Broker   : (not set)
+  Volc AppKey   : (not set)
+  Volc Token    : (not set)
+  Volc API Key  : (not set)
+  Volc Speaker  : (not set)
+[netmgr] Found iface eth0 addr 192.168.137.194
+[netmgr] Found iface eth0 addr 192.168.137.194
+Network: connected / 192.168.137.194
+=============================
+vela> 
+
+=== net_test === len=253
+net_test
+Testing HTTPS to www.baidu.com...
+[vela_tls] Handshake start: Host=www.baidu.com, UNIX=1789593066
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256
+SUCCESS! HTTP Status: 200
+vela> vgtime: synced 2026-09-16 21:11:48
+
+
+=== ask 读取从站1温湿度，请用 run_shell 执行 vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0 === len=1483
+ask ??????1????????? run_shell ??? vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0
+[netmgr] Found iface eth0 addr 192.168.137.194
+Ask queued;[agent] ask: ??????1????????? run_she all ??? vgmodbus -a 1 -r
+gent_loop starting in b[agent] Processing message from cli:console
+ackground...
+Sent to agent: ??????1????????? run_shell ??? vgmodbus -a 1 -r
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aab064935c3b13a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 16017 bytes)
+[agent] Dispatching response ??? cli:console
+
+[Agent]: ???[ag???????????????...
+ent] [Agent]: v??????????????????...
+ela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789593161
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] Write request failed: -3
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6aab064935c3b13a] iter=0 tool=(none) latency=6070ms llm=fail backend=0
+[trace:6aab064935c3b13a] END status=fail iters=1 tools=0 llm_ms=6070 elapsed=6s backend=0
+[agent] Dispatching response ??? cli:console
+
+[Agent]: Sor[agent] [Agent]: Sorry, I encountered an errror.
+y, I encountered an error.
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+

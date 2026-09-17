@@ -1,4 +1,4 @@
-# Recover HMI board: build velaguard-lvgl, flash, run stage1 LVGL accept.
+﻿# Recover HMI board: build velaguard-lvgl, flash, run stage1 LVGL accept.
 # Usage: powershell.exe -ExecutionPolicy Bypass -File scripts/recover-hmi.ps1
 
 $ErrorActionPreference = "Stop"

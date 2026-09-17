@@ -93,7 +93,7 @@ USB CDC / UART 只作为开发调试和救援通道，不是正式运行链路�
 - 遥测与告警上云
 - OTA
 
-**断网时的诚实口径**：采集、告警、统计、日志全部照常。Agent 能力降级：告警详情展示规则引擎原始信息（触发条件、当前值、时间）；不生成 AI 解释与报告；自然语言查数可降级为结构化数值展示。网络恢复后可补跑 pending 的报告任务。
+**断网时的诚实口径**：采集、告警、统计、日志全部照常。Agent 能力降级：告警详情展示规则引擎原始信息（触发条件、当前值、时间）；不生成 AI 解释与报告；自然语言查数可降级为结构化数值展示。当天缺日报时板端会按失败退避重试（最长每 5 分钟一次，`VG_DAILY_RETRY_MS`），不依赖网络恢复事件触发。
 
 ### 2.3 Agent 的权限边界
 
@@ -160,7 +160,7 @@ Agent 解释 / 报告
 |---|---|---|
 | 4.3" 480×272 RGB LCD (LTDC) | 可用，有本地显示加速补丁 | 现场 HMI |
 | FT5x06 电容触摸 (I2C4) | 可用 | 确认操作 |
-| LED | 可用 | 状态 / 告警指示 |
+| LED | 可用 | 状态指示（心跳）；告警目前只走屏幕，未驱动 LED |
 | UART + RS485 收发器 | 可用（扩展板已焊接） | Modbus RTU 主站 |
 | RJ45 Ethernet | 可用 | 主网络 |
 | ESP-01 Wi-Fi (UART AT) | 已实现 | 备用网络 |
@@ -332,16 +332,13 @@ openvela / NuttX
 
 基于 openvela `packages/ai_agent`。Agent **不负责**总线排障或寄存器探测实验；只做告警解释、运行报告与自然语言查数。
 
-**自定义 C 工具集**（全部只读，查询已采集数据）：
+**自定义 C 工具集**（实际实现的形态，全部只读）：
 
 | 工具 | 作用 |
 |---|---|
-| `get_live_values(slave, tags[])` | 当前采样值 |
-| `get_alarm_context(alarm_id)` | 告警实例、触发规则、关联点位 |
-| `get_events(since, until, filter)` | 结构化事件 |
-| `get_telemetry_summary(window, slaves[])` | 窗口内 min/max/avg、离线时长 |
-| `get_frame_stats(slave, window)` | 通信质量摘要 |
-| `get_point_table()` | 点名、单位、阈值 |
+| `run_shell` | 受 C 层允许表约束，放行 `vgmodbus`、`vgstats dump`、`vgruntime dump`、`vgcfg dump`、`vgnet status` |
+| `read_file` / `write_file` | 读写 `/data/agent` 与 `/data/velaguard` 下的文件，路径经沙箱校验 |
+| `get_current_time` | 读取板端已同步的时间 |
 
 所有工具受 §2.3 的沙箱约束。
 
@@ -354,7 +351,7 @@ openvela / NuttX
 
 #### 5.4.1 自然语言查实时数据（交互渠道）
 
-用户通过 CLI（`vela>`）或 LVGL 提问，例如「5 号从站流量怎么样？」。Agent 解析意图 → 调用 `get_live_values` / `get_point_table` → 用自然语言回答并附原始数值。**满足大赛交互渠道要求**；赛道书面说明的主场景为 §5.5–5.6 的主动能力。
+用户通过 CLI（`vela>`）或 LVGL 提问，例如「5 号从站流量怎么样？」。Agent 解析意图 → 调用 `run_shell` 放行的只读命令（`vgmodbus`、`vgstats dump` 等） → 用自然语言回答并附原始数值。**满足大赛交互渠道要求**；赛道书面说明的主场景为 §5.5–5.6 的主动能力。
 
 ### 5.5 主动告警解释（事件主动 + 执行）
 
@@ -363,25 +360,36 @@ openvela / NuttX
 ```text
 规则引擎产生告警（阈值 / 离线 / 链路劣化 …）
 → 本地告警与 UI 展示（不依赖网络）
-→ 若网络可用：自动启动告警解释会话
-→ Agent 调用 get_alarm_context / get_live_values / get_events 等
-→ 输出结构化解释（summary、evidence、suggested_attention）
-→ LVGL 告警详情页（标注「AI 推测」）+ MQTT 附摘要
+→ 若网络可用：板端 HMI 文件工作线程按告警集合发起一轮
+→ Agent 读 alarm_interpretation Skill，调 vgstats / vgmodbus / vgcfg 等只读命令
+→ write_file 写 /data/velaguard/reports/alarm_advice.txt（VGADV1 行式格式）
+→ 板端解析校验（id + epoch + 上电随机数三者匹配）后放进 RAM 缓存
+→ LVGL 告警页：行内一行短建议 + 详情区完整解释（标注「AI 推测」）
 → 不自动清除告警、不改配置
 ```
 
-断网时：仅展示规则引擎原始告警信息，不生成 AI 解释。
+告警页只读缓存：命中就显示 `AI · <短建议>`，未命中保持确定性规则摘要，页面自身不读文件也不发请求。请求与产物都带 `boot`、`req`、`epoch`，跨上电或迟到一轮的产物会被解析器整份丢弃。同一份持续存在的告警每 5 分钟会重新问一轮建议（`VG_ADV_REFRESH_MS`）；告警集合变化时可以立即重问。文档格式、上限与降级规则见 `.trellis/spec/backend/ai-text-contract.md`。
+
+断网时：仅展示规则引擎原始告警信息与本地规则摘要，不生成也不伪造 AI 解释；同一份告警签名的重试按退避间隔进行，不会持续消耗 LLM 轮次。
 
 ### 5.6 定时日报 / 周报（定时主动 + 执行）
 
 对应大赛「**定时主动**」。
 
 ```text
-定时器到点（如每日 08:00；周报如每周一 08:00，可配置）
-→ Agent 汇总窗口内告警、关键指标、通信质量、notable 事件
-→ 生成报告写入 /data/velaguard/reports/
-→ LVGL「报告」页预览 + 可选 MQTT + 事件日志
+板端文件工作线程发现「当天还没有通过校验的 daily-<日期>.md」（时钟已同步）
+→ 主动发起一轮，请求由板端生成，不是用户提问
+→ Agent 读 operations_report Skill，调 get_current_time / vgruntime dump /
+   vgstats dump 等只读工具取真实数字（取证命令写在同一条消息里一次发出，整轮工具调用不超过 4 次）
+→ write_file 写 /data/velaguard/reports/daily-<当天日期>.md
+→ 板端校验（首行 AI-DAILY v1、date= 等于当天、source=agent、正文不超过
+   1536 字节即 VG_AI_REPORT_MAX、文件新鲜度）
+→ LVGL「报告」页预览，标题「AI 日报 · OPENVELACLAW」+ 来源行
 ```
+
+报告页按来源切换署名：文件通过校验时显示 Agent 产出，否则回退固件确定性统计的 `runtime-report.md` 并标注「来源：固件确定性统计，离线可用」。Agent 在 C 层对 `runtime-report.md` 只读，所以兜底内容不会被 Agent 覆盖。取证靠框架自带的 `Executing tool:` 与 `END status=ok iters=N tools=M` 日志行，以及 `stage1_agent_ops_accept.ps1` 的断言。
+
+因单次 LLM 调用有 120 s 墙钟、实测一轮 ReAct 约 105 s，Skill 明确限制工具调用次数。周报的定时入口与 HMI 下的定时服务都不在本次范围内。
 
 9/20 里程碑：**日报必做，周报可后补。**
 
@@ -482,13 +490,22 @@ openvela / NuttX
 
 ### 6.4 告警解释页
 
-必须显示：现象摘要（规则引擎）、**AI 解释**（标注「AI 推测」）、证据列表、建议关注项、关联点位当前值。
+列表每行在确定性摘要下多一行 AI 建议（`AI · <短建议>`，≤ 24 个汉字），未命中缓存时不占位、不显示。选中行的详情区按状态显示：
 
-按钮：确认已知、标记已处理。**不提供任何「让 AI 直接修复」的入口。**
+| 状态 | 区块标题 | 正文 |
+|---|---|---|
+| 缓存命中 | `OPENVELACLAW 建议（AI 推测）` | 【AI 建议】/【依据】/【建议关注】三段 |
+| 轮次在途 | `AI 建议生成中，暂显示规则摘要` | 确定性文本 |
+| 失败或离线 | `AI 建议不可用，显示规则摘要` | 确定性文本 |
+| 无告警或未发起 | `规则摘要（本地）` | 确定性文本 |
+
+必须显示：现象摘要（规则引擎）、**AI 解释**（标注「AI 推测」）、证据列表、建议关注项、关联点位当前值。AI 文本只有一个来源——板端解析校验通过的缓存条目；页面不做任何模板合成，所以不存在伪造路径。
+
+按钮：静音、标记处理。**不提供任何「让 AI 直接修复」的入口。**
 
 ### 6.5 运行报告页
 
-展示最新日报/周报：告警摘要、关键指标、通信质量、生成时间。支持历史报告列表。
+展示当天日报，按实际的三节排布：通信质量、点位在线、异常时间线。标题与来源行按 `from_agent` 切换——Agent 产出显示「AI 日报 · OPENVELACLAW」与「来源：板载 Agent（OPENVELACLAW），经只读工具生成」，否则显示本地运行报告与「来源：固件确定性统计，离线可用」。报告页右上角的「刷新」在重读文件之外，还会以 `allow_generate` 再向 Agent 排一轮当天日报生成。
 
 ### 6.6 总线探查页
 
@@ -512,7 +529,7 @@ openvela / NuttX
 
 ### 7.3 场景三：日报与断网
 
-每日 8:00 自动生成日报，汇总 24h 告警与关键指标。断网时：采集、告警、统计照常；无 AI 解释与报告生成；恢复网络后补跑 pending 报告。CLI 仍可问「当前最高告警是什么？」——降级为结构化数值回答。
+当天缺日报时由板端发起一轮，汇总当日告警与关键指标；失败最长每 5 分钟重试一次（`VG_DAILY_RETRY_MS`）。断网时：采集、告警、统计照常；无 AI 解释与报告生成。CLI 仍可问「当前最高告警是什么？」——降级为结构化数值回答。
 
 ---
 
@@ -627,10 +644,29 @@ vg/{device_id}/ota/confirm
 2. 可用工具清单
 3. 如何组织证据（当前值、近期趋势、同从站其他点、近期事件）
 4. 常见告警类型的解释模板（超阈值、离线、链路劣化）
-5. 何时承认信息不足（`unresolved: true`）
-6. 输出格式约定
+5. 何时承认信息不足（`unres=1` 并在 `sum` 里说明，不编造）
+6. 输出格式：按 `VGADV1` 行式格式写 `/data/velaguard/reports/alarm_advice.txt`
 
-**输出结构**：
+**线上格式**（`VGADV1`，是下面 JSON 骨架在板端的投影）：
+
+```text
+VGADV1
+boot=<8 位十六进制>   ← 板端每次上电生成，必须原样回填
+req=<十进制>          ← 本轮序号，必须原样回填
+n=<0..8>
+[1]
+id=<点位 id>
+epoch=<十进制>        ← vg_sensor_t.al_epoch，必须原样回填
+sev=warn|crit|offline
+unres=0|1
+sum=<单行，一行短建议>
+ev=<单行，判断依据>
+att=<单行，建议关注>
+[2] ...
+END
+```
+
+对应的 JSON 骨架，字段一一对应：
 
 ```json
 {
@@ -644,13 +680,32 @@ vg/{device_id}/ota/confirm
 }
 ```
 
+选行式文本而非 JSON 的原因：校验器要手写，行语法更容易做到严格且有界；JSON 还得在板上多引一个解析器。字段上限、UTF-8 规则、身份三元组与失败语义见 `.trellis/spec/backend/ai-text-contract.md`。
+
 ### 10.2 `operations_report.md`
 
 存放路径：`/data/agent/skills/operations_report.md`
 
-**用途**：日报/周报的章节结构、指标口径与异常写法。
+**用途**：日报的章节结构、指标口径与异常写法。当前只授权日报，未授权周报。
 
-**输出结构**：
+**线上格式**（写 `/data/velaguard/reports/daily-<YYYY-MM-DD>.md`，纯文本，禁止 Markdown 标记）：
+
+```text
+AI-DAILY v1
+date=<YYYY-MM-DD>
+source=agent
+---
+通信质量
+<两到四行正文>
+点位在线
+<两到四行正文>
+异常时间线
+<两到四行正文>
+```
+
+前三行与分隔线是板端 `vg_ai_report_validate` 的采纳条件：首行标记、`date=` 等于当天、`source=agent`、正文非空且不超过 1536 字节（`VG_AI_REPORT_MAX`）、文件新鲜度在 26 小时内。任一不满足就整份不采纳，报告页回退固件统计。Skill 里建议正文不超过 1400 字节，给校验上限留出余量。
+
+对应的 JSON 骨架：
 
 ```json
 {

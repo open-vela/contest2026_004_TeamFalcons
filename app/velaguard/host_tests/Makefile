@@ -41,7 +41,10 @@ test_mqtt_payload: test_mqtt_payload.c ../vg_mqtt_payload.c ../vg_mqtt_payload.h
 	$(CC) $(CFLAGS) -o $@ test_mqtt_payload.c ../vg_mqtt_payload.c \
 	  ../vg_device_id.c
 
-test: test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload
+test_ai_contract: test_ai_contract.c ../vg_ai_contract.c ../vg_ai_contract.h
+	$(CC) $(CFLAGS) -o $@ test_ai_contract.c ../vg_ai_contract.c
+
+test: test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -54,6 +57,7 @@ test: test_net_policy test_config_store test_frame_stats test_runtime test_disco
 	./test_runtime_render
 	./test_hmi_sched
 	./test_mqtt_payload
+	./test_ai_contract
 
 clean:
-	rm -f test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload
+	rm -f test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract

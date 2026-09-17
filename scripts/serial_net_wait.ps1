@@ -2,6 +2,7 @@
 param([string]$ComPort = "COM3", [int]$WaitSec = 60)
 $ErrorActionPreference = "Stop"
 $port = New-Object System.IO.Ports.SerialPort $ComPort, 115200
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.ReadTimeout = 8000
 $port.DtrEnable = $true
 $port.Open()

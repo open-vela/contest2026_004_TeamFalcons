@@ -48,7 +48,8 @@ static int mock_discover_apply_status(void)
     return 2;
 }
 
-static int mock_read_report(char *body, size_t body_sz, char *path, size_t path_sz)
+static int mock_read_report(char *body, size_t body_sz, char *path,
+                            size_t path_sz, bool *from_agent)
 {
     static const char *mock_body =
         "2026-08-30 08:00 运营日报\n"
@@ -63,12 +64,69 @@ static int mock_read_report(char *body, size_t body_sz, char *path, size_t path_
     if(body != NULL && body_sz > 0) {
         lv_snprintf(body, body_sz, "%s", mock_body);
     }
+    if(from_agent != NULL) {
+        *from_agent = true;
+    }
     return 0;
 }
 
 static bool mock_request_daily_report(void)
 {
     /* PC sim has no on-device agent to poke. */
+    return false;
+}
+
+/* PC sim: no agent, so advice is whatever a headless check put here.
+ * This file is filtered out of the board build, so the setter below never
+ * exists in firmware. */
+
+static vg_ai_advice_entry_t s_mock_advice[VG_AI_ADV_MAX];
+static int s_mock_advice_n;
+static bool s_mock_advice_ready;
+
+void vg_ui_backend_mock_set_advice(const vg_ai_advice_entry_t *entries, int n)
+{
+    if(entries == NULL || n <= 0) {
+        s_mock_advice_n = 0;
+        s_mock_advice_ready = false;
+        return;
+    }
+
+    if(n > VG_AI_ADV_MAX) {
+        n = VG_AI_ADV_MAX;
+    }
+
+    memcpy(s_mock_advice, entries, sizeof(s_mock_advice[0]) * (size_t)n);
+    s_mock_advice_n = n;
+    s_mock_advice_ready = true;
+}
+
+void vg_ui_alarm_advice_request(void)
+{
+}
+
+vg_ui_advice_state_t vg_ui_alarm_advice_state(void)
+{
+    return s_mock_advice_ready ? VG_UI_ADV_READY : VG_UI_ADV_IDLE;
+}
+
+bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
+                            vg_ai_advice_entry_t *out)
+{
+    int i;
+
+    if(sensor_id == NULL || out == NULL || !s_mock_advice_ready) {
+        return false;
+    }
+
+    for(i = 0; i < s_mock_advice_n; i++) {
+        if(s_mock_advice[i].epoch == al_epoch &&
+           strcmp(s_mock_advice[i].id, sensor_id) == 0) {
+            *out = s_mock_advice[i];
+            return true;
+        }
+    }
+
     return false;
 }
 
@@ -89,6 +147,9 @@ static bool mock_report_snapshot(vg_ui_report_snapshot_t *out)
     out->request_id = 1;
     out->version = 1;
     out->status = VG_UI_REPORT_READY;
+    /* The sim exercises the AI label so the source line is visible while
+     * working on the page without a board. */
+    out->from_agent = true;
     lv_snprintf(out->path, sizeof(out->path), "/data/velaguard/reports/daily-20260830.md");
     lv_snprintf(out->body, sizeof(out->body),
                 "2026-08-30 08:00 运营日报\n"

@@ -1,0 +1,4 @@
+{"file": "AGENTS.md", "reason": "必守规则正文：V2 离线兜底、V3 Agent 定位为日报与解释、V5 只读边界、输出风格"}
+{"file": ".trellis/spec/backend/host-nsh-protocol.md", "reason": "报告页读取与文件路径约定，改动不得与既有 NSH 协议描述冲突"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认改动落在 velaguard-lvgl 主线链接的源文件内"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "判断日报发起是否复用既有 report worker 与快照机制而非另建线程"}

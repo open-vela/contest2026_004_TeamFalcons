@@ -8,6 +8,7 @@ foreach ($ComPort in $Ports) {
   Write-Host "`n########## $ComPort ##########"
   try {
     $port = New-Object System.IO.Ports.SerialPort
+    $port.Encoding = [System.Text.Encoding]::UTF8
     $port.PortName = $ComPort
     $port.BaudRate = $Baud
     $port.ReadTimeout = 8000

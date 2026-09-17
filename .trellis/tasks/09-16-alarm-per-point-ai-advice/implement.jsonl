@@ -1,0 +1,4 @@
+{"file": "AGENTS.md", "reason": "必守规则正文：V2 离线确定性、V5 AI 输出标注与校验、输出风格"}
+{"file": ".trellis/spec/frontend/component-guidelines.md", "reason": "LVGL 9 可点击容器陷阱与 headless 测试骨架，行内新增标签必须遵守"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认改动落在作品主线固件内"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "建议文本从 worker 线程到页面渲染跨了后端与 UI 两层，需核对线程与缓存契约"}

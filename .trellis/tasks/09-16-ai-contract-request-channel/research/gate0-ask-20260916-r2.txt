@@ -1,0 +1,133 @@
+
+=== vgprovision status === len=1162
+vgprovision status
+vgprovision: OK file=/data/velaguard/provision/llm_secrets.v1
+nsh> [K[llm] Response: 54 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=54, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6aab095b00000000] iter=2 tool=run_shell latency=3860ms llm=ok backend=0
+[agent] Tool call: run_shell args={"command": "vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0"}
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0
+[shell] popen(vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0) exit=-1, 78 bytes
+[shell] Result: 107 bytes (exit=0)
+[agent] Tool run_shell result: 107 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 17672 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Response: 48 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=48, tool_use=1, calls=1
+[agent] Tool iter 4: 1 calls
+[trace:6aab095b00000000] iter=3 tool=run_shell latency=2420ms llm=ok backend=0
+[agent] Tool call: run_shell args={"command": "vgmodbus -a 1 -r 0 -c 2 -n 3 -i 0"}
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus -a 1 -r 0 -c 2 -n 3 -i 0
+
+
+=== ai_agent --daemon & === len=48
+ai_agent --daemon &
+ai_agent [86:100]
+nsh> [K
+
+=== ai_agent === len=105
+ai_agent
+[agent] Attaching CLI to daemon agent
+[cli] NSH CLI started. Type 'help' for commands.
+vela> 
+
+=== net_status === len=934
+net_status
+[netmgr] Found iface eth0 addr 192.168.137.39
+Network connected: yes
+[netmgr] Found iface eth0 addr 192.168.137.39
+IP: 192.168.137.39
+vela> [llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 6: 1 calls
+[trace:6aab095b00000000] iter=5 tool=run_shell latency=2120ms llm=ok backend=0
+[agent] Tool name repeat limit (run_shell called 5 times)
+[agent] Tool call: run_shell args={"command": "vgstats dump 1"}
+[tools] Executing tool: run_shell
+[shell] Executing: vgstats dump 1
+[shell] popen(vgstats dump 1) exit=-1, 103 bytes
+[shell] Result: 131 bytes (exit=0)
+[agent] Tool run_shell result: 131 bytes
+[trace:6aab095b00000000] END status=fail iters=6 tools=6 llm_ms=17460 elapsed=198s backend=0
+[agent] Dispatching response �� cli:console
+
+[Agent]: Sorry, I en[agent] [Agent]: Sorry, I encountered an error.
+countered an error.
+vela> 
+
+=== config_show === len=937
+config_show
+=== Current Configuration ===
+  Feishu AppID  : (not set)
+  Feishu Secret : (not set)
+  API Key       : tp-c****
+  Model         : mimo-v2.5
+  LLM Host      : token-plan-cn.xiaomimimo.com
+  LLM Path      : /v1/chat/completions
+  Vision Model  : (not set)
+  Vision Host   : (not set)
+  Vision Key    : (not set)
+  Proxy Host    : (not set)
+  Proxy Port    : (not set)
+  SerpAPI Key   : (not set)
+  Exa Key       : (not set)
+  Tavily Key    : (not set)
+  News Key      : (not set)
+  Tavily Key    : (not set)
+  Gateway       : (not set)
+  GW Port       : (not set)
+  GW Token      : (not set)
+  MQTT Broker   : (not set)
+  Volc AppKey   : (not set)
+  Volc Token    : (not set)
+  Volc API Key  : (not set)
+  Volc Speaker  : (not set)
+[netmgr] Found iface eth0 addr 192.168.137.39
+[netmgr] Found iface eth0 addr 192.168.137.39
+Network: connected / 192.168.137.39
+=============================
+vela> 
+
+=== net_test === len=275
+net_test
+Testing HTTPS to www.baidu.com...
+[vela_tls] Handshake start: Host=www.baidu.com, UNIX=1789594175
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256
+SUCCESS! HTTP Status: 200
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+=== ask 读取从站1温湿度，请用 run_shell 执行 vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0 === len=1538
+ask 读取从站1温湿度，请用 run_shell 执行 vgmodbus[netmgr] Found iface eth0 ad -adr 192.168.137.39
+ 1 -r 0 -c [agent] ask: 读取从站1温湿度，请用 run_shell 执行 vgmodbus -a 1 -r
+2 -n 1 -i 0
+Ask queued; agent_[agent] Processing message from cli:console
+loop starting in background...
+Sent to agent: 读取从站1温湿度，请用 run_shell 执行 vgmodbus -a 1 -r
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aab0a9c35c3b13a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 16052 bytes)
+[agent] Dispatching response �� cli:console
+
+[Agent]: ��[agent] [Agent]: �Եȣ�������...
+�ȣ�������...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789594268
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] body write retry 1 at 0/16052 ret=-0x004e errno=12 fl=0x3
+[vela_tls] body write retry 64 at 0/16052 ret=-0x004e errno=107 fl=0x3
+[vela_tls] Write request failed: -3
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6aab0a9c35c3b13a] iter=0 tool=(none) latency=8220ms llm=fail backend=0
+[trace:6aab0a9c35c3b13a] END status=fail iters=1 tools=0 llm_ms=8220 elapsed=8s backend=0
+[agent] Dispatching response �� cli:console
+
+[Agent]: Sorry,[agent] [Agent]: Sorry, I encountered an error.
+ I encountered an error.
+vela> 

@@ -1,0 +1,3 @@
+{"file": "AGENTS.md", "reason": "仓库必守规则正文：输出风格、C2 公共树改动归属、禁止改 vendor/、日志与测试要求"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "决定两个文件各自保留局部封顶助手还是抽公共头文件时复用这份判据"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认改动只落在 velaguard-lvgl 主线链接的 packages/ai_agent 内"}

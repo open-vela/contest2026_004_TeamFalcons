@@ -1,0 +1,96 @@
+########## boot settle len=596 ##########
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aab0fff00000000] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 17319 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789595647
+[agent] Dispatching response ¡ú cli:console
+
+[Agent]: ÈÃ?[agent] [Agent]: ÈÃÎÒ²éÒ»?²éÒ»ÏÂ...
+velÏÂ...a
+> [vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgtime: synced 2026-09-16 21:57:16
+
+
+########## vgagent status,vgagent ask hello,vgagent status ########## len=3733
+vgagent status,vgagent ask hello,vgagent status
+nsh: vgagent: command not found
+nsh> [K[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6aab0fff00000000] iter=0 tool=run_shell latency=85150ms llm=ok backend=0
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus -r -a 1 -f 3 -l 2
+Usage: vgmodbus [-d <dev>] [-a <addr>] [-r <start>] [-c <qty>]
+          [-t 3|[shell] popen(vgmodbus -r -a 1 -f 3 -l 2) exit=-1, 0 bytes
+4] [-n <loops>] [-[shell] Result: i <secs>]
+Defaults: de84 bytes (exit=1)
+v=/dev/rs485 addr=1 start=0 qty=4 fc=3 loops=0 interval=1s
+  -t 3  Read Holding Registers (FC 03)
+  -t 4  Read Input Registers   (FC 04)
+  -n 0  poll forever
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus -s
+Usage: vgmodbus [-d <dev>] [-a <addr>] [-r <start>] [-c <qty>]
+          [-t 3|4] [-n <[sheloops>] [-i <secll] popen(vgmodbus -s) exit=-1, 0 bytes
+s>]
+Defaults: dev[shell] Result: 84 bytes (exit=1)
+=/dev/rs485 addr=1 start=0 qty=4 fc=3 loops=0 interval=1s
+  -t 3  Read Holding Registers (FC 03)
+  -t 4  Read Input Registers   (FC 04)
+  -n 0  poll forever
+[agent] Tool run_shell result: 84 bytes
+[agent] Tool run_shell result: 84 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 17978 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789595916
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Response: 87 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=87, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6aab0fff00000000] iter=1 tool=run_shell latency=4080ms llm=ok backend=0
+[tools] Executing tool: run_shell
+[shell] Blocked dangerous command: ps | grep -i modbus
+[tools] Executing tool: run_shell
+[shell] Executing: ls /dev/ttyS*
+[shell] Result: 98 bytes (exit=1)
+[agent] Tool run_shell result: 63 bytes
+[agent] Tool run_shell result: 98 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 18719 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 3: 2 calls
+[trace:6aab0fff00000000] iter=2 tool=run_shell latency=4660ms llm=ok backend=0
+[tools] Executing tool: run_shell
+[shell] Executing: ps
+[shell] Result: 652 bytes (exit=0)
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus -r -a 1 -f 3 -l 2
+Usage: vgmodbus [-d <dev>] [-a <addr>] [-r <start>] [-c <qty>]
+          [-t 3[shell] popen(vgmodbus -r -a 1 -f 3 -l 2) exit=-1, 0 bytes
+|4] [-n <loops>] [sh[-i <secs>]
+Dell] Result: e84 bytes (exit=1)
+faults: dev=/dev/rs485 addr=1 start=0 qty=4 fc=3 loops=0 interval=1s
+  -t 3  Read Holding Registers (FC 03)
+  -t 4  Read Input Registers   (FC 04)
+  -n 0  poll forever
+[agent] Tool run_shell result: 652 bytes
+[agent] Tool run_shell result: 84 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 19953 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Response: 144 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=144, tool_use=1, calls=2
+[agent] Tool iter 4: 2 calls
+[trace:6aab0fff00000000] iter=3 tool=run_shell latency=6600ms llm=ok backend=0
+[tools] Executing tool: run_shell
+[shell] Executing: vgmodbus
+[tools] Executing tool: run_shell
+[shell] Executing: lvctl
+nsh: lvctl: command not found
+[shell] popen(lvctl) exit=-1, 0 bytes
+[shell] Result: 84 bytes (exit=1)
+[agent] Tool run_shell result: 84 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+

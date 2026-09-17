@@ -2,6 +2,7 @@
 param([string]$ComPort = "COM3", [int]$Baud = 115200)
 $ErrorActionPreference = "Stop"
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = $Baud
 $port.ReadTimeout = 8000

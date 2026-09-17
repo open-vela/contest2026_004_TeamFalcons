@@ -26,6 +26,7 @@ typedef struct {
     lv_obj_t * row_name[ALARM_LIST_MAX];
     lv_obj_t * row_chip[ALARM_LIST_MAX];
     lv_obj_t * row_sum[ALARM_LIST_MAX];
+    lv_obj_t * row_ai[ALARM_LIST_MAX];
     lv_obj_t * row_mute[ALARM_LIST_MAX];
     lv_obj_t * row_ack[ALARM_LIST_MAX];
     char row_id[ALARM_LIST_MAX][VG_SENSOR_ID_MAX];
@@ -168,15 +169,16 @@ static void fmt_f1(char * buf, size_t n, float v)
     lv_snprintf(buf, n, "%d.%d", vi, vf);
 }
 
-static void set_ai_text(const char * text)
+static void set_ai_block(const char * head, const char * body)
 {
     if(s_alarm_ui.ai_lab == NULL) {
         return;
     }
-    lv_label_set_text(s_alarm_ui.ai_lab, text);
-    if(s_alarm_ui.ai_head) {
+    if(s_alarm_ui.ai_head != NULL) {
+        lv_label_set_text(s_alarm_ui.ai_head, head);
         lv_obj_clear_flag(s_alarm_ui.ai_head, LV_OBJ_FLAG_HIDDEN);
     }
+    lv_label_set_text(s_alarm_ui.ai_lab, body);
     lv_obj_clear_flag(s_alarm_ui.ai_lab, LV_OBJ_FLAG_HIDDEN);
 }
 
@@ -272,6 +274,7 @@ static lv_obj_t * make_alarm_row(lv_obj_t * parent, int idx)
     lv_obj_t * name;
     lv_obj_t * chip;
     lv_obj_t * sum;
+    lv_obj_t * ai;
 
     row = lv_obj_create(parent);
     lv_obj_remove_flag(row, LV_OBJ_FLAG_SCROLLABLE);
@@ -325,10 +328,23 @@ static lv_obj_t * make_alarm_row(lv_obj_t * parent, int idx)
     lv_obj_set_style_text_font(sum, vg_font_small(), 0);
     lv_obj_set_style_text_color(sum, vg_color_muted(), 0);
 
+    /* AI advice line, one per row, hidden until there is advice for this
+     * exact alarm episode.  Keeping it a separate line rather than replacing
+     * the rule summary means the deterministic numbers never disappear: the
+     * row simply grows by one line while advice is available. */
+    ai = lv_label_create(row);
+    lv_label_set_long_mode(ai, LV_LABEL_LONG_DOT);
+    lv_obj_set_width(ai, lv_pct(100));
+    lv_label_set_text(ai, "");
+    lv_obj_set_style_text_font(ai, vg_font_small(), 0);
+    lv_obj_set_style_text_color(ai, vg_color_info(), 0);
+    lv_obj_add_flag(ai, LV_OBJ_FLAG_HIDDEN);
+
     s_alarm_ui.row_obj[idx] = row;
     s_alarm_ui.row_name[idx] = name;
     s_alarm_ui.row_chip[idx] = chip;
     s_alarm_ui.row_sum[idx] = sum;
+    s_alarm_ui.row_ai[idx] = ai;
     return row;
 }
 
@@ -402,6 +418,67 @@ static void set_row_texts(int idx, const vg_alarm_t * a)
         if(a->muted) lv_obj_add_state(s_alarm_ui.row_mute[idx], LV_STATE_DISABLED);
         else lv_obj_remove_state(s_alarm_ui.row_mute[idx], LV_STATE_DISABLED);
     }
+    if(s_alarm_ui.row_ai[idx]) {
+        vg_ai_advice_entry_t adv;
+        uint32_t epoch = (s != NULL) ? s->al_epoch : 0;
+
+        /* One line from the validated cache, keyed to this exact alarm
+         * episode.  A miss hides the line rather than inventing text, so
+         * the row falls back to exactly today's appearance. */
+        if(vg_ui_alarm_advice_get(a->sensor_id, epoch, &adv)) {
+            char ai[96];
+            lv_snprintf(ai, sizeof(ai), "AI · %s", adv.sum);
+            lv_label_set_text(s_alarm_ui.row_ai[idx], ai);
+            lv_obj_clear_flag(s_alarm_ui.row_ai[idx], LV_OBJ_FLAG_HIDDEN);
+        }
+        else {
+            /* Hide and clear: hiding is what the user sees, clearing keeps
+             * the widget tree free of advice that no longer applies. */
+            lv_label_set_text(s_alarm_ui.row_ai[idx], "");
+            lv_obj_add_flag(s_alarm_ui.row_ai[idx], LV_OBJ_FLAG_HIDDEN);
+        }
+    }
+}
+
+/* AI advice block for the selected alarm.
+ *
+ * The only source of AI text is a cache entry the board already validated
+ * against the VGADV1 contract, so there is no path here that can invent an
+ * explanation.  Everything else -- still generating, failed, offline, or a
+ * plain miss -- keeps the deterministic rule summary that render_detail
+ * just built, and only the heading changes to say why. */
+static void render_ai_detail(const vg_alarm_t * a, const vg_sensor_t * as,
+                             const char * rule_text)
+{
+    vg_ai_advice_entry_t adv;
+    uint32_t epoch = (as != NULL) ? as->al_epoch : 0;
+    char body[640];
+    const char * head;
+
+    if(as != NULL && vg_ui_alarm_advice_get(a->sensor_id, epoch, &adv)) {
+        lv_snprintf(body, sizeof(body),
+                    "【AI 建议】%s\n【依据】%s\n【建议关注】%s%s",
+                    adv.sum,
+                    adv.ev[0] ? adv.ev : "（未给出）",
+                    adv.att[0] ? adv.att : "（未给出）",
+                    adv.unresolved ? "\n证据不足，未能给出确定结论" : "");
+        set_ai_block("OPENVELACLAW 建议（AI 推测）", body);
+        return;
+    }
+
+    switch(vg_ui_alarm_advice_state()) {
+        case VG_UI_ADV_PENDING:
+            head = "AI 建议生成中，暂显示规则摘要";
+            break;
+        case VG_UI_ADV_ERROR:
+            head = "AI 建议不可用，显示规则摘要";
+            break;
+        default:
+            head = "规则摘要（本地）";
+            break;
+    }
+
+    set_ai_block(head, rule_text);
 }
 
 /* Detail section bound to the selected alarm (NULL = empty state) */
@@ -420,7 +497,7 @@ static void render_detail(const vg_alarm_t * a)
         }
         vg_metric_row_set_value(s_alarm_ui.metric_rows[4], "--");
         lv_label_set_text(s_alarm_ui.hist_lab, "历史: --");
-        set_ai_text("【规则摘要】当前无活动告警。");
+        set_ai_block("规则摘要（本地）", "【规则摘要】当前无活动告警。");
         return;
     }
 
@@ -494,7 +571,7 @@ static void render_detail(const vg_alarm_t * a)
         lv_snprintf(buf, sizeof(buf),
                     "【规则摘要】有活动告警，但本地尚无该点读数。");
     }
-    set_ai_text(buf);
+    render_ai_detail(a, as, buf);
 }
 
 static void refresh_alarm(void * user)

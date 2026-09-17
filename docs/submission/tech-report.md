@@ -13,7 +13,7 @@
 
 ## 2、摘要
 
-VelaGuard 是 STM32H750B-DK 上的 Modbus 现场值守网关，同板用 openvela 运行 LVGL 界面与 openvelaClaw。采集、判定、告警与显示由本地 C 代码完成，断网照常；联网后 openvelaClaw 按 Skill 解释告警，并经 MQTT 四类主题上报云看板。重点是本地安全环、滑窗失败率判定、试读后人工确认与边界明确的工具。已提交公共仓 PR 9 个；带屏静止首页在约 80 秒窗口内的界面提交由 158 次降至 9 次；无屏板端一次日报耗时 115 秒，完成 6 轮 6 次工具调用。
+VelaGuard 是 STM32H750B-DK 上的 Modbus 现场值守网关，同板用 openvela 运行 LVGL 界面与 openvelaClaw。采集、判定、告警与显示由本地 C 代码完成，断网照常；联网后 openvelaClaw 按 Skill 解释告警，并经 MQTT 四类主题上报云看板。重点是本地安全环、滑窗失败率判定、试读后人工确认与边界明确的工具。已提交公共仓 PR 9 个；带屏静止首页在约 80 秒窗口内的界面提交由 158 次降至 9 次；板端自主发起的一轮日报在带屏固件上耗时 194 秒，完成 4 次工具调用并写出日报文件，告警逐点建议同样由板端发起并经 C 校验后上屏。
 
 专属仓为 [contest2026_004_TeamFalcons](https://github.com/open-vela/contest2026_004_TeamFalcons)。
 
@@ -73,7 +73,7 @@ VelaGuard 是 STM32H750B-DK 上的 Modbus 现场值守网关，同板用 openvel
 
 openvelaClaw 的 llm_proxy 发起大模型请求，通过 OpenAI 兼容 HTTPS 接口直连 MiMo。设备凭据由 vgprovision 管理并加密保存在 eMMC，产品固件不内置可用 API key。该选择使 LLM 请求不依赖另建的 MQTT AI 转发服务。 [7](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_provision.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
-本地有周期采集、规则告警、配置读写、运行统计和 LVGL 显示。断网时这些路径不依赖模型；告警解释和自然语言查询才需要 MiMo 在线。屏幕上的运行报告由固件统计，联网生成的解释与它分开。 [1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [5](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_runtime.c)
+本地有周期采集、规则告警、配置读写、运行统计和 LVGL 显示。断网时这些路径不依赖模型；告警解释和自然语言查询才需要 MiMo 在线。屏幕上的报告分两种来源：模型生成的当日日报经板端校验后显示，固件统计的 runtime-report.md 作为断网与校验失败时的兜底，页面会写明当前是哪一种。 [1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [5](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_runtime.c)
 
 有两项方案在设计阶段被否决，理由都是现场可靠性。一是波特率矩阵扫描：本机只有一个串口，任一时刻只能工作在一种波特率上，列入更多档位只会拉长扫描时间而不提高命中率，当前固定 9600。二是让模型识别设备型号来推断寄存器语义：工业现场以供应商手册为准，模型识别无法保证准确率，因此点表仍由人工按手册配置并用试读验证。 [44](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/logs/Foleaf/2026-08-25/cursor__2d65c3b9-8cdc-4237-bfcb-8493004ff772.jsonl)
 
@@ -107,7 +107,7 @@ RJ45 是主链路，ESP-01S 备用，固件维护连接状态、健康检查和�
 
 推理在云端完成，设备端负责会话、Skill 加载与工具调用，本节的量化集中在接口、轮次与工具次数。MiMo 通过 /v1/chat/completions 接口和 Bearer 鉴权提供推理；openvelaClaw 在板上维护会话、加载 Skill，并运行 ReAct 循环。Skill 是约定任务步骤与约束的 Markdown 文件。ReAct 指模型根据工具返回的结果继续推理，直到形成回答或达到轮次限制。 [7](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_provision.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
-以告警解释为例，Skill 规定先读取 pending_alarm.txt，再查询帧统计、寄存器和配置摘要，随后把说明写入 last_alarm.md。数据缺失必须保留不确定性，不能用推测补齐真实读数。工具调用与拦截通过框架的系统日志记录。 [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
+以告警解释为例，Skill 规定先用帧统计、寄存器和配置摘要取证，再把逐点说明写入 alarm_advice.txt；告警数据随请求下发，避免为取数据单独读文件而触发框架的单文件短路。数据缺失必须保留不确定性，不能用推测补齐真实读数。工具调用与拦截通过框架的系统日志记录。 [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
 #### 阈值与离线的确定性判定
 
@@ -161,9 +161,9 @@ eMMC 上的 FAT 文件系统不提供写入原子性，因此配置采用双槽�
 
 图形部分由 LVGL 页面、模型快照和显示触摸驱动配合完成。采集结果通过受保护的快照交给 UI，报告读写和 pending 文件操作由后台工作线程处理。页面按变化刷新，保留固定对象和监听器，减少静止页面的重复提交。趋势页保留单点历史曲线与阈值线，板端历史深度 128 点，可切换最近 60 点窗口，越限点单独着色。 [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [13](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/09-13-hmi-ux-performance/research/final-results.md) [14](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/09-13-hmi-runtime-render/research/runtime-results.md) [25](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/gui/main/ui/pages/vg_page_trend.c)
 
-对照赛道要求，本作品落地了 openvela 系统能力中的图形与 AI 两项，多媒体能力未使用。图形部分使用 openvela 的 LVGL 图形栈、显示与触摸驱动，以及自绘的现场页面；AI 部分使用 openvelaClaw 框架的 ReAct 循环、Markdown Skill、Tool 与 Shell 调用、心跳主动任务和 NSH 交互渠道。 [19](https://github.com/open-vela/packages_ai_agent/pull/32)
+对照赛道要求，本作品落地了 openvela 系统能力中的图形与 AI 两项，多媒体能力未使用。图形部分使用 openvela 的 LVGL 图形栈、显示与触摸驱动，以及自绘的现场页面；AI 部分使用 openvelaClaw 框架的 ReAct 循环、Markdown Skill、Tool 与 Shell 调用，主动轮次由板端文件工作线程发起（心跳线程保留但不再触发模型调用），交互渠道为 NSH。 [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
-赛题要的是能主动、会执行的嵌入式 AI Agent 应用。按官方的主动类型划分，本作品覆盖三类：告警产生后自动解释属事件主动，定时生成运行报告属定时主动，越限与离线判定属阈值主动；前两类与执行相连，产物分别是解释文件和报告文件。硬件方面，官方说明可以基于已适配 openvela 的硬件二次开发，本作品正是在这一范围内使用 STM32H750B-DK。 [19](https://github.com/open-vela/packages_ai_agent/pull/32)
+赛题要的是能主动、会执行的嵌入式 AI Agent 应用。按官方的主动类型划分，本作品覆盖三类：告警集合变化后板端自动发起解释属事件主动，发现当天还没有日报时板端按天主动生成属定时主动，越限与离线判定属阈值主动；前两类的触发都来自板端而不是用户提问，产物分别是建议文件和日报文件。硬件方面，官方说明可以基于已适配 openvela 的硬件二次开发，本作品正是在这一范围内使用 STM32H750B-DK。 [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
 AI 能力使用 openvelaClaw 的 llm_proxy、Skill 加载、心跳服务和 NSH 交互渠道。带屏配置将 openvelaClaw 主循环栈设为 32 KiB、上下文和流缓冲各设为 4 KiB，并按需启动主循环。 [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
@@ -192,9 +192,9 @@ velaguard_app_main 托管 NSH 与产品业务，初始化配置和网络管理�
 
 周期采集读取已确认点表，规则计算当前状态，形成本地告警；HMI 展示告警，后台任务写入主要告警对应的 pending_alarm.txt。告警恢复后，由本地逻辑清理待处理文件并记录状态变化。 [1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c)
 
-HEARTBEAT.md 规定发现 pending 后调用告警 Skill；openvelaClaw 取证并输出 last_alarm.md。心跳触发与手动 ask 是两种入口，这条事件主动链路的板端完整验收见 3.5。 [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [12](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/archive/2026-08/08-30-stage1-agent-ops/research/agent-ops-notes.md)
+告警集合发生变化时，HMI 的文件工作线程按 alarm_interpretation Skill 发起一轮，请求里带全量告警数据与上电随机数、轮次序号；openvelaClaw 调只读命令取证后写 alarm_advice.txt，板端解析校验通过才放进内存缓存，告警页行内显示一行短建议、详情区显示完整解释并标注 AI 推测。心跳线程在 HMI 构建下不再直接发起模型轮次，避免两个不同步的触发源抢同一个回调槽。这条事件主动链路的板端验收见 3.5。 [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c)
 
-vg_runtime 累计本次上电以来的通信质量、点位在线时间和异常记录。报告页请求读取或刷新时，后台任务写入 runtime-report.md，再返回文本快照。operations_report Skill 读取并复述这份内容，不负责覆盖它。 [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [5](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_runtime.c)
+vg_runtime 累计本次上电以来的通信质量、点位在线时间和异常记录，仍是报告页的离线兜底来源：文件工作线程在时钟同步、当天还没有日报时主动发起一轮，operations_report Skill 用 get_current_time、vgruntime dump、vgstats dump 取真实数字，写出 daily-当日日期.md；板端校验首行标记、日期、来源与长度后采纳，报告页标题显示 OPENVELACLAW 署名，否则回退 runtime-report.md 并标注本地来源。runtime-report.md 在 C 层对 Agent 只读，兜底内容不会被覆盖。 [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [5](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_runtime.c)
 
 已确认点表的周期快照按 status、telemetry、alarm、point_table 四类主题上报，由网络管理线程统一发布；采集与界面线程只入队，队列满时丢弃 telemetry、保留 alarm。四类主题的保留策略与投递等级不同：状态类周期发布并保留最后一条，遥测类不保留、按周期刷新最新一帧，告警类用至少一次投递、在内存中排队 8 条并在链路恢复后补发（断电不补），点表类保留最后一份已确认表。发送与接收缓冲分别为 8 KiB 与 512 字节，会话采用清理式连接，保活 60 秒。云看板只读订阅这四类主题，写入 SQLite 后供网页查询。 [8](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_mqtt_session.c) [20](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/velaguard-mqtt-contract.md) [28](https://github.com/FoLeaf/velaguard_mimo2mqtt) [29](https://velaguard.19y.cc/) [42](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/logs/Foleaf/2026-08-18/cursor__2b954b8a-3d21-4fb8-8fbd-54684a8360f1.jsonl)
 
@@ -271,8 +271,8 @@ XIP 指程序直接从外部闪存取指执行，QSPI 启动解决片内启动�
 
 | 文件 | 触发与数据 | 输出 |
 | --- | --- | --- |
-| alarm_interpretation.md | 告警提问或待处理告警；读取 pending、统计、寄存器和配置摘要 | 解释文本写入 last_alarm.md |
-| operations_report.md | 用户询问运行概况；读取固件生成的 runtime-report.md | 口述数据与异常，不覆盖原报告 |
+| alarm_interpretation.md | 板端在告警集合变化时发起，或用户问告警含义；数据随请求下发，再用统计、寄存器和配置摘要取证 | 逐点建议写入 alarm_advice.txt（VGADV1 行式格式），校验通过后上屏 |
+| operations_report.md | 板端发现当天无日报时主动请求，或用户询问运行概况 | 用只读工具取真实数字，写出 daily-当日日期.md；不覆盖固件的 runtime-report.md |
 | modbus_query.md | 用户查询寄存器、通信质量或运行累计；调用查询工具 | 返回工具支持的数据 |
 
 三份 Skill 均为 Markdown 文件，由固件首次启动写入 /data/agent/skills/，约定任务过程，C 层工具实现负责真正的访问限制。自然语言查数是补充交互，使用演示见提交的演示视频。 [4](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_agent_seed.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
@@ -301,7 +301,7 @@ XIP 指程序直接从外部闪存取指执行，QSPI 启动解决片内启动�
 
 #### 复现入口
 
-需要包含 nuttx、apps 和 packages 的完整 openvela 工作区，并按专属仓 manifest 接入产品目录。在本仓根目录执行 bash scripts/build.sh，默认构建 velaguard-lvgl。公共树改动按表 4 核对；本仓构建脚本不会替公共树应用补丁。主机测试入口为 make -C app/velaguard/host_tests test，当前 12 个用例覆盖网络策略、配置存储、帧统计、运行统计、探查、点表、告警判定、时间同步、HMI 性能、运行渲染、交互调度与 MQTT 载荷；无头界面用例用 ctest 运行，覆盖告警、趋势、夹具、生命周期刷新与交互检查。上位机与云看板各自按仓内 README 运行。本仓源码遵循 Apache 2.0，内置的 nanoMODBUS 保留其 MIT 许可。 [16](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/scripts/build.sh) [23](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/host_tests/Makefile) [30](https://github.com/FoLeaf/velaguard_host)
+需要包含 nuttx、apps 和 packages 的完整 openvela 工作区，并按专属仓 manifest 接入产品目录。在本仓根目录执行 bash scripts/build.sh，默认构建 velaguard-lvgl。公共树改动按表 4 核对；本仓构建脚本不会替公共树应用补丁。主机测试入口为 make -C app/velaguard/host_tests test，当前 13 个用例覆盖网络策略、配置存储、帧统计、运行统计、探查、点表、告警判定、时间同步、AI 文本契约、HMI 性能、运行渲染、交互调度与 MQTT 载荷；无头界面用例用 ctest 运行，覆盖告警、趋势、夹具、生命周期刷新与交互检查。上位机与云看板各自按仓内 README 运行。本仓源码遵循 Apache 2.0，内置的 nanoMODBUS 保留其 MIT 许可。 [16](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/scripts/build.sh) [23](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/host_tests/Makefile) [30](https://github.com/FoLeaf/velaguard_host)
 
 ### 3.5 系统测试与结果分析
 
@@ -313,11 +313,13 @@ XIP 指程序直接从外部闪存取指执行，QSPI 启动解决片内启动�
 
 | 项目与日期 | 方法或条件 | 实际结果与证据 |
 | --- | --- | --- |
-| 主机测试<br>2026-09-15 复核 | app/velaguard/host_tests | 12 个用例编译运行通过，覆盖网络策略、配置存储、帧统计、运行统计、探查、点表、告警判定、时间同步、HMI 性能、运行渲染、交互调度与 MQTT 载荷。[23](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/host_tests/Makefile) |
+| 主机测试<br>2026-09-17 复核 | app/velaguard/host_tests | 13 个用例编译运行通过，覆盖网络策略、配置存储、帧统计、运行统计、探查、点表、告警判定、时间同步、AI 文本契约、HMI 性能、运行渲染、交互调度与 MQTT 载荷；其中 AI 文本契约用例为 2026-09-17 新增。[23](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/host_tests/Makefile) |
 | 无头界面测试<br>2026-09-13 18:28 | ctest，hmi-headless | 原始记录 5/5 通过，覆盖告警、趋势、夹具、生命周期刷新和交互检查；不能代替实体触摸验收。[11](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/report-evidence.json) |
 | MQTT 四主题板验<br>2026-09-14 11:14 | 板端串口脚本断言 | PASS=4 FAIL=0：设备标识由 UID 派生、vgnet 显示 mqtt=up、eth0 取得 192.168.137.47、运行日志出现 mqtt online。[20](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/velaguard-mqtt-contract.md)[21](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/mqtt-nsh-accept-20260914.log) |
 | 板端时间同步<br>2026-09-14 | 串口连续观察记录 | 16:16 至 21:17 约 5 小时，vgtime 校时成功 11 次，同段日志无断言失败或 panic。[22](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/vgtime-board-20260914.log) |
 | 带屏 openvelaClaw 自启<br>2026-09-13 | 启动串口日志 | 出现 ai_agent autostart ok、32768 字节栈和 daemon 启动信息；只证明服务自启。[11](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/report-evidence.json) |
+| 板端自主生成日报<br>2026-09-16 23:2x | 带屏固件，无人工提问 | 板端自行发起：日志 `vghmi: daily report requested` 与 `round submitted: 124 bytes`，工具行依次为 read_file、get_current_time、run_shell、run_shell、write_file，`END status=ok iters=4 tools=4 elapsed=194s`，产出 `daily-2026-09-16.md`（824 B），`vgagent status` 的 gen 由 0 增至 1。证据见本报告引用的任务 research 目录与串口记录。 |
+| 告警逐点建议<br>2026-09-16 23:0x | 带屏固件，从站 1 离线告警 | Agent 写的 `alarm_advice.txt` 1840 B，首行 `VGADV1`、`boot=30bda344 req=15 n=8`，8 条均为 `sev=offline`，`sum`/`ev`/`att` 三字段齐全且引用了 vgstats 与 vgmodbus 的实际观测；板端另有 `agent_tools.log` 记录每次工具调用。 |
 | 历史 openvelaClaw 日报<br>2026-08-30 | 无屏板端，手动 ask | END status=ok；6 轮、6 次工具调用，产生 1796 B 日报文件。[11](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/report-evidence.json)[12](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/archive/2026-08/08-30-stage1-agent-ops/research/agent-ops-notes.md)[31](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/logs/Foleaf/2026-08-30/cursor__5c92cac5-619d-4584-8c7f-3a6ae56c3286.jsonl) |
 | 点表确认与本地告警<br>2026-09-14 核查 | 代码、协议及历史用例 | 候选分离与 --confirm 检查存在，点表上限 32 点；完整人工试读确认与物理注入录像仍待补充。[1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c)[2](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vgpoint.c)[10](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/velaguard-host-nsh-protocol.md) |
 | 带屏工具轮次<br>2026-09-14 | 串口日志与故障转储 | 含工具轮次曾出现 openvelaClaw 任务 HardFault（mm_forcefree，CFSR=00000400），最后一次记录在 15:19；其后观察无复位。[3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c)[15](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/09-12-heartbeat-llm-round-system-wedge/prd.md)[24](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/hardfault-20260914.log)[43](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) |
@@ -386,11 +388,13 @@ VelaGuard 已经有一套以现场网关为中心的 openvela 固件，本地采
 
 #### 不足与后续重点
 
-带屏固件的含工具轮次仍有 HardFault 记录，最近一次的时间见表 6。触发路径已经定位：定时心跳与屏幕写入的唤醒文件会在界面侧把 ReAct 拉起来，在拼完 system prompt 后于内存释放路径崩溃，故障状态寄存器报出非精确总线错误（IMPRECISERR），整板静默。处置是切断界面侧启动模型的入口：界面后端不再生成心跳唤醒文件，定时心跳与屏幕操作都不再拉起 ReAct，日报页改为只写板端报告文件。其后约 5 小时连续观察无复位，但 32 KiB 栈配置下仍记录到同类故障，命令行发起的对话仍会进入同一条路径。事件主动解释、定时 openvelaClaw 日报和解释文件自动上屏也尚未完成完整验收，当前运行报告是固件统计结果。 [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [15](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/09-12-heartbeat-llm-round-system-wedge/prd.md) [19](https://github.com/open-vela/packages_ai_agent/pull/32) [24](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/hardfault-20260914.log) [43](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c)
+带屏固件的含工具轮次仍有 HardFault 记录，最近一次的时间见表 6。触发路径已经定位：定时心跳与屏幕写入的唤醒文件会在界面侧把 ReAct 拉起来，在拼完 system prompt 后于内存释放路径崩溃，故障状态寄存器报出非精确总线错误（IMPRECISERR），整板静默。处置是切断界面侧启动模型的入口：界面后端不再生成心跳唤醒文件，定时心跳与屏幕操作都不再拉起 ReAct，报告页不再发起生成，只读文件工作线程写出的报告。其后约 5 小时连续观察无复位，但 32 KiB 栈配置下仍记录到同类故障，命令行发起的对话仍会进入同一条路径。这条路径在 2026-09-16 复测中未再复现：板端自主发起的日报轮次与告警建议轮次都跑完并落盘，见 3.5 表 6 的两行板验记录。事件主动解释、板端自主日报与建议上屏已经落地并有板端证据，固件的 runtime-report.md 保留为断网与校验失败时的兜底来源。
+
+2026-09-17 连续运行数十轮后记录到另一类故障：Agent 的消息总线被灌满（`[bus] Queue full, dropping message`），此后所有请求递不进去，原因是上一轮 run_shell 派生的 `vgmodbus` 子进程没有返回，ReAct 循环停在那里不再消费总线；复位后恢复。这与 09-12 记录的心跳与 ReAct 卡死属同一类问题，已单独立案，不在本次交付范围内。板端一侧已把提交失败纳入退避，避免在那种状态下持续向队列投递。 [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [15](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/.trellis/tasks/09-12-heartbeat-llm-round-system-wedge/prd.md) [19](https://github.com/open-vela/packages_ai_agent/pull/32) [24](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/docs/submission/evidence/hardfault-20260914.log) [43](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c)
 
 实现层面还有三处不一致。告警规则目前有两份实现：界面模型里的滑窗离线判定已经上线，而独立的告警判定模块用的是连续失败计数，只被主机测试覆盖、尚未接入固件调用路径，后续将合并为一份实现。寄存器解码只实现了 int16 乘倍率，点表虽然支持 5 种数据类型与两种字序，但由人工选定，多候选的自动求解尚未实现。帧质量统计把帧间隔违规与异常码一并归入其他类，没有单独计数。 [1](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_alarm_eval.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [37](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/gui/main/ui/model/vg_model.c)
 
-安全边界还有待补强的部分。vgstats/vgnet 等命令目前只限制到命令级，未细化到子命令；文件写入范围与配置文件保护仍可收紧；试读结果与生效版本的强绑定、AI 输出 schema 校验和 AI 推测上屏标注尚未完整落实。其中 schema 指输出字段和类型必须符合预先规定的结构。 [2](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vgpoint.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
+安全边界已经补上的部分：命令限制细化到子命令（vgstats 与 vgruntime 只放行 dump、vgnet 只放行 status、vgcfg 只放行 dump），封住了 vgruntime report 这个可写任意路径的口子；固件的离线兜底产物 runtime-report.md 在 C 层对 Agent 只读；每次工具执行前追加审计行到 agent_tools.log；AI 上屏文本只来自通过板端 C 校验的缓存条目，标注为 AI 推测。其中 schema 指输出字段和类型必须符合预先规定的结构。仍待补强的是试读结果与生效版本的强绑定，以及文件写入范围与配置文件保护的进一步收紧。 [2](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vgpoint.c) [3](https://github.com/open-vela/contest2026_004_TeamFalcons/blob/dev-ai-contest-2026/app/velaguard/vg_ui_backend_board.c) [19](https://github.com/open-vela/packages_ai_agent/pull/32)
 
 24 小时稳定性、物理告警注入及恢复测试仍待完成。明文 MQTT 和测试 Broker 只按赛期演示定位；OTA、周报、故障归因规则库、Bridge、语音与屏幕点表编辑尚未交付。
 

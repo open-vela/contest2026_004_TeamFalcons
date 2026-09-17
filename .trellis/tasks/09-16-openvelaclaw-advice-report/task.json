@@ -1,0 +1,30 @@
+{
+  "id": "openvelaclaw-advice-report",
+  "name": "openvelaclaw-advice-report",
+  "title": "OPENVELACLAW 告警页逐点建议与真实生成日报",
+  "description": "告警页每条告警增加 OPENVELACLAW 的行内短建议与详情解释；日报改由板端 ai_agent 真实读 skill、调只读工具生成。父任务负责需求集、子任务地图与最终集成验收。",
+  "status": "planning",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-16",
+  "completedAt": null,
+  "branch": null,
+  "base_branch": "integrate-learn-vela-0912",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [
+    "09-16-ai-contract-request-channel",
+    "09-16-alarm-per-point-ai-advice",
+    "09-16-agent-authored-daily-report"
+  ],
+  "parent": null,
+  "relatedFiles": [],
+  "notes": "",
+  "meta": {}
+}

@@ -1,4 +1,4 @@
-# Stage1 LVGL HMI board accept (velaguard-lvgl = net+HMI @ COM3).
+﻿# Stage1 LVGL HMI board accept (velaguard-lvgl = net+HMI @ COM3).
 #   powershell.exe -ExecutionPolicy Bypass -File scripts/stage1_lvgl_hmi_accept.ps1
 
 param(
@@ -44,6 +44,7 @@ function Assert-Match {
 }
 
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = $Baud
 $port.ReadTimeout = 8000
@@ -156,7 +157,7 @@ try {
   $vgcfg = Send-Serial $port "vgcfg dump" 12
   Assert-Match "vgcfg dump responds" $vgcfg "seq="
 
-  $lsrep = Send-Serial $port "ls /data/agent/reports" 10
+  $lsrep = Send-Serial $port "ls /data/velaguard/reports" 10
   if ($lsrep -match "daily-") {
     Write-Host "[PASS] reports dir has daily file"
     $script:pass++
@@ -191,6 +192,27 @@ try {
   else {
     Write-Host "[PASS] C4 empty-or-pending (no points.json; LCD confirm still visual)"
     $script:pass++
+  }
+
+  # Per-point advice.  The page itself only reads a RAM cache, so the board
+  # evidence is the document the agent wrote plus the HMI worker's own log
+  # line; the rendering itself is covered by the headless alarm_check.
+  $adv = Send-Serial $port "ls /data/velaguard/reports/alarm_advice.txt" 8
+  if ($adv -match "alarm_advice\.txt") {
+    $c = Send-Serial $port "cat /data/velaguard/reports/alarm_advice.txt" 12
+    Assert-Match "advice document is VGADV1" $c.Text "VGADV1"
+  }
+  else {
+    Write-Host "[INFO] no alarm_advice.txt yet (no active alarm on the bench)"
+  }
+
+  $drain = Send-Serial $port "" 6
+  if ($boot -match "\[vgadvice\]" -or $drain.Text -match "\[vgadvice\]") {
+    Write-Host "[PASS] HMI advice worker logged its rounds"
+    $script:pass++
+  }
+  else {
+    Write-Host "[INFO] no [vgadvice] line yet (worker only logs once an alarm is up)"
   }
 
   Write-Host "`n=== Summary: pass=$($script:pass) fail=$($script:fail) ==="

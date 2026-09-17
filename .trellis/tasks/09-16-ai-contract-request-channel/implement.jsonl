@@ -1,0 +1,5 @@
+{"file": "AGENTS.md", "reason": "必守规则正文：V5 要求只读权限与参数上限落在 C 实现、C2 公共树改动归属、输出风格"}
+{"file": ".trellis/spec/backend/quality-guidelines.md", "reason": "偏移不变量与截断日志要求；请求构造与解析器的写入必须按同一套封顶写法"}
+{"file": ".trellis/spec/backend/firmware-mainline.md", "reason": "确认改动只落在 velaguard-lvgl 主线链接的源文件内"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "契约模块要同时被 app/velaguard 与 gui 两侧引用，需跨层核对 include 路径与结构体一致性"}
+{"file": ".trellis/spec/guides/code-reuse-thinking-guide.md", "reason": "判断请求通道与既有 report worker 调度是否该复用同一线程与状态机"}

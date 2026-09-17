@@ -91,6 +91,50 @@ int main(int argc, char ** argv)
     n = vg_model_collect_alarms(list, 16);
     ok &= hg_expect(n == 3, "warn scenario yields 3 alarm rows");
 
+    /* 7) AI advice, keyed to the selected alarm's episode.  The board
+     *    hands the page a validated entry and nothing else; a miss must
+     *    leave the deterministic rule summary in place. */
+    vg_model_set_scenario(VG_SCENARIO_CRIT);
+    hg_pump(30);
+    n = vg_model_collect_alarms(list, 16);
+    ok &= hg_expect(n > 0, "crit scenario back for the advice check");
+
+    if(n > 0) {
+        const vg_sensor_t * s = vg_model_get_sensor(list[0].sensor_id);
+        vg_ai_advice_entry_t adv;
+
+        memset(&adv, 0, sizeof(adv));
+        snprintf(adv.id, sizeof(adv.id), "%s", list[0].sensor_id);
+        adv.sev = VG_AI_SEV_CRIT;
+        adv.epoch = (s != NULL) ? s->al_epoch : 0;
+        snprintf(adv.sum, sizeof(adv.sum), "先确认现场积水并检查排水");
+        snprintf(adv.ev, sizeof(adv.ev), "当前值达到点表阈值且持续未恢复");
+        snprintf(adv.att, sizeof(adv.att), "检查地漏与排水泵");
+
+        vg_ui_backend_mock_set_advice(&adv, 1);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "07_alarm_ai_advice");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI · ", NULL, NULL) != NULL,
+                        "row shows the AI advice line");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"OPENVELACLAW", NULL, NULL) != NULL,
+                        "detail head attributes the advice to OPENVELACLAW");
+
+        /* Same point, next alarm episode: adding one to the epoch is
+         * exactly what a re-raised alarm does, and the stale advice must
+         * stop matching. */
+        adv.epoch += 1;
+        vg_ui_backend_mock_set_advice(&adv, 1);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "08_alarm_ai_stale_epoch");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI · ", NULL, NULL) == NULL,
+                        "stale epoch hides the advice line");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"规则摘要（本地）",
+                                    NULL, NULL) != NULL,
+                        "detail head falls back to the rule summary");
+
+        vg_ui_backend_mock_set_advice(NULL, 0);
+    }
+
     printf("\nalarm_check: %s (%d failures)\n",
            ok ? "ALL PASS" : "FAILURES PRESENT", hg_failures());
     return ok ? 0 : 1;

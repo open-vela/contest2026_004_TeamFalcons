@@ -1,4 +1,4 @@
-# Open all 32 VelaGuard Modbus Slave windows (NN_<sensor>.mbs).
+﻿# Open all 32 VelaGuard Modbus Slave windows (NN_<sensor>.mbs).
 #
 # IMPORTANT: Mbslave.Document COM windows are owned by this process. If the
 # script exits, every window closes. This script ALWAYS holds until you press

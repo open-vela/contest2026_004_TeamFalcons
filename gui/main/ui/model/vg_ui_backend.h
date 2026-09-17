@@ -5,6 +5,12 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* The AI advice fields are the board's own contract type: the board backend
+ * parses the agent's file into it and the page reads it back, so both ends
+ * must agree byte for byte.  Visible from gui/ because gui/CMakeLists.txt and
+ * app/velaguard/Makefile both put app/velaguard on the include path. */
+#include "vg_ai_contract.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,7 +50,41 @@ typedef struct {
     char path[128];
     char body[1536];
     bool truncated;
+    /* true when the report shown came from the board agent, false when it is
+     * the firmware's own deterministic statistics.  The page labels the
+     * source from this so a reader can never mistake one for the other. */
+    bool from_agent;
 } vg_ui_report_snapshot_t;
+
+/* Per-point AI advice for the alarm page.
+ *
+ * The board asks the agent for advice when the alarm set changes and caches
+ * the validated answer, so the page itself never does IO and never blocks.
+ * VG_UI_ADV_IDLE       nothing outstanding, no advice to show
+ * VG_UI_ADV_PENDING    a round is queued or running
+ * VG_UI_ADV_READY      a validated document is loaded
+ * VG_UI_ADV_ERROR      the round failed, timed out, or its answer was rejected
+ */
+typedef enum {
+    VG_UI_ADV_IDLE = 0,
+    VG_UI_ADV_PENDING,
+    VG_UI_ADV_READY,
+    VG_UI_ADV_ERROR
+} vg_ui_advice_state_t;
+
+void                 vg_ui_alarm_advice_request(void);
+vg_ui_advice_state_t vg_ui_alarm_advice_state(void);
+
+/* Look up one alarm episode.  Returns true only when a loaded document has
+ * an entry for exactly this point and episode; the epoch test is what stops
+ * advice from a previous alarm on the same point being shown again. */
+bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
+                            vg_ai_advice_entry_t *out);
+
+/* PC simulator / headless only: install canned advice so the page can be
+ * exercised without a board.  Defined in gui/main/ui/model/vg_ui_backend.c,
+ * which the firmware build filters out; pass n == 0 to clear. */
+void vg_ui_backend_mock_set_advice(const vg_ai_advice_entry_t *entries, int n);
 
 /* discover_*_status: 0 idle, 1 running, 2 done, <0 error */
 typedef struct {
@@ -54,7 +94,8 @@ typedef struct {
     int (*discover_apply_status)(void);
     int (*get_slaves)(vg_ui_slave_t *out, int max);
     int (*read_latest_report)(char *body, size_t body_sz,
-                              char *path, size_t path_sz);
+                              char *path, size_t path_sz,
+                              bool *from_agent);
     /* Ask the on-device agent to generate today's daily report (MiMo).
      * Returns false when the platform has no agent backend. */
     bool (*request_daily_report)(void);

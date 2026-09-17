@@ -41,7 +41,7 @@
 | 硬件 / 系统 | STM32H750B-DK（Cortex-M7，固件从 QSPI XIP 执行）· openvela / NuttX |
 | 交互渠道 | CLI（`vela>` 自然语言查数）+ LVGL 触控 HMI |
 | 自定义 Skill | `/data/agent/skills/` 下 `alarm_interpretation.md`、`operations_report.md`、`modbus_query.md`，固件首启自动写入 |
-| 主动 + 执行 | **事件主动**：本地告警 → Agent 解释落盘；**定时主动**：HEARTBEAT 每 3 分钟覆盖生成自本次上电起的运行报告 → LVGL 报告页 |
+| 主动 + 执行 | **事件主动**：本地告警 → 板端按告警集合发起一轮，Agent 写 `alarm_advice.txt` → 告警页行内建议 + 详情解释；**主动 + 执行**：发现当天还没有日报时板端自己发起一轮，Agent 用只读工具取真实数字写 `daily-<日期>.md` → LVGL 报告页 |
 | openvela 能力落点 | 图形（LVGL HMI）+ AI（ai_agent）+ NuttX 串口 / 网络 / 块设备 |
 | 运行方式 | [构建、烧录与运行](#构建烧录与运行) · [NSH 命令速查](#nsh-命令速查) · `scripts/stage1_*_accept_nsh.txt` |
 | 公共仓改动 | 直接改 nuttx / nuttx-apps / MQTT-C 树并 PR，不用 patch，见 [公共仓改动与 PR](#公共仓改动与-pr) |
@@ -56,15 +56,15 @@
 三个用户故事，对应三条主线：
 
 1. **接入陌生总线**。集成工程师带着网关到现场柜子，不知道总线上有几个从站、什么地址、寄存器怎么解读。打开屏上「启用总线扫描」（默认关），`Scan Bus` 扫地址 1–32，探测寄存器块，生成候选点表，`测试读取` 通过后现场确认，曲线开始跑。全过程本地完成，不需要网络。
-2. **夜里温度越限**。规则引擎在板上判定阈值 / 离线告警，屏幕和 LED 立刻报警，不等网络。联网时 Agent 在下一个 HEARTBEAT 周期读取告警上下文、通信质量和实时值，写出一份带证据的解释到 `reports/last_alarm.md`，标注「AI 推测」。工程师早上看到的是解释，不是一串原始数值。
-3. **本次上电以来的运行概况**。Agent 按 `operations_report` Skill 汇总通信质量、点位在线时长与异常时间线，覆盖写入 `reports/runtime-report.md`，LVGL 报告页直接读取；随时可以在 `vela>` 用自然语言查当前读数。
+2. **夜里温度越限**。规则引擎在板上判定阈值 / 离线告警，屏幕立刻报警，不等网络。联网时板端自己发起一轮，Agent 按 `alarm_interpretation` Skill 调 `vgstats` / `vgmodbus` / `vgcfg` 只读命令，把带证据的解释写进 `reports/alarm_advice.txt`，告警页行内显示一行短建议、详情区显示完整解释并标注「AI 推测」。工程师早上看到的是解释，不是一串原始数值。
+3. **本次上电以来的运行概况**。板端发现当天还没有日报时自己发起一轮，Agent 按 `operations_report` Skill 调 `get_current_time` / `vgruntime dump` / `vgstats dump` 取真实数字，写出 `reports/daily-<当天日期>.md`，LVGL 报告页标题显示「AI 日报 · OPENVELACLAW」；随时可以在 `vela>` 用自然语言查当前读数。断网或校验不过时报告页回退固件的 `reports/runtime-report.md` 并标注本地来源。
 
 | 能力 | 常见做法 | VelaGuard | 状态 |
 |------|----------|-----------|------|
 | 发现从站 | 手工试地址 × 波特率 | `vgdiscover` / HMI 扫描 @9600，地址 1–32 | 已落地（波特率矩阵为阶段 2） |
 | 识别数据格式 | 试四种字序看哪个像 | int16 × 0.1 物理合理性筛选生成候选点表 | 基础版已落地；字序 / 倍率联合约束求解为阶段 2 |
-| 理解告警 | 看原始数值自己猜 | Agent 自动解释，带 evidence，标「AI 推测」 | 已落地 |
-| 运行概况 | 翻日志 / 手工统计 | Agent 定时生成自本次上电起的运行报告 | 已落地 |
+| 理解告警 | 看原始数值自己猜 | Agent 自动解释，带 evidence，标「AI 推测」，逐点显示在告警页 | 已落地 |
+| 运行概况 | 翻日志 / 手工统计 | Agent 主动生成当日日报，页面标明来源 | 已落地（仅日报，周报可后补） |
 | 查当前读数 | 组态或串口助手 | `vela> ask` 自然语言提问 | 已落地 |
 | 定位通信故障 | 老师傅经验 | 确定性归因规则库 | 阶段 2，规划中 |
 
@@ -79,9 +79,9 @@
   </picture>
 </p>
 
-**永远本地**（断网照常）：Modbus 周期采集、帧级质量统计、阈值 / 离线告警、屏幕与 LED 告警、双槽配置存储。
+**永远本地**（断网照常）：Modbus 周期采集、帧级质量统计、阈值 / 离线告警、屏幕告警、双槽配置存储。
 
-**需要网络**：Agent 解释与运行报告（LLM 在云端）、MQTT 状态上报。断网时 HMI 只显示规则引擎的原始信息，不假装还能 AI 诊断。
+**需要网络**：Agent 解释与日报（LLM 在云端）、MQTT 状态上报。断网时告警页回到本地规则摘要、报告页回到固件统计报告，不假装还能 AI 诊断。
 
 系统入口 `velaguard_app_main` 初始化 NSH、网络管理、eMMC 配置、Skill 与 LLM 凭据、本地告警检测器。主线固件自动启动 LVGL HMI，随后延迟 3 秒启动 `ai_agent --daemon`。采集与告警不依赖网络，也不依赖 Agent。
 
@@ -95,21 +95,30 @@
 
 ```text
 规则引擎判定阈值 / 离线告警（vg_alarm_eval.c，本地，不依赖网络）
-→ 告警检测器写 /data/velaguard/pending_alarm.txt（vg_agent_alarm.c、HMI 后端）
-→ ai_agent --daemon 每 3 分钟读 HEARTBEAT.md，发现 pending 告警
+→ 告警集合变化，HMI 文件工作线程发起一轮（请求里带全量告警数据与 boot/req）
+→ 板端本地 IPC 把请求交给 ai_agent 的 ReAct 循环
 → 按 alarm_interpretation Skill：vgstats dump / vgmodbus 读实时值 / vgcfg dump 取证据
-→ 写 /data/velaguard/reports/last_alarm.md（纯文本：摘要 · 证据 · 建议关注）
-→ 不清告警、不改配置；信息不足时 unresolved=true，不编造点位
+→ 写 /data/velaguard/reports/alarm_advice.txt（VGADV1 行式格式，逐点一条）
+→ 板端解析校验通过后放进 RAM 缓存，告警页行内显示 AI · <短建议>
+→ 不清告警、不改配置；信息不足时 unres=1，不编造点位
 ```
 
-### 定时主动：运行报告
+同一份持续存在的告警每 5 分钟会重新问一轮建议（`VG_ADV_REFRESH_MS`）；告警集合发生变化时立即重问。
+
+### 主动 + 执行：运行日报
 
 ```text
-HEARTBEAT.md：覆盖生成自本次上电起的运行报告
-→ 按 operations_report Skill：vgruntime dump + vgcfg dump 取指标
-→ 写 /data/velaguard/reports/runtime-report.md（通信质量 · 点位在线 · 异常时间线）
-→ LVGL「报告」页优先显示 runtime-report.md
+板端发现时钟已同步、当天还没有 daily-<日期>.md（不是用户提问，也不是定时器）
+→ 发起一轮，请求里写明 Skill 与文件格式
+→ 按 operations_report Skill：get_current_time + vgruntime dump + vgstats dump 取真实数字
+→ 写 /data/velaguard/reports/daily-<当天日期>.md（AI-DAILY v1 + 通信质量 · 点位在线 · 异常时间线）
+→ 板端校验首行标记、日期、来源与长度，通过后 LVGL「报告」页标题显示 OPENVELACLAW 署名
+→ 不过或断网则回退固件 runtime-report.md，报告页标注本地来源
 ```
+
+报告页右上角的「刷新」在重读文件之外，还会以 `allow_generate` 再向 Agent 排一轮当天日报生成。
+
+一轮的开销由迭代次数决定：单次 LLM 调用有 120 s 墙钟，而每多一条消息就多等一次模型调用。所以两份 Skill 都要求把互不依赖的取证命令写在同一条消息里一次发出，整轮只走两步（取证、写文件），工具调用不超过 4 次。取证看串口里的 `Executing tool:` 与 `END status=ok iters=N tools=M elapsed=Ns`，以及 `scripts/stage1_agent_ops_accept.ps1` 的断言。
 
 ### 交互渠道：自然语言查数
 
@@ -121,31 +130,36 @@ HEARTBEAT.md：覆盖生成自本次上电起的运行报告
 
 | 文件 | 触发 | 允许的工具 | 产出 |
 |------|------|------------|------|
-| `alarm_interpretation.md` | pending 告警 / 用户问告警含义 | `read_file`、`run_shell`（只读命令） | `reports/last_alarm.md` |
-| `operations_report.md` | HEARTBEAT / 用户要运行报告 | `run_shell`（含 `vgruntime dump`） | `reports/runtime-report.md` |
+| `alarm_interpretation.md` | 板端告警集合变化 / 用户问告警含义 | `run_shell`（只读命令）、`write_file` | `reports/alarm_advice.txt`（VGADV1） |
+| `operations_report.md` | 板端发现当天无日报 / 用户要日报 | `get_current_time`、`run_shell`（含 `vgruntime dump`）、`write_file` | `reports/daily-<日期>.md`（AI-DAILY v1） |
 | `modbus_query.md` | 用户问寄存器 / 温湿度 / 通信质量 | `run_shell`（`vgmodbus`、`vgstats`、`vgruntime`、`vgcfg dump`） | 自然语言回答 + 原始数值 |
-| `HEARTBEAT.md` | 守护进程每 3 分钟 | 仅 `vgmodbus`、`vgstats`、`vgruntime`、`vgcfg dump`、`vgnet` | 上两项的周期性触发 |
+| `HEARTBEAT.md` | 守护进程周期读取（HMI 构建下不再直接发起 LLM 轮次） | 仅 `vgmodbus`、`vgstats`、`vgruntime`、`vgcfg dump`、`vgnet`、`read_file`、`write_file` | 现场说明，实际触发由板端文件工作线程负责 |
+
+写 Skill 时注意一条框架行为：某一轮迭代如果只调用了单个 `read_file`/`write_file`，框架会直接把文件内容当回复并结束本轮。Skill 里不要把已经写在请求里的数据再用 `read_file` 取一遍。
 
 ### 板上演示（真实命令，来自 `scripts/stage1_agent_ops_accept_nsh.txt`）
 
 ```text
 nsh> ls /data/agent/skills                 # 三个 Skill 由固件首启写入
 nsh> ai_agent                               # 主线守护进程已自动启动；此处附着交互，进入 vela>
-vela> ask 按 operations_report Skill 生成运行报告，写入 /data/velaguard/reports/runtime-report.md
+vela> ask 按 operations_report Skill 生成今日日报
 vela> quit
-nsh> ls /data/velaguard/reports             # runtime-report.md
-nsh> cat /data/velaguard/reports/runtime-report.md
+nsh> ls /data/velaguard/reports             # daily-2026-09-16.md（板端自己也会主动生成一份）
+nsh> cat /data/velaguard/reports/daily-2026-09-16.md
 nsh> vgruntime dump
 
-# 人工注入一条告警，验证事件主动链路（真实告警由规则引擎自动写入同一文件）
-nsh> echo "type=threshold\nslave=1\nreg=0\nvalue=3500\nthreshold=3000" > /data/velaguard/pending_alarm.txt
-nsh> ai_agent
-vela> ask 按 alarm_interpretation Skill 解释 pending 告警
-vela> quit
-nsh> cat /data/velaguard/reports/last_alarm.md
+# 板端轮次通道的回读探针，不必翻 syslog
+nsh> vgagent status                         # round: state=idle|running gen=N owner=advice|daily|none
+nsh> vgagent ask 读取从站1温湿度              # 手工推一轮，走同一条通道
+
+# 告警建议由板端自己发起，产物在这里
+nsh> cat /data/velaguard/reports/alarm_advice.txt      # VGADV1 行式格式
+nsh> cat /data/velaguard/logs/agent_tools.log          # 工具调用审计
 ```
 
-可证伪目标（手册 §14.2）：告警解释被人工判定合理的比例 ≥ 70%；运行报告指标与板上数据一致的比例 ≥ 90%；全过程 Agent 触发写操作次数 = 0。
+工具调用审计写 `/data/velaguard/logs/agent_tools.log`，每次工具执行追加一行（单调时间戳、工具名、脱敏后的参数前缀、结果状态），超过 64 KB 轮转一次。
+
+可证伪目标（手册 §14.2）：告警解释被人工判定合理的比例 ≥ 70%；日报指标与板上数据一致的比例 ≥ 90%；全过程 Agent 触发写操作次数 = 0。
 
 ---
 
@@ -154,15 +168,16 @@ nsh> cat /data/velaguard/reports/last_alarm.md
 <p align="center">
   <picture>
     <source media="(max-width: 640px)" srcset="./assets/readme/agent-boundary-mobile.svg">
-    <img src="./assets/readme/agent-boundary.svg" width="100%" alt="Agent 权限示意：C 工具层拒绝 vgpoint 和 vgdiscover，vgcfg 仅允许 dump，文件工具限定在 /data/agent 与 /data/velaguard。点表变更由人试读后确认。当前 vgstats 与 vgnet 尚缺子命令级限制，不能把整个允许表视为严格只读。">
+    <img src="./assets/readme/agent-boundary.svg" width="100%" alt="Agent 权限示意：C 工具层拒绝 vgpoint 和 vgdiscover，vgstats / vgruntime / vgcfg 只允许 dump，vgnet 只允许 status，文件工具限定在 /data/agent 与 /data/velaguard。点表变更由人试读后确认。">
   </picture>
 </p>
 
 当前 C 工具层（公共树 `packages/ai_agent/src/tools/tool_shell.c`、`tool_files.c`）已实现以下限制：
 
 - `run_shell` 走允许表，默认拒绝；拒绝管道、重定向等 shell 元字符
-- `vgpoint`、`vgdiscover` 一律拒绝；`vgcfg` 只放行 `dump`
-- `read_file` / `write_file` 只能落在 `/data/agent` 与 `/data/velaguard` 之下
+- `vgpoint`、`vgdiscover` 一律拒绝；`vgstats`、`vgruntime`、`vgcfg` 只放行 `dump`，`vgnet` 只放行 `status`。子命令门槛写在 C 里走表驱动，不靠提示词——`vgstats inject`、`vgnet inject` 都会改板端状态，`vgruntime report <path>` 能写任意路径
+- `read_file` / `write_file` 只能落在 `/data/agent` 与 `/data/velaguard` 之下；固件的离线兜底产物 `runtime-report.md` 在 C 层对 Agent 只读
+- 每次工具执行前向 `agent_tools.log` 追加审计行，工具本身不受审计写失败影响
 - Skill 与 `HEARTBEAT.md` 再写一遍只读约束，作为第二道
 
 点表变更须由人在板端 NSH 执行 `vgdiscover apply --confirm` / `vgpoint apply --confirm`。Agent 的产品职责是产出解释与建议，不代替人处置设备。
@@ -182,14 +197,14 @@ nsh> cat /data/velaguard/reports/last_alarm.md
 | 采集与统计 | nanoMODBUS RTU 主站 `vgmodbus`；HMI 周期轮询并写实时快照 | 已落地 | `vg_modbus_read.c`、`vg_ui_backend_board.c` |
 | 采集与统计 | 帧级质量统计：CRC / 超时 / 回显 / 延迟，按从站滑窗，`vgstats` | 已落地 | `vg_frame_stats.c` |
 | 告警 | 阈值（warn / crit）与离线（滑窗失败率）判定，HMI 告警页 | 已落地 | `vg_alarm_eval.c`、`vg_page_alarm.c` |
-| 告警 | 告警 → `pending_alarm.txt` 交 Agent 解释（事件主动） | 已落地 | `vg_agent_alarm.c` |
-| 告警 | 告警页直接显示 Agent 解释 | 部分：当前显示本地规则摘要并标「规则摘要」，Agent 解释在 `last_alarm.md` | `vg_page_alarm.c` |
+| 告警 | 告警集合变化时板端发起一轮，Agent 写 `alarm_advice.txt`（事件主动） | 已落地 | `vg_advice.c`、`vg_agent_round.c` |
+| 告警 | 告警页逐点显示 Agent 建议：行内一行短建议，详情区完整解释并标「AI 推测」 | 已落地 | `vg_page_alarm.c`、`vg_ai_contract.c` |
 | 告警 | 485 故障归因规则库 | 阶段 2 | 手册 §5.8 |
 | Agent | `ai_agent` 在 Cortex-M7 运行，CLI `vela>`，MiMo OpenAI 兼容 HTTPS 直连 | 已落地 | `packages/ai_agent`（PR #32） |
-| Agent | 3 个 Skill + `HEARTBEAT.md` 首启写入；运行报告落盘并在 LVGL 报告页显示 | 已落地 | `vg_agent_seed.c`、`vg_page_report.c` |
-| Agent | C 工具层命令允许表 + 文件路径沙箱 | 部分：点表提交已拒绝；`vgstats` / `vgnet` 子命令限制待补齐 | `packages/ai_agent/src/tools/` |
+| Agent | 3 个 Skill + `HEARTBEAT.md` 首启写入；当日日报由 Agent 主动生成并在 LVGL 报告页显示，页面标明来源 | 已落地 | `vg_agent_seed.c`、`vg_page_report.c` |
+| Agent | C 工具层命令允许表 + 子命令门槛 + 文件路径沙箱 + 工具调用审计 | 已落地 | `packages/ai_agent/src/tools/` |
 | Agent | LLM 密钥加密存 eMMC（`vgprovision`），不进固件、不进 git | 已落地 | `vg_provision*.c`、`scripts/provision-llm-from-secrets.*` |
-| Agent | 周报、调用限流 / 审计日志、云端 Bridge | 规划 | 手册 §5.6、§11 |
+| Agent | 周报、云端 Bridge | 规划 | 手册 §5.6、§11 |
 | HMI | LVGL 触控 HMI：首页 / 从站详情 / 告警 / 报告 / 总线探查；PC 模拟器与板端同源 | 已落地 | `gui/` |
 | HMI | 趋势 / 诊断 / 日志 / 系统页 | 阶段 2（占位 toast） | `gui/main/ui/shell/vg_shell.c` |
 | 网络 | RJ45 主 + ESP-01S 备：ping 判健康、热备切换、指数退避、稳定窗口回切 | 已落地 | `vg_net_mgr.c`、`vg_net_policy.c` |
@@ -210,7 +225,7 @@ nsh> cat /data/velaguard/reports/last_alarm.md
 |---------------|----------------|
 | ReAct 循环 + 工具调用 | `run_shell` 调板上只读 NSH 工具（`vgmodbus`、`vgstats`、`vgruntime`、`vgcfg dump`、`vgnet`）；`read_file` / `write_file` 读写 `/data/velaguard` |
 | Markdown Skill | 三个 Skill 由固件首启写入 `/data/agent/skills/`，可在板上修改 |
-| HEARTBEAT 主动任务 | `--daemon` 每 3 分钟读 `HEARTBEAT.md`：有 pending 告警则解释，并覆盖生成运行报告 |
+| HEARTBEAT 主动任务 | `--daemon` 读取 `HEARTBEAT.md`。HMI 构建下 heartbeat 线程被有意保留但不再直接发起 LLM 轮次，主动轮次统一由板端文件工作线程经本地 IPC 发起，避免两个不同步的触发源抢同一个回调槽 |
 | NSH 渠道 | `ai_agent` 进入 `vela>`；守护进程已在跑时自动附着，`quit` 只退出交互 |
 | LLM 后端 | OpenAI 兼容 HTTPS 直连 MiMo；`set_llm` 一次性配置或 eMMC 加密 provision |
 | 工具层扩展 | 团队在 `tool_shell.c` / `tool_files.c` 加入 VelaGuard 允许表与路径沙箱 |
@@ -406,8 +421,11 @@ vela> quit
 | `vela>` | `help` / `ask <问题>` / `quit` | 查看 Agent 命令、自然语言查询、退出交互 |
 | `vela>` | `set_llm <url> <model> <key>` | 手动配置 LLM；日常部署优先使用加密 provision 脚本，不在截图或日志中暴露密钥 |
 | `nsh>` | `vgprovision uid` / `vgprovision status` | 查看设备标识 / 凭据文件是否存在；`status` 不代表 LLM 连通性已验证 |
-| `nsh>` | `ls /data/velaguard/reports` | 查看已落盘的解释和运行报告 |
-| `nsh>` | `cat /data/velaguard/reports/last_alarm.md` | 查看最近一次告警解释 |
+| `nsh>` | `ls /data/velaguard/reports` | 查看已落盘的建议、日报与固件兜底报告 |
+| `nsh>` | `cat /data/velaguard/reports/alarm_advice.txt` | 查看最近一轮逐点告警建议（VGADV1） |
+| `nsh>` | `cat /data/velaguard/reports/daily-<日期>.md` | 查看当天 Agent 日报 |
+| `nsh>` | `vgagent status` / `vgagent ask <问题>` / `vgagent clear` | 回读板端轮次通道状态、手工推一轮、清掉上一轮结果 |
+| `nsh>` | `cat /data/velaguard/logs/agent_tools.log` | 查看工具调用审计 |
 | `nsh>` | `help` / `ps` / `free` / `df` | 查看可用命令、任务、内存与文件系统空间 |
 | `nsh>` | `ifconfig` / `ping <ip>` / `date` | 查看网络接口、测试 ICMP 连通性、查看板上时间；`ping` 不代表 Wi-Fi 备链路健康 |
 
@@ -485,6 +503,7 @@ nsh> vgnet status
 | open-vela/nuttx-apps | `velaguard/netinit-esp8266` | [#119](https://github.com/open-vela/nuttx-apps/pull/119) |
 | open-vela/apps_netutils_mqttc_MQTT-C | `velaguard/mqtt-pal-hook` | [#1](https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1) |
 | open-vela/packages_ai_agent | `velaguard/stm32h750b-dk-hmi-agent` | [#32](https://github.com/open-vela/packages_ai_agent/pull/32) |
+| open-vela/packages_ai_agent | `velaguard/llm-tls-send-retry` | [#40](https://github.com/open-vela/packages_ai_agent/pull/40) |
 
 Fork：`FoLeaf/nuttx`、`FoLeaf/nuttx-apps`、`FoLeaf/apps_netutils_mqttc_MQTT-C`、`FoLeaf/packages_ai_agent`；本地集成分支 `nuttx/velaguard/integration` 仅开发用。
 

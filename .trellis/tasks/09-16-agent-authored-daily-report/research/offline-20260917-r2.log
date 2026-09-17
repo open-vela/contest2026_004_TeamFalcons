@@ -1,0 +1,48 @@
+########## boot settle len=0 ##########
+
+
+########## ls -l /data/velaguard/reports ########## len=2311
+ls -l /data/velaguard/reports
+/data/velaguard/reports:
+ -rw-rw-rw-   0        1796 daily-20260228.md
+ -rw-rw-rw-   0         632 last_alarm.md
+ -rw-rw-rw-   0        1103 daily-20260912.md
+ -rw-rw-rw-   0         859 daily-20260913.md
+ -rw-rw-rw-   0         578 runtime-report.md
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aaba47861ce8483] BEGIN chat=velaguard chan=local_client
+[agent] Cache hit, skipping LLM call
+[trace:6aaba47861ce8483] iter=0 tool=(none) latency=0ms llm=ok backend=0
+[trace:6aaba47861ce8483] END status=ok iters=1 tools=0 llm_ms=0 elapsed=0s backend=0
+[agent] Dispatching response ¡ú local_client:velaguard
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms
+[vgagent] round submitted: 1439 bytes
+[agent] Processing message from local_client:velaguard
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3552 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6aaba48651d2c243] BEGIN chat=velaguard chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 19187 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1789633670
+[agent] Dispatching response ¡ú local_client:velaguard
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 5 (backoff 16)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6aaba48651d2c243] iter=0 tool=(none) latency=50ms llm=fail backend=0
+[trace:6aaba48651d2c243] END status=fail iters=1 tools=0 llm_ms=50 elapsed=0s backend=0
+[vgagent] round finished: reply
+[agent] Dispatching response ¡ú local_client:velaguard
+[vgadvice] no advice file (2)
+

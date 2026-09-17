@@ -1,0 +1,38 @@
+=== root-cause regression: BEFORE fix (packages/ai_agent source UNMODIFIED) ===
+date: 2026-09-16T18:58:37+08:00
+repo: /home/hello19y/openvela/packages/ai_agent
+branch: velaguard/agent-hmi-fixes
+HEAD: e63e785b197d6e1f693da17b0d828b3b387de239
+tracked source status (skill_loader.c / context_builder.c must be clean):
+sha1 of unmodified sources:
+ece5fda89969d151a2bc2554a87ef2c8725f1e43  src/tools/skill_loader.c
+52bf0a16fc3955f58dfdb3dd1de635f36b99b78b  src/core/context_builder.c
+7caf3e5beb3afdd499bbdd41268a80d5c036e3de  src/core/memory_store.c
+
+--- command 1 ---
+gcc -O2 -g -Wall -Wextra -fstack-protector-all -include tests/stub/host_compat.h -I tests/stub -I include -I src -DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR='"/tmp/vgtest"' tests/test_skill_summary.c src/tools/skill_loader.c tests/tool_registry_stub.c -o /tmp/test_skill_summary
+
+--- output 1 ---
+=== skill_loader_build_summary canary test (dir=/tmp/vgtest/skills/) ===
+[skill_summary] cap=1024  n=1031   front=ok  rear=BAD len=BAD nul=BAD -> FAIL
+[skill_summary] cap=1086  n=1134   front=ok  rear=BAD len=BAD nul=BAD -> FAIL
+[skill_summary] cap=64    n=116    front=ok  rear=BAD len=BAD nul=BAD -> FAIL
+[skill_summary] cap=2     n=116    front=ok  rear=BAD len=BAD nul=BAD -> FAIL
+[skill_summary] cap=0     n=1134   front=ok  rear=BAD len=BAD nul=ok  -> FAIL
+=== FAILED ===
+run1 rc=1
+
+--- command 2 ---
+gcc -O2 -g -Wall -Wextra -fstack-protector-all -include tests/stub/host_compat.h -I tests/stub -I include -I src -I /home/hello19y/openvela/apps/netutils/cjson/cJSON -DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR='"/tmp/vgtest"' tests/test_context_prompt.c src/core/context_builder.c src/tools/skill_loader.c tests/tool_registry_stub.c /home/hello19y/openvela/apps/netutils/cjson/cJSON/cJSON.c -o /tmp/test_context_prompt
+
+--- output 2 ---
+=== context_build_system_prompt canary test (dir=/tmp/vgtest) ===
+[context_prompt] cap=4096  len=4095   rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=2048  len=2047   rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=1024  len=1023   rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=512   len=511    rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=64    len=63     rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=1     len=0      rc=0 front=ok  rear=BAD len=ok  -> FAIL
+[context_prompt] cap=0     len=0      rc=0 front=ok  rear=BAD len=ok  -> FAIL
+=== FAILED ===
+run2 rc=1

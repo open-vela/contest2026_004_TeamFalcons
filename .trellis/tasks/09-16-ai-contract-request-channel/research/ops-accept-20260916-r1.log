@@ -1,0 +1,11 @@
+[FAIL] autostart ok (pattern: vgagent: ai_agent autostart ok)
+[PASS] operations_report skill
+[PASS] alarm_interpretation skill
+[PASS] modbus_query skill
+[PASS] HEARTBEAT file
+[PASS] vela after ai_agent attach
+[INFO] MIMO_API_KEY unset; using eMMC /data/agent/config/config.json if present
+[PASS] no LLM watchdog timeout
+[PASS] agent replied
+[FAIL] agent really called a tool (pattern: Executing tool: )
+[PASS] vgagent round channel present

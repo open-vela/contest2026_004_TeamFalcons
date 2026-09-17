@@ -37,10 +37,14 @@ static void report_set_refresh_enabled(bool enabled)
     }
 }
 
+/* Body plus the source line appended below it. */
+
+#define REPORT_BODY_BUF (sizeof(((vg_ui_report_snapshot_t *)0)->body) + 96)
+
 static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
 {
     const char * base;
-    char buf[1024];
+    char buf[REPORT_BODY_BUF];
 
     if(s_report.title_lab == NULL || s_report.body_lab == NULL) {
         return;
@@ -48,16 +52,28 @@ static void apply_snapshot(const vg_ui_report_snapshot_t * snap)
 
     base = (snap->path[0] != '\0') ? strrchr(snap->path, '/') : NULL;
     base = (base != NULL) ? base + 1 : snap->path;
-    if(base != NULL && base[0] != '\0') {
-        lv_label_set_text_fmt(s_report.title_lab, "运行报告 · %s", base);
+
+    /* The title is the only thing telling a reader whether the numbers in
+     * front of them were written by the board agent or counted by the
+     * firmware, so it follows from_agent rather than the file name. */
+    if(snap->from_agent) {
+        lv_label_set_text(s_report.title_lab, "AI 日报 · OPENVELACLAW");
+    }
+    else if(base != NULL && base[0] != '\0') {
+        lv_label_set_text_fmt(s_report.title_lab, "本地运行报告 · %s", base);
     }
     else {
-        lv_label_set_text(s_report.title_lab, "运行报告");
+        lv_label_set_text(s_report.title_lab, "本地运行报告");
     }
 
     switch(snap->status) {
         case VG_UI_REPORT_READY:
-            lv_label_set_text(s_report.body_lab, snap->body[0] ? snap->body : REPORT_BODY_HINT);
+            lv_snprintf(buf, sizeof(buf), "%s\n\n%s",
+                        snap->body[0] ? snap->body : REPORT_BODY_HINT,
+                        snap->from_agent
+                            ? "来源：板载 Agent（OPENVELACLAW），经只读工具生成"
+                            : "来源：固件确定性统计，离线可用");
+            lv_label_set_text(s_report.body_lab, buf);
             report_set_refresh_enabled(true);
             break;
         case VG_UI_REPORT_GENERATING:

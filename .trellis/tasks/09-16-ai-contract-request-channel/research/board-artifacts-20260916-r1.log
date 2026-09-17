@@ -1,0 +1,19 @@
+########## boot settle len=0 ##########
+
+
+########## ls -l /data/velaguard/reports ########## len=345
+ls -l /data/velaguard/reports
+/data/velaguard/reports:
+ -rw-rw-rw-   0        1796 daily-20260228.md
+ -rw-rw-rw-   0         632 last_alarm.md
+ -rw-rw-rw-   0        1103 daily-20260912.md
+ -rw-rw-rw-   0         859 daily-20260913.md
+ -rw-rw-rw-   0         578 runtime-report.md
+ -rw-rw-rw-   0         824 daily-2026-09-16.md
+nsh> [K
+
+########## vgagent status ########## len=78
+vgagent status
+round: state=idle gen=1 owner=manual
+reply: ÕýÔÚ·ÖÎö...
+nsh> [K

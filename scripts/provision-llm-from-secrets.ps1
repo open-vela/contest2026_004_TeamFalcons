@@ -39,6 +39,7 @@ $obj = @{ host = $llmHost; path = $path; port = $portNum; model = 'mimo-v2.5'; a
 $obj | ConvertTo-Json -Compress | Out-File -LiteralPath $plain -Encoding ascii -NoNewline
 
 $port = New-Object System.IO.Ports.SerialPort $ComPort, 115200
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.ReadTimeout = 15000
 $port.DtrEnable = $true
 $port.RtsEnable = $true

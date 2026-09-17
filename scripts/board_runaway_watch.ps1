@@ -1,4 +1,4 @@
-# Hold COM3 and watch for HARDFAULT / silent NSH.
+﻿# Hold COM3 and watch for HARDFAULT / silent NSH.
 # Agent loop ticks every -TickSec so a long session can catch 跑飞.
 param(
   [string]$ComPort = "COM3",
@@ -14,6 +14,7 @@ New-Item -ItemType Directory -Force -Path (Split-Path $LogPath) | Out-Null
 "[watch] start $(Get-Date -Format o) port=$ComPort" | Set-Content -Path $LogPath
 
 $port = New-Object System.IO.Ports.SerialPort
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.PortName = $ComPort
 $port.BaudRate = 115200
 $port.ReadTimeout = 800

@@ -1,7 +1,8 @@
-# Test net_test and ask at vela> after daemon start
+﻿# Test net_test and ask at vela> after daemon start
 param([string]$ComPort = "COM3")
 $ErrorActionPreference = "Stop"
 $port = New-Object System.IO.Ports.SerialPort $ComPort, 115200
+$port.Encoding = [System.Text.Encoding]::UTF8
 $port.ReadTimeout = 8000
 $port.DtrEnable = $true
 $port.RtsEnable = $true

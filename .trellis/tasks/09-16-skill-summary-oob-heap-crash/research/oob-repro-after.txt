@@ -1,0 +1,37 @@
+=== root-cause regression: AFTER fix ===
+date: 2026-09-16T18:59:59+08:00
+repo: /home/hello19y/openvela/packages/ai_agent
+branch: velaguard/agent-hmi-fixes
+HEAD: 3b95ef5b9b3ab287c197d5f0559518205a4eaf69
+sha1 of fixed sources:
+4c7645b04716e313cfd0ca227fc0d5f8a5328046  src/tools/skill_loader.c
+95ddd4f82c672e0d07d116c6ce8c815806f172dc  src/core/context_builder.c
+b59e6f127c69040d09f65f8b830342632cdb144f  src/core/memory_store.c
+
+--- command 1 ---
+gcc -O2 -g -Wall -Wextra -fstack-protector-all -include tests/stub/host_compat.h -I tests/stub -I include -I src -DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR='"/tmp/vgtest"' tests/test_skill_summary.c src/tools/skill_loader.c tests/tool_registry_stub.c -o /tmp/test_skill_summary
+
+--- output 1 ---
+=== skill_loader_build_summary canary test (dir=/tmp/vgtest/skills/) ===
+[skill_summary] cap=1024  n=910    front=ok  rear=ok  len=ok  nul=ok  -> PASS
+[skill_summary] cap=1086  n=1031   front=ok  rear=ok  len=ok  nul=ok  -> PASS
+[skill_summary] cap=64    n=0      front=ok  rear=ok  len=ok  nul=ok  -> PASS
+[skill_summary] cap=2     n=0      front=ok  rear=ok  len=ok  nul=ok  -> PASS
+[skill_summary] cap=0     n=0      front=ok  rear=ok  len=ok  nul=ok  -> PASS
+=== ALL PASS ===
+run1 rc=0
+
+--- command 2 ---
+gcc -O2 -g -Wall -Wextra -fstack-protector-all -include tests/stub/host_compat.h -I tests/stub -I include -I src -I /home/hello19y/openvela/apps/netutils/cjson/cJSON -DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR='"/tmp/vgtest"' tests/test_context_prompt.c src/core/context_builder.c src/tools/skill_loader.c tests/tool_registry_stub.c /home/hello19y/openvela/apps/netutils/cjson/cJSON/cJSON.c -o /tmp/test_context_prompt
+
+--- output 2 ---
+=== context_build_system_prompt canary test (dir=/tmp/vgtest) ===
+[context_prompt] cap=4096  len=4095   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=2048  len=2047   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=1024  len=1023   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=512   len=511    rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=64    len=63     rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=1     len=0      rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=0     len=0      rc=0 front=ok  rear=ok  len=ok  -> PASS
+=== ALL PASS ===
+run2 rc=0

@@ -1,0 +1,60 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+./test_net_policy
+test_net_policy: all passed
+./test_config_store
+test_config_store: OK
+./test_frame_stats
+test_frame_stats: OK
+./test_runtime
+test_runtime: OK
+./test_discover
+test_discover: OK
+./test_vgpoint
+test_vgpoint: OK
+./test_alarm_eval
+test_alarm_eval: ok
+./test_time_sync
+test_time_sync: all passed
+./test_hmi_perf
+[PASS] window empty after init
+[PASS] no samples after init
+[PASS] uptime starts at zero
+[PASS] total count grows to 300
+[PASS] total duration accumulates
+[PASS] max tracks the largest span
+[PASS] window caps at 256 samples
+[PASS] window keeps the most recent 256 samples in order
+[PASS] stray end does not create a sample
+[PASS] unpaired begin counted as incomplete
+[PASS] paired begin/end records one real sample
+[PASS] wraparound uses unsigned difference
+[PASS] p50 nearest-rank of 5
+[PASS] p95 nearest-rank of 5
+[PASS] 0 pct clamps to minimum
+[PASS] 100 pct is maximum
+[PASS] single sample rank
+[PASS] empty input is zero
+[PASS] every span is recorded or counted as dropped
+[PASS] window stays bounded under concurrency
+[PASS] static stats budget under 8 KiB
+[INFO] vg_hmi_perf budget = 6424 bytes
+
+test_hmi_perf: ALL PASS
+./test_runtime_render
+[PASS] versioned point table copy and stale poll detection
+[PASS] alarm file serialization format
+test_runtime_render: ALL PASS
+./test_hmi_sched
+[PASS] zero idle sleeps minimum
+[PASS] no-timer-ready sleeps minimum
+[PASS] 1 ms stays 1
+[PASS] 5 ms stays 5
+[PASS] 10 ms stays 10
+[PASS] 11 ms clamps to max
+[PASS] large idle clamps to max
+[PASS] indev read target is 10 ms
+[PASS] sleep max matches indev read period
+test_hmi_sched: ALL PASS
+./test_mqtt_payload
+test_mqtt_payload: OK
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

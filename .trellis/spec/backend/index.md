@@ -17,11 +17,12 @@ This directory contains guidelines for backend development. Fill in each file wi
 | [Directory Structure](./directory-structure.md) | Module organization and file layout | To fill |
 | [Database Guidelines](./database-guidelines.md) | ORM patterns, queries, migrations | To fill |
 | [Error Handling](./error-handling.md) | Error types, handling strategies | To fill |
-| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | To fill |
+| [Quality Guidelines](./quality-guidelines.md) | Code standards, forbidden patterns | Active |
 | [Logging Guidelines](./logging-guidelines.md) | Structured logging, log levels | To fill |
 | [VelaGuard config store](./vg-config-store.md) | Dual-slot FAT commit/load (`seq`/CRC/`vgcfg`) | Active |
 | [Contest firmware mainline](./firmware-mainline.md) | One product image: `velaguard-lvgl` | Active |
 | [Host NSH vgpoint protocol](./host-nsh-protocol.md) | ST-LINK NSH point-table commands; canonical doc in `docs/` | Active |
+| [Board AI text contract](./ai-text-contract.md) | VGADV1 告警建议与日报的解析、身份三元组、单调时钟超时 | Active |
 | [MQTT dashboard publish](../../../docs/velaguard-mqtt-contract.md) | Board publish of status/telemetry/alarm/point_table | Active |
 
 ---

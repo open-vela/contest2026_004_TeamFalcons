@@ -1,0 +1,2 @@
+{"file": "AGENTS.md", "reason": "核对输出风格、公共树改动归属、是否误改工作树上其他未提交改动"}
+{"file": ".trellis/spec/guides/cross-layer-thinking-guide.md", "reason": "按跨层影响核对偏移不变量在 skill/context/memory 三段之间是否一致"}
