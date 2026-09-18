@@ -408,3 +408,97 @@ RAM 存储（eMMC 未挂载或退化成 tmpfs），此时写进去的凭证重�
 - 新增 PowerShell 批量脚本
 
 实现前以本文为准；若命令或字段有变，先改本文再改代码。
+
+### 8.2 只读数据工具：`vgagent tools` / `vgagent tool`
+
+Agent 有两个只读数据工具，模型在 `ask` 时会自己调用：
+
+| 工具 | 作用 |
+|---|---|
+| `vg_point_read {query?}` | 读已确认点表里一个点位的工程值、单位、采样新鲜度与阈值；`query` 可写 id 或中文点名，留空列出全部点位 |
+| `vg_run_report {}` | 读自本次上电以来的运行报告（通信质量 / 点位在线 / 异常时间线） |
+
+两者都只读文件，不打开 RS485，也不写任何文件。`vgpoint` 仍在 `tool_shell.c`
+的白名单外，Agent 不能借这两个工具改点表。
+
+模型后端不可达时，`ask` 一定失败，但工具本身仍然可以单独验证：
+
+```text
+nsh> vgagent tools
+tools: 10676 bytes
+tool: "vg_point_read","description":"...","input_schema":{...}}
+tool: "vg_run_report","description":"...","input_schema":{...}}
+
+nsh> vgagent tool vg_point_read ups_load
+tool vg_point_read rc=0
+vgquery: point id=ups_load name=UPS负载 value=72.5 unit=% ok=1 age_ms=120 warn=ge70 crit=ge90
+
+nsh> vgagent tool vg_run_report {}
+tool vg_run_report rc=0
+运行报告由板上统计生成，数字不是推测。
+...
+```
+
+`vgagent tools` 打印的是注册表实际下发给模型的工具定义。注册表会静默丢弃
+JSON 解析不通过的 provider，从外部看和「模型没调用」一样，所以要看到字符串
+本身才能区分这两种情况。
+
+`vgagent tool` 走的是和 ReAct 循环同一套 guard 与审计路径，调用会记进
+`/data/velaguard/logs/agent_tools.log`。**它只用于板端诊断与验收，不是给人用的
+配置通道**，两个工具本身也只读。
+
+`query` 传一个裸词即可（`vgagent tool vg_point_read UPS负载`）：NSH 会吃掉
+JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}` 而解析
+失败，因此工具层接受裸词并自己补成合法 JSON。
+
+板上验收不依赖模型的路径是 `scripts/vg_agent_tools_probe.ps1`。
+
+---
+
+## 9. 上位机脚本约定
+
+1. 等到 `nsh>`。
+2. 按文件逐条 `add` / `set`，每条等到 OK 再发下一条。
+3. `vgpoint test`，把全部 `READ` 行打印给人看。
+4. **停住**，等人确认。
+5. 单独发送 `vgpoint apply --confirm`。
+6. `vgpoint list`，核对已确认表。
+
+不得把第 2 步和第 5 步合成一条命令。脚本可以在人按回车之后代发 apply，但中间必须有停顿。
+
+参考现有 COM3 写法：`scripts/stage1_modbus_discovery_accept.ps1`（写一行、等到 `nsh>`）。批量点表脚本在实现阶段新增，不在本规范文件里附带。
+
+演示触发（规范不规定从站仿真细节）：上位机把某点配成 `cmp=eq crit=1`，再让从站输出 1；或拔掉 RS485 触发离线。
+
+---
+
+## 10. 并发与总线
+
+周期采集、总线扫描、`vgpoint test`、`vgdiscover test-read` 共用 `/dev/rs485`。任意时刻只允许一路占用。
+
+`test` 期间采集线程必须跳过本轮（忙则 `usleep` 再试）。`add` / `set` / `list` / `get` / `abort` 不占用总线。
+
+`apply` 写文件期间采集仍读内存里的旧已确认表，apply 成功后再切换指针或重新加载，避免读到半截 JSON。
+
+---
+
+## 11. 本次不做
+
+- 二进制帧、CRC 封装、第二路 UART
+- MQTT / 云端下发点表
+- 上位机订阅实时值或告警推送
+- 经 RS485 配置从站
+- Windows 图形配置软件
+- 在屏幕上编辑点表或长按确认
+- 开机自动启动 Agent
+
+---
+
+## 12. 实现阶段才改、本规范不改的文件
+
+- `scripts/configs/velaguard-lvgl.defconfig`：`CONFIG_NSH_LINELEN=128`，`CONFIG_NSH_MAXARGUMENTS=32`
+- `app/velaguard/`：`vgpoint` 命令、点表字段、采集改读已确认表
+- `app/velaguard/vg_agent_seed.c`：Skill 禁令
+- 新增 PowerShell 批量脚本
+
+实现前以本文为准；若命令或字段有变，先改本文再改代码。
