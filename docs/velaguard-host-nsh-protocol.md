@@ -337,6 +337,28 @@ Agent 的 `run_shell` 白名单保持只读：`vgmodbus`、`vgstats`、`vgcfg du
 
 实现阶段改 `app/velaguard/vg_agent_seed.c` 的 Skill 正文，并在 Agent 工具层挡住这些命令。规范先把口径定死：点表变更只能由调试串口上的人或上位机脚本发起。
 
+### 8.1 诊断 AI 不可用：先看 `vgagent status`
+
+```text
+nsh> vgagent status
+round: state=idle gen=0 owner=none
+llm: credentials=ready provision_file=present
+```
+
+`credentials=MISSING` 表示 `/data/agent/config/config.json` 里没有非空的
+`llm_host` 或 `api_key`，也就是 agent 没有任何 backend 可调。此时每一轮都以失败
+结束、不产出任何文档，告警页会显示「AI 凭证未配置，显示规则摘要」，报告页会退回
+`runtime-report.md`。这是凭证问题，不是建议或报告功能的问题，处理方式是重新
+provision（见 `README.md` 的 `scripts/provision-llm-from-secrets.sh`）。
+
+`provision_file` 表示封存的 `/data/velaguard/provision/llm_secrets.v1` 是否存在。
+两者不一致（blob 在、凭证不在）说明应用步骤没跑：`commit` 之后必须复位板子，
+配置在开机时写入。
+
+`vgprovision commit` 若打印 `WARNING store is not persistent`，说明 `/data` 当前是
+RAM 存储（eMMC 未挂载或退化成 tmpfs），此时写进去的凭证重启即丢。
+
+
 ---
 
 ## 9. 上位机脚本约定
