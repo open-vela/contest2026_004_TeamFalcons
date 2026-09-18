@@ -379,6 +379,85 @@ int main(void)
                        "token default");
   fails += expect_true(strcmp(vg_point_table_err_token(-ENODEV), "enodev") == 0,
                        "token enodev");
+  fails += expect_true(strcmp(vg_point_table_err_token(-ENOTDIR),
+                              "enotdir") == 0,
+                       "token enotdir");
+
+  {
+    /* An absent path component answers ENOTDIR on NuttX: with no
+     * /data/velaguard/discover directory, opening the candidate table
+     * inside it failed that way, so list -c reported eio and
+     * ensure_candidate returned before it could recreate the directory.
+     * One lost directory therefore killed the whole point table with an
+     * error that named neither.  The host libc answers ENOENT in that
+     * situation, so the regular-file-in-the-path form below is what
+     * produces ENOTDIR here; it is the same errno the board returns.
+     */
+
+    const char *blocker = "vgpoint_enotdir_blocker";
+    const char *under_file = "vgpoint_enotdir_blocker/cand.json";
+    FILE *bfp = fopen(blocker, "w");
+
+    fails += expect_true(bfp != NULL, "create enotdir blocker");
+    if (bfp != NULL)
+      {
+        fclose(bfp);
+      }
+
+    memset(&sum, 0, sizeof(sum));
+    fails += expect_true(vg_point_table_read(&sum, under_file) == -ENOENT,
+                         "ENOTDIR from a path component reads as no table");
+    fails += expect_true(vg_point_table_err_token(
+                          vg_point_table_read(&sum, under_file)) == NULL ||
+                         strcmp(vg_point_table_err_token(-ENOTDIR),
+                                "enotdir") == 0,
+                         "ENOTDIR has its own token, not a bare eio");
+
+    remove(blocker);
+  }
+
+  {
+    /* A directory the store lost is rebuilt by the next write, so a single
+     * missing level is not a permanent failure.  This half is what keeps
+     * the board's add working after the tree is damaged: the read says "no
+     * table", the write puts the tree back.
+     */
+
+    const char *deep = "vgpoint_lost_dir/deeper/cand.json";
+
+    memset(&sum, 0, sizeof(sum));
+    fails += expect_true(vg_point_table_read(&sum, deep) == -ENOENT,
+                         "absent parent dir reads as no table");
+    fails += expect_true(vg_point_table_write_candidate(&sum, deep) == 0,
+                         "write recreates the missing tree");
+    fails += expect_true(vg_point_table_read(&sum, deep) == 0,
+                         "read back after recreate");
+
+    remove(deep);
+    rmdir("vgpoint_lost_dir/deeper");
+    rmdir("vgpoint_lost_dir");
+  }
+
+  {
+    /* ensure_candidate seeds from the committed table, and that seeding
+     * used to stop at the same ENOTDIR: the candidate's directory was
+     * missing, so the fallback to the committed table never ran and add
+     * reported a bare I/O error.  With both paths missing it must still
+     * leave a usable empty candidate behind.
+     */
+
+    const char *cand = "vgpoint_seed_dir/cand.json";
+    const char *comm = "vgpoint_seed_dir/deeper/points.json";
+
+    memset(&sum, 0, sizeof(sum));
+    fails += expect_true(vg_point_table_ensure_candidate(&sum, cand, comm) == 0,
+                         "ensure_candidate with absent dirs");
+    fails += expect_true(vg_point_table_read(&sum, cand) == 0,
+                         "candidate usable after ensure");
+
+    remove(cand);
+    rmdir("vgpoint_seed_dir");
+  }
 
   {
     /* The store root probe separates "no table yet" from "the store is

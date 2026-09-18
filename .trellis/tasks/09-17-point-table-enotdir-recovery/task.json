@@ -1,0 +1,29 @@
+{
+  "id": "point-table-enotdir-recovery",
+  "name": "point-table-enotdir-recovery",
+  "title": "点表目录丢失导致 vgpoint add 全部 io/eio：按 ENOTDIR 自愈",
+  "description": "上位机导入 14 点全部 ERR cmd=add code=io msg=eio，vgpoint list 回 OK n=0。根因是 /data/velaguard/discover 目录丢失后，NuttX 打开其下文件返回 ENOTDIR（20），代码只把 ENOENT 当「表还不存在」，ENOTDIR 被当成 I/O 故障上抛，ensure_candidate 因此不会走建目录分支，一个目录丢失把整张点表打成永久失败。本任务修 read/ensure 的 errno 语义并补 on-board 验证。",
+  "status": "completed",
+  "dev_type": null,
+  "scope": null,
+  "package": null,
+  "priority": "P0",
+  "creator": "19y",
+  "assignee": "19y",
+  "createdAt": "2026-09-17",
+  "completedAt": "2026-09-17",
+  "branch": "integrate-learn-vela-0912",
+  "base_branch": "integrate-learn-vela-0912",
+  "worktree_path": null,
+  "commit": null,
+  "pr_url": null,
+  "subtasks": [],
+  "children": [],
+  "parent": null,
+  "relatedFiles": [
+    "app/velaguard/vg_point_table.c",
+    "app/velaguard/host_tests/test_vgpoint.c"
+  ],
+  "notes": "",
+  "meta": {}
+}

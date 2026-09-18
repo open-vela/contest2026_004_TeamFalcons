@@ -107,6 +107,7 @@ bool vg_discover_parse_addr_range(FAR const char *spec,
 static int mkdir_p(FAR const char *path)
 {
   char tmp[128];
+  struct stat st;
   char *p;
   size_t len;
 
@@ -137,9 +138,23 @@ static int mkdir_p(FAR const char *path)
    * raw mkdir() result cannot express that.
    */
 
-  if (mkdir(tmp, 0755) != 0 && errno != EEXIST)
+  if (mkdir(tmp, 0755) != 0)
     {
-      return -errno;
+      if (errno != EEXIST)
+        {
+          return -errno;
+        }
+
+      /* EEXIST only says the name is taken.  When a plain file sits where
+       * the directory belongs, the caller's fopen would fail with ENOTDIR
+       * and report a bare write failure; naming it here points at the
+       * actual cause.
+       */
+
+      if (stat(tmp, &st) != 0 || !S_ISDIR(st.st_mode))
+        {
+          return -ENOTDIR;
+        }
     }
 
   return 0;
@@ -851,6 +866,9 @@ FAR const char *vg_point_table_err_token(int ret)
       case ENOENT:
         return "enoent";
 
+      case ENOTDIR:
+        return "enotdir";
+
       case EROFS:
         return "erofs";
 
@@ -1458,7 +1476,18 @@ int vg_point_table_read(FAR struct vg_discover_summary *sum,
   fp = fopen(path, "r");
   if (fp == NULL)
     {
-      ret = (errno != 0) ? -errno : -EIO;
+      /* NuttX answers ENOTDIR, not ENOENT, when a component of the path is
+       * missing: with no /data/velaguard/discover directory yet, opening
+       * .../discover/point_table_candidate.json fails that way.  Callers
+       * read "no file" as "no table yet" and go on to create the tree, so
+       * both errnos have to mean the same thing here.  Letting ENOTDIR
+       * through made list -c report eio and made ensure_candidate bail out
+       * before it could create the missing directory, which turned one
+       * absent directory into a dead point table with no cause in the error.
+       */
+
+      ret = (errno == ENOTDIR) ? -ENOENT :
+            ((errno != 0) ? -errno : -EIO);
       goto out;
     }
 
