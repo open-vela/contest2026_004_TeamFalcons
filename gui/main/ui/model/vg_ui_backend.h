@@ -60,24 +60,41 @@ typedef struct {
  *
  * The board asks the agent for advice when the alarm set changes and caches
  * the validated answer, so the page itself never does IO and never blocks.
- * VG_UI_ADV_IDLE       nothing outstanding, no advice to show
+ *
+ * Whether a point shows AI text is decided by vg_ui_alarm_advice_get() alone:
+ * the entry has to match the alarm episode, and the round state is not part
+ * of that test.  A refresh that fails leaves the validated document in place,
+ * so advice that is still correct for the alarm on screen stays on screen.
+ *
+ * These states only choose the heading the page shows when nothing matches:
+ * VG_UI_ADV_IDLE       no round outstanding and nothing for this alarm set
  * VG_UI_ADV_PENDING    a round is queued or running
- * VG_UI_ADV_READY      a validated document is loaded
- * VG_UI_ADV_ERROR      the round failed, timed out, or its answer was rejected
+ * VG_UI_ADV_READY      loaded advice answers the alarm set on screen
+ * VG_UI_ADV_ERROR      no round in flight and nothing to show for this set
+ * VG_UI_ADV_NO_CRED    the agent has no LLM credentials, so no round can help
+ *
+ * ERROR and NO_CRED are both "nothing to show", and the page falls back to the
+ * rule summary either way.  They stay apart because the reader's next step
+ * differs: ERROR means wait for a retry, NO_CRED means the board needs
+ * provisioning again.  Collapsing them sent the 2026-09-17 investigation
+ * looking for a bug in the advice feature while the LLM credentials were
+ * simply gone from the eMMC.
  */
 typedef enum {
     VG_UI_ADV_IDLE = 0,
     VG_UI_ADV_PENDING,
     VG_UI_ADV_READY,
-    VG_UI_ADV_ERROR
+    VG_UI_ADV_ERROR,
+    VG_UI_ADV_NO_CRED
 } vg_ui_advice_state_t;
 
 void                 vg_ui_alarm_advice_request(void);
 vg_ui_advice_state_t vg_ui_alarm_advice_state(void);
 
-/* Look up one alarm episode.  Returns true only when a loaded document has
- * an entry for exactly this point and episode; the epoch test is what stops
- * advice from a previous alarm on the same point being shown again. */
+/* Look up one alarm episode.  True only when a loaded document has an entry
+ * for exactly this point and episode; the epoch test is what stops advice
+ * from a previous alarm on the same point being shown again.  The state of
+ * the last round deliberately plays no part here. */
 bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
                             vg_ai_advice_entry_t *out);
 
@@ -85,6 +102,7 @@ bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
  * exercised without a board.  Defined in gui/main/ui/model/vg_ui_backend.c,
  * which the firmware build filters out; pass n == 0 to clear. */
 void vg_ui_backend_mock_set_advice(const vg_ai_advice_entry_t *entries, int n);
+void vg_ui_backend_mock_set_advice_state(vg_ui_advice_state_t state);
 
 /* discover_*_status: 0 idle, 1 running, 2 done, <0 error */
 typedef struct {

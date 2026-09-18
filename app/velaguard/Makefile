@@ -103,7 +103,8 @@ VG_UI_CSRCS     := $(foreach _d,$(VG_UI_SUBDIRS),$(wildcard $(VG_UI_DIR)/$(_d)/*
 VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/model/vg_ui_backend.c,$(VG_UI_CSRCS))
 
 CSRCS    += $(notdir $(VG_UI_CSRCS))
-CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c vg_ai_contract.c
+CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c \
+            vg_advice_policy.c vg_ai_contract.c
 VPATH    += $(foreach _d,$(VG_UI_SUBDIRS),:$(VG_UI_DIR)/$(_d))
 DEPPATH  += $(foreach _d,$(VG_UI_SUBDIRS),--dep-path $(VG_UI_DIR)/$(_d))
 

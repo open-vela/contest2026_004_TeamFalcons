@@ -23,6 +23,7 @@ void vg_advice_note_alarms(void);
 
 void vg_advice_tick(void);
 
+
 #ifdef __cplusplus
 }
 #endif
