@@ -113,3 +113,6 @@ logs/**/errors/
 /docs/submission/fonts/
 /docs/submission/TeamFalcons-*-PREVIEW.zip
 /docs/submission/REQUIREMENTS.md
+
+# Headless/HMI framebuffer captures dropped at the repo root during accept runs
+/*.ppm
