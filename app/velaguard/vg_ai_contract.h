@@ -87,6 +87,23 @@ typedef struct
 } vg_ai_alarm_in_t;
 
 /****************************************************************************
+ * Read only the identity header (VGADV1 / boot / req).
+ *
+ * The board uses this before parsing: a document is accepted on its boot
+ * stamp and its entries' epochs, so the req it was written for is diagnostic
+ * rather than a gate.  A file left behind by a round that timed out mid-work
+ * is still the right advice for the alarms it names, and rejecting it on the
+ * req alone is what left the page on the rule summary with a valid document
+ * sitting on eMMC.
+ *
+ * Returns VG_AI_OK and writes whichever of boot/req is not NULL, or a
+ * negative enum vg_ai_rc.
+ ****************************************************************************/
+
+int vg_ai_advice_head(const char *buf, size_t len, uint32_t *boot,
+                      uint32_t *req);
+
+/****************************************************************************
  * Parse a VGADV1 document.
  *
  * Any structural violation fails the whole document: *out is untouched and

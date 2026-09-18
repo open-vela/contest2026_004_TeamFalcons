@@ -385,6 +385,92 @@ static int parse_sev(const char *v, size_t vlen, uint8_t *out)
 
 static vg_ai_advice_doc_t s_parse_scratch;
 
+/****************************************************************************
+ * Identity header only.
+ *
+ * Why this exists: a document is accepted on its boot stamp and its entries'
+ * (id, epoch), and the req it was written for says nothing about whether it
+ * still applies.  A round that times out while the model is still working
+ * leaves its file behind one round later; comparing that file's req against
+ * the live counter rejected the whole document, and the page went to the rule
+ * summary even though the advice matched the alarms on screen exactly.  The
+ * board reads the header first, checks the boot stamp itself, and lets the
+ * per-point epochs decide what may be shown.
+ ****************************************************************************/
+
+int vg_ai_advice_head(const char *buf, size_t len, uint32_t *boot,
+                      uint32_t *req)
+{
+  const char *cur;
+  const char *end;
+  const char *ls;
+  const char *v;
+  size_t llen;
+  size_t vlen;
+  uint32_t u32;
+  int rc;
+
+  if (buf == NULL || len == 0 || len > VG_AI_DOC_MAX)
+    {
+      return VG_AI_ERR_ARG;
+    }
+
+  cur = buf;
+  end = buf + len;
+
+  if (next_line(&cur, end, &ls, &llen) != 0 ||
+      llen != 6 || memcmp(ls, "VGADV1", 6) != 0)
+    {
+      return VG_AI_ERR_FORMAT;
+    }
+
+  if (next_line(&cur, end, &ls, &llen) != 0)
+    {
+      return VG_AI_ERR_FORMAT;
+    }
+
+  rc = expect_key(ls, llen, "boot", &v, &vlen);
+  if (rc != VG_AI_OK)
+    {
+      return rc;
+    }
+
+  rc = parse_hex8(v, vlen, &u32);
+  if (rc != VG_AI_OK)
+    {
+      return rc;
+    }
+
+  if (boot != NULL)
+    {
+      *boot = u32;
+    }
+
+  if (next_line(&cur, end, &ls, &llen) != 0)
+    {
+      return VG_AI_ERR_FORMAT;
+    }
+
+  rc = expect_key(ls, llen, "req", &v, &vlen);
+  if (rc != VG_AI_OK)
+    {
+      return rc;
+    }
+
+  rc = parse_dec(v, vlen, &u32);
+  if (rc != VG_AI_OK)
+    {
+      return rc;
+    }
+
+  if (req != NULL)
+    {
+      *req = u32;
+    }
+
+  return VG_AI_OK;
+}
+
 int vg_ai_advice_parse(const char *buf, size_t len,
                        uint32_t expect_boot, uint32_t expect_req,
                        vg_ai_advice_doc_t *out)

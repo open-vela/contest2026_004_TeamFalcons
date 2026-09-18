@@ -78,6 +78,20 @@ END
 - **一个通道有多个消费者时必须标记归属**。告警建议与日报共用这条通道，而回复文本不是产物（产物是各自的文件）。`vg_agent_round_queue_owned()` 记录发起方，消费者先查 `vg_agent_round_owner()` 再决定是否读产物，读完调 `vg_agent_round_clear()`。没有这层归属时，日报轮次结束会让告警侧去读 `alarm_advice.txt`，用当前 `req` 比对上一轮写的文件，得到 `VG_AI_ERR_STALE`，看着像产物坏了，实际是读错了对象。
 - 轮次预算取 300 s：实测一轮 ReAct 是 6 次迭代、约 190 s 墙上时间、LLM 侧累计约 105 s，已经贴着 120 s 的单次调用墙钟。
 
+## 页面拿到的建议由命中决定，不由上一轮成败决定
+
+`vg_advice_policy.{h,c}` 是这几条规则的唯一实现，放在纯 libc 模块里是为了能在 `app/velaguard/host_tests` 断言；`vg_advice.c` 只留线程、IO 与解析。
+
+- **命中的判据是 `loaded` 加 `boot`+`id`+`epoch`**。轮次状态不参与命中判断。曾经把 `g_state == READY` 也写进命中条件，于是一轮刷新失败就把已经通过校验、身份完全对得上的建议一起屏蔽，页面显示「AI 建议不可用，显示规则摘要」，而板端其实有这份建议。这是本次修的问题。
+- **`req` 不是身份，是诊断信息**。文档的身份是 `boot` 加逐条 `(id, epoch)`。一轮在写文件之后被判超时，它留下的产物会在下一轮被读到，`req` 必然差一；用 `req` 当门槛就会把一份与屏幕告警完全对得上的建议整份拒绝。`vg_ai_advice_head()` 只取 `boot`/`req` 两个字段，板端先比对 `boot`，`req` 只写进日志。
+- **覆盖由文档与告警集合现算，不靠记忆的签名**。`vg_advice_doc_covers_set()` 检查文档对当前每个 `(id, epoch)` 都有条目。这样上一轮写出的文档仍然算数，而集合真的变了（同点重新告警、`al_epoch` 递增）时立刻判定为未覆盖。
+- **`-EBUSY` 是瞬时冲突，不得上报为 ERROR**。它只表示另一条流向这一拍占着唯一的轮次通道，与建议本身无关；上报成 ERROR 会让日报轮在途时页面每次都闪成「不可用」。日报侧对同一种情况的处理是对的（`rc != -EBUSY` 才计一次失败），建议侧要对齐。
+- **重问的门槛是「已装载的文档是否覆盖当前告警集合」**，不是「是否装载过文档」。退避要记在「这一轮是针对哪份告警签名」上，这样告警集合变了立刻重问，而同一个集合失败后按 `VG_ADV_RETRY_MS` 等下一次。
+- **时间戳求差一律带符号**。`advice_load()` 在同一个 tick 内把 `g_last_ok_ms` 写成比该 tick 开头取的 `now` 更晚的读数，`now - g_last_ok_ms` 用无符号算会绕成约 2^32 并判为「已过期」，于是每 tick 都重问一轮。刷新判定收进 `vg_advice_refresh_due()`，用例固定了「时间戳晚于 now」这一情形。
+- 状态枚举的语义据此收敛成一条不变量：**已覆盖当前告警集合就是 `READY`，未覆盖才区分「有轮次在途」`PENDING` 与「没有可显示的建议」`ERROR`**。刷新轮在途时手上那份建议仍然适用，就不该被标成「生成中」；日报轮占用通道时同理。这条不变量让验收断言可以无歧义地写：`covered=1` 必须伴随 `state=ready`，不必考虑是否有轮次在跑。
+
+验收上，`vgagent advice` 打印的就是页面的输入：`state` 是没命中时的措辞来源，`advice=hit` 才是真正让 AI 文本上屏的东西。断言要打在命中与 `covered=1` 上，不要在未覆盖时把「还没有建议」判成失败——一轮约 195 s，失败后还有 `VG_ADV_RETRY_MS` 退避。
+
 ## 写 skill 时要避开单文件调用短路
 
 `agent_loop.c` 有一处省时间的优化：某一轮迭代如果只调用了一个 `read_file` / `write_file` / `edit_file`，且目标不是 skills 目录或 `HEARTBEAT.md`，框架会直接把文件内容当成回复并结束本轮，不再走下一次 LLM 调用。省约 2 秒，代价是后续步骤全部不执行。
@@ -103,4 +117,38 @@ END
 
 - 所有 `(buf, size)` 写入遵循 `Quality Guidelines` 的偏移不变量，禁止按 `snprintf` 返回值累加偏移。
 - 工具调用审计写 `/data/velaguard/logs/agent_tools.log`，超过 64 KB 轮转一次，写失败不能影响工具调用本身。
-- 新增校验逻辑后，边界用例加到 `app/velaguard/host_tests/test_ai_contract.c`；页面行为改动加到 `gui/headless/alarm_check_main.c`。两者都不占串口，先跑它们再上板。
+- 新增校验逻辑后，边界用例加到 `app/velaguard/host_tests/test_ai_contract.c`；建议的命中、覆盖与重问规则加到 `app/velaguard/host_tests/test_advice_policy.c`；页面行为改动加到 `gui/headless/alarm_check_main.c`。三者都不占串口，先跑它们再上板。
+
+## 没有凭证要说凭证，不要说功能坏了
+
+`llm_router` 只在所有 backend 槽位都没有 host 时打印 `No available backend`，而槽位完全来自 `/data/agent/config/config.json` 的 `llm_backend_0`，没有编译期内置默认值。凭证丢失时每一轮都以失败结束、不产生任何文档，页面于是显示「AI 建议不可用」——这句话把读者的注意力引向建议功能本身，而实际要做的是重新 provision。
+
+所以降级原因必须可区分：
+
+- `vg_advice_presence()` 增加 `credentials_ready` 入参，未就绪时返回 `VG_ADV_PRESENCE_NO_CRED`，页面显示「AI 凭证未配置，显示规则摘要」。它排在「轮次在途」之前：没有凭证时正在跑的轮次已经注定失败，页面不该停在「生成中」等一个不会来的答案。
+- 已缓存且覆盖当前告警集合的建议仍然优先显示。凭证消失不该抹掉一份对当前告警正确的文档。
+- `vgagent status` 打印 `llm: credentials=<ready|MISSING> provision_file=<present|absent>`，一条命令定位，不必进 `vela>` CLI 跑 `config_show` / `router_status`。
+- 判定读 `config.json` 而不是封存的 blob：blob 存在但 apply 没跑过，正是要抓的状态。判定放在 `vg_provision_creds_ready_in()` 里，与文件读取分开，host 测试才能覆盖。
+
+## 凭证只写在持久存储上
+
+`/data` 是 eMMC 卷的软链接，但 `agent_main.c` 在 `stat("/data")` 失败时会挂 tmpfs 上去。那之后所有写入都进 RAM，重启即失，而当时的返回码全是成功。
+
+- `vg_provision_apply_llm_config()` 在解密前先检查目标在持久存储上（`vg_provision_store_is_persistent()`），tmpfs 或伪文件系统返回 `-ENODEV`。
+- `vgprovision commit` 落盘后同检查一次，不通过就打印 `WARNING store is not persistent`。
+- `agent_main.c` 的 tmpfs 兜底从 `LOG_INFO` 提到 `LOG_ERR`，写明重启即丢。
+
+## provision 没有 reboot 可依赖
+
+`velaguard-lvgl` 未开 `CONFIG_BOARDCTL_RESET`，`nsh_reboot` 不存在，NSH 里没有 `reboot`。`commit` 只写 blob 和 `/data/velaguard/provision/.apply_on_boot`，配置在**下一次开机**才写进 `config.json`。
+
+- 脚本不得发 `reboot` 后假定生效。`provision-llm-from-secrets.ps1` 现在明确提示需要人工复位或走 `.debug/nsh_reset_only.ps1`，并给出复位后的三条确认命令。
+- 这条踩过一次：脚本在 `.apply_on_boot` 从未被消费的情况下打印 `OK`，板子仍然没有 backend。
+
+## 响应缓冲要能装下一次工具调用的回复
+
+直接 HTTPS 路径（`llm_http_direct()`）把缓冲区直接交给 vela_tls，**不经过** `resp_buf_append()` 的可增长逻辑，而 vela_tls 读满 `resp_cap-1` 就停。工具调用轮次的回复要把模型的 `tool_arguments` 整份带回来（实测请求体 18–21 KB），`CONFIG_VG_HMI` 把 `AGENT_LLM_STREAM_BUF_SIZE` 压到 4 KB 时会截断，症状是 `[llm] Failed to parse API JSON`——一个模型输出里不存在的语法错误。
+
+- 直接路径用 `AGENT_LLM_DIRECT_RESP_CAP`（64 KB），与流式路径的 4 KB 分开。
+- 取回 `out_body_len` 并在长度落在 `cap-1` 时判定截断、打印实际字节数与上限。用 `vela_https_post_json()` 包装器会丢弃 body 长度，截断无从察觉。
+- `vg_advice` 一侧不要因为看到 `Failed to parse API JSON` 就去改提示词：先确认缓冲区装得下。

@@ -337,6 +337,80 @@ static int test_boot_req_identity(void)
   return fails;
 }
 
+/* The board reads the header on its own: the boot stamp decides whether a
+ * document may be adopted, the req is diagnostic.  Getting the header out of
+ * a document whose req is stale is what lets a valid file survive a round
+ * that reported failure. */
+static int test_advice_head(void)
+{
+  uint32_t boot;
+  uint32_t req;
+  int fails = 0;
+
+  boot = 0;
+  req = 0;
+  fails += expect_rc(vg_ai_advice_head(DOC3, sizeof(DOC3) - 1, &boot, &req),
+                     VG_AI_OK, "head of a valid document");
+  fails += expect_true(boot == 0x0a1b2c3du, "head reports the boot stamp");
+  fails += expect_true(req == 7u, "head reports the req");
+
+  /* Either output may be skipped. */
+
+  fails += expect_rc(vg_ai_advice_head(DOC3, sizeof(DOC3) - 1, NULL, NULL),
+                     VG_AI_OK, "head with no outputs wanted");
+
+  /* The header is read even when the body is not there at all. */
+
+  {
+    static const char head_only[] = "VGADV1\nboot=0a1b2c3d\nreq=7\n";
+
+    boot = 0;
+    req = 0;
+    fails += expect_rc(vg_ai_advice_head(head_only, sizeof(head_only) - 1,
+                                         &boot, &req),
+                       VG_AI_OK, "head of a header-only buffer");
+    fails += expect_true(boot == 0x0a1b2c3du, "header-only boot");
+    fails += expect_true(req == 7u, "header-only req");
+  }
+
+  /* Bad input. */
+
+  fails += expect_rc(vg_ai_advice_head(NULL, 0, &boot, &req),
+                     VG_AI_ERR_ARG, "head of NULL");
+  fails += expect_rc(vg_ai_advice_head(DOC3, 0, &boot, &req),
+                     VG_AI_ERR_ARG, "head of an empty buffer");
+
+  {
+    static const char bad[] = "VGADV2\nboot=0a1b2c3d\nreq=7\n";
+
+    fails += expect_rc(vg_ai_advice_head(bad, sizeof(bad) - 1, &boot, &req),
+                       VG_AI_ERR_FORMAT, "head of a wrong marker");
+  }
+
+  {
+    static const char bad[] = "VGADV1\nreq=7\n";
+
+    fails += expect_rc(vg_ai_advice_head(bad, sizeof(bad) - 1, &boot, &req),
+                       VG_AI_ERR_KEY, "head with boot missing");
+  }
+
+  {
+    static const char bad[] = "VGADV1\nboot=0a1b2c3d\n";
+
+    fails += expect_rc(vg_ai_advice_head(bad, sizeof(bad) - 1, &boot, &req),
+                       VG_AI_ERR_FORMAT, "head with req missing");
+  }
+
+  {
+    static const char bad[] = "VGADV1\nboot=zzzzzzzz\nreq=7\n";
+
+    fails += expect_rc(vg_ai_advice_head(bad, sizeof(bad) - 1, &boot, &req),
+                       VG_AI_ERR_RANGE, "head with a bad boot literal");
+  }
+
+  return fails;
+}
+
 static int test_entry_field_failures(void)
 {
   vg_ai_advice_doc_t doc;
@@ -662,6 +736,7 @@ int main(void)
   fails += test_doc_size_cap();
   fails += test_structure_failures();
   fails += test_boot_req_identity();
+  fails += test_advice_head();
   fails += test_entry_field_failures();
   fails += test_text_truncation();
   fails += test_request_builder();
