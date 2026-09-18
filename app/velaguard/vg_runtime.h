@@ -58,6 +58,11 @@ void vg_runtime_fprint_dump(FILE *fp);
 /* Print the screen report: 通信 / 点位在线 / 异常, scannable. */
 void vg_runtime_fprint_report(FILE *fp);
 
+/* Same report into a caller buffer, for the agent tool that answers a spoken
+ * 运行报告 question.  Truncates at cap and NUL-terminates.  Returns bytes
+ * written (excluding NUL), or 0 when out/cap is unusable. */
+int vg_runtime_format_report(char *out, size_t cap);
+
 uint32_t vg_runtime_uptime_s(void);
 
 /* Write the screen report to path. Returns 0 or -errno. */

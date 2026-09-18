@@ -114,11 +114,77 @@ static void test_write_report(void)
   expect(strstr(buf, "vgruntime: slave=") == NULL, "no dump lines");
 }
 
+/* The agent answers "运行报告" from the buffer form while the report page
+ * falls back to the file form.  Both must say the same thing, so compare the
+ * two renderings byte for byte rather than only checking section headers. */
+
+static void test_buffer_matches_file(void)
+{
+  char path[] = "/tmp/vg_runtime_report_cmp.md";
+  char fbuf[4096];
+  char bbuf[4096];
+  FILE *fp;
+  size_t n;
+  int written;
+
+  expect(vg_runtime_write_report(path) == 0, "write report for compare");
+
+  written = vg_runtime_format_report(bbuf, sizeof(bbuf));
+  expect(written > 0, "buffer report non-empty");
+  expect((size_t)written == strlen(bbuf), "returned length matches strlen");
+
+  fp = fopen(path, "r");
+  expect(fp != NULL, "open report for compare");
+  if (fp == NULL)
+    {
+      return;
+    }
+
+  n = fread(fbuf, 1, sizeof(fbuf) - 1, fp);
+  fclose(fp);
+  unlink(path);
+  fbuf[n] = '\0';
+
+  expect(n == (size_t)written, "file and buffer agree on length");
+  expect(strcmp(fbuf, bbuf) == 0, "file and buffer renderings are identical");
+
+  expect(strstr(bbuf, "通信质量") != NULL, "buffer has comm section");
+  expect(strstr(bbuf, "点位在线") != NULL, "buffer has point section");
+  expect(strstr(bbuf, "异常时间线") != NULL, "buffer has event section");
+}
+
+static void test_format_report_bounds(void)
+{
+  char small[64];
+  int n;
+  size_t i;
+
+  n = vg_runtime_format_report(small, sizeof(small));
+  expect(n >= 0, "short buffer does not fail");
+  expect(n <= (int)sizeof(small) - 1, "short buffer stays in bounds");
+
+  for (i = 0; i < sizeof(small); i++)
+    {
+      if (small[i] == '\0')
+        {
+          break;
+        }
+    }
+
+  expect(i < sizeof(small), "short buffer is NUL-terminated");
+
+  expect(vg_runtime_format_report(NULL, sizeof(small)) == 0,
+         "NULL out returns 0");
+  expect(vg_runtime_format_report(small, 0) == 0, "zero cap returns 0");
+}
+
 int main(void)
 {
   test_boot_survives_window();
   test_point_online_and_events();
   test_write_report();
+  test_buffer_matches_file();
+  test_format_report_bounds();
 
   if (g_fail != 0)
     {

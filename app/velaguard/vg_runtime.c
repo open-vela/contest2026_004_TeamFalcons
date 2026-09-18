@@ -760,7 +760,66 @@ static unsigned pct_u(uint32_t ok, uint32_t total)
   return (unsigned)((ok * 100u + total / 2u) / total);
 }
 
-void vg_runtime_fprint_report(FILE *fp)
+/* The report body is written once and reaches two destinations: a FILE for
+ * the report page's fallback file, and a buffer for the agent tool that
+ * answers "运行报告" over the console.  Keeping one body means the screen and
+ * the spoken answer cannot drift apart. */
+
+struct vg_report_sink
+{
+  FILE  *fp;     /* set for the FILE destination */
+  char  *buf;    /* set for the buffer destination */
+  size_t cap;
+  int    off;
+};
+
+static void sink_put(struct vg_report_sink *s, const char *fmt, ...)
+{
+  va_list ap;
+
+  if (s == NULL)
+    {
+      return;
+    }
+
+  if (s->fp != NULL)
+    {
+      va_start(ap, fmt);
+      vfprintf(s->fp, fmt, ap);
+      va_end(ap);
+      return;
+    }
+
+  if (s->buf == NULL || s->cap == 0 || s->off >= (int)s->cap - 1)
+    {
+      return;
+    }
+
+  va_start(ap, fmt);
+  /* snprintf returns the untruncated length, so saturate rather than letting
+   * the offset walk past the buffer on the next call. */
+  {
+    int n = vsnprintf(s->buf + s->off, s->cap - (size_t)s->off, fmt, ap);
+
+    if (n > 0)
+      {
+        s->off += n;
+        if (s->off > (int)s->cap - 1)
+          {
+            s->off = (int)s->cap - 1;
+          }
+      }
+  }
+  va_end(ap);
+}
+
+/* Provenance line shared by the file and buffer renderings.  The agent
+ * paraphrases this text, so it should know the numbers are measured on the
+ * board rather than supplied by it. */
+#define VG_RUNTIME_PROVENANCE \
+  "运行报告由板上统计生成，数字不是推测。\n"
+
+static void report_emit(struct vg_report_sink *s)
 {
   int i;
   int n_pts = 0;
@@ -785,7 +844,7 @@ void vg_runtime_fprint_report(FILE *fp)
   char dur[32];
   time_t now_wall = 0;
 
-  if (fp == NULL)
+  if (s == NULL)
     {
       return;
     }
@@ -812,7 +871,7 @@ void vg_runtime_fprint_report(FILE *fp)
       snprintf(wallbuf, sizeof(wallbuf), "-");
     }
 
-  fprintf(fp, "运行报告（本次上电起）\n%s  已运行 %s\n\n", wallbuf, dur);
+  sink_put(s, "运行报告（本次上电起）\n%s  已运行 %s\n\n", wallbuf, dur);
 
   for (i = 0; ; i++)
     {
@@ -846,34 +905,34 @@ void vg_runtime_fprint_report(FILE *fp)
         }
     }
 
-  fprintf(fp, "通信质量\n");
+  sink_put(s, "通信质量\n");
   if (bus_total == 0)
     {
-      fprintf(fp, "暂无通信统计。\n");
+      sink_put(s, "暂无通信统计。\n");
     }
   else
     {
-      fprintf(fp, "总线成功 %u%%（%u/%u），超时 %u，CRC %u\n",
+      sink_put(s, "总线成功 %u%%（%u/%u），超时 %u，CRC %u\n",
               pct_u(bus_ok, bus_total), (unsigned)bus_ok,
               (unsigned)bus_total, (unsigned)bus_to, (unsigned)bus_crc);
       if (win_total == 0)
         {
-          fprintf(fp, "近窗尚无采样。\n");
+          sink_put(s, "近窗尚无采样。\n");
         }
       else if (win_to == 0 && win_crc == 0 && win_ok == win_total)
         {
-          fprintf(fp, "近窗全部正常。\n");
+          sink_put(s, "近窗全部正常。\n");
         }
       else
         {
-          fprintf(fp, "近窗成功 %u%%（%u/%u），超时 %u，CRC %u\n",
+          sink_put(s, "近窗成功 %u%%（%u/%u），超时 %u，CRC %u\n",
                   pct_u(win_ok, win_total), (unsigned)win_ok,
                   (unsigned)win_total, (unsigned)win_to, (unsigned)win_crc);
         }
 
       if (worst_slave != 0 && worst_pct < 100)
         {
-          fprintf(fp, "最差从站 %u：成功 %u%%（%u/%u）\n",
+          sink_put(s, "最差从站 %u：成功 %u%%（%u/%u）\n",
                   (unsigned)worst_slave, worst_pct,
                   (unsigned)worst_ok, (unsigned)worst_total);
         }
@@ -887,10 +946,10 @@ void vg_runtime_fprint_report(FILE *fp)
         }
     }
 
-  fprintf(fp, "\n点位在线\n");
+  sink_put(s, "\n点位在线\n");
   if (n_pts == 0)
     {
-      fprintf(fp, "暂无点位。\n");
+      sink_put(s, "暂无点位。\n");
     }
 
   for (i = 0; i < VG_RUNTIME_MAX_POINTS && shown_pts < VG_RUNTIME_REPORT_POINTS;
@@ -920,14 +979,14 @@ void vg_runtime_fprint_report(FILE *fp)
       if (p->online)
         {
           format_dur(online_ms / 1000u, ondur, sizeof(ondur));
-          fprintf(fp, "%s 在线 %s  %.4g%s\n", p->id, ondur,
+          sink_put(s, "%s 在线 %s  %.4g%s\n", p->id, ondur,
                   (double)p->last_value,
                   p->kind == VG_RUNTIME_KIND_THRESHOLD ? " 越限" : "");
         }
       else
         {
           format_dur(offline_s, ondur, sizeof(ondur));
-          fprintf(fp, "%s 离线 %s  %.4g\n", p->id, ondur,
+          sink_put(s, "%s 离线 %s  %.4g\n", p->id, ondur,
                   (double)p->last_value);
         }
 
@@ -936,7 +995,7 @@ void vg_runtime_fprint_report(FILE *fp)
 
   if (n_pts > VG_RUNTIME_REPORT_POINTS)
     {
-      fprintf(fp, "其余 %d 个未列出\n", n_pts - VG_RUNTIME_REPORT_POINTS);
+      sink_put(s, "其余 %d 个未列出\n", n_pts - VG_RUNTIME_REPORT_POINTS);
     }
 
   ev_n = (int)g_ev_len;
@@ -946,10 +1005,10 @@ void vg_runtime_fprint_report(FILE *fp)
       ev_start = ev_n - VG_RUNTIME_REPORT_EVENTS;
     }
 
-  fprintf(fp, "\n异常时间线\n");
+  sink_put(s, "\n异常时间线\n");
   if (ev_n == 0)
     {
-      fprintf(fp, "暂无异常记录。\n");
+      sink_put(s, "暂无异常记录。\n");
     }
 
   for (i = ev_n - 1; i >= ev_start; i--)
@@ -969,19 +1028,55 @@ void vg_runtime_fprint_report(FILE *fp)
 
       if (e->kind == VG_RUNTIME_KIND_OFFLINE)
         {
-          fprintf(fp, "%s %s %s\n", hm, e->id,
+          sink_put(s, "%s %s %s\n", hm, e->id,
                   e->action == VG_RUNTIME_ACT_RAISE ? "离线" : "恢复在线");
         }
       else if (e->action == VG_RUNTIME_ACT_RAISE)
         {
-          fprintf(fp, "%s %s 越限 %.4g%s%.4g\n", hm, e->id,
+          sink_put(s, "%s %s 越限 %.4g%s%.4g\n", hm, e->id,
                   (double)e->value, cmp_sym(e->cmp), (double)e->threshold);
         }
       else
         {
-          fprintf(fp, "%s %s 越限解除\n", hm, e->id);
+          sink_put(s, "%s %s 越限解除\n", hm, e->id);
         }
     }
+}
+
+void vg_runtime_fprint_report(FILE *fp)
+{
+  struct vg_report_sink s;
+
+  if (fp == NULL)
+    {
+      return;
+    }
+
+  memset(&s, 0, sizeof(s));
+  s.fp = fp;
+  report_emit(&s);
+}
+
+int vg_runtime_format_report(char *out, size_t cap)
+{
+  struct vg_report_sink s;
+
+  if (out == NULL || cap == 0)
+    {
+      return 0;
+    }
+
+  out[0] = '\0';
+  memset(&s, 0, sizeof(s));
+  s.buf = out;
+  s.cap = cap;
+
+  /* Same provenance line the file gets.  It matters more here: the model
+   * reads this text and then paraphrases it, so it should know the numbers
+   * are measured on the board rather than supplied by it. */
+  sink_put(&s, VG_RUNTIME_PROVENANCE);
+  report_emit(&s);
+  return s.off;
 }
 
 int vg_runtime_write_report(const char *path)
@@ -1020,7 +1115,7 @@ int vg_runtime_write_report(const char *path)
       return -errno;
     }
 
-  fprintf(fp, "运行报告由板上统计生成，数字不是推测。\n");
+  fprintf(fp, VG_RUNTIME_PROVENANCE);
   vg_runtime_fprint_report(fp);
   fclose(fp);
   return 0;
