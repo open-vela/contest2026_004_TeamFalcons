@@ -47,6 +47,11 @@ endif
 
 ifeq ($(CONFIG_EXAMPLES_AI_AGENT_VELA),y)
 CSRCS += vg_agent_seed.c vg_agent_round.c vg_provision.c vg_provision_crypto.c
+# Read-only data tools the agent calls directly.  vg_agent_query.c is pure
+# logic (host-tested); vg_agent_tools.c registers them and is compiled only
+# when a data source exists, so build targets that enable ai_agent without
+# the frame-stat or discover modules (velaguard-ai-probe) do not link them.
+CSRCS += vg_agent_query.c vg_agent_tools.c
 PROGNAME += vgprovision vgagent
 MAINSRC += vgprovision.c vgagent.c
 # Local agent IPC (velaclaw/client.h). packages/ sits next to apps/ in the

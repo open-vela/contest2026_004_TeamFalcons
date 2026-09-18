@@ -54,6 +54,7 @@ extern int vghmi_main(int argc, char *argv[]);
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 #include "vg_agent_seed.h"
+#include "vg_agent_tools.h"
 #include "vg_provision.h"
 #endif
 
@@ -171,6 +172,11 @@ int main(int argc, char *argv[])
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
     vg_agent_seed_content();
+    /* Hand the read-only data tools to ai_agent before its daemon starts, so
+     * the first round already sees them.  Registration only appends to the
+     * registry's static provider array; the daemon does the same from its own
+     * task in the flat build, so this is the same registry. */
+    vg_agent_tools_register();
     vg_provision_boot_apply_if_needed();
 #endif
 
