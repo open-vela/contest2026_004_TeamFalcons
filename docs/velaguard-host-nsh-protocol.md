@@ -295,6 +295,7 @@ token，由板端 errno 映射而来。errno 数值随平台变化，token 才�
 | token | 含义 |
 | --- | --- |
 | `enoent` | 路径不存在：`/data` 软链接悬空、目录没建起来 |
+| `enotdir` | 表所在目录被同名普通文件占了位 |
 | `erofs` | 只读文件系统 |
 | `enospc` | eMMC 没有空间 |
 | `enomem` | 内存不足 |
@@ -303,6 +304,11 @@ token，由板端 errno 映射而来。errno 数值随平台变化，token 才�
 | `einval` | 文件存在但内容不是合法点表 |
 | `enodev` | 存储根落在 RAM 伪文件系统上，重启即丢 |
 | `eio` | 其他，含未识别的 errno |
+
+表所在的目录缺失不算故障：板端把读表时的 `ENOTDIR` 与 `ENOENT` 同样看待，
+`list` / `get` 回 `OK n=0`，`add` / `set` / `del` 直接重建目录树再写。NuttX 在
+路径中间某级缺失时回的是 `ENOTDIR`（不是 `ENOENT`），这一点与桌面 libc 不同；
+只有目录名被普通文件占用时才会真的报 `enotdir`。
 
 其余 `io` 的 `msg` 仍是操作名（`write_fail` / `write_points` / `commit_fail` /
 `unlink_fail` / `read_fail`），用来区分是哪一个写或读失败。
