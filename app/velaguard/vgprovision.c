@@ -113,13 +113,31 @@ static int cmd_commit(void)
 
   printf("vgprovision: committed %s (%ld bytes)\n",
          VG_PROVISION_FILE, (long)st.st_size);
+
+  /* Say plainly whether the blob will still be there after a restart.  A
+   * commit onto RAM-backed /data prints no other symptom at the time and only
+   * shows up later as an agent with no backend. */
+
+  ret = vg_provision_store_is_persistent(VG_PROVISION_DIR);
+  if (ret == -ENOENT)
+    {
+      ret = vg_provision_store_is_persistent("/data");
+    }
+
+  if (ret != 0)
+    {
+      printf("vgprovision: WARNING store is not persistent (%d): "
+             "credentials will be lost on reboot\n", ret);
+    }
+
   fd = open(VG_APPLY_FLAG, O_WRONLY | O_CREAT | O_TRUNC, 0600);
   if (fd >= 0)
     {
       close(fd);
     }
 
-  printf("vgprovision: reboot to apply LLM config\n");
+  printf("vgprovision: reboot required to apply LLM config "
+         "(this build has no reboot command; reset the board)\n");
   return 0;
 }
 
