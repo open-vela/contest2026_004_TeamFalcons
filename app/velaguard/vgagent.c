@@ -22,6 +22,7 @@
 #include <unistd.h>
 
 #include "vg_agent_round.h"
+#include "vg_provision.h"
 
 #define VGAGENT_ASK_MAX 1024
 
@@ -73,6 +74,15 @@ static void print_status(void)
          state_name(vg_agent_round_state()),
          (unsigned)vg_agent_round_generation(),
          owner_name(vg_agent_round_owner()));
+
+  /* One line that answers "why is there no AI".  Without it the reader has to
+   * enter the agent CLI and run config_show/router_status to learn that the
+   * credentials are gone, which is how a missing key was mistaken for a bug in
+   * the feature consuming the answer. */
+
+  printf("llm: credentials=%s provision_file=%s\n",
+         vg_llm_credentials_ready() ? "ready" : "MISSING",
+         vg_provision_is_present() ? "present" : "absent");
 
   if (vg_agent_round_last_reply()[0] != '\0')
     {
