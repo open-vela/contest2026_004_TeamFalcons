@@ -83,12 +83,14 @@ static bool mock_request_daily_report(void)
 static vg_ai_advice_entry_t s_mock_advice[VG_AI_ADV_MAX];
 static int s_mock_advice_n;
 static bool s_mock_advice_ready;
+static vg_ui_advice_state_t s_mock_advice_state = VG_UI_ADV_IDLE;
 
 void vg_ui_backend_mock_set_advice(const vg_ai_advice_entry_t *entries, int n)
 {
     if(entries == NULL || n <= 0) {
         s_mock_advice_n = 0;
         s_mock_advice_ready = false;
+        s_mock_advice_state = VG_UI_ADV_IDLE;
         return;
     }
 
@@ -99,6 +101,15 @@ void vg_ui_backend_mock_set_advice(const vg_ai_advice_entry_t *entries, int n)
     memcpy(s_mock_advice, entries, sizeof(s_mock_advice[0]) * (size_t)n);
     s_mock_advice_n = n;
     s_mock_advice_ready = true;
+    s_mock_advice_state = VG_UI_ADV_READY;
+}
+
+void vg_ui_backend_mock_set_advice_state(vg_ui_advice_state_t state)
+{
+    /* Headless only: the board's round state reaches ERROR, and the page has
+     * to be exercised in that state too.  The PC backend used to report only
+     * READY or IDLE, so the fallback headings were never rendered here. */
+    s_mock_advice_state = state;
 }
 
 void vg_ui_alarm_advice_request(void)
@@ -107,7 +118,7 @@ void vg_ui_alarm_advice_request(void)
 
 vg_ui_advice_state_t vg_ui_alarm_advice_state(void)
 {
-    return s_mock_advice_ready ? VG_UI_ADV_READY : VG_UI_ADV_IDLE;
+    return s_mock_advice_state;
 }
 
 bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
@@ -115,7 +126,10 @@ bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
 {
     int i;
 
-    if(sensor_id == NULL || out == NULL || !s_mock_advice_ready) {
+    /* Same rule as the board: a match is what puts AI text on screen, and the
+     * round state only chooses the wording when there is no match. */
+
+    if(sensor_id == NULL || out == NULL) {
         return false;
     }
 

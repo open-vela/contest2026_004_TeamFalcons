@@ -132,6 +132,56 @@ int main(int argc, char ** argv)
                                     NULL, NULL) != NULL,
                         "detail head falls back to the rule summary");
 
+        /* A round that failed must not take away advice that still matches
+         * the alarm on screen.  This is how the field symptom looked: the
+         * round state was ERROR, so the page printed "unavailable" over an
+         * alarm the board had a validated answer for. */
+        adv.epoch -= 1;
+        vg_ui_backend_mock_set_advice(&adv, 1);
+        vg_ui_backend_mock_set_advice_state(VG_UI_ADV_ERROR);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "09_alarm_ai_error_with_match");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI · ", NULL, NULL) != NULL,
+                        "ERROR state still shows advice that matches the episode");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"OPENVELACLAW", NULL, NULL) != NULL,
+                        "ERROR state still attributes the advice to OPENVELACLAW");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI 建议不可用", NULL, NULL) == NULL,
+                        "ERROR state does not print the fallback over a match");
+
+        /* Nothing cached and the round errored: now the fallback heading is
+         * correct, and this branch had no coverage at all before. */
+        vg_ui_backend_mock_set_advice(NULL, 0);
+        vg_ui_backend_mock_set_advice_state(VG_UI_ADV_ERROR);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "10_alarm_ai_unavailable");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI 建议不可用，显示规则摘要",
+                                    NULL, NULL) != NULL,
+                        "an unmatched errored round reports advice unavailable");
+
+        /* A round in flight reads as generating, not as a failure. */
+        vg_ui_backend_mock_set_advice_state(VG_UI_ADV_PENDING);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "11_alarm_ai_pending");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI 建议生成中，暂显示规则摘要",
+                                    NULL, NULL) != NULL,
+                        "a round in flight reports advice as generating");
+
+        /* Missing LLM credentials read differently from a failed round.  On
+         * the 2026-09-17 board the credentials were gone, the page said
+         * "unavailable", and the investigation went looking for a bug in the
+         * advice feature.  The heading has to point at provisioning instead. */
+        vg_ui_backend_mock_set_advice(NULL, 0);
+        vg_ui_backend_mock_set_advice_state(VG_UI_ADV_NO_CRED);
+        hg_pump(40);
+        hg_dump_ppm(out_dir, "12_alarm_ai_no_cred");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI 凭证未配置",
+                                    NULL, NULL) != NULL,
+                        "missing credentials name the credentials, not the feature");
+        ok &= hg_expect(hg_find_obj(hg_match_label_sub, (void *)"AI 建议不可用",
+                                    NULL, NULL) == NULL,
+                        "missing credentials do not read as a failed round");
+
+        vg_ui_backend_mock_set_advice_state(VG_UI_ADV_IDLE);
         vg_ui_backend_mock_set_advice(NULL, 0);
     }
 

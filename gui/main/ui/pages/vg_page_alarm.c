@@ -473,6 +473,12 @@ static void render_ai_detail(const vg_alarm_t * a, const vg_sensor_t * as,
         case VG_UI_ADV_ERROR:
             head = "AI 建议不可用，显示规则摘要";
             break;
+        /* Distinct from ERROR on purpose: the agent has no LLM credentials, so
+         * waiting will not change anything and the fix is to provision the
+         * board again. */
+        case VG_UI_ADV_NO_CRED:
+            head = "AI 凭证未配置，显示规则摘要";
+            break;
         default:
             head = "规则摘要（本地）";
             break;
