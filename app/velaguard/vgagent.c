@@ -9,6 +9,7 @@
  * syslog.
  *
  *   vgagent status          round state, generation, last reply
+ *   vgagent advice          what the alarm page is being handed (read-only)
  *   vgagent ask <text>      queue one round and wait for it
  *   vgagent clear           release a DONE/ERROR slot
  ****************************************************************************/
@@ -23,6 +24,10 @@
 
 #include "vg_agent_round.h"
 #include "vg_provision.h"
+
+#ifdef CONFIG_VG_HMI
+#  include "vg_advice.h"
+#endif
 
 #define VGAGENT_ASK_MAX 1024
 
@@ -49,6 +54,7 @@ static void usage(void)
 {
   printf("Usage:\n");
   printf("  vgagent status\n");
+  printf("  vgagent advice\n");
   printf("  vgagent ask <text>\n");
   printf("  vgagent clear\n");
 }
@@ -138,6 +144,18 @@ int main(int argc, char *argv[])
       print_status();
       return 0;
     }
+
+#ifdef CONFIG_VG_HMI
+  if (strcmp(argv[1], "advice") == 0)
+    {
+      /* Read-only: the alarm page's inputs, so acceptance can assert on the
+       * console that advice is reaching the screen. */
+
+      print_status();
+      vg_advice_probe_dump();
+      return 0;
+    }
+#endif
 
   if (strcmp(argv[1], "clear") == 0)
     {

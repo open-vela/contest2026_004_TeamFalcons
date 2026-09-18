@@ -195,19 +195,55 @@ try {
   }
 
   # Per-point advice.  The page itself only reads a RAM cache, so the board
-  # evidence is the document the agent wrote plus the HMI worker's own log
-  # line; the rendering itself is covered by the headless alarm_check.
+  # evidence is the document the agent wrote, the HMI worker's own log line,
+  # and vgagent advice, which prints the exact inputs the page is handed:
+  # state is only the heading used when nothing matches, while advice=hit is
+  # what actually puts AI text on screen.  The rendering itself is covered by
+  # the headless alarm_check.
+  #
+  # Send-Serial returns the text itself, so it is matched directly: reading
+  # .Text off a string yields $null and the assertion would never pass.
+  $haveDoc = $false
   $adv = Send-Serial $port "ls /data/velaguard/reports/alarm_advice.txt" 8
   if ($adv -match "alarm_advice\.txt") {
     $c = Send-Serial $port "cat /data/velaguard/reports/alarm_advice.txt" 12
-    Assert-Match "advice document is VGADV1" $c.Text "VGADV1"
+    Assert-Match "advice document is VGADV1" $c "VGADV1"
+    $haveDoc = $true
   }
   else {
-    Write-Host "[INFO] no alarm_advice.txt yet (no active alarm on the bench)"
+    Write-Host "[INFO] no alarm_advice.txt yet (no active alarm, or the round has not landed)"
+  }
+
+  $probe = Send-Serial $port "vgagent advice" 8
+  if ($probe -match "advice: state=") {
+    $summary = ($probe -split "`r?`n" |
+      Where-Object { $_ -match "advice: (state|alarms|point=)" }) -join " | "
+    Write-Host "[INFO] advice cache: $summary"
+
+    if ($probe -match "advice: alarms=0") {
+      Write-Host "[INFO] no active alarm on the bench, so no point is expected to hit"
+    }
+    elseif ($probe -match "covered=1") {
+      # The check the field symptom failed: the alarm set on screen has
+      # validated advice behind it, so the page shows AI text.  state must be
+      # ready whatever the last round ended like.
+      Assert-Match "advice cache reports a usable document" $probe "advice: state=ready"
+      Assert-Match "at least one active point has advice to show" $probe "advice=hit"
+    }
+    else {
+      # Alarms are up but the cached document does not answer all of them: a
+      # round costs about 195 s, a set that came back empty waits out
+      # VG_ADV_RETRY_MS, and a bench bus that flaps changes the set under it.
+      # Record the partial state instead of calling it a failure.
+      Write-Host "[INFO] alarm set is not fully covered yet (round in flight or backing off)"
+    }
+  }
+  else {
+    Write-Host "[INFO] vgagent advice unavailable (probe only exists in HMI builds)"
   }
 
   $drain = Send-Serial $port "" 6
-  if ($boot -match "\[vgadvice\]" -or $drain.Text -match "\[vgadvice\]") {
+  if ($boot -match "\[vgadvice\]" -or $drain -match "\[vgadvice\]") {
     Write-Host "[PASS] HMI advice worker logged its rounds"
     $script:pass++
   }

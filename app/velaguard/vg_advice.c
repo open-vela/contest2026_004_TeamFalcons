@@ -673,3 +673,57 @@ bool vg_ui_alarm_advice_get(const char *sensor_id, uint32_t al_epoch,
  * only the heading the page picks when nothing matches, while advice=hit is
  * what actually puts AI text on screen. */
 
+void vg_advice_probe_dump(void)
+{
+  static const char *const st_name[] =
+  {
+    "idle", "pending", "ready", "error"
+  };
+  vg_advice_alarm_t snap[VG_AI_ADV_MAX];
+  vg_ui_advice_state_t st;
+  bool loaded;
+  uint32_t boot;
+  uint32_t req;
+  bool covered;
+  int doc_n;
+  int n;
+  int i;
+
+  pthread_mutex_lock(&g_lock);
+  st = g_state;
+  loaded = g_loaded;
+  boot = g_boot;
+  req = g_req;
+  doc_n = g_loaded ? g_doc.n : 0;
+  pthread_mutex_unlock(&g_lock);
+
+  pthread_mutex_lock(&g_snap_lock);
+  memcpy(snap, g_snap, sizeof(snap));
+  n = g_snap_n;
+  pthread_mutex_unlock(&g_snap_lock);
+
+  covered = advice_covered(snap, n);
+
+  printf("advice: state=%s loaded=%d boot=%08x req=%u doc_n=%d covered=%d\n",
+         ((unsigned)st < 4) ? st_name[st] : "?", loaded ? 1 : 0,
+         (unsigned)boot, (unsigned)req, doc_n, covered ? 1 : 0);
+  printf("advice: alarms=%d\n", n);
+
+  for (i = 0; i < n; i++)
+    {
+      vg_ai_advice_entry_t adv;
+
+      if (vg_ui_alarm_advice_get(snap[i].id, snap[i].epoch, &adv))
+        {
+          printf("advice: point=%s epoch=%u advice=hit\n",
+                 snap[i].id, (unsigned)snap[i].epoch);
+        }
+      else
+        {
+          printf("advice: point=%s epoch=%u advice=miss\n",
+                 snap[i].id, (unsigned)snap[i].epoch);
+        }
+    }
+}
+
+#endif /* CONFIG_VG_HMI */

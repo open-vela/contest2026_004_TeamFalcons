@@ -23,6 +23,13 @@ void vg_advice_note_alarms(void);
 
 void vg_advice_tick(void);
 
+/* Read-only dump of what the alarm page is being handed, for the `vgagent
+ * advice` NSH probe: the round state, the cached document's identity, and one
+ * hit/miss line per active alarm.  This is the acceptance evidence for "the
+ * page shows advice, not the rule summary"; it reads state and prints,
+ * nothing else.  Safe from any thread. */
+
+void vg_advice_probe_dump(void);
 
 #ifdef __cplusplus
 }
