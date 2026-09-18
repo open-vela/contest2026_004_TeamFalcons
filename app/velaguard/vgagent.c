@@ -12,6 +12,8 @@
  *   vgagent advice          what the alarm page is being handed (read-only)
  *   vgagent ask <text>      queue one round and wait for it
  *   vgagent clear           release a DONE/ERROR slot
+ *   vgagent tools           the tool definitions the model is offered
+ *   vgagent tool <name> [json]  run one read-only tool, print its raw answer
  ****************************************************************************/
 
 #include <nuttx/config.h>
@@ -19,8 +21,11 @@
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+
+#include "tools/tool_provider.h"
 
 #include "vg_agent_round.h"
 #include "vg_provision.h"
@@ -57,6 +62,107 @@ static void usage(void)
   printf("  vgagent advice\n");
   printf("  vgagent ask <text>\n");
   printf("  vgagent clear\n");
+  printf("  vgagent tools\n");
+  printf("  vgagent tool <name> [json]\n");
+  printf("    a bare word is wrapped as {\"query\":\"<word>\"}, because NSH\n");
+  printf("    strips the quotes a JSON argument needs\n");
+}
+
+/* ── read-only tool diagnostics ─────────────────────────────────────
+ *
+ * A round needs a reachable LLM, so when the model backend is down these two
+ * subcommands are the only way to show on the board that the tools themselves
+ * work.  They are read-only: they run the same guard and audit path the ReAct
+ * loop does, and neither writes board state.
+ *
+ * The tool JSON is printed in full because a provider whose definitions do not
+ * parse is silently dropped by the registry, which from the outside looks
+ * exactly like the model choosing not to call anything.  Seeing the string is
+ * what tells those two apart.
+ */
+
+static void print_tools(void)
+{
+  char *json = tool_registry_get_tools_json();
+
+  if (json == NULL)
+    {
+      printf("tools: none (registry not initialized)\n");
+      return;
+    }
+
+  printf("tools: %u bytes\n", (unsigned)strlen(json));
+
+  /* Print the VelaGuard-owned slice, not the whole registry: the builtin
+   * tools are long and would bury the part being checked. */
+
+  {
+    const char *p = json;
+    int found = 0;
+
+    while ((p = strstr(p, "\"vg_")) != NULL)
+      {
+        const char *end = strchr(p, '}');
+
+        printf("tool: %.200s}\n", p);
+        found++;
+        p = (end != NULL) ? end + 1 : p + 1;
+      }
+
+    if (found == 0)
+      {
+        printf("tools: no vg_* tool registered\n");
+      }
+  }
+
+  free(json);
+}
+
+static int run_tool_cmd(int argc, char *argv[])
+{
+  static char out[2048];
+  static char args_buf[128];
+  const char *name;
+  const char *args;
+  int rc;
+
+  if (argc < 3)
+    {
+      fprintf(stderr, "vgagent: tool needs a name\n");
+      return 1;
+    }
+
+  name = argv[2];
+  args = (argc >= 4) ? argv[3] : "{}";
+
+  /* NSH's tokenizer eats the quotes in a JSON argument, so a quoted
+   * {"query":"ups_load"} arrives as {query:ups_load} and fails to parse.  A
+   * bare word is therefore accepted for the single-string-parameter case and
+   * wrapped here.  Point ids and names cannot contain a quote or a backslash
+   * (vg_point_validate_name rejects both), so this cannot break the JSON. */
+  if (args[0] != '{')
+    {
+      if (strlen(args) > 64)
+        {
+          fprintf(stderr, "vgagent: argument too long\n");
+          return 1;
+        }
+
+      snprintf(args_buf, sizeof(args_buf), "{\"query\":\"%s\"}", args);
+      args = args_buf;
+    }
+
+  out[0] = '\0';
+  rc = tool_registry_execute(name, args, out, sizeof(out));
+
+  printf("tool %s rc=%d\n", name, rc);
+  printf("%s", out);
+  if (out[0] != '\0' && out[strlen(out) - 1] != '\n')
+    {
+      printf("\n");
+    }
+
+  return (rc == 0) ? 0 : 1;
 }
 
 static const char *owner_name(enum vg_agent_round_owner owner)
@@ -162,6 +268,17 @@ int main(int argc, char *argv[])
       vg_agent_round_clear();
       print_status();
       return 0;
+    }
+
+  if (strcmp(argv[1], "tools") == 0)
+    {
+      print_tools();
+      return 0;
+    }
+
+  if (strcmp(argv[1], "tool") == 0)
+    {
+      return run_tool_cmd(argc, argv);
     }
 
   if (strcmp(argv[1], "ask") != 0)
