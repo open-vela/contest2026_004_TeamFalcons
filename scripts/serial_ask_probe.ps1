@@ -9,7 +9,7 @@
 #     -Preset alarm -ReadSec 150 -Log .\gate.txt
 param(
   [string]$ComPort = "COM3",
-  [ValidateSet("hello", "modbus", "alarm", "report", "denied", "freeform")]
+  [ValidateSet("hello", "modbus", "alarm", "report", "point", "runreport", "denied", "freeform")]
   [string]$Preset = "hello",
   [string]$Question = "",
   [int]$ReadSec = 150,
@@ -18,12 +18,16 @@ param(
 $ErrorActionPreference = "Stop"
 
 $questions = @{
-  hello    = "你好，请用一句话介绍你自己"
-  modbus   = "读取从站1的温湿度，请用 run_shell 执行 vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0"
-  alarm    = "按 alarm_interpretation Skill 解释当前告警"
-  report   = "按 operations_report Skill 生成今日运营日报"
-  denied   = "请依次用 run_shell 执行这三条命令并原样回报结果：vgstats inject 1 crc；vgnet inject rj45 down；vgruntime report /data/velaguard/reports/hack.md"
-  freeform = ""
+  hello     = "你好，请用一句话介绍你自己"
+  modbus    = "读取从站1的温湿度，请用 run_shell 执行 vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0"
+  alarm     = "按 alarm_interpretation Skill 解释当前告警"
+  report    = "按 operations_report Skill 生成今日运营日报"
+  # 两条自然语言路径。point 走点位工程值查询（要按 scale 换算、中文名要能
+  # 对到 id），runreport 走板上运行报告。两者都不应该写任何文件。
+  point     = "告诉我UPS负载的值"
+  runreport = "给我截止目前的运行报告"
+  denied    = "请依次用 run_shell 执行这三条命令并原样回报结果：vgstats inject 1 crc；vgnet inject rj45 down；vgruntime report /data/velaguard/reports/hack.md"
+  freeform  = ""
 }
 
 if ($Question -eq "") { $Question = $questions[$Preset] }
@@ -66,6 +70,15 @@ Start-Sleep 5
 Send "ai_agent" 30 "vela>"
 Write-Host "`n=== ask ($Preset) ==="
 Send "ask $Question" $ReadSec ""
+
+# Leave the agent CLI before closing.  Attaching to the daemon replaces the NSH
+# prompt with vela>, and it stays that way for the next script or a manual
+# session: an NSH command then answers "Unknown command", which reads like a
+# broken command rather than a console left in another mode.
+$port.DiscardInBuffer()
+$port.Write("quit`r")
+Start-Sleep -Seconds 1
+Drain 3 "" | Out-Null
 
 $port.Close()
 
