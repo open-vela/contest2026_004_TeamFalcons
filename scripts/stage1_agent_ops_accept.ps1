@@ -400,6 +400,7 @@ try {
       $r = @{ Text = $r.Text + $r2.Text; Block = $r.Block + $r2.Block }
     }
     Write-Output $r.Block
+    $pointAskText = $r.Text
 
     $r = Send-Serial $port "ask 给我截止目前的运行报告" 200
     if ($r.Text -notmatch "Executing tool: ") {
@@ -408,6 +409,7 @@ try {
       $r = @{ Text = $r.Text + $r2.Text; Block = $r.Block + $r2.Block }
     }
     Write-Output $r.Block
+    $reportAskText = $r.Text
     $asked = $true
   } else {
     Write-Output "[INFO] the model backend is unreachable from the board; skipping the ask-side checks"
@@ -424,12 +426,36 @@ try {
   # Attributable: the log was cleared before the asks and no vgagent tool call
   # has run in this script yet.  Only a UPS-related query counts, so a board
   # round that happened to read some other point cannot make this pass.
+  #
+  # The up-front probe only says the backend was reachable then.  On this bench
+  # it goes down for minutes at a time, so the ask window is re-checked: "the
+  # model picked the wrong tool" and "the model was never reached" are
+  # different findings and must not share one FAIL.  The ask console shows
+  # `llm=fail` / `LLM call failed` when no round completed.
   $auditBeforeProbe = (Send-Serial $port "cat /data/velaguard/logs/agent_tools.log" 20).Text
-  if ($asked) {
-    Assert-Match "the model itself called vg_point_read for the point question" `
-      $auditBeforeProbe "tool=vg_point_read rc=0 args=.*(ups_load|UPS)"
-  } else {
+  if (-not $asked) {
     Write-Output "[INFO] the ask-side assertion is skipped because the model backend is down, not failed"
+  } elseif ($pointAskText -match "llm=fail|LLM call failed|No available backend|No healthy backend") {
+    Write-Output "[INFO] the model backend failed during the ask window; the ask-side assertion is not evaluated"
+  } elseif ($auditBeforeProbe -match "tool=vg_point_read rc=0 args=.*(ups_load|UPS)") {
+    Write-Output "[PASS] the model itself called vg_point_read for the point question"
+    $script:pass++
+  } else {
+    Write-Output "[FAIL] the model itself called vg_point_read for the point question"
+    Write-Output "  the backend answered but no UPS query reached the tool; the model picked something else"
+    $script:fail++
+  }
+
+  if ($asked -and $reportAskText -notmatch "llm=fail|LLM call failed|No available backend|No healthy backend") {
+    if ($auditBeforeProbe -match "tool=vg_run_report rc=0 args=\{\}") {
+      Write-Output "[PASS] the model itself called vg_run_report for the report question"
+      $script:pass++
+    } else {
+      Write-Output "[FAIL] the model itself called vg_run_report for the report question"
+      $script:fail++
+    }
+  } elseif ($asked) {
+    Write-Output "[INFO] the model backend failed during the report ask window; not evaluated"
   }
 
   # What the model is actually offered.  The registry drops a provider whose

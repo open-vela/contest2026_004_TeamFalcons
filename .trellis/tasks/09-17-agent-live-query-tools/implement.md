@@ -136,14 +136,28 @@ vgagent tool no_such_tool_xyz {}      → rc=-1（反例：工具名不对必须
 与 `llm=ok backend=0`。回答内容如实说明 RS485 读不到值。
 
 **`scripts/stage1_agent_ops_accept.ps1`：pass=37 fail=0**（模型可用时）。
+模型在 ask 窗口掉线时不再误报：脚本会识别 `llm=fail` 窗口并把 A1–A3 报成
+`[INFO]`（模型没被触达）而不是 `[FAIL]`（模型选错工具），两者是不同的结论。
+
+从站接上后（`mbslave` 喂 7 个从站，`vgstats` 全 `ok`）：
+`vgpoint get ups_load` → `value=134.4 ok=1`，A1 变成真正的逐值比对并通过
+（`[PASS] vg_point_read returns the same value as vgpoint get`），
+这是唯一能抓住「未按 scale 换算」的检查。
+
+**验收手册见 `docs/velaguard-agent-query-acceptance.md`**（三档：工具层 / 可见性 /
+完整验收，含手工 NSH 步骤与常见坑）。
 
 ### 未执行 / 未能稳定复现
 
-- 模型后端可用性在这台台架上是间歇的（见下），上面那轮干净日志的 `ask` 是成功的一次；
-  另一次在 LLM 失败窗口内跑，模型什么都没调用，审计日志为空。这个断言现在不会
-  因为失败窗口而误判（先清日志、先探测后端），但「每次都成功」没有被证明。
-- 数值与 `vgpoint get ups_load` 的逐值比对未生效：台架没接从站，参考值是 `-`，
-  脚本转为断言 `reason=read_failed|no_sample`。接入从站后应重跑，让比对真正生效。
+- 模型后端在这台台架上是间歇可用的。已确认与板子无关：板端 ping 真实地址
+  `220.181.104.192` 与 fake IP `198.18.1.41` 都 0% 丢包，但 TCP 443 到该主机
+  `net_connect ret=0x42`，而主机侧 `curl` 同一域名返回 401。也就是 ICMP 通、
+  TCP 不通，问题在 Clash 转发的 TCP 这一段。凭证本身完好（`config.json` 414 字节、
+  `credentials=ready`）。因此「每次都成功」未被证明；工具层（第一档）不受影响，
+  反复跑都是 18/18。
+- A1 的逐值比对依赖台架接从站。接上后通过过一次；`mbslave` 10 分钟试用到期会自己
+  断开，断开后脚本自动降级为断言 `reason=read_failed|no_sample`。
+
 
 
 ## 已知限制

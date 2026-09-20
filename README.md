@@ -500,8 +500,10 @@ nsh> vgnet status
 | open-vela/nuttx | `velaguard/eth-mii-stm32h750b-dk` | [#352](https://github.com/open-vela/nuttx/pull/352) |
 | open-vela/nuttx | `velaguard/display-acceleration-stm32h750b-dk` | [#353](https://github.com/open-vela/nuttx/pull/353) |
 | open-vela/nuttx | `velaguard/ui-performance-stm32h750b-dk` | [#354](https://github.com/open-vela/nuttx/pull/354) |
+| open-vela/nuttx | `velaguard/wdog-activelist-recover` | [#384](https://github.com/open-vela/nuttx/pull/384) |
 | open-vela/nuttx-apps | `velaguard/netinit-esp8266` | [#119](https://github.com/open-vela/nuttx-apps/pull/119) |
 | open-vela/apps_netutils_mqttc_MQTT-C | `velaguard/mqtt-pal-hook` | [#1](https://github.com/open-vela/apps_netutils_mqttc_MQTT-C/pull/1) |
+| open-vela/packages_ai_agent | `learn_vela` | [#29](https://github.com/open-vela/packages_ai_agent/pull/29) |
 | open-vela/packages_ai_agent | `velaguard/stm32h750b-dk-hmi-agent` | [#32](https://github.com/open-vela/packages_ai_agent/pull/32) |
 | open-vela/packages_ai_agent | `velaguard/llm-tls-send-retry` | [#40](https://github.com/open-vela/packages_ai_agent/pull/40) |
 
