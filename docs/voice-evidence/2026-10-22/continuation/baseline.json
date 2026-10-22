@@ -1,0 +1,34 @@
+[
+  {
+    "command": "",
+    "wait_ms": 10000
+  },
+  {
+    "command": "uname -a",
+    "wait_ms": 1200
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 1200
+  },
+  {
+    "command": "free",
+    "wait_ms": 1200
+  },
+  {
+    "command": "ps",
+    "wait_ms": 1200
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 1200
+  },
+  {
+    "command": "ifconfig",
+    "wait_ms": 1200
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 1200
+  }
+]

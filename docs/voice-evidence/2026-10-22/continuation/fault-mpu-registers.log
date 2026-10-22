@@ -1,0 +1,34 @@
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.22.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 0043001D3137511133333639
+ST-LINK FW  : V3J17M11
+Board       : STM32H750B-DK
+Voltage     : 3.27V
+SWD freq    : 8000 KHz
+Connect mode: Hot Plug
+Reset mode  : Software reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size  : 128 KBytes
+Device type : MCU
+Device CPU  : Cortex-M7
+BL Version  : 0x90
+
+
+Reading 32-bit memory content
+  Size          : 4 Bytes
+  Address:      : 0xE000ED14
+0xE000ED14 : 00070200
+
+
+
+Reading 32-bit memory content
+  Size          : 20 Bytes
+  Address:      : 0xE000ED90
+0xE000ED90 : 00001000 00000005 00000000 90000000
+0xE000EDA0 : 05020035
+
+

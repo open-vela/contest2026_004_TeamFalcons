@@ -211,3 +211,7 @@ vgvoice play /data/velaguard/voice/tts-16k.wav
 vgvoice record 2000
 free
 ```
+
+## 续接核验更正
+
+2026-10-22 22:44：48 KB 栈仍出现 HARDFAULT，栈水位 24680 / 49128 字节。缺陷 22 的栈溢出根因及已修复结论撤回，重新打开；阶段 B 仍未通过。当前续接证据及固件来源见 [continuation](../continuation/README.md)。

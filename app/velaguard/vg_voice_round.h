@@ -16,6 +16,7 @@
 #define __APP_VELAGUARD_VG_VOICE_ROUND_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 
 #include "vg_voice_session.h"
@@ -58,6 +59,10 @@ void vg_voice_round_hold(bool held);
 
 /* Explicit end from the overlay or a long press. */
 void vg_voice_round_end(void);
+
+/* NuttX stack high-water estimate.  Size and headroom exclude TLS.
+ * Returns a negative errno if stopped or stack coloration is disabled. */
+int vg_voice_round_stack(size_t *size, size_t *used, size_t *headroom);
 
 /* Diagnostic entry that posts the same event the button callback posts.
  * It does not read the pin, so it cannot stand in for a real press; it exists

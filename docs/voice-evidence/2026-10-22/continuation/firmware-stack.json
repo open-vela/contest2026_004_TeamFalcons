@@ -1,0 +1,32 @@
+{
+  ".": {
+    "head": "8b2e25365ef211e79a14d33af18678de968a47cf",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "189e6d8a18d8866e628af8c3f7b541c0e659b8bc",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "414141564d9d06cae5ff326903895b203f2f341e",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "21877556b685ebebc3bb726092179246fd7e73847e8cc953ccf06d133e919c55",
+    ".debug/nuttx.bin": "cafd4b79d43e23963fde6b92a6402717086fd24e19d6535f10412b89bfb29b74"
+  },
+  "sources": {
+    "app/velaguard/vg_voice_round.c": "25eb900e505f88195ede44db374ab35d275f80c798f1d6a0d7799131faf1293e",
+    "app/velaguard/vg_voice_round.h": "706b912fb118ef17f3f6e1465825e1a764c49f36d3f3d11dc84f444ea4889054",
+    "app/velaguard/vgvoice.c": "3c8904b275d3fdd21160c6b16a723ec3d7aa1131e9d51c86fa0c2248707f276b",
+    "scripts/configs/velaguard-lvgl.defconfig": "5d6785c7ad03fb3c4ebd928a378a196840bf79301a5bc84c0fe2013420529433",
+    "scripts/build.sh": "6c537d310f2d0c80557b3fe615cc695b16bf9fae54f19e35c3cce839effac28f",
+    "../nuttx/.config": "31269236f09c3feb466a424b0e411b046b1a4cc55ad40e01fd0fdc221ddf9cbd"
+  },
+  "date": "2026-10-22",
+  "description": "NuttX native stack coloration; voice worker remains 48 KB"
+}

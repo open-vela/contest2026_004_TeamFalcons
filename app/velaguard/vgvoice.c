@@ -297,10 +297,25 @@ int main(int argc, FAR char *argv[])
           return EXIT_SUCCESS;
         }
 
+      if (argc >= 3 && strcmp(argv[2], "stack") == 0)
+        {
+          size_t size = 0;
+          size_t used = 0;
+          size_t headroom = 0;
+
+          if (vg_voice_round_stack(&size, &used, &headroom) != 0)
+            {
+              printf("vgvoice: stack measurement unavailable\n");
+              return EXIT_FAILURE;
+            }
+
+          printf("vgvoice: stack size=%u used=%u headroom=%u\n",
+                 (unsigned)size, (unsigned)used, (unsigned)headroom);
+          return EXIT_SUCCESS;
+        }
+
       if (argc >= 3 && strcmp(argv[2], "text") == 0)
         {
-          struct vg_voice_ui ui;
-
           if (!vg_voice_round_ui(&ui))
             {
               printf("vgvoice: round not started\n");

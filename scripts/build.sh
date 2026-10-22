@@ -127,6 +127,7 @@ expect_dev_config()
       grep -q '^CONFIG_GRAPHICS_LVGL=y' "$NUTTX_ROOT/.config" &&
         grep -q 'CONFIG_INIT_ENTRYPOINT="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_INIT_STACKSIZE=8192$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_STACK_COLORATION=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_SCHED_CHILD_STATUS=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI_AUTOSTART=y' "$NUTTX_ROOT/.config" &&

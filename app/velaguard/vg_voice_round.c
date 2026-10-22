@@ -19,6 +19,8 @@
 #if defined(CONFIG_VG_VOICE_LOOPBACK) && defined(CONFIG_EXAMPLES_AI_AGENT_VELA)
 
 #include <errno.h>
+#include <nuttx/arch.h>
+#include <nuttx/sched.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
@@ -928,8 +930,10 @@ int vg_voice_round_start(void)
 
 void vg_voice_round_stop(void)
 {
+  pthread_mutex_lock(&g_start_lock);
   if (!g_vr.started)
     {
+      pthread_mutex_unlock(&g_start_lock);
       return;
     }
 
@@ -938,6 +942,59 @@ void vg_voice_round_stop(void)
   pthread_join(g_vr.thread, NULL);
   g_vr.started = false;
   g_round_ready = false;
+  pthread_mutex_unlock(&g_start_lock);
+
+}
+
+int vg_voice_round_stack(size_t *size, size_t *used, size_t *headroom)
+{
+#ifdef CONFIG_STACK_COLORATION
+  struct tcb_s *tcb;
+  size_t total;
+  size_t highwater;
+
+  pthread_mutex_lock(&g_start_lock);
+  if (!g_vr.started)
+    {
+      pthread_mutex_unlock(&g_start_lock);
+      return -ENOENT;
+    }
+
+  tcb = nxsched_get_tcb(pthread_gettid_np(g_vr.thread));
+  if (tcb == NULL)
+    {
+      pthread_mutex_unlock(&g_start_lock);
+      return -ESRCH;
+    }
+
+  /* NuttX colors the stack before starting the thread.  Its adjusted base
+   * excludes TLS and alignment, so headroom counts usable stack only.
+   * A TCB reference plus the lifecycle lock keeps the stack alive here. */
+
+  total = tcb->adj_stack_size;
+  highwater = up_check_tcbstack(tcb, total);
+  nxsched_put_tcb(tcb);
+  pthread_mutex_unlock(&g_start_lock);
+
+  if (size != NULL)
+    {
+      *size = total;
+    }
+
+  if (used != NULL)
+    {
+      *used = highwater;
+    }
+
+  if (headroom != NULL)
+    {
+      *headroom = total - highwater;
+    }
+
+  return 0;
+#else
+  return -ENOSYS;
+#endif
 }
 
 bool vg_voice_round_ui(struct vg_voice_ui *out)
