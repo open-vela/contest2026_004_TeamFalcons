@@ -1,0 +1,270 @@
+2026-10-22T22:53:32.3981815+08:00 CMD vgvoice round stack
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+vgvoice round stack
+vgvoice: stack size=49128 used=880 headroom=48248
+nsh> [K
+2026-10-22T22:53:33.4439918+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     850672    5987040     884672    5795432   1089      5 Umem
+nsh> [K
+2026-10-22T22:53:34.4460901+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+nsh> [K
+2026-10-22T22:53:35.4652538+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K
+2026-10-22T22:53:36.4677809+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T22:53:37.3768448+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T22:53:39.5943887+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709072
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T22:53:44.8146122+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K
+2026-10-22T22:53:45.5414118+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 04  61   1   0    0   0      0  192.168.137.158:8502        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:53:46.2491507+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=6240
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 92 bytes
+
+2026-10-22T22:53:47.1565265+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+
+2026-10-22T22:53:49.3759852+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [Kvgtime: synced 2026-10-22 22:53:55
+
+2026-10-22T22:53:54.6069486+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K
+2026-10-22T22:53:55.3304336+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+nsh> [K
+2026-10-22T22:53:56.0441779+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T22:53:56.9557344+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5480
+
+2026-10-22T22:53:59.1601850+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709644
+
+2026-10-22T22:54:04.3773008+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T22:54:05.1032981+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 04  61   1   3 1385   0      0  192.168.137.158:8503        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:54:05.8127270+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5730
+
+2026-10-22T22:54:06.7245545+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T22:54:08.9483005+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709653
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T22:54:14.1617950+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K
+2026-10-22T22:54:14.8717765+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 04  61   1   3 4117   0      0  192.168.137.158:8504        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:54:15.5780508+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T22:54:16.4863181+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5850
+
+2026-10-22T22:54:18.6979133+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709662
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T22:54:23.9095397+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K
+2026-10-22T22:54:24.6342694+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 00  60   0   0    0   0      0  192.168.137.158:8504        198.18.0.53:443   
+     4: 04  61   1   3 1385   0      0  192.168.137.158:8505        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:54:25.3419881+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5980
+
+2026-10-22T22:54:26.2546238+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada942300000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6634 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709667
+[agent] Dispatching response → local_client:velaguard:1
+
+2026-10-22T22:54:28.4692269+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+
+2026-10-22T22:54:33.6724121+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K[llm] Resp bytes=619 text=0 reasoning=48 toolargs=2 calls=1 finish=tool_calls tokens=1821/25/1846
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada942300000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=330(fused) setup=120 tls=3330 send=420 ttfb=2820 body=0 pool=0 build=100 parse=0 http=7040 backoff=0 total=7250 req=6634 resp=619 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada942300000000] iter=0 tool=vg_anomaly_read latency=7340ms llm=ok backend=0
+[agent] Tool call: vg_anomaly_read args={}
+
+2026-10-22T22:54:34.3847114+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 00  60   0   0    0   0      0  192.168.137.158:8504        198.18.0.53:443   
+     4: 00  60   0   0    0   0      0  192.168.137.158:8505        198.18.0.53:443   
+     5: 04  61   1   0    0   0      0  192.168.137.158:8506        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:54:35.0952051+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round visible=1 state=3 gen=6 muted=0 failed=0
+vgvoice: round status=识别中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-22T22:54:39.1168535+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709680
+[tools] Executed vg tool: vg_anomaly_read
+
+2026-10-22T22:54:40.1195698+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     988216    5849496    1044040    5795432   1255      8 Umem
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T22:54:41.1414881+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%   3.1% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  11.3% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Ready              0000000000000000 0001976 0000696  35.2%   2.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001928  23.6%   1.8% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264 0002752  22.4%   1.1% velaguard_app_main 0x90010915 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014429 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000728  35.9%   1.7% ESP8266 0x90066a6d 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x90067839 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001408  34.7%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0024680  50.2%   9.8% velaguard_app_main 0x9001663d 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  65.7% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006288  76.9%   0.0% vghmi 0x90014c69 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Ready              0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002c1bd 0x3000d1f8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000976  23.9%   0.0% ai_agent 0x90032355 0x3000d2f8
+   17    14  50 FIFO     pthread   - Ready              0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002c1bd 0x24052c10
+   26    14  60 FIFO     pthread   - Ready              0000000000000000 0032744 0009664  29.5%   0.0% ai_agent 0x9002de51 0x30002760
+   63    12 100 RR       pthread   - Waiting  Mutex:26  0000000000000000 0008168 0003512  42.9%   0.9% vghmi 0x900153cd 0
+nsh> [K
+2026-10-22T22:54:42.1442754+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 00  60   0   0    0   0      0  192.168.137.158:8504        198.18.0.53:443   
+     4: 00  60   0   0    0   0      0  192.168.137.158:8505        198.18.0.53:443   
+     5: 04  61   1   0    0   0      0  192.168.137.158:8506        198.18.0.53:443   
+     6: 04  61   1   0    0   0      0  192.168.137.158:8507        198.18.0.53:443   
+nsh> [K[agent] Tool vg_anomaly_read result: 1089 bytes, 8480 ms
+[trace:6ada942300000000] tool_iter=0 tool=vg_anomaly_read tool_ms=8480 out=1089 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_anomaly_read)
+[trace:6ada942300000000] END status=ok iters=1 tools=1 llm_ms=7340 tool_ms=8480 elapsed_ms=16130 backend=0
+
+2026-10-22T22:54:43.1711651+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+
+2026-10-22T22:54:44.2016389+08:00 CMD vgagent status
+ -rw-rw-rw-   0      136760 clip.wav
+ -rw-rw-rw-   0           8 pref.txt
+

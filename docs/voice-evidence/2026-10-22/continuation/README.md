@@ -32,3 +32,15 @@
 [Arm/Keil 的 Cortex-M7 SDRAM 未对齐访问说明](https://www.keil.com/support/docs/3777%20%20.htm)解释了默认 Device 内存即使 CCR 未开启 UNALIGN_TRP 仍要求自然对齐，推荐用 MPU 设为 Normal 内存。[ST AN4838](https://www.st.com/content/st_com/en/technical-documents/an4838-introduction-to-memory-protection-unit-management-on-stm32-mcus-stmicroelectronics_asset/chunk-001-topic-an4838-overview.html)说明 MPU 内存属性与区域优先级。这里用原理图和 BSP 确认板上器件及地址，用架构资料判断内存类型，尚须板测。
 
 阶段 A / B 继续保持未通过；真人录音、听音、触摸与断电验收没有执行。
+
+## 第二阶段：修复 SDRAM 内存属性
+
+NuttX 提交 `6f11173642c` 在 H750B-DK 且启用 FMC 时，将板级声明的 8 MB SDRAM 设置为 Normal、non-cacheable、shareable、XN；不改时钟、引脚、QSPI 或 DMA 行为。保持不可缓存，避免引入 LTDC/DMA 缓存一致性要求。该地址此前使用默认 Device 属性，解释了证书中普通字节数组的未对齐访问为何触发异常。
+
+- `build-mpu.log` / `flash-mpu.log` / `firmware-mpu.json`：从竞赛仓入口构建并烧录，保存摘要及源码来源。
+- `fixed-mpu-registers.log`：映射后的 MPU 实测；新增 region 1，RBAR=`0xd0000000`、RASR=`0x110c002d`（Normal、8 MB、不可缓存、XN）。
+- `baseline-mpu.json` / `baseline-mpu.log`：本次启动基线。
+- `mpu-stress.log`：同一六组替换测试，无 HARDFAULT；最高栈 used=24680 / size=49128。ASR 有 HTTP 200 及明确的取消结果；这六组不等于六次完整成功问答。
+- `mpu-recovery.json` / `mpu-recovery.log`：不复位，结束合成轮次后再次 ASR 成功（HTTP 200，15920 ms），存储目录可列举。仅保留合成样本 `q1.wav` 和 `pref.txt`。
+
+本次状态是根因修复及有限回归通过，尚不能声称全部网络/存储稳定性问题消失。新 TCP 统计发现三条 CLOSED、ref=0 的记录持续存在，接下来单独核查回收。`/proc/net/tcp` 需要 CONFIG_NET_STATISTICS；原先缺文件并非没有挂载 procfs。

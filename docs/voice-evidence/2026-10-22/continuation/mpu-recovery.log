@@ -1,0 +1,98 @@
+ -rw-rw-rw-   0       46124 clip-mono.wav
+nsh> [Kvgagent status
+round: state=running gen=0 owner=advice
+llm: credentials=ready provision_file=present
+nsh> [K[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=15770
+[agent] Processing message from local_client:velaguard:2
+[agent] Dispatching response → local_client:velaguard:1
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+2026-10-22T22:56:22.5314560+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round visible=1 state=9 gen=7 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=18 bytes
+vgvoice: round error=上一个问题仍在处理，请稍后再试
+nsh> [K
+2026-10-22T22:56:23.5234526+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=24680 headroom=24448
+nsh> [K
+2026-10-22T22:56:24.5441551+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     947264    5890448    1044040    5795432   1248     10 Umem
+nsh> [K
+2026-10-22T22:56:25.5490705+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%   2.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  10.3% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000760  38.4%   0.6% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001928  23.6%   2.0% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0002752  22.4%   0.6% velaguard_app_main 0x90010915 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014429 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000728  35.9%   3.7% ESP8266 0x90066a6d 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x90067839 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001408  34.7%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0024680  50.2%   0.5% velaguard_app_main 0x9001663d 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  72.0% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006304  77.1%   0.0% vghmi 0x90014c69 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002c1bd 0x3000d1f8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000976  23.9%   0.0% ai_agent 0x90032355 0x3000d2f8
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002c1bd 0x24052c10
+   26    14  60 FIFO     pthread   - Ready              0000000000000000 0032744 0009664  29.5%   0.5% ai_agent 0x9002de51 0x30002760
+   63    12 100 RR       pthread   - Waiting  Mutex:26  0000000000000000 0008168 0003528  43.1%   3.0% vghmi 0x900153cd 0
+nsh> [K
+2026-10-22T22:56:26.5619996+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 00  60   0   0    0   0      0  192.168.137.158:8504        198.18.0.53:443   
+     4: 00  60   0   0    0   0      0  192.168.137.158:8505        198.18.0.53:443   
+     5: 07  61   1   0    0   0     23  192.168.137.158:8506        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:56:27.5636479+08:00 CMD vgagent status
+vgagent status
+round: state=running gen=0 owner=advice
+llm: credentials=ready provision_file=present
+nsh> [K
+2026-10-22T22:56:29.6518470+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K
+2026-10-22T22:56:32.8430803+08:00 CMD vgvoice asr /data/velaguard/voice/q1.wav
+vgvoice asr /data/velaguard/voice/q1.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792709801
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=61669 resp=471 ms=15920
+vgvoice: asr text=现在有哪些异常？
+nsh> [K
+2026-10-22T22:56:49.1108552+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.158:8501       8.148.67.174:1883  
+     2: 00  60   0   0    0   0      0  192.168.137.158:8503        198.18.0.53:443   
+     3: 00  60   0   0    0   0      0  192.168.137.158:8504        198.18.0.53:443   
+     4: 00  60   0   0    0   0      0  192.168.137.158:8505        198.18.0.53:443   
+     5: 07  61   1   0    0   0     23  192.168.137.158:8506        198.18.0.53:443   
+nsh> [K
+2026-10-22T22:56:50.1350081+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada94b435c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:2
+

@@ -1,0 +1,33 @@
+{
+  ".": {
+    "head": "6c7581ed637e49656832b39f7cedb6a91da10573",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "189e6d8a18d8866e628af8c3f7b541c0e659b8bc",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "414141564d9d06cae5ff326903895b203f2f341e",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "640cf04bbe0bd8e6f11faa7b1eb042a6ddb3bcf8ee426ccf3ca3f59b2d2dff98",
+    ".debug/nuttx.bin": "3992aeb6d0df6eb3a693390c0f4007dfa11c680fbbbfd8bc54c8362e95e64e88"
+  },
+  "sources": {
+    "app/velaguard/vg_voice_round.c": "25eb900e505f88195ede44db374ab35d275f80c798f1d6a0d7799131faf1293e",
+    "app/velaguard/vg_voice_round.h": "706b912fb118ef17f3f6e1465825e1a764c49f36d3f3d11dc84f444ea4889054",
+    "app/velaguard/vgvoice.c": "3c8904b275d3fdd21160c6b16a723ec3d7aa1131e9d51c86fa0c2248707f276b",
+    "scripts/configs/velaguard-lvgl.defconfig": "01672d30af3fe68da760080b1e219d2ce06293e9c64a2334fd1c7a5614b39c2c",
+    "scripts/build.sh": "fb0b18c01dcd6de6872eaad9588a26209f4311a4f155fd7330fa66b04ca942e0",
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../nuttx/arch/arm/src/stm32h7/stm32_mpuinit.c": "4bd969ed625be227544ba791dc6dcd69d5ecd09e7c091e7bf9b439ef37ace799"
+  },
+  "date": "2026-10-22",
+  "description": "Native coloration + normal noncacheable SDRAM MPU mapping + TCP procfs statistics"
+}
