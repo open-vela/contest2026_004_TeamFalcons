@@ -85,7 +85,7 @@ endif
 ifeq ($(CONFIG_VG_VOICE_LOOPBACK),y)
 PROGNAME += vgvoice
 MAINSRC  += vgvoice.c
-CSRCS    += vg_voice.c vg_voice_ptt.c vg_pdm_filter.c
+CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c
 endif
 
 ifeq ($(CONFIG_VG_PDM_DUMP),y)
