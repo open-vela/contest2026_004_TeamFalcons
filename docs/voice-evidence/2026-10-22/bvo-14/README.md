@@ -34,6 +34,8 @@
 | 坏输入 | 文本文件冒充 WAV 返回 `cannot prepare upload wav: -22`、`rc=io req=0`，不产生网络请求 | `nsh-fault-corrupt-wav.log` |
 | 录音后取消 | `vgvoice start` 进入 recording，取消后回到 idle，目录无新增文件 | `nsh-cancel.log` |
 | 在线从站 | COM7 从站 1,253 请求 / 1,184 应答 / `crc_scan=0`；温度 36.0 触发 crit，恢复 31 s，离线 44 s 后成项 | `../bvo-09/board-live-slave.log` |
+| 语音整轮 | 合成按放与合成提问跑通录音→WAV→ASR 200→Agent 调用工具→文字回答；TTS 在预算尾部偶发超时，文字保留 | `../bvo-11/board-round-synthetic.log`、`../bvo-07/board-round-budget.log` |
+| 模型问答 | 异常、点位、恢复三问均调用只读工具，数字与从站及工具输出一致 | `../bvo-10/board-llm-answers.log` |
 | 堆 | 见第 3 节 | `nsh-*.log` 中的 `free` |
 
 板端命令是诊断入口，不是产品交互：`vgvoice asr/tts/play` 复用与语音轮次相同的 `vg_voice_cloud_*` 和 `vg_voice_play_file`，因此它们证明的是同一条云与播放链路。
@@ -59,6 +61,8 @@
 - 新镜像上电 3.5 分钟的增量 84 KB 与上一组一致，`maxused` 未超过 1.0 MB，`maxfree` 仍为 5.79 MB。两次开机值与上一次开机值相差不足 20 字节，说明语音缓冲在启动时一次分配、不随轮次增长。
 
 ## 4. 板端发现并修复的缺陷
+
+本轮共在真机发现并修复 15 项，按发现顺序：
 
 1. **产品工具白名单缺两项**：`vg_anomaly_read`、`vg_alarm_recovery` 被 `vg_product_tool_allowed()` 拒绝，语音的异常与恢复意图在真机会直接失败。已加入 ai_agent 的白名单。
 2. **跨启动快照被当成当前样本**：eMMC 上的 live 快照带有上一次启动的单调 tick，简单相减得到约 49 天的 `age_ms`，回答会念出 `4294967 秒`。已改为 tick 超前时视为无样本，并加主机回归。
@@ -96,7 +100,7 @@
 | BVO-13 | 已实现；开关跨两次硬件复位保持，开机清理无残留音频；真实断电未测 | `bvo-13/README.md` |
 | BVO-05 | 未关闭，维持原状态 | `bvo-05/followup/README.md` |
 
-阶段 B 仍未通过：上表没有一行满足人工验收条件。
+阶段 B 仍未通过：上表没有一行满足人工验收条件。板端当前固件 `102d2d68...0137a35`，模型 `mimo-v2.6-flash`，主机侧 RTU 从站已停止，语音目录只剩 `pref.txt` 与两只测试 WAV。
 
 ## 7. 待补清单（需要人或外部条件）
 
