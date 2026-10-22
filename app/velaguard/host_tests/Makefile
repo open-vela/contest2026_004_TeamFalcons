@@ -26,6 +26,9 @@ test_frame_stats: test_frame_stats.c ../vg_frame_stats.c ../vg_frame_stats.h
 test_runtime: test_runtime.c ../vg_runtime.c ../vg_runtime.h ../vg_frame_stats.c ../vg_frame_stats.h
 	$(CC) $(CFLAGS) -o $@ test_runtime.c ../vg_runtime.c ../vg_frame_stats.c
 
+test_runtime_anomaly: test_runtime_anomaly.c ../vg_runtime.c ../vg_runtime.h ../vg_frame_stats.c ../vg_frame_stats.h
+	$(CC) $(CFLAGS) -o $@ test_runtime_anomaly.c ../vg_runtime.c ../vg_frame_stats.c
+
 test_discover: test_discover.c ../vg_point_table.c ../vg_discover.h ../vg_file_store.c $(CJSON_SRC)
 	$(CC) $(CFLAGS) -o $@ test_discover.c ../vg_point_table.c ../vg_file_store.c $(CJSON_SRC) -lm
 
@@ -82,11 +85,12 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
 	./test_runtime
+	./test_runtime_anomaly
 	./test_discover
 	./test_vgpoint
 	./test_alarm_eval
@@ -119,7 +123,7 @@ test: test_net_policy test_config_store test_frame_stats test_runtime test_disco
 
 clean:
 	rm -f test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles
-	rm -f test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
+	rm -f test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
 
 test_maintenance: test_maintenance.c ../vg_point_table.c ../vg_file_store.c $(CJSON_SRC)
 	$(CC) $(CFLAGS) -o $@ $^ -lm

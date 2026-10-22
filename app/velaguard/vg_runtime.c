@@ -31,12 +31,17 @@ struct vg_runtime_point
   float last_thr;
   char cmp[4];
   char level[8];
+  uint32_t thr_since_ms;   /* when the threshold episode began */
+  uint32_t episode_thr;    /* instance id of that episode */
+  uint32_t episode_off;    /* instance id of the offline episode */
 };
 
 struct vg_runtime_event
 {
   uint32_t mono_ms;
   time_t wall;
+  uint32_t serial;        /* 1-based order in this boot; 0 marks an empty slot */
+  uint32_t episode;       /* RAISE and its CLEAR share this instance id */
   char id[24];
   enum vg_runtime_action action;
   enum vg_runtime_kind kind;
@@ -51,6 +56,10 @@ static struct vg_runtime_event g_ev[VG_RUNTIME_EVENT_MAX];
 static uint16_t g_ev_pos;
 static uint16_t g_ev_len;
 static uint32_t g_boot_mono_ms;
+static uint32_t g_ev_seq;
+static uint32_t g_ev_dropped;
+static uint32_t g_episode_seq;
+static uint32_t g_boot_id;
 static int g_inited;
 
 static uint32_t mono_ms(void)
@@ -122,12 +131,14 @@ static void mqtt_note_event(const char *id, enum vg_runtime_action act,
 static void push_event(const char *id, enum vg_runtime_action act,
                        enum vg_runtime_kind kind, float value, float thr,
                        const char *cmp, const char *reason,
-                       const char *level)
+                       const char *level, uint32_t episode)
 {
   struct vg_runtime_event *e = &g_ev[g_ev_pos];
 
   memset(e, 0, sizeof(*e));
   e->mono_ms = mono_ms();
+  e->serial = ++g_ev_seq;
+  e->episode = episode;
   if (!wall_ok(&e->wall))
     {
       e->wall = 0;
@@ -152,6 +163,11 @@ static void push_event(const char *id, enum vg_runtime_action act,
   if (g_ev_len < VG_RUNTIME_EVENT_MAX)
     {
       g_ev_len++;
+    }
+  else
+    {
+      /* The slot being written next was the oldest event: it is gone. */
+      g_ev_dropped++;
     }
 
   mqtt_note_event(id, act, kind, value, thr, cmp, level);
@@ -202,7 +218,11 @@ void vg_runtime_init(void)
   memset(g_ev, 0, sizeof(g_ev));
   g_ev_pos = 0;
   g_ev_len = 0;
+  g_ev_seq = 0;
+  g_ev_dropped = 0;
+  g_episode_seq = 0;
   g_boot_mono_ms = mono_ms();
+  g_boot_id = (g_boot_mono_ms != 0) ? g_boot_mono_ms : 1u;
   g_inited = 1;
   vg_fs_init();
 }
@@ -275,7 +295,9 @@ void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
           if (p->offline_since_ms != 0)
             {
               push_event(id, VG_RUNTIME_ACT_CLEAR, VG_RUNTIME_KIND_OFFLINE,
-                         value, 0, cmp, "offline_recovered", p->level);
+                         value, 0, cmp, "offline_recovered", p->level,
+                         p->episode_off);
+              p->episode_off = 0;
             }
 
           p->offline_since_ms = 0;
@@ -302,8 +324,10 @@ void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
           p->offline_since_ms = now;
           if (was_online)
             {
+              p->episode_off = ++g_episode_seq;
               push_event(id, VG_RUNTIME_ACT_RAISE, VG_RUNTIME_KIND_OFFLINE,
-                         value, 0, cmp, "modbus_fail_offline", "offline");
+                         value, 0, cmp, "modbus_fail_offline", "offline",
+                         p->episode_off);
             }
         }
 
@@ -317,16 +341,22 @@ void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
 
       snprintf(reason, sizeof(reason), "threshold_%s",
                (cmp && cmp[0]) ? cmp : "ge");
+      p->episode_thr = ++g_episode_seq;
+      p->thr_since_ms = now;
       push_event(id, VG_RUNTIME_ACT_RAISE, VG_RUNTIME_KIND_THRESHOLD, value,
                  threshold, cmp, reason,
-                 (p->level[0] != '\0') ? p->level : level);
+                 (p->level[0] != '\0') ? p->level : level,
+                 p->episode_thr);
     }
   else if (kind != VG_RUNTIME_KIND_THRESHOLD &&
            prev_kind == VG_RUNTIME_KIND_THRESHOLD)
     {
       push_event(id, VG_RUNTIME_ACT_CLEAR, VG_RUNTIME_KIND_THRESHOLD, value,
                  threshold, cmp, "threshold_cleared",
-                 (p->level[0] != '\0') ? p->level : level);
+                 (p->level[0] != '\0') ? p->level : level,
+                 p->episode_thr);
+      p->episode_thr = 0;
+      p->thr_since_ms = 0;
     }
 
   p->kind = kind;
@@ -1119,4 +1149,328 @@ int vg_runtime_write_report(const char *path)
   vg_runtime_fprint_report(fp);
   fclose(fp);
   return 0;
+}
+
+/* ── Anomaly and recovery queries (BVO-09) ───────────────────────── */
+
+/* Worst category decides the order: a critical threshold outranks a warning,
+ * a warning outranks an offline point, and stale data alone is last.  A point
+ * that carries several flags keeps its worst one here and all of them in
+ * flags. */
+
+static uint8_t anomaly_rank(uint8_t flags, const char *level)
+{
+  if ((flags & VG_RUNTIME_ANOMALY_F_THRESHOLD) != 0)
+    {
+      return (level != NULL && strcmp(level, "crit") == 0) ? 0 : 1;
+    }
+
+  if ((flags & VG_RUNTIME_ANOMALY_F_OFFLINE) != 0)
+    {
+      return 2;
+    }
+
+  return 3;
+}
+
+int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
+                         int *total_out, uint32_t stale_ms)
+{
+  struct vg_runtime_anomaly all[VG_RUNTIME_MAX_POINTS];
+  uint32_t now;
+  int total = 0;
+  int i;
+  int j;
+
+  if (total_out != NULL)
+    {
+      *total_out = 0;
+    }
+
+  if (out == NULL || max < 0)
+    {
+      return -1;
+    }
+
+  if (!g_inited)
+    {
+      vg_runtime_init();
+    }
+
+  now = mono_ms();
+
+  for (i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
+    {
+      struct vg_runtime_point *p = &g_pts[i];
+      struct vg_runtime_anomaly *a;
+      bool has_sample;
+      uint32_t age;
+
+      if (!p->used)
+        {
+          continue;
+        }
+
+      a = &all[total];
+      memset(a, 0, sizeof(*a));
+      snprintf(a->id, sizeof(a->id), "%s", p->id);
+      a->slave = p->slave;
+
+      has_sample = p->first_ok_ms != 0;
+      a->has_value = has_sample;
+      a->value = p->last_value;
+      a->threshold = p->last_thr;
+      snprintf(a->cmp, sizeof(a->cmp), "%s", p->cmp);
+      snprintf(a->level, sizeof(a->level), "%s", p->level);
+
+      age = (has_sample && now >= p->last_ok_ms)
+                ? now - p->last_ok_ms
+                : 0;
+      a->age_ms = age;
+
+      if (!p->online || p->kind == VG_RUNTIME_KIND_OFFLINE)
+        {
+          a->flags |= VG_RUNTIME_ANOMALY_F_OFFLINE;
+        }
+
+      if (p->kind == VG_RUNTIME_KIND_THRESHOLD)
+        {
+          a->flags |= VG_RUNTIME_ANOMALY_F_THRESHOLD;
+        }
+
+      /* A point that never sampled successfully is not stale: it has no
+       * sample at all, which is what the offline flag already says. */
+
+      if (stale_ms > 0 && has_sample && age > stale_ms)
+        {
+          a->flags |= VG_RUNTIME_ANOMALY_F_STALE;
+        }
+
+      if (a->flags == 0)
+        {
+          continue;
+        }
+
+      a->rank = anomaly_rank(a->flags, a->level);
+
+      if ((a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE) != 0)
+        {
+          a->since_ms = (p->offline_since_ms != 0 && now >= p->offline_since_ms)
+                            ? now - p->offline_since_ms
+                            : 0;
+        }
+      else if ((a->flags & VG_RUNTIME_ANOMALY_F_THRESHOLD) != 0)
+        {
+          a->since_ms = (p->thr_since_ms != 0 && now >= p->thr_since_ms)
+                            ? now - p->thr_since_ms
+                            : 0;
+        }
+      else
+        {
+          a->since_ms = age;
+        }
+
+      total++;
+    }
+
+  /* Insertion sort by rank then id.  At most VG_RUNTIME_MAX_POINTS entries,
+   * and the order has to be stable enough that the same snapshot always
+   * produces the same speech summary. */
+
+  for (i = 1; i < total; i++)
+    {
+      struct vg_runtime_anomaly key = all[i];
+
+      j = i - 1;
+      while (j >= 0 &&
+             (all[j].rank > key.rank ||
+              (all[j].rank == key.rank && strcmp(all[j].id, key.id) > 0)))
+        {
+          all[j + 1] = all[j];
+          j--;
+        }
+
+      all[j + 1] = key;
+    }
+
+  if (total_out != NULL)
+    {
+      *total_out = total;
+    }
+
+  if (total > max)
+    {
+      total = max;
+    }
+
+  for (i = 0; i < total; i++)
+    {
+      out[i] = all[i];
+    }
+
+  return total;
+}
+
+int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
+                        struct vg_runtime_recovery *out)
+{
+  const struct vg_runtime_event *latest = NULL;
+  const struct vg_runtime_event *raise = NULL;
+  struct vg_runtime_point *p = NULL;
+  int i;
+
+  if (out == NULL || id == NULL || id[0] == '\0')
+    {
+      return -1;
+    }
+
+  memset(out, 0, sizeof(*out));
+
+  if (!g_inited)
+    {
+      vg_runtime_init();
+    }
+
+  snprintf(out->id, sizeof(out->id), "%s", id);
+  out->kind = kind;
+  out->state = VG_RUNTIME_RECOVERY_UNKNOWN;
+
+  for (i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
+    {
+      if (g_pts[i].used && strcmp(g_pts[i].id, id) == 0)
+        {
+          p = &g_pts[i];
+          break;
+        }
+    }
+
+  /* Newest first.  The first event for this point and kind decides whether
+   * the episode is open; a CLEAR then looks back for the RAISE that shares
+   * its episode id, so an unrelated event in between cannot break the pair. */
+
+  for (i = 0; i < g_ev_len; i++)
+    {
+      int idx = (int)g_ev_pos - 1 - i;
+      const struct vg_runtime_event *e;
+
+      while (idx < 0)
+        {
+          idx += VG_RUNTIME_EVENT_MAX;
+        }
+
+      e = &g_ev[idx];
+      if (e->serial == 0)
+        {
+          continue;
+        }
+
+      if (strcmp(e->id, id) != 0 || e->kind != kind)
+        {
+          continue;
+        }
+
+      if (latest == NULL)
+        {
+          latest = e;
+          if (e->action == VG_RUNTIME_ACT_RAISE)
+            {
+              break;
+            }
+
+          continue;
+        }
+
+      if (e->action == VG_RUNTIME_ACT_RAISE && e->episode == latest->episode)
+        {
+          raise = e;
+          break;
+        }
+    }
+
+  if (latest == NULL)
+    {
+      /* No retained event.  The current state can still show an open episode,
+       * but a point that is normal now is not evidence of a past recovery. */
+
+      bool active = false;
+
+      if (p != NULL)
+        {
+          if (kind == VG_RUNTIME_KIND_OFFLINE)
+            {
+              active = (!p->online || p->kind == VG_RUNTIME_KIND_OFFLINE);
+            }
+          else if (kind == VG_RUNTIME_KIND_THRESHOLD)
+            {
+              active = (p->kind == VG_RUNTIME_KIND_THRESHOLD);
+            }
+        }
+
+      if (active)
+        {
+          out->state = VG_RUNTIME_RECOVERY_ACTIVE;
+        }
+
+      return 0;
+    }
+
+  out->episode = latest->episode;
+
+  if (latest->action == VG_RUNTIME_ACT_RAISE)
+    {
+      out->state = VG_RUNTIME_RECOVERY_ACTIVE;
+      out->history_complete = true;
+      out->raise_ms = latest->mono_ms;
+      out->raise_wall = latest->wall;
+      out->value = latest->value;
+      out->threshold = latest->threshold;
+      return 0;
+    }
+
+  out->clear_ms = latest->mono_ms;
+  out->clear_wall = latest->wall;
+  out->value = latest->value;
+  out->threshold = latest->threshold;
+
+  if (raise != NULL)
+    {
+      out->state = VG_RUNTIME_RECOVERY_RECOVERED;
+      out->history_complete = true;
+      out->has_duration = true;
+      out->raise_ms = raise->mono_ms;
+      out->raise_wall = raise->wall;
+      out->duration_ms = (latest->mono_ms >= raise->mono_ms)
+                             ? latest->mono_ms - raise->mono_ms
+                             : 0;
+    }
+  else
+    {
+      /* The CLEAR is real, the start is gone.  Report the recovery and say
+       * the duration is unknown rather than guessing from the current state. */
+
+      out->state = VG_RUNTIME_RECOVERY_RECOVERED_PARTIAL;
+      out->history_complete = false;
+    }
+
+  return 0;
+}
+
+uint32_t vg_runtime_boot_id(void)
+{
+  if (!g_inited)
+    {
+      vg_runtime_init();
+    }
+
+  return g_boot_id;
+}
+
+uint32_t vg_runtime_events_dropped(void)
+{
+  if (!g_inited)
+    {
+      vg_runtime_init();
+    }
+
+  return g_ev_dropped;
 }
