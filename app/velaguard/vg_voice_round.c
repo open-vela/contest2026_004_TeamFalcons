@@ -50,7 +50,10 @@
  * piece and the 2 KB TLS read buffer inside the transport, the TLS handshake,
  * and the render buffers.  16 KB was not enough headroom for that stack. */
 
-#define VR_STACK_SIZE   32768
+/* mbedTLS handshake plus the ASR body builder measured around 10 KB of frame
+ * at the fault site, but the handshake's deepest path is not observable from
+ * the dump; 48 KB leaves room for the certificate parse. */
+#define VR_STACK_SIZE   49152
 #define VR_PRIORITY     118
 #define VR_TICK_MS      50
 #define VR_AGENT_POLL_MS 100

@@ -1,0 +1,350 @@
+2026-10-22T20:24:19.0055534+08:00 CMD free
+[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=6640
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 92 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 20:22:42
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.570, +2570)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.580, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.580, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.580, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.580, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.590, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.600, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.610, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.620, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.620, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.630, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.640, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.640, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.650, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.650, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.660, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.670, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.670, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.680, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.690, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.690, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.700, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.710, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.710, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.720, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.730, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.740, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.750, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.760, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 14:29:15)
+32768[agent] [boot +10ms] P0: timezone set
+)
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +80ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +190ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +200ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +550ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +560ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     804776    6032992     815240    579543[2skills] Skill exists: /data/agent/skills/news-digest.md 
+  1081      4 Umem
+nsh> [K[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2410ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2410ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2480ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2490ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2490ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2500ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2510ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2520ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2520ms] P5: network_watch thread started (async)
+[agent] [boot +2530ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2530ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.24
+[netmgr] Network connected: 192.168.137.24
+[netmgr] Found iface eth0 addr 192.168.137.24
+[agent] Network connected: 192.168.137.24
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-22T20:24:20.2520728+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:24:21.1658177+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:24:23.3693237+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700574
+vgnet: join 19y failed
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] body write gave up at 0/4096
+[vgvoice] asr: transport failed: -3 (net)
+
+2026-10-22T20:24:28.5794349+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=4470
+
+2026-10-22T20:24:29.4952660+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [Kvgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T20:24:31.7172291+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [Kvghmi: live ok=0/14 a1=0.0
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700585
+
+2026-10-22T20:24:36.9249968+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4940
+
+2026-10-22T20:24:37.8341344+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:24:40.0592206+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700591
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:24:45.2719414+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4990
+
+2026-10-22T20:24:46.1880254+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:24:48.4045456+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700599
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:24:53.6171996+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5010
+
+2026-10-22T20:24:54.5538010+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:24:56.7824532+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700608
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:25:02.0078303+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5090
+
+2026-10-22T20:25:02.9397587+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:05.1548507+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700616
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:25:10.3737677+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5010
+
+2026-10-22T20:25:11.2875603+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:13.5074904+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700625
+vgtime: synced 2026-10-22 20:25:17
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:25:18.7081692+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5050
+
+2026-10-22T20:25:19.6232663+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:21.8285898+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700724
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:25:27.0457804+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4980
+
+2026-10-22T20:25:27.9605220+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:30.1697363+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700732
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=1810
+
+2026-10-22T20:25:35.3933963+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:36.3252872+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:38.5306374+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700741
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=1760
+
+2026-10-22T20:25:43.7407030+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:44.6512214+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:46.8709819+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700749
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=1790
+
+2026-10-22T20:25:52.0861223+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:52.9904046+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:25:55.2122126+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+
+2026-10-22T20:26:00.4254544+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     894472    5943296     933280    5795432   1117      8 Umem
+nsh> [K
+2026-10-22T20:26:01.6676039+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000  5.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 15.5% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.5% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.0% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264  1.9% velaguard_app_main 0x90010825 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90014339 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  0.9% ESP8266 0x900684ed 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x900692b9 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Mutex:90  0000000000000000 0049128  0.8% velaguard_app_main 0x9001654d 0
+   11    11  90 RR       Task      - Ready              0000000000000000 0004056  0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 68.6% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  0.8% vghmi 0x90014b79 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x90016d75 0x2407c5a8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001cf0d 0x2407c6a8
+   17    14  50 FIFO     pthread   - Ready              0000000000000000 0028648  0.0% ai_agent 0x90016d75 0x24052bd8
+   90    12 100 RR       pthread   - Waiting  Mutex:10  0000000000000000 0008168  2.3% vghmi 0x900152dd 0
+   91    14  60 FIFO     pthread   - Waiting  Mutex:10  0000000000000000 0032744  0.0% ai_agent 0x90018a09 0x30002830
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700763
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+

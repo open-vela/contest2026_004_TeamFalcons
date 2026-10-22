@@ -1,0 +1,204 @@
+2026-10-22T20:26:12.0473690+08:00 CMD free
+[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=5820
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     892856    5944912     933280    5795432   1106     10 Umem
+nsh> [K
+2026-10-22T20:26:13.2753651+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:14.1788930+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:16.4090846+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:26:21.6360640+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:22.5361913+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T20:26:24.7391104+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5180
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T20:26:29.9531044+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:30.8657670+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:33.0844445+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:26:38.3081203+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:39.2391325+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4100
+
+2026-10-22T20:26:41.4680199+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:26:46.6694881+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:47.5862150+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5490
+
+2026-10-22T20:26:49.7872773+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:26:54.9964623+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:26:55.9177204+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velagua[rdvgvoice] asr: transport failed: /v-7 (cancelled)
+oice/q1.wav
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5260
+
+2026-10-22T20:26:58.1370683+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:03.3451450+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:27:04.2556296+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5590
+
+2026-10-22T20:27:06.4688746+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:11.6893180+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T20:27:12.5943665+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4870
+
+2026-10-22T20:27:14.8107730+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:20.0130803+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voi[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700840
+ce/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+
+2026-10-22T20:27:20.9134043+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=net status=0 req=61669 resp=0 ms=3800
+
+2026-10-22T20:27:23.1175162+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:28.3378532+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:27:29.2484111+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T20:27:31.4568636+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5730
+
+2026-10-22T20:27:36.6971415+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:27:37.6235054+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:27:39.8426542+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:45.0624398+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T20:27:45.9663626+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4260
+
+2026-10-22T20:27:48.1933140+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:27:53.4180987+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     904704    5933064     939136    5795432   1207     12 Umem
+nsh> [K
+2026-10-22T20:27:54.6188348+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000  4.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.1% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Ready              0000000000000000 0001976  1.0% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.9% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264  2.9% velaguard_app_main 0x90010825 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90014339 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  0.8% ESP8266 0x900684ed 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024  0.0% netinit 0x900692b9 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Mutex:90  0000000000000000 0049128  0.8% velaguard_app_main 0x9001654d 0
+   11    11  90 RR       Task      - Ready              0000000000000000 0004056  0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 66.6% vghmi vghmi
+   13    12 100 RR       pthread   - Ready              0000000000000000 0008168  0.8% vghmi 0x90014b79 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Ready              0000000000000000 0012264  0.0% ai_agent 0x90016d75 0x2407c5a8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001cf0d 0x2407c6a8
+   17    14  50 FIFO     pthread   - Ready              0000000000000000 0028648  0.0% ai_agent 0x90016d75 0x24052bd8
+   90    12 100 RR       pthread   - Waiting  Mutex:10  0000000000000000 0008168  3.1% vghmi 0x900152dd 0
+   91    14  60 FIFO     pthread   - Waiting  Mutex:10  0000000000000000 0032744  0.0% ai_agent 0x90018a09 0x30002830
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700875
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[vgvoice] asr: transport failed: -1 (net)
+

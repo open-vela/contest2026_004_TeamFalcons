@@ -87,7 +87,21 @@ ASR 与 Agent 合计 17.4 至 23.1 s，30 秒预算下 TTS 只有 7 至 9 秒。
 - 取消与并发后堆：982,528 与 930,312，不随轮次单调上升。
 - 一次未复现的硬故障：连续替换中工作线程在 mbedTLS 握手内触发 HARDFAULT（PC 0x900433c2 / LR 0x90077f11，`mbedtls_ssl_write_version`），随后两次相同压测未再出现。按未解决记录，见 BVO-14 缺陷 22。
 
-## 8. 未验证
+## 8. 握手崩溃：工作线程栈不足
+
+[board-handshake-crash.log](board-handshake-crash.log)、[board-cancel-late-no-crash.log](board-cancel-late-no-crash.log)、[board-handshake-stress-48k-a.log](board-handshake-stress-48k-a.log)、[board-handshake-stress-48k-b.log](board-handshake-stress-48k-b.log)，2026-10-22 20:18-20:28：
+
+| 条件 | 结果 |
+|---|---|
+| 32 KB 工作线程栈，12 轮“1 秒后再按、取消上一轮 ASR” | 3 次 HARDFAULT，板端卡死需复位 |
+| 32 KB，6 轮“5 秒后再按”（取消发生在请求中段） | 0 次 |
+| 48 KB，同样的 1 秒压测 12 轮 ×2 | 0 次，ASR 结果 12 条与 10 条 |
+
+故障现场：`CFSR=01000000`（UFSR.UNALIGNED），`HFSR=40000000`（FORCED），stacked PC `0x900433c2` 是 `strh r2, [r0, #0]`——16 位存储命中奇地址；LR 在 `mbedtls_ssl_write_client_hello`。故障线程是语音轮次工作线程。
+
+结论：32 KB 栈在“mbedTLS 握手 + ASR 请求构造”叠加时溢出，破坏相邻内存后表现为对齐故障。把工作线程栈提高到 48 KB 后，同样压测 24 轮不再出现。这是经验修复：没有栈高水位插桩，溢出深度未直接测量；代价是堆上多 16 KB（used 894,472，free 5.94 MB）。
+
+## 9. 未验证
 
 - 按键取消到资源回收的 2 秒目标仍未测：本轮验证的是截止时间到期，不是人工取消。
 - 一轮语音期间的堆空闲、最大空闲块、socket 数量和线程数量没有板端采样。

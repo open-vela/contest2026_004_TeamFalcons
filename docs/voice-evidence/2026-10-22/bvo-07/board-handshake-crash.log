@@ -1,0 +1,309 @@
+2026-10-22T20:17:17.0679280+08:00 CMD free
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada6f4d15802f6f] BEGIN chat=velaguard:8 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10856 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:8
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700237
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768    1004424    5833344    1060808    5795432   1210      9 Umem
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:17:18.3094379+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:19.2164087+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:21.4406794+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:17:26.6565292+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4400
+
+2026-10-22T20:17:27.5592544+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:29.7886151+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:17:35.0145245+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:35.9236024+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=5800
+
+2026-10-22T20:17:38.1308733+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] body progress: gaps=3 first_read=8110ms total=888 bytes
+[vela_tls] body gap 1: idle=5090ms at=13200ms bytes=12
+[vela_tls] body gap 2: idle=4990ms at=18190ms bytes=18
+[vela_tls] body gap 3: idle=3240ms at=21430ms bytes=883
+[llm] Resp bytes=861 text=0 reasoning=177 toolargs=4 calls=2 finish=tool_calls tokens=3615/64/3679
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6ada6f4d15802f6f] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=850 send=200 ttfb=8110 body=13420 pool=0 build=10 parse=0 http=22700 backoff=0 total=22720 req=10856 resp=861 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6ada6f4d15802f6f] iter=0 tool=vg_anomaly_read latency=22740ms llm=ok backend=0
+[tools] Executed vg tool: vg_anomaly_read
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_anomaly_read result: 1244 bytes, 3260 ms
+[trace:6ada6f4d15802f6f] tool_iter=0 tool=vg_anomaly_read tool_ms=3260 out=1244 ok=1
+[agent] Tool vg_run_report result: 701 bytes, 3280 ms
+[trace:6ada6f4d15802f6f] tool_iter=0 tool=vg_run_report tool_ms=3280 out=701 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 13254 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-22T20:17:43.3459703+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:44.2737542+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:46.4890464+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:17:51.7169879+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:17:52.6291940+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=4840
+
+2026-10-22T20:17:54.8508925+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792700281
+HARDFAULT: CFSR=01000000 HFSR=40000000 BFAR=00000000 MMFAR=00000000
+HARDFAULT: stacked PC=900433c2 LR=90077f11
+dump_assert_info: Current Version: NuttX  0.0.0 189e6d8a18d-dirty Oct 22 2026 20:04:26 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x9001654d
+up_dump_register: R0: 24004bd0 R1: 00000000 R2: 900b7872  R3: 240045b8
+up_dump_register: R4: 3800c448 R5: 00000003 R6: 900b7872  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004538 R10: 00000006 R11: 24065a90
+up_dump_register: R12: 00000009 SP: 240658a0 LR: 90001ab3  PC: 90001ab3
+up_dump_register: xPSR: 20000003 BASEPRI: 
+2026-10-22T20:18:00.0674686+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x24063028
+dump_stackinfo:   size: 00032744
+dump_stackinfo:     sp: 0x240658a0
+stack_dump:  24065880: 240658a0 24066880 240658a0 24063028 00007fe8 380003d0 24004538 90001c53
+stack_dump:  240658a0: 900d05e8 00000000 3800c4f8 38000480 9001654d 0000000a 00000000 00000000
+stack_dump:  240658c0: 3800c448 24004bd0 900b7872 00000000 00000000 7474754e 40000058 24065950
+stack_dump:  240658e0: 00000000 9000823f 00000000 00000008 00000000 00000000 900b7871 00000000
+stack_dump:  24065900: 37663131 39303037 302e3000 9000302e 00000080 00000007 24065b34 3831784c
+stack_dump:  24065920: 64366539 38316138 69642d64 20797472 2074634f 32203232 20363230 303a3032
+stack_dump:  24065940: 36323a34 900b7800 24065988 90007731 6d72612b 90008c00 90008bd7 00000001
+stack_dump:  24065960: 90008211 0000000a 240509e4 24065a90 00000003 240045b8 24065a90 24065e40
+stack_dump:  24065980: 3003af08 24065f20 24065a90 900014b1 00000001 00000000 3800c448 90000e7d
+stack_dump:  240659a0: 00000000 00000007 24065ce8 d027d1a5 00003ffc 90001063 00000000 00000000
+stack_dump:  240659c0: 00000000 0000005a 00000000 00000000 240509e4 24065a14 00000000 00000000
+stack_dump:  240659e0: 00000000 00000000 3003aebc 3001fa3c 00000101 9008c6fb 00000000 3003aebc
+stack_dump:  24065a00: 24065ad8 00000080 3800c448 24065b34 00000000 24000264 00000000 00000001
+stack_dump:  24065a20: 00000001 ffffffff 00000000 ffffffe9 00000000 000000af 66485494 bc66c879
+stack_dump:  24065a40: 9e052576 9006d531 00000000 00000007 24065f5c 00000006 00000000 1361af63
+stack_dump:  24065a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065a80: 00000000 24065f24 00000000 24065b08 24065b68 00000000 00000001 24065ce8
+stack_dump:  24065aa0: d027d1a5 00003ffc 24065e40 3003af08 24065f20 24065f24 00000000 ffffffe9
+stack_dump:  24065ac0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ae0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065b00: d02791a9 00000000 00000303 24065e40 00000000 90077f11 900433c2 81000000
+stack_dump:  24065b20: 00000000 40000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065b40: 00000000 00000000 c1059ed8 cbbb9d5d 367cd507 629a292a 3070dd17 9159015a
+stack_dump:  24065b60: 20000000 3003b1cc 00000001 90077f11 900dc394 00000000 d02791a9 240529f8
+stack_dump:  24065b80: 0000001d 90009f87 00000000 d02791a9 00003ffc 796fda6a 24067218 24065ce8
+stack_dump:  24065ba0: 24065ce8 24067218 240670d8 24065e40 00000000 24065f20 24065f24 9004533b
+stack_dump:  24065bc0: 24065ce8 9004536b 00000000 9001e03b 00000000 0c280c96 0b7f0bff 6ada6f79
+stack_dump:  24065be0: 0b9d0bb0 000a70da 00000078 00000000 0784086c 066b06f7 05810617 044b04e3
+stack_dump:  24065c00: 021e035b ff3700b9 fbe8fdba f92afa8a f6a0f7fa f45bf591 f159f2e4 edebefa2
+stack_dump:  24065c20: eafeec1b eb45ea90 eeb9ec62 f3e7f151 f763f5e8 f830f841 f71ff79e f676f6ae
+stack_dump:  24065c40: f763f6a1 f96bf875 fb54fa8b fc39fc24 000a6fe0 2406ad9c 24067530 24067480
+stack_dump:  24065c60: 240670f8 24067218 900c0768 240670d8 2406ad9c 24067530 24067480 240670f8
+stack_dump:  24065c80: 24067218 900c0768 24067298 9001ea1b 0d0b0cb5 0d130d1a 0c380caf 0ba80bca
+stack_dump:  24065ca0: 000a706c 0b6b0b68 0ade0b47 00000000 00000000 24067530 00001000 00000000
+stack_dump:  24065cc0: 012c0200 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ce0: 00000000 00000000 24065e40 00000001 00000000 00000000 00000303 00000000
+stack_dump:  24065d00: 00000000 00000000 9003e159 9003e105 00000000 24065f20 00000000 00000000
+stack_dump:  24065d20: 00000000 3001fb68 3003af08 00000000 00000000 00000000 3003ada0 00000000
+stack_dump:  24065d40: 00000000 00000000 300203a0 300203a0 300203a8 300203ab 300203ab 300203ad
+stack_dump:  24065d60: 300203ad 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065d80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065da0: 00000000 00000000 d0279198 d0279198 d02791a0 d02791a3 d02791a3 d02791a5
+stack_dump:  24065dc0: d02791a5 00000016 00000000 00000000 00000000 00000000 00000000 3001fc18
+stack_dump:  24065de0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e40: 03030303 00010000 01010100 00010100 00000000 2404eafc 00000000 00000000
+stack_dump:  24065e60: 9003c469 24065f24 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e80: 00000000 00000000 00000000 90044821 90044829 00000000 00000000 00000000
+stack_dump:  24065ea0: 00000000 00000000 900dcdd4 00000000 00000000 00000000 00000000 2400089e
+stack_dump:  24065ec0: 00000000 240008d4 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ee0: 00000000 00000000 00000000 00000000 24000600 00000000 000003e8 0000ea60
+stack_dump:  24065f00: 00000010 ffff0000 ffffffff 00000000 00000400 00000000 00000000 00000000
+stack_dump:  24065f20: 00000007 66485494 9e052576 6c221a6d 1361af63 00000002 00000000 00000030
+stack_dump:  24065f40: 00002710 0000000e 00000000 9f952ba4 b72ef59d 1692b479 ca01da05 b7ec3fb1
+stack_dump:  24065f60: 419df57f b8f0105e 60d0a430 9b455bec 2c6bae71 3af91a08 f0f8c00d 3bad8566
+stack_dump:  24065f80: 7a307019 c2c06047 a210c477 6e7f91f2 42143f83 78ed258b 8815e586 fff45c22
+stack_dump:  24065fa0: 85c42c3b 47044c7c e514880b 45a66b32 07b254b1 7f5f713a f74a94bc 97227e47
+stack_dump:  24065fc0: 12e6527c 55e21e00 b0f6960b 6e4129aa 69f37d1b 16ac0c21 e1e6989d 6fac3819
+stack_dump:  24065fe0: 7d4a6a65 28a87465 985ee26e f1077122 98f40c39 8e580018 6fbe9885 c7027e8e
+stack_dump:  24066000: ba4814eb 92e0608e 0abe82e0 1060df11 8894d328 06ccd330 69724bb5 3e42cd5b
+stack_dump:  24066020: 840ad9b0 16eab93e 1c543bde 0dfcffb3 85682c9b 83a4ffab ead6b41e b9b44029
+stack_dump:  24066040: 3dbe9999 2b5420a7 37001b79 00000000 00000000 00000000 00000000 9001e415
+stack_dump:  24066060: 00000000 00000000 00000000 7fffffff 00000004 00000000 00000000 00000000
+stack_dump:  24066080: 00000001 00000000 fc3ffd05 fabefb85 f92df9ee f75df856 f538f648 f2d8f418
+stack_dump:  240660a0: f0acf197 efe3f01c f050efed f157f0d7 f24bf1d4 f312f2b3 f42bf390 f5d5f4e3
+stack_dump:  240660c0: f7c5f6d2 f985f8ab faf1fa4d fc3efb98 fd94fcea ff02fe41 0083ffbf 02130148
+stack_dump:  240660e0: 037902cd 04c60423 05df0552 07120673 0833079f 095808c9 0a3809d1 0afe0aa1
+stack_dump:  24066100: 0bb10b54 0c650c16 0cf30cae 0d5b0d30 0d550d69 0cda0d1a 0c250c88 0b3a0bb8
+stack_dump:  24066120: 0a1f0ab7 08bc097d 071107ed 051a061f 03070411 00c701ea fe83ffa2 fc40fd60
+stack_dump:  24066140: fa1bfb27 f7d3f8f7 f5bbf6ba f38ff4a8 f183f28a ef92f095 edcdee9d ed0aed3e
+stack_dump:  24066160: ed72ed1a eeb1edf6 f00aef71 f159f0a5 f2e1f21f f4d0f3c1 f6f7f5ea f934f818
+stack_dump:  24066180: fb3cfa42 fd02fc1f febefde4 0070ff90 0222014e 03cf02f8 053e048d 068505ee
+stack_dump:  240661a0: 078f0706 08710805 092b08cc 09cf097b 0a660a23 0ac10a9c 0af20adf 0b050aff
+stack_dump:  240661c0: 0afb0b00 0adf0aec 0a8f0aca 09f60a45 094d09ad 08c808ff 08570896 07db0818
+stack_dump:  240661e0: 07180790 06110691 050f058f 04110494 031a0394 023502a9 014401b9 001900bb
+stack_dump:  24066200: fea5ff5e fd33fdf4 fbc0fc70 fa61fb15 f8dcf9a6 f6fef7fb f4f8f5ff f314f3fd
+stack_dump:  24066220: f18ef243 f0abf0f6 f0b5f097 f16ef0f9 f26ef1fa f372f2e9 f4c3f40e f65ff580
+stack_dump:  24066240: f844f754 fa14f92f fbbffaf2 fd24fc6d fe8dfddb ffd2ff25 012a0087 026401c2
+stack_dump:  24066260: 03c50316 050d0462 065005bd 075f06d2 086607f0 095208d4 0a4309d7 0af90a9f
+stack_dump:  24066280: 0b8d0b4c 0c270bd6 0c980c6f 0cce0cb6 0ca30cd0 0c370c72 0b930bee 0ae40b43
+stack_dump:  240662a0: 09d20a6a 0872092a 06d807b1 04fc05f7 02e503f4 00b201cd fe74ff8c fc6afd68
+stack_dump:  240662c0: fa89fb74 f8bdf9ae f6aaf7bc f44ff581 f20bf326 f015f0f9 ee99ef43 edf2ee12
+stack_dump:  240662e0: ee7aee1b efb5ef09 f105f05d f24ff1a7 f3f4f30e f608f4ed f888f746 fadcf9bb
+stack_dump:  24066300: fce6fbf7 fe89fdb9 000fff57 019400ce 03400265 04c6040a 060e0571 07100692
+stack_dump:  24066320: 07d6077f 08790829 08ff08c5 097f0942 09f709bf 0a460a24 0a6f0a5b 0a6c0a6b
+stack_dump:  24066340: 0a5f0a6e 0a270a49 09bd09fe 091d0972 086b08c1 07e10821 076d07af 06e60731
+stack_dump:  24066360: 06290694 053805b4 042904b4 033003a3 025f02d0 019201f7 00c1012e ffcd0049
+stack_dump:  24066380: feaeff42 fd62fe09 fc30fcc7 fb04fba8 f988fa50 f7d9f8c5 f5f1f6dd f43cf511
+stack_dump:  240663a0: f2d7f36d f24af272 f280f243 f34af2e4 f41ff3b7 f517f497 f67af5af f84af75a
+stack_dump:  240663c0: fa3cf941 fc01fb22 fd84fcce fee8fe3a 0046ff95 017500e2 02950203 03a40322
+stack_dump:  240663e0: 04ba0434 05b4053b 06b6063a 078b071b 08780801 095e08e6 0a3809dc 0ab50a7d
+stack_dump:  24066400: 0af70ae4 0b240b02 0b720b4c 0bb40b92 0bb90bbf 0b690b9e 0aad0b19 09910a2a
+stack_dump:  24066420: 083408ef 06be0778 051b05f4 0332042d 01000224 fe9dffd2 fc7dfd82 faa5fb83
+stack_dump:  24066440: f89df9b8 f684f778 f40ff55c f1f7f2d9 efa0f0e7 edf0eeb7 ece8ed48 ee1ded42
+stack_dump:  24066460: f00cef0c f22bf12c f33ff2c2 f499f3da f643f54e f91df79a fbcffa71 fe4efd38
+stack_dump:  24066480: ffbcff0e 010b0072 01fa0179 035e02b0 048b03f4 05a50530 063205f0 06dc068e
+stack_dump:  240664a0: 077b0722 082b07e4 089d085e 08fb08d6 091a0912 09040920 08e108e7 08db08dc
+stack_dump:  240664c0: 090108e6 08d308f9 085a0896 07ab0808 072e0760 06fa0716 06ac06dc 06030662
+stack_dump:  240664e0: 0536059d 045104b7 03a003fb 0316034d 029302e2 01d4023c 00dd0169 ffbf0050
+stack_dump:  24066500: fe94ff2b fd7bfe02 fc58fcf2 fb04fbae f968fa45 f78ef87a f57ff680 f3acf47d
+stack_dump:  24066520: f2a5f304 f26df274 f2f7f2a8 f359f327 f417f3aa f515f487 f6b6f5d2 f849f787
+stack_dump:  24066540: f9eaf91a fb4dfaaa fce5fc18 fe2afd95 ff73fed2 00980009 01bb011e 02dd0249
+stack_dump:  24066560: 03fd0373 04f1047f 05f00575 06e20669 07db0762 08b0083c 096d0914 0a1809c0
+stack_dump:  24066580: 0ad80a7e 0b8b0b37 0c120bd9 0c420c31 0c240c44 0ba70be7 0b200b64 0a7f0ad3
+stack_dump:  240665a0: 097f0a10 082608dd 0661074d 0486057a 02840386 00a70198 feb3ffae fcd1fdc8
+stack_dump:  240665c0: faaafbc2 f877f995 f632f754 f42bf526 f22ff32b f054f141 ef04ef77 eee2eed6
+
+2026-10-22T20:18:00.9756611+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+stack_dump:  240665e0: efa0ef18 f0b2f032 f1daf12b f359f295 f537f42e f767f652 f98af879 fb81faa0
+stack_dump:  24066600: fd32fc59 feabfdfc 0013ff5f 017b00c9 02c2022a 03ce034f 04b50446 058c0523
+stack_dump:  24066620: 064f05ee 06f106a4 07790733 080207c5 086d0838 08b10899 08c008b7 08b408be
+stack_dump:  24066640: 0882089c 0848086d 07db0817 077407a3 0725074a 06e50704 06a606c6 063e0670
+stack_dump:  24066660: 05c4060a 05270573 04a904e0 04590487 03d2041e 0315037e 022802a1 013101b0
+stack_dump:  24066680: 002100ac ff06ff9d fd9cfe59 fc10fce0 fa2bfb29 f819f929 f5f0f704 f403f4d8
+stack_dump:  240666a0: f325f372 f2e4f2ea f321f2fe f34af336 f3cdf377 f4a5f431 f603f53e f79ff6d5
+stack_dump:  240666c0: f93bf870 fab2f9fb fc1ffb6d fd7efcd2 fec9fe2a 000eff69 012e00a4 023d01b5
+stack_dump:  240666e0: 033b02c3 042a03ae 052504ad 05f7058b 06c80665 078d0724 086a07fa 093b08d5
+stack_dump:  24066700: 0a0b09a2 0aaa0a66 0b210aed 0b330b38 0b0f0b28 0ac60aec 0a6e0a9f 09e30a37
+stack_dump:  24066720: 08f30979 07ac085a 063c06fa 04a1056f 030803d6 016c023a ff97008a fdb7fea9
+stack_dump:  24066740: fbccfcbd fa0cfae8 f871f93b f6def7a7 f53ef611 f39ef46e f253f2e7 f1bef1e9
+stack_dump:  24066760: f1f1f1c0 f286f232 f35af2e6 f477f3d8 f5e6f526 f799f6b8 f963f87f fb2cfa45
+stack_dump:  24066780: fceafc10 fe90fdb8 0010ff59 016f00c0 028c020e 036f0300 044b03de 050604b0
+stack_dump:  240667a0: 05ab055b 062b05ed 068c0660 06bf06aa 06d906ce 06e506e0 06fb06ee 0715070a
+stack_dump:  240667c0: 073c0726 07440746 0731073d 06f6071b 069706c6 0645066f 05e60617 058c05bd
+stack_dump:  240667e0: 0522055e 048404d5 03e00435 0321037c 027602cc 01b30218 00df014d ffd70064
+stack_dump:  24066800: feb5ff47 fd95fe24 fc7bfd0a fb4cfbe6 fa13fab5 f8d8f972 f7bff844 f6f8f74e
+stack_dump:  24066820: f68bf6ac f6a3f68f f6d3f6b9 f6eff6ed 07b30783 0786076b 069b071e 03dd0543
+stack_dump:  24066840: 00870257 fd03fecd f9c5fb69 f6ecf836 f3e6f54e efcff1f1 eb8ced98 e8fdea0e
+stack_dump:  24066860: eb71e99e f2fbeec5 fa55f6c6 fc6dfc43 f928fb3b f553f755 f4b2f419 f722f57d
+stack_dump:  24066880: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24052610      1000     4.6%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240073d8      1976    17.8%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006bd8      1976     0.6%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136     0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168     0.0%   velaguard_app_main 0x9000cae1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264     1.9%   velaguard_app_main 0x90010825 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072     0.0%   velaguard_app_main 0x90014339 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024     1.3%   ESP8266 0x900684ed 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024     0.0%   netinit 0x900692b9 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b208      4056     0.6%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Running            0000000000000000 0x24063028     32744     3.9%   velaguard_app_main 0x9001654d 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ca98      4056     0.6%   vgptt
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x2406b048     49104    66.2%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Signal     0000000000000000 0x30000028      8168     0.6%   vghmi 0x90014b79 0
+dump_task:      14    14 100 RR       Task    -   Waiting Signal     0000000000000000 0x30002060     32696     0.0%   ai_agent ai_agent --daemon
+dump_task:      15    14  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x3000ab18     12264     0.0%   ai_agent 0x90016d75 0x3000a020
+dump_task:      16    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x3000db20      4072     0.0%   ai_agent 0x9001cf0d 0x3000a030
+dump_task:      17    14  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3000eb28     28648     0.0%   ai_agent 0x90016d75 0x3000a0c8
+dump_task:      22    14  60 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x24023580     32744     0.0%   ai_agent 0x90018a09 0x2407df10
+dump_task:      55    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3003bf98      8168     1.3%   vghmi 0x900152dd 0
+
+2026-10-22T20:18:03.1958868+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:08.3966546+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:09.3095942+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:11.5328255+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:16.7585366+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:17.6640356+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:19.8840843+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:25.0994128+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:26.0101993+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:28.2151480+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:33.4340028+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:34.3420260+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:36.5528259+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:41.7722299+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:42.6752058+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:44.8895877+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:50.0923580+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:51.0223526+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+
+2026-10-22T20:18:53.2314416+08:00 CMD vgvoice round release
+
+2026-10-22T20:18:58.4379415+08:00 CMD free
+
+2026-10-22T20:18:59.6623898+08:00 CMD ps
+
