@@ -1,0 +1,67 @@
+
+2026-10-22T20:15:31.4744729+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=2 shown=2 seen=14 boot=0000519a
+- id=humid rank=offline flags=offline,stale value=50.0 threshold=0.0 age_ms=59690 since_ms=55170
+- id=temp rank=offline flags=offline,stale value=36.0 threshold=0.0 age_ms=59690 since_ms=55170
+nsh> [K
+2026-10-22T20:15:33.9947375+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=517 wall=2026-10-22T20:15:35
+vgruntime: slave=1 boot_total=238 boot_ok=175 boot_crc=0 boot_timeout=63 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=660 boot_lat_avg=46 win_total=64 win_ok=25 win_crc=0 win_timeout=39 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=118 boot_ok=105 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=29 win_total=64 win_ok=63 win_crc=0 win_timeout=1 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=118 boot_ok=105 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=100 boot_lat_avg=25 win_total=64 win_ok=63 win_crc=0 win_timeout=1 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=354 boot_ok=315 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=160 boot_lat_avg=26 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=354 boot_ok=316 boot_crc=0 boot_timeout=38 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=720 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=354 boot_ok=315 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=26 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=118 boot_ok=105 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=160 boot_lat_avg=29 win_total=64 win_ok=62 win_crc=0 win_timeout=2 win_echo=0 win_other=0
+vgruntime: bus boot_total=1654 boot_ok=1436 boot_crc=0 boot_timeout=218 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=229230 offline_s=57 last_ok_ago_s=62 value=36 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=229230 offline_s=57 last_ok_ago_s=62 value=50 kind=offline
+vgruntime: point id=flood slave=2 online=1 online_ms=286970 offline_s=0 last_ok_ago_s=2 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=286980 offline_s=0 last_ok_ago_s=2 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=287160 offline_s=0 last_ok_ago_s=3 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=287160 offline_s=0 last_ok_ago_s=3 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=287160 offline_s=0 last_ok_ago_s=3 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=287190 offline_s=0 last_ok_ago_s=3 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=287190 offline_s=0 last_ok_ago_s=3 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=289220 offline_s=0 last_ok_ago_s=3 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=289210 offline_s=0 last_ok_ago_s=3 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=289220 offline_s=0 last_ok_ago_s=3 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=289230 offline_s=0 last_ok_ago_s=3 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=289240 offline_s=0 last_ok_ago_s=3 value=0 kind=none
+vgruntime: event t_boot_s=264 wall=2026-10-22T20:11:22 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=268 wall=2026-10-22T20:11:26 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=272 wall=2026-10-22T20:11:30 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=276 wall=2026-10-22T20:11:34 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=278 wall=2026-10-22T20:11:36 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=282 wall=2026-10-22T20:11:40 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=287 wall=2026-10-22T20:11:44 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=291 wall=2026-10-22T20:11:49 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=295 wall=2026-10-22T20:11:53 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=299 wall=2026-10-22T20:11:57 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=303 wall=2026-10-22T20:12:01 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=308 wall=2026-10-22T20:12:06 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=312 wall=2026-10-22T20:12:10 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=317 wall=2026-10-22T20:12:14 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=319 wall=2026-10-22T20:12:17 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=323 wall=2026-10-22T20:12:21 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=327 wall=2026-10-22T20:12:25 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=332 wall=2026-10-22T20:12:30 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=336 wall=2026-10-22T20:12:34 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=339 wall=2026-10-22T20:12:36 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=343 wall=2026-10-22T20:12:41 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=348 wall=2026-10-22T20:12:46 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=352 wall=2026-10-22T20:12:49 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=356 wall=2026-10-22T20:12:54 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=360 wall=2026-10-22T20:12:58 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=364 wall=2026-10-22T20:13:02 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=366 wall=2026-10-22T20:13:04 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=371 wall=2026-10-22T20:13:09 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=432 wall=2026-10-22T20:14:10 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=459 wall=2026-10-22T20:14:37 id=temp action=raise kind=offline value=36 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=459 wall=2026-10-22T20:14:37 id=temp action=clear kind=threshold value=36 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=459 wall=2026-10-22T20:14:37 id=humid action=raise kind=offline value=50 thr=0 cmp=ge reason=modbus_fail_offline
+nsh> [K

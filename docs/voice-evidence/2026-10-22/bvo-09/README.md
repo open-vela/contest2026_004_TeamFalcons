@@ -33,6 +33,7 @@
 | 仅 1 号从站不应答约 18 秒 | 点位查询已返回 `value=- reason=read_failed`，异常集合仍为 0 |
 | 同一工况约 44 秒 | `total=2`：`temp` 与 `humid` 均 `flags=offline,stale`，保留最后读数，`age_ms=45760` |
 | 恢复应答 | `total=0`；事件环出现 `offline_recovered` 的 CLEAR |
+| 越限后从站失联 | `total=2`：`temp` 与 `humid` 均 `rank=offline flags=offline,stale value=36.0/50.0`，保留最后读数，`age_ms=59690 since_ms=55170`；`vgruntime` 显示 `online=0 last_ok_ago_s=62 value=36` |
 
 事件环按时间记录同一测点的完整过程：
 
@@ -84,6 +85,6 @@ make test_runtime test_runtime_anomaly test_agent_tools
 
 - 板端已取到 `active`、`recovered` 与 `unknown` 三种结论；并用 17 次温度越限/恢复得到 17 个实例，查询返回 `episode=17`、`history_complete=true`、`duration_ms=4480`，与最后一次事件间隔一致，见 [board-episode-correlation.log](board-episode-correlation.log)。
 - `RECOVERED_PARTIAL` 需要 RAISE 被挤出而 CLEAR 仍保留，事件窗口只有一个事件的宽度；当前从站脚本只能在整点表上制造事件，未在板端构造，仍只有主机用例。
-- 同一测点同时处于阈值与离线只在主机用例中构造；板端观察到的是阈值与离线先后发生，以及离线与过期同时出现。
+- 同一测点在同一个快照里同时带阈值与离线标志只在主机用例中构造；板端验证的是先后发生（越限 → 失联）且离线后保留最后读数并标记过期，见 [board-offline-last-value.log](board-offline-last-value.log)。
 - 配置删除点位后运行层记录不会主动清除；当前点表驱动的异常集合不受影响，但 `vg_runtime_recovery()` 仍可按 ID 查询旧事件。若后续需要严格隔离，需在配置提交时清理。
 - 语音回答如何引用异常总数与前三项属于 BVO-10，本任务只提供工具与快照。
