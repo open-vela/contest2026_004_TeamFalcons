@@ -41,7 +41,11 @@
 #include "vg_voice_round.h"
 #include "vg_voice_session.h"
 
-#define VR_STACK_SIZE   16384
+/* The worker owns the whole call chain: a 4 KB response buffer, the 4 KB body
+ * piece and the 2 KB TLS read buffer inside the transport, the TLS handshake,
+ * and the render buffers.  16 KB was not enough headroom for that stack. */
+
+#define VR_STACK_SIZE   32768
 #define VR_PRIORITY     118
 #define VR_TICK_MS      50
 #define VR_AGENT_POLL_MS 100
@@ -772,7 +776,15 @@ int vg_voice_round_start(void)
       return ret;
     }
 
-  ret = pthread_create(&g_vr.thread, NULL, vr_thread, NULL);
+  {
+    pthread_attr_t attr;
+
+    pthread_attr_init(&attr);
+    pthread_attr_setstacksize(&attr, VR_STACK_SIZE);
+    ret = pthread_create(&g_vr.thread, &attr, vr_thread, NULL);
+    pthread_attr_destroy(&attr);
+  }
+
   if (ret != 0)
     {
       pthread_mutex_unlock(&g_start_lock);

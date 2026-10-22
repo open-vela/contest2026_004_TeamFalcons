@@ -12,11 +12,15 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "vg_voice_pref.h"
+
 #define VG_VOICE_MAX_MS         15000u
 #define VG_VOICE_RATE_HZ        16000u
 #define VG_VOICE_RING_BYTES     16384
 #define VG_VOICE_PCM_MAX_BYTES  (VG_VOICE_RATE_HZ * 2u * 15500u / 1000u)
-#define VG_VOICE_WAV_PATH       "/data/velaguard/voice/clip.wav"
+
+/* The recorder and the ASR upload must name the same file. */
+#define VG_VOICE_WAV_PATH       VG_VC_CLIP_PATH
 
 enum vg_voice_state
 {
