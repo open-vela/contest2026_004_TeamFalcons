@@ -1,0 +1,40 @@
+2026-10-22T12:40:16.3924134+08:00 CMD vgvoice record 3000
+vgvoice record 3000
+vgvoice: timed record queued ms=3000
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T12:40:24.4186322+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=6 played=6 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=3010 samples=48270 bytes=96540
+vgvoice: level peak=7176 rms=60
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=6410 temp_left=0 worker=9
+vgvoice: capture halves=47 drained=48 overwritten=0 wraps=23 elapsed_ms=3010 rate=128292 B/s
+vgvoice: tail_bytes=1137 stage_ms=290
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=10 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:40:25.2345071+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0038
+vgaudio: codec[0x001d]=0x0038
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K

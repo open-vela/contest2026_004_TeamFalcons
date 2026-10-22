@@ -1,0 +1,67 @@
+2026-10-22T12:40:51.6077474+08:00 CMD vgvoice record 2000
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:3
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada04517c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792672849
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada04517c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=790 send=160 ttfb=60 body=0 pool=0 build=0 parse=10 http=1140 backoff=0 total=1160 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada04517c9701b3] iter=0 tool=(none) latency=1160ms llm=fail backend=0
+[trace:6ada04517c9701b3] END status=fail iters=1 tools=0 llm_ms=1160 tool_ms=0 elapsed_ms=1210 backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+vgvoice record 2000
+vgvoice: timed record queued ms=2000
+nsh> [K
+2026-10-22T12:40:58.6336968+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=7 played=7 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2010 samples=32128 bytes=64256
+vgvoice: level peak=7186 rms=109
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=4380 temp_left=0 worker=9
+vgvoice: capture halves=31 drained=32 overwritten=0 wraps=15 elapsed_ms=2010 rate=127875 B/s
+vgvoice: tail_bytes=3078 stage_ms=260
+vgvoice: generation=7 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=33 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:40:59.4370962+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0038
+vgaudio: codec[0x001d]=0x0038
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K

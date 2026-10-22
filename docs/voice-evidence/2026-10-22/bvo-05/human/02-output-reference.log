@@ -1,0 +1,59 @@
+2026-10-22T11:54:24.3919669+08:00 CMD vgaudio fixtures
+vgaudio fixtures
+vgaudio: fixture /mnt/emmc/bvo04/tone.wav bytes=64044
+vgaudio: fixture /mnt/emmc/bvo04/speech.wav bytes=64044
+vgaudio: fixture /mnt/emmc/bvo04/tone-stop.wav bytes=320044
+nsh> [K
+2026-10-22T11:54:25.1282707+08:00 CMD nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+2026-10-22T11:54:25.6550912+08:00 CMD volume 15
+volume 15
+nxplayer> [K
+2026-10-22T11:54:25.9651054+08:00 CMD play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+2026-10-22T11:54:28.2803909+08:00 CMD play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+2026-10-22T11:54:30.6114899+08:00 CMD play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+2026-10-22T11:54:32.9315764+08:00 CMD quit
+quit
+nsh> [K
+2026-10-22T11:54:33.7402516+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0009
+vgaudio: codec[0x001d]=0x0009
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T11:54:34.3605936+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30021820
+vgaudio: dma_done=198 errors=0 timeouts=0 txbytes=1600316
+vgaudio: sai_underruns=21 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nsh> [K

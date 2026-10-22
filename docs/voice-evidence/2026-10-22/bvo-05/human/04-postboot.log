@@ -1,0 +1,147 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:19
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada02680e2b9805] BEGIN chat=velaguard:19 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5791 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792672361
+[agent] Dispatching response → local_client:velaguard:19
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ada02680e2b9805] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=30 backoff=0 total=40 req=5791 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 19 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada02680e2b9805] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ada02680e2b9805] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → local_client:velaguard:19
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=10
+[vgagent] round submitted: 1326 bytes
+[agent] Processing message from local_client:velaguard:20
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] All backends backed off, using fallback 0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada029d3bedee8b] BEGIN chat=velaguard:20 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7021 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792672413
+[agent] Dispatching response → local_client:velaguard:20
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ada029d3bedee8b] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=30 backoff=0 total=40 req=7021 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 20 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada029d3bedee8b] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ada029d3bedee8b] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → local_client:velaguard:20
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cfb5af
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 12:31:21
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.880, +1880)	 check_stack_size: tid: 11, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.890, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.900, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.910, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(1.920, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.930, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.930, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.940, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.950, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.950, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.960, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.970, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.970, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.980, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.990, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.990, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.000, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.010, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.010, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.020, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.030, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.030, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.040, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.050, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.060, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.070, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 10:51:16)
+=32768)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +100ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +200ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +210ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +460ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +470ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +580ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +930ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boo
+
+2026-10-22T12:34:20.1454179+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x000a
+vgaudio: codec[0x001d]=0x000a
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0083
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T12:34:20.9560037+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K

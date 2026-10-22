@@ -1,0 +1,70 @@
+2026-10-22T12:35:45.1112492+08:00 CMD vgvoice record 5000
+vgnet: join 19y failed
+vghmi: live ok=0/14 a1=0.0
+vgtime: synced 2026-10-22 12:35:17
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+vgvoice record 5000
+vgvoice: timed record queued ms=5000
+nsh> [K[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada032600000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792672550
+[agent] Dispatching response → local_client:velaguard:1
+
+2026-10-22T12:35:54.1663115+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=playing
+vgvoice: rounds=1 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80015 bytes=160030
+vgvoice: level peak=7185 rms=51
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128024 B/s
+vgvoice: tail_bytes=1147 stage_ms=730
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=19 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:35:54.9688681+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0078
+vgaudio: codec[0x001d]=0x0078
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0001
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T12:35:55.8768482+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=300151c0
+vgaudio: dma_done=37 errors=0 timeouts=0 txbytes=303060
+vgaudio: sai_underruns=35 clockerrors=0
+vgaudio: stream_ms=4730 stream_bytes=303060 tick_us=10000
+nsh> [K

@@ -39,6 +39,13 @@
 #define VOICE_STOP_MS          3000u
 #define VOICE_MIN_MS           100u
 #define VOICE_PLAYER_IDLE      0
+
+/* NxPlayer 的音量取值是 0..1000，wm8994 驱动按 63 * volume / 1000
+ * 换算成 HPOUT1 PGA 寄存器 0..63，寄存器 0 为 -57 dB，63 为 +6 dB。
+ * 900 对应寄存器 56，约 -1 dB，与 2026-10-22 听音确认可辨的
+ * NxPlayer CLI volume 90 增益一致。原先传 15 只会落到寄存器 0。
+ */
+#define VOICE_PLAY_VOLUME      900
 #ifndef CONFIG_NXPLAYER_MSG_PRIO
 #  define CONFIG_NXPLAYER_MSG_PRIO 1
 #endif
@@ -513,7 +520,7 @@ static void voice_play(void)
           return;
         }
       nxplayer_setdevice(g_player, "/dev/audio/pcm0p");
-      nxplayer_setvolume(g_player, 15);
+      nxplayer_setvolume(g_player, VOICE_PLAY_VOLUME);
     }
   ret = nxplayer_playfile(g_player, VG_VOICE_WAV_PATH,
                           AUDIO_FMT_UNDEF, AUDIO_FMT_UNDEF);

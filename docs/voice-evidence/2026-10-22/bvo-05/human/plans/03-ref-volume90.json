@@ -1,0 +1,34 @@
+[
+  {
+    "command": "",
+    "wait_ms": 600
+  },
+  {
+    "command": "nxplayer",
+    "wait_ms": 600
+  },
+  {
+    "command": "volume 90",
+    "wait_ms": 500
+  },
+  {
+    "command": "play /mnt/emmc/bvo04/speech.wav",
+    "wait_ms": 3000
+  },
+  {
+    "command": "play /mnt/emmc/bvo04/speech.wav",
+    "wait_ms": 3000
+  },
+  {
+    "command": "quit",
+    "wait_ms": 600
+  },
+  {
+    "command": "vgaudio codec",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgaudio sai",
+    "wait_ms": 500
+  }
+]

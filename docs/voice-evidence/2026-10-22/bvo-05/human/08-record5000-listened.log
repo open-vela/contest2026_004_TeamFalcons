@@ -1,0 +1,49 @@
+2026-10-22T12:38:04.1714312+08:00 CMD vgvoice record 5000
+vgvoice record 5000
+vgvoice: timed record queued ms=5000
+nsh> [K
+2026-10-22T12:38:13.2142800+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=playing
+vgvoice: rounds=4 played=3 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80014 bytes=160028
+vgvoice: level peak=7186 rms=122
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128023 B/s
+vgvoice: tail_bytes=1142 stage_ms=690
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=74 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:38:14.0197388+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0078
+vgaudio: codec[0x001d]=0x0078
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0001
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T12:38:14.9209426+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30019740
+vgaudio: dma_done=181 errors=0 timeouts=0 txbytes=1463240
+vgaudio: sai_underruns=160 clockerrors=0
+vgaudio: stream_ms=4860 stream_bytes=311252 tick_us=10000
+nsh> [K

@@ -1,0 +1,145 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:5
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9fa342746feb7] BEGIN chat=velaguard:5 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:5
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792670260
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9fa342746feb7] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=700 send=160 ttfb=50 body=0 pool=0 build=0 parse=10 http=1040 backoff=0 total=1060 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 5 (backoff 16)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9fa342746feb7] iter=0 tool=(none) latency=1060ms llm=fail backend=0
+[trace:6ad9fa342746feb7] END status=fail iters=1 tools=0 llm_ms=1060 tool_ms=0 elapsed_ms=1110 backend=0
+[agent] Dispatching response → local_client:velaguard:5
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=3
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:6
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9fa460830f44a] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7011 bytes)
+[agent] Dispatching response → local_client:velaguard:6
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9fa460830f44a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=370 ttfb=10 body=0 pool=0 build=0 parse=10 http=490 backoff=0 total=510 req=7011 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 6 (backoff 32)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9fa460830f44a] iter=0 tool=(none) latency=510ms llm=fail backend=0
+[trace:6ad9fa460830f44a] END status=fail iters=1 tools=0 llm_ms=510 tool_ms=0 elapsed_ms=570 backend=0
+[agent] Dispatching response → local_client:velaguard:6
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cfb5af
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:7
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9fb6073b6c3ea] BEGIN chat=velaguard:7 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:7
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792670560
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9fb6073b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=500 send=310 ttfb=50 body=0 pool=0 build=0 parse=10 http=980 backoff=0 total=1000 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 7 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9fb6073b6c3ea] iter=0 tool=(none) latency=1000ms llm=fail backend=0
+[trace:6ad9fb6073b6c3ea] END status=fail iters=1 tools=0 llm_ms=1000 tool_ms=0 elapsed_ms=1050 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=4
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:8
+[skills] Skills summary: 1086 bytes
+[context] Sys
+
+2026-10-22T12:30:45.7788118+08:00 CMD nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+2026-10-22T12:30:46.4087502+08:00 CMD volume 90
+volume 90
+nxplayer> [K
+2026-10-22T12:30:46.9446401+08:00 CMD play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+2026-10-22T12:30:49.9509834+08:00 CMD play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+2026-10-22T12:30:52.9717965+08:00 CMD quit
+quit
+nsh> [K
+2026-10-22T12:30:53.5724116+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0038
+vgaudio: codec[0x001d]=0x0038
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T12:30:54.4162798+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=3001b3e0
+vgaudio: dma_done=214 errors=0 timeouts=0 txbytes=1728316
+vgaudio: sai_underruns=27 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nsh> [K

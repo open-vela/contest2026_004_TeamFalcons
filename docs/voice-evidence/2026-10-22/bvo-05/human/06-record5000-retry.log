@@ -1,0 +1,89 @@
+2026-10-22T12:36:33.1599915+08:00 CMD vgvoice record 5000
+vgnet: mqtt flush MQTT_ERROR_SOCKET_ERROR
+[vela_tls] ssl_handshake ret=-0x004c: NET - Reading information from the socket failed
+[trace:6ada032600000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=350(fused) setup=10 tls=31010 send=na ttfb=na body=na pool=0 build=10 parse=na http=31380 backoff=0 total=31400 req=5790 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ada032600000000] iter=0 tool=(none) latency=31400ms llm=fail backend=0
+[trace:6ada032600000000] END status=fail iters=1 tools=0 llm_ms=31400 tool_ms=0 elapsed_ms=31440 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1309 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada034b35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7003 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792672587
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada034b35c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=70(fused) setup=0 tls=930 send=220 ttfb=360 body=0 pool=0 build=0 parse=10 http=1580 backoff=0 total=1600 req=7003 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada034b35c3b13a] iter=0 tool=(none) latency=1600ms llm=fail backend=0
+[trace:6ada034b35c3b13a] END status=fail iters=1 tools=0 llm_ms=1600 tool_ms=0 elapsed_ms=1650 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc3ebc
+vgvoice record 5000
+vgvoice: timed record queued ms=5000
+nsh> [Kvgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T12:36:42.1883791+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=playing
+vgvoice: rounds=2 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80014 bytes=160028
+vgvoice: level peak=7179 rms=51
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128022 B/s
+vgvoice: tail_bytes=1137 stage_ms=830
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=19 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:36:43.0051413+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0078
+vgaudio: codec[0x001d]=0x0078
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0001
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+2026-10-22T12:36:43.9098948+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=3001d780
+vgaudio: dma_done=76 errors=0 timeouts=0 txbytes=614928
+vgaudio: sai_underruns=71 clockerrors=0
+vgaudio: stream_ms=4610 stream_bytes=294868 tick_us=10000
+nsh> [K

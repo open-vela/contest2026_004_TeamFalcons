@@ -1,0 +1,52 @@
+2026-10-22T12:41:21.3492075+08:00 CMD vgvoice record 1000
+vgvoice record 1000
+vgvoice: timed record queued ms=1000
+nsh> [K
+2026-10-22T12:41:27.3894660+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=8 played=8 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1010 samples=16123 bytes=32246
+vgvoice: level peak=7185 rms=125
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2260 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=1010 rate=127709 B/s
+vgvoice: tail_bytes=6107 stage_ms=80
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=74 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:41:28.2090052+08:00 CMD vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0038
+vgaudio: codec[0x001d]=0x0038
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:4
+
+2026-10-22T12:41:29.1119503+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3596 addr=30021820
+vgaudio: dma_done=239 errors=0 timeouts=0 txbytes=1922660
+vgaudio: sai_underruns=207 clockerrors=0
+vgaudio: stream_ms=1010 stream_bytes=64492 tick_us=10000
+nsh> [K
