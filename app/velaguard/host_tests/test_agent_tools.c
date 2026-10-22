@@ -23,6 +23,7 @@
 #include "vg_agent_tools.h"
 #include "vg_discover.h"
 #include "vg_runtime.h"
+#include "vg_voice_facts.h"
 
 static int g_fail;
 
@@ -122,6 +123,91 @@ int vg_runtime_format_report(char *out, size_t cap)
   return (int)n;
 }
 
+/* ── anomaly / recovery / facts stubs ────────────────────────────── */
+
+static struct vg_runtime_anomaly g_anomalies[VG_RUNTIME_MAX_POINTS];
+static int  g_anomaly_n;
+static int  g_anomaly_total;
+static struct vg_runtime_recovery g_recovery;
+static int  g_recovery_rc;
+static int  g_facts_anomaly_calls;
+static int  g_facts_recovery_calls;
+static int  g_facts_point_calls;
+
+int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
+                         int *total_out, uint32_t stale_ms)
+{
+  int i;
+
+  (void)stale_ms;
+
+  if (total_out != NULL)
+    {
+      *total_out = g_anomaly_total;
+    }
+
+  for (i = 0; i < g_anomaly_n && i < max; i++)
+    {
+      out[i] = g_anomalies[i];
+    }
+
+  return (g_anomaly_n < max) ? g_anomaly_n : max;
+}
+
+int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
+                        struct vg_runtime_recovery *out)
+{
+  if (g_recovery_rc < 0)
+    {
+      return g_recovery_rc;
+    }
+
+  *out = g_recovery;
+  snprintf(out->id, sizeof(out->id), "%s", id);
+  out->kind = kind;
+  return 0;
+}
+
+uint32_t vg_runtime_boot_id(void) { return 0x1234u; }
+
+void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
+                                      int n, int total, uint32_t age_ms)
+{
+  (void)items;
+  (void)n;
+  (void)total;
+  (void)age_ms;
+  g_facts_anomaly_calls++;
+}
+
+void vg_voice_facts_publish_recovery(const struct vg_runtime_recovery *rec,
+                                     uint32_t age_ms)
+{
+  (void)rec;
+  (void)age_ms;
+  g_facts_recovery_calls++;
+}
+
+void vg_voice_facts_publish_point(const char *id, const char *name,
+                                  const char *unit, bool online,
+                                  bool has_value, float value,
+                                  uint32_t age_ms, bool has_warn, float warn,
+                                  bool has_crit, float crit)
+{
+  (void)id;
+  (void)name;
+  (void)unit;
+  (void)online;
+  (void)has_value;
+  (void)value;
+  (void)age_ms;
+  (void)has_warn;
+  (void)warn;
+  (void)has_crit;
+  (void)crit;
+  g_facts_point_calls++;
+}
+
 /* Records what the provider registered, so the test can call it the same way
  * tool_registry_execute does. */
 
@@ -196,12 +282,16 @@ static int run_tool(const char *name, const char *args, char *out, size_t cap)
 
 static void test_tools_json_is_valid_and_complete(void)
 {
+  vg_agent_tools_reset_rate();
+
   char *json = g_provider_tools();
   cJSON *arr;
   cJSON *tool;
   int names_seen = 0;
   int has_point = 0;
   int has_report = 0;
+  int has_anomaly = 0;
+  int has_recovery = 0;
 
   expect(json != NULL, "provider returns tools JSON");
   if (json == NULL)
@@ -245,12 +335,30 @@ static void test_tools_json_is_valid_and_complete(void)
             {
               has_report = 1;
             }
+
+          if (strcmp(name->valuestring, "vg_anomaly_read") == 0)
+            {
+              has_anomaly = 1;
+            }
+
+          if (strcmp(name->valuestring, "vg_alarm_recovery") == 0)
+            {
+              has_recovery = 1;
+
+              /* The model has to know the id field is required, or it will
+               * call the tool with an empty object and get a bad_arg back. */
+
+              expect(cJSON_GetObjectItem(schema, "required") != NULL,
+                     "vg_alarm_recovery declares required fields");
+            }
         }
     }
 
-  expect(names_seen == 2, "exactly the two read-only tools are advertised");
+  expect(names_seen == 4, "exactly the four read-only tools are advertised");
   expect(has_point, "vg_point_read advertised");
   expect(has_report, "vg_run_report advertised");
+  expect(has_anomaly, "vg_anomaly_read advertised");
+  expect(has_recovery, "vg_alarm_recovery advertised");
 
   cJSON_Delete(arr);
   free(json);
@@ -258,6 +366,8 @@ static void test_tools_json_is_valid_and_complete(void)
 
 static void test_point_read_returns_scaled_value(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   int rc;
 
@@ -275,6 +385,8 @@ static void test_point_read_returns_scaled_value(void)
 
 static void test_point_read_by_chinese_name(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   int rc;
 
@@ -291,6 +403,8 @@ static void test_point_read_by_chinese_name(void)
 
 static void test_point_read_ambiguous_lists_candidates(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   int rc;
 
@@ -308,6 +422,8 @@ static void test_point_read_ambiguous_lists_candidates(void)
 
 static void test_point_read_no_query_lists_table(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
 
   seed_table();
@@ -323,6 +439,8 @@ static void test_point_read_no_query_lists_table(void)
 
 static void test_point_read_no_table(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
 
   seed_table();
@@ -337,6 +455,8 @@ static void test_point_read_no_table(void)
 
 static void test_point_read_missing_table_with_dead_store(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
 
   seed_table();
@@ -359,6 +479,8 @@ static void test_point_read_missing_table_with_dead_store(void)
 
 static void test_point_read_without_snapshot(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
 
   seed_table();
@@ -378,6 +500,8 @@ static void test_point_read_without_snapshot(void)
 
 static void test_point_read_not_found(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
 
   seed_table();
@@ -395,6 +519,8 @@ static void test_point_read_not_found(void)
 
 static void test_owned_tool_always_returns_ok(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   int rc;
 
@@ -434,6 +560,8 @@ static void test_owned_tool_always_returns_ok(void)
 
 static void test_query_argument_guards(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   char big[128];
 
@@ -462,6 +590,8 @@ static void test_query_argument_guards(void)
 
 static void test_run_report(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[1024];
   int rc;
 
@@ -479,6 +609,8 @@ static void test_run_report(void)
 
 static void test_unknown_tool_is_not_claimed(void)
 {
+  vg_agent_tools_reset_rate();
+
   char out[64];
 
   seed_table();
@@ -491,6 +623,8 @@ static void test_unknown_tool_is_not_claimed(void)
 
 static void test_output_is_bounded(void)
 {
+  vg_agent_tools_reset_rate();
+
   char small[96];
 
   seed_table();
@@ -503,6 +637,82 @@ static void test_output_is_bounded(void)
   run_tool("vg_point_read", "{}", small, sizeof(small));
   expect(small[sizeof(small) - 1] == '\0',
          "small buffer stays NUL-terminated");
+}
+
+static void test_anomaly_tool(void)
+{
+  vg_agent_tools_reset_rate();
+
+  char out[2048];
+  int rc;
+
+  memset(g_anomalies, 0, sizeof(g_anomalies));
+  snprintf(g_anomalies[0].id, sizeof(g_anomalies[0].id), "ups_temp");
+  g_anomalies[0].flags = VG_RUNTIME_ANOMALY_F_THRESHOLD;
+  g_anomalies[0].rank = 0;
+  g_anomalies[0].value = 95.0f;
+  g_anomalies[0].threshold = 90.0f;
+  g_anomalies[0].age_ms = 2000;
+  g_anomaly_n = 1;
+  g_anomaly_total = 1;
+
+  rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
+  expect(rc == 0, "vg_anomaly_read succeeds");
+  expect(strstr(out, "total=1") != NULL, "reports the total");
+  expect(strstr(out, "id=ups_temp") != NULL, "names the point");
+  expect(strstr(out, "rank=crit") != NULL, "orders by severity");
+  expect(g_facts_anomaly_calls == 1, "publishes the answer snapshot");
+
+  /* Empty set is an answer, not an error. */
+
+  g_anomaly_n = 0;
+  g_anomaly_total = 0;
+  rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
+  expect(rc == 0, "an empty anomaly set is a handled call");
+  expect(strstr(out, "total=0") != NULL, "reports zero");
+}
+
+static void test_recovery_tool(void)
+{
+  vg_agent_tools_reset_rate();
+
+  char out[512];
+  int rc;
+
+  memset(&g_recovery, 0, sizeof(g_recovery));
+  g_recovery_rc = 0;
+  g_recovery.state = VG_RUNTIME_RECOVERY_RECOVERED;
+  g_recovery.history_complete = true;
+  g_recovery.has_duration = true;
+  g_recovery.duration_ms = 199000;
+  g_recovery.episode = 4;
+
+  rc = run_tool("vg_alarm_recovery", "{\"point_id\":\"ups_temp\"}", out,
+                sizeof(out));
+  expect(rc == 0, "vg_alarm_recovery succeeds");
+  expect(strstr(out, "state=recovered") != NULL, "reports recovered");
+  expect(strstr(out, "duration_ms=199000") != NULL, "reports the duration");
+  expect(g_facts_recovery_calls == 1, "publishes the recovery snapshot");
+
+  /* No retained event: unknown, not recovered. */
+
+  g_recovery_rc = -1;
+  rc = run_tool("vg_alarm_recovery", "{\"point_id\":\"ups_temp\"}", out,
+                sizeof(out));
+  expect(rc == 0, "a missing event is a handled call");
+  expect(strstr(out, "state=unknown") != NULL, "does not claim recovery");
+
+  /* Missing id and a bad kind are rejected before touching the runtime. */
+
+  g_recovery_rc = 0;
+  rc = run_tool("vg_alarm_recovery", "{}", out, sizeof(out));
+  expect(rc == 0, "missing point_id is a handled call");
+  expect(strstr(out, "reason=bad_arg") != NULL, "names the bad argument");
+
+  rc = run_tool("vg_alarm_recovery",
+                "{\"point_id\":\"ups_temp\",\"kind\":\"write\"}", out,
+                sizeof(out));
+  expect(strstr(out, "reason=bad_arg") != NULL, "rejects an unknown kind");
 }
 
 int main(void)
@@ -519,6 +729,8 @@ int main(void)
     }
 
   test_tools_json_is_valid_and_complete();
+  test_anomaly_tool();
+  test_recovery_tool();
   test_point_read_returns_scaled_value();
   test_point_read_by_chinese_name();
   test_point_read_ambiguous_lists_candidates();

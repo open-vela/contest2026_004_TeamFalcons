@@ -52,6 +52,12 @@ CSRCS += vg_agent_seed.c vg_agent_round.c vg_provision.c vg_provision_crypto.c
 # when a data source exists, so build targets that enable ai_agent without
 # the frame-stat or discover modules (velaguard-ai-probe) do not link them.
 CSRCS += vg_agent_query.c vg_agent_tools.c
+# The voice answer path shares one snapshot between the tool result, the
+# overlay and the speech renderer.  It needs the runtime layer, so it is
+# compiled only when frame stats (which provide vg_runtime.c) are present.
+ifeq ($(CONFIG_VG_FRAME_STATS),y)
+CSRCS += vg_voice_facts.c
+endif
 PROGNAME += vgprovision vgagent
 MAINSRC += vgprovision.c vgagent.c
 # Local agent IPC (velaclaw/client.h). packages/ sits next to apps/ in the
@@ -85,7 +91,8 @@ endif
 ifeq ($(CONFIG_VG_VOICE_LOOPBACK),y)
 PROGNAME += vgvoice
 MAINSRC  += vgvoice.c
-CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c
+CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c \
+            vg_voice_intent.c vg_voice_answer.c
 endif
 
 ifeq ($(CONFIG_VG_PDM_DUMP),y)

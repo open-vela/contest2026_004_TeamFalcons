@@ -47,6 +47,7 @@
 #include "vg_agent_query.h"
 #include "vg_agent_tools.h"
 #include "vg_runtime.h"
+#include "vg_voice_facts.h"
 
 #if defined(VG_AGENT_TOOLS_HAVE_POINTS) || defined(VG_AGENT_TOOLS_HAVE_REPORT)
 
@@ -203,9 +204,21 @@ static int tool_point_read(const char *query, char *out, size_t cap)
   switch (rc)
     {
       case VG_AGENT_QUERY_OK:
-        vg_agent_query_format_point(out, cap, &points[res.index],
-                                    vg_agent_query_is_stale(
-                                        &points[res.index]));
+        {
+          const struct vg_agent_point *p = &points[res.index];
+
+          vg_agent_query_format_point(out, cap, p,
+                                      vg_agent_query_is_stale(p));
+
+          /* Publish the same reading the model was given.  The overlay and
+           * the speech renderer read this snapshot, so they cannot show a
+           * different value from the one the tool returned. */
+
+          vg_voice_facts_publish_point(p->id, p->name, p->unit, p->ok,
+                                       p->has_sample && p->ok, p->value,
+                                       p->age_ms, p->has_warn, p->warn,
+                                       p->has_crit, p->crit);
+        }
         break;
 
       case VG_AGENT_QUERY_AMBIG:
@@ -245,6 +258,182 @@ static int tool_run_report(char *out, size_t cap)
   return OK;
 }
 
+/* ── anomaly and recovery tools (BVO-09 data, BVO-10 exposure) ─────
+ *
+ * Both answer from the runtime layer, which already holds every confirmed
+ * point, so neither opens RS485 nor waits for a poll cycle.  The tool text is
+ * bounded for the model; the complete list reaches the user through the
+ * published snapshot, not through this string.
+ */
+
+static const char *vg_rank_name(uint8_t rank)
+{
+  switch (rank)
+    {
+      case 0: return "crit";
+      case 1: return "warn";
+      case 2: return "offline";
+      default: return "stale";
+    }
+}
+
+static int tool_anomaly_read(char *out, size_t cap)
+{
+  struct vg_runtime_anomaly items[VG_RUNTIME_MAX_POINTS];
+  int total = 0;
+  int n;
+  int listed;
+  int i;
+  size_t off = 0;
+  uint32_t oldest = 0;
+
+  n = vg_runtime_anomalies(items, VG_RUNTIME_MAX_POINTS, &total,
+                           VG_AGENT_QUERY_STALE_MS);
+  if (n < 0)
+    {
+      snprintf(out, cap, "vganomaly: reason=bad_state msg=运行层不可用\n");
+      return OK;
+    }
+
+  for (i = 0; i < n; i++)
+    {
+      if (items[i].age_ms > oldest)
+        {
+          oldest = items[i].age_ms;
+        }
+    }
+
+  vg_voice_facts_publish_anomalies(items, n, total, oldest);
+
+  listed = n;
+
+  /* Each line is about 90 bytes; 12 lines plus the header stay inside the
+   * 2 KB tool budget.  The header carries the real total either way. */
+
+  if (listed > 12)
+    {
+      listed = 12;
+    }
+
+  off += (size_t)snprintf(out + off, cap - off,
+                          "vganomaly: total=%d shown=%d boot=%08x\n", total,
+                          listed, (unsigned)vg_runtime_boot_id());
+
+  for (i = 0; i < listed && off < cap; i++)
+    {
+      const struct vg_runtime_anomaly *a = &items[i];
+
+      off += (size_t)snprintf(out + off, cap - off,
+                              "- id=%s rank=%s flags=%s%s%s value=%.1f "
+                              "threshold=%.1f age_ms=%u since_ms=%u\n",
+                              a->id, vg_rank_name(a->rank),
+                              (a->flags & VG_RUNTIME_ANOMALY_F_THRESHOLD)
+                                  ? "threshold" : "",
+                              (a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE)
+                                  ? ",offline" : "",
+                              (a->flags & VG_RUNTIME_ANOMALY_F_STALE)
+                                  ? ",stale" : "",
+                              a->value, a->threshold, (unsigned)a->age_ms,
+                              (unsigned)a->since_ms);
+    }
+
+  if (listed < n && off < cap)
+    {
+      snprintf(out + off, cap - off, "- omitted=%d\n", n - listed);
+    }
+
+  return OK;
+}
+
+static int tool_alarm_recovery(const char *input_json, char *out, size_t cap)
+{
+  struct vg_runtime_recovery rec;
+  cJSON *root;
+  cJSON *item;
+  char id[VG_AGENT_TOOL_QUERY_MAX];
+  enum vg_runtime_kind kind = VG_RUNTIME_KIND_THRESHOLD;
+  int rc;
+
+  id[0] = '\0';
+
+  if (input_json == NULL || input_json[0] == '\0')
+    {
+      snprintf(out, cap, "vgrecovery: reason=bad_arg msg=缺少 point_id\n");
+      return OK;
+    }
+
+  root = cJSON_Parse(input_json);
+  if (root == NULL)
+    {
+      snprintf(out, cap, "vgrecovery: reason=bad_arg msg=参数不是合法 JSON\n");
+      return OK;
+    }
+
+  item = cJSON_GetObjectItem(root, "point_id");
+  if (item == NULL || !cJSON_IsString(item) || item->valuestring == NULL ||
+      item->valuestring[0] == '\0')
+    {
+      cJSON_Delete(root);
+      snprintf(out, cap, "vgrecovery: reason=bad_arg msg=缺少 point_id\n");
+      return OK;
+    }
+
+  if (strlen(item->valuestring) >= sizeof(id))
+    {
+      cJSON_Delete(root);
+      snprintf(out, cap, "vgrecovery: reason=bad_arg msg=point_id 过长\n");
+      return OK;
+    }
+
+  snprintf(id, sizeof(id), "%s", item->valuestring);
+
+  item = cJSON_GetObjectItem(root, "kind");
+  if (item != NULL && cJSON_IsString(item) && item->valuestring != NULL)
+    {
+      if (strcmp(item->valuestring, "offline") == 0)
+        {
+          kind = VG_RUNTIME_KIND_OFFLINE;
+        }
+      else if (strcmp(item->valuestring, "threshold") != 0)
+        {
+          cJSON_Delete(root);
+          snprintf(out, cap,
+                   "vgrecovery: reason=bad_arg msg=kind 只能是 threshold 或 "
+                   "offline\n");
+          return OK;
+        }
+    }
+
+  cJSON_Delete(root);
+
+  memset(&rec, 0, sizeof(rec));
+  rc = vg_runtime_recovery(id, kind, &rec);
+
+  if (rc < 0)
+    {
+      snprintf(out, cap,
+               "vgrecovery: id=%s kind=%s state=unknown history_complete=false\n",
+               id, kind == VG_RUNTIME_KIND_OFFLINE ? "offline" : "threshold");
+      return OK;
+    }
+
+  vg_voice_facts_publish_recovery(&rec, 0);
+
+  snprintf(out, cap,
+           "vgrecovery: id=%s kind=%s state=%s history_complete=%s "
+           "duration_ms=%u episode=%u boot=%08x\n",
+           rec.id, kind == VG_RUNTIME_KIND_OFFLINE ? "offline" : "threshold",
+           rec.state == VG_RUNTIME_RECOVERY_ACTIVE        ? "active"
+           : rec.state == VG_RUNTIME_RECOVERY_RECOVERED  ? "recovered"
+           : rec.state == VG_RUNTIME_RECOVERY_RECOVERED_PARTIAL
+               ? "recovered_partial"
+               : "unknown",
+           rec.history_complete ? "true" : "false", (unsigned)rec.duration_ms,
+           (unsigned)rec.episode, (unsigned)vg_runtime_boot_id());
+
+  return OK;
+}
+
 #endif /* VG_AGENT_TOOLS_HAVE_REPORT */
 
 #if defined(VG_AGENT_TOOLS_HAVE_POINTS) || defined(VG_AGENT_TOOLS_HAVE_REPORT)
@@ -273,6 +462,30 @@ static const char *VG_TOOL_REPORT_JSON =
     "\"description\":\"读取本机自本次上电以来的运行报告，含通信质量、点位在线和异常时间线三节。"
       "数字由板上统计产生，不需要参数。只读。\","
     "\"input_schema\":{\"type\":\"object\",\"properties\":{},\"required\":[]}"
+  "}";
+
+static const char *VG_TOOL_ANOMALY_JSON =
+  "{"
+    "\"name\":\"vg_anomaly_read\","
+    "\"description\":\"读取当前全部异常点位：规则阈值告警、离线、数据过期。"
+      "按严重程度排序并给出总数，总数统计的是异常点位数。只读，不发起总线通信。\","
+    "\"input_schema\":{\"type\":\"object\",\"properties\":{},\"required\":[]}"
+  "}";
+
+static const char *VG_TOOL_RECOVERY_JSON =
+  "{"
+    "\"name\":\"vg_alarm_recovery\","
+    "\"description\":\"查询一个点位的告警是否已经恢复。只依据本次上电保留的事件记录；"
+      "没有保留记录时返回 unknown，当前读数正常不能证明告警恢复过。只读。\","
+    "\"input_schema\":{"
+      "\"type\":\"object\","
+      "\"properties\":{"
+        "\"point_id\":{\"type\":\"string\",\"description\":\"点位 id，例如 ups_temp\"},"
+        "\"kind\":{\"type\":\"string\",\"enum\":[\"threshold\",\"offline\"],"
+          "\"description\":\"告警类型，默认 threshold\"}"
+      "},"
+      "\"required\":[\"point_id\"]"
+    "}"
   "}";
 
 /* Assemble only the tools whose data source this build actually has. */
@@ -319,6 +532,16 @@ static char *vg_tools_get_json(void)
 #  endif
 
   off = app_str(buf, sizeof(buf), off, VG_TOOL_REPORT_JSON);
+#endif
+
+#ifdef VG_AGENT_TOOLS_HAVE_REPORT
+#  ifdef VG_AGENT_TOOLS_HAVE_POINTS
+  off = app_str(buf, sizeof(buf), off, ",");
+#  endif
+
+  off = app_str(buf, sizeof(buf), off, VG_TOOL_ANOMALY_JSON);
+  off = app_str(buf, sizeof(buf), off, ",");
+  off = app_str(buf, sizeof(buf), off, VG_TOOL_RECOVERY_JSON);
 #endif
 
   (void)app_str(buf, sizeof(buf), off, "]");
@@ -416,8 +639,7 @@ static int vg_tools_execute(const char *name, const char *input_json,
 {
   size_t cap;
 
-  /* input_json is only read by vg_point_read; the report tool takes none. */
-  (void)input_json;
+  /* input_json is read by vg_point_read and vg_alarm_recovery. */
 
   if (name == NULL || output == NULL || output_size == 0)
     {
@@ -444,7 +666,9 @@ static int vg_tools_execute(const char *name, const char *input_json,
 #endif
 
 #ifdef VG_AGENT_TOOLS_HAVE_REPORT
-    if (strcmp(name, "vg_run_report") == 0)
+    if (strcmp(name, "vg_run_report") == 0 ||
+        strcmp(name, "vg_anomaly_read") == 0 ||
+        strcmp(name, "vg_alarm_recovery") == 0)
       {
         owned = true;
       }
@@ -501,6 +725,16 @@ static int vg_tools_execute(const char *name, const char *input_json,
     {
       return tool_run_report(output, cap);
     }
+
+  if (strcmp(name, "vg_anomaly_read") == 0)
+    {
+      return tool_anomaly_read(output, cap);
+    }
+
+  if (strcmp(name, "vg_alarm_recovery") == 0)
+    {
+      return tool_alarm_recovery(input_json, output, cap);
+    }
 #endif
 
   /* Not ours: let the registry try the next provider. */
@@ -510,6 +744,17 @@ static int vg_tools_execute(const char *name, const char *input_json,
 #endif /* any tool */
 
 /* ── registration ────────────────────────────────────────────────── */
+
+#ifdef VG_AGENT_TOOLS_HOST_TEST
+/* The host suite runs many calls back to back, far faster than the product
+ * ever will, so it resets the window between cases.  Compiled only for the
+ * test build: the firmware has no way to clear the limit. */
+
+void vg_agent_tools_reset_rate(void)
+{
+  vg_agent_rate_init(&g_rate, VG_TOOL_RATE_MAX_CALLS, VG_TOOL_RATE_WINDOW_MS);
+}
+#endif
 
 void vg_agent_tools_register(void)
 {

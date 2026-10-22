@@ -151,22 +151,65 @@ vg_agent_query_match(const struct vg_agent_point *points, int n,
         }
     }
 
-  for (i = 0; i < n; i++)
-    {
-      /* An entry with no explicit name carries its id in the name field
-       * (vg_point_table.c parse fills it that way), so skip the duplicate
-       * rather than letting it win the name pass by accident. */
-      if (ci_equal(points[i].id, points[i].name))
-        {
-          continue;
-        }
+  /* Exact names are collected before deciding.  Two points may share a name
+   * (two temperature sensors both called 温度, for instance), and answering
+   * with whichever comes first would report one point's value under the
+   * other's name.  The contract requires the user to give the id in that
+   * case, so this is ambiguous rather than a first-match win. */
 
-      if (ci_equal(points[i].name, query))
-        {
-          set_match(out, VG_AGENT_MATCH_NAME, i);
-          return VG_AGENT_QUERY_OK;
-        }
-    }
+  {
+    int name_idx = -1;
+    int name_n = 0;
+    int name_cand[VG_AGENT_QUERY_CAND_MAX];
+
+    for (i = 0; i < n; i++)
+      {
+        /* An entry with no explicit name carries its id in the name field
+         * (vg_point_table.c parse fills it that way), so skip the duplicate
+         * rather than letting it win the name pass by accident. */
+        if (ci_equal(points[i].id, points[i].name))
+          {
+            continue;
+          }
+
+        if (ci_equal(points[i].name, query))
+          {
+            if (name_n == 0)
+              {
+                name_idx = i;
+              }
+
+            if (name_n < VG_AGENT_QUERY_CAND_MAX)
+              {
+                name_cand[name_n] = i;
+              }
+
+            name_n++;
+          }
+      }
+
+    if (name_n == 1)
+      {
+        set_match(out, VG_AGENT_MATCH_NAME, name_idx);
+        return VG_AGENT_QUERY_OK;
+      }
+
+    if (name_n > 1)
+      {
+        int listed = (name_n < VG_AGENT_QUERY_CAND_MAX)
+                         ? name_n
+                         : VG_AGENT_QUERY_CAND_MAX;
+
+        set_match(out, VG_AGENT_MATCH_NONE, -1);
+        for (i = 0; i < listed; i++)
+          {
+            out->cand_idx[i] = name_cand[i];
+          }
+
+        out->cand_n = listed;
+        return VG_AGENT_QUERY_AMBIG;
+      }
+  }
 
   for (i = 0; i < n; i++)
     {

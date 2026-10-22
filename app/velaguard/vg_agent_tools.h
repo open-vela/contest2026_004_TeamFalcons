@@ -21,6 +21,11 @@
 
 void vg_agent_tools_register(void);
 
+#ifdef VG_AGENT_TOOLS_HOST_TEST
+/* Test build only: clear the read-only call window between cases. */
+void vg_agent_tools_reset_rate(void);
+#endif
+
 #endif /* CONFIG_EXAMPLES_AI_AGENT_VELA */
 
 #endif /* __APP_VELAGUARD_VG_AGENT_TOOLS_H */
