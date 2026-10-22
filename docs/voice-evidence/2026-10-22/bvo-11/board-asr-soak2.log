@@ -1,0 +1,122 @@
+2026-10-22T19:30:00.8573969+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838312     910136    5928176    1103760    5795432   1152     15 Umem
+nsh> [K
+2026-10-22T19:30:02.0759440+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697402
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7330
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:30:18.0814463+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697418
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7400
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:30:34.1084009+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697434
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=7170
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:30:50.1433112+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697450
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7240
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:31:06.1613998+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697467
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7360
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T19:31:22.1779170+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697483
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=7130
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:31:38.1793392+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697499
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=7550
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:31:54.2106538+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697515
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7290
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:32:10.2441317+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697531
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7730
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:32:26.2513205+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697547
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=7230
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:32:42.2716592+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697563
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=7170
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:32:58.2774729+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697579
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7600
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T19:33:14.3052346+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 26.9% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.5% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.6% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  2.1% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  5.9% velaguard_app_main 0x9001081d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90014331 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  1.6% ESP8266 0x90068075 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.5% netinit 0x90068e41 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0032744 15.2% velaguard_app_main 0x90016421 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.5% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 29.1% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168 13.4% vghmi 0x90014b71 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.5% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x90016c49 0x2407ef78
+   16    14   3 FIFO     pthread   - Ready              0000000000000000 0004072  0.0% ai_agent 0x9001cde5 0x2407f078
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x90016c49 0x240529b8
+   20    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900188dd 0x2407e2a0
+nsh> [K
+2026-10-22T19:33:15.8108260+08:00 CMD netstats
+netstats
+nsh: netstats: command not found
+nsh> [K
+2026-10-22T19:33:17.3249729+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838312     910136    5928176    1103760    5795432   1152     17 Umem
+nsh> [K

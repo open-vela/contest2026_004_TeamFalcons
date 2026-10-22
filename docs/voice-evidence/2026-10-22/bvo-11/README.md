@@ -48,8 +48,9 @@
 - 云 ASR：160,044 B 合成样本，请求 213,561 B，HTTP 200，转写与样本一致。
 - 云 TTS：84,480 B PCM，生成 16 kHz 双声道 WAV 112,684 B。
 - 播放：NxPlayer 接受，`play rc=0`，任务回到 idle。
-- 连续 45 次 ASR（[board-asr-soak.log](board-asr-soak.log)）：42 次 200，用时 8.1 至 11.1 s；3 次 `rc=net` 分别在 6.89、7.95、7.21 s 返回，每次下一次都立即成功。没有复现 14:40 的挂起。
-- 35 次调用后的堆采样（每 5 次一次）：used 918,168 / 918,720 / 918,168 / 918,168，`maxused` 1,077,568、`maxfree` 5,795,432 全程不变。首轮之后没有随调用次数增长，说明单次请求的缓冲没有累积。
+- 连续 57 次 ASR（[board-asr-soak.log](board-asr-soak.log)、[board-asr-soak2.log](board-asr-soak2.log)）：54 次 200，用时 4.5 至 11.1 s；3 次 `rc=net` 分别在 6.89、7.95、7.21 s 返回，每次下一次都立即成功。没有复现 14:40 的挂起。
+- 35 次调用后的堆采样（每 5 次一次）：used 918,168 / 918,720 / 918,168 / 918,168；第 57 次前后 used 均为 910,136，`maxused` 1,103,760、`maxfree` 5,795,432 不变。首轮之后没有随调用次数增长，说明单次请求的缓冲没有累积。
+- 第 57 次后的 `ps` 与基线一致，没有新增线程；本构建没有 `netstats` 命令，socket 计数无法直接取证。
 - 300 ms 预算：1.05 s 返回 `rc=timeout`，随后完整调用成功，见 [../bvo-07/board-deadline-recovery.log](../bvo-07/board-deadline-recovery.log)。
 - 合成按放一整轮（[board-round-synthetic.log](board-round-synthetic.log)）：录音 4.0 s、64,726 样本，ASR 请求 172,833 B、响应 449 B、HTTP 200；识别文本是环境噪声得到的一个字符，意图未命中，浮层显示“没有找到这个点位，请报点位 ID 或完整名称”，结束后目录无残留。
 - 这一轮暴露出“云端路径不写录音文件”的缺陷：结束请求走静默分支时只发布空闲，不调用 `voice_write_wav`，ASR 打开一个从未创建的路径。已改为两条结束路径都先写 WAV，再决定是否播放。

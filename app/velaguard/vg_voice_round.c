@@ -29,6 +29,7 @@
 #include <time.h>
 #include <unistd.h>
 
+#include <agent_llm.h>
 #include "vg_agent_query.h"
 #include "vg_agent_round.h"
 #ifdef CONFIG_VG_BUS_DISCOVER
@@ -450,6 +451,13 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   have_before = vg_voice_facts_copy(&before);
   seq_before = have_before ? before.seq : 0;
+
+  /* Every voice question has to run its tool again: a cached answer from an
+   * identical earlier question would skip the tool and leave the round with
+   * no snapshot to validate.  Drop only this question's entry, so background
+   * caching is unaffected. */
+
+  agent_llm_cache_forget(question);
 
   if (vg_agent_round_queue_owned(question, VG_AGENT_ROUND_OWNER_VOICE) != 0)
     {
