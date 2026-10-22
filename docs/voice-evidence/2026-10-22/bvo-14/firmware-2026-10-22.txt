@@ -1,18 +1,24 @@
-# 2026-10-22 18:05 板端镜像记录
+# 2026-10-22 板端镜像记录
 
-- 烧录文件：`.debug/nuttx.hex`，构建 2026-10-22 18:05，脚本 `bash scripts/build.sh`（TARGET=velaguard-lvgl，发布构建）
-- SHA256：`0d517611397373e5f49c32c92f90e40d452d12180fadad03e7dd101f1504dbd0`
+- 构建脚本：`bash scripts/build.sh`（TARGET=velaguard-lvgl，发布构建）
 - 片内引导：`.debug/qspi_bootstub.hex`，SHA256 `877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e`
 - 烧录：STM32CubeProgrammer 2.22.0，两段均 verified，末尾硬件复位
-- 板端自报：`NuttX 0.0.0 189e6d8a18d-dirty Oct 22 2026 18:06:42 arm stm32h750b-dk`
 
-## 源码版本
+## 当日镜像
+
+| 时间 | nuttx.hex SHA256 | 内容 | 板端 |
+|---|---|---|---|
+| 18:05 | `0d517611397373e5f49c32c92f90e40d452d12180fadad03e7dd101f1504dbd0` | 异常输出格式、首轮提示、恢复裸词包装 | 已烧录，BVO-08/09 证据来自此镜像 |
+| 18:15 | `58b7fee43cd75fb7445600d531efa637512991ef91c0827a6c718109f2e47b9e` | 新增 `vgvoice mute` | 已烧录，BVO-13 复位证据来自此镜像 |
+| 18:19 | `3d6cbc1c60d07124e09e95dbfdb455984c4a106342350b1d689f8e89f9039941` | `vgvoice asr` 可选预算 | 已烧录，BVO-07 截止证据来自此镜像 |
+
+板端自报时间：`NuttX 0.0.0 189e6d8a18d-dirty Oct 22 2026 18:06:42 arm stm32h750b-dk`（18:05 镜像）。由于镜像内含构建时间戳，同一棵源码树重复构建的 SHA256 不同；判断运行版本以板端自报的构建时间为准。
+
+## 源码版本（18:19 镜像）
 
 | 仓库 | 提交 | 分支 |
 |---|---|---|
-| 竞赛仓 | 6fc96a932e38 | velaguard/maintenance-stability |
+| 竞赛仓工作树 | 6fc96a9 之后新增 `vgvoice mute` 与 `asr` 预算，提交见 05a648d 及后续 | velaguard/maintenance-stability |
 | nuttx | 189e6d8a18d8 | velaguard/ptt-user1-stm32h750b-dk |
 | apps | 0ea954b79740 | velaguard/netinit-esp8266 |
 | packages/ai_agent | eff6626a10ab | velaguard/rsp01-response-timing |
-
-竞赛仓提交 `6fc96a9` 在烧录之后生成，其代码内容与烧录时的构建树一致；此后没有再改应用源码。同日 18:2x 用同一棵树重建得到 `4317f3ca...57a2ca`，差异来自镜像内的构建时间戳，该镜像没有烧录。判断板端运行版本以 `uname -a` 的构建时间为准。

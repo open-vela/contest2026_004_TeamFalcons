@@ -1,0 +1,19 @@
+2026-10-22T18:19:54.2396316+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav 300
+vgvoice asr /data/velaguard/voice/test.wav 300
+[vgvoice] asr: transport failed: -6 (timeout)
+vgvoice: asr rc=timeout status=0 req=213561 resp=0 ms=1050
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-22T18:20:03.2803571+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693138
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=7950
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [Kvgtime: synced 2026-10-22 18:20:26
+
+2026-10-22T18:20:33.2875822+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     834384    6004032     918592    5795432   1091      6 Umem
+nsh> [K

@@ -11,7 +11,7 @@
 | 串口 | Windows COM3，ST-Link Virtual COM Port，115200 |
 | 烧录工具 | STM32CubeProgrammer v2.22.0，External Loader MT25TL01G_STM32H750B-DISCO |
 | 烧录范围 | 内部引导 0x08000000..0x080002d0，QSPI 镜像 0x90000000 起 |
-| 镜像 | `.debug/nuttx.hex`，SHA256 `0d517611...1504dbd0`，源码版本与烧录时间见 [firmware-2026-10-22.txt](firmware-2026-10-22.txt)；板端自报 `189e6d8a18d-dirty Oct 22 2026 18:06:42` |
+| 镜像 | 当日 3 个镜像，最新 `3d6cbc1c...f9039941`（18:19），见 [firmware-2026-10-22.txt](firmware-2026-10-22.txt)；板端自报 `189e6d8a18d-dirty Oct 22 2026 18:06:42` |
 | 网络 | rj45，192.168.137.83，网关可达，MQTT up |
 
 烧录日志：`flash.log`。每次烧录后都重新抓取串口启动日志。
@@ -79,13 +79,13 @@
 
 | 任务 | 状态 | 依据 |
 |---|---|---|
-| BVO-07 | 已实现；截止时间与回收有板端堆数据，取消回收时间未测 | `bvo-07/README.md` |
+| BVO-07 | 已实现；300 ms 预算在 1.05 s 内结束，随后新请求成功；按键取消未测 | `bvo-07/README.md` |
 | BVO-08 | 已实现，已接入板端轮次线程；真机按键未测 | `bvo-08/README.md` |
 | BVO-09 | 已实现；板端取到 total=14、omitted=2、recovery=unknown；在线从站未接 | `bvo-09/README.md` |
 | BVO-10 | 已实现并主机验证；30 条真人问法未做 | `bvo-10/` |
 | BVO-11 | 已实现；云 ASR/TTS 与播放已在板端跑通 | `bvo-11/README.md` |
 | BVO-12 | 已实现并接入构建；浮层未在屏幕确认 | `bvo-12/README.md` |
-| BVO-13 | 已实现并主机验证；断电保持未测 | `bvo-13/README.md` |
+| BVO-13 | 已实现；开关跨两次硬件复位保持，开机清理无残留音频；真实断电未测 | `bvo-13/README.md` |
 | BVO-05 | 未关闭，维持原状态 | `bvo-05/followup/README.md` |
 
 阶段 B 仍未通过：上表没有一行满足人工验收条件。

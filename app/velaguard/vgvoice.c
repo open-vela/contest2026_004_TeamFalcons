@@ -104,7 +104,8 @@ int main(int argc, FAR char *argv[])
     {
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
-      printf("       vgvoice asr [wav] | tts <text> | play <wav> | mute [on|off]\n");
+      printf("       vgvoice asr [wav] [budget_ms] | tts <text> | play <wav>\n");
+      printf("       vgvoice mute [on|off]\n");
 #endif
       return EXIT_FAILURE;
     }
@@ -165,8 +166,25 @@ int main(int argc, FAR char *argv[])
       vela_req_ctl_t ctl;
       char text[VG_VC_TEXT_MAX];
       enum vg_vc_result rc;
+      unsigned long budget = 30000;
 
-      ctl.deadline_ms = vgvoice_now_ms() + 30000u;
+      /* An optional budget lets the deadline path run on the board without a
+       * button press: a short budget must end the request quickly, and the
+       * next call must still work on the reclaimed connection. */
+
+      if (argc >= 4)
+        {
+          char *end;
+
+          budget = strtoul(argv[3], &end, 10);
+          if (*end || budget < 100 || budget > 120000)
+            {
+              printf("vgvoice: budget out of range\n");
+              return EXIT_FAILURE;
+            }
+        }
+
+      ctl.deadline_ms = vgvoice_now_ms() + (uint32_t)budget;
       ctl.cancel = NULL;
 
       rc = vg_voice_cloud_asr(path, &ctl, text, sizeof(text), &info);
