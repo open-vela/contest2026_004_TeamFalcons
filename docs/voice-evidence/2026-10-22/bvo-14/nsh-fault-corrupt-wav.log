@@ -1,0 +1,61 @@
+2026-10-22T18:37:55.0547740+08:00 CMD wget -o /data/velaguard/voice/bad.wav http://192.168.137.1:8000/manifest.txt
+wget -o /data/velaguard/voice/bad.wav http://192.168.137.1:8000/manifest.txt
+nsh> [K
+2026-10-22T18:38:00.0803406+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0      160044 test.wav
+ -rw-rw-rw-   0         460 bad.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K
+2026-10-22T18:38:01.5844191+08:00 CMD vgvoice asr /data/velaguard/voice/bad.wav
+vgvoice asr /data/velaguard/voice/bad.wav
+[vgvoice] asr: cannot prepare upload wav: -22
+vgvoice: asr rc=io status=0 req=0 resp=0 ms=0
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-22T18:38:07.6043788+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+
+2026-10-22T18:38:10.6434705+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T18:38:12.1693396+08:00 CMD vgvoice wait 5000
+vgvoice wait 5000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=1 played=0 cancelled=1 too_short=0 failures=0 timeouts=0
+vgvoice: last result=cancelled ms=2960 samples=47446 bytes=94892
+vgvoice: level peak=7341 rms=75
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=46 drained=47 overwritten=0 wraps=23 elapsed_ms=2960 rate=128234 B/s
+vgvoice: tail_bytes=2743 stage_ms=0
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [Kvghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:5
+
+2026-10-22T18:38:18.2009687+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0      160044 test.wav
+ -rw-rw-rw-   0         460 bad.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+

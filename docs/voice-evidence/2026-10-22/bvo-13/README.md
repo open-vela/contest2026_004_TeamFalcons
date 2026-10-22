@@ -44,6 +44,7 @@
 | 关闭静音 | `vgvoice mute off` | `muted=0` |
 | 再次复位后 | `vgvoice mute` | `muted=0` |
 | 复位后目录 | `ls -l /data/velaguard/voice` | 只有 `pref.txt`，没有录音或 TTS 中间文件 |
+| 录音后取消 | `vgvoice start` → `vgvoice cancel` → `ls` | 状态回到 idle，目录没有新增文件，见 [../bvo-14/nsh-cancel.log](../bvo-14/nsh-cancel.log) |
 
 复位是 ST-LINK 硬件复位，不是拔电。它能证明偏好文件在 eMMC 上跨启动保留、开机清理不留音频，但不能代替真实断电时序。
 

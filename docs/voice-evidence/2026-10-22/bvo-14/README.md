@@ -31,6 +31,8 @@
 | 云 TTS | `pcm16` 流式，84,480 B PCM → 112,684 B 的 16 kHz 双声道 WAV，2.47 s | `nsh-tts.log` |
 | 播放 | NxPlayer 接受该 WAV，`play rc=0`，任务回到 idle | `nsh-play.log` |
 | 本地故障 | 不存在的文件返回 `rc=io`，不产生请求 | `nsh-fault.log` |
+| 坏输入 | 文本文件冒充 WAV 返回 `cannot prepare upload wav: -22`、`rc=io req=0`，不产生网络请求 | `nsh-fault-corrupt-wav.log` |
+| 录音后取消 | `vgvoice start` 进入 recording，取消后回到 idle，目录无新增文件 | `nsh-cancel.log` |
 | 堆 | 见第 3 节 | `nsh-*.log` 中的 `free` |
 
 板端命令是诊断入口，不是产品交互：`vgvoice asr/tts/play` 复用与语音轮次相同的 `vg_voice_cloud_*` 和 `vg_voice_play_file`，因此它们证明的是同一条云与播放链路。
@@ -138,6 +140,7 @@
 - 缺少：可控断网与配额。
 - 操作：断网、错域名、无效密钥、429、响应截断各 3 次。
 - 判定：30 秒内明确失败；恢复网络后下一轮成功；无残留连接。
+- 已完成：本地文件缺失、坏 WAV、300 ms 预算、45 次调用中的 3 次 `rc=net`，都在 11 秒内结束且下一次成功。未做：主动断网、错域名、无效密钥、429、响应截断；这些会改变板端 provision，或需要可控的服务端。
 
 ### H. 云端保留政策（BVO-06、13）
 
