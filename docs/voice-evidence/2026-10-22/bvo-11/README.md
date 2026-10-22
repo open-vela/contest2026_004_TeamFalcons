@@ -38,7 +38,7 @@
 - `test_voice_pcm`：24k→16k 整数 3:2 重采样、WAV 头、流式写入短写、base64 编解码、SSE `data:` 行与 `[DONE]`。
 - `test_req_ctl`：无截止时间、剩余时间、单调回绕、取消、单预算被三个阶段共享。
 
-构建：`bash scripts/build.sh`，退出码 0，flash 1,470,668 B，sram 336,752 B（64.23%），见 `build.log`。镜像 SHA256 见 `firmware.sha256`。
+构建：`bash scripts/build.sh`，退出码 0，flash 1,471,020 B（干净构建），sram 336,752 B（64.23%），见 `build.log`。镜像 SHA256 见 `firmware.sha256`。
 
 ## 5. 未验证与限制
 

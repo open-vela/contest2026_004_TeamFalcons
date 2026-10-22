@@ -6,7 +6,7 @@
 
 | 项目 | 结果 |
 |---|---|
-| 固件构建 | `bash scripts/build.sh` 退出码 0，flash 1,470,764 B，sram 336,752 B（64.23%） |
+| 固件构建 | `bash scripts/build.sh` 退出码 0，flash 1,471,020 B，sram 336,752 B（64.23%） |
 | 链接检查 | `nm nuttx/nuttx` 中存在 `vg_voice_round_start`、`vg_voice_overlay_create`、`vg_voice_cloud_asr`、`vg_voice_pref_load/sweep` |
 | 三意图固定问法 | `test_voice_intent` 新增 30 条固定问法（三类各 10 条），意图全部正确；这只是确定性层的主机检查，不代替 30 条真人录音 |
 | 主机回归 | `make test` 全部通过，含 `test_voice_intent`、`test_voice_answer`、`test_voice_pcm`、`test_voice_pref`、`test_agent_tools`、`test_voice_session`、`test_agent_round` |

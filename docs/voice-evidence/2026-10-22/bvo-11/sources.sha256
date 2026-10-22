@@ -9,7 +9,7 @@ b91524530be7023f56e767fbd0cd464d464de11a2ab60713c860aee00507e19d  app/velaguard/
 05f91bfdd09ad6c408599a3f4668579fc17100bf9238c2830b452262c96d74e6  app/velaguard/vg_voice_intent.c
 7d15ac1c8146fd0db48baaa535fb2281920cd27eb9a382fadab04f80c998f2b3  gui/main/ui/widgets/vg_voice_overlay.c
 9ca297ce3c2b3d09492e0ddd2b31a67e47c6d9e3d576e513b546da49df3971cb  gui/main/ui/widgets/vg_voice_overlay.h
-# contest 658d4155645180627beba8ac9213c0333a49cfea
+# contest 3eafca19bd5a95d2d34257cda0bc03644e2bf799
 # nuttx 189e6d8a18d8866e628af8c3f7b541c0e659b8bc
 # apps 0ea954b79740756318ce1f0b13271dd94235fe2a
 # ai_agent 050cc55bef9a9af8fcc2c40518bb0ed969424222
