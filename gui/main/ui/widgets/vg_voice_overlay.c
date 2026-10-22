@@ -189,10 +189,15 @@ static void overlay_measure(void)
         }
 
         if(s_retry != NULL && n < (int)sizeof(buf)) {
-            lv_obj_get_coords(s_mute, &b);
+            lv_obj_get_coords(s_retry, &b);
+            lv_point_t p = { (b.x1 + b.x2) / 2, (b.y1 + b.y2) / 2 };
             n += snprintf(buf + n, sizeof(buf) - n,
-                          "overlay: retry_visible=%d\n",
-                          lv_obj_has_flag(s_retry, LV_OBJ_FLAG_HIDDEN) ? 0 : 1);
+                          "overlay: retry=%dx%d at %d,%d visible=%d hit=%d\n",
+                          (int)lv_obj_get_width(s_retry),
+                          (int)lv_obj_get_height(s_retry),
+                          (int)b.x1, (int)b.y1,
+                          lv_obj_has_flag(s_retry, LV_OBJ_FLAG_HIDDEN) ? 0 : 1,
+                          lv_obj_hit_test(s_retry, &p) ? 1 : 0);
         }
 
         if(s_close != NULL && n < (int)sizeof(buf)) {

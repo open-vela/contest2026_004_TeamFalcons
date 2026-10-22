@@ -54,9 +54,11 @@ stack: poll_cb (vg_voice_overlay.c) -> lv_label_set_text -> lv_obj_invalidate
 | 录音中 | 468x58 at (6,208) |
 | 播报开关 | 62x24 at (371,197)，中心点 hit=1 |
 | 关闭 | 30x24 at (437,197)，中心点 hit=1 |
-| 回答区 | 空回答 h16、scroll_bottom=0；1143 字节回答时面板增高 |
+| 回答区（空） | h16、scroll_bottom=0 |
+| 回答区（1143 字节，14 条异常） | 面板 468x152 at (6,114)，回答框 h92、scroll_bottom=164、标签高 256，可滚动 |
+| 播报失败时 | retry 62x24 at (371,121) visible=1 hit=1，文字保留 |
 
-测量在 LVGL 线程内完成并发布快照，NSH 只读快照。长回答的滚动量要在结果可见的 15 秒窗口内采样，本轮未抓到，列为待补。
+测量在 LVGL 线程内完成并发布快照，NSH 只读快照。长回答的滚动量见 [board-overlay-scroll.log](board-overlay-scroll.log)：回答标签 256 px 高、容器 92 px、可滚动 164 px。隐藏状态下的按钮坐标是上次布局的残值，命中测试不作为证据。
 
 ## 5. 未验证与限制
 
