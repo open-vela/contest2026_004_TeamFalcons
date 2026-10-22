@@ -33,6 +33,7 @@
 | 本地故障 | 不存在的文件返回 `rc=io`，不产生请求 | `nsh-fault.log` |
 | 坏输入 | 文本文件冒充 WAV 返回 `cannot prepare upload wav: -22`、`rc=io req=0`，不产生网络请求 | `nsh-fault-corrupt-wav.log` |
 | 录音后取消 | `vgvoice start` 进入 recording，取消后回到 idle，目录无新增文件 | `nsh-cancel.log` |
+| 在线从站 | COM7 从站 1,253 请求 / 1,184 应答 / `crc_scan=0`；温度 36.0 触发 crit，恢复 31 s，离线 44 s 后成项 | `../bvo-09/board-live-slave.log` |
 | 堆 | 见第 3 节 | `nsh-*.log` 中的 `free` |
 
 板端命令是诊断入口，不是产品交互：`vgvoice asr/tts/play` 复用与语音轮次相同的 `vg_voice_cloud_*` 和 `vg_voice_play_file`，因此它们证明的是同一条云与播放链路。
@@ -74,7 +75,7 @@
 
 - **语音轮次的完整闭环**没有跑过：需要真人按住 USER1 说话。已分别验证录音、云 ASR、只读工具、云 TTS、播放，但按钮到会话状态机这一段只有主机测试。
 - **一次 ASR 卡住**：14:40 的一次调用在 TLS 握手成功后长时间没有返回，命令任务一直占用 NSH，超过 30 秒 deadline。复位后连续两次调用均成功（8.3 s、12.7 s），未能复现。已记录为未解决缺陷，未用重试掩盖。
-- 在线 Modbus 从站未接入，异常与恢复只有空表结果。
+- 在线从站已接入并跑过阈值告警与恢复；同一测点阈值与离线同时出现、以及事件环挤出导致的 `RECOVERED_PARTIAL` 仍只有主机用例。
 - 听音、屏幕布局、静音开关、断电保持均未做。
 
 ## 6. 各任务状态
@@ -83,7 +84,7 @@
 |---|---|---|
 | BVO-07 | 已实现；300 ms 预算在 1.05 s 内结束，随后新请求成功；按键取消未测 | `bvo-07/README.md` |
 | BVO-08 | 已实现，已接入板端轮次线程；真机按键未测 | `bvo-08/README.md` |
-| BVO-09 | 已实现；板端取到 total=14、omitted=2、recovery=unknown；在线从站未接 | `bvo-09/README.md` |
+| BVO-09 | 已实现；在线从站下取到 crit=36、recovered 31 s、离线 44 s 判定与完整事件链 | `bvo-09/README.md` |
 | BVO-10 | 已实现并主机验证；30 条真人问法未做 | `bvo-10/` |
 | BVO-11 | 已实现；云 ASR/TTS 与播放已在板端跑通 | `bvo-11/README.md` |
 | BVO-12 | 已实现并接入构建；浮层未在屏幕确认 | `bvo-12/README.md` |
@@ -133,7 +134,8 @@
 - 缺少：在线 Modbus 从站。
 - 操作：制造超阈值告警并恢复，再问当前异常与告警恢复。
 - 判定：总数与列表和事件环一致；0 项、1 项、超过 3 项、超过旧报告 8 项、多类别重叠各测一次。
-- 已有：无从站时取到 14 条离线和 `omitted=2`，说明完整集合与截断提示可用；缺的是阈值告警与 RAISE/CLEAR 事件。
+- 已完成：主机 RTU 从站在 COM7 提供 14 点，板端取到 all-online（total=0）、温度 36.0（total=1，rank=crit）、恢复 `duration_ms=31000`、单从站离线约 44 秒后 `flags=offline,stale`（total=2），以及 4 条 RAISE/CLEAR 事件。见 `../bvo-09/board-live-slave.log`。
+- 剩余：同一测点阈值与离线同时出现、事件环挤出后的部分恢复。
 
 ### G. 服务故障注入（BVO-07、11）
 

@@ -1,0 +1,468 @@
+# BVO-09 在线从站下的异常与恢复（2026-10-22 18:39-18:42）
+主机侧 `maintenance_rtu_slave.ps1` 在 COM7 作 RTU 从站，9600 8N1，只应答不主动发送；板端保持唯一主站。
+模式切换通过控制文件完成：normal → critical（温度 36.0）→ normal → offline1（仅 1 号从站不应答）→ normal → stop。
+
+## 1. 从站日志（请求、应答、模式切换）
+
+```
+START 2026-10-22T18:39:30.5800816+08:00 port=COM7 mode=slave-only baud=9600 rts=False dtr=False reply_delay_ms=0
+STATUS 2026-10-22T18:39:30.5800816+08:00 elapsed_s=0.0 mode=normal requests=0 replies=0 suppressed=0 crc_scan=0
+RX 2026-10-22T18:39:31.1863163+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-22T18:39:31.2650056+08:00 04-03-00-02-00-01-25-9F
+RX 2026-10-22T18:39:31.3485331+08:00 05-03-00-00-00-01-85-8E
+RX 2026-10-22T18:39:31.4247553+08:00 05-03-00-01-00-01-D4-4E
+RX 2026-10-22T18:39:31.5029124+08:00 05-03-00-02-00-01-24-4E
+RX 2026-10-22T18:39:31.5978329+08:00 06-03-00-00-00-01-85-BD
+RX 2026-10-22T18:39:31.6763294+08:00 06-03-00-01-00-01-D4-7D
+RX 2026-10-22T18:39:31.7528668+08:00 06-03-00-02-00-01-24-7D
+RX 2026-10-22T18:39:31.9548659+08:00 07-03-00-00-00-01-84-6C
+RX 2026-10-22T18:39:32.6075712+08:00 01-03-00-00-00-01-84-0A
+RX 2026-10-22T18:39:32.6851877+08:00 01-03-00-01-00-01-D5-CA
+RX 2026-10-22T18:39:32.7776365+08:00 02-03-00-02-00-01-25-F9
+RX 2026-10-22T18:39:32.9790561+08:00 03-03-00-00-00-01-85-E8
+RX 2026-10-22T18:39:33.2567762+08:00 04-03-00-00-00-01-84-5F
+RX 2026-10-22T18:39:33.3341714+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-22T18:39:33.4274366+08:00 04-03-00-02-00-01-25-9F
+RX 2026-10-22T18:39:33.5055092+08:00 05-03-00-00-00-01-85-8E
+RX 2026-10-22T18:39:33.5991190+08:00 05-03-00-01-00-01-D4-4E
+RX 2026-10-22T18:39:33.6771719+08:00 05-03-00-02-00-01-24-4E
+RX 2026-10-22T18:39:33.7552578+08:00 06-03-00-00-00-01-85-BD
+RX 2026-10-22T18:39:33.9577639+08:00 06-03-00-01-00-01-D4-7D
+RX 2026-10-22T18:39:34.0502580+08:00 06-03-00-02-00-01-24-7D
+RX 2026-10-22T18:39:34.1267155+08:00 07-03-00-00-00-01-84-6C
+RX 2026-10-22T18:39:34.9900458+08:00 01-03-00-00-00-01-84-0A
+RX 2026-10-22T18:39:35.2666409+08:00 01-03-00-01-00-01-D5-CA
+RX 2026-10-22T18:39:35.3437954+08:00 02-03-00-02-00-01-25-F9
+RX 2026-10-22T18:39:35.4364752+08:00 03-03-00-00-00-01-85-E8
+RX 2026-10-22T18:39:35.5279212+08:00 04-03-00-00-00-01-84-5F
+RX 2026-10-22T18:39:35.6049335+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-22T18:39:35.6971038+08:00 04-03-00-02-00-01-25-9F
+RX 2026-10-22T18:39:35.7736324+08:00 05-03-00-00-00-01-85-8E
+RX 2026-10-22T18:39:35.8648128+08:00 05-03-00-01-00-01-D4-4E
+STATUS 2026-10-22T18:39:40.5948126+08:00 elapsed_s=10.0 mode=normal requests=67 replies=67 suppressed=0 crc_scan=0
+STATUS 2026-10-22T18:39:50.5982464+08:00 elapsed_s=20.0 mode=normal requests=151 replies=151 suppressed=0 crc_scan=0
+STATUS 2026-10-22T18:40:00.6056962+08:00 elapsed_s=30.0 mode=normal requests=233 replies=233 suppressed=0 crc_scan=0
+MODE 2026-10-22T18:40:05.9688433+08:00 critical
+STATUS 2026-10-22T18:40:10.6155644+08:00 elapsed_s=40.0 mode=critical requests=317 replies=317 suppressed=0 crc_scan=0
+STATUS 2026-10-22T18:40:20.6233191+08:00 elapsed_s=50.0 mode=critical requests=383 replies=383 suppressed=0 crc_scan=0
+STATUS 2026-10-22T18:40:30.6339230+08:00 elapsed_s=60.1 mode=critical requests=450 replies=450 suppressed=0 crc_scan=0
+MODE 2026-10-22T18:40:35.9691874+08:00 normal
+STATUS 2026-10-22T18:40:40.6488818+08:00 elapsed_s=70.1 mode=normal requests=518 replies=518 suppressed=0 crc_scan=0
+STATUS 2026-10-22T18:40:50.6604261+08:00 elapsed_s=80.1 mode=normal requests=598 replies=598 suppressed=0 crc_scan=0
+MODE 2026-10-22T18:40:58.6849766+08:00 offline1
+STATUS 2026-10-22T18:41:00.6709722+08:00 elapsed_s=90.1 mode=offline1 requests=670 replies=667 suppressed=3 crc_scan=0
+STATUS 2026-10-22T18:41:10.6777009+08:00 elapsed_s=100.1 mode=offline1 requests=715 replies=703 suppressed=12 crc_scan=0
+STATUS 2026-10-22T18:41:20.6884146+08:00 elapsed_s=110.1 mode=offline1 requests=749 replies=727 suppressed=22 crc_scan=0
+STATUS 2026-10-22T18:41:30.6952903+08:00 elapsed_s=120.1 mode=offline1 requests=785 replies=753 suppressed=32 crc_scan=0
+STATUS 2026-10-22T18:41:40.7018869+08:00 elapsed_s=130.1 mode=offline1 requests=828 replies=787 suppressed=41 crc_scan=0
+STATUS 2026-10-22T18:41:50.7038731+08:00 elapsed_s=140.1 mode=offline1 requests=862 replies=811 suppressed=51 crc_scan=0
+STATUS 2026-10-22T18:42:00.7120051+08:00 elapsed_s=150.1 mode=offline1 requests=899 replies=839 suppressed=60 crc_scan=0
+STATUS 2026-10-22T18:42:10.7216265+08:00 elapsed_s=160.1 mode=offline1 requests=940 replies=871 suppressed=69 crc_scan=0
+MODE 2026-10-22T18:42:10.9867974+08:00 normal
+STATUS 2026-10-22T18:42:20.7316245+08:00 elapsed_s=170.2 mode=normal requests=1013 replies=944 suppressed=69 crc_scan=0
+STATUS 2026-10-22T18:42:30.7347496+08:00 elapsed_s=180.2 mode=normal requests=1097 replies=1028 suppressed=69 crc_scan=0
+STATUS 2026-10-22T18:42:40.7439077+08:00 elapsed_s=190.2 mode=normal requests=1178 replies=1109 suppressed=69 crc_scan=0
+STOP 2026-10-22T18:42:49.6553600+08:00 requests=1253 replies=1184 suppressed=69 crc_scan=0
+```
+
+## 2. 全部在线
+
+```
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada58350830f44a] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7881 bytes)
+[agent] Dispatching response → local_client:velaguard:6
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada58350830f44a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=0 body=0 pool=0 build=0 parse=10 http=300 backoff=0 total=320 req=7881 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 6 (backoff 32)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada58350830f44a] iter=0 tool=(none) latency=320ms llm=fail backend=0
+[trace:6ada58350830f44a] END status=fail iters=1 tools=0 llm_ms=320 tool_ms=0 elapsed_ms=370 backend=0
+[agent] Dispatching response → local_client:velaguard:6
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc195c
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: live ok=9/14 a1=0.0
+[vgadvice] asked for 5 alarms req=4
+[vgagent] round submitted: 1064 bytes
+[agent] Processing message from local_client:velaguard:7
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada586a73b6c3ea] BEGIN chat=velaguard:7 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7625 bytes)
+[agent] Dispatching response → local_client:velaguard:7
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada586a73b6c3ea] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=10 body=0 pool=0 build=10 parse=10 http=310 backoff=0 total=330 req=7625 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 7 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada586a73b6c3ea] iter=0 tool=(none) latency=330ms llm=fail backend=0
+[trace:6ada586a73b6c3ea] END status=fail iters=1 tools=0 llm_ms=330 tool_ms=0 elapsed_ms=370 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgagent] round finished: reply
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+vghmi: live ok=14/14 a1=24.0
+
+2026-10-22T18:39:53.8042150+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=0 shown=0 seen=14 boot=00004c7c
+nsh> [K
+2026-10-22T18:39:56.3371279+08:00 CMD vgagent tool vg_point_read temp
+vgagent tool vg_point_read temp
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: point id=temp name=温度验收 value=24 unit=C ok=1 age_ms=1780 warn=ge28 crit=ge35
+nsh> [K
+2026-10-22T18:39:58.8664580+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=776 wall=2026-10-22T18:39:59
+vgruntime: slave=1 boot_total=114 boot_ok=30 boot_crc=0 boot_timeout=84 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=29 win_total=64 win_ok=30 win_crc=0 win_timeout=34 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=57 boot_ok=15 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=30 boot_lat_avg=22 win_total=57 win_ok=15 win_crc=0 win_timeout=42 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=57 boot_ok=15 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=34 win_total=57 win_ok=15 win_crc=0 win_timeout=42 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=171 boot_ok=47 boot_crc=0 boot_timeout=124 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=38 win_total=64 win_ok=47 win_crc=0 win_timeout=17 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=171 boot_ok=48 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=30 boot_lat_avg=22 win_total=64 win_ok=48 win_crc=0 win_timeout=16 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=171 boot_ok=48 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=30 boot_lat_avg=23 win_total=64 win_ok=48 win_crc=0 win_timeout=16 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=57 boot_ok=16 boot_crc=0 boot_timeout=41 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=30 boot_lat_avg=24 win_total=57 win_ok=16 win_crc=0 win_timeout=41 win_echo=0 win_other=0
+vgruntime: bus boot_total=798 boot_ok=219 boot_crc=0 boot_timeout=579 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=24200 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=24210 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=24220 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=24230 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=24240 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=26250 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=26260 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=26260 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=26270 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=26280 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=26290 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=26300 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=26310 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=26320 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=volt_a action=clear kind=offline value=230 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=pwr_kw action=clear kind=offline value=3 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=energy_kwh action=clear kind=offline value=123.4 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=door action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=smoke action=clear kind=offline value=1 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+nsh> [K
+```
+
+## 3. 温度越限
+
+```
+[vgadvice] asked for 1 alarms req=5
+[vgagent] round submitted: 745 bytes
+[agent] Processing message from local_client:velaguard:8
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] All backends backed off, using fallback 0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada588f76c64bb0] BEGIN chat=velaguard:8 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 10262 bytes)
+[agent] Dispatching response → local_client:velaguard:8
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada588f76c64bb0] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=210 ttfb=60 body=0 pool=0 build=0 parse=10 http=390 backoff=0 total=410 req=10262 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 8 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada588f76c64bb0] iter=0 tool=(none) latency=410ms llm=fail backend=0
+[trace:6ada588f76c64bb0] END status=fail iters=1 tools=0 llm_ms=410 tool_ms=0 elapsed_ms=460 backend=0
+[agent] Dispatching response → local_client:velaguard:8
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc195c
+
+2026-10-22T18:40:25.2563279+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=1 shown=1 seen=14 boot=00004c7c
+- id=temp rank=crit flags=threshold value=36.0 threshold=35.0 age_ms=1500 since_ms=16460
+nsh> [K
+2026-10-22T18:40:27.7619423+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=active history_complete=true duration_ms=0 episode=1 boot=00004c7c
+nsh> [K
+```
+
+## 4. 恢复后查询
+
+```
+2026-10-22T18:40:49.2648523+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=recovered history_complete=true duration_ms=31000 episode=1 boot=00004c7c
+nsh> [K
+2026-10-22T18:40:51.8086687+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=0 shown=0 seen=14 boot=00004c7c
+nsh> [K
+```
+
+## 5. 仅 1 号从站离线（约 18 秒时）
+
+```
+2026-10-22T18:41:18.1002089+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=0 shown=0 seen=14 boot=00004c7c
+nsh> [K[vgadvice] asked for 2 alarms req=6
+[vgagent] round submitted: 823 bytes
+[agent] Processing message from local_client:velaguard:9
+
+2026-10-22T18:41:20.6264820+08:00 CMD vgagent tool vg_point_read temp
+vgagent tool vg_point_read temp
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: point id=temp name=温度验收 value=- unit=C reason=read_failed age_ms=2210 warn=ge28 crit=ge35
+nsh> [K
+```
+
+## 6. 离线约 44 秒后
+
+```
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada58d561ce8483] BEGIN chat=velaguard:9 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7381 bytes)
+[agent] Dispatching response → local_client:velaguard:9
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada58d561ce8483] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=0 parse=10 http=420 backoff=0 total=440 req=7381 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 9 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada58d561ce8483] iter=0 tool=(none) latency=440ms llm=fail backend=0
+[trace:6ada58d561ce8483] END status=fail iters=1 tools=0 llm_ms=440 tool_ms=0 elapsed_ms=500 backend=0
+[agent] Dispatching response → local_client:velaguard:9
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc195c
+
+2026-10-22T18:42:00.7301849+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=2 shown=2 seen=14 boot=00004c7c
+- id=humid rank=offline flags=offline,stale value=50.0 threshold=0.0 age_ms=45760 since_ms=41810
+- id=temp rank=offline flags=offline,stale value=24.0 threshold=0.0 age_ms=45760 since_ms=41810
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T18:42:03.2759793+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=901 wall=2026-10-22T18:42:03
+vgruntime: slave=1 boot_total=208 boot_ok=94 boot_crc=0 boot_timeout=114 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=34 win_crc=0 win_timeout=30 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=104 boot_ok=62 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=26 win_total=64 win_ok=62 win_crc=0 win_timeout=2 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=104 boot_ok=62 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=33 win_total=64 win_ok=62 win_crc=0 win_timeout=2 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=312 boot_ok=188 boot_crc=0 boot_timeout=124 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=312 boot_ok=189 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=25 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=312 boot_ok=189 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=104 boot_ok=63 boot_crc=0 boot_timeout=41 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=27 win_total=64 win_ok=63 win_crc=0 win_timeout=1 win_echo=0 win_other=0
+vgruntime: bus boot_total=1456 boot_ok=847 boot_crc=0 boot_timeout=609 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=104230 offline_s=44 last_ok_ago_s=48 value=24 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=104230 offline_s=44 last_ok_ago_s=48 value=50 kind=offline
+vgruntime: point id=flood slave=2 online=1 online_ms=148780 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=148790 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=148800 offline_s=0 last_ok_ago_s=1 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=150810 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=150820 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=150830 offline_s=0 last_ok_ago_s=1 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=150840 offline_s=0 last_ok_ago_s=1 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=150850 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=150860 offline_s=0 last_ok_ago_s=1 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=150870 offline_s=0 last_ok_ago_s=1 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=150870 offline_s=0 last_ok_ago_s=1 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=150880 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=volt_a action=clear kind=offline value=230 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=pwr_kw action=clear kind=offline value=3 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=energy_kwh action=clear kind=offline value=123.4 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=door action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=smoke action=clear kind=offline value=1 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=786 wall=2026-10-22T18:40:09 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=817 wall=2026-10-22T18:40:40 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=temp action=raise kind=offline value=24 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=humid action=raise kind=offline value=50 thr=0 cmp=ge reason=modbus_fail_offline
+nsh> [K
+```
+
+## 7. 恢复 normal
+
+```
+2026-10-22T18:42:32.3380495+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=0 shown=0 seen=14 boot=00004c7c
+nsh> [K
+2026-10-22T18:42:34.8836056+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=recovered history_complete=true duration_ms=31000 episode=1 boot=00004c7c
+nsh> [K
+2026-10-22T18:42:37.4129040+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=935 wall=2026-10-22T18:42:37
+vgruntime: slave=1 boot_total=243 boot_ok=125 boot_crc=0 boot_timeout=118 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=35 win_total=64 win_ok=31 win_crc=0 win_timeout=33 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=121 boot_ok=79 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=121 boot_ok=79 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=363 boot_ok=239 boot_crc=0 boot_timeout=124 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=27 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=363 boot_ok=240 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=25 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=363 boot_ok=240 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=121 boot_ok=80 boot_crc=0 boot_timeout=41 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=27 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=1695 boot_ok=1082 boot_crc=0 boot_timeout=613 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=128390 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=128400 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=182770 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=182780 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=182790 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=184800 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=184800 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=184810 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=184820 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=184830 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=184840 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=184850 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=184860 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=184870 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=volt_a action=clear kind=offline value=230 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=pwr_kw action=clear kind=offline value=3 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=energy_kwh action=clear kind=offline value=123.4 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=door action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=smoke action=clear kind=offline value=1 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=786 wall=2026-10-22T18:40:09 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=817 wall=2026-10-22T18:40:40 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=temp action=raise kind=offline value=24 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=humid action=raise kind=offline value=50 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=911 wall=2026-10-22T18:42:13 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=911 wall=2026-10-22T18:42:13 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+nsh> [K
+```
+
+## 8. 最终事件环
+
+```
+2026-10-22T18:42:46.9121806+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=944 wall=2026-10-22T18:42:47
+vgruntime: slave=1 boot_total=254 boot_ok=136 boot_crc=0 boot_timeout=118 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=34 win_total=64 win_ok=42 win_crc=0 win_timeout=22 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=127 boot_ok=85 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=127 boot_ok=85 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=381 boot_ok=257 boot_crc=0 boot_timeout=124 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=660 boot_lat_avg=27 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=381 boot_ok=258 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=25 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=381 boot_ok=258 boot_crc=0 boot_timeout=123 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=127 boot_ok=86 boot_crc=0 boot_timeout=41 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=27 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=1778 boot_ok=1165 boot_crc=0 boot_timeout=613 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=137900 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=137910 offline_s=0 last_ok_ago_s=1 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=192280 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=192290 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=192300 offline_s=0 last_ok_ago_s=1 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=194310 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=194320 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=194330 offline_s=0 last_ok_ago_s=1 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=194340 offline_s=0 last_ok_ago_s=1 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=194350 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=194360 offline_s=0 last_ok_ago_s=1 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=194360 offline_s=0 last_ok_ago_s=1 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=194370 offline_s=0 last_ok_ago_s=1 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=194380 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=volt_a action=clear kind=offline value=230 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=pwr_kw action=clear kind=offline value=3 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=energy_kwh action=clear kind=offline value=123.4 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=750 wall=2026-10-22T18:39:33 id=door action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=smoke action=clear kind=offline value=1 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=752 wall=2026-10-22T18:39:35 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=786 wall=2026-10-22T18:40:09 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=817 wall=2026-10-22T18:40:40 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=temp action=raise kind=offline value=24 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=856 wall=2026-10-22T18:41:19 id=humid action=raise kind=offline value=50 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=911 wall=2026-10-22T18:42:13 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=911 wall=2026-10-22T18:42:13 id=humid action=clear kind=offline value=50 thr=0 cmp=ge reason=offline_recovered
+nsh> [K
+```
