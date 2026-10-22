@@ -123,10 +123,22 @@ static enum vg_agent_query_rc collect_points(struct vg_agent_point *out,
       return VG_AGENT_QUERY_NO_TABLE;
     }
 
-  if (vg_live_snapshot_read(CONFIG_VG_LIVE_VALUES_PATH, &snap) == 0)
+  if (vg_live_snapshot_read(CONFIG_VG_LIVE_VALUES_PATH, &snap) == 0 &&
+      snap.tick_ms != 0)
     {
-      have_snap = true;
-      age = vg_live_age_ms(snap.tick_ms, vg_live_now_ms());
+      /* The snapshot file survives a reboot, but its tick is a monotonic
+       * uptime from the boot that wrote it.  A tick ahead of the current
+       * uptime therefore means "written by an earlier boot", and ageing it
+       * would wrap to about 49 days.  Report no sample instead of a number
+       * that looks like a measurement. */
+
+      uint32_t now = vg_live_now_ms();
+
+      if ((int32_t)(now - snap.tick_ms) >= 0)
+        {
+          have_snap = true;
+          age = now - snap.tick_ms;
+        }
     }
 
   for (i = 0; i < table.n_points && i < VG_AGENT_QUERY_MAX; i++)

@@ -1,0 +1,82 @@
+
+2026-10-22T14:44:12.4168040+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+vgtime: synced 2026-10-22 14:44:14
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792680254
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=8310
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [Kvghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada216000000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792680288
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada216000000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=0 tls=670 send=160 ttfb=60 body=0 pool=10 build=10 parse=10 http=950 backoff=0 total=970 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ada216000000000] iter=0 tool=(none) latency=970ms llm=fail backend=0
+[trace:6ada216000000000] END status=fail iters=1 tools=0 llm_ms=970 tool_ms=0 elapsed_ms=1010 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+
+2026-10-22T14:44:52.4390663+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792680296
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada216c35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7865 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada216c35c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=220 ttfb=20 body=0 pool=0 build=0 parse=10 http=350 backoff=0 total=560 req=7865 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada216c35c3b13a] iter=0 tool=(none) latency=560ms llm=fail backend=0
+[trace:6ada216c35c3b13a] END status=fail iters=1 tools=0 llm_ms=560 tool_ms=0 elapsed_ms=630 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc6dc0
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=12660
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T14:45:32.4722165+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918104    5920312    1076904    5795432   1148     11 Umem
+nsh> [K

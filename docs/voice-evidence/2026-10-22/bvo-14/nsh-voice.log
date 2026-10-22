@@ -1,0 +1,202 @@
+vgtime: synced 2026-10-22 14:22:47
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 14:22:47
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.540, +2540)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.550, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.560, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.570, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.580, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.580, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.590, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.600, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.600, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.610, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.620, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.620, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.630, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.640, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.640, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.650, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.660, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.660, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.670, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.680, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.680, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.690, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.700, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.710, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.720, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.730, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 14:16:37)
+32768)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +140ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +240ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +250ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +630ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +640ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +750ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1060ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1280ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1860ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1880ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2490ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2500ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2570ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2580ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2590ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2590ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2600ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2610ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2610ms] P5: network_watch thread started (async)
+[agent] [boot +2620ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2620ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.83
+[netmgr] Network connected: 192.168.137.83
+[netmgr] Found iface eth0 addr 192.168.137.83
+[agent] Network connected: 192.168.137.83
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+vgnet: join 19y failed
+
+2026-10-22T14:23:43.3253321+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     834256    6004160     834792    5795432   1088      6 Umem
+nsh> [K
+2026-10-22T14:23:44.8529500+08:00 CMD vgagent tool vg_point_read ups_load
+vgagent tool vg_point_read ups_load
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: point id=ups_load name=UPS负载 value=- unit=% reason=no_sample warn=ge70 crit=ge90
+nsh> [Kvgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T14:23:47.3743840+08:00 CMD vgvoice record 2000
+vgvoice record 2000
+vgvoice: timed record queued ms=2000
+nsh> [K
+2026-10-22T14:23:48.3813206+08:00 CMD vgvoice wait 5000
+vgvoice wait 5000
+vghmi: live ok=0/14 a1=0.0
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2010 samples=32120 bytes=64240
+vgvoice: level peak=7376 rms=104
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=4520 temp_left=0 worker=9
+vgvoice: capture halves=31 drained=32 overwritten=0 wraps=15 elapsed_ms=2010 rate=127843 B/s
+vgvoice: tail_bytes=3014 stage_ms=280
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T14:23:54.3886995+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2010 samples=32120 bytes=64240
+vgvoice: level peak=7376 rms=104
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=4520 temp_left=0 worker=9
+vgvoice: capture halves=31 drained=32 overwritten=0 wraps=15 elapsed_ms=2010 rate=127843 B/s
+vgvoice: tail_bytes=3014 stage_ms=280
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T14:23:56.3954386+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     834624    6003792     882912    5795432   1093     10 Umem
+nsh> [K
+2026-10-22T14:23:57.9104828+08:00 CMD ls /data/velaguard/voice
+ls /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

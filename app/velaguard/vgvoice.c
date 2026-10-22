@@ -23,8 +23,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <time.h>
 
 #include "vg_voice.h"
+
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+#include "vg_voice_cloud.h"
+
+/* The cloud adapter is the same code the round uses.  These two commands make
+ * it reachable without a button press, so the request shape and the audio
+ * conversion can be checked from NSH with a recorded or supplied file. */
+
+static uint32_t vgvoice_now_ms(void)
+{
+  struct timespec ts;
+
+  if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
+    {
+      return 0;
+    }
+
+  return (uint32_t)((uint64_t)ts.tv_sec * 1000u
+                    + (uint64_t)ts.tv_nsec / 1000000u);
+}
+#endif
 
 /**
   * @brief  打印状态与统计。
@@ -78,6 +101,9 @@ int main(int argc, FAR char *argv[])
   if (argc < 2)
     {
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+      printf("       vgvoice asr [wav] | tts <text> | play <wav>\n");
+#endif
       return EXIT_FAILURE;
     }
 
@@ -129,6 +155,89 @@ int main(int argc, FAR char *argv[])
       return EXIT_SUCCESS;
     }
 
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+  if (strcmp(cmd, "asr") == 0)
+    {
+      const char *path = (argc >= 3) ? argv[2] : VG_VOICE_WAV_PATH;
+      struct vg_vc_info info;
+      vela_req_ctl_t ctl;
+      char text[VG_VC_TEXT_MAX];
+      enum vg_vc_result rc;
+
+      ctl.deadline_ms = vgvoice_now_ms() + 30000u;
+      ctl.cancel = NULL;
+
+      rc = vg_voice_cloud_asr(path, &ctl, text, sizeof(text), &info);
+      printf("vgvoice: asr rc=%s status=%d req=%u resp=%u ms=%u\n",
+             vg_vc_result_name(rc), info.status, (unsigned)info.req_bytes,
+             (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
+      printf("vgvoice: asr text=%s\n", text[0] ? text : "(empty)");
+      return (rc == VG_VC_OK || rc == VG_VC_EMPTY) ? EXIT_SUCCESS
+                                                   : EXIT_FAILURE;
+    }
+
+  if (strcmp(cmd, "tts") == 0 && argc >= 3)
+    {
+      struct vg_vc_info info;
+      struct stat st;
+      vela_req_ctl_t ctl;
+      char text[VG_VC_TEXT_MAX];
+      enum vg_vc_result rc;
+      size_t used = 0;
+      int i;
+
+      text[0] = '\0';
+      for (i = 2; i < argc; i++)
+        {
+          int n = snprintf(text + used, sizeof(text) - used, "%s%s",
+                           (i > 2) ? " " : "", argv[i]);
+
+          if (n < 0 || (size_t)n >= sizeof(text) - used)
+            {
+              printf("vgvoice: text too long\n");
+              return EXIT_FAILURE;
+            }
+
+          used += (size_t)n;
+        }
+
+      ctl.deadline_ms = vgvoice_now_ms() + 30000u;
+      ctl.cancel = NULL;
+
+      rc = vg_voice_cloud_tts(text, VG_VC_TTS_WAV_PATH, &ctl, &info);
+      printf("vgvoice: tts rc=%s status=%d pcm=%u resp=%u ms=%u\n",
+             vg_vc_result_name(rc), info.status, (unsigned)info.audio_bytes,
+             (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
+
+      if (stat(VG_VC_TTS_WAV_PATH, &st) == 0)
+        {
+          printf("vgvoice: tts wav=%ld bytes\n", (long)st.st_size);
+        }
+
+      return (rc == VG_VC_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+#endif
+
+  if (strcmp(cmd, "play") == 0 && argc >= 3)
+    {
+      int rc = vg_voice_play_file(argv[2]);
+
+      printf("vgvoice: play rc=%d\n", rc);
+      if (rc != 0)
+        {
+          return EXIT_FAILURE;
+        }
+
+      if (!vg_voice_wait_idle(60000))
+        {
+          printf("vgvoice: play did not finish\n");
+          return EXIT_FAILURE;
+        }
+
+      printf("vgvoice: play done\n");
+      return EXIT_SUCCESS;
+    }
+
   if (strcmp(cmd, "wait") == 0)
     {
       long ms = (argc >= 3) ? strtol(argv[2], NULL, 0) : 20000;
@@ -152,6 +261,9 @@ int main(int argc, FAR char *argv[])
     }
 
   printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+  printf("       vgvoice asr [wav] | tts <text> | play <wav>\n");
+#endif
   return EXIT_FAILURE;
 }
 

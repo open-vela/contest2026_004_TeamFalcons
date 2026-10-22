@@ -32,7 +32,13 @@
 #define VC_READ_CHUNK   4096
 #define VC_B64_CHUNK    6144
 #define VC_RESP_MAX     4096
-#define VC_SSE_LINE_MAX 24576
+/* One SSE line carries a whole base64 audio chunk.  The service does not
+ * promise a chunk size, and a real 24 kHz answer arrived as a single line
+ * well over 24 KB, so the buffer starts at 32 KB and doubles up to 512 KB.
+ * Beyond that the line is not something this decoder understands. */
+
+#define VC_SSE_LINE_INIT 32768
+#define VC_SSE_LINE_MAX  524288
 #define VC_PCM_CHUNK    16384
 #define VC_PCM_SAMPLES  15360   /* multiple of 3 for 24k->16k */
 
@@ -312,6 +318,8 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
   int ret;
   enum vg_vc_result rc;
   struct stat st;
+  struct timespec mono_start;
+  struct timespec mono_end;
 
   if (info == NULL)
     {
@@ -319,6 +327,7 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
     }
 
   memset(info, 0, sizeof(*info));
+  clock_gettime(CLOCK_MONOTONIC, &mono_start);
 
   if (text == NULL || cap == 0)
     {
@@ -450,6 +459,11 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
   rc = VG_VC_OK;
 
 out:
+  clock_gettime(CLOCK_MONOTONIC, &mono_end);
+  info->elapsed_ms =
+      (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
+                 + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
+
   /* The recording exists only for this recognition.  The mono copy goes
    * with it; neither is retained for a retry. */
 
@@ -473,27 +487,61 @@ struct vc_tts_sink
 static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 {
   uint8_t pcm[VC_PCM_CHUNK];
-  int n;
+  const size_t step = (sizeof(pcm) / 3) * 4;  /* whole base64 groups */
+  size_t off = 0;
 
-  n = vg_b64_decode(b64, len, pcm, sizeof(pcm));
-  if (n < 0)
+  /* The service chooses the chunk size, and a real answer arrived as one
+   * 40 KB base64 string.  Decode in pieces that fit the buffer instead of
+   * assuming a chunk size. */
+
+  while (off < len)
     {
-      syslog(LOG_ERR, "[%s] tts: bad base64 chunk of %u bytes\n", TAG,
-             (unsigned)len);
+      size_t take = len - off;
+      int n;
+
+      if (take > step)
+        {
+          take = step;
+        }
+
+      n = vg_b64_decode(b64 + off, take, pcm, sizeof(pcm));
+      if (n < 0)
+        {
+          syslog(LOG_ERR, "[%s] tts: bad base64 chunk of %u bytes\n", TAG,
+                 (unsigned)take);
+          return -1;
+        }
+
+      if (n > 0 && write(s->fd, pcm, (size_t)n) != n)
+        {
+          return -1;
+        }
+
+      s->pcm_bytes += (size_t)n;
+      off += take;
+    }
+
+  return 0;
+}
+
+static int vc_tts_grow(struct vc_tts_sink *s)
+{
+  size_t ncap = (s->line_cap == 0) ? VC_SSE_LINE_INIT : s->line_cap * 2;
+  char *line;
+
+  if (ncap > VC_SSE_LINE_MAX)
+    {
       return -1;
     }
 
-  if (n == 0)
-    {
-      return 0;
-    }
-
-  if (write(s->fd, pcm, (size_t)n) != n)
+  line = realloc(s->line, ncap);
+  if (line == NULL)
     {
       return -1;
     }
 
-  s->pcm_bytes += (size_t)n;
+  s->line = line;
+  s->line_cap = ncap;
   return 0;
 }
 
@@ -509,13 +557,13 @@ static int vc_tts_line(struct vc_tts_sink *s)
 
   s->line[s->line_len] = '\0';
 
-  payload = malloc(VC_SSE_LINE_MAX);
+  payload = malloc(s->line_len + 1);
   if (payload == NULL)
     {
       return -1;
     }
 
-  rc = vg_sse_line_data(s->line, s->line_len, payload, VC_SSE_LINE_MAX);
+  rc = vg_sse_line_data(s->line, s->line_len, payload, s->line_len + 1);
   s->line_len = 0;
 
   if (rc == -1)
@@ -591,7 +639,7 @@ static int vc_tts_write(void *ctx, const char *data, size_t len)
           continue;
         }
 
-      if (s->line_len + 1 >= s->line_cap)
+      if (s->line_len + 1 >= s->line_cap && vc_tts_grow(s) < 0)
         {
           /* A line this long is not a data line we understand; stopping is
            * better than silently dropping audio. */
@@ -661,9 +709,7 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
            escaped);
 
   memset(&sink, 0, sizeof(sink));
-  sink.line_cap = VC_SSE_LINE_MAX;
-  sink.line = malloc(sink.line_cap);
-  if (sink.line == NULL)
+  if (vc_tts_grow(&sink) < 0)
     {
       free(body);
       return VG_VC_IO;
@@ -820,6 +866,11 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
   rc = VG_VC_OK;
 
 out:
+  clock_gettime(CLOCK_MONOTONIC, &mono_end);
+  info->elapsed_ms =
+      (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
+                 + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
+
   unlink(VG_VC_TTS_PCM_PATH);
 
   if (rc != VG_VC_OK)

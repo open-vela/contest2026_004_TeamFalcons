@@ -498,6 +498,29 @@ static void test_point_read_without_snapshot(void)
          "thresholds still reported without a sample");
 }
 
+/* A snapshot file left by an earlier boot carries that boot's uptime.  The
+ * current uptime is lower, so a plain subtraction wraps to about 49 days and
+ * the answer would claim "4294967 seconds old".  Report no sample instead. */
+
+static void test_point_read_cross_boot_snapshot(void)
+{
+  vg_agent_tools_reset_rate();
+
+  char out[1024];
+
+  seed_table();
+  seed_snapshot_scaled();
+  g_snap.tick_ms = 200000;   /* ahead of vg_live_now_ms() */
+
+  run_tool("vg_point_read", "{\"query\":\"ups_load\"}", out, sizeof(out));
+  expect(strstr(out, "reason=no_sample") != NULL,
+         "snapshot from another boot is not used as a sample");
+  expect(strstr(out, "value=-") != NULL,
+         "cross-boot snapshot does not report a value");
+  expect(strstr(out, "age_ms=4") == NULL,
+         "cross-boot snapshot does not wrap the age");
+}
+
 static void test_point_read_not_found(void)
 {
   vg_agent_tools_reset_rate();
@@ -738,6 +761,7 @@ int main(void)
   test_point_read_no_table();
   test_point_read_missing_table_with_dead_store();
   test_point_read_without_snapshot();
+  test_point_read_cross_boot_snapshot();
   test_point_read_not_found();
   test_owned_tool_always_returns_ok();
   test_query_argument_guards();

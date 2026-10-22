@@ -185,10 +185,12 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 # heap-allocated. 16K leaves room for fopen + nanomodbus on test.
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
-  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT)))))
-# vgptt and vgvoice are thin NSH front ends; the button thread and the
-# voice task get their own stacks from Kconfig, so the commands keep the
-# default.
+  $(if $(filter vgvoice,$(p)),32768, \
+  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT))))))
+# vgptt is a thin NSH front end; the button thread gets its own stack from
+# Kconfig.  vgvoice is not thin: its asr/tts diagnostics run the same cloud
+# call chain as the round worker (4 KB response buffer, 4 KB body piece and
+# 2 KB TLS read buffer), so it needs the worker's stack.
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 
