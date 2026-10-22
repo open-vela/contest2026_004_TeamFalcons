@@ -1,0 +1,359 @@
+# BVO-12 浮层几何与命中（2026-10-22 19:37-19:53）
+固件 374d3788 与 bc4b718c。`vgvoice round overlay` 读取 LVGL 线程发布的一份快照，不在 NSH 线程直接摸对象。
+
+## 1. 空闲与录音中的几何
+
+```
+2026-10-22T19:37:46.7436587+08:00 CMD wget -o /data/velaguard/voice/q1.wav http://192.168.137.1:8000/q1.wav
+wget -o /data/velaguard/voice/q1.wav http://192.168.137.1:8000/q1.wav
+nsh> [Kvgtime: synced 2026-10-22 19:37:52
+
+2026-10-22T19:37:51.7749098+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0      160044 test.wav
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K
+2026-10-22T19:37:53.0047038+08:00 CMD vgvoice round overlay
+vgvoice round overlay
+overlay: panel=468x76 at 6,190 screen=480x272 visible=1
+overlay: answer_box=h16 scroll_bottom=0 label_h=16
+overlay: mute=62x24 at 371,197 hit=1
+overlay: retry_visible=0
+overlay: close=30x24 at 437,197 hit=1
+nsh> [K
+2026-10-22T19:37:54.2100465+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T19:37:57.2276503+08:00 CMD vgvoice round overlay
+vgvoice round overlay
+overlay: panel=468x58 at 6,208 screen=480x272 visible=1
+overlay: answer_box=h16 scroll_bottom=0 label_h=16
+overlay: mute=62x24 at 371,215 hit=1
+overlay: retry_visible=0
+overlay: close=30x24 at 437,215 hit=1
+nsh> [K
+2026-10-22T19:37:58.4490770+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697881
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=6320
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 92 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada662800000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8305 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792697896
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T19:38:18.4620291+08:00 CMD vgvoice round overlay
+vgvoice round overlay
+overlay: panel=468x76 at 6,190 screen=480x272 visible=1
+overlay: answer_box=h16 scroll_bottom=0 label_h=16
+overlay: mute=62x24 at 371,197 hit=1
+overlay: retry_visible=0
+overlay: close=30x24 at 437,197 hit=1
+nsh> [K
+2026-10-22T19:38:19.9835115+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=4 gen=3 muted=0 failed=0
+vgvoice: round status=查询中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+nsh> [K
+```
+
+## 2. 14 条异常的回答
+
+```
+[vgagent] round finished: reply
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 19:49:42
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.310, +2310)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.320, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.330, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.330, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.330, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.330, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.340, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.350, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.350, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.360, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttxvgptt: watching /dev/buttons (led=2)
+_fbdev.c:280
+[User]	(2.370, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.380, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.380, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.390, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.400, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.400, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.410, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.420, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.420, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.430, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.440, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.440, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.450, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.460, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.460, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.470, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.480, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.490, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.500, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 14:29:15)
+)
+L[agent] [boot +10ms] P0: timezone set
+ED num: 3
+
+Hello from openvela contest 2026 team 004!
+[agent] [boot +160ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +240ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +250ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +460ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +470ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +560ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +860ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1130ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1600ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1610ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2020ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2030ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2080ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2090ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2090ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2100ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2110ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2120ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2120ms] P5: network_watch thread started (async)
+[agent] [boot +2130ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2130ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.107
+[netmgr] Network connected: 192.168.137.107
+[netmgr] Found iface eth0 addr 192.168.137.107
+[agent] Network connected: 192.168.137.107
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T19:51:01.6510285+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [Kvghmi: live ok=0/14 a1=0.0
+
+2026-10-22T19:51:04.1844664+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792698603
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=5590
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 92 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T19:51:16.1901014+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=4 gen=1 muted=0 failed=0
+vgvoice: round status=查询中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-22T19:51:17.4159359+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada68f900000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9550 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792698617
+[agent] Dispatching response → local_client:velaguard:1
+
+2026-10-22T19:51:20.4191851+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792698619
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=597 text=0 reasoning=27 toolargs=2 calls=1 finish=tool_calls tokens=2740/21/2761
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada68f900000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=220(fused) setup=100 tls=2580 send=310 ttfb=1540 body=0 pool=0 build=10 parse=0 http=4760 backoff=0 total=4770 req=9550 resp=597 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada68f900000000] iter=0 tool=vg_anomaly_read latency=4860ms llm=ok backend=0
+[agent] Tool call: vg_anomaly_read args={}
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1089 bytes, 550 ms
+[trace:6ada68f900000000] tool_iter=0 tool=vg_anomaly_read tool_ms=550 out=1089 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_anomaly_read)
+[trace:6ada68f900000000] END status=ok iters=1 tools=1 llm_ms=4860 tool_ms=550 elapsed_ms=5730 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=5690
+[vgagent] round submitted: 92 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada690735c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10293 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=616 text=0 reasoning=45 toolargs=2 calls=1 finish=tool_calls tokens=3211/26/3237
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada690735c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=400 ttfb=3460 body=0 pool=0 build=10 parse=0 http=4050 backoff=0 total=4060 req=10293 resp=616 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada690735c3b13a] iter=0 tool=vg_anomaly_read latency=4080ms llm=ok backend=0
+[agent] Tool call: vg_anomaly_read args={}
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1089 bytes, 670 ms
+[trace:6ada690735c3b13a] tool_iter=0 tool=vg_anomaly_read tool_ms=670 out=1089 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_anomaly_read)
+[trace:6ada690735c3b13a] END status=ok iters=1 tools=1 llm_ms=4080 tool_ms=670 elapsed_ms=5020 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792698637
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x52
+[vgvoice] tts rc=net status=0 pcm=0 resp=0 ms=440
+
+2026-10-22T19:51:46.4204956+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些异常？
+a=当前异常 14 个点位（最旧采样 0 秒前）
+1. [离线] acu_ret，离线，最近成功采样 0 秒前，已持续 35 秒
+2. [离线] acu_run，离线，最近成功采样 0 秒前，已持续 35 秒
+3. [离线] acu_set，离线，最近成功采样 0 秒前，已持续 35 秒
+4. [离线] door，离线，最近成功采样 0 秒前，已持续 35 秒
+5. [离线] energy_kwh，离线，最近成功采样 0 秒前，已持续 35 秒
+6. [离线] flood，离线，最近成功采样 0 秒前，已持续 35 秒
+7. [离线] humid，离线，最近成功采样 0 秒前，已持续 35 秒
+8. [离线] pwr_kw，离线，最近成功采样 0 秒前，已持续 35 秒
+9. [离线] smoke，离线，最近成功采样 0 秒前，已持续 35 秒
+10. [离线] temp，离线，最近成功采样 0 秒前，已持续 35 秒
+11. [离线] ups_bypass，离线，最近成功采样 0 秒前，已持续 35 秒
+12. [离线] ups_load，离线，最近成功采样 0 秒前，已持续 35 秒
+13. [离线] ups_soc，离线，最近成功采样 0 秒前，已持续 35 秒
+14. [离线] volt_a，离线，最近成功采样 0 秒前，已持续 35 秒
+
+nsh> [Kvgtime: synced 2026-10-22 19:51:49
+
+2026-10-22T19:51:48.4346048+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=3 muted=0 failed=1
+vgvoice: round status=播报失败，可重试播报
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=1143 bytes
+nsh> [K
+```
+
+## 3. 结论
+
+- 面板 468x76，位于 (6,190)，屏幕 480x272：右边界 474、下边界 266，未越界。
+- 录音时面板高 58，位于 (6,208)，仍在屏内。
+- 播报开关 62x24 at (371,197)、关闭 30x24 at (437,197)，中心点 `lv_obj_hit_test` 均为 1。
+- 回答为空时 answer_box 高 16、`scroll_bottom=0`；长回答（1143 字节）触发时面板随内容增高，滚动量需要在结果可见的 15 秒窗口内采样，本轮没抓到，列为待补。
