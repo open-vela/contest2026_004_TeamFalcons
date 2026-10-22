@@ -6,7 +6,8 @@
 
 | 项目 | 结果 |
 |---|---|
-| 固件构建 | `bash scripts/build.sh` 退出码 0，flash 1,470,692 B，sram 336,752 B（64.23%） |
+| 固件构建 | `bash scripts/build.sh` 退出码 0，flash 1,470,764 B，sram 336,752 B（64.23%） |
+| 链接检查 | `nm nuttx/nuttx` 中存在 `vg_voice_round_start`、`vg_voice_overlay_create`、`vg_voice_cloud_asr`、`vg_voice_pref_load/sweep` |
 | 主机回归 | `make test` 全部通过，含 `test_voice_intent`、`test_voice_answer`、`test_voice_pcm`、`test_voice_pref`、`test_agent_tools`、`test_voice_session`、`test_agent_round` |
 | 传输回归 | `test_req_ctl`、`test_http_body` 通过 |
 | 启动接线 | 开机清理遗留音频、读取播报开关、启动语音轮次、创建跨页浮层，均在板端目标中编译 |

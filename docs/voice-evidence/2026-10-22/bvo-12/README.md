@@ -24,6 +24,7 @@
 ## 3. 测试
 
 - 构建通过（`bvo-11/build.log`），`vg_voice_overlay.c` 在板端目标中编译，模拟器构建排除。
+- `nm nuttx/nuttx` 中存在 `vg_voice_overlay_create`，说明浮层函数体确实编译进镜像（`VG_VOICE_ROUND` 已定义），并且 `vg_hmi.c:468` 调用的 `vg_app_init()` 会创建它。
 - 主机测试不覆盖 LVGL 布局；`test_voice_session` 覆盖收起、滚动暂停对应的状态迁移。
 
 ## 4. 未验证与限制
