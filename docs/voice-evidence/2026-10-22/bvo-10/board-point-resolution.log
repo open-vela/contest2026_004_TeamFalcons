@@ -1,0 +1,83 @@
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:10
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada594616b6aaad] BEGIN chat=velaguard:10 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6661 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:10
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694598
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada594616b6aaad] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=560 send=330 ttfb=60 body=0 pool=0 build=10 parse=10 http=1090 backoff=0 total=1110 req=6661 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 10 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada594616b6aaad] iter=0 tool=(none) latency=1110ms llm=fail backend=0
+[trace:6ada594616b6aaad] END status=fail iters=1 tools=0 llm_ms=1110 tool_ms=0 elapsed_ms=1160 backend=0
+[agent] Dispatching response → local_client:velaguard:10
+[vgagent] round finished: reply
+
+2026-10-22T18:44:15.2140812+08:00 CMD vgpoint list
+vgpoint list
+vgpoint: POINT id=temp name=温度验收 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+2026-10-22T18:44:17.7308338+08:00 CMD vgagent tool vg_point_read ups_load
+vgagent tool vg_point_read ups_load
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: point id=ups_load name=UPS负载 value=40 unit=% ok=1 age_ms=670 warn=ge70 crit=ge90
+nsh> [K
+2026-10-22T18:44:20.2384792+08:00 CMD vgagent tool vg_point_read 温度
+vgagent tool vg_point_read 温度
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: ambiguous n=3
+vgquery: candidate id=temp name=温度验收
+vgquery: candidate id=acu_ret name=回风温度
+vgquery: candidate id=acu_set name=设定温度
+nsh> [K
+2026-10-22T18:44:22.7771753+08:00 CMD vgagent tool vg_point_read 不存在的点位
+vgagent tool vg_point_read 不存在的点位
+[tools] Executed vg tool: vg_point_read
+tool vg_point_read rc=0
+vgquery: table n=14
+vgquery: point id=temp name=温度验收 unit=C warn=ge28 crit=ge35
+vgquery: point id=humid name=湿度 unit=%RH warn=ge70 crit=ge85
+vgquery: point id=flood name=水浸 unit=- crit=eq1
+vgquery: point id=smoke name=烟雾 unit=% warn=ge5 crit=ge10
+vgquery: point id=acu_ret name=回风温度 unit=C warn=ge28 crit=ge32
+vgquery: point id=acu_set name=设定温度 unit=C
+vgquery: point id=acu_run name=空调运行 unit=-
+vgquery: point id=ups_load name=UPS负载 unit=% warn=ge70 crit=ge90
+vgquery: point id=ups_soc name=UPS电池 unit=% warn=le40 crit=le20
+vgquery: point id=ups_bypass name=UPS旁路 unit=- crit=eq1
+vgquery: point id=volt_a name=A相电压 unit=V warn=le200 crit=le180
+vgquery: point id=pwr_kw name=有功功率 unit=kW warn=ge8 crit=ge10
+vgquery: more=2
+vgquery: reason=not_found query=不存在的点位
+nsh> [K
