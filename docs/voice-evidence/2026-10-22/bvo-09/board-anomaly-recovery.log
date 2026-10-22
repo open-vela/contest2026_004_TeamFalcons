@@ -1,0 +1,314 @@
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada507b35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada507b35c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=60 body=0 pool=0 build=0 parse=10 http=330 backoff=0 total=350 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada507b35c3b13a] iter=0 tool=(none) latency=350ms llm=fail backend=0
+[trace:6ada507b35c3b13a] END status=fail iters=1 tools=0 llm_ms=350 tool_ms=0 elapsed_ms=400 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:3
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada50817c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7865 bytes)
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada50817c9701b3] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=10 body=0 pool=0 build=0 parse=10 http=310 backoff=0 total=330 req=7865 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada50817c9701b3] iter=0 tool=(none) latency=330ms llm=fail backend=0
+[trace:6ada50817c9701b3] END status=fail iters=1 tools=0 llm_ms=330 tool_ms=0 elapsed_ms=560 backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30ccefae
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 18:05:15
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.930, +1930)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.940, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.940, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.940, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.940, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.950, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.960, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(1.970, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.970, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.980, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.990, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.990, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.000, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.010, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.010, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +780ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +870ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1390ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1400ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +1790ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +1800ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +1830ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +1840ms] P3: heartbeat_init (rc=0)
+[agent] [boot +1850ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +1850ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +1860ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +1870ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +1870ms] P5: network_watch thread started (async)
+[agent] [boot +1880ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +1880ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.203
+[netmgr] Network connected: 192.168.137.203
+[netmgr] Found iface eth0 addr 192.168.137.203
+[agent] Network connected: 192.168.137.203
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-22T18:07:20.5171553+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     834216    6004200     834792    5795432   1086      7 Umem
+nsh> [K
+2026-10-22T18:07:21.3474352+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=0 submits=0 timeouts=0 last_ms=0
+vgptt: samples=9 raw_high=0 events=0 timeouts_wake=9 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T18:07:22.1554300+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+vgtime: synced 2026-10-22 18:08:15
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada512f00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792692527
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada512f00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=0 tls=670 send=160 ttfb=60 body=0 pool=0 build=0 parse=10 http=950 backoff=0 total=970 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ada512f00000000] iter=0 tool=(none) latency=970ms llm=fail backend=0
+[trace:6ada512f00000000] END status=fail iters=1 tools=0 llm_ms=970 tool_ms=0 elapsed_ms=1020 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada513535c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7865 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada513535c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=370 ttfb=0 body=0 pool=0 build=10 parse=10 http=480 backoff=0 total=500 req=7865 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada513535c3b13a] iter=0 tool=(none) latency=500ms llm=fail backend=0
+[trace:6ada513535c3b13a] END status=fail iters=1 tools=0 llm_ms=500 tool_ms=0 elapsed_ms=550 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc1118
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T18:10:43.6974761+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=14 shown=12 seen=14 boot=00004f42
+- id=acu_ret rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=acu_run rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=acu_set rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=door rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=energy_kwh rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=flood rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=humid rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=pwr_kw rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=smoke rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=temp rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=ups_bypass rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- id=ups_load rank=offline flags=offline value=- threshold=0.0 age_ms=0 since_ms=193730
+- omitted=2
+nsh> [K
+2026-10-22T18:10:46.2301514+08:00 CMD vgagent tool vg_alarm_recovery ups_load
+vgagent tool vg_alarm_recovery ups_load
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=ups_load kind=threshold state=unknown history_complete=false duration_ms=0 episode=0 boot=00004f42
+nsh> [K
+2026-10-22T18:10:48.7577114+08:00 CMD vgruntime
+vgruntime
+Usage: vgruntime dump | report [path]
+nsh> [K
+2026-10-22T18:10:51.2817831+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 17.6% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.8% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.7% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.5% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  1.5% velaguard_app_main 0x9001081d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90014331 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  3.0% ESP8266 0x90067ead 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x90068c79 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0032744 10.5% velaguard_app_main 0x900163fd 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 38.5% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  2.2% vghmi 0x90014b71 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x90016b99 0x2407e7f8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001cced 0x2407e8f8
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x90016b99 0x24052950
+   20    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  5.0% vghmi 0x900152d5 0
+   21    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x9001882d 0x2407e750
+nsh> [K
+2026-10-22T18:10:52.7867615+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918048    5920368     997736    5795432   1148     11 Umem
+nsh> [K

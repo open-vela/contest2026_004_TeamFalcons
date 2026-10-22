@@ -240,6 +240,26 @@ static void test_partial_recovery(void)
   expect(rec.has_duration == false, "no duration from a missing start");
 }
 
+/* Points seen drives the "first cycle has not finished" note.  It must count
+ * distinct points, not samples, or a single point re-sampled would look like
+ * a complete cycle. */
+
+static void test_points_seen(void)
+{
+  int before = vg_runtime_points_seen();
+
+  note("seen_a", 1, VG_RUNTIME_KIND_NONE, 1.0f, 0, NULL);
+  expect(vg_runtime_points_seen() == before + 1, "one point counted");
+
+  note("seen_a", 1, VG_RUNTIME_KIND_NONE, 2.0f, 0, NULL);
+  expect(vg_runtime_points_seen() == before + 1,
+         "re-sampling the same point does not add a second");
+
+  note("seen_b", 0, VG_RUNTIME_KIND_OFFLINE, 0, 0, "offline");
+  expect(vg_runtime_points_seen() == before + 2,
+         "an offline point is still a seen point");
+}
+
 int main(void)
 {
   vg_runtime_init();
@@ -252,6 +272,7 @@ int main(void)
   test_stale_only();
   test_recovery();
   test_partial_recovery();
+  test_points_seen();
 
   if (g_fail != 0)
     {

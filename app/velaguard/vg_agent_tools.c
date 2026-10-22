@@ -357,24 +357,67 @@ static int tool_anomaly_read(char *out, size_t cap)
     }
 
   off += (size_t)snprintf(out + off, cap - off,
-                          "vganomaly: total=%d shown=%d boot=%08x\n", total,
-                          listed, (unsigned)vg_runtime_boot_id());
+                          "vganomaly: total=%d shown=%d seen=%d boot=%08x\n",
+                          total, listed, vg_runtime_points_seen(),
+                          (unsigned)vg_runtime_boot_id());
+
+  /* No point noted yet means the first acquisition cycle has not finished.
+   * Saying so prevents an empty list from reading as a healthy site. */
+
+  if (vg_runtime_points_seen() == 0)
+    {
+      off += (size_t)snprintf(out + off, cap - off,
+                              "note=first_cycle_pending\n");
+    }
 
   for (i = 0; i < listed && off < cap; i++)
     {
       const struct vg_runtime_anomaly *a = &items[i];
+      char flags[32];
+      char value[24];
+      size_t fl = 0;
+
+      /* The separator goes before every flag after the first, because the
+       * first flag is not always threshold.  A leading comma made the
+       * offline-only line read "flags=,offline", which a model can echo. */
+
+      flags[0] = '\0';
+
+      if ((a->flags & VG_RUNTIME_ANOMALY_F_THRESHOLD) != 0)
+        {
+          fl += (size_t)snprintf(flags + fl, sizeof(flags) - fl, "%s",
+                                 "threshold");
+        }
+
+      if ((a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE) != 0)
+        {
+          fl += (size_t)snprintf(flags + fl, sizeof(flags) - fl, "%soffline",
+                                 (fl > 0) ? "," : "");
+        }
+
+      if ((a->flags & VG_RUNTIME_ANOMALY_F_STALE) != 0)
+        {
+          fl += (size_t)snprintf(flags + fl, sizeof(flags) - fl, "%sstale",
+                                 (fl > 0) ? "," : "");
+        }
+
+      /* A point that never sampled has no reading.  Printing 0.0 would let
+       * the answer claim a value the bus never returned. */
+
+      if (a->has_value)
+        {
+          snprintf(value, sizeof(value), "%.1f", a->value);
+        }
+      else
+        {
+          snprintf(value, sizeof(value), "-");
+        }
 
       off += (size_t)snprintf(out + off, cap - off,
-                              "- id=%s rank=%s flags=%s%s%s value=%.1f "
+                              "- id=%s rank=%s flags=%s value=%s "
                               "threshold=%.1f age_ms=%u since_ms=%u\n",
-                              a->id, vg_rank_name(a->rank),
-                              (a->flags & VG_RUNTIME_ANOMALY_F_THRESHOLD)
-                                  ? "threshold" : "",
-                              (a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE)
-                                  ? ",offline" : "",
-                              (a->flags & VG_RUNTIME_ANOMALY_F_STALE)
-                                  ? ",stale" : "",
-                              a->value, a->threshold, (unsigned)a->age_ms,
+                              a->id, vg_rank_name(a->rank), flags, value,
+                              a->threshold, (unsigned)a->age_ms,
                               (unsigned)a->since_ms);
     }
 

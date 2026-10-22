@@ -162,4 +162,12 @@ uint32_t vg_runtime_boot_id(void);
 
 uint32_t vg_runtime_events_dropped(void);
 
+/* Number of points the runtime has seen at least once.  The acquisition
+ * loop feeds one full cycle at a time, so this is 0 until the first cycle
+ * ends.  An empty anomaly list with a non-empty point table means the
+ * first cycle has not finished, which is not the same answer as no
+ * anomalies. */
+
+int vg_runtime_points_seen(void);
+
 #endif /* __APP_VELAGUARD_VG_RUNTIME_H */

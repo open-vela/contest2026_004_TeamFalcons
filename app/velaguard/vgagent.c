@@ -148,7 +148,15 @@ static int run_tool_cmd(int argc, char *argv[])
           return 1;
         }
 
-      snprintf(args_buf, sizeof(args_buf), "{\"query\":\"%s\"}", args);
+      /* vg_alarm_recovery takes point_id, not query.  Wrapping every bare
+       * word as query made the recovery check unreachable from NSH, which is
+       * the only way to demonstrate it without a spoken question. */
+
+      snprintf(args_buf, sizeof(args_buf),
+               (strcmp(name, "vg_alarm_recovery") == 0)
+                   ? "{\"point_id\":\"%s\"}"
+                   : "{\"query\":\"%s\"}",
+               args);
       args = args_buf;
     }
 

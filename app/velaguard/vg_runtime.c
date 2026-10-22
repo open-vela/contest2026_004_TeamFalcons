@@ -1474,3 +1474,24 @@ uint32_t vg_runtime_events_dropped(void)
 
   return g_ev_dropped;
 }
+
+int vg_runtime_points_seen(void)
+{
+  int seen = 0;
+  int i;
+
+  if (!g_inited)
+    {
+      vg_runtime_init();
+    }
+
+  for (i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
+    {
+      if (g_pts[i].used)
+        {
+          seen++;
+        }
+    }
+
+  return seen;
+}

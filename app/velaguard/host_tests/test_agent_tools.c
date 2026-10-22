@@ -170,6 +170,13 @@ int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
 
 uint32_t vg_runtime_boot_id(void) { return 0x1234u; }
 
+static int g_points_seen = 14;
+
+int vg_runtime_points_seen(void)
+{
+  return g_points_seen;
+}
+
 void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
                                       int n, int total, uint32_t age_ms)
 {
@@ -673,6 +680,7 @@ static void test_anomaly_tool(void)
   snprintf(g_anomalies[0].id, sizeof(g_anomalies[0].id), "ups_temp");
   g_anomalies[0].flags = VG_RUNTIME_ANOMALY_F_THRESHOLD;
   g_anomalies[0].rank = 0;
+  g_anomalies[0].has_value = true;
   g_anomalies[0].value = 95.0f;
   g_anomalies[0].threshold = 90.0f;
   g_anomalies[0].age_ms = 2000;
@@ -684,7 +692,38 @@ static void test_anomaly_tool(void)
   expect(strstr(out, "total=1") != NULL, "reports the total");
   expect(strstr(out, "id=ups_temp") != NULL, "names the point");
   expect(strstr(out, "rank=crit") != NULL, "orders by severity");
+  expect(strstr(out, "flags=threshold") != NULL, "spells the flag");
+  expect(strstr(out, "value=95.0") != NULL, "reports the sampled value");
   expect(g_facts_anomaly_calls == 1, "publishes the answer snapshot");
+
+  /* Offline-only: the flag list must not start with a comma, and a point
+   * that never sampled must not render a value of 0.0. */
+
+  memset(g_anomalies, 0, sizeof(g_anomalies));
+  snprintf(g_anomalies[0].id, sizeof(g_anomalies[0].id), "smoke");
+  g_anomalies[0].flags = VG_RUNTIME_ANOMALY_F_OFFLINE;
+  g_anomalies[0].rank = 2;
+  g_anomalies[0].has_value = false;
+  g_anomalies[0].since_ms = 5000;
+
+  rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
+  expect(rc == 0, "offline entry succeeds");
+  expect(strstr(out, "flags=offline") != NULL, "single flag has no comma");
+  expect(strstr(out, "flags=,offline") == NULL, "no leading comma");
+  expect(strstr(out, "value=-") != NULL, "no value for a point with no sample");
+  expect(strstr(out, "value=0.0") == NULL, "does not invent a reading");
+
+  memset(g_anomalies, 0, sizeof(g_anomalies));
+  g_anomalies[0].flags = VG_RUNTIME_ANOMALY_F_THRESHOLD |
+                         VG_RUNTIME_ANOMALY_F_OFFLINE;
+  snprintf(g_anomalies[0].id, sizeof(g_anomalies[0].id), "ups_load");
+  g_anomalies[0].has_value = true;
+  g_anomalies[0].value = 88.0f;
+  g_anomalies[0].threshold = 70.0f;
+
+  rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
+  expect(strstr(out, "flags=threshold,offline") != NULL,
+         "two flags joined once");
 
   /* Empty set is an answer, not an error. */
 
@@ -693,6 +732,18 @@ static void test_anomaly_tool(void)
   rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
   expect(rc == 0, "an empty anomaly set is a handled call");
   expect(strstr(out, "total=0") != NULL, "reports zero");
+  expect(strstr(out, "note=first_cycle_pending") == NULL,
+         "a completed cycle is not reported as pending");
+
+  /* Before the first acquisition cycle nothing has been noted.  The empty
+   * list must not read as a healthy site. */
+
+  g_points_seen = 0;
+  rc = run_tool("vg_anomaly_read", "{}", out, sizeof(out));
+  expect(rc == 0, "pending first cycle is a handled call");
+  expect(strstr(out, "note=first_cycle_pending") != NULL,
+         "says the first cycle has not finished");
+  g_points_seen = 14;
 }
 
 static void test_recovery_tool(void)
