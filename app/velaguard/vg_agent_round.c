@@ -332,6 +332,37 @@ void vg_agent_round_clear(void)
   pthread_mutex_unlock(&g_lock);
 }
 
+void vg_agent_round_abandon(void)
+{
+  velaclaw_client_t *client;
+
+  pthread_mutex_lock(&g_lock);
+
+  client = g_client;
+
+  if (g_state == VG_AGENT_ROUND_QUEUED || g_state == VG_AGENT_ROUND_RUNNING)
+    {
+      g_state = VG_AGENT_ROUND_IDLE;
+      g_owner = VG_AGENT_ROUND_OWNER_NONE;
+      g_finished_ms = 0;
+      g_reply_seen = false;
+
+      /* A late reply must not be attributed to the next question. */
+
+      if (++g_request_serial == 0)
+        {
+          ++g_request_serial;
+        }
+    }
+
+  pthread_mutex_unlock(&g_lock);
+
+  if (client != NULL)
+    {
+      velaclaw_client_abandon(client);
+    }
+}
+
 const char *vg_agent_round_last_reply(void)
 {
   return g_reply;

@@ -30,6 +30,7 @@
 #include <unistd.h>
 
 #include <agent_llm.h>
+#include "tools/tool_provider.h"
 #include "vg_agent_query.h"
 #include "vg_agent_round.h"
 #ifdef CONFIG_VG_BUS_DISCOVER
@@ -288,6 +289,8 @@ static bool vr_wait_agent(uint32_t deadline_ms)
  * answered inside the three-intent contract. */
 
 static bool vr_build_question(const char *text, char *question, size_t qcap,
+                              char *tool, size_t tcap,
+                              char *tool_json, size_t jcap,
                               char *reason, size_t rcap)
 {
   struct vg_voice_intent_result intent;
@@ -314,6 +317,8 @@ static bool vr_build_question(const char *text, char *question, size_t qcap,
       snprintf(question, qcap,
                "现在有哪些异常？请调用 vg_anomaly_read 获取完整列表，"
                "然后简要说明。");
+      snprintf(tool, tcap, "vg_anomaly_read");
+      snprintf(tool_json, jcap, "{}");
       return true;
     }
 
@@ -346,6 +351,8 @@ static bool vr_build_question(const char *text, char *question, size_t qcap,
         {
           snprintf(question, qcap, "查询点位 %s 的当前读数，请调用 "
                    "vg_point_read。", ctx);
+          snprintf(tool, tcap, "vg_point_read");
+          snprintf(tool_json, jcap, "{\"query\":\"%s\"}", ctx);
           return true;
         }
 
@@ -360,11 +367,17 @@ static bool vr_build_question(const char *text, char *question, size_t qcap,
       snprintf(question, qcap,
                "查询点位 %s 的告警是否已经恢复，请调用 vg_alarm_recovery。",
                points[res.index].id);
+      snprintf(tool, tcap, "vg_alarm_recovery");
+      snprintf(tool_json, jcap, "{\"point_id\":\"%s\"}",
+               points[res.index].id);
     }
   else
     {
       snprintf(question, qcap,
                "查询点位 %s 的当前读数，请调用 vg_point_read。",
+               points[res.index].id);
+      snprintf(tool, tcap, "vg_point_read");
+      snprintf(tool_json, jcap, "{\"query\":\"%s\"}",
                points[res.index].id);
     }
 
@@ -438,12 +451,17 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
   char reason[128];
   char display[VG_VOICE_DISPLAY_MAX];
   char speech[VG_VS_TEXT_MAX];
+  char tool[32];
+  char tool_json[96];
   struct vg_voice_facts before;
   uint32_t seq_before;
   bool have_before;
 
-  if (!vr_build_question(text, question, sizeof(question), reason,
-                         sizeof(reason)))
+  tool[0] = '\0';
+  tool_json[0] = '\0';
+
+  if (!vr_build_question(text, question, sizeof(question), tool, sizeof(tool),
+                         tool_json, sizeof(tool_json), reason, sizeof(reason)))
     {
       vr_ui_error(reason);
       return vg_vs_agent_result(&g_vr.s, gen, false, reason, vr_now_ms());
@@ -481,6 +499,11 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
           return 0;
         }
 
+      /* Give up the agent slot: otherwise the discarded round keeps the client
+       * busy and the next question is refused for up to its 300 s timeout. */
+
+      vg_agent_round_abandon();
+
       vr_ui_error("查询超时");
       return vg_vs_agent_result(&g_vr.s, gen, false, "agent timeout",
                                 vr_now_ms());
@@ -495,6 +518,23 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
     if (g_vr.cancel)
       {
         return 0;
+      }
+
+    /* The model sometimes answers from history without calling the tool.
+     * The intent is already fixed in C and maps to exactly one read-only
+     * tool, so run it here instead of failing the question.  Same tools, same
+     * guard and rate limiter; only the model's tool choice is replaced. */
+
+    if ((seq_after == seq_before || seq_after == 0) && tool[0] != '\0')
+      {
+        char out[1024];
+        int rc;
+
+        out[0] = '\0';
+        rc = tool_registry_execute(tool, tool_json, out, sizeof(out));
+        syslog(LOG_INFO, "[vgvoice] intent tool fallback %s rc=%d\n", tool,
+               rc);
+        seq_after = vg_voice_facts_seq();
       }
 
     if (seq_after == seq_before || seq_after == 0)
@@ -602,6 +642,15 @@ static void vr_run_actions(uint32_t actions)
               vr_ui_error("播放未能停止");
               next |= vg_vs_end(&g_vr.s, vr_now_ms());
             }
+        }
+
+      if ((actions & VG_VS_ACT_CANCEL_AGENT) != 0)
+        {
+          /* A new press replaced the question.  Release the agent slot so
+           * the replacement can be submitted; the old reply is dropped by
+           * its serial. */
+
+          vg_agent_round_abandon();
         }
 
       if ((actions & VG_VS_ACT_STOP_RECORD) != 0)

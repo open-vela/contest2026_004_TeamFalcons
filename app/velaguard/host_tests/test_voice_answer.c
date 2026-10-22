@@ -127,6 +127,7 @@ static void test_anomalies_empty(void)
   memset(&f, 0, sizeof(f));
   f.data_age_ms = 1500;
   f.anomaly_total = 0;
+  f.anomaly_seen = 14;
   f.anomaly_n = 0;
 
   CHECK(vg_va_render_anomalies(&f, display, sizeof(display), speech,
@@ -135,6 +136,28 @@ static void test_anomalies_empty(void)
   CHECK_STR_CONTAINS(speech, "当前没有异常点位");
   CHECK(vg_va_text_facts_consistent(&f, display));
   CHECK(vg_va_text_facts_consistent(&f, speech));
+}
+
+
+/* Before the first acquisition cycle nothing is sampled: an empty list is
+ * unknown, not healthy. */
+
+static void test_anomalies_pending(void)
+{
+  struct vg_voice_facts f;
+  char display[512];
+  char speech[128];
+
+  memset(&f, 0, sizeof(f));
+  f.anomaly_total = 0;
+  f.anomaly_seen = 0;
+
+  CHECK(vg_va_render_anomalies(&f, display, sizeof(display), speech,
+                               sizeof(speech)) > 0);
+  CHECK_STR_CONTAINS(display, "采集尚未完成");
+  CHECK_STR_CONTAINS(display, "无法确认异常");
+  CHECK_STR_CONTAINS(speech, "无法确认异常");
+  CHECK(strstr(display, "当前没有异常点位") == NULL);
 }
 
 static void test_anomalies_many(void)
@@ -146,6 +169,7 @@ static void test_anomalies_many(void)
   memset(&f, 0, sizeof(f));
   f.data_age_ms = 2000;
   f.anomaly_total = 12;
+  f.anomaly_seen = 14;
   f.anomaly_n = 12;
 
   add_anomaly(&f, 0, "ups_temp", VG_RUNTIME_ANOMALY_F_THRESHOLD, 0, 95.0f,
@@ -205,6 +229,7 @@ static void test_anomalies_truncated_snapshot(void)
 
   memset(&f, 0, sizeof(f));
   f.anomaly_total = 9;
+  f.anomaly_seen = 14;
   f.anomaly_n = 2;
   add_anomaly(&f, 0, "a", VG_RUNTIME_ANOMALY_F_THRESHOLD, 0, 1.0f, 0.5f,
               1000, 0);
@@ -304,6 +329,7 @@ static void test_consistency(void)
 
   memset(&f, 0, sizeof(f));
   f.anomaly_total = 3;
+  f.anomaly_seen = 14;
   CHECK(vg_va_text_facts_consistent(&f, "当前有 3 个异常点位。"));
   CHECK(!vg_va_text_facts_consistent(&f, "当前有 7 个异常点位。"));
 
@@ -324,6 +350,7 @@ static void test_speech_truncation(void)
 
   memset(&f, 0, sizeof(f));
   f.anomaly_total = 12;
+  f.anomaly_seen = 14;
   f.anomaly_n = 12;
 
   for (i = 0; i < 12; i++)
@@ -356,6 +383,7 @@ int main(void)
 {
   test_point();
   test_anomalies_empty();
+  test_anomalies_pending();
   test_anomalies_many();
   test_anomalies_truncated_snapshot();
   test_recovery();

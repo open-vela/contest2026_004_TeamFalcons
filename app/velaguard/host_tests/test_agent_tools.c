@@ -178,11 +178,13 @@ int vg_runtime_points_seen(void)
 }
 
 void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
-                                      int n, int total, uint32_t age_ms)
+                                      int n, int total, int seen,
+                                      uint32_t age_ms)
 {
   (void)items;
   (void)n;
   (void)total;
+  (void)seen;
   (void)age_ms;
   g_facts_anomaly_calls++;
 }

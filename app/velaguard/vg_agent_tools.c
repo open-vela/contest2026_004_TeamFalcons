@@ -344,7 +344,8 @@ static int tool_anomaly_read(char *out, size_t cap)
         }
     }
 
-  vg_voice_facts_publish_anomalies(items, n, total, oldest);
+  vg_voice_facts_publish_anomalies(items, n, total,
+                                   vg_runtime_points_seen(), oldest);
 
   listed = n;
 

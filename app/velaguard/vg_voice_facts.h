@@ -30,6 +30,7 @@ struct vg_voice_facts
 
   /* Anomaly answer. */
   int      anomaly_total;   /* points, including those beyond anomaly_n */
+  int      anomaly_seen;    /* points the runtime has sampled at least once */
   int      anomaly_n;
   struct vg_runtime_anomaly anomalies[VG_RUNTIME_MAX_POINTS];
 
@@ -53,7 +54,8 @@ struct vg_voice_facts
 };
 
 void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
-                                      int n, int total, uint32_t age_ms);
+                                      int n, int total, int seen,
+                                      uint32_t age_ms);
 void vg_voice_facts_publish_recovery(const struct vg_runtime_recovery *rec,
                                      uint32_t age_ms);
 void vg_voice_facts_publish_point(const char *id, const char *name,

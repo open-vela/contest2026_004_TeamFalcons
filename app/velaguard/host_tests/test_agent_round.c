@@ -15,6 +15,7 @@ velaclaw_client_t *velaclaw_client_open(const char *name)
 int velaclaw_ask_async(velaclaw_client_t *c, const velaclaw_ask_req_t *req,
                       void (*cb)(int, const char *, void *), void *ck)
 { (void)c; (void)req; callback = cb; cookie = ck; return 0; }
+void velaclaw_client_abandon(velaclaw_client_t *c) { (void)c; }
 
 int main(void)
 {

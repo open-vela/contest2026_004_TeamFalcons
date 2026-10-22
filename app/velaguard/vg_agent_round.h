@@ -96,6 +96,11 @@ uint32_t vg_agent_round_generation(void);
 
 void vg_agent_round_clear(void);
 
+/* Give up on the current round without waiting for its reply.  The local
+ * state returns to IDLE and the client slot is released, so the next question
+ * is not refused as busy; a late reply is dropped by its serial. */
+void vg_agent_round_abandon(void);
+
 /* How long a finished result may sit unclaimed before any other flow may
  * release it.  The queue refuses to start a round while a terminal state is
  * still there, so without this a manual round that nobody read (the NSH

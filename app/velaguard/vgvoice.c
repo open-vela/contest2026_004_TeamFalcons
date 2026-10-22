@@ -32,6 +32,9 @@
 #include "vg_voice_cloud.h"
 #include "vg_voice_pref.h"
 #include "vg_voice_round.h"
+#ifdef VG_VOICE_ROUND
+#include "vg_voice_overlay.h"
+#endif
 
 /* The cloud adapter is the same code the round uses.  These two commands make
  * it reachable without a button press, so the request shape and the audio
@@ -292,6 +295,41 @@ int main(int argc, FAR char *argv[])
           vg_voice_round_press_sim(false);
           printf("vgvoice: round release synthetic\n");
           return EXIT_SUCCESS;
+        }
+
+      if (argc >= 3 && strcmp(argv[2], "text") == 0)
+        {
+          struct vg_voice_ui ui;
+
+          if (!vg_voice_round_ui(&ui))
+            {
+              printf("vgvoice: round not started\n");
+              return EXIT_FAILURE;
+            }
+
+          printf("q=%s\n", ui.question);
+          printf("a=%s\n", ui.answer);
+
+          if (ui.error[0] != '\0')
+            {
+              printf("e=%s\n", ui.error);
+            }
+
+          return EXIT_SUCCESS;
+        }
+
+      if (argc >= 3 && strcmp(argv[2], "overlay") == 0)
+        {
+          char buf[600];
+
+#ifdef VG_VOICE_ROUND
+          (void)vg_voice_overlay_debug(buf, sizeof(buf));
+          printf("%s", buf);
+          return EXIT_SUCCESS;
+#else
+          printf("vgvoice: overlay not built\n");
+          return EXIT_FAILURE;
+#endif
         }
 
       if (argc >= 3 && strcmp(argv[2], "retry") == 0)

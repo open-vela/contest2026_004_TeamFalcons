@@ -32,7 +32,8 @@ static struct vg_voice_facts *facts_begin_locked(void)
 }
 
 void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
-                                      int n, int total, uint32_t age_ms)
+                                      int n, int total, int seen,
+                                      uint32_t age_ms)
 {
   struct vg_voice_facts *f;
   int i;
@@ -51,6 +52,7 @@ void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
   f = facts_begin_locked();
   f->data_age_ms = age_ms;
   f->anomaly_total = total;
+  f->anomaly_seen = seen;
   f->anomaly_n = n;
 
   for (i = 0; i < n; i++)

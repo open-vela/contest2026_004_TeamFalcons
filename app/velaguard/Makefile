@@ -101,6 +101,8 @@ CSRCS    += vg_voice_cloud.c vg_voice_round.c vg_voice_pref.c
 # so it is filtered out below when this is not set.
 VG_VOICE_ROUND_ENABLED := y
 CFLAGS   += -DVG_VOICE_ROUND=1
+# vgvoice reaches the overlay's read-only layout diagnostic.
+CFLAGS   += -I$(CURDIR)/../../gui/main/ui/widgets
 endif
 endif
 

@@ -22,6 +22,7 @@
 #include "vg_voice_pref.h"
 #include "vg_voice_round.h"
 
+#include <pthread.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -38,7 +39,14 @@ static lv_obj_t * s_close;
 static lv_obj_t * s_mute;
 static lv_obj_t * s_mute_label;
 static lv_obj_t * s_retry;
+static lv_obj_t * s_answer_box;
 static lv_timer_t * s_timer;
+
+/* BVO-12 layout snapshot, written from the LVGL thread and copied out by the
+ * NSH diagnostic.  Measuring from another thread would race the layout. */
+
+static char s_dbg[512];
+static pthread_mutex_t s_dbg_lock = PTHREAD_MUTEX_INITIALIZER;
 
 static void overlay_hide(void)
 {
@@ -136,6 +144,72 @@ static void status_text(const struct vg_voice_ui * ui, char * buf, size_t cap)
     }
 }
 
+/* Runs in the LVGL thread.  Reports geometry, the answer scroll range and a
+ * hit test on each button center, so a board run can show the panel fits the
+ * screen and the controls are reachable without a person looking at it. */
+
+static void overlay_measure(void)
+{
+    char buf[512];
+    lv_area_t a;
+    lv_area_t b;
+    lv_display_t * disp;
+    int n = 0;
+
+    if(s_panel == NULL) {
+        n = snprintf(buf, sizeof(buf), "overlay: absent\n");
+    }
+    else {
+        lv_obj_get_coords(s_panel, &a);
+        disp = lv_obj_get_display(s_panel);
+        n = snprintf(buf, sizeof(buf),
+                     "overlay: panel=%dx%d at %d,%d screen=%dx%d visible=%d\n",
+                     (int)lv_obj_get_width(s_panel),
+                     (int)lv_obj_get_height(s_panel),
+                     (int)a.x1, (int)a.y1,
+                     (int)lv_display_get_horizontal_resolution(disp),
+                     (int)lv_display_get_vertical_resolution(disp),
+                     lv_obj_has_flag(s_panel, LV_OBJ_FLAG_HIDDEN) ? 0 : 1);
+
+        if(s_answer_box != NULL && n < (int)sizeof(buf)) {
+            n += snprintf(buf + n, sizeof(buf) - n,
+                          "overlay: answer_box=h%d scroll_bottom=%d label_h=%d\n",
+                          (int)lv_obj_get_height(s_answer_box),
+                          (int)lv_obj_get_scroll_bottom(s_answer_box),
+                          (int)lv_obj_get_height(s_answer));
+        }
+
+        if(s_mute != NULL && n < (int)sizeof(buf)) {
+            lv_obj_get_coords(s_mute, &b);
+            lv_point_t p = { (b.x1 + b.x2) / 2, (b.y1 + b.y2) / 2 };
+            n += snprintf(buf + n, sizeof(buf) - n,
+                          "overlay: mute=%dx%d at %d,%d hit=%d\n",
+                          (int)lv_obj_get_width(s_mute), (int)lv_obj_get_height(s_mute),
+                          (int)b.x1, (int)b.y1, lv_obj_hit_test(s_mute, &p) ? 1 : 0);
+        }
+
+        if(s_retry != NULL && n < (int)sizeof(buf)) {
+            lv_obj_get_coords(s_mute, &b);
+            n += snprintf(buf + n, sizeof(buf) - n,
+                          "overlay: retry_visible=%d\n",
+                          lv_obj_has_flag(s_retry, LV_OBJ_FLAG_HIDDEN) ? 0 : 1);
+        }
+
+        if(s_close != NULL && n < (int)sizeof(buf)) {
+            lv_obj_get_coords(s_close, &b);
+            lv_point_t p = { (b.x1 + b.x2) / 2, (b.y1 + b.y2) / 2 };
+            n += snprintf(buf + n, sizeof(buf) - n,
+                          "overlay: close=%dx%d at %d,%d hit=%d\n",
+                          (int)lv_obj_get_width(s_close), (int)lv_obj_get_height(s_close),
+                          (int)b.x1, (int)b.y1, lv_obj_hit_test(s_close, &p) ? 1 : 0);
+        }
+    }
+
+    pthread_mutex_lock(&s_dbg_lock);
+    snprintf(s_dbg, sizeof(s_dbg), "%s", buf);
+    pthread_mutex_unlock(&s_dbg_lock);
+}
+
 static void poll_cb(lv_timer_t * t)
 {
     struct vg_voice_ui ui;
@@ -145,6 +219,9 @@ static void poll_cb(lv_timer_t * t)
 
     if(!vg_voice_round_ui(&ui) || !ui.visible) {
         overlay_hide();
+        pthread_mutex_lock(&s_dbg_lock);
+        snprintf(s_dbg, sizeof(s_dbg), "overlay: hidden\n");
+        pthread_mutex_unlock(&s_dbg_lock);
         return;
     }
 
@@ -187,6 +264,8 @@ static void poll_cb(lv_timer_t * t)
      * invalidation; the text belongs to the label inside the button. */
     if(s_mute_label) {
         lv_label_set_text(s_mute_label, ui.muted ? "播报:关" : "播报:开");
+
+    overlay_measure();
     }
 }
 
@@ -298,6 +377,7 @@ void vg_voice_overlay_create(void)
         lv_obj_add_event_cb(box, scroll_cb, LV_EVENT_SCROLL_BEGIN, NULL);
         lv_obj_add_event_cb(box, scroll_cb, LV_EVENT_SCROLL_END, NULL);
 
+        s_answer_box = box;
         s_answer = lv_label_create(box);
         lv_obj_set_width(s_answer, LV_PCT(100));
         lv_obj_set_style_text_color(s_answer, lv_color_hex(VG_COLOR_TEXT), 0);
@@ -307,6 +387,19 @@ void vg_voice_overlay_create(void)
     }
 
     s_timer = lv_timer_create(poll_cb, 100, NULL);
+}
+
+int vg_voice_overlay_debug(char *out, size_t cap)
+{
+    if(out == NULL || cap == 0) {
+        return 0;
+    }
+
+    pthread_mutex_lock(&s_dbg_lock);
+    snprintf(out, cap, "%s", s_dbg[0] != '\0' ? s_dbg : "overlay: no snapshot\n");
+    pthread_mutex_unlock(&s_dbg_lock);
+
+    return (int)strlen(out);
 }
 
 void vg_voice_overlay_destroy(void)
@@ -327,6 +420,7 @@ void vg_voice_overlay_destroy(void)
     s_mute = NULL;
     s_mute_label = NULL;
     s_retry = NULL;
+    s_answer_box = NULL;
 }
 
 #endif /* VG_VOICE_ROUND */

@@ -10,7 +10,13 @@
 #ifndef VG_VOICE_OVERLAY_H
 #define VG_VOICE_OVERLAY_H
 
+#include <stddef.h>
+
 void vg_voice_overlay_create(void);
+
+/* BVO-12 diagnostics: geometry, scroll range and hit tests into a buffer.
+ * Returns bytes written.  Read-only; it never moves or styles an object. */
+int vg_voice_overlay_debug(char *out, size_t cap);
 void vg_voice_overlay_destroy(void);
 
 #endif /* VG_VOICE_OVERLAY_H */

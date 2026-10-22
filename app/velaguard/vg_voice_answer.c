@@ -346,6 +346,18 @@ int vg_va_render_anomalies(const struct vg_voice_facts *f,
 
   listed = f->anomaly_n;
 
+  /* No point has been sampled yet, so an empty list is "unknown", not
+   * "healthy".  This happens for the first acquisition cycle after boot. */
+
+  if (f->anomaly_seen <= 0)
+    {
+      va_append(display, dcap, &d,
+                "采集尚未完成，暂时无法确认异常（已确认点位 %d 个）。",
+                f->anomaly_total);
+      va_append(speech, scap, &s, "采集尚未完成，暂时无法确认异常。");
+      return (int)d;
+    }
+
   if (f->anomaly_total <= 0)
     {
       va_append(display, dcap, &d, "当前没有异常点位，共 %d 个已确认点位。",
