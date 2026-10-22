@@ -20,6 +20,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <pthread.h>
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -51,6 +53,30 @@ static uint32_t vgvoice_now_ms(void)
 
   return (uint32_t)((uint64_t)ts.tv_sec * 1000u
                     + (uint64_t)ts.tv_nsec / 1000000u);
+}
+#endif
+
+#ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+struct vgvoice_probe_cancel
+{
+  volatile int cancel;
+  volatile bool done;
+  uint32_t at_ms;
+};
+
+static void *vgvoice_probe_cancel_worker(void *arg)
+{
+  struct vgvoice_probe_cancel *c = arg;
+  while (!c->done)
+    {
+      if ((int32_t)(vgvoice_now_ms() - c->at_ms) >= 0)
+        {
+          c->cancel = 1;
+          break;
+        }
+      usleep(10000);
+    }
+  return NULL;
 }
 #endif
 
@@ -269,6 +295,88 @@ int main(int argc, FAR char *argv[])
 
       printf("vgvoice: muted=%d\n", vg_voice_round_muted() ? 1 : 0);
       return EXIT_SUCCESS;
+    }
+
+  if (strcmp(cmd, "netprobe") == 0)
+    {
+      /* NSH-only transport diagnostic: always use a fixed invalid test
+       * credential.  Never load provision, and never print the reply body.
+       * This exercises the real TLS/HTTP path against a local fault server
+       * without changing the product endpoint or exposing its API key. */
+
+      char *end;
+      unsigned long budget;
+      unsigned long port;
+      vela_req_ctl_t ctl;
+      uint32_t start;
+      size_t received = 0;
+      int status = 0;
+      int rc;
+      struct vgvoice_probe_cancel cancellation = {0};
+      pthread_t cancel_thread;
+      unsigned long cancel_after = 0;
+
+      if ((argc != 6 && argc != 7) || strpbrk(argv[2], "\r\n \t") != NULL ||
+          argv[4][0] != '/' || strpbrk(argv[4], "\r\n \t") != NULL)
+        {
+          printf("vgvoice: netprobe host port /path budget_ms [cancel_ms]\n");
+          return EXIT_FAILURE;
+        }
+
+      port = strtoul(argv[3], &end, 10);
+      if (*end != '\0' || port == 0 || port > 65535)
+        {
+          return EXIT_FAILURE;
+        }
+
+      budget = strtoul(argv[5], &end, 10);
+      if (*end != '\0' || budget == 0 || budget > 30000)
+        {
+          return EXIT_FAILURE;
+        }
+
+      if (argc == 7)
+        {
+          cancel_after = strtoul(argv[6], &end, 10);
+          if (*end != '\0' || cancel_after == 0 || cancel_after > budget)
+            {
+              return EXIT_FAILURE;
+            }
+        }
+
+      start = vgvoice_now_ms();
+      if (cancel_after != 0)
+        {
+          pthread_attr_t attr;
+          cancellation.at_ms = start + (uint32_t)cancel_after;
+          pthread_attr_init(&attr);
+          pthread_attr_setstacksize(&attr, 2048);
+          rc = pthread_create(&cancel_thread, &attr,
+                              vgvoice_probe_cancel_worker, &cancellation);
+          pthread_attr_destroy(&attr);
+          if (rc != 0)
+            {
+              return EXIT_FAILURE;
+            }
+        }
+      ctl.deadline_ms = start + (uint32_t)budget;
+      if (ctl.deadline_ms == 0)
+        {
+          ctl.deadline_ms = 1;
+        }
+
+      ctl.cancel = &cancellation.cancel;
+      rc = agent_http_probe(argv[2], argv[3], argv[4], &ctl,
+                            &received, &status);
+      cancellation.done = true;
+      if (cancel_after != 0)
+        {
+          pthread_join(cancel_thread, NULL);
+        }
+      printf("vgvoice: netprobe rc=%d status=%d bytes=%u ms=%u\n", rc,
+             status, (unsigned)received,
+             (unsigned)(vgvoice_now_ms() - start));
+      return rc == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
     }
 
   if (strcmp(cmd, "round") == 0)

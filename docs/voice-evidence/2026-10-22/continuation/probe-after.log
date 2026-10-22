@@ -1,0 +1,382 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 23:07:43
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(3.520, +3520)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(3.530, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(3.530, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(3.540, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(3.540, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(3.540, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(3.550, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(3.560, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.570, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.570, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.580, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.590, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.590, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.600, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.610, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.610, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.620, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.630, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.630, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.640, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.650, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.650, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.660, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.670, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.670, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.680, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.690, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.700, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.710, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED[ nuagent] AI Agent - Vela AI Agent starting (build: 2026-10-m22 22:51:07)
+: 3[agent] [boot +10ms] P0: timezone set
+
+Hello from openvela contest 2026 team 004!
+[agent] [boot +270ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +550ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +560ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +1030ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +1040ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +1170ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1720ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +2060ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2740ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2760ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +3540ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +3550ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +3620ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +3630ms] P3: heartbeat_init (rc=0)
+[agent] [boot +3640ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +3640ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +3650ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +3660ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.236
+[netmgr] Network connected: 192.168.137.236
+[netmgr] Found iface eth0 addr 192.168.137.236
+[agent] Network connected: 192.168.137.236
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+
+2026-10-22T23:08:53.9779908+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710491
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=200 bytes=13 ms=460
+nsh> [K
+2026-10-22T23:08:54.4826498+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710492
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=401 bytes=13 ms=470
+nsh> [K
+2026-10-22T23:08:54.9913528+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710492
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=429 bytes=13 ms=460
+nsh> [K
+2026-10-22T23:08:55.4826427+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710493
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[vela_tls] body ended at 13/113
+vgvoice: netprobe rc=-4 status=0 bytes=0 ms=460
+nsh> [K
+2026-10-22T23:08:55.9878951+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 300
+vgvoice netprobe 192.168.137.1 8444 /ok 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710493
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=310
+nsh> [K
+2026-10-22T23:08:56.3383914+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710494
+vgvoice: netprobe rc=-7 status=0 bytes=0 ms=320
+nsh> [K
+2026-10-22T23:08:56.7038316+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /stall 1000
+vgvoice netprobe 192.168.137.1 8443 /stall 1000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710494
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=1080
+nsh> [K
+2026-10-22T23:08:57.8031679+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710495
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=200 bytes=13 ms=490
+nsh> [K
+2026-10-22T23:08:58.3360808+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.236:8501       8.148.67.174:1883  
+     2: 06  68   0   0    0   0      0  192.168.137.236:8506      192.168.137.1:8444  
+     3: 06  68   0   0    0   0      0  192.168.137.236:8507      192.168.137.1:8444  
+     4: 06  68   0   0    0   0      0  192.168.137.236:8508      192.168.137.1:8443  
+nsh> [K
+2026-10-22T23:08:58.5519727+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     850672    5987040     927520    5795432   1089      5 Umem
+nsh> [K
+2026-10-22T23:08:58.7666157+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710496
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=200 bytes=13 ms=450
+nsh> [K
+2026-10-22T23:08:59.2436595+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710496
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=401 bytes=13 ms=450
+nsh> [K
+2026-10-22T23:08:59.7364489+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710497
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=429 bytes=13 ms=460
+nsh> [K
+2026-10-22T23:09:00.2319041+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710497
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[vela_tls] body ended at 13/113
+vgvoice: netprobe rc=-4 status=0 bytes=0 ms=450
+nsh> [K
+2026-10-22T23:09:00.7089418+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 300
+vgvoice netprobe 192.168.137.1 8444 /ok 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710498
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=310
+nsh> [K
+2026-10-22T23:09:01.0435073+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710498
+vgvoice: netprobe rc=-7 status=0 bytes=0 ms=420
+nsh> [K
+2026-10-22T23:09:01.4907328+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /stall 1000
+vgvoice netprobe 192.168.137.1 8443 /stall 1000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710499
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=1010
+nsh> [K
+2026-10-22T23:09:02.5181985+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710500
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=200 bytes=13 ms=2300
+nsh> [K
+2026-10-22T23:09:04.8659196+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.236:8501       8.148.67.174:1883  
+     2: 06  68   0   0    0   0      0  192.168.137.236:8508      192.168.137.1:8443  
+     3: 06  68   0   0    0   0      0  192.168.137.236:8514      192.168.137.1:8444  
+     4: 06  68   0   0    0   0      0  192.168.137.236:8515      192.168.137.1:8444  
+nsh> [K
+2026-10-22T23:09:05.0782484+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     850672    5987040     927520    5795432   1089      7 Umem
+nsh> [K
+2026-10-22T23:09:05.3235930+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710503
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=200 bytes=13 ms=480
+nsh> [K
+2026-10-22T23:09:05.8470701+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+vgvoice netprobe 192.168.137.1 8443 /unauthorized 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710503
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=401 bytes=13 ms=460
+nsh> [K
+2026-10-22T23:09:06.3511762+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+vgvoice netprobe 192.168.137.1 8443 /rate-limit 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710504
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=0 status=429 bytes=13 ms=480
+nsh> [K
+2026-10-22T23:09:06.8767779+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+vgvoice netprobe 192.168.137.1 8443 /truncate 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710504
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[vela_tls] body ended at 13/113
+vgvoice: netprobe rc=-4 status=0 bytes=0 ms=470
+nsh> [K
+2026-10-22T23:09:07.3861661+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 300
+vgvoice netprobe 192.168.137.1 8444 /ok 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710505
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=310
+nsh> [K
+2026-10-22T23:09:07.7230952+08:00 CMD vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+vgvoice netprobe 192.168.137.1 8444 /ok 3000 300
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710505
+vgvoice: netprobe rc=-7 status=0 bytes=0 ms=420
+nsh> [K
+2026-10-22T23:09:08.1664444+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /stall 1000
+vgvoice netprobe 192.168.137.1 8443 /stall 1000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710505
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=1060
+nsh> [K
+2026-10-22T23:09:09.2523307+08:00 CMD vgvoice netprobe 192.168.137.1 8443 /ok 3000
+vgvoice netprobe 192.168.137.1 8443 /ok 3000
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792710506
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+vgvoice: netprobe rc=-6 status=0 bytes=0 ms=3160
+nsh> [K
+2026-10-22T23:09:12.4578012+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.236:8501       8.148.67.174:1883  
+     2: 06  68   0   0    0   0      0  192.168.137.236:8522      192.168.137.1:8444  
+     3: 06  68   0   0    0   0      0  192.168.137.236:8523      192.168.137.1:8444  
+     4: 06  68   0   0    0   0      0  192.168.137.236:8524      192.168.137.1:8443  
+nsh> [K
+2026-10-22T23:09:12.6723480+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     850672    5987040     927520    5795432   1089      7 Umem
+nsh> [K
+2026-10-22T23:09:12.8892343+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 5000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 5000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792710510
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=400 bytes=98 ms=710
+nsh> [K
+2026-10-22T23:09:13.6508449+08:00 CMD vgvoice asr /data/velaguard/voice/q1.wav
+vgvoice asr /data/velaguard/voice/q1.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792710512
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=61669 resp=472 ms=3840
+vgvoice: asr text=现在有哪些异常？
+nsh> [K
+2026-10-22T23:09:17.8774942+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=592 headroom=48536
+nsh> [K
+2026-10-22T23:09:18.3787463+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.236:8501       8.148.67.174:1883  
+nsh> [K
+2026-10-22T23:09:18.8861626+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837712     850672    5987040     934928    5795432   1089      7 Umem
+nsh> [K
+2026-10-22T23:09:19.4060751+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  28.8% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%   6.6% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000744  37.6%   1.0% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001760  21.5%   3.2% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264 0002752  22.4%   4.8% velaguard_app_main 0x90010915 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014429 0
+    7     3 200 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0000696  34.3%   3.2% ESP8266 0x90066d65 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x90067b31 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0000656  16.1%   0.0% vgvoice
+   10     3 100 RR       pthread   - Ready              0000000000000000 0049128 0000592   1.2%  15.7% velaguard_app_main 0x9001663d 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.5% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0008968  18.2%  30.7% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006288  76.9%   2.5% vghmi 0x90014c69 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002c1bd 0x3000d1f8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000976  23.9%   0.0% ai_agent 0x90032355 0x3000d2f8
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.5% ai_agent 0x9002c1bd 0x24052c10
+nsh> [K
+2026-10-22T23:09:19.9092376+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0           8 pref.txt
+nsh> [K

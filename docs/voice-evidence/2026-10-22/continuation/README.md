@@ -44,3 +44,39 @@ NuttX 提交 `6f11173642c` 在 H750B-DK 且启用 FMC 时，将板级声明的 8
 - `mpu-recovery.json` / `mpu-recovery.log`：不复位，结束合成轮次后再次 ASR 成功（HTTP 200，15920 ms），存储目录可列举。仅保留合成样本 `q1.wav` 和 `pref.txt`。
 
 本次状态是根因修复及有限回归通过，尚不能声称全部网络/存储稳定性问题消失。新 TCP 统计发现三条 CLOSED、ref=0 的记录持续存在，接下来单独核查回收。`/proc/net/tcp` 需要 CONFIG_NET_STATISTICS；原先缺文件并非没有挂载 procfs。
+
+## 第三阶段：TCP / TLS 截止时间与无密钥故障注入
+
+新增 NSH 诊断 `vgvoice netprobe host port /path budget_ms [cancel_ms]`，使用同一个 `vela_https_request_stream`。只发送固定的无效测试凭据和固定测试 JSON，不读 provision，不修改产品端点，不输出响应正文。不是设备端 Agent 工具。
+
+原始传输的 300 ms 握手预算实际在 8050 ms 后才返回，见 `probe-before.log`。修复为：受控调用用非阻塞 TCP 与 TLS，在至多 100 ms 的 poll 片段间检查原 deadline / cancel；socket 只 close 一次，去掉重叠的 shutdown；永久收发错误不再无限当作可重试。普通后台调用仍沿用原有连接流程。
+
+### 结果及证据边界
+
+`probe-after-final.log` 与 `probe-check-final.log`：25 项检查全部通过，均在同次开机中执行：
+
+| 场景 | 次数 | 耗时 |
+|---|---:|---|
+| 本地正常响应与故障后的下一次成功 | 6 | 500–710 ms |
+| 本地 HTTP 401 | 3 | 520–750 ms |
+| 本地 HTTP 429 | 3 | 510–770 ms |
+| 声明 113 B、实际 13 B 的截断响应 | 3 | 510–750 ms，明确读取失败 |
+| TLS 服务不回应，300 ms deadline | 3 | 310–390 ms，timeout |
+| TLS 服务不回应，300 ms 后取消 | 3 | 330–510 ms，cancelled |
+| 握手后无 HTTP 响应，1000 ms deadline | 3 | 1030–1080 ms，timeout |
+| 真实 MiMo 端点 + 固定无效凭据 | 1 | HTTP 401，920 ms |
+
+随后同次开机、真实凭据的 ASR 成功：HTTP 200，5620 ms。这是合成样本 `q1.wav`，没有上传个人录音。未发生复位、硬故障或存储读取失败。没有把本地服务的 429 当成真实服务商限流。
+
+`firmware-deadline-final.json`、`build-deadline-final.log`、`flash-deadline-final.log` 保存实际固件及来源。`scripts/voice_test/tls_fixture.py` 是有次数、时长、线程上限的本地故障服务；证书与临时私钥仅在主机临时目录，不入仓。`nsh_plan.ps1` 每步等待提示符且有超时，避免慢命令与下条命令交错；`check_probe.py` 对命令、错误类型和时限逐条判定。
+
+保留 `probe-check.log` 的首次失败：其中一次恢复探测被故障服务的四个滞留线程阻塞，另一次真实端点返回 400（测试缺少有效格式的 JSON），不能算作通过。服务改为观察连接关闭、及时释放模拟线程，探测改为发送固定合法格式 JSON 后重跑，最终 25 项通过。没有修改失败原始记录。
+
+### 仍未关闭的 BVO-07 缺口
+
+- `getaddrinfo` 仍使用平台阻塞 DNS，默认接收/发送超时为 30 s、重试 3 次。现在返回后会检查预算，但不能中途取消 DNS；不能宣称全链路截止时间已完成。
+- 语音 Agent 阶段仍使用普通 `llm_chat_tools` 和 300 s 本地客户端超时；放弃只是释放客户端槽位，尚未给这段物理请求传递语音 deadline。
+- 当前受控传输遇到配置了 HTTP CONNECT 代理时明确失败，避免退回固定 30 s 隧道等待。VelaGuard 当前直连路径已测。
+- 当前网络及存储的历史异常未复现，不等于已经排除。回收后可见 TIME_WAIT、ref=0 的连接，这是 TCP 正常状态；不能要求表中完全没有记录。
+
+上述都是工程缺口，不再归为需要管理员权限、必须重写密钥或必须人工操作的阻塞。阶段 B 仍未通过，继续作为后续子目标处理。

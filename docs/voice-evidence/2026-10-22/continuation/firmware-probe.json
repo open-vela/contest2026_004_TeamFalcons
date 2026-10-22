@@ -1,0 +1,35 @@
+{
+  ".": {
+    "head": "9ff34652bb2c1d370aaa900da0bd8ea8d330ae40",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "6f11173642c5227a3c3e0e19a6fe21c84f8a0014",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "414141564d9d06cae5ff326903895b203f2f341e",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "92e43003c3d1f4ef824e914c20647f37c7378097d43e88e3ea9c75b98ad6e560",
+    ".debug/nuttx.bin": "336a2ab1755ca9081971294ed54fd96eb29181e5a8dbd76b551901cd1307f1ac"
+  },
+  "sources": {
+    "app/velaguard/vg_voice_round.c": "25eb900e505f88195ede44db374ab35d275f80c798f1d6a0d7799131faf1293e",
+    "app/velaguard/vg_voice_round.h": "706b912fb118ef17f3f6e1465825e1a764c49f36d3f3d11dc84f444ea4889054",
+    "app/velaguard/vgvoice.c": "7c986e76e8f015a0e819d55ab6bd5a5e063c8a1e1472c598ea2d915a1be795e8",
+    "scripts/configs/velaguard-lvgl.defconfig": "01672d30af3fe68da760080b1e219d2ce06293e9c64a2334fd1c7a5614b39c2c",
+    "scripts/build.sh": "fb0b18c01dcd6de6872eaad9588a26209f4311a4f155fd7330fa66b04ca942e0",
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../nuttx/arch/arm/src/stm32h7/stm32_mpuinit.c": "4bd969ed625be227544ba791dc6dcd69d5ecd09e7c091e7bf9b439ef37ace799",
+    "../packages/ai_agent/include/agent_http.h": "3ce18940157dec8ce374b693ae8a498ae6544f9fba435c8bd47ceb0cc64134f2",
+    "../packages/ai_agent/src/llm/llm_proxy.c": "faadb57342eea17256c268f3e92bdf90f02ae25fc066cb863334903bd20cb010"
+  },
+  "date": "2026-10-22",
+  "description": "Transport probe with a fixed invalid test credential, original transport for baseline"
+}
