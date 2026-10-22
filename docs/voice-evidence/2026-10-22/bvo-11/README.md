@@ -48,7 +48,8 @@
 - 云 ASR：160,044 B 合成样本，请求 213,561 B，HTTP 200，转写与样本一致。
 - 云 TTS：84,480 B PCM，生成 16 kHz 双声道 WAV 112,684 B。
 - 播放：NxPlayer 接受，`play rc=0`，任务回到 idle。
-- 连续 10 次 ASR（[board-asr-loop.log](board-asr-loop.log)）：9 次 200，用时 9.2 至 10.3 s；1 次 `rc=net` 在 6.89 s 返回，下一次立即成功。没有复现 14:40 的挂起。
+- 连续 45 次 ASR（[board-asr-soak.log](board-asr-soak.log)）：42 次 200，用时 8.1 至 11.1 s；3 次 `rc=net` 分别在 6.89、7.95、7.21 s 返回，每次下一次都立即成功。没有复现 14:40 的挂起。
+- 35 次调用后的堆采样（每 5 次一次）：used 918,168 / 918,720 / 918,168 / 918,168，`maxused` 1,077,568、`maxfree` 5,795,432 全程不变。首轮之后没有随调用次数增长，说明单次请求的缓冲没有累积。
 - 300 ms 预算：1.05 s 返回 `rc=timeout`，随后完整调用成功，见 [../bvo-07/board-deadline-recovery.log](../bvo-07/board-deadline-recovery.log)。
 
 ## 6. 未验证与限制

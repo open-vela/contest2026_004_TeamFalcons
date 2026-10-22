@@ -1,0 +1,556 @@
+# BVO-11 连续 ASR 稳定性（2026-10-22 18:20-18:33）
+固件 18:19（3d6cbc1c）与 18:26（a5a0031c）两个镜像；同一 5 秒合成样本，无重试、无并发。
+
+## 1. 第 1 组：10 次
+
+```
+2026-10-22T18:21:11.5325248+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada540a00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693258
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada540a00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=680 send=160 ttfb=60 body=0 pool=0 build=0 parse=10 http=960 backoff=0 total=980 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ada540a00000000] iter=0 tool=(none) latency=980ms llm=fail backend=0
+[trace:6ada540a00000000] END status=fail iters=1 tools=0 llm_ms=980 tool_ms=0 elapsed_ms=1030 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada541035c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7865 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada541035c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=10 parse=10 http=320 backoff=0 total=340 req=7865 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada541035c3b13a] iter=0 tool=(none) latency=340ms llm=fail backend=0
+[trace:6ada541035c3b13a] END status=fail iters=1 tools=0 llm_ms=340 tool_ms=0 elapsed_ms=390 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cceba5
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693273
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=9320
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:21:31.5689633+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693293
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=9220
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:21:51.5716587+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693313
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=10100
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:22:11.5727243+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693333
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=10220
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T18:22:31.5857455+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693353
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10080
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:22:51.6059771+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693373
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=9720
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:23:11.6119049+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693393
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] body write gave up at 0/1368
+[vgvoice] asr: transport failed: -3 (net)
+vgvoice: asr rc=net status=0 req=213561 resp=0 ms=6890
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-22T18:23:31.6312110+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693413
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=9700
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:23:51.6349531+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693433
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=9290
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:24:11.6531383+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693453
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=10310
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:24:31.6690221+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918176    5920240    1002480    5795432   1150     14 Umem
+nsh> [K
+```
+
+## 2. 第 2 组：20 次
+
+```
+2026-10-22T18:27:54.7458300+08:00 CMD free
+vgtime: synced 2026-10-22 18:27:48
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     834376    6004040     868240    5795432   1091      6 Umem
+nsh> [K
+2026-10-22T18:27:55.9708559+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693677
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=8100
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:28:11.9809430+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693693
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10280
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada55c700000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693703
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada55c700000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=0 tls=580 send=280 ttfb=60 body=0 pool=0 build=0 parse=10 http=980 backoff=0 total=1000 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ada55c700000000] iter=0 tool=(none) latency=1000ms llm=fail backend=0
+[trace:6ada55c700000000] END status=fail iters=1 tools=0 llm_ms=1000 tool_ms=0 elapsed_ms=1050 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T18:28:28.0087792+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693710
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada55d035c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7865 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada55d035c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=0 body=0 pool=0 build=0 parse=10 http=320 backoff=0 total=340 req=7865 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada55d035c3b13a] iter=0 tool=(none) latency=340ms llm=fail backend=0
+[trace:6ada55d035c3b13a] END status=fail iters=1 tools=0 llm_ms=340 tool_ms=0 elapsed_ms=410 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc195c
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=11070
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:28:44.0228681+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693725
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10460
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:29:00.0277166+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693741
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10720
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:29:16.0508740+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693758
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10850
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:29:32.0744591+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693774
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] body write gave up at 0/1364
+[vgvoice] asr: transport failed: -3 (net)
+vgvoice: asr rc=net status=0 req=213561 resp=0 ms=7950
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-22T18:29:48.0788957+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693790
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10840
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:30:04.0857124+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693806
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10630
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:30:20.0994839+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693822
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=10610
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:30:36.1132569+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693838
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10840
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:30:52.1280336+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693854
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10320
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:31:08.1288356+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693869
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=9890
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:31:24.1349851+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693886
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10470
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:31:40.1415740+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693902
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10160
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:31:56.1581625+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693918
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10190
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:32:12.1797261+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693934
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10670
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:32:28.2082433+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693950
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=533 ms=10510
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:32:44.2116796+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693966
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10270
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:33:00.2340217+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792693982
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10720
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [Kvghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:3
+
+2026-10-22T18:33:16.2636270+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918448    5919968    1077568    5795432   1155     12 Umem
+nsh> [K
+```
+
+## 3. 第 3 组：15 次，每组后采堆
+
+```
+2026-10-22T18:33:25.3139945+08:00 CMD free
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada56f07c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6660 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694000
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada56f07c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=750 send=170 ttfb=60 body=0 pool=0 build=0 parse=10 http=1110 backoff=0 total=1130 req=6660 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada56f07c9701b3] iter=0 tool=(none) latency=1130ms llm=fail backend=0
+[trace:6ada56f07c9701b3] END status=fail iters=1 tools=0 llm_ms=1130 tool_ms=0 elapsed_ms=1190 backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918168    5920248    1077568    5795432   1150     15 Umem
+nsh> [K
+2026-10-22T18:33:26.5338749+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694008
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10900
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada570303cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7881 bytes)
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada570303cd357a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=10 parse=10 http=320 backoff=0 total=340 req=7881 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 4 (backoff 8)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada570303cd357a] iter=0 tool=(none) latency=340ms llm=fail backend=0
+[trace:6ada570303cd357a] END status=fail iters=1 tools=0 llm_ms=340 tool_ms=0 elapsed_ms=390 backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc195c
+
+2026-10-22T18:33:42.5608209+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694024
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10710
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:33:58.5765352+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694040
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10310
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:34:14.6042839+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694056
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=9990
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:34:30.6182521+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694072
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10220
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:34:46.6461972+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918720    5919696    1077568    5795432   1156     14 Umem
+nsh> [K
+2026-10-22T18:34:47.8560566+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694089
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10270
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:35:03.8811666+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694105
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10420
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:35:19.9128641+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694121
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] body write gave up at 0/1364
+[vgvoice] asr: transport failed: -3 (net)
+vgvoice: asr rc=net status=0 req=213561 resp=0 ms=7210
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-22T18:35:35.9406015+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694138
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10900
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:35:51.9523904+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694154
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10600
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:36:07.9794122+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918168    5920248    1077568    5795432   1150     15 Umem
+nsh> [K
+2026-10-22T18:36:09.1984570+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694170
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10260
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:36:25.2144584+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694187
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10370
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:36:41.2184249+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694203
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10280
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:36:57.2416530+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694219
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10590
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:37:13.2570973+08:00 CMD vgvoice asr /data/velaguard/voice/test.wav
+vgvoice asr /data/velaguard/voice/test.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792694235
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=213561 resp=534 ms=10760
+vgvoice: asr text=测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？
+nsh> [K
+2026-10-22T18:37:29.2811439+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6838416     918168    5920248    1077568    5795432   1150     15 Umem
+nsh> [K
+```
