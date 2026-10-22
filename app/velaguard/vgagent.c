@@ -25,6 +25,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <agent_llm.h>
 #include "tools/tool_provider.h"
 
 #include "vg_agent_round.h"
@@ -63,6 +64,7 @@ static void usage(void)
   printf("  vgagent ask <text>\n");
   printf("  vgagent clear\n");
   printf("  vgagent tools\n");
+  printf("  vgagent model <name>   (keeps host and key)\n");
   printf("  vgagent tool <name> [json]\n");
   printf("    a bare word is wrapped as {\"query\":\"<word>\"}, because NSH\n");
   printf("    strips the quotes a JSON argument needs\n");
@@ -276,6 +278,21 @@ int main(int argc, char *argv[])
       vg_agent_round_clear();
       print_status();
       return 0;
+    }
+
+  if (strcmp(argv[1], "model") == 0)
+    {
+      int ret;
+
+      if (argc < 3)
+        {
+          usage();
+          return 1;
+        }
+
+      ret = agent_llm_set_model(argv[2]);
+      printf("vgagent: model=%s rc=%d\n", argv[2], ret);
+      return (ret == 0) ? 0 : 1;
     }
 
   if (strcmp(argv[1], "tools") == 0)

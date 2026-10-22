@@ -87,7 +87,7 @@
 | BVO-07 | 已实现；300 ms 预算在 1.05 s 内结束，随后新请求成功；按键取消未测 | `bvo-07/README.md` |
 | BVO-08 | 已实现，已接入板端轮次线程；真机按键未测 | `bvo-08/README.md` |
 | BVO-09 | 已实现；在线从站下取到 crit=36、recovered 31 s、离线 44 s 判定与完整事件链 | `bvo-09/README.md` |
-| BVO-10 | 已实现并主机验证；30 条真人问法未做 | `bvo-10/` |
+| BVO-10 | 已实现；模型调用两个新工具与点查捷径已在板端验证；30 条真人问法未做 | `bvo-10/` |
 | BVO-11 | 已实现；录音到 ASR 的整轮已在板端跑通（合成按键），TTS 与播放分段验证 | `bvo-11/README.md` |
 | BVO-12 | 已实现；首次显示崩溃已修复，显示路径板端通过；布局与触摸待人工 | `bvo-12/README.md` |
 | BVO-13 | 已实现；开关跨两次硬件复位保持，开机清理无残留音频；真实断电未测 | `bvo-13/README.md` |
@@ -159,7 +159,10 @@
 - 补充：该次调用已运行在 32 KB 命令栈的镜像上（`vgvoice` 栈已改），因此不是栈溢出，没有用提高栈的方式掩盖。
 - 追加：2026-10-22 18:20 至 18:33 连续 45 次 ASR 未复现挂起：42 次 200（8.1 至 11.1 s），3 次 `rc=net` 在 6.89、7.95、7.21 s 返回且下一次成功；35 次后每 5 次采堆，used 稳定在 918,168 附近，`maxfree` 不变。见 `../bvo-11/board-asr-soak.log`。挂起仍按未解决记录，45 次未复现不足以排除。
 
-### J. 聊天模型名（BVO-10、14）
+### J. 聊天模型名（BVO-10、14）——已解决
+
+- 处理：新增 `agent_llm_set_model()` 与 `vgagent model <name>`，只替换 backend 0 的模型并保留主机与密钥，避免把密钥经串口写入 staging。板端执行 `vgagent model mimo-v2.6-flash` 后 HTTP 200，复位后启动日志仍为 mimo-v2.6-flash。
+- 结论：模型名问题关闭；下方原始记录保留，说明为什么没有走重新 provision。
 
 - 缺少：用户的 provision 决定。
 - 现象：板端 provision 文件保存 `mimo-v2.5`，账号返回 `400 Unsupported model mimo-v2.5`；账号模型列表为 `mimo-v2.5-asr`、`mimo-v2.5-tts`、`mimo-v2.5-tts-voiceclone`、`mimo-v2.5-tts-voicedesign`、`mimo-v2.6-flash`、`mimo-v2.6-pro`，`connect_info` 写的是 `mimo-v2.6-flash`。
