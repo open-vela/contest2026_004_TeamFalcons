@@ -1,0 +1,114 @@
+2026-10-22T20:08:06.6589275+08:00 CMD free
+[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=7050
+[vgagent] round submitted: 92 bytes
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     982528    5855240    1060808    5795432   1160     13 Umem
+nsh> [K[vela_tls] body progress: gaps=1 first_read=8140ms total=641 bytes
+[vela_tls] body gap 1: idle=4940ms at=13080ms bytes=12
+[llm] Resp bytes=619 text=0 reasoning=46 toolargs=2 calls=1 finish=tool_calls tokens=1821/26/1847
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada6d1a35c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=240 ttfb=8140 body=5290 pool=0 build=90 parse=0 http=13880 backoff=0 total=13980 req=6634 resp=619 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada6d1a35c3b13a] iter=0 tool=vg_anomaly_read latency=13990ms llm=ok backend=0
+[agent] Tool call: vg_anomaly_read args={}
+[tools] Executed vg tool: vg_anomaly_read
+
+2026-10-22T20:08:07.9010803+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[agent] Tool vg_anomaly_read result: 1089 bytes, 1020 ms
+[trace:6ada6d1a35c3b13a] tool_iter=0 tool=vg_anomaly_read tool_ms=1020 out=1089 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_anomaly_read)
+[trace:6ada6d1a35c3b13a] END status=ok it
+2026-10-22T20:08:09.1089200+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [Kers=1 tools=1 llm_ms=13990 tool_ms=1020 elapsed_ms=15410 backend=0
+[agent] Processing message from local_client:velaguard:3
+[agent] Dispatching response → local_client:velaguard:2
+
+2026-10-22T20:08:12.1347127+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:08:13.3548901+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=3880
+
+2026-10-22T20:08:16.3656124+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:08:17.5785405+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+
+2026-10-22T20:08:20.6204692+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:08:21.8542515+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:08:24.8566448+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr: transport failed: -7 (cancelled)
+
+2026-10-22T20:08:26.0861227+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vgvoice] asr rc=cancelled status=0 req=61669 resp=0 ms=6660
+
+2026-10-22T20:08:29.0948807+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:08:30.3151538+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K
+2026-10-22T20:08:33.3404650+08:00 CMD vgvoice wait 20000
+vgvoice wait 20000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=8 played=0 cancelled=0 too_short=2 failures=0 timeouts=0
+vgvoice: last result=ok ms=1070 samples=17190 bytes=34380
+vgvoice: level peak=5481 rms=124
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=16 drained=17 overwritten=0 wraps=8 elapsed_ms=1070 rate=128526 B/s
+vgvoice: tail_bytes=6451 stage_ms=1350
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=249 clip=0 tick_us=10000
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699718
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=11430
+
+2026-10-22T20:08:55.3685123+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     930312    5907456    1060808    5795432   1246     11 Umem
+nsh> [K
+2026-10-22T20:08:56.5716631+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=8 played=0 cancelled=0 too_short=2 failures=0 timeouts=0
+vgvoice: last result=ok ms=1070 samples=17190 bytes=34380
+vgvoice: level peak=5481 rms=124
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=16 drained=17 overwritten=0 wraps=8 elapsed_ms=1070 rate=128526 B/s
+vgvoice: tail_bytes=6451 stage_ms=1350
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=249 clip=0 tick_us=10000
+nsh> [K

@@ -186,12 +186,22 @@ static void round_submit(void)
   rc = velaclaw_ask_async(client, &ask, round_reply, (void *)(uintptr_t)serial);
 
   pthread_mutex_lock(&g_lock);
-  if (rc == 0)
+
+  /* abandon() may have run while velaclaw_ask_async was in flight.  In that
+   * case the question is gone: leave the state IDLE instead of resurrecting
+   * it, or the next question is refused as busy.  The reply is dropped by
+   * its serial either way. */
+
+  if (rc == 0 && g_state == VG_AGENT_ROUND_QUEUED)
     {
       g_state = VG_AGENT_ROUND_RUNNING;
       g_started_ms = vg_agent_round_now_ms();
       syslog(LOG_INFO, "[%s] round submitted: %u bytes\n",
              TAG, (unsigned)strlen(req));
+    }
+  else if (rc == 0)
+    {
+      syslog(LOG_INFO, "[%s] round abandoned during submit\n", TAG);
     }
   else if (rc == -EBUSY)
     {

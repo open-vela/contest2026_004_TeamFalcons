@@ -665,9 +665,19 @@ static void vr_run_actions(uint32_t actions)
       if ((actions & VG_VS_ACT_START_RECORD) != 0)
         {
           uint32_t gen = 0;
-          int rc = vg_voice_record_begin_owned(&gen);
+          int rc;
 
-          if (rc < 0)
+          /* A previous round may still be writing its WAV.  Starting a
+           * recording on top of that produced a phantom capture and then
+           * "录音未正常结束" at the next stage; wait for the worker to settle
+           * first and fail with a clear reason if it does not. */
+
+          if (!vg_voice_wait_idle(2000))
+            {
+              vr_ui_error("录音设备忙，请稍后再试");
+              next |= vg_vs_end(&g_vr.s, vr_now_ms());
+            }
+          else if ((rc = vg_voice_record_begin_owned(&gen)) < 0)
             {
               vr_ui_error("录音启动失败");
               next |= vg_vs_end(&g_vr.s, vr_now_ms());
@@ -695,7 +705,7 @@ static void vr_run_actions(uint32_t actions)
           /* The recorder stops the PDM stream, drains and writes the WAV;
            * 2 s was tight enough to lose a round right after playback. */
 
-          if (!vr_wait_voice_idle(3000))
+          if (!vr_wait_voice_idle(5000))
             {
               vr_ui_error("录音未正常结束");
               next |= vg_vs_asr_result(&g_vr.s, gen, false, NULL,

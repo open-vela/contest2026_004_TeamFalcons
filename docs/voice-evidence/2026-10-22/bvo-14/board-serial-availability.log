@@ -1,0 +1,14 @@
+
+Status Class FriendlyName                                      InstanceId                                  
+------ ----- ------------                                      ----------                                  
+OK     Ports ´òÓ¡»ú¶Ë¿Ú (LPT1)                                 ACPI\PNP0400\0                              
+OK     Ports Í¨ÐÅ¶Ë¿Ú (COM1)                                   ACPI\PNP0501\0                              
+OK     Ports STMicroelectronics STLink Virtual COM Port (COM3) USB\VID_0483&PID_374E&MI_02\8&5FF72B1&0&0002
+OK     Ports USB-SERIAL CH340 (COM7)                           USB\VID_1A86&PID_7523\7&7DC3B09&0&2         
+
+
+COM3 opened: True
+COM3 readable bytes: 10
+
+nsh> [K
+COM3 closed

@@ -1,0 +1,443 @@
+2026-10-22T20:04:54.8879260+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=9960
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada6c477c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[agent] Dispatching re[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+sponse → local_client:velaguard:3
+[llm] Resp bytes=653 text=0 reasoning=33 toolargs=54 calls=1 finish=tool_calls tokens=2362/37/2399
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada6c477c9701b3] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=690 ttfb=1580 body=0 pool=0 build=10 parse=0 http=2500 backoff=0 total=2620 req=7871 resp=653 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada6c477c9701b3] iter=0 tool=read_file latency=2840ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/alarm_interpretation.md"}
+[tools] Executing tool: read_file
+[agent] Tool read_file result: 84 bytes, 3420 ms
+[trace:6ada6c477c9701b3] tool_iter=0 tool=read_file tool_ms=3420 out=84 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8229 bytes)
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 20:03:05
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.720, +2720)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.730, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.730, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.730, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.730, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.740, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_vgptt: watching /dev/buttons (led=2)
+nuttx_fbdev.c:115
+[User]	(2.750, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.760, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.770, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.770, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.780, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.790, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.790, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.800, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.800, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.810, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.820, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.830, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.830, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.840, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.840, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.850, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.860, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.860, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.870, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.880, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.890, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.900, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.910, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [Kvgagent: ai_agent autostart ok (stack[agent] AI Agent - Vela AI Agent starting (build: =327682026-10-22 14:29:15)
+)
+[agent] [boot +10ms] P0: timezone set
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +610ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +1340ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +1350ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+
+2026-10-22T20:04:56.9367982+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[memory] Memory store initialized successfully
+[agent] [boot +2710ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +2720ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +3250ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +5100ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699395
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +6350ms] P3: llm_router_init (rc=0)
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +8270ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +8280ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+vgnet: join 19y failed
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +9950ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +9950ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +10140ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +10150ms] P3: heartbeat_init (rc=0)
+[agent] [boot +10160ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +10160ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +10170ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +10180ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +10180ms] P5: network_watch thread started (async)
+[agent] [boot +10190ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +10190ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.10
+[netmgr] Network connected: 192.168.137.10
+[netmgr] Found iface eth0 addr 192.168.137.10
+[agent] Network connected: 192.168.137.10
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+[vgvoice] asr rc=ok status=200 req=61669 resp=471 ms=8770
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 92 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+
+2026-10-22T20:05:12.9498575+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=4 gen=1 muted=0 failed=0
+vgvoice: round status=查询中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+nsh> [K[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T20:05:13.9653463+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:05:16.4658211+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699413
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-22T20:05:22.4959249+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些异常？
+a=
+nsh> [K
+2026-10-22T20:05:23.7018642+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=3 gen=2 muted=0 failed=0
+vgvoice: round status=识别中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6ada6c1900000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6634 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699417
+[agent] Dispatching response → local_client:velaguard:1
+
+2026-10-22T20:05:24.7108299+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=7200
+[vgagent] round submitted: 92 bytes
+
+2026-10-22T20:05:26.7314159+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699422
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=667 text=0 reasoning=96 toolargs=2 calls=1 finish=tool_calls tokens=1821/38/1859
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ada6c1900000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=10 tls=3420 send=320 ttfb=3880 body=0 pool=0 build=0 parse=0 http=7760 backoff=0 total=7770 req=6634 resp=667 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ada6c1900000000] iter=0 tool=vg_anomaly_read latency=7870ms llm=ok backend=0
+[agent] Tool call: vg_anomaly_read args={}
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1089 bytes, 570 ms
+[trace:6ada6c1900000000] tool_iter=0 tool=vg_anomaly_read tool_ms=570 out=1089 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_anomaly_read)
+[trace:6ada6c1900000000] END status=ok iters=1 tools=1 llm_ms=7870 tool_ms=570 elapsed_ms=8840 backend=0
+[agent] Processing message from local_client:velaguard:2
+[agent] Dispatching response → local_client:velaguard:1
+[vgvoice] asr rc=ok status=200 req=61669 resp=472 ms=6430
+[vgagent] round submitted: 92 bytes
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+
+2026-10-22T20:05:42.7376964+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=4 gen=3 muted=0 failed=0
+vgvoice: round status=查询中
+vgvoice: round q=现在有哪些�[��llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+常？
+[trace:6ada6c2c35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+vgvoice: round a=0 bytes
+nsh> [K[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6634 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-22T20:05:43.7571752+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-22T20:05:46.2709743+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792699442
+HARDFAULT: CFSR=01000000 HFSR=40000000 BFAR=00000000 MMFAR=00000000
+HARDFAULT: stacked PC=900433c2 LR=90077f11
+dump_assert_info: Current Version: NuttX  0.0.0 189e6d8a18d-dirty Oct 22 2026 20:04:26 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x9001654d
+up_dump_register: R0: 24004bd0 R1: 00000000 R2: 900b7872  R3: 240045b8
+up_dump_register: R4: 3800c448 R5: 00000003 R6: 900b7872  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004538 R10: 00000006 R11: 24065a90
+up_dump_register: R12: 00000009 SP: 240658a0 LR: 90001ab3  PC: 90001ab3
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x24063028
+dump_stackinfo:   size: 00032744
+dump_stackinfo:     sp: 0x240658a0
+stack_dump:  24065880: 240658a0 24066880 240658a0 24063028 00007fe8 380003d0 24004538 90001c53
+stack_dump:  240658a0: 900d05e8 00000000 3800c4f8 38000480 9001654d 0000000a 00000000 00000000
+stack_dump:  240658c0: 3800c448 24004bd0 900b7872 00000000 00000000 7474754e 40000058 24065950
+stack_dump:  240658e0: 00000000 9000823f 00000000 00000008 00000000 00000000 900b7871 00000000
+stack_dump:  24065900: 37663131 39303037 302e3000 9000302e 00000080 00000007 24065b34 3831784c
+stack_dump:  24065920: 64366539 38316138 69642d64 20797472 2074634f 32203232 20363230 303a3032
+stack_dump:  24065940: 36323a34 900b7800 24065988 90007731 6d72612b 90008c00 90008bd7 00000001
+stack_dump:  24065960: 90008211 0000000a 240508d0 24065a90 00000003 240045b8 24065a90 24065e40
+stack_dump:  24065980: 30046d40 24065f20 24065a90 900014b1 00000001 00000000 3800c448 90000e7d
+stack_dump:  240659a0: 00000000 00000007 24065ce8 d027d1a5 00003ffc 90001063 00000000 00000000
+stack_dump:  240659c0: 00000000 0000005a 00000000 00000000 240508d0 24065a14 00000000 00000000
+stack_dump:  240659e0: 00000000 00000000 3002abe4 30011f1c 00000101 9008c6fb 00000000 3002abe4
+stack_dump:  24065a00: 24065ad8 00000080 3800c448 24065b34 00000000 24000264 00000000 00000001
+stack_dump:  24065a20: ffffffff 3800fc40 00000000 24000264 00000000 00000058 e8b9d529 d26cfcbf
+stack_dump:  24065a40: 78d29c0a 9006d531 00000000 00000007 24065f5c 00000006 24065b34 8ae55dc3
+stack_dump:  24065a60: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065a80: 00000000 24065f24 00000000 24065b08 24065b68 00000000 00000001 24065ce8
+stack_dump:  24065aa0: d027d1a5 00003ffc 24065e40 30046d40 24065f20 24065f24 00000000 ffffffe9
+stack_dump:  24065ac0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ae0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065b00: d02791a9 00000000 00000303 24065e40 00000000 90077f11 900433c2 81000000
+stack_dump:  24065b20: 00000000 40000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065b40: 00000000 00000000 c1059ed8 cbbb9d5d 367cd507 629a292a 3070dd17 9159015a
+stack_dump:  24065b60: 20000000 30047004 00000001 90077f11 900dc394 00000000 d02791a9 240529f8
+stack_dump:  24065b80: 0000001d 90009f87 00000000 d02791a9 00003ffc 326cda6a 24067218 24065ce8
+stack_dump:  24065ba0: 24065ce8 24067218 240670d8 24065e40 00000000 24065f20 24065f24 9004533b
+stack_dump:  24065bc0: 24065ce8 9004536b 00000000 9001e03b 00000000 0c280c96 0b7f0bff 6ada6c32
+stack_dump:  24065be0: 0b9d0bb0 0000e6f0 00000078 00000000 0784086c 066b06f7 05810617 044b04e3
+stack_dump:  24065c00: 021e035b ff3700b9 fbe8fdba f92afa8a f6a0f7fa f45bf591 f159f2e4 edebefa2
+stack_dump:  24065c20: eafeec1b eb45ea90 eeb9ec62 f3e7f151 f763f5e8 f830f841 f71ff79e f676f6ae
+stack_dump:  24065c40: f763f6a1 f96bf875 fb54fa8b fc39fc24 0000e290 2406ad9c 24067530 24067480
+stack_dump:  24065c60: 240670f8 24067218 900c0768 240670d8 2406ad9c 24067530 24067480 240670f8
+stack_dump:  24065c80: 24067218 900c0768 24067298 9001ea1b 0d0b0cb5 0d130d1a 0c380caf 0ba80bca
+stack_dump:  24065ca0: 0000e628 0b6b0b68 0ade0b47 00000000 00000000 24067530 00001000 00000000
+stack_dump:  24065cc0: 012c0200 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ce0: 00000000 00000000 24065e40 00000001 00000000 00000000 00000303 00000000
+stack_dump:  24065d00: 00000000 00000000 9003e159 9003e105 00000000 24065f20 00000000 00000000
+stack_dump:  24065d20: 00000000 30011048 30046d40 00000000 00000000 00000000 30014790 00000000
+stack_dump:  24065d40: 00000000 00000000 30024358 30024358 30024360 30024363 30024363 30024365
+stack_dump:  24065d60: 30024365 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065d80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065da0: 00000000 00000000 d0279198 d0279198 d02791a0 d02791a3 d02791a3 d02791a5
+stack_dump:  24065dc0: d02791a5 00000016 00000000 00000000 00000000 00000000 00000000 30047fd8
+stack_dump:  24065de0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e40: 03030303 00010000 01010100 00010100 00000000 2404eafc 00000000 00000000
+stack_dump:  24065e60: 9003c469 24065f24 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065e80: 00000000 00000000 00000000 90044821 90044829 00000000 00000000 00000000
+stack_dump:  24065ea0: 00000000 00000000 900dcdd4 00000000 00000000 00000000 00000000 2400089e
+stack_dump:  24065ec0: 00000000 240008d4 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24065ee0: 00000000 00000000 00000000 00000000 24000600 00000000 000003e8 0000ea60
+stack_dump:  24065f00: 00000010 ffff0000 ffffffff 00000000 00000400 00000000 00000000 00000000
+stack_dump:  24065f20: 00000006 e8b9d529 78d29c0a 71be9db6 8ae55dc3 00000002 00000000 00000030
+stack_dump:  24065f40: 00002710 0000000e 00000000 86bc04a3 dea13356 92737a0d e9e33c54 f19b98a7
+stack_dump:  24065f60: e9ffaeeb b1789966 71bbcc15 df1feee9 01beddbf 93cda7b2 7a2e9be6 2baa8c29
+stack_dump:  24065f80: c25522c2 732dbba4 029677b1 17687e1e 16d6a3a1 851b0413 ff359ff5 3d3c57cf
+stack_dump:  24065fa0: ff69750d 8c44cea9 8ed2b918 ba71cb4c aca768ed 29bc6cfe d689f30b cb9b5ae4
+stack_dump:  24065fc0: 34f22fe9 b8b6e140 36645858 d074882e 7cd3e0c3 556f8c3d 83e67f36 271588e1
+stack_dump:  24065fe0: 13e7a708 ab514648 9d351e10 1a2a1e4c 66f9fe8f 339672b2 b0700d84 c0445fbe
+stack_dump:  24066000: d3a3f8b6 78f2befe e5c7a0ee 32f3d88c 540a2603 679c54b1 d7ec5935 ce8a9428
+stack_dump:  24066020: 1d296c9e 65dbd260 801c728e 2b3e448c 7f34628f 18a8363e cf446f0b 44913c03
+stack_dump:  24066040: 59b8509d 3c6382fd bc7ff073 00000000 00000000 00000000 00000000 9001e415
+stack_dump:  24066060: 00000000 00000000 00000000 7fffffff 00000004 00000000 00000000 00000000
+stack_dump:  24066080: 00000001 00000000 fc3ffd05 fabefb85 f92df9ee f75df856 f538f648 f2d8f418
+stack_dump:  240660a0: f0acf197 efe3f01c f050efed f157f0d7 f24bf1d4 f312f2b3 f42bf390 f5d5f4e3
+stack_dump:  240660c0: f7c5f6d2 f985f8ab faf1fa4d fc3efb98 fd94fcea ff02fe41 0083ffbf 02130148
+stack_dump:  240660e0: 037902cd 04c60423 05df0552 07120673 0833079f 095808c9 0a3809d1 0afe0aa1
+stack_dump:  24066100: 0bb10b54 0c650c16 0cf30cae 0d5b0d30 0d550d69 0cda0d1a 0c250c88 0b3a0bb8
+stack_dump:  24066120: 0a1f0ab7 08bc097d 071107ed 051a061f 03070411 00c701ea fe83ffa2 fc40fd60
+stack_dump:  24066140: fa1bfb27 f7d3f8f7 f5bbf6ba f38ff4a8 f183f28a ef92f095 edcdee9d ed0aed3e
+stack_dump:  24066160: ed72ed1a eeb1edf6 f00aef71 f159f0a5 f2e1f21f f4d0f3c1 f6f7f5ea f934f818
+stack_dump:  24066180: fb3cfa42 fd02fc1f febefde4 0070ff90 0222014e 03cf02f8 053e048d 068505ee
+stack_dump:  240661a0: 078f0706 08710805 092b08cc 09cf097b 0a660a23 0ac10a9c 0af20adf 0b050aff
+stack_dump:  240661c0: 0afb0b00 0adf0aec 0a8f0aca 09f60a45 094d09ad 08c808ff 08570896 07db0818
+stack_dump:  240661e0: 07180790 06110691 050f058f 04110494 031a0394 023502a9 014401b9 001900bb
+stack_dump:  24066200: fea5ff5e fd33fdf4 fbc0fc70 fa61fb15 f8dcf9a6 f6fef7fb f4f8f5ff f314f3fd
+stack_dump:  24066220: f18ef243 f0abf0f6 f0b5f097 f16ef0f9 f26ef1fa f372f2e9 f4c3f40e f65ff580
+stack_dump:  24066240: f844f754 fa14f92f fbbffaf2 fd24fc6d fe8dfddb ffd2ff25 012a0087 026401c2
+stack_dump:  24066260: 03c50316 050d0462 065005bd 075f06d2 086607f0 095208d4 0a4309d7 0af90a9f
+stack_dump:  24066280: 0b8d0b4c 0c270bd6 0c980c6f 0cce0cb6 0ca30cd0 0c370c72 0b930bee 0ae40b43
+stack_dump:  240662a0: 09d20a6a 0872092a 06d807b1 04fc05f7 02e503f4 00b201cd fe74ff8c fc6afd68
+stack_dump:  240662c0: fa89fb74 f8bdf9ae f6aaf7bc f44ff581 f20bf326 f015f0f9 ee99ef43 edf2ee12
+stack_dump:  240662e0: ee7aee1b efb5ef09 f105f05d f24ff1a7 f3f4f30e f608f4ed f888f746 fadcf9bb
+stack_dump:  24066300: fce6fbf7 fe89fdb9 000fff57 019400ce 03400265 04c6040a 060e0571 07100692
+stack_dump:  24066320: 07d6077f 08790829 08ff08c5 097f0942 09f709bf 0a460a24 0a6f0a5b 0a6c0a6b
+stack_dump:  24066340: 0a5f0a6e 0a270a49 09bd09fe 091d0972 086b08c1 07e10821 076d07af 06e60731
+stack_dump:  24066360: 06290694 053805b4 042904b4 033003a3 025f02d0 019201f7 00c1012e ffcd0049
+stack_dump:  24066380: feaeff42 fd62fe09 fc30fcc7 fb04fba8 f988fa50 f7d9f8c5 f5f1f6dd f43cf511
+stack_dump:  240663a0: f2d7f36d f24af272 f280f243 f34af2e4 f41ff3b7 f517f497 f67af5af f84af75a
+stack_dump:  240663c0: fa3cf941 fc01fb22 fd84fcce fee8fe3a 0046ff95 017500e2 02950203 03a40322
+stack_dump:  240663e0: 04ba0434 05b4053b 06b6063a 078b071b 08780801 095e08e6 0a3809dc 0ab50a7d
+stack_dump:  24066400: 0af70ae4 0b240b02 0b720b4c 0bb40b92 0bb90bbf 0b690b9e 0aad0b19 09910a2a
+stack_dump:  24066420: 083408ef 06be0778 051b05f4 0332042d 01000224 fe9dffd2 fc7dfd82 faa5fb83
+stack_dump:  24066440: f89df9b8 f684f778 f40ff55c f1f7f2d9 efa0f0e7 edf0eeb7 ece8ed48 ee1ded42
+stack_dump:  24066460: f00cef0c f22bf12c f33ff2c2 f499f3da f643f54e f91df79a fbcffa71 fe4efd38
+stack_dump:  24066480: ffbcff0e 010b0072 01fa0179 035e02b0 048b03f4 05a50530 063205f0 06dc068e
+stack_dump:  240664a0: 077b0722 082b07e4 089d085e 08fb08d6 091a0912 09040920 08e108e7 08db08dc
+stack_dump:  240664c0: 090108e6 08d308f9 085a0896 07ab0808 072e0760 06fa0716 06ac06dc 06030662
+stack_dump:  240664e0: 0536059d 045104b7 03a003fb 0316034d 029302e2 01d4023c 00dd0169 ffbf0050
+stack_dump:  24066500: fe94ff2b fd7bfe02 fc58fcf2 fb04fbae f968fa45 f78ef87a f57ff680 f3acf47d
+stack_dump:  24066520: f2a5f304 f26df274 f2f7f2a8 f359f327 f417f3aa f515f487 f6b6f5d2 f849f787
+stack_dump:  24066540: f9eaf91a fb4dfaaa fce5fc18 fe2afd95 ff73fed2 00980009 01bb011e 02dd0249
+stack_dump:  24066560: 03fd0373 04f1047f 05f00575 06e20669 07db0762 08b0083c 096d0914 0a1809c0
+stack_dump:  24066580: 0ad80a7e 0b8b0b37 0c120bd9 0c420c31 0c240c44 0ba70be7 0b200b64 0a7f0ad3
+stack_dump:  240665a0: 097f0a10 082608dd 0661074d 0486057a 02840386 00a70198 feb3ffae fcd1fdc8
+stack_dump:  240665c0: faaafbc2 f877f995 f632f754 f42bf526 f22ff32b f054f141 ef04ef77 eee2eed6
+stack_dump:  240665e0: efa0ef18 f0b2f032 f1daf12b f359f295 f537f42e f767f652 f98af879 fb81faa0
+stack_dump:  24066600: fd32fc59 feabfdfc 0013ff5f 017b00c9 02c2022a 03ce034f 04b50446 058c0523
+stack_dump:  24066620: 064f05ee 06f106a4 07790733 080207c5 086d0838 08b10899 08c008b7 08b408be
+stack_dump:  24066640: 0882089c 0848086d 07db0817 077407a3 0725074a 06e50704 06a606c6 063e0670
+stack_dump:  24066660: 05c4060a 05270573 04a904e0 04590487 03d2041e 0315037e 022802a1 013101b0
+stack_dump:  24066680: 002100ac ff06ff9d fd9cfe59 fc10fce0 fa2bfb29 f819f929 f5f0f704 f403f4d8
+stack_dump:  240666a0: f325f372 f2e4f2ea f321f2fe f34af336 f3cdf377 f4a5f431 f603f53e f79ff6d5
+stack_dump:  240666c0: f93bf870 fab2f9fb fc1ffb6d fd7efcd2 fec9fe2a 000eff69 012e00a4 023d01b5
+stack_dump:  240666e0: 033b02c3 042a03ae 052504ad 05f7058b 06c80665 078d0724 086a07fa 093b08d5
+stack_dump:  24066700: 0a0b09a2 0aaa0a66 0b210aed 0b330b38 0b0f0b28 0ac60aec 0a6e0a9f 09e30a37
+stack_dump:  24066720: 08f30979 07ac085a 063c06fa 04a1056f 030803d6 016c023a ff97008a fdb7fea9
+stack_dump:  24066740: fbccfcbd fa0cfae8 f871f93b f6def7a7 f53ef611 f39ef46e f253f2e7 f1bef1e9
+stack_dump:  24066760: f1f1f1c0 f286f232 f35af2e6 f477f3d8 f5e6f526 f799f6b8 f963f87f fb2cfa45
+stack_dump:  24066780: fceafc10 fe90fdb8 0010ff59 016f00c0 028c020e 036f0300 044b03de 050604b0
+stack_dump:  240667a0: 05ab055b 062b05ed 068c0660 06bf06aa 06d906ce 06e506e0 06fb06ee 0715070a
+stack_dump:  240667c0: 073c0726 07440746 0731073d 06f6071b 069706c6 0645066f 05e60617 058c05bd
+stack_dump:  240667e0: 0522055e 048404d5 03e00435 0321037c 027602cc 01b30218 00df014d ffd70064
+stack_dump:  24066800: feb5ff47 fd95fe24 fc7bfd0a fb4cfbe6 fa13fab5 f8d8f972 f7bff844 f6f8f74e
+stack_dump:  24066820: f68bf6ac f6a3f68f f6d3f6b9 f6eff6ed 07b30783 0786076b 069b071e 03dd0543
+stack_dump:  24066840: 00870257 fd03fecd f9c5fb69 f6ecf836 f3e6f54e efcff1f1 eb8ced98 e8fdea0e
+stack_dump:  24066860: eb71e99e f2fbeec5 fa55f6c6 fc6dfc43 f928fb3b f553f755 f4b2f419 f722f57d
+stack_dump:  24066880: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24052610      1000     4.4%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240073d8      1976    13.2%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x24006bd8      1976     0.8%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136     0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168     0.0%   velaguard_app_main 0x9000cae1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264     2.6%   velaguard_app_main 0x90010825 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072     0.0%   velaguard_app_main 0x90014339 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024     2.6%   ESP8266 0x900684ed 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024     0.0%   netinit 0x900692b9 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b208      4056     8.8%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Running            0000000000000000 0x24063028     32744     4.4%   velaguard_app_main 0x9001654d 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ca98      4056     0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x2406b048     49104    62.8%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Ready              0000000000000000 0x30000028      8168     0.0%   vghmi 0x90014b79 0
+dump_task:      46    15  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x300159d8     12264     0.0%   ai_agent 0x90016d75 0x240770b0
+dump_task:      15    15 100 RR       Task    -   Waiting Signal     0000000000000000 0x30002060     32696     0.0%   ai_agent ai_agent --daemon
+dump_task:      48    15   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x300189e0      4072     0.0%   ai_agent 0x9001cf0d 0x24077240
+dump_task:      49    15  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x300199e8     28648     0.0%   ai_agent 0x90016d75 0x240794b8
+dump_task:      50    15  60 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x24023580     32744     0.0%   ai_agent 0x90018a09 0x2407e718
+
+2026-10-22T20:05:52.2809125+08:00 CMD vgvoice round text
+
+2026-10-22T20:05:53.5073241+08:00 CMD vgvoice round
+
