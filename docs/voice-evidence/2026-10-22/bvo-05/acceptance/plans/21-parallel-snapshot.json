@@ -1,0 +1,54 @@
+[
+  {
+    "command": "free",
+    "wait_ms": 600
+  },
+  {
+    "command": "ps",
+    "wait_ms": 1200
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 800
+  },
+  {
+    "command": "vghmi perf",
+    "wait_ms": 600
+  },
+  {
+    "command": "ifconfig",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgaudio sai",
+    "wait_ms": 800
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  },
+  {
+    "command": "echo bvo05-acceptance > /data/velaguard/bvo05-acceptance.tmp",
+    "wait_ms": 600
+  },
+  {
+    "command": "cat /data/velaguard/bvo05-acceptance.tmp",
+    "wait_ms": 600
+  },
+  {
+    "command": "rm /data/velaguard/bvo05-acceptance.tmp",
+    "wait_ms": 600
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 800
+  },
+  {
+    "command": "free",
+    "wait_ms": 600
+  }
+]

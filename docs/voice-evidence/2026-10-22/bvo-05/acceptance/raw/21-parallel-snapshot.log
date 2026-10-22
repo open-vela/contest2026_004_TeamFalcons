@@ -1,0 +1,113 @@
+2026-10-22T13:17:56.9953127+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     837048    6009848     989144    5795432   1011     10 Umem
+nsh> [K
+2026-10-22T13:17:57.6230735+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 25.9% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 21.2% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.5% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  2.5% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  3.5% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  1.8% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024  0.0% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   11    11 100 RR       Task      - Ready              0000000000000000 0049104 43.7% vghmi vghmi
+   12    11 100 RR       pthread   - Ready              0000000000000000 0008168  0.8% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4e0
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5e0
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6e0
+   19    11 100 RR       pthread   - Ready              0000000000000000 0008168  3.3% vghmi 0x9001492d 0
+   20    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5e0
+nsh> [K
+2026-10-22T13:17:58.8490871+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=2 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=3 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=4 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=5 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=6 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=7 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+2026-10-22T13:17:59.6646064+08:00 CMD vghmi perf
+vghmi perf
+vghmi perf: state=disabled (built without CONFIG_VG_HMI_PERF)
+nsh> [K
+2026-10-22T13:18:00.2884560+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.210 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+nsh> [K
+2026-10-22T13:18:01.0996417+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3624 addr=3001a9c0
+vgaudio: dma_done=1000 errors=0 timeouts=0 txbytes=8060356
+vgaudio: sai_underruns=872 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64548 tick_us=10000
+nsh> [K
+2026-10-22T13:18:01.9081997+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K
+2026-10-22T13:18:02.5107928+08:00 CMD echo bvo05-acceptance > /data/velaguard/bvo05-acceptance.tmp
+echo bvo05-acceptance > /data/velaguard/bvo05-acceptance.tmp
+nsh> [K
+2026-10-22T13:18:03.1280033+08:00 CMD cat /data/velaguard/bvo05-acceptance.tmp
+cat /data/velaguard/bvo05-acceptance.tmp
+bvo05-acceptance
+nsh> [K
+2026-10-22T13:18:03.7573036+08:00 CMD rm /data/velaguard/bvo05-acceptance.tmp
+rm /data/velaguard/bvo05-acceptance.tmp
+nsh> [K
+2026-10-22T13:18:04.3714506+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=2612 wall=2026-10-22T13:18:04
+vgruntime: slave=1 boot_total=284 boot_ok=0 boot_crc=0 boot_timeout=284 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=142 boot_ok=0 boot_crc=0 boot_timeout=142 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=142 boot_ok=0 boot_crc=0 boot_timeout=142 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=424 boot_ok=0 boot_crc=0 boot_timeout=424 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=423 boot_ok=0 boot_crc=0 boot_timeout=423 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=423 boot_ok=0 boot_crc=0 boot_timeout=423 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=141 boot_ok=0 boot_crc=0 boot_timeout=141 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: bus boot_total=1979 boot_ok=0 boot_crc=0 boot_timeout=1979 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=2612 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+2026-10-22T13:18:05.2144547+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=2 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=3 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=4 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=5 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=6 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=7 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+2026-10-22T13:18:06.0314137+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     836520    6010376     989144    5795432   1006     11 Umem
+nsh> [K

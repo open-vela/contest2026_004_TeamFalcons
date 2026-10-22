@@ -1,0 +1,54 @@
+vghmi: daily report requested
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:15
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada0b5b124a6e44] BEGIN chat=velaguard:15 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5791 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:15
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792674651
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ada0b5b124a6e44] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=110 backoff=0 total=120 req=5791 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 15 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada0b5b124a6e44] iter=0 tool=(none) latency=120ms llm=fail backend=0
+[trace:6ada0b5b124a6e44] END status=fail iters=1 tools=0 llm_ms=120 tool_ms=0 elapsed_ms=390 backend=0
+[agent] Dispatching response → local_client:velaguard:15
+[vgagent] round finished: reply
+
+2026-10-22T13:10:54.0464729+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=26 submits=26 timeouts=1 last_ms=15000
+vgptt: samples=2249 raw_high=115 events=52 timeouts_wake=2197 poll_err=0 read_err=0
+nsh> [K
+
+2026-10-22T13:11:12.7031894+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=36 played=25 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=14940 samples=239074 bytes=478148
+vgvoice: level peak=7189 rms=53
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=32580 temp_left=0 worker=9
+vgvoice: capture halves=233 drained=234 overwritten=0 wraps=116 elapsed_ms=14940 rate=128018 B/s
+vgvoice: tail_bytes=3857 stage_ms=2480
+vgvoice: generation=36 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=69 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:11:13.5097686+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=26 submits=26 timeouts=1 last_ms=15000
+vgptt: samples=2268 raw_high=115 events=52 timeouts_wake=2216 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:11:14.1344188+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

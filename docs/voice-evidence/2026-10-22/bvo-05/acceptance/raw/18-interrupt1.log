@@ -1,0 +1,34 @@
+
+2026-10-22T13:15:32.6744832+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=41 played=29 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=2110 samples=33660 bytes=67320
+vgvoice: level peak=22302 rms=1005
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=4940 temp_left=0 worker=9
+vgvoice: capture halves=32 drained=33 overwritten=0 wraps=16 elapsed_ms=2110 rate=127621 B/s
+vgvoice: tail_bytes=7137 stage_ms=260
+vgvoice: generation=41 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=24 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:15:33.4815682+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=31 submits=31 timeouts=3 last_ms=2310
+vgptt: samples=2539 raw_high=166 events=62 timeouts_wake=2477 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:15:34.1068788+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=1806 addr=30014960
+vgaudio: dma_done=992 errors=0 timeouts=0 txbytes=7995808
+vgaudio: sai_underruns=868 clockerrors=0
+vgaudio: stream_ms=2100 stream_bytes=134640 tick_us=10000
+nsh> [K
+2026-10-22T13:15:34.9168441+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

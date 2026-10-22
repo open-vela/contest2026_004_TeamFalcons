@@ -1,0 +1,200 @@
+2026-10-22T13:12:18.7889368+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=27 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2335 raw_high=120 events=54 timeouts_wake=2281 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:21.6451002+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=28 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2339 raw_high=123 events=55 timeouts_wake=2284 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:24.4804196+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=28 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2342 raw_high=126 events=55 timeouts_wake=2287 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:27.3203633+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=28 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2345 raw_high=129 events=55 timeouts_wake=2290 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:30.1369371+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=28 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2348 raw_high=132 events=55 timeouts_wake=2293 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:32.9788115+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=28 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2350 raw_high=134 events=55 timeouts_wake=2295 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:35.7810113+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=held
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2353 raw_high=137 events=55 timeouts_wake=2298 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:38.6045189+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2357 raw_high=139 events=56 timeouts_wake=2301 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:41.4167834+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2360 raw_high=139 events=56 timeouts_wake=2304 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:44.2381121+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2363 raw_high=139 events=56 timeouts_wake=2307 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:47.0560673+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2366 raw_high=139 events=56 timeouts_wake=2310 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:49.8648391+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2368 raw_high=139 events=56 timeouts_wake=2312 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:52.7139124+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=28 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2371 raw_high=139 events=56 timeouts_wake=2315 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:55.5493860+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=29 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2376 raw_high=142 events=57 timeouts_wake=2319 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:12:58.4034009+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=29 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2379 raw_high=145 events=57 timeouts_wake=2322 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:01.2344779+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=29 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2381 raw_high=147 events=57 timeouts_wake=2324 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:04.0540125+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=29 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2384 raw_high=150 events=57 timeouts_wake=2327 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:06.8709421+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=29 submits=28 timeouts=2 last_ms=15000
+vgptt: samples=2387 raw_high=153 events=57 timeouts_wake=2330 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:09.6761946+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=held
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2390 raw_high=156 events=57 timeouts_wake=2333 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:12.4855183+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2394 raw_high=157 events=58 timeouts_wake=2336 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:15.2976899+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2397 raw_high=157 events=58 timeouts_wake=2339 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:18.1449749+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2400 raw_high=157 events=58 timeouts_wake=2342 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:20.9573198+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2402 raw_high=157 events=58 timeouts_wake=2344 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:23.7620294+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2405 raw_high=157 events=58 timeouts_wake=2347 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:26.5978236+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2408 raw_high=157 events=58 timeouts_wake=2350 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:29.4067440+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2411 raw_high=157 events=58 timeouts_wake=2353 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:32.2495630+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2413 raw_high=157 events=58 timeouts_wake=2355 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:35.0852077+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2416 raw_high=157 events=58 timeouts_wake=2358 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:37.9128962+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2419 raw_high=157 events=58 timeouts_wake=2361 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:40.7276055+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2422 raw_high=157 events=58 timeouts_wake=2364 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:43.5344545+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=29 submits=29 timeouts=3 last_ms=15000
+vgptt: samples=2425 raw_high=157 events=58 timeouts_wake=2367 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:13:46.3819772+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=39 played=28 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=14940 samples=238975 bytes=477950
+vgvoice: level peak=7185 rms=87
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=31260 temp_left=0 worker=9
+vgvoice: capture halves=233 drained=234 overwritten=0 wraps=116 elapsed_ms=14940 rate=127965 B/s
+vgvoice: tail_bytes=3068 stage_ms=1270
+vgvoice: generation=39 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=25 clip=0 tick_us=10000
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+

@@ -1,0 +1,129 @@
+{
+  "date": "2026-10-22",
+  "task": [
+    "BVO-03 15s gate",
+    "BVO-05 real-button acceptance"
+  ],
+  "firmware": {
+    "hex": ".debug/nuttx.hex",
+    "hex_sha256": "ce984bf49b3dee8967a0fb3f9068946d273b60b30f9e209ce5353b37792f8eb2",
+    "elf": ".debug/nuttx.elf",
+    "elf_sha256": "ed9d7401d3de0d6e4817af6c580eaf8bd9362799caab8c955519b3ab9e6bb3b1",
+    "voice_source": "app/velaguard/vg_voice.c",
+    "voice_source_sha256": "cfc535d581b6dbf3bf90ad2f00b7773cfbe63d3414c945308d94642a6c0a63c5",
+    "rebuilt": false,
+    "flashed": false
+  },
+  "repos": {
+    "contest": {
+      "head": "6b43cdbe2f62a2f5a785b5390fe7c81d415327c9",
+      "branch": "velaguard/maintenance-stability"
+    },
+    "nuttx": {
+      "head": "189e6d8a18d8866e628af8c3f7b541c0e659b8bc",
+      "branch": "velaguard/ptt-user1-stm32h750b-dk"
+    },
+    "apps": {
+      "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+      "branch": "velaguard/netinit-esp8266"
+    }
+  },
+  "bvo03": {
+    "one_second": {
+      "samples": 16123,
+      "result": "ok",
+      "listened": true
+    },
+    "five_second": {
+      "samples": 80013,
+      "result": "ok",
+      "listened": true
+    },
+    "fifteen_second": {
+      "samples": 239929,
+      "bytes": 479858,
+      "ms": 15000,
+      "halves": 234,
+      "tail_bytes": 2505,
+      "drained": 235,
+      "overwritten": 0,
+      "dma_errors": 0,
+      "temp_left": 0,
+      "listened": true
+    },
+    "gate_met": true
+  },
+  "bvo05": {
+    "normal_rounds": {
+      "registered_presses": 18,
+      "recordings": 18,
+      "completed_playbacks": 15,
+      "operator_claim": 20,
+      "status": "incomplete"
+    },
+    "cancels": {
+      "real_button_cancels": 6,
+      "cancelled_delta": 6,
+      "played_delta": 0,
+      "silent": true,
+      "status": "complete"
+    },
+    "upper_limit": {
+      "executed": 3,
+      "required": 4,
+      "each_single_playback": true,
+      "next_press_accepted": true,
+      "status": "incomplete"
+    },
+    "playback_interrupt": {
+      "executed": 1,
+      "required": 2,
+      "stop_effective": true,
+      "second_segment_clear": true,
+      "status": "incomplete"
+    },
+    "quick_press": {
+      "executed": 2,
+      "too_short_delta": 2,
+      "played_delta": 0,
+      "status": "complete"
+    },
+    "error_recovery": {
+      "injected_result": "err_file",
+      "same_boot_recovery": "ok",
+      "temp_left_after": 0,
+      "status": "complete"
+    },
+    "overall": "not passed"
+  },
+  "parallel": {
+    "touch": "operator confirmed page switch normal",
+    "modbus": "all 14 points offline; bus boot_total advanced 1979 to 2032",
+    "storage": "write/read/delete passed; voice temp dir empty",
+    "network": "eth0 RUNNING 192.168.137.210",
+    "heap_used": {
+      "start": 880184,
+      "after_cancels": 880176,
+      "final": 836632
+    },
+    "nused": {
+      "start": 1055,
+      "after_cancels": 1055,
+      "final": 1008
+    },
+    "playthread_during_playback": [
+      796,
+      797
+    ],
+    "playthread_after_playback": "absent",
+    "queue_highwater": 1
+  },
+  "known_issues": {
+    "fixed_transient_peak": 7184,
+    "sai_underruns_final": 889,
+    "raw_sr": "0x30009 (earlier 0x40009)",
+    "feif_present": true,
+    "note": "underrun counter reads sticky OVRUDR; not an independent event count"
+  },
+  "phase_a": "not passed"
+}

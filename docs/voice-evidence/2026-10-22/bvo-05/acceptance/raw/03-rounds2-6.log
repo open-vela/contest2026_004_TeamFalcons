@@ -1,0 +1,229 @@
+2026-10-22T12:55:13.2783590+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=1 submits=1 timeouts=0 last_ms=2510
+vgptt: samples=1247 raw_high=4 events=2 timeouts_wake=1245 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:15.1428141+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=2 submits=1 timeouts=0 last_ms=2510
+vgptt: samples=1250 raw_high=7 events=3 timeouts_wake=1247 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:16.9737307+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=2 submits=2 timeouts=0 last_ms=1610
+vgptt: samples=1253 raw_high=7 events=4 timeouts_wake=1249 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:18.7865885+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=2 submits=2 timeouts=0 last_ms=1610
+vgptt: samples=1255 raw_high=7 events=4 timeouts_wake=1251 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:20.5911793+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=3 submits=3 timeouts=0 last_ms=1640
+vgptt: samples=1260 raw_high=10 events=6 timeouts_wake=1254 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:22.4232964+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=3 submits=3 timeouts=0 last_ms=1640
+vgptt: samples=1261 raw_high=10 events=6 timeouts_wake=1255 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:24.2379517+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=4 submits=3 timeouts=0 last_ms=1640
+vgptt: samples=1265 raw_high=13 events=7 timeouts_wake=1258 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:26.0547448+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=4 submits=4 timeouts=0 last_ms=1760
+vgptt: samples=1268 raw_high=13 events=8 timeouts_wake=1260 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:27.8696511+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=5 submits=4 timeouts=0 last_ms=1760
+vgptt: samples=1272 raw_high=16 events=9 timeouts_wake=1263 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:29.6710135+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=5 submits=5 timeouts=0 last_ms=1550
+vgptt: samples=1275 raw_high=16 events=10 timeouts_wake=1265 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:31.4839170+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=6 submits=5 timeouts=0 last_ms=1550
+vgptt: samples=1278 raw_high=18 events=11 timeouts_wake=1267 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:33.3191715+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1281 raw_high=19 events=12 timeouts_wake=1269 poll_err=0 read_err=0
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T12:55:35.1318713+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1283 raw_high=19 events=12 timeouts_wake=1271 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:36.9457813+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1285 raw_high=19 events=12 timeouts_wake=1273 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:38.7564491+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1287 raw_high=19 events=12 timeouts_wake=1275 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:40.5857870+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1289 raw_high=19 events=12 timeouts_wake=1277 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:42.3938390+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1290 raw_high=19 events=12 timeouts_wake=1278 poll_err=0 read_err=0
+nsh> [Kvghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:9
+
+2026-10-22T12:55:44.2127592+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1292 raw_high=19 events=12 timeouts_wake=1280 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:46.0146619+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1294 raw_high=19 events=12 timeouts_wake=1282 poll_err=0 read_err=0
+nsh> [K[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+
+2026-10-22T12:55:47.8352723+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1296 raw_high=19 events=12 timeouts_wake=1284 poll_err=0 read_err=0
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada07d461ce8483] BEGIN chat=velaguard:9 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:9
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792673748
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada07d461ce8483] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=220(fused) setup=10 tls=630 send=160 ttfb=210 body=0 pool=0 build=0 parse=10 http=1320 backoff=0 total=1340 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 9 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada07d461ce8483] iter=0 tool=(none) latency=1340ms llm=fail backend=0
+[trace:6ada07d461ce8483] END status=fail iters=1 tools=0 llm_ms=1340 tool_ms=0 elapsed_ms=1400 backend=0
+[agent] Dispatching response → local_client:velaguard:9
+[vgagent] round finished: reply
+
+2026-10-22T12:55:49.6496079+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1298 raw_high=19 events=12 timeouts_wake=1286 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:51.4539928+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1299 raw_high=19 events=12 timeouts_wake=1287 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:53.3028465+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1301 raw_high=19 events=12 timeouts_wake=1289 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:55.1094731+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1303 raw_high=19 events=12 timeouts_wake=1291 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:56.9234949+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1305 raw_high=19 events=12 timeouts_wake=1293 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:55:58.7451666+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1307 raw_high=19 events=12 timeouts_wake=1295 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:00.5724409+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1308 raw_high=19 events=12 timeouts_wake=1296 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:02.4491175+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1310 raw_high=19 events=12 timeouts_wake=1298 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:04.2823724+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1312 raw_high=19 events=12 timeouts_wake=1300 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:06.1006437+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1314 raw_high=19 events=12 timeouts_wake=1302 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:07.9093238+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=6 submits=6 timeouts=0 last_ms=1700
+vgptt: samples=1316 raw_high=19 events=12 timeouts_wake=1304 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T12:56:09.7578121+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=15 played=15 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=1660 samples=26541 bytes=53082
+vgvoice: level peak=7188 rms=91
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=3720 temp_left=0 worker=9
+vgvoice: capture halves=25 drained=26 overwritten=0 wraps=12 elapsed_ms=1660 rate=127912 B/s
+vgvoice: tail_bytes=7535 stage_ms=250
+vgvoice: generation=15 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=41 clip=0 tick_us=10000
+nsh> [K

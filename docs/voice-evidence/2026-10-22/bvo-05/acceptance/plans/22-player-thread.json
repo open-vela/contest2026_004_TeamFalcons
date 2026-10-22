@@ -1,0 +1,22 @@
+[
+  {
+    "command": "vgvoice record 3000",
+    "wait_ms": 4500
+  },
+  {
+    "command": "ps",
+    "wait_ms": 1200
+  },
+  {
+    "command": "vgvoice wait 10000",
+    "wait_ms": 6000
+  },
+  {
+    "command": "ps",
+    "wait_ms": 1200
+  },
+  {
+    "command": "free",
+    "wait_ms": 600
+  }
+]

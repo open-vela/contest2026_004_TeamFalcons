@@ -1,0 +1,14 @@
+[
+  {
+    "command": "",
+    "wait_ms": 18000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgptt status",
+    "wait_ms": 600
+  }
+]

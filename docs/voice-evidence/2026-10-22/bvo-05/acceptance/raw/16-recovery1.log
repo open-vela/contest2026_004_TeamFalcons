@@ -1,0 +1,23 @@
+
+2026-10-22T13:11:57.2800751+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=37 played=26 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=3720 samples=59548 bytes=119096
+vgvoice: level peak=12120 rms=505
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=8370 temp_left=0 worker=9
+vgvoice: capture halves=58 drained=59 overwritten=0 wraps=29 elapsed_ms=3720 rate=128062 B/s
+vgvoice: tail_bytes=1255 stage_ms=700
+vgvoice: generation=37 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=16 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:11:58.1013739+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=27 submits=27 timeouts=1 last_ms=3760
+vgptt: samples=2315 raw_high=120 events=54 timeouts_wake=2261 poll_err=0 read_err=0
+nsh> [K[vgadvice] asked for 8 alarms req=8
+[vgagent] round submitted: 1325 bytes
+[agent] Processing message from local_client:velaguard:16
+

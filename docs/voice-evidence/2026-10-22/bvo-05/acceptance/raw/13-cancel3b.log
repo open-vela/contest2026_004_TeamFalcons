@@ -1,0 +1,94 @@
+2026-10-22T13:08:54.3186867+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=22 submits=22 timeouts=0 last_ms=4360
+vgptt: samples=2118 raw_high=78 events=44 timeouts_wake=2074 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:08:54.8884588+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=23 submits=22 timeouts=0 last_ms=4360
+vgptt: samples=2120 raw_high=80 events=45 timeouts_wake=2075 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:08:56.7803808+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T13:08:57.3990233+08:00 CANCEL-SENT begin=23 n=1
+2026-10-22T13:08:59.0585457+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=23 submits=22 timeouts=0 last_ms=4360
+vgptt: samples=2124 raw_high=84 events=45 timeouts_wake=2079 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:08:59.5868466+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=23 submits=23 timeouts=0 last_ms=4330
+vgptt: samples=2126 raw_high=84 events=46 timeouts_wake=2080 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:00.1107677+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=23 submits=23 timeouts=0 last_ms=4330
+vgptt: samples=2126 raw_high=84 events=46 timeouts_wake=2080 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:00.6373018+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=24 submits=23 timeouts=0 last_ms=4330
+vgptt: samples=2129 raw_high=86 events=47 timeouts_wake=2082 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:02.5026401+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T13:09:03.1122821+08:00 CANCEL-SENT begin=24 n=2
+2026-10-22T13:09:04.7699275+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=24 submits=24 timeouts=0 last_ms=3890
+vgptt: samples=2134 raw_high=89 events=48 timeouts_wake=2086 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:05.2937660+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=24 submits=24 timeouts=0 last_ms=3890
+vgptt: samples=2135 raw_high=89 events=48 timeouts_wake=2087 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:05.8393190+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=24 submits=24 timeouts=0 last_ms=3890
+vgptt: samples=2136 raw_high=90 events=49 timeouts_wake=2087 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:06.3813140+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=25 submits=24 timeouts=0 last_ms=3890
+vgptt: samples=2137 raw_high=91 events=49 timeouts_wake=2088 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:09:08.2668628+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T13:09:08.8795761+08:00 CANCEL-SENT begin=25 n=3
+2026-10-22T13:09:10.5493640+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=35 played=24 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=2320 samples=37167 bytes=74334
+vgvoice: level peak=7188 rms=71
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=36 drained=37 overwritten=0 wraps=18 elapsed_ms=2320 rate=128165 B/s
+vgvoice: tail_bytes=2431 stage_ms=0
+vgvoice: generation=35 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=46 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:09:11.3551658+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=25 submits=25 timeouts=0 last_ms=4220
+vgptt: samples=2144 raw_high=95 events=50 timeouts_wake=2094 poll_err=0 read_err=0
+nsh> [K

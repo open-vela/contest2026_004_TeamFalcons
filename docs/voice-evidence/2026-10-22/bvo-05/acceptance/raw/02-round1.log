@@ -1,0 +1,49 @@
+[vgadvice] asked for 8 alarms req=4
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:8
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] All backends backed off, using fallback 0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada06df76c64bb0] BEGIN chat=velaguard:8 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 9971 bytes)
+[agent] Dispatching response → local_client:velaguard:8
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada06df76c64bb0] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=60 body=0 pool=0 build=0 parse=10 http=370 backoff=0 total=390 req=9971 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 8 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada06df76c64bb0] iter=0 tool=(none) latency=390ms llm=fail backend=0
+[trace:6ada06df76c64bb0] END status=fail iters=1 tools=0 llm_ms=390 tool_ms=0 elapsed_ms=460 backend=0
+[agent] Dispatching response → local_client:velaguard:8
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc3ebc
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T12:54:22.3496566+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=10 played=10 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=2470 samples=39524 bytes=79048
+vgvoice: level peak=7178 rms=87
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=5340 temp_left=0 worker=9
+vgvoice: capture halves=38 drained=39 overwritten=0 wraps=19 elapsed_ms=2470 rate=128013 B/s
+vgvoice: tail_bytes=4898 stage_ms=300
+vgvoice: generation=10 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=64 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:54:23.1625025+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=1 submits=1 timeouts=0 last_ms=2510
+vgptt: samples=1198 raw_high=4 events=2 timeouts_wake=1196 poll_err=0 read_err=0
+nsh> [K

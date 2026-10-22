@@ -1,0 +1,65 @@
+2026-10-22T12:48:53.2324208+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=8 played=8 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1010 samples=16123 bytes=32246
+vgvoice: level peak=7185 rms=125
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2260 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=1010 rate=127709 B/s
+vgvoice: tail_bytes=6107 stage_ms=80
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=74 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:48:53.8822644+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880184    5966712     987816    5795432   1055     14 Umem
+nsh> [K
+2026-10-22T12:48:54.5000193+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 27.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.2% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.2% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.8% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  3.7% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  2.4% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.6% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.5% vgptt
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 36.9% vghmi vghmi
+   12    11 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  2.3% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.5% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4e0
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5e0
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6e0
+   19    11 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  5.5% vghmi 0x9001492d 0
+   20    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5e0
+nsh> [K
+2026-10-22T12:48:55.5433909+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=2 window=64 total=48 ok=0 crc=0 timeout=48 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=3 window=64 total=48 ok=0 crc=0 timeout=48 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=4 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=5 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=6 window=64 total=64 ok=0 crc=0 timeout=64 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=7 window=64 total=47 ok=0 crc=0 timeout=47 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+2026-10-22T12:48:56.3611266+08:00 CMD vghmi perf
+vghmi perf
+vghmi perf: state=disabled (built without CONFIG_VG_HMI_PERF)
+nsh> [K
+2026-10-22T12:48:57.1816413+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.210 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+nsh> [K
+2026-10-22T12:48:58.1998693+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

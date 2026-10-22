@@ -1,0 +1,28 @@
+########## boot settle len=0 ##########
+
+
+########## vgvoice status ########## len=575
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=28 played=24 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=2650 samples=42398 bytes=84796
+vgvoice: level peak=7185 rms=85
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=41 drained=42 overwritten=0 wraps=20 elapsed_ms=2650 rate=127994 B/s
+vgvoice: tail_bytes=3313 stage_ms=360
+vgvoice: generation=28 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=59 clip=0 tick_us=10000
+nsh> [K
+
+########## vgptt status ########## len=201
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=19 submits=19 timeouts=0 last_ms=2670
+vgptt: samples=1981 raw_high=59 events=38 timeouts_wake=1943 poll_err=0 read_err=0
+nsh> [K
+
+########## ls -l /data/velaguard/voice ########## len=61
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

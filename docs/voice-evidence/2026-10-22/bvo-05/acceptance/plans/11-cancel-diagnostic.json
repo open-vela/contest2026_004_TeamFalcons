@@ -1,0 +1,22 @@
+[
+  {
+    "command": "vgvoice record 5000",
+    "wait_ms": 1200
+  },
+  {
+    "command": "vgvoice cancel",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgvoice wait 5000",
+    "wait_ms": 1000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  }
+]

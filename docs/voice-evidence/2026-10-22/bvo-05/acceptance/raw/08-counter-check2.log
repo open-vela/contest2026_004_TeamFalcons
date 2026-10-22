@@ -1,0 +1,23 @@
+########## boot settle len=0 ##########
+
+
+########## vgptt status ########## len=201
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=18 submits=18 timeouts=0 last_ms=2110
+vgptt: samples=1832 raw_high=55 events=36 timeouts_wake=1796 poll_err=0 read_err=0
+nsh> [K
+
+########## vgvoice status ########## len=571
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=27 played=24 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=2090 samples=33432 bytes=66864
+vgvoice: level peak=7188 rms=87
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=4580 temp_left=0 worker=9
+vgvoice: capture halves=32 drained=33 overwritten=0 wraps=16 elapsed_ms=2090 rate=127971 B/s
+vgvoice: tail_bytes=5317 stage_ms=220
+vgvoice: generation=27 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=57 clip=0 tick_us=10000
+nsh> [K

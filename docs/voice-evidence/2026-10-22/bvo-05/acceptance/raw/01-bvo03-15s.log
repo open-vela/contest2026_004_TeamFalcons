@@ -1,0 +1,56 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-22T12:49:59.3980308+08:00 CMD vgvoice record 15000
+vgvoice record 15000
+vgvoice: timed record queued ms=15000
+nsh> [K
+2026-10-22T12:50:16.4047622+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=playing
+vgvoice: rounds=9 played=8 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239929 bytes=479858
+vgvoice: level peak=7184 rms=48
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127962 B/s
+vgvoice: tail_bytes=2505 stage_ms=1240
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=54 clip=0 tick_us=10000
+nsh> [K
+
+2026-10-22T12:50:35.0188843+08:00 CMD vgvoice wait 20000
+vgvoice wait 20000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=9 played=9 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239929 bytes=479858
+vgvoice: level peak=7184 rms=48
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=31380 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127962 B/s
+vgvoice: tail_bytes=2505 stage_ms=1240
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=54 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:50:36.5432331+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=9 played=9 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239929 bytes=479858
+vgvoice: level peak=7184 rms=48
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=31380 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127962 B/s
+vgvoice: tail_bytes=2505 stage_ms=1240
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=54 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T12:50:37.1737378+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K
+2026-10-22T12:50:37.7930666+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880184    5966712     987816    5795432   1055     14 Umem
+nsh> [K

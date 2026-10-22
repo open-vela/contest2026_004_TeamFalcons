@@ -1,0 +1,42 @@
+[
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  },
+  {
+    "command": "mkdir /data/velaguard/voice/clip.wav",
+    "wait_ms": 600
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  },
+  {
+    "command": "vgvoice record 1000",
+    "wait_ms": 4000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  },
+  {
+    "command": "rmdir /data/velaguard/voice/clip.wav",
+    "wait_ms": 600
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  },
+  {
+    "command": "vgvoice record 1000",
+    "wait_ms": 5000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  }
+]

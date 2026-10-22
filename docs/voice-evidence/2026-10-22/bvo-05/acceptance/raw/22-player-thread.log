@@ -1,0 +1,71 @@
+2026-10-22T13:18:15.3565183+08:00 CMD vgvoice record 3000
+vgvoice record 3000
+vgvoice: timed record queued ms=3000
+nsh> [K
+2026-10-22T13:18:19.8717750+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000  4.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 19.0% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Ready              0000000000000000 0001976  0.7% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  0.7% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264  1.5% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  1.5% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 38.6% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   11    11 100 RR       Task      - Ready              0000000000000000 0049104 31.3% vghmi vghmi
+   12    11 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  0.0% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4e0
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5e0
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6e0
+   19    11 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  1.4% vghmi 0x9001492d 0
+   20    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5e0
+  796     9 246 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  0.0% playthread 0x9005157d 0x30014058
+  797     9 252 RR       pthread   - Waiting  MQ empty  0000000000000000 0000744  0.0% wm8994 0x90098a91 0x38008f50
+nsh> [K
+2026-10-22T13:18:21.0857545+08:00 CMD vgvoice wait 10000
+vgvoice wait 10000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=46 played=31 cancelled=7 too_short=2 failures=1 timeouts=1
+vgvoice: last result=ok ms=3010 samples=48116 bytes=96232
+vgvoice: level peak=7186 rms=73
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=6560 temp_left=0 worker=9
+vgvoice: capture halves=46 drained=47 overwritten=0 wraps=23 elapsed_ms=3010 rate=127885 B/s
+vgvoice: tail_bytes=8102 stage_ms=210
+vgvoice: generation=46 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=10 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:18:27.1169127+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 23.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.1% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.9% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  3.7% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264  2.8% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  0.9% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.8% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 42.4% vghmi vghmi
+   12    11 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  2.6% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4e0
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5e0
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6e0
+   19    11 100 RR       pthread   - Ready              0000000000000000 0008168  5.0% vghmi 0x9001492d 0
+   20    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5e0
+nsh> [K
+2026-10-22T13:18:28.3269523+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     836608    6010288     989144    5795432   1008     11 Umem
+nsh> [K

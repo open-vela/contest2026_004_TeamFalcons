@@ -1,0 +1,59 @@
+########## boot settle len=1389 ##########
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada094134a9cc0d] BEGIN chat=velaguard:12 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7020 bytes)
+[agent] Dispatching response → local_client:velaguard:12
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ada094134a9cc0d] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=360 ttfb=0 body=0 pool=0 build=10 parse=10 http=470 backoff=0 total=490 req=7020 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 12 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada094134a9cc0d] iter=0 tool=(none) latency=490ms llm=fail backend=0
+[trace:6ada094134a9cc0d] END status=fail iters=1 tools=0 llm_ms=490 tool_ms=0 elapsed_ms=550 backend=0
+[agent] Dispatching response → local_client:velaguard:12
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc3ebc
+
+
+########## vgvoice status ########## len=571
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=22 played=20 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=1190 samples=18956 bytes=37912
+vgvoice: level peak=7188 rms=121
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2620 temp_left=0 worker=9
+vgvoice: capture halves=18 drained=19 overwritten=0 wraps=9 elapsed_ms=1190 rate=127441 B/s
+vgvoice: tail_bytes=4199 stage_ms=180
+vgvoice: generation=22 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=61 clip=0 tick_us=10000
+nsh> [K
+
+########## vgptt status ########## len=206
+vgptt status
+vgptt: running=yes opened=yes state=recording
+vgptt: begins=15 submits=14 timeouts=0 last_ms=1360
+vgptt: samples=1731 raw_high=44 events=29 timeouts_wake=1702 poll_err=0 read_err=0
+nsh> [K
+
+########## ls -l /data/velaguard/voice ########## len=61
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K
+
+########## free ########## len=166
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880184    5966712     987816    5795432   1055     13 Umem
+nsh> [K

@@ -1,0 +1,26 @@
+[
+  {
+    "command": "",
+    "wait_ms": 22000
+  },
+  {
+    "command": "vgptt status",
+    "wait_ms": 600
+  },
+  {
+    "command": "",
+    "wait_ms": 18000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 800
+  },
+  {
+    "command": "vgptt status",
+    "wait_ms": 600
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 600
+  }
+]

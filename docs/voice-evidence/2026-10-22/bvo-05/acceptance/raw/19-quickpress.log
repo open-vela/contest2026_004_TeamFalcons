@@ -1,0 +1,82 @@
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:17
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada0c853f41631c] BEGIN chat=velaguard:17 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5791 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792674949
+[agent] Dispatching response → local_client:velaguard:17
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ada0c853f41631c] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=10 parse=na http=30 backoff=0 total=40 req=5791 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 17 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada0c853f41631c] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ada0c853f41631c] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → local_client:velaguard:17
+[vgagent] round finished: reply
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgadvice] asked for 8 alarms req=9
+[vgagent] round submitted: 1325 bytes
+[agent] Processing message from local_client:velaguard:18
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ada0cd24eb10062] BEGIN chat=velaguard:18 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7122 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792675026
+[agent] Dispatching response → local_client:velaguard:18
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ada0cd24eb10062] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=30 backoff=0 total=40 req=7122 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 18 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ada0cd24eb10062] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ada0cd24eb10062] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=100 backend=0
+[agent] Dispatching response → local_client:velaguard:18
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc3ebc
+
+2026-10-22T13:17:21.9662566+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=43 played=29 cancelled=7 too_short=2 failures=0 timeouts=1
+vgvoice: last result=too_short ms=0 samples=22 bytes=44
+vgvoice: level peak=6873 rms=1927
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=1 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=180 stage_ms=0
+vgvoice: generation=43 queue_highwater=1 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=409 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T13:17:22.7851461+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=33 submits=33 timeouts=3 last_ms=60
+vgptt: samples=2655 raw_high=170 events=66 timeouts_wake=2589 poll_err=0 read_err=0
+nsh> [K
+2026-10-22T13:17:23.4101354+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K
+2026-10-22T13:17:24.0410682+08:00 CMD vgvoice wait 5000
+vgvoice wait 5000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=43 played=29 cancelled=7 too_short=2 failures=0 timeouts=1
+vgvoice: last result=too_short ms=0 samples=22 bytes=44
+vgvoice: level peak=6873 rms=1927
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=1 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=180 stage_ms=0
+vgvoice: generation=43 queue_highwater=1 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=409 clip=0 tick_us=10000
+nsh> [K
