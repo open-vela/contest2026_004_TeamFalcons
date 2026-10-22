@@ -49,9 +49,10 @@ make test_voice_intent test_voice_answer test_agent_tools
 
 构建：竞赛仓根目录 `bash scripts/build.sh`，TARGET=velaguard-lvgl，退出码 0，生成 `.debug/nuttx.hex`。构建日志中的 `vg_runtime.c:1216` 截断告警在本次改动前已存在，未修改该行。
 
-## 5. 未完成
+## 5. 接线与板端状态
 
-- 未烧录，未在真机观察工具输出与浮层文本。
-- 语音链路尚未把 `vg_vi_classify`/`vg_vi_resolve_point` 接到实际 ASR 文本，接线在 BVO-11。
-- 模型回答与确定性回答的取舍目前由调用方决定；BVO-11 接入时必须先查一致性再用模型文本，否则用渲染文本。
-- 配置版本尚未由采集侧写入 `vg_voice_facts_set_config_version()`，当前发布值为 0，渲染时省略该行。
+- 已烧录。板端 `vg_anomaly_read` 取到 14 条异常并带 `omitted=2`，`vg_alarm_recovery` 无事件时返回 `unknown`，见 [../bvo-09/board-anomaly-recovery.log](../bvo-09/board-anomaly-recovery.log)。浮层上的完整回答仍待真人按放。
+- 语音链路已把 `vg_vi_classify` 与 `vg_vi_resolve_point` 接到实际 ASR 文本（`vg_voice_round.c` 第 285、318 行附近）。
+- 模型回答只有在 `vg_va_text_facts_consistent()` 通过后才展示，否则用确定性渲染文本；这段取舍在 `vg_voice_round.c` 的 agent 结果处理里。
+- 配置版本已由 `vg_live_points_gen()` 每个 tick 写入会话：点表提交后代次改变，在途问题结束，点位上下文清空。板端只验证了启动后 gen 稳定、语音仍空闲；点表变更与语音重叠的实测需要一次 apply 与一次按键同时发生。
+- 板端聊天模型仍是 `mimo-v2.5`，模型调用返回 400，因此“模型选择调用工具并组织回答”这一段没有真机证据，见 [../bvo-14/README.md](../bvo-14/README.md) 待补清单第 J 项。

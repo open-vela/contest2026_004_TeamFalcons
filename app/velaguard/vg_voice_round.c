@@ -31,6 +31,9 @@
 
 #include "vg_agent_query.h"
 #include "vg_agent_round.h"
+#ifdef CONFIG_VG_BUS_DISCOVER
+#  include "vg_discover.h"
+#endif
 #include "vg_agent_tools.h"
 #include "vg_ptt_board.h"
 #include "vg_voice.h"
@@ -757,6 +760,14 @@ static void *vr_thread(void *arg)
           g_vr.muted = g_vr.mute_value;
           vg_vs_set_muted(&g_vr.s, g_vr.mute_value);
         }
+
+#ifdef CONFIG_VG_BUS_DISCOVER
+      /* A committed point-table change bumps the live generation.  Feed it to
+       * the session so an in-flight question ends instead of answering from a
+       * table that may no longer contain the points it names. */
+
+      vg_vs_set_config_version(&g_vr.s, vg_live_points_gen());
+#endif
 
       actions = vg_vs_tick(&g_vr.s, now);
       vr_run_actions(actions);

@@ -11,7 +11,7 @@
 | 串口 | Windows COM3，ST-Link Virtual COM Port，115200 |
 | 烧录工具 | STM32CubeProgrammer v2.22.0，External Loader MT25TL01G_STM32H750B-DISCO |
 | 烧录范围 | 内部引导 0x08000000..0x080002d0，QSPI 镜像 0x90000000 起 |
-| 镜像 | 当日 3 个镜像，最新 `3d6cbc1c...f9039941`（18:19），见 [firmware-2026-10-22.txt](firmware-2026-10-22.txt)；板端自报 `189e6d8a18d-dirty Oct 22 2026 18:06:42` |
+| 镜像 | 当日 4 个镜像，最新 `a5a0031c...1f4d44f8`（18:26），见 [firmware-2026-10-22.txt](firmware-2026-10-22.txt)；板端自报 `189e6d8a18d-dirty Oct 22 2026 18:26:00` |
 | 网络 | rj45，192.168.137.83，网关可达，MQTT up |
 
 烧录日志：`flash.log`。每次烧录后都重新抓取串口启动日志。
