@@ -71,7 +71,6 @@ static void mute_cb(lv_event_t * e)
     LV_UNUSED(e);
 
     muted = !vg_voice_round_muted();
-    vg_voice_round_set_muted(muted);
     vg_voice_pref_set_muted(muted);
 }
 

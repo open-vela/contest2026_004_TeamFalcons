@@ -792,14 +792,21 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
         done += got;
       }
 
-    if (done != samples || vg_pcm_writer_close(&w) != 0)
-      {
-        free(pcm_in);
-        free(pcm_out);
-        fclose(f);
-        rc = VG_VC_IO;
-        goto out;
-      }
+    /* Close unconditionally: the writer holds the output FILE, and a short
+     * read above would otherwise leave it open. */
+
+    {
+      int close_ret = vg_pcm_writer_close(&w);
+
+      if (done != samples || close_ret != 0)
+        {
+          free(pcm_in);
+          free(pcm_out);
+          fclose(f);
+          rc = VG_VC_IO;
+          goto out;
+        }
+    }
 
     free(pcm_in);
     free(pcm_out);

@@ -62,6 +62,10 @@ struct voice_round
   volatile bool        submit_pending;
   volatile bool        end_pending;
   volatile bool        retry_pending;
+  volatile bool        hold_pending;
+  volatile bool        hold_value;
+  volatile bool        mute_pending;
+  volatile bool        mute_value;
   volatile bool        quit;
   uint32_t             record_generation;
   bool                 muted;
@@ -737,6 +741,23 @@ static void *vr_thread(void *arg)
           now = vr_now_ms();
         }
 
+      /* The session belongs to this thread.  The overlay's hold and mute
+       * switches arrive as pending values so no other thread mutates it. */
+
+      if (g_vr.hold_pending)
+        {
+          g_vr.hold_pending = false;
+          g_vr.hold = g_vr.hold_value;
+          vg_vs_result_hold(&g_vr.s, g_vr.hold, now);
+        }
+
+      if (g_vr.mute_pending)
+        {
+          g_vr.mute_pending = false;
+          g_vr.muted = g_vr.mute_value;
+          vg_vs_set_muted(&g_vr.s, g_vr.mute_value);
+        }
+
       actions = vg_vs_tick(&g_vr.s, now);
       vr_run_actions(actions);
 
@@ -840,7 +861,15 @@ bool vg_voice_round_ui(struct vg_voice_ui *out)
 void vg_voice_round_set_muted(bool muted)
 {
   g_vr.muted = muted;
-  vg_vs_set_muted(&g_vr.s, muted);
+
+  if (!g_vr.started)
+    {
+      return;
+    }
+
+  g_vr.mute_value = muted;
+  g_vr.mute_pending = true;
+  sem_post(&g_vr.wake);
 }
 
 bool vg_voice_round_muted(void)
@@ -850,8 +879,14 @@ bool vg_voice_round_muted(void)
 
 void vg_voice_round_hold(bool held)
 {
-  g_vr.hold = held;
-  vg_vs_result_hold(&g_vr.s, held, vr_now_ms());
+  if (!g_vr.started)
+    {
+      return;
+    }
+
+  g_vr.hold_value = held;
+  g_vr.hold_pending = true;
+  sem_post(&g_vr.wake);
 }
 
 void vg_voice_round_end(void)
