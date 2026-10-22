@@ -11,7 +11,7 @@
 | 串口 | Windows COM3，ST-Link Virtual COM Port，115200 |
 | 烧录工具 | STM32CubeProgrammer v2.22.0，External Loader MT25TL01G_STM32H750B-DISCO |
 | 烧录范围 | 内部引导 0x08000000..0x080002d0，QSPI 镜像 0x90000000 起 |
-| 镜像 | `.debug/nuttx.hex`，SHA256 见 `../bvo-11/firmware.sha256`，源码提交见 `sources.txt` |
+| 镜像 | `.debug/nuttx.hex`，SHA256 `0d517611...1504dbd0`，源码版本与烧录时间见 [firmware-2026-10-22.txt](firmware-2026-10-22.txt)；板端自报 `189e6d8a18d-dirty Oct 22 2026 18:06:42` |
 | 网络 | rj45，192.168.137.83，网关可达，MQTT up |
 
 烧录日志：`flash.log`。每次烧录后都重新抓取串口启动日志。
@@ -21,8 +21,11 @@
 | 检查 | 结果 | 证据 |
 |---|---|---|
 | 启动 | NSH 启动，eMMC 挂载，HMI 480×272，`vgptt: watching /dev/buttons`，ai_agent 守护启动 | `boot-after-flash.log` |
-| 只读工具 | `vg_anomaly_read` rc=0，total=0 shown=0；`vg_point_read` 无样本时 `reason=no_sample value=-` | `nsh-tools.log` |
-| 参数校验 | `vg_alarm_recovery` 缺 point_id 返回 `reason=bad_arg` | `nsh-tools.log` |
+| 只读工具 | `vg_anomaly_read` rc=0；`vg_point_read` 无样本时 `reason=no_sample value=-` | `nsh-tools.log` |
+| 异常完整列表 | 无在线从站时 `total=14 shown=12 seen=14`，列出 12 条后 `omitted=2`，未采样点 `value=-` | `../bvo-09/board-anomaly-recovery.log` |
+| 告警恢复 | `vg_alarm_recovery ups_load` 返回 `state=unknown history_complete=false`，没有把当前离线当成历史结论 | `../bvo-09/board-anomaly-recovery.log` |
+| 参数校验 | 旧镜像上 `vg_alarm_recovery` 缺少 point_id 时返回 `reason=bad_arg`；现支持裸词按 point_id 包装 | `nsh-tools.log`、`../bvo-09/board-anomaly-recovery.log` |
+| 语音线程 | `vgptt: running=yes state=idle begins=0`，`vgvoice: state=idle worker=9`；`ps` 中 32,744 字节栈的轮次线程存在 | `../bvo-08/board-round-thread.log` |
 | 录音与清理 | 2 秒录音：samples=32120 bytes=64240，dropped=0 overruns=0，temp_left=0，目录为空 | `nsh-voice.log` |
 | 云 ASR | 160,044 B 合成样本 → 请求 213,561 B、响应 533 B、HTTP 200，转写与样本一致，8.2 s / 12.7 s | `nsh-asr.log`、`nsh-asr-repeat.log` |
 | 云 TTS | `pcm16` 流式，84,480 B PCM → 112,684 B 的 16 kHz 双声道 WAV，2.47 s | `nsh-tts.log` |
@@ -43,11 +46,14 @@
 | 云 ASR 后 | 834,304 | 6,004,112 | 919,168 | 5,795,432 |
 | TTS + 播放后 | 834,632 | 6,003,784 | 1,062,336 | 5,795,432 |
 | 连续 ASR 后 | 918,104 | 5,920,312 | 1,076,904 | 5,795,432 |
+| 新镜像开机空闲（18:07） | 834,224 | 6,004,192 | 834,784 | 5,795,432 |
+| 新镜像运行 3.5 分钟后（18:10） | 918,048 | 5,920,368 | 997,736 | 5,795,432 |
 
 - 语音任务在 `vg_voice_init` 中一次分配约 484 KB 的 PCM 缓冲，已包含在开机 used 内。
 - 单轮语音的峰值增量约 230 KB（TTS 解码、SSE 行、重采样缓冲），最大已用约 1.08 MB。
 - `maxfree` 在全部采样中保持 5.79 MB，说明没有出现大块连续内存被耗尽的情况。
 - 连续 ASR 后 used 比开机高约 84 KB，同期 ai_agent 后台日报仍在运行，无法据此判定泄漏；需要在关闭后台任务的条件下重复测量。
+- 新镜像上电 3.5 分钟的增量 84 KB 与上一组一致，`maxused` 未超过 1.0 MB，`maxfree` 仍为 5.79 MB。两次开机值与上一次开机值相差不足 20 字节，说明语音缓冲在启动时一次分配、不随轮次增长。
 
 ## 4. 板端发现并修复的缺陷
 
@@ -58,6 +64,9 @@
 5. **base64 分片超过解码缓冲**：真实分片 40,960 字符，原实现按固定 16 KB 输出缓冲一次解码而失败。已改为按 4 字符组循环解码。
 6. **TTS 输出 FILE 泄漏**：短读路径跳过了 `vg_voice_pcm_writer_close`。已改为无条件关闭。
 7. **聊天模型名与账号不符**：板端 provision 文件保存的是 `mimo-v2.5`，账号返回 `400 Unsupported model`。账号模型列表与 `connect_info` 都是 `mimo-v2.6-flash`。仓库内 `scripts/gen-agent-secrets.sh` 已改为 `mimo-v2.6-flash`；板端已保存的 provision 文件未改动，见待补清单第 J 项。
+8. **异常列表把未采样显示为 0.0**：离线且从未读到的点渲染成 `value=0.0`，模型会当成真实读数。已改为 `value=-`。
+9. **单标志带前导逗号**：离线行输出 `flags=,offline`。已改为只在非首项前加分隔符。
+10. **首轮采集前 `total=0` 读成健康**：新增 `seen=` 与 `note=first_cycle_pending`，把未采集与无异常分开。
 
 ## 5. 尚未验证
 
@@ -71,8 +80,8 @@
 | 任务 | 状态 | 依据 |
 |---|---|---|
 | BVO-07 | 已实现；截止时间与回收有板端堆数据，取消回收时间未测 | `bvo-07/README.md` |
-| BVO-08 | 已实现并主机验证；真机按键未测 | `bvo-08/` |
-| BVO-09 | 已实现；工具在板端可执行，在线从站未接 | `bvo-09/` |
+| BVO-08 | 已实现，已接入板端轮次线程；真机按键未测 | `bvo-08/README.md` |
+| BVO-09 | 已实现；板端取到 total=14、omitted=2、recovery=unknown；在线从站未接 | `bvo-09/README.md` |
 | BVO-10 | 已实现并主机验证；30 条真人问法未做 | `bvo-10/` |
 | BVO-11 | 已实现；云 ASR/TTS 与播放已在板端跑通 | `bvo-11/README.md` |
 | BVO-12 | 已实现并接入构建；浮层未在屏幕确认 | `bvo-12/README.md` |
@@ -88,6 +97,7 @@
 - 缺少：真人按住 USER1 说话。
 - 原因：无法自动产生按键与语音。
 - 操作：按住 USER1 说“现在有哪些异常”，松开；再试 1 秒、5 秒、15 秒和超过 15 秒。
+- 现状：`vgptt` 与 `vgvoice` 均为 idle，`begins=0`，本轮没有任何按键事件，可直接开始。
 - 预期：浮层出现并显示录音中，松开后识别、查询、播报，文字与播报来自同一快照。
 - 判定：30 次按键无重复提交、无录放重叠、无残留文件；每次回答的数字与同轮快照一致。
 
@@ -120,6 +130,7 @@
 - 缺少：在线 Modbus 从站。
 - 操作：制造超阈值告警并恢复，再问当前异常与告警恢复。
 - 判定：总数与列表和事件环一致；0 项、1 项、超过 3 项、超过旧报告 8 项、多类别重叠各测一次。
+- 已有：无从站时取到 14 条离线和 `omitted=2`，说明完整集合与截断提示可用；缺的是阈值告警与 RAISE/CLEAR 事件。
 
 ### G. 服务故障注入（BVO-07、11）
 
@@ -137,12 +148,13 @@
 - 缺少：稳定复现条件。
 - 现象：2026-10-22 14:40 一次 ASR 在握手成功后未返回，超过 30 秒 deadline，命令任务占用 NSH。
 - 下一步：在板上连续跑 50 次 ASR，记录每次耗时与 `maxused`；若复现，抓 `ps` 与 `netstats`，确认阻塞在 send 还是 recv。当前实现依赖 socket 超时让读循环回到 deadline 检查，若 NuttX 在某个路径上不返回，需要改为非阻塞加 poll。
+- 补充：该次调用已运行在 32 KB 命令栈的镜像上（`vgvoice` 栈已改），因此不是栈溢出，没有用提高栈的方式掩盖。
 
 ### J. 聊天模型名（BVO-10、14）
 
 - 缺少：用户的 provision 决定。
 - 现象：板端 provision 文件保存 `mimo-v2.5`，账号返回 `400 Unsupported model mimo-v2.5`；账号模型列表为 `mimo-v2.5-asr`、`mimo-v2.5-tts`、`mimo-v2.5-tts-voiceclone`、`mimo-v2.5-tts-voicedesign`、`mimo-v2.6-flash`、`mimo-v2.6-pro`，`connect_info` 写的是 `mimo-v2.6-flash`。
-- 为什么不能自行完成：重新 provision 需要把密钥写入 staging 文件，而 staging 通过串口十六进制下发会把密钥写进日志；本轮没有这样做。
+- 为什么不能自行完成：重新 provision 需要把密钥写入 staging 文件，而 staging 通过串口十六进制下发会把密钥写进日志；本轮没有这样做。板端 `set_llm` 在当前构建里不可用（ai_agent 以 daemon 方式启动，跳过 nsh_commands），没有第二条不改密钥的修改路径。
 - 操作：用现有 provision 流程（主机侧）把模型改为 `mimo-v2.6-flash`，或确认应使用 `mimo-v2.6-pro`。
 - 判定：`vgagent ask 现在有哪些异常` 返回 HTTP 200，模型调用 `vg_anomaly_read` 并按快照回答。
 - 影响：BVO-10 的模型路径、BVO-14 的端到端联调。仓库内 `scripts/gen-agent-secrets.sh` 已改，未动板端 provision 文件。

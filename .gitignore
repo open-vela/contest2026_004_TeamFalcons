@@ -120,3 +120,6 @@ logs/**/errors/
 
 # Submission material backups (kept out of git; canonical copies live elsewhere)
 docs/submission/.backup-*/
+
+# Local connection notes (MQTT and MiMo endpoints); never commit.
+connect_info

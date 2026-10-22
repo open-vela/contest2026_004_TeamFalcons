@@ -1,0 +1,18 @@
+# 2026-10-22 18:05 板端镜像记录
+
+- 烧录文件：`.debug/nuttx.hex`，构建 2026-10-22 18:05，脚本 `bash scripts/build.sh`（TARGET=velaguard-lvgl，发布构建）
+- SHA256：`0d517611397373e5f49c32c92f90e40d452d12180fadad03e7dd101f1504dbd0`
+- 片内引导：`.debug/qspi_bootstub.hex`，SHA256 `877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e`
+- 烧录：STM32CubeProgrammer 2.22.0，两段均 verified，末尾硬件复位
+- 板端自报：`NuttX 0.0.0 189e6d8a18d-dirty Oct 22 2026 18:06:42 arm stm32h750b-dk`
+
+## 源码版本
+
+| 仓库 | 提交 | 分支 |
+|---|---|---|
+| 竞赛仓 | 6fc96a932e38 | velaguard/maintenance-stability |
+| nuttx | 189e6d8a18d8 | velaguard/ptt-user1-stm32h750b-dk |
+| apps | 0ea954b79740 | velaguard/netinit-esp8266 |
+| packages/ai_agent | eff6626a10ab | velaguard/rsp01-response-timing |
+
+竞赛仓提交 `6fc96a9` 在烧录之后生成，其代码内容与烧录时的构建树一致；此后没有再改应用源码。同日 18:2x 用同一棵树重建得到 `4317f3ca...57a2ca`，差异来自镜像内的构建时间戳，该镜像没有烧录。判断板端运行版本以 `uname -a` 的构建时间为准。
