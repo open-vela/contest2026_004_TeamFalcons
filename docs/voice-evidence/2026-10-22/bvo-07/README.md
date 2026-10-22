@@ -101,7 +101,14 @@ ASR 与 Agent 合计 17.4 至 23.1 s，30 秒预算下 TTS 只有 7 至 9 秒。
 
 结论：32 KB 栈在“mbedTLS 握手 + ASR 请求构造”叠加时溢出，破坏相邻内存后表现为对齐故障。把工作线程栈提高到 48 KB 后，同样压测 24 轮不再出现。这是经验修复：没有栈高水位插桩，溢出深度未直接测量；代价是堆上多 16 KB（used 894,472，free 5.94 MB）。
 
-## 9. 未验证
+## 9. 压测后的网络与存储观察
+
+24 轮压测（20:29-20:34）之后出现两段独立的异常，均已保留原始日志，未当作产品恢复：
+
+- **出站不可达**：`[vela_tls] net_connect ... ret=0x42`，`vgagent ask` 失败，`wget http://example.com` 失败；同一时刻主机能连端点、能连板端，ICS 服务 Running。等待 2.5 分钟仍失败，复位后 `vgvoice asr` 3.59 s 成功。见 [board-net-unreachable.log](board-net-unreachable.log)。快速连续建立 TLS（每个请求 `Connection: close`）可能耗尽主机侧的 NAT/连接表，这是部署限制，不是固件恢复能力。
+- **/data 短暂卡死**：`ls -l /data/velaguard/voice` 返回 `stat failed: 110`，`vgvoice asr` 返回 `rc=io`（未发请求）；复位后同一文件仍在（46,124 B）且可读。见 [board-fs-stall.log](board-fs-stall.log)。这与 ST-02 的 eMMC 稳定性问题同域，保持开放，不用复位结果替代产品恢复证据。
+
+## 10. 未验证
 
 - 按键取消到资源回收的 2 秒目标仍未测：本轮验证的是截止时间到期，不是人工取消。
 - 一轮语音期间的堆空闲、最大空闲块、socket 数量和线程数量没有板端采样。

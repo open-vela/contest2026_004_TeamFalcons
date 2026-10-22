@@ -1,0 +1,12 @@
+2026-10-22T20:36:04.9726907+08:00 CMD vgvoice asr /data/velaguard/voice/q1.wav
+vgvoice asr /data/velaguard/voice/q1.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792701050
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=61669 resp=471 ms=3590
+vgvoice: asr text=现在有哪些异常？
+nsh> [K
+2026-10-22T20:36:30.0101917+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6837768     850664    5987104     934912    5795432   1088      5 Umem
+nsh> [K
