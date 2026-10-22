@@ -201,9 +201,87 @@ static void test_resolve(void)
                             sizeof(token)) == VG_AGENT_QUERY_ARG);
 }
 
+/* Ten fixed utterances per intent, in the shape ASR returns them: no
+ * punctuation discipline, filler words, mixed Chinese and identifiers.  This
+ * is the deterministic half of the acceptance row; it does not replace the
+ * 30 real recordings. */
+
+struct matrix_case
+{
+  const char     *text;
+  enum vg_voice_intent intent;
+};
+
+static void test_matrix(void)
+{
+  static const struct matrix_case cases[] =
+    {
+      { "现在有哪些异常",             VG_VI_ANOMALY },
+      { "有什么告警吗",               VG_VI_ANOMALY },
+      { "现在有报警吗",               VG_VI_ANOMALY },
+      { "当前异常有哪些",             VG_VI_ANOMALY },
+      { "有哪些点位不正常",           VG_VI_ANOMALY },
+      { "有没有异常情况",             VG_VI_ANOMALY },
+      { "现在有没有告警",             VG_VI_ANOMALY },
+      { "目前有哪些报警",             VG_VI_ANOMALY },
+      { "有哪些点报错了",             VG_VI_ANOMALY },
+      { "现在设备有没有问题",         VG_VI_ANOMALY },
+
+      { "UPS负载是多少",              VG_VI_POINT },
+      { "查一下电池温度",             VG_VI_POINT },
+      { "bms_01 的读数",              VG_VI_POINT },
+      { "电池01现在多少",             VG_VI_POINT },
+      { "UPS输入电压是多少伏",        VG_VI_POINT },
+      { "读一下温度传感器的值",       VG_VI_POINT },
+      { "当前电流是多少",             VG_VI_POINT },
+      { "帮我查UPS负载",              VG_VI_POINT },
+      { "bms_零一的值是多少",         VG_VI_POINT },
+      { "温度现在是多少度",           VG_VI_POINT },
+
+      { "UPS负载恢复了吗",            VG_VI_RECOVERY },
+      { "告警恢复了吗",               VG_VI_RECOVERY },
+      { "电池温度还报警吗",           VG_VI_RECOVERY },
+      { "bms_01 恢复正常了吗",        VG_VI_RECOVERY },
+      { "UPS负载的告警消除了吗",      VG_VI_RECOVERY },
+      { "那个异常好了没有",           VG_VI_RECOVERY },
+      { "温度告警还在吗",             VG_VI_RECOVERY },
+      { "告警有没有解除",             VG_VI_RECOVERY },
+      { "UPS负载现在正常了吗",        VG_VI_RECOVERY },
+      { "电池01的报警恢复没有",       VG_VI_RECOVERY }
+    };
+  size_t i;
+
+  /* A recovery question names the alarm, not a point.  The alarm word must be
+   * stripped so the remaining token is the point the user asked about. */
+
+  {
+    char buf[64];
+
+    CHECK(vg_vi_point_token("UPS负载的告警消除了吗", buf, sizeof(buf)) > 0);
+    CHECK(strcmp(buf, "UPS负载") == 0);
+    CHECK(vg_vi_point_token("温度告警还在吗", buf, sizeof(buf)) > 0);
+    CHECK(strcmp(buf, "温度") == 0);
+    CHECK(vg_vi_point_token("UPS负载现在正常了吗", buf, sizeof(buf)) > 0);
+    CHECK(strcmp(buf, "UPS负载") == 0);
+  }
+
+  for (i = 0; i < sizeof(cases) / sizeof(cases[0]); i++)
+    {
+      enum vg_voice_intent got = vg_vi_classify(cases[i].text, NULL);
+
+      if (got != cases[i].intent)
+        {
+          printf("matrix[%zu] %s: want %d got %d\n", i, cases[i].text,
+                 (int)cases[i].intent, (int)got);
+          g_fail++;
+        }
+    }
+}
+
 int main(void)
 {
   test_classify();
+  test_matrix();
   test_token();
   test_digits();
   test_resolve();

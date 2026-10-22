@@ -10,7 +10,7 @@
 | `app/velaguard/vg_voice_facts.h/.c` | 一轮回答的单一快照，带 seq 与配置版本 |
 | `app/velaguard/vg_voice_answer.h/.c` | 同一快照渲染完整文字与播报摘要，模型文本数值一致性校验 |
 | `app/velaguard/vg_agent_tools.c` | 新增 `vg_anomaly_read`、`vg_alarm_recovery`；`vg_point_read` 命中后发布快照 |
-| `app/velaguard/host_tests/test_voice_intent.c` | 意图、词元、读音归一、歧义与不猜测 |
+| `app/velaguard/host_tests/test_voice_intent.c` | 意图、词元、读音归一、歧义与不猜测；30 条固定问法矩阵（三类各 10 条） |
 | `app/velaguard/host_tests/test_voice_answer.c` | 点值、异常全量、恢复四态、一致性、播报截断 |
 | `app/velaguard/host_tests/test_agent_tools.c` | 四个工具的定义、参数护栏、异常与恢复输出 |
 | `app/velaguard/Makefile` / `host_tests/Makefile` | 构建接入 |
