@@ -31,6 +31,7 @@
 #define VG_VS_RECORD_MAX_MS      15000u  /* hard cap from the interaction contract */
 #define VG_VS_RECORD_MIN_MS        300u  /* below this, nothing was said */
 #define VG_VS_BUDGET_MS          30000u  /* submit -> first playable audio / text */
+#define VG_VS_RETRY_BUDGET_MS    15000u  /* speech-only retry after the first deadline */
 #define VG_VS_RESULT_HOLD_MS     15000u  /* answer stays after speech ends */
 #define VG_VS_IDLE_MS           120000u  /* context expires after this */
 #define VG_VS_CANCEL_GRACE_MS     2000u  /* target for physical reclaim, BVO-07 */
@@ -78,7 +79,8 @@ struct vg_voice_session
   uint32_t now_ms;
 
   uint32_t submit_ms;       /* when the question was submitted */
-  uint32_t deadline_ms;     /* submit_ms + VG_VS_BUDGET_MS */
+  uint32_t deadline_ms;     /* submit_ms + budget_ms */
+  uint32_t budget_ms;       /* 30 s for a question, 15 s for a speech retry */
   uint32_t record_ms;       /* when capture started */
   uint32_t result_ms;       /* when the answer became visible */
   uint32_t error_ms;

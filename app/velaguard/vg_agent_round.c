@@ -193,6 +193,13 @@ static void round_submit(void)
       syslog(LOG_INFO, "[%s] round submitted: %u bytes\n",
              TAG, (unsigned)strlen(req));
     }
+  else if (rc == -EBUSY)
+    {
+      /* The channel already carries a background round.  A user question
+       * waits behind it instead of failing on the spot: the state stays
+       * QUEUED and later ticks retry until the queue timeout. */
+
+    }
   else
     {
       g_state = VG_AGENT_ROUND_ERROR;

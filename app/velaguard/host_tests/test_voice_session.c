@@ -272,6 +272,45 @@ static void test_budget(void)
   expect(s.speech_failed == true, "speech failure recorded");
 }
 
+/* A retry after the first deadline must get its own bounded budget.  Reusing
+ * the spent deadline made the button fail instantly on the board. */
+
+static void test_retry_budget(void)
+{
+  struct vg_voice_session s;
+  uint32_t t = 1000;
+  uint32_t gen;
+  uint32_t a;
+
+  vg_vs_init(&s, t);
+  to_asr(&s, &t);
+  gen = vg_vs_generation(&s);
+  (void)vg_vs_asr_result(&s, gen, true, "现在有哪些异常", t);
+  (void)vg_vs_agent_result(&s, gen, true, "共 0 项", t);
+
+  a = vg_vs_tick(&s, t + 30000);
+  expect((a & VG_VS_ACT_SHOW_RESULT) != 0, "first budget expires into result");
+  expect(s.speech_failed, "speech failed");
+
+  a = vg_vs_retry_tts(&s, t + 31000);
+  expect((a & VG_VS_ACT_START_TTS) != 0, "retry starts speech");
+  expect(vg_vs_state(&s) == VG_VS_TTS, "state tts after retry");
+  expect(vg_vs_remaining_ms(&s, t + 31000) == VG_VS_RETRY_BUDGET_MS,
+         "retry gets a fresh bounded budget");
+
+  expect(vg_vs_tick(&s, t + 31000 + VG_VS_RETRY_BUDGET_MS - 1) == 0,
+         "retry budget does not expire early");
+
+  a = vg_vs_tick(&s, t + 31000 + VG_VS_RETRY_BUDGET_MS);
+  expect((a & VG_VS_ACT_SHOW_RESULT) != 0, "retry budget expires into result");
+  expect(s.speech_failed, "retry failure recorded again");
+
+  a = vg_vs_retry_tts(&s, t + 50000);
+  expect((a & VG_VS_ACT_START_TTS) != 0, "a second retry also starts");
+  expect(vg_vs_remaining_ms(&s, t + 50000) == VG_VS_RETRY_BUDGET_MS,
+         "each retry is bounded on its own");
+}
+
 static void test_record_cap_and_short(void)
 {
   struct vg_voice_session s;
@@ -401,6 +440,7 @@ int main(void)
   test_empty_transcript();
   test_tts_failure_retries_speech_only();
   test_budget();
+  test_retry_budget();
   test_record_cap_and_short();
   test_idle_and_page();
   test_result_hold();

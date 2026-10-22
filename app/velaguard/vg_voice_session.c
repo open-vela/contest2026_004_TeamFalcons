@@ -90,6 +90,7 @@ void vg_vs_init(struct vg_voice_session *s, uint32_t now_ms)
   memset(s, 0, sizeof(*s));
   s->state = VG_VS_IDLE;
   s->now_ms = now_ms;
+  s->budget_ms = VG_VS_BUDGET_MS;
   s->last_active_ms = now_ms;
 }
 
@@ -184,6 +185,7 @@ uint32_t vg_vs_release(struct vg_voice_session *s, uint32_t now_ms)
 
   s->state = VG_VS_ASR;
   s->submit_ms = now_ms;
+  s->budget_ms = VG_VS_BUDGET_MS;
   s->deadline_ms = now_ms + VG_VS_BUDGET_MS;
   s->last_active_ms = now_ms;
 
@@ -208,6 +210,7 @@ uint32_t vg_vs_record_cap(struct vg_voice_session *s, uint32_t now_ms)
   s->now_ms = now_ms;
   s->state = VG_VS_ASR;
   s->submit_ms = now_ms;
+  s->budget_ms = VG_VS_BUDGET_MS;
   s->deadline_ms = now_ms + VG_VS_BUDGET_MS;
   s->last_active_ms = now_ms;
 
@@ -381,6 +384,15 @@ uint32_t vg_vs_retry_tts(struct vg_voice_session *s, uint32_t now_ms)
 
   s->now_ms = now_ms;
   s->state = VG_VS_TTS;
+
+  /* The first deadline has already been spent, so reusing it would make the
+   * retry button dead on arrival.  A retry is a new user action: give the
+   * speech stage its own bounded budget and restart the shared deadline at
+   * that smaller value. */
+
+  s->submit_ms = now_ms;
+  s->budget_ms = VG_VS_RETRY_BUDGET_MS;
+  s->deadline_ms = now_ms + VG_VS_RETRY_BUDGET_MS;
   s->speech_failed = false;
   s->generation++;
   return VG_VS_ACT_START_TTS;
@@ -402,7 +414,7 @@ uint32_t vg_vs_tick(struct vg_voice_session *s, uint32_t now_ms)
       return vg_vs_record_cap(s, now_ms);
     }
 
-  if (in_flight(s->state) && reached(now_ms, s->submit_ms, VG_VS_BUDGET_MS))
+  if (in_flight(s->state) && reached(now_ms, s->submit_ms, s->budget_ms))
     {
       /* The budget is one deadline for the whole chain, not per stage. */
 
@@ -583,12 +595,12 @@ uint32_t vg_vs_remaining_ms(const struct vg_voice_session *s, uint32_t now_ms)
       return 0;
     }
 
-  if (reached(now_ms, s->submit_ms, VG_VS_BUDGET_MS))
+  if (reached(now_ms, s->submit_ms, s->budget_ms))
     {
       return 0;
     }
 
-  return VG_VS_BUDGET_MS - elapsed(now_ms, s->submit_ms);
+  return s->budget_ms - elapsed(now_ms, s->submit_ms);
 }
 
 uint32_t vg_vs_result_left_s(const struct vg_voice_session *s, uint32_t now_ms)

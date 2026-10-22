@@ -64,6 +64,10 @@ void vg_voice_round_end(void);
  * so the pipeline after the event can be exercised without hands. */
 void vg_voice_round_press_sim(bool press);
 
+/* Diagnostic: use this WAV for the next recognition instead of the microphone
+ * recording.  A real button press clears it, so it cannot outlive the test. */
+void vg_voice_round_set_asr_source(const char *path);
+
 /* Retry speech only, using the answer already validated. */
 void vg_voice_round_retry_tts(void);
 

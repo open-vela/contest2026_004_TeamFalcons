@@ -105,7 +105,7 @@ int main(int argc, FAR char *argv[])
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
       printf("       vgvoice asr [wav] [budget_ms] | tts <text> | play <wav>\n");
-      printf("       vgvoice mute [on|off] | round [press|release]\n");
+      printf("       vgvoice mute [on|off] | round [press|release|ask <wav>]\n");
 #endif
       return EXIT_FAILURE;
     }
@@ -272,6 +272,14 @@ int main(int argc, FAR char *argv[])
     {
       struct vg_voice_ui ui;
 
+      if (argc >= 4 && strcmp(argv[2], "ask") == 0)
+        {
+          vg_voice_round_set_asr_source(argv[3]);
+          vg_voice_round_press_sim(true);
+          printf("vgvoice: round ask synthetic src=%s\n", argv[3]);
+          return EXIT_SUCCESS;
+        }
+
       if (argc >= 3 && strcmp(argv[2], "press") == 0)
         {
           vg_voice_round_press_sim(true);
@@ -283,6 +291,13 @@ int main(int argc, FAR char *argv[])
         {
           vg_voice_round_press_sim(false);
           printf("vgvoice: round release synthetic\n");
+          return EXIT_SUCCESS;
+        }
+
+      if (argc >= 3 && strcmp(argv[2], "retry") == 0)
+        {
+          vg_voice_round_retry_tts();
+          printf("vgvoice: round retry speech\n");
           return EXIT_SUCCESS;
         }
 

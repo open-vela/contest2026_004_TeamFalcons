@@ -71,6 +71,7 @@ struct voice_round
   volatile bool        mute_value;
   volatile bool        quit;
   uint32_t             record_generation;
+  char                 asr_src[80];
   bool                 muted;
   bool                 hold;
 
@@ -164,6 +165,7 @@ static void vr_button(const struct vg_ptt_event_record *rec, void *arg)
 
   if (rec->type == VG_PTT_EV_BEGIN)
     {
+      g_vr.asr_src[0] = '\0';
       g_vr.cancel = 1;
       g_vr.press_pending = true;
       sem_post(&g_vr.wake);
@@ -200,11 +202,12 @@ static bool vr_stage_asr(char *text, size_t cap)
   vr_ui_set_status("识别中");
   vr_ui_publish();
 
-  rc = vg_voice_cloud_asr(VG_VC_CLIP_PATH, &ctl, text, cap, &info);
+  rc = vg_voice_cloud_asr(g_vr.asr_src[0] ? g_vr.asr_src : VG_VC_CLIP_PATH,
+                          &ctl, text, cap, &info);
 
-  syslog(LOG_INFO, "[vgvoice] asr rc=%s status=%d req=%u resp=%u\n",
+  syslog(LOG_INFO, "[vgvoice] asr rc=%s status=%d req=%u resp=%u ms=%u\n",
          vg_vc_result_name(rc), info.status, (unsigned)info.req_bytes,
-         (unsigned)info.resp_bytes);
+         (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
 
   if (rc == VG_VC_CANCELLED)
     {
@@ -244,6 +247,14 @@ static bool vr_wait_agent(uint32_t deadline_ms)
   for (;;)
     {
       enum vg_agent_round_state st;
+
+      /* Drive the channel here as well.  The HMI worker ticks every 100 ms,
+       * but it can be busy with a report or advice write; a question that
+       * sits QUEUED past the budget is indistinguishable from a model
+       * timeout.  The submission guard keeps the two tickers from pushing
+       * the same request twice. */
+
+      vg_agent_round_tick();
 
       if (g_vr.cancel)
         {
@@ -519,9 +530,9 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
   rc = vg_voice_cloud_tts(g_vr.s.answer, VG_VC_TTS_WAV_PATH, &ctl, &info);
 
-  syslog(LOG_INFO, "[vgvoice] tts rc=%s status=%d pcm=%u resp=%u\n",
+  syslog(LOG_INFO, "[vgvoice] tts rc=%s status=%d pcm=%u resp=%u ms=%u\n",
          vg_vc_result_name(rc), info.status, (unsigned)info.audio_bytes,
-         (unsigned)info.resp_bytes);
+         (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
 
   if (rc != VG_VC_OK)
     {
@@ -918,6 +929,17 @@ void vg_voice_round_press_sim(bool press)
     }
 
   sem_post(&g_vr.wake);
+}
+
+void vg_voice_round_set_asr_source(const char *path)
+{
+  if (path == NULL)
+    {
+      g_vr.asr_src[0] = '\0';
+      return;
+    }
+
+  snprintf(g_vr.asr_src, sizeof(g_vr.asr_src), "%s", path);
 }
 
 void vg_voice_round_end(void)
