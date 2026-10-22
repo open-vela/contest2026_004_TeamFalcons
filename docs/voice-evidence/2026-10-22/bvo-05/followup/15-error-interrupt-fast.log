@@ -1,0 +1,172 @@
+2026-10-22T11:40:01.7301505+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=11 played=1 cancelled=10 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=470 samples=7652 bytes=15304
+vgvoice: level peak=7186 rms=125
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=470 rate=130259 B/s
+vgvoice: tail_bytes=3878 stage_ms=0
+vgvoice: generation=11 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:02.1603306+08:00 CMD mkdir /data/velaguard/voice/clip.wav
+mkdir /data/velaguard/voice/clip.wav
+nsh> [K
+2026-10-22T11:40:02.6904269+08:00 CMD vgvoice record 300
+vgvoice record 300
+vgvoice: timed record queued ms=300
+nsh> [K
+2026-10-22T11:40:03.9154645+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=12 played=1 cancelled=10 too_short=0 failures=1 timeouts=1
+vgvoice: last result=err_file ms=300 samples=4778 bytes=9556
+vgvoice: level peak=7179 rms=159
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=1 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=300 rate=127420 B/s
+vgvoice: tail_bytes=5458 stage_ms=70
+vgvoice: generation=12 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=16 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:04.3183969+08:00 CMD rmdir /data/velaguard/voice/clip.wav
+rmdir /data/velaguard/voice/clip.wav
+nsh> [K
+2026-10-22T11:40:04.8444165+08:00 CMD vgvoice record 1000
+vgvoice record 1000
+vgvoice: timed record queued ms=1000
+nsh> [K
+2026-10-22T11:40:08.8511692+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=13 played=2 cancelled=10 too_short=0 failures=1 timeouts=1
+vgvoice: last result=ok ms=1010 samples=16140 bytes=32280
+vgvoice: level peak=7175 rms=93
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2440 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=1010 rate=127841 B/s
+vgvoice: tail_bytes=6240 stage_ms=180
+vgvoice: generation=13 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:09.2553438+08:00 CMD vgvoice record 5000
+vgvoice record 5000
+vgvoice: timed record queued ms=5000
+nsh> [K
+2026-10-22T11:40:15.7605019+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=playing
+vgvoice: rounds=14 played=2 cancelled=10 too_short=0 failures=1 timeouts=1
+vgvoice: last result=ok ms=5000 samples=80015 bytes=160030
+vgvoice: level peak=7177 rms=55
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128024 B/s
+vgvoice: tail_bytes=1147 stage_ms=700
+vgvoice: generation=14 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=35 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:16.1649805+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=playing
+vgvoice: rounds=14 played=2 cancelled=10 too_short=0 failures=1 timeouts=1
+vgvoice: last result=ok ms=5000 samples=80015 bytes=160030
+vgvoice: level peak=7177 rms=55
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128024 B/s
+vgvoice: tail_bytes=1147 stage_ms=700
+vgvoice: generation=14 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=35 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:16.6938740+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30019620
+vgaudio: dma_done=136 errors=0 timeouts=0 txbytes=1106188
+vgaudio: sai_underruns=30 clockerrors=0
+vgaudio: stream_ms=1280 stream_bytes=81876 tick_us=10000
+nsh> [K
+2026-10-22T11:40:17.1001730+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:17.6282521+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=15 played=2 cancelled=11 too_short=0 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=670 samples=10720 bytes=21440
+vgvoice: level peak=7175 rms=281
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=10 drained=11 overwritten=0 wraps=5 elapsed_ms=670 rate=128008 B/s
+vgvoice: tail_bytes=3846 stage_ms=0
+vgvoice: generation=15 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=38 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:18.0314290+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=15 played=2 cancelled=11 too_short=0 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=670 samples=10720 bytes=21440
+vgvoice: level peak=7175 rms=281
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice
+2026-10-22T11:40:18.0621962+08:00 CMD vgvoice stop
+: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=10 drained=11 overwritten=0 wraps=5 elapsed_ms=670 rate=128008 B/s
+vgvoice: tail_bytes=3846 stage_ms=0
+vgvoice: generation=15 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=38 clip=0 tick_us=10000
+nsh> [Kvgvoice stop
+vgvoice: stop requested
+nsh> [K
+2026-10-22T11:40:18.6882580+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=16 played=2 cancelled=11 too_short=1 failures=1 timeouts=1
+vgvoice: last result=too_short ms=0 samples=3 bytes=6
+vgvoice: level peak=144 rms=89
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=1 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=28 stage_ms=0
+vgvoice: generation=16 queue_highwater=1 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=333 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:19.0919284+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880144    5966752     960928    5795432   1055     13 Umem
+nsh> [K
+2026-10-22T11:40:19.5080004+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 20.6% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.8% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.2% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  3.0% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  3.0% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  3.0% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  7.7% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 38.0% vghmi vghmi
+   12    11 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  1.7% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.5% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4d8
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5d8
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6d8
+   29    11 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  1.7% vghmi 0x9001492d 0
+   30    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5d8
+nsh> [K
+2026-10-22T11:40:19.9384232+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

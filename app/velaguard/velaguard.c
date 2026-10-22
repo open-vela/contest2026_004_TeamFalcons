@@ -87,8 +87,12 @@ extern int vghmi_main(int argc, char *argv[]);
 #include "vg_agent_alarm.h"
 #endif
 
-#ifdef CONFIG_VG_PTT
+#if defined(CONFIG_VG_PTT) || defined(CONFIG_VG_VOICE_LOOPBACK)
 #include "vg_ptt_board.h"
+#endif
+
+#ifdef CONFIG_VG_VOICE_LOOPBACK
+#include "vg_voice_ptt.h"
 #endif
 
 #ifdef CONFIG_VG_CONFIG_STORE
@@ -231,10 +235,19 @@ int main(int argc, char *argv[])
     vg_agent_alarm_start();
 #endif
 
-#ifdef CONFIG_VG_PTT_AUTOSTART
-    /* USER1 push-to-talk event thread.  It only opens /dev/buttons and turns
-     * edges into record/submit events; there is no audio path yet, so the
-     * default handler prints one line per event. */
+#if defined(CONFIG_VG_VOICE_LOOPBACK)
+    /* USER1 -> local record/playback loop.  This starts the button task too,
+     * with the recording handler already registered; starting the button task
+     * with the default handler first would fix the print-only callback and the
+     * recording path would never be reached. */
+
+    if (vg_voice_ptt_start() != 0)
+      {
+        printf("vgvoice: loopback not started\n");
+      }
+#elif defined(CONFIG_VG_PTT_AUTOSTART)
+    /* USER1 push-to-talk event thread without an audio backend: it only opens
+     * /dev/buttons and turns edges into record/submit events. */
 
     if (vg_ptt_start(NULL, NULL, NULL) != 0)
       {

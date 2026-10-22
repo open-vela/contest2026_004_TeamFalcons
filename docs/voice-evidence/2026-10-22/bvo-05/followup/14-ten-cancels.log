@@ -1,0 +1,372 @@
+2026-10-22T11:39:12.4609535+08:00 CMD vgvoice start
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f5dd00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792669149
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f5dd00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=10 tls=510 send=150 ttfb=200 body=0 pool=0 build=0 parse=10 http=930 backoff=0 total=950 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad9f5dd00000000] iter=0 tool=(none) latency=950ms llm=fail backend=0
+[trace:6ad9f5dd00000000] END status=fail iters=1 tools=0 llm_ms=950 tool_ms=0 elapsed_ms=990 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239938 bytes=479876
+vgvoice: level peak=7189 rms=33
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=30940 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127967 B/s
+vgvoice: tail_bytes=2578 stage_ms=780
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=42 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:12.7943158+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:13.2129312+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=2 played=1 cancelled=1 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=240 samples=3827 bytes=7654
+vgvoice: level peak=7177 rms=176
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=240 rate=127595 B/s
+vgvoice: tail_bytes=6047 stage_ms=0
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:13.4174252+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=2 played=1 cancelled=1 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=240 samples=3827 bytes=7654
+vgvoice: level peak=7177 rms=176
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=240 rate=127595 B/s
+vgvoice: tail_bytes=6047 stage_ms=0
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:13.7318522+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:14.1538191+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=3 played=1 cancelled=2 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4326 bytes=8652
+vgvoice: level peak=7191 rms=165
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=128185 B/s
+vgvoice: tail_bytes=1842 stage_ms=0
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+
+2026-10-22T11:39:14.3726821+08:00 CMD vgvoice start
+nsh> [Kvgvoice start
+vgvoice: state=idle
+vgvoice: rounds=3 played=1 cancelled=2 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4326 bytes=8652
+vgvoice: level peak=7191 rms=165
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=128185 B/s
+vgvoice: tail_bytes=1842 stage_ms=0
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f5e335c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6995 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+
+2026-10-22T11:39:14.6983461+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f5e335c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=20 parse=10 http=330 backoff=0 total=360 req=6995 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f5e335c3b13a] iter=0 tool=(none) latency=360ms llm=fail backend=0
+[trace:6ad9f5e335c3b13a] END status=fail iters=1 tools=0 llm_ms=360 tool_ms=0 elapsed_ms=400 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+
+2026-10-22T11:39:15.0999290+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=4 played=1 cancelled=3 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=230 samples=3766 bytes=7532
+vgvoice: level peak=7196 rms=176
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=230 rate=131008 B/s
+vgvoice: tail_bytes=5556 stage_ms=0
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K[vgagent] round finished: reply
+
+2026-10-22T11:39:15.3136748+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=4 played=1 cancelled=3 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=230 samples=3766 bytes=7532
+vgvoice: level peak=7196 rms=176
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=230 rate=131008 B/s
+vgvoice: tail_bytes=5556 stage_ms=0
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K[vgadvice] advice from another boot: file=30ca00be board=30cfb768
+
+2026-10-22T11:39:15.6254221+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:16.0289443+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=5 played=1 cancelled=4 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=170 samples=2759 bytes=5518
+vgvoice: level peak=7190 rms=204
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=2 drained=3 overwritten=0 wraps=1 elapsed_ms=170 rate=129847 B/s
+vgvoice: tail_bytes=5690 stage_ms=0
+vgvoice: generation=5 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:16.2479747+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=5 played=1 cancelled=4 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=170 samples=2759 bytes=5518
+vgvoice: level peak=7190 rms=204
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=2 drained=3 overwritten=0 wraps=1 elapsed_ms=170 rate=129847 B/s
+vgvoice: tail_bytes=5690 stage_ms=0
+vgvoice: generation=5 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:16.5590908+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:16.9650249+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=6 played=1 cancelled=5 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=80 samples=1372 bytes=2744
+vgvoice: level peak=7185 rms=284
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=1 drained=2 overwritten=0 wraps=0 elapsed_ms=80 rate=137237 B/s
+vgvoice: tail_bytes=2787 stage_ms=0
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:17.1678017+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=6 played=1 cancelled=5 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=80 samples=1372 bytes=2744
+vgvoice: level peak=7185 rms=284
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=1 drained=2 overwritten=0 wraps=0 elapsed_ms=80 rate=137237 B/s
+vgvoice: tail_bytes=2787 stage_ms=0
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:17.4754184+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:17.8814191+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=7 played=1 cancelled=6 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=290 samples=4577 bytes=9154
+vgvoice: level peak=7188 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=290 rate=126279 B/s
+vgvoice: tail_bytes=3853 stage_ms=0
+vgvoice: generation=7 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:18.1012315+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=7 played=1 cancelled=6 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=290 samples=4577 bytes=9154
+vgvoice: level peak=7188 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=290 rate=126279 B/s
+vgvoice: tail_bytes=3853 stage_ms=0
+vgvoice: generation=7 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:18.4126283+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:18.8210792+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=8 played=1 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=300 samples=4789 bytes=9578
+vgvoice: level peak=7190 rms=156
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=300 rate=127730 B/s
+vgvoice: tail_bytes=5551 stage_ms=0
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=15 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:19.0377798+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=8 played=1 cancelled=7 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=300 samples=4789 bytes=9578
+vgvoice: level peak=7190 rms=156
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=300 rate=127730 B/s
+vgvoice: tail_bytes=5551 stage_ms=0
+vgvoice: generation=8 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=15 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:19.3435192+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:19.7564010+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=9 played=1 cancelled=8 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=360 samples=5853 bytes=11706
+vgvoice: level peak=7190 rms=141
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=360 rate=130077 B/s
+vgvoice: tail_bytes=5868 stage_ms=0
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=28 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:19.9696790+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=9 played=1 cancelled=8 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=360 samples=5853 bytes=11706
+vgvoice: level peak=7190 rms=141
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=360 rate=130077 B/s
+vgvoice: tail_bytes=5868 stage_ms=0
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=28 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:20.2804847+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:20.6869133+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=10 played=1 cancelled=9 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=420 samples=6805 bytes=13610
+vgvoice: level peak=7188 rms=132
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=420 rate=129619 B/s
+vgvoice: tail_bytes=5288 stage_ms=0
+vgvoice: generation=10 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:20.9173147+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=10 played=1 cancelled=9 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=420 samples=6805 bytes=13610
+vgvoice: level peak=7188 rms=132
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=420 rate=129619 B/s
+vgvoice: tail_bytes=5288 stage_ms=0
+vgvoice: generation=10 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:21.2281419+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:39:21.6293525+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=11 played=1 cancelled=10 too_short=0 failures=0 timeouts=1
+vgvoice: last result=cancelled ms=470 samples=7652 bytes=15304
+vgvoice: level peak=7186 rms=125
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=470 rate=130259 B/s
+vgvoice: tail_bytes=3878 stage_ms=0
+vgvoice: generation=11 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=6 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:39:21.8475763+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880144    5966752     960928    5795432   1055     13 Umem
+nsh> [K
+2026-10-22T11:39:22.2514492+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=0 submits=0 timeouts=0 last_ms=0
+vgptt: samples=108 raw_high=0 events=0 timeouts_wake=108 poll_err=0 read_err=0
+nsh> [K

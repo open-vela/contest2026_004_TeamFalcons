@@ -1,0 +1,233 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:3
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f7077c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792669447
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f7077c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=730 send=150 ttfb=60 body=0 pool=0 build=0 parse=10 http=1070 backoff=0 total=1090 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f7077c9701b3] iter=0 tool=(none) latency=1090ms llm=fail backend=0
+[trace:6ad9f7077c9701b3] END status=fail iters=1 tools=0 llm_ms=1090 tool_ms=0 elapsed_ms=1140 backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f71403cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7011 bytes)
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f71403cd357a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=10 body=0 pool=0 build=0 parse=10 http=320 backoff=0 total=530 req=7011 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 4 (backoff 8)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f71403cd357a] iter=0 tool=(none) latency=530ms llm=fail backend=0
+[trace:6ad9f71403cd357a] END status=fail iters=1 tools=0 llm_ms=530 tool_ms=0 elapsed_ms=580 backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cfb768
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 11:43:36
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.130, +2130)	 check_stack_size: tid: 11, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.140, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.150, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.150, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.150, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.150, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+vgptt: watching /dev/buttons (led=2)
+[User]	(2.160, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.170, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.180, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.190, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.190, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.200, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.200, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.210, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.220, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.220, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.230, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.240, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.240, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.250, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.260, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.260, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.270, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.280, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.280, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.290, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.300, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.310, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.320, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LE[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 1D0:51:16)
+ num[agent] [boot +10ms] P0: timezone set
+: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +110ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +220ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +230ms] P1: message_bus_init (rc=0)
+[memory] Initializing
+
+2026-10-22T11:46:19.0277360+08:00 CMD vgvoice record 1000
+vgvoice record 1000
+vgvoice: timed record queued ms=1000
+nsh> [Kvgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T11:46:23.0570423+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1010 samples=16132 bytes=32264
+vgvoice: level peak=7184 rms=94
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2230 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=1010 rate=127778 B/s
+vgvoice: tail_bytes=6176 stage_ms=100
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=2 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:46:23.4623945+08:00 CMD vgvoice record 5000
+vgvoice record 5000
+vgvoice: timed record queued ms=5000
+nsh> [Kvghmi: live ok=0/14 a1=0.0
+
+2026-10-22T11:46:35.4817803+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=2 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80013 bytes=160026
+vgvoice: level peak=7178 rms=49
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=10400 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128021 B/s
+vgvoice: tail_bytes=1133 stage_ms=300
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=15 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:46:35.9002584+08:00 CMD vgvoice record 15000
+vgvoice record 15000
+vgvoice: timed record queued ms=15000
+nsh> [K
+2026-10-22T11:46:51.9187714+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=recording
+vgvoice: rounds=2 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80013 bytes=160026
+vgvoice: level peak=7178 rms=49
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128021 B/s
+vgvoice: tail_bytes=1133 stage_ms=0
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=15 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:46:52.3230532+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=3000d060
+vgaudio: dma_done=50 errors=0 timeouts=0 txbytes=400920
+vgaudio: sai_underruns=0 clockerrors=0
+vgaudio: stream_ms=250 stream_bytes=16340 tick_us=10000
+nsh> [K
+2026-10-22T11:46:52.7243436+08:00 CMD vgvoice wait 25000
+vgvoice wait 25000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=3 played=3 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239926 bytes=479852
+vgvoice: level peak=7188 rms=35
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=31060 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127960 B/s
+vgvoice: tail_bytes=2486 stage_ms=870
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=29 clip=0 tick_us=10000
+nsh> [Kvgtime: synced 2026-10-22 11:47:09
+
+2026-10-22T11:47:09.7470070+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=3 played=3 cancelled=0 too_short=0 failures=0 timeouts=1
+vgvoice: last result=ok ms=15000 samples=239926 bytes=479852
+vgvoice: level peak=7188 rms=35
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=31060 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127960 B/s
+vgvoice: tail_bytes=2486 stage_ms=870
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=29 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:47:10.1644186+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=642 addr=3000d060
+vgaudio: dma_done=166 errors=0 timeouts=0 txbytes=1344284
+vgaudio: sai_underruns=0 clockerrors=0
+vgaudio: stream_ms=15000 stream_bytes=959704 tick_us=10000
+nsh> [K
+2026-10-22T11:47:10.5682468+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=8 ok=0 crc=0 timeout=8 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=2 window=64 total=4 ok=0 crc=0 timeout=4 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=3 window=64 total=4 ok=0 crc=0 timeout=4 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=4 window=64 total=12 ok=0 crc=0 timeout=12 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=5 window=64 total=10 ok=0 crc=0 timeout=10 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=6 window=64 total=9 ok=0 crc=0 timeout=9 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+vgstats: slave=7 window=64 total=3 ok=0 crc=0 timeout=3 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+2026-10-22T11:47:10.9720634+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     797144    6049752     840936    5795432    996      7 Umem
+nsh> [K
+2026-10-22T11:47:11.4029883+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+nsh> [K

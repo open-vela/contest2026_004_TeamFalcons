@@ -1,0 +1,134 @@
+Main QSPI image : 0x90000000..0x90160d8c
+Internal stub   : 0x08000000..0x080002d0
+External Loader : D:\Develop\STM32CubeCLT_1.21.0\STM32CubeProgrammer\bin\ExternalLoader\MT25TL01G_STM32H750B-DISCO.stldr
+1/3 Programming and verifying external QSPI...
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.22.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 0043001D3137511133333639
+ST-LINK FW  : V3J17M11
+Board       : STM32H750B-DK
+Voltage     : 3.26V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size  : 128 KBytes
+Device type : MCU
+Device CPU  : Cortex-M7
+BL Version  : 0x90
+
+
+
+Opening and parsing file: nuttx.hex
+
+
+Memory Programming ...
+  File          : nuttx.hex
+  Size          : 1.38 MB 
+  Address       : 0x90000000
+
+
+Erasing memory corresponding to segment 0:
+Erasing external memory sectors [0 11]
+Download in Progress:
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±± 0%€€€€€€€€€€€€€€€ 31%€€€€€€€€€€€€€€€€ 62%€€€€€€€€€€€€€€€ 93%€€€€ 100%
+
+File download complete
+Time elapsed during download operation: 00:00:05.094
+
+
+
+Verifying...
+
+
+Read progress:
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±± 50%€€€€€€€€€€€€€€€ 31%€€€€€€€€€€€€€€€€ 62%€€€€€€€€€€€€€€€ 93%€€€€ 100%
+
+Time elapsed during verifying operation: 00:00:03.454
+
+
+Download verified successfully
+
+
+2/3 Programming and verifying internal boot stub...
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.22.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 0043001D3137511133333639
+ST-LINK FW  : V3J17M11
+Board       : STM32H750B-DK
+Voltage     : 3.28V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size  : 128 KBytes
+Device type : MCU
+Device CPU  : Cortex-M7
+BL Version  : 0x90
+
+
+
+Opening and parsing file: qspi_bootstub.hex
+
+
+Memory Programming ...
+  File          : qspi_bootstub.hex
+  Size          : 720.00 B 
+  Address       : 0x08000000
+
+
+Erasing memory corresponding to segment 0:
+Download in Progress:
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±± 0%€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ 100%
+
+File download complete
+Time elapsed during download operation: 00:00:10.216
+
+
+
+Verifying...
+
+
+File size < 32KB legacy verify will be used
+Read progress:
+±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±±± 50%€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€ 100%
+
+Time elapsed during verifying operation: 00:00:00.001
+
+
+Download verified successfully
+
+
+3/3 Resetting target...
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.22.0                  
+      -------------------------------------------------------------------
+
+ST-LINK SN  : 0043001D3137511133333639
+ST-LINK FW  : V3J17M11
+Board       : STM32H750B-DK
+Voltage     : 3.27V
+SWD freq    : 8000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x450
+Revision ID : Rev V
+Device name : STM32H7xx
+NVM size  : 128 KBytes
+Device type : MCU
+Device CPU  : Cortex-M7
+BL Version  : 0x90
+
+
+MCU Reset
+
+Software reset is performed
+Flash completed: internal stub -> QSPI XIP image.

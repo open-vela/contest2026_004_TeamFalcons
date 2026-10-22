@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-22",
+  "target": "velaguard-lvgl",
+  "build": "bash scripts/build.sh",
+  "firmware": {
+    "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/nuttx.hex": {
+      "sha256": "86cb353037ae94cb9d8568b5f84b6a85719d3453018c98a709f87ca4fe4e01da",
+      "bytes": 4065235
+    },
+    "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/nuttx.elf": {
+      "sha256": "108df0d2990e94bdb11d0a7fc5111d060cf7004fbffda6319ea8a6c287172c10",
+      "bytes": 1873256
+    },
+    "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/nuttx.bin": {
+      "sha256": "f9c2927ae4c37ddbbbb33e2e3b3a3ffeba410e37e33fcb1190a96a7934eaab6b",
+      "bytes": 1445260
+    },
+    "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/qspi_bootstub.hex": {
+      "sha256": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e",
+      "bytes": 2076
+    }
+  },
+  "sources": {
+    "app/velaguard/vg_voice.c": "df35ccffcd0c9c109d2854faaf7fece701bbf483c0c70f5ef475d715bea1e9f0",
+    "app/velaguard/vg_voice.h": "d3921786d6bfaf7e67dcabe0bae0aa2b89528ddeaa9ff9b917b8d99312f927ed",
+    "app/velaguard/vg_voice_ptt.c": "4d3546899ff08e28506889c96404e8b2fc9f9eb8ecdce977ebf67b42ae5b4316",
+    "app/velaguard/vg_pdm_filter.c": "e15e06a31a6986250ae0f0e9dcd9898015a3b9589dbbb985bab337bd4bd133f3",
+    "scripts/configs/velaguard-lvgl.defconfig": "819e3ec22433f87a409c62edc234aad75f3ab31504651a8da5e0a1650295bcb7",
+    "../nuttx/arch/arm/src/stm32h7/stm32_sai.c": "0620e588d3d71f62d5b65104ad261b675b381757b96edd9c02778f8ba1e62003",
+    "../nuttx/arch/arm/src/stm32h7/stm32_sai_capture.h": "1826e4bfc40fbc4f77aa36ae3482e8e15bef23f8066c4101ab3dbc16272b7d6d",
+    "../nuttx/arch/arm/src/stm32h7/stm32_dma.c": "1bc447bb028568a6659d176d7ddbedebc00852b8384a0832b5322491784c3ac1",
+    "../nuttx/arch/arm/src/stm32h7/stm32_dma.h": "c900748ed4e1ffcd03c31c081c6da363dcd523575bf3d07626caee8269900901",
+    "../nuttx/boards/arm/stm32h7/stm32h750b-dk/include/board.h": "daa2d6f0e5a038ae04dea36bec66bc56ec08bbb11444fdf0047ba556c57c660f",
+    "../nuttx/boards/arm/stm32h7/stm32h750b-dk/src/stm32_bringup.c": "ac9af8220e9964ae2b466b3b22ae9d150818bbd45fc9d26f3f3a38ae7956ee4c"
+  },
+  "base_heads": {
+    ".": "4861a540c3a9a4dbd0e4287ef023d37273168f4a",
+    "../nuttx": "92fe6edc75963b168b75c90f04d7060af4159053",
+    "../apps": "0ea954b79740756318ce1f0b13271dd94235fe2a"
+  },
+  "configuration_note": "实际安装的 NuttX defconfig 含其他任务的未提交配置，不提交该文件；凭据不进入证据。",
+  "note": "最终源码检查修正原始 PDM 状态接口的无关条件，并补齐语音诊断的 Kconfig 前置依赖；此前板测清单另存 tested-before-config-review.json。",
+  "committed_nuttx": "189e6d8a18d",
+  "final_recheck": "18-final-1-5-15.log"
+}

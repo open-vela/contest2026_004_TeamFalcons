@@ -1,0 +1,206 @@
+########## boot settle len=1868 ##########
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:7
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f2ed73b6c3ea] BEGIN chat=velaguard:7 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:7
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792668397
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f2ed73b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=890 send=150 ttfb=50 body=0 pool=0 build=10 parse=10 http=1230 backoff=0 total=1250 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 7 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f2ed73b6c3ea] iter=0 tool=(none) latency=1250ms llm=fail backend=0
+[trace:6ad9f2ed73b6c3ea] END status=fail iters=1 tools=0 llm_ms=1250 tool_ms=0 elapsed_ms=1310 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgagent] round finished: reply
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 11:25:06
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+
+
+########## vgvoice status ########## len=1956
+ (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.670, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.670, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.680, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.690, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdevv.c:282
+g[User]	(2.690, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdevv.c:283
+o[User]	(2.700, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuittx_fbdev.c:278
+c[User]	(2.710, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nutetx_fbdev.c:279
+ [User]	(2.710, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_sfbdev.c:280
+t[User]	(2.720, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbadev.c:281
+t[User]	(2.730, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdeuv.c:282
+s[User]	(2.730, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbde
+v.c:283
+[User]	(2.740, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.750, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.760, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+vgvoice: state=idle
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 active_ms=0/0 frames clip=0
+nsh> [K[User]	(2.820, +60)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vgptt: watching /dev/buttons (led=2)
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+
+
+########## vgvoice record 1000 ########## len=67
+vgvoice record 1000
+vgvoice: timed record queued ms=1000
+nsh> [K
+
+########## vgvoice wait 6000 ########## len=1201
+vgvoice wait 6000
+[agent] [boot +240ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +450ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +450ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +950ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +960ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +1070ms] P2: http_proxy_init (rc=0)
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1000 samples=15360 bytes=30720
+vgvoice: level peak=7178 rms=97
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2460 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=15 overwritten=0 wraps=7 elapsed_ms=1000 rate=122880 B/s
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=7 active_ms=0/0 frames clip=0
+nsh> [K
+
+########## vgvoice status ########## len=3179
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1000 samples=15360 bytes=30720
+vgvoice: level peak=7178 rms=97
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=2460 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=15 overwritten=0 wraps=7 elapsed_ms=1000 rate=122880 B/s
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=7 active_ms=0/0 frames clip=0
+nsh> [K[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1920ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2560ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2570ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+
+
+########## free ########## len=1684
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6863312     751304    6112008     793296    5795432    988      7 Umem
+nsh> [K[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +3310ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +3320ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +3370ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +3380ms] P3: heartbeat_init (rc=0)
+[agent] [boot +3380ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +3390ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +3400ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +3410ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +3410ms] P5: network_watch thread started (async)
+[agent] [boot +3420ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +3420ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.164
+[netmgr] Network connected: 192.168.137.164
+[netmgr] Found iface eth0 addr 192.168.137.164
+[agent] Network connected: 192.168.137.164
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+

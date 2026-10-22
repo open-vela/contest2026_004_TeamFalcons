@@ -1,0 +1,44 @@
+taps                : 129
+stage-2 rate        : 128000 Hz -> 16000 Hz
+Q15 sum             : 32767 (ideal 32768)
+|h| peak            : 0.081197
+
+stage-2 FIR response, dB relative to DC:
+     300 Hz     -0.00
+    1000 Hz     -0.01
+    2000 Hz     -0.00
+    3400 Hz     -0.02
+    4000 Hz     -0.44
+    5000 Hz     -4.42
+    5200 Hz     -6.03
+    6000 Hz    -16.78
+    7000 Hz    -59.35
+    8000 Hz    -62.21
+   12000 Hz    -97.97
+   16000 Hz    -85.85
+   32000 Hz    -83.97
+   48000 Hz    -84.11
+   56000 Hz    -84.15
+   64000 Hz    -84.16
+
+stage-1 second-order boxcar, dB relative to DC:
+  120000 Hz    -46.76
+  128000 Hz   -480.00
+  136000 Hz    -48.82
+  248000 Hz    -58.06
+  256000 Hz   -480.00
+  264000 Hz    -58.91
+
+quantised (Q15) stage-2 response at the验收 points:
+    1000 Hz     -0.01
+    3400 Hz     -0.02
+    8000 Hz    -61.89
+
+rail (no DC blocker): all-0xff -> 32767  all-0x00 -> -32767
+
+rail after DC blocker: all-0xff tail [660, 655, 650, 645, 640, 635, 630, 625]  all-0x00 tail [-660, -655, -650, -645, -640, -635, -630, -625]
+
+1 kHz tone at 8% depth: peak 5266 (expect about 5243)
+
+wrote app/velaguard/vg_pdm_filter_coeffs.h
+wrote app/velaguard/host_tests/pdm_golden.h

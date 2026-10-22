@@ -82,6 +82,12 @@ MAINSRC  += vgptt.c
 CSRCS    += vg_ptt.c vg_ptt_board.c
 endif
 
+ifeq ($(CONFIG_VG_VOICE_LOOPBACK),y)
+PROGNAME += vgvoice
+MAINSRC  += vgvoice.c
+CSRCS    += vg_voice.c vg_voice_ptt.c vg_pdm_filter.c
+endif
+
 ifeq ($(CONFIG_VG_PDM_DUMP),y)
 PROGNAME += vgpdmdump
 MAINSRC  += vgpdmdump.c
@@ -161,8 +167,9 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
   $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT)))))
-# vgptt is a thin NSH front end; the button thread gets its own stack from
-# CONFIG_VG_PTT_STACKSIZE, so the command keeps the default.
+# vgptt and vgvoice are thin NSH front ends; the button thread and the
+# voice task get their own stacks from Kconfig, so the commands keep the
+# default.
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 

@@ -208,6 +208,47 @@ config VG_PTT_AUTOSTART
 
 endif # VG_PTT
 
+config VG_VOICE_LOOPBACK
+	bool "Local record/playback loop (vgvoice)"
+	default n
+	depends on VG_BRINGUP_TOOLS && VG_PTT && AUDIO && I2S && \
+	          STM32H7_SAI_CAPTURE && STM32H7_SAI1_A && \
+	          STM32H7_SAI_PDM_MODE && SYSTEM_NXPLAYER
+	---help---
+		Press USER1 to record from the on-board PDM microphone, release
+		to stop and play the recording back through the WM8994 codec.
+
+		This is a diagnostic entry, not a product voice UI: no ASR, no
+		TTS, no network, no LVGL overlay.  It exists so the local audio
+		path can be acceptance-tested on its own, and it reuses the
+		BVO-02 button event layer and the BVO-04 standard NxPlayer path.
+
+		Recording runs a circular DMA over a fixed ring, decimates the
+		PDM bitstream to 16 kHz mono PCM with filter state carried across
+		DMA halves (so the stream stays continuous), and keeps at most one
+		15-second recording in RAM.  Recording and playback are mutually
+		exclusive.  Every round removes its temporary WAV.
+
+if VG_VOICE_LOOPBACK
+
+config VG_VOICE_PRIORITY
+	int "vgvoice record task priority"
+	default 110
+	---help---
+		Priority of the resident task that decimates queued blocks while a
+		recording is in progress.  It must sit above the HMI so half-ring
+		handovers are consumed well within their 64 ms arrival interval,
+		and below the high-priority work queue (224) so DMA completion
+		callbacks are never delayed by it.
+
+config VG_VOICE_STACKSIZE
+	int "vgvoice record task stack size"
+	default 4096
+	---help---
+		The task runs decimation, bounded WAV writes and NxPlayer control.
+
+endif # VG_VOICE_LOOPBACK
+
 config VG_PDM_DUMP
 	bool "Raw PDM capture probe (vgpdmdump)"
 	default n

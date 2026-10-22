@@ -1,0 +1,147 @@
+2026-10-22T11:30:46.3855905+08:00 CMD vgvoice record 15000
+vgtime: synced 2026-10-22 11:30:31
+vgvoice record 15000
+vgvoice: timed record queued ms=15000
+nsh> [K
+2026-10-22T11:30:50.4122834+08:00 CMD vgstats
+vgstats
+Usage:
+  vgstats dump [slave]
+  vgstats inject <slave> ok|crc|timeout|echo|other [latency_ms]
+  vgstats reset [slave]
+nsh> [K
+2026-10-22T11:30:50.8143914+08:00 CMD vgruntime
+vgruntime
+Usage: vgruntime dump | report [path]
+nsh> [K
+2026-10-22T11:30:51.2214689+08:00 CMD vghmi status
+vghmi status
+nsh> [K
+2026-10-22T11:30:51.6254460+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6863280     797152    6066128     847520    5795432    996      7 Umem
+nsh> [Kvghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+
+2026-10-22T11:31:02.6428391+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=recording
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=5000 samples=80013 bytes=160026
+vgvoice: level peak=7185 rms=51
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=78 drained=79 overwritten=0 wraps=39 elapsed_ms=5000 rate=128021 B/s
+vgvoice: tail_bytes=1132
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=12 active_ms=0/0 frames clip=0
+nsh> [K
+2026-10-22T11:31:03.0499295+08:00 CMD vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=304 addr=3000d0a0
+vgaudio: dma_done=40 errors=0 timeouts=0 txbytes=320052
+vgaudio: sai_underruns=17 clockerrors=0
+vgaudio: stream_ms=5000 stream_bytes=320052 tick_us=10000
+nsh> [K
+2026-10-22T11:31:03.4555831+08:00 CMD vgvoice wait 20000
+vgvoice wait 20000
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f3fe00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792668670
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f3fe00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=0 tls=780 send=160 ttfb=60 body=0 pool=0 build=0 parse=10 http=1050 backoff=0 total=1070 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad9f3fe00000000] iter=0 tool=(none) latency=1070ms llm=fail backend=0
+[trace:6ad9f3fe00000000] END status=fail iters=1 tools=0 llm_ms=1070 tool_ms=0 elapsed_ms=1120 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f40535c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6995 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f40535c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=360 ttfb=30 body=0 pool=0 build=0 parse=10 http=510 backoff=0 total=520 req=6995 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f40535c3b13a] iter=0 tool=(none) latency=520ms llm=fail backend=0
+[trace:6ad9f40535c3b13a] END status=fail iters=1 tools=0 llm_ms=520 tool_ms=0 elapsed_ms=570 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cfa8a7
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=2 played=1 cancelled=0 too_short=0 failures=1 timeouts=1
+vgvoice: last result=err_play ms=15000 samples=239919 bytes=479838
+vgvoice: level peak=7376 rms=33
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127957 B/s
+vgvoice: tail_bytes=2429
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=50 active_ms=0/0 frames clip=0
+nsh> [K
+2026-10-22T11:31:23.4826079+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=2 played=1 cancelled=0 too_short=0 failures=1 timeouts=1
+vgvoice: last result=err_play ms=15000 samples=239919 bytes=479838
+vgvoice: level peak=7376 rms=33
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127957 B/s
+vgvoice: tail_bytes=2429
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=50 active_ms=0/0 frames clip=0
+nsh> [K
+2026-10-22T11:31:23.8938669+08:00 CMD vgstats
+vgstats
+Usage:
+  vgstats dump [slave]
+  vgstats inject <slave> ok|crc|timeout|echo|other [latency_ms]
+  vgstats reset [slave]
+nsh> [K
+2026-10-22T11:31:24.3070008+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6863280     880176    5983104    1002808    5795432   1055     16 Umem
+nsh> [K

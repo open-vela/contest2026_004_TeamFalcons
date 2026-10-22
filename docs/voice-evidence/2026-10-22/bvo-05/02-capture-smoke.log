@@ -1,0 +1,59 @@
+########## boot settle len=0 ##########
+
+
+########## vgvoice start ########## len=295
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+nsh> [K
+
+########## vgvoice status ########## len=301
+vgvoice status
+vgvoice: state=recording
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+nsh> [K
+
+########## vgvoice status ########## len=301
+vgvoice status
+vgvoice: state=recording
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+nsh> [K
+
+########## vgvoice cancel ########## len=87
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [Kvgtime: synced 2026-10-22 10:55:40
+
+
+########## vgvoice wait 3000 ########## len=352
+vgvoice wait 3000
+vgvoice: idle after wait
+vgvoice: state=idle
+vgvoice: rounds=1 played=0 cancelled=1 too_short=0 failures=0 timeouts=0
+vgvoice: last result=cancelled ms=13290 samples=247808 bytes=495616
+vgvoice: level peak=26819 rms=154
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+nsh> [K
+
+########## vgvoice status ########## len=323
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=1 played=0 cancelled=1 too_short=0 failures=0 timeouts=0
+vgvoice: last result=cancelled ms=13290 samples=247808 bytes=495616
+vgvoice: level peak=26819 rms=154
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+nsh> [K

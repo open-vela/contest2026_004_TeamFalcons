@@ -1,0 +1,27 @@
+########## boot settle len=0 ##########
+
+
+########## vgaudio sai ########## len=446
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30016b80
+vgaudio: dma_done=151 errors=0 timeouts=0 txbytes=1226244
+vgaudio: sai_underruns=107 clockerrors=0
+vgaudio: stream_ms=12170 stream_bytes=778196 tick_us=10000
+nsh> [K
+
+########## vgvoice status ########## len=565
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=4 played=3 cancelled=0 too_short=0 failures=1 timeouts=1
+vgvoice: last result=err_play ms=15000 samples=239947 bytes=479894
+vgvoice: level peak=7177 rms=34
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=234 drained=235 overwritten=0 wraps=117 elapsed_ms=15000 rate=127971 B/s
+vgvoice: tail_bytes=2649
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=33 clip=0 tick_us=10000
+nsh> [K

@@ -1,0 +1,134 @@
+########## boot settle len=5741 ##########
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:3
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f0967c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792667798
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f0967c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=220(fused) setup=10 tls=520 send=150 ttfb=70 body=0 pool=0 build=0 parse=10 http=1050 backoff=0 total=1070 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f0967c9701b3] iter=0 tool=(none) latency=1070ms llm=fail backend=0
+[trace:6ad9f0967c9701b3] END status=fail iters=1 tools=0 llm_ms=1070 tool_ms=0 elapsed_ms=1310 backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f0aa03cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7011 bytes)
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f0aa03cd357a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=380 ttfb=10 body=0 pool=0 build=0 parse=10 http=500 backoff=0 total=520 req=7011 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 4 (backoff 8)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f0aa03cd357a] iter=0 tool=(none) latency=520ms llm=fail backend=0
+[trace:6ad9f0aa03cd357a] END status=fail iters=1 tools=0 llm_ms=520 tool_ms=0 elapsed_ms=570 backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cfbcb0
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:5
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f1c22746feb7] BEGIN chat=velaguard:5 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:5
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792668098
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f1c22746feb7] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=510 send=340 ttfb=60 body=0 pool=0 build=10 parse=10 http=1040 backoff=0 total=1070 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 5 (backoff 16)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9f1c22746feb7] iter=0 tool=(none) latency=1070ms llm=fail backend=0
+[trace:6ad9f1c22746feb7] END status=fail iters=1 tools=0 llm_ms=1070 tool_ms=0 elapsed_ms=1120 backend=0
+[agent] Dispatching response → local_client:velaguard:5
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=3
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:6
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9f1de0830f44a] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7011 bytes)
+[agent] Dispatching response → local_client:velaguard:6
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9f1de0830f44a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=20 body=0 pool=0 build=10 parse=10 http=330 backoff=0 tot
+
+
+########## vgvoice status ########## len=468
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=5 played=1 cancelled=4 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=4300 samples=62464 bytes=124928
+vgvoice: level peak=1325 rms=107
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=7740 temp_left=0 worker=9
+vgvoice: capture halves=67 drained=61 overwritten=6 wraps=33 elapsed_ms=4300 rate=127642 B/s
+vgvoice: content zcr=31 active_ms=380/3900 frames clip=0
+nsh> [K
+
+########## vgptt status ########## len=195
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=1 submits=1 timeouts=0 last_ms=3510
+vgptt: samples=964 raw_high=5 events=2 timeouts_wake=962 poll_err=0 read_err=0
+nsh> [K
+
+########## free ########## len=166
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6863688     847976    6015712     927696    5795432   1063     13 Umem
+nsh> [K

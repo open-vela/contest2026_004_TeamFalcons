@@ -1,0 +1,340 @@
+2026-10-22T11:40:50.9731624+08:00 CMD free
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880144    5966752     960928    5795432   1055     13 Umem
+nsh> [K
+2026-10-22T11:40:51.4099327+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 25.8% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 19.0% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.6% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  2.4% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  3.2% velaguard_app_main 0x9001037d 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.8% velaguard_app_main 0x90013989 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  3.2% ESP8266 0x9004d5e9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.7% netinit 0x9004f40d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgvoice
+   10    10  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 35.6% vghmi vghmi
+   12    11 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  2.3% vghmi 0x900141c9 0
+   13    13 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   14    13  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9001654d 0x2407f4d8
+   15    13   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9001c6a5 0x2407f5d8
+   16    13  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9001654d 0x2407f6d8
+   29    11 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  4.4% vghmi 0x9001492d 0
+   30    13  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x900181e1 0x2407f5d8
+nsh> [K
+2026-10-22T11:40:51.8168830+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=16 played=2 cancelled=11 too_short=1 failures=1 timeouts=1
+vgvoice: last result=too_short ms=0 samples=3 bytes=6
+vgvoice: level peak=144 rms=89
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=1 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=28 stage_ms=0
+vgvoice: generation=16 queue_highwater=1 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=333 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:52.1245504+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:52.5277501+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=17 played=2 cancelled=12 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4360 bytes=8720
+vgvoice: level peak=7185 rms=164
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=129185 B/s
+vgvoice: tail_bytes=2112 stage_ms=0
+vgvoice: generation=17 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=62 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:52.7467936+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=17 played=2 cancelled=12 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4360 bytes=8720
+vgvoice: level peak=7185 rms=164
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=129185 B/s
+vgvoice: tail_bytes=2112 stage_ms=0
+vgvoice: generation=17 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=62 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:53.0586973+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:53.4619460+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=18 played=2 cancelled=13 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=280 samples=4543 bytes=9086
+vgvoice: level peak=7189 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=280 rate=129821 B/s
+vgvoice: tail_bytes=3582 stage_ms=0
+vgvoice: generation=18 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=21 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:53.6774304+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=18 played=2 cancelled=13 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=280 samples=4543 bytes=9086
+vgvoice: level peak=7189 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=280 rate=129821 B/s
+vgvoice: tail_bytes=3582 stage_ms=0
+vgvoice: generation=18 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=21 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:53.9859186+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:54.3888964+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=19 played=2 cancelled=14 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=150 samples=2458 bytes=4916
+vgvoice: level peak=7188 rms=214
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=2 drained=3 overwritten=0 wraps=1 elapsed_ms=150 rate=131140 B/s
+vgvoice: tail_bytes=3287 stage_ms=0
+vgvoice: generation=19 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=18 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:54.5899743+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=19 played=2 cancelled=14 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=150 samples=2458 bytes=4916
+vgvoice: level peak=7188 rms=214
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=2 drained=3 overwritten=0 wraps=1 elapsed_ms=150 rate=131140 B/s
+vgvoice: tail_bytes=3287 stage_ms=0
+vgvoice: generation=19 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=18 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:54.9112591+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:55.3157675+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=20 played=2 cancelled=15 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4439 bytes=8878
+vgvoice: level peak=7187 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=131529 B/s
+vgvoice: tail_bytes=2745 stage_ms=0
+vgvoice: generation=20 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=13 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:55.5317031+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=20 played=2 cancelled=15 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4439 bytes=8878
+vgvoice: level peak=7187 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=131529 B/s
+vgvoice: tail_bytes=2745 stage_ms=0
+vgvoice: generation=20 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=13 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:55.8412593+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:56.2467134+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=21 played=2 cancelled=16 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4403 bytes=8806
+vgvoice: level peak=7190 rms=162
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=130481 B/s
+vgvoice: tail_bytes=2462 stage_ms=0
+vgvoice: generation=21 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=37 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:56.4476326+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=21 played=2 cancelled=16 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4403 bytes=8806
+vgvoice: level peak=7190 rms=162
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=130481 B/s
+vgvoice: tail_bytes=2462 stage_ms=0
+vgvoice: generation=21 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=37 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:56.7597067+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:57.1646930+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=22 played=2 cancelled=17 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=310 samples=4952 bytes=9904
+vgvoice: level peak=7187 rms=151
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=310 rate=127812 B/s
+vgvoice: tail_bytes=6854 stage_ms=0
+vgvoice: generation=22 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=57 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:57.3832453+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=22 played=2 cancelled=17 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=310 samples=4952 bytes=9904
+vgvoice: level peak=7187 rms=151
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=310 rate=127812 B/s
+vgvoice: tail_bytes=6854 stage_ms=0
+vgvoice: generation=22 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=57 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:57.6927363+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:58.0961011+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=23 played=2 cancelled=18 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=380 samples=6094 bytes=12188
+vgvoice: level peak=7191 rms=138
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=380 rate=128297 B/s
+vgvoice: tail_bytes=7793 stage_ms=0
+vgvoice: generation=23 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=53 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:58.3163253+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=23 played=2 cancelled=18 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=380 samples=6094 bytes=12188
+vgvoice: level peak=7191 rms=138
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=380 rate=128297 B/s
+vgvoice: tail_bytes=7793 stage_ms=0
+vgvoice: generation=23 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=53 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:58.6265939+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:59.0280967+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=24 played=2 cancelled=19 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=420 samples=6815 bytes=13630
+vgvoice: level peak=7190 rms=131
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=420 rate=129814 B/s
+vgvoice: tail_bytes=5370 stage_ms=0
+vgvoice: generation=24 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=45 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:59.2289452+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=24 played=2 cancelled=19 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=420 samples=6815 bytes=13630
+vgvoice: level peak=7190 rms=131
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=420 rate=129814 B/s
+vgvoice: tail_bytes=5370 stage_ms=0
+vgvoice: generation=24 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=45 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:40:59.5380625+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:40:59.9684628+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=25 played=2 cancelled=20 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4388 bytes=8776
+vgvoice: level peak=7188 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=130033 B/s
+vgvoice: tail_bytes=2341 stage_ms=0
+vgvoice: generation=25 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=38 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:41:00.1854222+08:00 CMD vgvoice start
+vgvoice start
+vgvoice: state=idle
+vgvoice: rounds=25 played=2 cancelled=20 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4388 bytes=8776
+vgvoice: level peak=7188 rms=160
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=130033 B/s
+vgvoice: tail_bytes=2341 stage_ms=0
+vgvoice: generation=25 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=38 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:41:00.5094560+08:00 CMD vgvoice cancel
+vgvoice cancel
+vgvoice: cancel requested
+nsh> [K
+2026-10-22T11:41:00.9131144+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle
+vgvoice: rounds=26 played=2 cancelled=21 too_short=1 failures=1 timeouts=1
+vgvoice: last result=cancelled ms=270 samples=4324 bytes=8648
+vgvoice: level peak=7187 rms=163
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=4 drained=5 overwritten=0 wraps=2 elapsed_ms=270 rate=128140 B/s
+vgvoice: tail_bytes=1830 stage_ms=0
+vgvoice: generation=26 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=9 clip=0 tick_us=10000
+nsh> [K
+2026-10-22T11:41:01.1303690+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6846896     880144    5966752     960928    5795432   1055     13 Umem
+nsh> [K
+2026-10-22T11:41:01.5363838+08:00 CMD vgptt status
+vgptt status
+vgptt: running=yes opened=yes state=idle
+vgptt: begins=0 submits=0 timeouts=0 last_ms=0
+vgptt: samples=206 raw_high=0 events=0 timeouts_wake=206 poll_err=0 read_err=0
+nsh> [K

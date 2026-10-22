@@ -72,13 +72,17 @@ test_agent_tools: test_agent_tools.c ../vg_agent_tools.c ../vg_agent_tools.h \
 	$(CC) $(TEST_AGENT_TOOLS_CFLAGS) -o $@ test_agent_tools.c \
 	  ../vg_agent_tools.c ../vg_agent_query.c $(CJSON_SRC) -lm
 
+test_pdm_filter: test_pdm_filter.c ../vg_pdm_filter.c ../vg_pdm_filter.h \
+                 ../vg_pdm_filter_coeffs.h pdm_golden.h
+	$(CC) $(CFLAGS) -o $@ test_pdm_filter.c ../vg_pdm_filter.c
+
 test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt.c ../vg_ptt.c
 
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles
+test: test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -109,6 +113,7 @@ test: test_net_policy test_config_store test_frame_stats test_runtime test_disco
 	./test_mqtt_session
 	./test_ptt
 	./test_ptt_cycles
+	./test_pdm_filter
 	python3 test_boot_stack.py
 	python3 test_board_pins.py
 

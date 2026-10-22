@@ -1,0 +1,58 @@
+[
+  {
+    "command": "",
+    "wait_ms": 1000
+  },
+  {
+    "command": "vgvoice record 1000",
+    "wait_ms": 4000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgvoice record 5000",
+    "wait_ms": 12000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgvoice record 15000",
+    "wait_ms": 16000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgaudio sai",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgvoice wait 25000",
+    "wait_ms": 17000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgaudio sai",
+    "wait_ms": 400
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 400
+  },
+  {
+    "command": "free",
+    "wait_ms": 400
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 400
+  }
+]
