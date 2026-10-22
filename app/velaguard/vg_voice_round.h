@@ -59,6 +59,11 @@ void vg_voice_round_hold(bool held);
 /* Explicit end from the overlay or a long press. */
 void vg_voice_round_end(void);
 
+/* Diagnostic entry that posts the same event the button callback posts.
+ * It does not read the pin, so it cannot stand in for a real press; it exists
+ * so the pipeline after the event can be exercised without hands. */
+void vg_voice_round_press_sim(bool press);
+
 /* Retry speech only, using the answer already validated. */
 void vg_voice_round_retry_tts(void);
 

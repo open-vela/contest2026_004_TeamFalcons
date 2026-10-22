@@ -900,6 +900,26 @@ void vg_voice_round_hold(bool held)
   sem_post(&g_vr.wake);
 }
 
+void vg_voice_round_press_sim(bool press)
+{
+  if (!g_vr.started)
+    {
+      return;
+    }
+
+  if (press)
+    {
+      g_vr.cancel = 1;
+      g_vr.press_pending = true;
+    }
+  else
+    {
+      g_vr.submit_pending = true;
+    }
+
+  sem_post(&g_vr.wake);
+}
+
 void vg_voice_round_end(void)
 {
   if (!g_vr.started)

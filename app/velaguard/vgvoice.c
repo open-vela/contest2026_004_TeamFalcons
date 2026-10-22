@@ -105,7 +105,7 @@ int main(int argc, FAR char *argv[])
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
       printf("       vgvoice asr [wav] [budget_ms] | tts <text> | play <wav>\n");
-      printf("       vgvoice mute [on|off]\n");
+      printf("       vgvoice mute [on|off] | round [press|release]\n");
 #endif
       return EXIT_FAILURE;
     }
@@ -265,6 +265,45 @@ int main(int argc, FAR char *argv[])
         }
 
       printf("vgvoice: muted=%d\n", vg_voice_round_muted() ? 1 : 0);
+      return EXIT_SUCCESS;
+    }
+
+  if (strcmp(cmd, "round") == 0)
+    {
+      struct vg_voice_ui ui;
+
+      if (argc >= 3 && strcmp(argv[2], "press") == 0)
+        {
+          vg_voice_round_press_sim(true);
+          printf("vgvoice: round press synthetic\n");
+          return EXIT_SUCCESS;
+        }
+
+      if (argc >= 3 && strcmp(argv[2], "release") == 0)
+        {
+          vg_voice_round_press_sim(false);
+          printf("vgvoice: round release synthetic\n");
+          return EXIT_SUCCESS;
+        }
+
+      if (!vg_voice_round_ui(&ui))
+        {
+          printf("vgvoice: round not started\n");
+          return EXIT_FAILURE;
+        }
+
+      printf("vgvoice: round visible=%d state=%u gen=%u muted=%d failed=%d\n",
+             ui.visible ? 1 : 0, (unsigned)ui.state, (unsigned)ui.generation,
+             ui.muted ? 1 : 0, ui.speech_failed ? 1 : 0);
+      printf("vgvoice: round status=%s\n", ui.status);
+      printf("vgvoice: round q=%s\n", ui.question);
+      printf("vgvoice: round a=%u bytes\n", (unsigned)strlen(ui.answer));
+
+      if (ui.error[0] != '\0')
+        {
+          printf("vgvoice: round error=%s\n", ui.error);
+        }
+
       return EXIT_SUCCESS;
     }
 #endif

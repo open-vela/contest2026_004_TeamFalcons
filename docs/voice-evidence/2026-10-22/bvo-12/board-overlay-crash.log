@@ -1,0 +1,333 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-22 18:44:52
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.220, +2220)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.230, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.230, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.230, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.230, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.240, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.250, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.260, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.260, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.270, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.280, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.290, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.290, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.300, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.300, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.310, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.320, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.320, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.330, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.340, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.340, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.350, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.360, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.360, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.370, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.380, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.390, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.400, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.410, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED num[agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 14:29:15)
+: 3[agent] [boot +10ms] P0: timezone set
+
+Hello from openvela contest 2026 team 004!
+[agent] [boot +110ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +250ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +260ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +500ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +510ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +550ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1010ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1200ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1670ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1690ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2250ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2250ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2280ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2290ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2300ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2300ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2310ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2320ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2320ms] P5: network_watch thread started (async)
+[agent] [boot +2330ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2330ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.249
+[netmgr] Network connected: 192.168.137.249
+[netmgr] Found iface eth0 addr 192.168.137.249
+[agent] Network connected: 192.168.137.249
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+
+2026-10-22T18:46:10.9200524+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=0 state=0 gen=0 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-22T18:46:12.4537651+08:00 CMD vgvoice round press
+vgvoice round press
+vgvoice: round press synthetic
+nsh> [KHARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=00000035 MMFAR=00000035
+HARDFAULT: stacked PC=90009d88 LR=90009e1d
+dump_assert_info: Current Version: NuttX  0.0.0 189e6d8a18d-dirty Oct 22 2026 18:45:25 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: vghmi process: vghmi 0x9000e391
+up_dump_register: R0: 24004bb0 R1: 00000000 R2: 900b718a  R3: 24004598
+up_dump_register: R4: 3800da78 R5: 00000003 R6: 900b718a  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004518 R10: 00000006 R11: 24075eb8
+up_dump_register: R12: 00000009 SP: 24075cc8 LR: 90001ab3  PC: 90001ab3
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x2406adc0
+dump_stackinfo:   size: 00049104
+dump_stackinfo:     sp: 0x24075cc8
+stack_dump:  24075ca8: 24075cc8 24076ca8 24075cc8 2406adc0 0000bfd0 3800da78 24004518 90001c53
+stack_dump:  24075cc8: 900cfc99 00000000 3800db28 3800db28 9000e391 0000000a 00000000 00000000
+stack_dump:  24075ce8: 3800da78 24004bb0 900b718a 00000000 00000000 7474754e 40000058 24075d78
+stack_dump:  24075d08: 00000000 9000823f 240700b0 00000008 24075d70 24079db0 900b7189 24075d70
+stack_dump:  24075d28: 39653164 39303030 302e3000 0000302e 00000001 90059491 24075d70 38317164
+stack_dump:  24075d48: 64366539 38316138 69642d64 20797472 2074634f 32203232 20363230 343a3831
+stack_dump:  24075d68: 35323a35 900b7100 24075db0 90007731 6d72612b 90008c00 90008bd7 00000000
+stack_dump:  24075d88: 90008211 0000000a 00000000 24075eb8 00000003 24004598 24075eb8 00004ce0
+stack_dump:  24075da8: 24078620 24032624 24075eb8 900014b1 00000001 00000035 3800da78 90000e7d
+stack_dump:  24075dc8: 00000000 00000007 00000039 24000264 7fffffff 90001063 00000000 9008275d
+stack_dump:  24075de8: 900826f1 00000000 003a424a 4d7d0001 00000000 24075e80 00000000 00004e2d
+stack_dump:  24075e08: 900dcc40 9008296d 00000001 90001063 24079e40 9002a5df 3800ede0 00000001
+stack_dump:  24075e28: 00000030 3800fb10 3800ede0 9002a5df 24075e78 3800ede0 24075ea8 00000030
+stack_dump:  24075e48: 24075ed0 00000000 24075f2c 9005c4f7 00000000 3800eb00 3800eb00 00000030
+stack_dump:  24075e68: 24075ea8 3800eb3c 3800eb00 00000001 24075e98 24075ed0 00000000 9005afb9
+stack_dump:  24075e88: 3800fad8 24075ed0 00000001 90057391 00000000 00000000 000001df 0000010f
+stack_dump:  24075ea8: 0000000d 000000f3 000001d3 00000103 24075f90 00000000 00000039 00000039
+stack_dump:  24075ec8: 24000264 7fffffff 00004ce0 24078620 24032624 00000000 00000000 ffffffe9
+stack_dump:  24075ee8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24075f08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24075f28: 00000000 00000039 7fffffff 00000001 00000000 90009e1d 90009d88 01000000
+stack_dump:  24075f48: 00000000 c7efffff dff07036 47efffff 00000000 00000000 00000000 00000000
+stack_dump:  24075f68: 00000000 00000000 00000000 3ff00000 ffffffff 7fefffff 3f800000 7f7fffff
+stack_dump:  24075f88: 80000010 9005744d 24052770 90009e1d 24009288 2407db58 900cbb27 0000000b
+stack_dump:  24075fa8: 00000000 9003432f 9000819d 2404c470 2407e5d8 ffffffff 00000001 2404c470
+stack_dump:  24075fc8: 2407e5d8 ffffffff 00000001 900506c1 e995bde5 b8e4b39f b7c220ad 809ce620
+stack_dump:  24075fe8: 20bf95e9 e7203531 c22092a7 bde520b7 b39fe995 00adb8e4 00000000 00000000
+stack_dump:  24076008: 0000000a ffffff00 00ffffff 00000000 00000001 00000001 00000001 00003a8e
+stack_dump:  24076028: 00000000 00000000 e995bde5 b8e4b39f 000000ad 00000000 00000000 00000000
+stack_dump:  24076048: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076068: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076088: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240760a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240760c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240760e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076108: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076128: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076148: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076168: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076188: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240761a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240761c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240761e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076208: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076228: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076248: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076268: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076288: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240762a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240762c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240762e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076308: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076328: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076348: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076368: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076388: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240763a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240763c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240763e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076408: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076428: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076448: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076468: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076488: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240764a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240764c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240764e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076508: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076528: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076548: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076568: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076588: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240765a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240765c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240765e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076608: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076628: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076648: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076668: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076688: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240766a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240766c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240766e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076708: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076728: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076748: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076768: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076788: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240767a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240767c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240767e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076808: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076828: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076848: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076868: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076888: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240768a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240768c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240768e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076908: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076928: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076948: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076968: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076988: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240769a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240769c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240769e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076a08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076a28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076a48: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076a68: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076a88: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076aa8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076ac8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076ae8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076b08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076b28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076b48: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076b68: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076b88: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076ba8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076bc8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076be8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076c08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076c28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076c48: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076c68: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076c88: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24076ca8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24052388      1000    34.0%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240073b8      1976     1.0%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006bb8      1976     1.0%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136     0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168     0.0%   velaguard_app_main 0x9000cae1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264     5.1%   velaguard_app_main 0x9001081d 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072     0.0%   velaguard_app_main 0x90014331 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024     1.0%   ESP8266 0x90067f05 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024     0.0%   netinit 0x90068cd1 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b208      4056     0.0%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x24062da0     32744    18.5%   velaguard_app_main 0x900163fd 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ca98      4056     0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Running            0000000000000000 0x2406adc0     49104    36.0%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Signal     0000000000000000 0x30000028      8168     3.0%   vghmi 0x90014b71 0
+dump_task:      14    14 100 RR       Task    -   Waiting Signal     0000000000000000 0x30002060     32696     0.0%   ai_agent ai_agent --daemon
+dump_task:      15    14  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x3000aa30     12264     0.0%   ai_agent 0x90016bed 0x2407e678
+dump_task:      16    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x3000da38      4072     0.0%   ai_agent 0x9001cd45 0x2407e778
+dump_task:      17    14  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3000ea40     28648     0.0%   ai_agent 0x90016bed 0x24052950
+
+2026-10-22T18:46:14.9705923+08:00 CMD vgvoice round
+
+2026-10-22T18:46:16.4875532+08:00 CMD vgvoice round release
+
+2026-10-22T18:46:42.4986294+08:00 CMD vgvoice round
+
+2026-10-22T18:46:44.5173136+08:00 CMD ls -l /data/velaguard/voice
+
+2026-10-22T18:46:46.0458140+08:00 CMD free
+

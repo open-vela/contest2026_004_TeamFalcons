@@ -36,6 +36,7 @@ static lv_obj_t * s_answer;
 static lv_obj_t * s_error;
 static lv_obj_t * s_close;
 static lv_obj_t * s_mute;
+static lv_obj_t * s_mute_label;
 static lv_obj_t * s_retry;
 static lv_timer_t * s_timer;
 
@@ -181,7 +182,12 @@ static void poll_cb(lv_timer_t * t)
         lv_obj_add_flag(s_retry, LV_OBJ_FLAG_HIDDEN);
     }
 
-    lv_label_set_text(s_mute, ui.muted ? "播报:关" : "播报:开");
+    /* s_mute is a button, not a label.  Calling lv_label_set_text on it
+     * wrote label fields into a button object and asserted on the next
+     * invalidation; the text belongs to the label inside the button. */
+    if(s_mute_label) {
+        lv_label_set_text(s_mute_label, ui.muted ? "播报:关" : "播报:开");
+    }
 }
 
 void vg_voice_overlay_create(void)
@@ -239,9 +245,9 @@ void vg_voice_overlay_create(void)
         lv_obj_set_size(s_mute, 62, 24);
         lv_obj_add_event_cb(s_mute, mute_cb, LV_EVENT_CLICKED, NULL);
         {
-            lv_obj_t * lab = lv_label_create(s_mute);
-            lv_obj_set_style_text_font(lab, &lv_font_montserrat_14, 0);
-            lv_label_set_text(lab, "播报:开");
+            s_mute_label = lv_label_create(s_mute);
+            lv_obj_set_style_text_font(s_mute_label, &lv_font_montserrat_14, 0);
+            lv_label_set_text(s_mute_label, "播报:开");
         }
 
         s_retry = lv_button_create(btns);
@@ -319,6 +325,7 @@ void vg_voice_overlay_destroy(void)
     s_error = NULL;
     s_close = NULL;
     s_mute = NULL;
+    s_mute_label = NULL;
     s_retry = NULL;
 }
 

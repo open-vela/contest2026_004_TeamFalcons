@@ -529,23 +529,11 @@ static int voice_play_path(const char *path)
   return 0;
 }
 
+/* Play the WAV the finish path already wrote.  Writing is separate because
+ * the cloud round keeps the file instead of playing it. */
+
 static void voice_play(void)
 {
-  uint32_t stage_start = voice_ms();
-  int ret = voice_write_wav();
-  g_stats.stage_ms = voice_ms() - stage_start;
-  if (ret < 0)
-    {
-      if (ret == -ECANCELED)
-        {
-          g_stats.last_result = VG_VOICE_CANCELLED;
-          voice_clear_pcm();
-          voice_publish(VG_VOICE_IDLE);
-        }
-      else voice_fail(VG_VOICE_ERR_FILE, false);
-      return;
-    }
-
   if (voice_play_path(VG_VOICE_WAV_PATH) < 0)
     {
       voice_fail(VG_VOICE_ERR_PLAY, false);
@@ -609,6 +597,33 @@ static void voice_finish(bool cancelled, bool play)
       return;
     }
   g_stats.last_result = VG_VOICE_OK;
+
+  /* Both paths need the file on disk.  The cloud round recognises it and
+   * never plays it, but it still has to exist: writing only inside the
+   * playback path left the recogniser opening a path that was never
+   * created. */
+
+  {
+    uint32_t stage_start = voice_ms();
+    int wret = voice_write_wav();
+    g_stats.stage_ms = voice_ms() - stage_start;
+
+    if (wret < 0)
+      {
+        if (wret == -ECANCELED)
+          {
+            g_stats.last_result = VG_VOICE_CANCELLED;
+            voice_clear_pcm();
+            voice_publish(VG_VOICE_IDLE);
+          }
+        else
+          {
+            voice_fail(VG_VOICE_ERR_FILE, false);
+          }
+
+        return;
+      }
+  }
 
   if (play)
     {
