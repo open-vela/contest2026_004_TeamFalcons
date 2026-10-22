@@ -93,6 +93,8 @@ extern int vghmi_main(int argc, char *argv[]);
 
 #ifdef CONFIG_VG_VOICE_LOOPBACK
 #include "vg_voice_ptt.h"
+#include "vg_voice_round.h"
+#include "vg_voice_pref.h"
 #endif
 
 #ifdef CONFIG_VG_CONFIG_STORE
@@ -235,7 +237,31 @@ int main(int argc, char *argv[])
     vg_agent_alarm_start();
 #endif
 
-#if defined(CONFIG_VG_VOICE_LOOPBACK)
+#if defined(CONFIG_VG_VOICE_LOOPBACK) && defined(CONFIG_EXAMPLES_AI_AGENT_VELA)
+    /* USER1 -> record -> ASR -> on-board agent -> TTS -> Line Out.  The round
+     * worker owns the button task, so the handler is fixed before any edge is
+     * delivered.  Stale audio from a crash is removed first, and the stored
+     * speech preference is applied before the first round can run. */
+
+    {
+      bool muted = false;
+      bool have_pref;
+
+      vg_voice_pref_sweep();
+      have_pref = (vg_voice_pref_load(&muted) == 0);
+
+      if (vg_voice_round_start() != 0)
+        {
+          printf("vgvoice: round not started\n");
+        }
+      else if (have_pref)
+        {
+          /* start() initialises the session, so the stored value is applied
+           * after it, not before. */
+          vg_voice_round_set_muted(muted);
+        }
+    }
+#elif defined(CONFIG_VG_VOICE_LOOPBACK)
     /* USER1 -> local record/playback loop.  This starts the button task too,
      * with the recording handler already registered; starting the button task
      * with the default handler first would fix the print-only callback and the

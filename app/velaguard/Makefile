@@ -92,7 +92,16 @@ ifeq ($(CONFIG_VG_VOICE_LOOPBACK),y)
 PROGNAME += vgvoice
 MAINSRC  += vgvoice.c
 CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c \
-            vg_voice_intent.c vg_voice_answer.c
+            vg_voice_intent.c vg_voice_answer.c vg_voice_pcm.c
+# The cloud adapter needs the agent transport for its HTTPS call; the pure
+# audio helpers above do not.
+ifeq ($(CONFIG_EXAMPLES_AI_AGENT_VELA),y)
+CSRCS    += vg_voice_cloud.c vg_voice_round.c vg_voice_pref.c
+# The overlay is one of the gui/ wildcard sources; it needs the round's API,
+# so it is filtered out below when this is not set.
+VG_VOICE_ROUND_ENABLED := y
+CFLAGS   += -DVG_VOICE_ROUND=1
+endif
 endif
 
 ifeq ($(CONFIG_VG_PDM_DUMP),y)
@@ -135,6 +144,9 @@ VG_UI_DIR       := $(VG_CONTEST_ROOT)/gui/main/ui
 VG_UI_SUBDIRS   := app shell pages model theme widgets fonts
 VG_UI_CSRCS     := $(foreach _d,$(VG_UI_SUBDIRS),$(wildcard $(VG_UI_DIR)/$(_d)/*.c))
 VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/model/vg_ui_backend.c,$(VG_UI_CSRCS))
+ifneq ($(VG_VOICE_ROUND_ENABLED),y)
+VG_UI_CSRCS     := $(filter-out $(VG_UI_DIR)/widgets/vg_voice_overlay.c,$(VG_UI_CSRCS))
+endif
 
 CSRCS    += $(notdir $(VG_UI_CSRCS))
 CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c \

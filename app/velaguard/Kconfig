@@ -247,6 +247,26 @@ config VG_VOICE_STACKSIZE
 	---help---
 		The task runs decimation, bounded WAV writes and NxPlayer control.
 
+config VG_VOICE_ASR_MODEL
+	string "ASR model name"
+	default "mimo-v2.5-asr"
+	---help---
+		Model name sent with a recognition request.  It must exist on the
+		same endpoint and be covered by the configured key; the Base URL
+		and the key are a pair and are not chosen here.
+
+config VG_VOICE_TTS_MODEL
+	string "TTS model name"
+	default "mimo-v2.5-tts"
+	---help---
+		Model name sent with a synthesis request.
+
+config VG_VOICE_TTS_VOICE
+	string "TTS voice name"
+	default "冰糖"
+	---help---
+		Voice used for synthesis.  The name is passed through as UTF-8.
+
 endif # VG_VOICE_LOOPBACK
 
 config VG_PDM_DUMP

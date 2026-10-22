@@ -94,6 +94,14 @@ int vg_voice_record_begin(void);
 int vg_voice_record_begin_owned(uint32_t *generation);
 enum vg_voice_result vg_voice_finish_owned(uint32_t generation,
                                             bool cancelled);
+
+/* End a recording without playing it back.  The cloud path recognises the
+ * WAV instead; the round is IDLE once the file is closed. */
+enum vg_voice_result vg_voice_finish_owned_silent(uint32_t generation);
+
+/* Play a WAV that was produced elsewhere (TTS).  Returns 0 when the request
+ * was queued; the task serialises it with recording and playback. */
+int vg_voice_play_file(const char *path);
 int vg_voice_record_for(uint32_t ms);
 enum vg_voice_result vg_voice_record_end(bool cancelled);
 enum vg_voice_result vg_voice_cancel(void);

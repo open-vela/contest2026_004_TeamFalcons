@@ -21,6 +21,13 @@
 
 void vg_agent_tools_register(void);
 
+/* Fill the agent-facing view of the confirmed table: metadata joined with the
+ * live snapshot.  Returns 0 when values are available, or a
+ * vg_agent_query_rc reason (NO_TABLE, NO_SAMPLE).  Used by the voice path to
+ * resolve a spoken point name before it asks the agent. */
+struct vg_agent_point;
+int vg_agent_tools_collect(struct vg_agent_point *out, int max, int *n_out);
+
 #ifdef VG_AGENT_TOOLS_HOST_TEST
 /* Test build only: clear the read-only call window between cases. */
 void vg_agent_tools_reset_rate(void);

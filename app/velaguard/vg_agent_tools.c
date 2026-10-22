@@ -244,6 +244,35 @@ static int tool_point_read(const char *query, char *out, size_t cap)
   return OK;
 }
 
+/* Public wrapper for the voice path: it resolves a spoken point name before
+ * submitting a question, so an ambiguous name never reaches the model. */
+
+int vg_agent_tools_collect(struct vg_agent_point *out, int max, int *n_out)
+{
+  struct vg_agent_point all[VG_AGENT_QUERY_MAX];
+  int n = 0;
+  int i;
+  enum vg_agent_query_rc rc = collect_points(all, &n);
+
+  if (out == NULL || n_out == NULL || max <= 0)
+    {
+      return VG_AGENT_QUERY_ARG;
+    }
+
+  if (n > max)
+    {
+      n = max;
+    }
+
+  for (i = 0; i < n; i++)
+    {
+      out[i] = all[i];
+    }
+
+  *n_out = n;
+  return (int)rc;
+}
+
 #endif /* VG_AGENT_TOOLS_HAVE_POINTS */
 
 #ifdef VG_AGENT_TOOLS_HAVE_REPORT

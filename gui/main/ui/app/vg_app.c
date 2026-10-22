@@ -3,6 +3,9 @@
 #include "model/vg_model.h"
 #include "shell/vg_shell.h"
 #include "lvgl/lvgl.h"
+#ifdef VG_VOICE_ROUND
+#include "widgets/vg_voice_overlay.h"
+#endif
 #ifndef VG_HMI_BOARD
 #include <SDL2/SDL.h>
 #endif
@@ -81,6 +84,10 @@ void vg_app_init(void)
     vg_model_init();
     vg_shell_create();
     vg_nav_goto(VG_PAGE_HOME, NULL);
+#ifdef VG_VOICE_ROUND
+    /* Lives on lv_layer_top(), so it stays across page switches. */
+    vg_voice_overlay_create();
+#endif
 
     g = lv_group_get_default();
     if(g == NULL) {

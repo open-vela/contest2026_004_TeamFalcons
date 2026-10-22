@@ -39,7 +39,8 @@ enum vg_agent_round_owner
 {
   VG_AGENT_ROUND_OWNER_NONE = 0,  /* manual round (the NSH probe) */
   VG_AGENT_ROUND_OWNER_ADVICE,    /* per-point alarm advice */
-  VG_AGENT_ROUND_OWNER_DAILY      /* the daily report */
+  VG_AGENT_ROUND_OWNER_DAILY,     /* the daily report */
+  VG_AGENT_ROUND_OWNER_VOICE      /* one spoken question */
 };
 
 /* Total budget for one round, in milliseconds.  Measured rounds on this board

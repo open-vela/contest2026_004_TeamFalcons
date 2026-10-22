@@ -93,6 +93,12 @@ file(GLOB_RECURSE VG_UI_SOURCES
     "${PROJECT_SOURCE_DIR}/main/ui/*.c"
 )
 
+# The voice overlay belongs to the board HMI: it calls into the voice round,
+# which is only linked into the firmware.
+list(REMOVE_ITEM VG_UI_SOURCES
+    "${PROJECT_SOURCE_DIR}/main/ui/widgets/vg_voice_overlay.c"
+)
+
 # Create the main executable, depending on the FreeRTOS option
 if(USE_FREERTOS)
     add_executable(main

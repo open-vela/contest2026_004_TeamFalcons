@@ -52,9 +52,11 @@
 
 struct voice_request
 {
-  enum { REQ_BEGIN, REQ_END, REQ_CANCEL, REQ_QUIT } type;
+  enum { REQ_BEGIN, REQ_END, REQ_END_SILENT, REQ_CANCEL, REQ_PLAY,
+         REQ_QUIT } type;
   uint32_t generation;
   uint32_t limit_ms;
+  char     path[80];      /* REQ_PLAY: file to play, copied by the caller */
 };
 
 struct voice_block
@@ -495,6 +497,38 @@ static int voice_start(const struct voice_request *request)
   return 0;
 }
 
+static int voice_play_path(const char *path)
+{
+  int ret;
+
+  if (path == NULL || path[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
+  if (g_player == NULL)
+    {
+      g_player = nxplayer_create();
+      if (g_player == NULL)
+        {
+          return -ENOMEM;
+        }
+      nxplayer_setdevice(g_player, "/dev/audio/pcm0p");
+      nxplayer_setvolume(g_player, VOICE_PLAY_VOLUME);
+    }
+
+  ret = nxplayer_playfile(g_player, path, AUDIO_FMT_UNDEF, AUDIO_FMT_UNDEF);
+  if (ret < 0)
+    {
+      printf("vgvoice: nxplayer_playfile failed rc=%d errno=%d\n", ret, errno);
+      return ret;
+    }
+
+  g_play_started_ms = voice_ms();
+  voice_publish(VG_VOICE_PLAYING);
+  return 0;
+}
+
 static void voice_play(void)
 {
   uint32_t stage_start = voice_ms();
@@ -511,30 +545,14 @@ static void voice_play(void)
       else voice_fail(VG_VOICE_ERR_FILE, false);
       return;
     }
-  if (g_player == NULL)
+
+  if (voice_play_path(VG_VOICE_WAV_PATH) < 0)
     {
-      g_player = nxplayer_create();
-      if (g_player == NULL)
-        {
-          voice_fail(VG_VOICE_ERR_ALLOC, false);
-          return;
-        }
-      nxplayer_setdevice(g_player, "/dev/audio/pcm0p");
-      nxplayer_setvolume(g_player, VOICE_PLAY_VOLUME);
-    }
-  ret = nxplayer_playfile(g_player, VG_VOICE_WAV_PATH,
-                          AUDIO_FMT_UNDEF, AUDIO_FMT_UNDEF);
-  if (ret < 0)
-    {
-      printf("vgvoice: nxplayer_playfile failed rc=%d errno=%d\n", ret, errno);
       voice_fail(VG_VOICE_ERR_PLAY, false);
-      return;
     }
-  g_play_started_ms = voice_ms();
-  voice_publish(VG_VOICE_PLAYING);
 }
 
-static void voice_finish(bool cancelled)
+static void voice_finish(bool cancelled, bool play)
 {
   struct stm32_pdm_capture_stats cap;
   int ret = stm32_pdm_capture_stop(50);
@@ -591,7 +609,18 @@ static void voice_finish(bool cancelled)
       return;
     }
   g_stats.last_result = VG_VOICE_OK;
-  voice_play();
+
+  if (play)
+    {
+      voice_play();
+    }
+  else
+    {
+      /* The cloud path recognises the file instead of playing it back, so
+       * the round ends here and the caller waits for IDLE. */
+
+      voice_publish(VG_VOICE_IDLE);
+    }
 }
 
 static int voice_task(int argc, char **argv)
@@ -613,15 +642,37 @@ static int voice_task(int argc, char **argv)
             {
               if (g_stats.state == VG_VOICE_RECORDING)
                 {
-                  voice_finish(true);
+                  voice_finish(true, false);
                 }
               voice_start(&request);
+            }
+          else if (request.type == REQ_PLAY)
+            {
+              if (g_stats.state == VG_VOICE_RECORDING)
+                {
+                  voice_finish(true, false);
+                }
+
+              if (g_stats.state == VG_VOICE_PLAYING &&
+                  voice_stop_playback() < 0)
+                {
+                  voice_fail(VG_VOICE_ERR_BUSY, true);
+                }
+              else
+                {
+                  voice_clear_pcm();
+                  if (voice_play_path(request.path) < 0)
+                    {
+                      voice_fail(VG_VOICE_ERR_PLAY, false);
+                    }
+                }
             }
           else if (request.generation == g_generation)
             {
               if (g_stats.state == VG_VOICE_RECORDING)
                 {
-                  voice_finish(request.type == REQ_CANCEL);
+                  voice_finish(request.type == REQ_CANCEL,
+                               request.type == REQ_END);
                 }
               else if (request.type == REQ_CANCEL &&
                        g_stats.state == VG_VOICE_PLAYING)
@@ -644,12 +695,12 @@ static int voice_task(int argc, char **argv)
           voice_drain();
           if (g_dropped || g_bad_stream)
             {
-              voice_finish(false);
+              voice_finish(false, true);
             }
           else if (voice_ms() - g_started_ms >= g_limit_ms)
             {
               if (g_limit_ms == VG_VOICE_MAX_MS) g_stats.timeouts++;
-              voice_finish(false);
+              voice_finish(false, true);
             }
         }
       else if (g_stats.state == VG_VOICE_PLAYING)
@@ -677,7 +728,7 @@ static int voice_task(int argc, char **argv)
         }
     }
 
-  if (g_stats.state == VG_VOICE_RECORDING) voice_finish(true);
+  if (g_stats.state == VG_VOICE_RECORDING) voice_finish(true, false);
   if (voice_stop_playback() < 0 || g_fault)
     {
       voice_publish(VG_VOICE_FAULT);
@@ -800,6 +851,39 @@ enum vg_voice_result vg_voice_finish_owned(uint32_t generation, bool cancelled)
   ret = voice_post((struct voice_request){ .generation = generation,
     .type = cancelled ? REQ_CANCEL : REQ_END });
   return ret < 0 ? VG_VOICE_ERR_BUSY : VG_VOICE_OK;
+}
+
+enum vg_voice_result vg_voice_finish_owned_silent(uint32_t generation)
+{
+  int ret;
+
+  if (generation == 0)
+    {
+      return VG_VOICE_ERR_BUSY;
+    }
+
+  ret = voice_post((struct voice_request){ .generation = generation,
+    .type = REQ_END_SILENT });
+
+  return ret < 0 ? VG_VOICE_ERR_BUSY : VG_VOICE_OK;
+}
+
+int vg_voice_play_file(const char *path)
+{
+  struct voice_request request;
+  int ret;
+
+  if (path == NULL || path[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
+  memset(&request, 0, sizeof(request));
+  request.type = REQ_PLAY;
+  snprintf(request.path, sizeof(request.path), "%s", path);
+
+  ret = voice_post(request);
+  return ret < 0 ? ret : 0;
 }
 
 int vg_voice_record_begin(void)
