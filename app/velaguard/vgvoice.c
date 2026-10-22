@@ -30,6 +30,8 @@
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 #include "vg_voice_cloud.h"
+#include "vg_voice_pref.h"
+#include "vg_voice_round.h"
 
 /* The cloud adapter is the same code the round uses.  These two commands make
  * it reachable without a button press, so the request shape and the audio
@@ -102,7 +104,7 @@ int main(int argc, FAR char *argv[])
     {
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
-      printf("       vgvoice asr [wav] | tts <text> | play <wav>\n");
+      printf("       vgvoice asr [wav] | tts <text> | play <wav> | mute [on|off]\n");
 #endif
       return EXIT_FAILURE;
     }
@@ -215,6 +217,37 @@ int main(int argc, FAR char *argv[])
         }
 
       return (rc == VG_VC_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+
+  if (strcmp(cmd, "mute") == 0)
+    {
+      /* Same entry the overlay uses, so the preference file and the running
+       * round change together.  Without a board-side command, the reboot
+       * persistence of the switch could only be checked by touching the
+       * screen. */
+
+      if (argc < 3)
+        {
+          printf("vgvoice: muted=%d\n", vg_voice_round_muted() ? 1 : 0);
+          return EXIT_SUCCESS;
+        }
+
+      if (strcmp(argv[2], "on") == 0)
+        {
+          vg_voice_pref_set_muted(true);
+        }
+      else if (strcmp(argv[2], "off") == 0)
+        {
+          vg_voice_pref_set_muted(false);
+        }
+      else
+        {
+          printf("vgvoice: mute expects on or off\n");
+          return EXIT_FAILURE;
+        }
+
+      printf("vgvoice: muted=%d\n", vg_voice_round_muted() ? 1 : 0);
+      return EXIT_SUCCESS;
     }
 #endif
 
