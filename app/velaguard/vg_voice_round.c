@@ -692,7 +692,10 @@ static void vr_run_actions(uint32_t actions)
 
           text[0] = '\0';
 
-          if (!vr_wait_voice_idle(2000))
+          /* The recorder stops the PDM stream, drains and writes the WAV;
+           * 2 s was tight enough to lose a round right after playback. */
+
+          if (!vr_wait_voice_idle(3000))
             {
               vr_ui_error("录音未正常结束");
               next |= vg_vs_asr_result(&g_vr.s, gen, false, NULL,
