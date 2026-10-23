@@ -393,9 +393,31 @@ int vg_voice_cloud_fixture(const char *mode)
 }
 #endif
 
+/* 阶段计时仅用于延迟归因日志；未执行的阶段打印 na，不与 0 混淆。 */
+static void vc_timing_init(agent_llm_timing_t *t)
+{
+  memset(t, 0, sizeof(*t));
+  t->dns_tcp_ms = AGENT_T_NA;
+  t->tls_setup_ms = AGENT_T_NA;
+  t->tls_ms = AGENT_T_NA;
+  t->send_ms = AGENT_T_NA;
+  t->ttfb_ms = AGENT_T_NA;
+  t->body_ms = AGENT_T_NA;
+  t->http_total_ms = AGENT_T_NA;
+}
+
+static void vc_timing_log(const char *what, const agent_llm_timing_t *t)
+{
+  syslog(LOG_INFO, "[%s] %s phases dns=%d tls=%d send=%d ttfb=%d body=%d "
+         "http=%d\n", TAG, what, (int)t->dns_tcp_ms, (int)t->tls_ms,
+         (int)t->send_ms, (int)t->ttfb_ms, (int)t->body_ms,
+         (int)t->http_total_ms);
+}
+
 static int vc_post(bool asr, const char *data, const vela_body_src_t *body,
                     const vela_resp_sink_t *sink, char *response, size_t cap,
-                    size_t *bytes, int *status, const vela_req_ctl_t *ctl)
+                    size_t *bytes, int *status, const vela_req_ctl_t *ctl,
+                    agent_llm_timing_t *timing)
 {
 #ifdef CONFIG_VG_VOICE_TEST_FIXTURE
   char mode[24], path[40];
@@ -414,7 +436,8 @@ static int vc_post(bool asr, const char *data, const vela_body_src_t *body,
 #else
   (void)asr;
 #endif
-  return agent_http_post_stream(data,body,sink,response,cap,bytes,status,ctl);
+  return agent_http_post_stream_timed(data,body,sink,response,cap,bytes,status,
+                                      timing,ctl);
 }
 
 /* Post the prepared body and read the transcript out of the reply. */
@@ -432,8 +455,13 @@ static enum vg_vc_result vc_asr_post(struct vc_body_src *src, size_t body_len,
   body.read = vc_src_read;
   body.ctx = src;
 
-  ret = vc_post(true, NULL, &body, NULL, resp, sizeof(resp),
-                               &body_out, &status, ctl);
+  {
+    agent_llm_timing_t t;
+    vc_timing_init(&t);
+    ret = vc_post(true, NULL, &body, NULL, resp, sizeof(resp),
+                                 &body_out, &status, ctl, &t);
+    vc_timing_log("asr", &t);
+  }
 
   info->status = status;
   info->resp_bytes = (uint32_t)body_out;
@@ -970,12 +998,15 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 
   {
     vela_resp_sink_t rs;
+    agent_llm_timing_t t;
 
     rs.write = vc_tts_write;
     rs.ctx = &sink;
 
+    vc_timing_init(&t);
     ret = vc_post(false, body, NULL, &rs, resp, sizeof(resp),
-                               &body_out, &status, ctl);
+                               &body_out, &status, ctl, &t);
+    vc_timing_log("tts", &t);
   }
 
   info->status = status;

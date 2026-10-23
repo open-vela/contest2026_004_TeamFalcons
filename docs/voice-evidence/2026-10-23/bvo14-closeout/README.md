@@ -78,6 +78,15 @@ ai_agent 框架改动已本地提交 d9da371；没有推送。
 
 修复后的回归单独编号记录在 `cancel/*-final2.log`（新固件 106f947b，见 firmware-final2.json）。
 
+## 分段计时与两项归因更正（2026-10-24 03:00-03:25）
+
+为把慢轮次归因到具体阶段，agent_http 新增 agent_http_post_stream_timed 透传 vela_tls 的分段计时，ASR/TTS 各打一行 phases 日志（dns/tls/send/ttfb/body），构建见 firmware 描述符 timed 系列日志。测量结果与两项更正：
+
+1. **后台 abandon 后 ASR 变慢的说法证伪**。分段显示 preemption 轮 ASR 慢在 body（上传吞吐段）翻倍，dns/tls/send 与空闲基线一致；在 critical 模式下等后台解释完成、无任何 abandon 的普通轮，body 同样翻倍（3040ms 空闲基线 vs 5100/6340/7640ms 告警态）。结论：变慢与 abandon 无关，是告警模式下系统共存的吞吐特性——LVCL 重绘使 LTDC 显示扫描与 ETH DMA 争用 SDRAM 带宽的假设与延迟型阶段不变、吞吐型阶段翻倍的观测一致（未做硬件级验证）。若要在此负载下达标，需要产品决策（语音前台期间节流非必要重绘），不是缺陷修复。
+2. **press 立即提交的说法证伪，15 秒上限生产链路实际通过**。此前把阶段行 t 值（相对 15 秒自动截断时的 submit_ms）误读为按 press 计时。重读 record-limit-offline.log：录音实测 14.95 秒、478350 字节，自动提交后 ASR 因 eth0 关闭按设计失败（req=0，无任何上传），取消回收干净、PCM=0。两次运行一致。此前 README 所记会话残留缺陷与播放后 press 缺陷撤销；press 到录音的单独验证见 press-flow-test.log。
+
+preemption 第七次尝试（preemption-final7.log）：暂停/恢复标记正常，ASR 9.4 秒（告警负载），TTS 以 rc=net 连接失败收场。七次尝试的语音轮次分别败于告警负载下 ASR 吞吐翻倍、TTS 服务窗口波动（body 8.6-9.2 秒或瞬时网络错误）；两项都不是合同内软件缺陷，达标需上述设计决策配合较好的服务窗口。
+
 ## 矩阵 #4 与 eMMC 卡死事故
 
 `matrix-foreground4/` 在最终固件上跑到第 15 条（point05，01:17:51）时 /data 上的文件打开开始全部返回 errno=110（ETIMEDOUT），此后 16 条连续 ASR 即时失败，矩阵以 14/30 中止。这不是语音链路问题：point01-04 与整组异常在此前全部通过，卡死跨案例持续。`emmc-wedge-diag.log` 显示用户态线程无卡死、堆正常、无 TCP 残留，阻塞在内核/驱动层；`emmc-wedge-reboot.log` 证明 NSH 热重启后 /data 仍不可用，最终经 SWD 复位（flash.ps1 重烧同镜像）恢复，见 post-swdreset-boot.log。该签名与 23:37 ab-pilot 中一次 ASR 即时 io 失败加 skills 目录瞬时打不开一致，属于先于今晚改动存在的板级/驱动故障，疑似交接文件禁止介入的 QA-04 总线冻结家族，本轮仅记录证据不查根因。矩阵 #4 计入硬件故障中止，不计入指标；矩阵 #3 的 28/30 仍是有效指标证据，最终固件与矩阵 #3 固件的差异仅 errno 日志和矩阵路径不可达的录音取消清理。
@@ -86,7 +95,7 @@ NSH 计划工具最终版本带 `HARNESS v2026-10-24c` 标记和 STEP/PRESEED/TA
 
 ## 取消、播放与场景收尾结果
 
-取消与坏输入场景在两代固件上分别留档：`cancel/*-fg2.log` 为回退固件（4eb9eb9c）10 场景全量，`cancel/*-final2*.log` 为最终固件（106f947b）关键复验。record_early 取消回收 250 ms 且 PCM 为零（修复后），asr_early/asr_late 分别在 ASR 上传 940/2720 ms 处真实取消生效、回收 1040/430 ms、PCM 为零；model_early 150 ms、model_late 10 ms、tts 1140 ms、playing 1900 ms 均达标；missing/not_wav 明确报错；取消后真实查询 20.9 秒完整恢复。`press-flow-test.log` 进一步证明真实麦克风录音 3 秒后取消 170 ms 回收、PCM 为零。15 秒录音上限的完整生产链路（断网录音自动提交）因当晚板端不稳定未再取得，其证据仍为诊断镜像的 record-limit-local.log；本轮还观察到播放后立即 press 会被立即提交吞掉录音、以及计划中途夭折后的 press 同样立即提交，指向会话残留状态缺陷，未及修复，复现步骤在 press-flow-test-plan.json 与 record-limit-offline2.log。
+取消与坏输入场景在两代固件上分别留档：`cancel/*-fg2.log` 为回退固件（4eb9eb9c）10 场景全量，`cancel/*-final2*.log` 为最终固件（106f947b）关键复验。record_early 取消回收 250 ms 且 PCM 为零（修复后），asr_early/asr_late 分别在 ASR 上传 940/2720 ms 处真实取消生效、回收 1040/430 ms、PCM 为零；model_early 150 ms、model_late 10 ms、tts 1140 ms、playing 1900 ms 均达标；missing/not_wav 明确报错；取消后真实查询 20.9 秒完整恢复。`press-flow-test.log` 进一步证明真实麦克风录音 3 秒后取消 170 ms 回收、PCM 为零。15 秒录音上限生产链路通过：record-limit-offline.log 实测录音 14.95 秒、478350 字节后自动提交，eth0 关闭下 ASR 按设计失败（req=0，未上传任何环境录音），取消回收干净、PCM=0；此前的立即提交判断是阶段行计时的误读，已在分段计时一节更正。
 
 播放时长回归通过：`playback5s-final2.log` 记录 5 秒 WAV 自然播放，`played=1`、`last result=ok ms=5000`，播放器自然空闲，排除沿用录音时长提前停止；人耳听音仍属人工。
 

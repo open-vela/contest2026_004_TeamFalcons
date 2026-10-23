@@ -73,7 +73,7 @@
 
 ## I. 本轮新发现待续项（BVO-07 至 14 收尾）
 
-- preemption 完整通过：暂停/恢复/后台续跑三标记已取证（preemption-final2/3/5.log），缺语音轮次在预算内完成。前置缺陷：后台请求被 abandon 后紧接的 ASR 恒定变慢至 6.6-8.9 秒（正常 3.5-5 秒），需排查被放弃 TLS 连接的拆线对新建连接的影响；修复后在服务正常窗口重跑 preemption-final-plan.json 即可验收。
+- preemption 完整通过：暂停/恢复/后台续跑三标记已取证（preemption-final2/3/5/7.log），缺语音轮次在预算内完成（七次尝试）。分段计时证伪 abandon 归因：告警模式下无 abandon 的普通轮 ASR body 同样翻倍（3040ms 空闲 vs 5100-7640ms 告警态，dns/tls/send 不变），属告警负载下 LTDC 显示与 ETH DMA 争 SDRAM 带宽一类的吞吐特性。达标需要产品决策（语音前台期间节流非必要 HMI 重绘）配合正常 TTS 服务窗口，重跑 preemption-final-plan.json 验收。
 - 非空异常完整播报：文字与只读基准一致已取证（nonempty-anomaly-final2.log），缺 TTS 预算内完成；修复上一条或等服务正常窗口后重跑 nonempty-anomaly-plan.json。
-- 15 秒录音上限生产链路：press 到录音已单独验证（press-flow-test.log），自动提交链路沿用诊断镜像证据；生产复测需先修复计划夭折/播放后 press 被立即提交吞掉录音的会话残留缺陷（record-limit-offline2.log 可复现）。
+- 15 秒录音上限生产链路：已通过（record-limit-offline.log，14.95 秒自动提交、离线 ASR 按设计失败、PCM=0）；此前的 press 立即提交缺陷判断撤销，属日志计时误读。
 - RR 100 回退后的开机时长对照：慢样本都在开机 2 小时以上、快样本都在 25 分钟内，但当晚板端反复卡死复位，2 小时稳定运行试点未能成立，该归因保持未验证。

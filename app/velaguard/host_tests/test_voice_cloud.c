@@ -22,6 +22,15 @@ int agent_http_post_stream(const char *post, const vela_body_src_t *body,
     const vela_resp_sink_t *sink, char *resp, size_t cap, size_t *out,
     int *status, const vela_req_ctl_t *ctl)
 {
+  return agent_http_post_stream_timed(post, body, sink, resp, cap, out,
+      status, NULL, ctl);
+}
+
+int agent_http_post_stream_timed(const char *post, const vela_body_src_t *body,
+    const vela_resp_sink_t *sink, char *resp, size_t cap, size_t *out,
+    int *status, agent_llm_timing_t *timing, const vela_req_ctl_t *ctl)
+{
+  (void)timing;
   (void)post;
   (void)ctl;
   *out = 0;

@@ -64,7 +64,8 @@ MAINSRC += vgprovision.c vgagent.c
 # openvela workspace; derive it from APPDIR rather than $(CURDIR), which may
 # be reached through the packages/demos symlink.
 VG_AI_AGENT_INC := $(abspath $(APPDIR)/../packages/ai_agent/include)
-CFLAGS += ${INCDIR_PREFIX}$(VG_AI_AGENT_INC)
+VG_AI_AGENT_SRC_INC := $(abspath $(APPDIR)/../packages/ai_agent/src)
+CFLAGS += ${INCDIR_PREFIX}$(VG_AI_AGENT_INC) ${INCDIR_PREFIX}$(VG_AI_AGENT_SRC_INC)
 endif
 
 ifeq ($(CONFIG_VG_AGENT_OPS),y)

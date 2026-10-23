@@ -229,7 +229,7 @@ test_dns_control: test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_
 
 
 test_voice_cloud: test_voice_cloud.c ../vg_voice_cloud.c ../vg_voice_pcm.c $(CJSON_SRC)
-	$(CC) $(CFLAGS) -Istubs -include stubs/vg_host_shim.h -DCONFIG_VG_VOICE_LOOPBACK=1 -DCONFIG_EXAMPLES_AI_AGENT_VELA=1 -I$(AI_AGENT_INC) -DVG_VOICE_DIR='"/tmp/vg-cloud-test-dir"' -o $@ $^ -lm
+	$(CC) $(CFLAGS) -Istubs -include stubs/vg_host_shim.h -DCONFIG_VG_VOICE_LOOPBACK=1 -DCONFIG_EXAMPLES_AI_AGENT_VELA=1 -I$(AI_AGENT_INC) -I$(AI_AGENT_ROOT)/src -DVG_VOICE_DIR='"/tmp/vg-cloud-test-dir"' -o $@ $^ -lm
 
 
 test_context_cache: $(AI_AGENT_ROOT)/tests/test_context_cache.c $(AI_AGENT_ROOT)/src/core/context_builder.c $(CJSON_SRC)
