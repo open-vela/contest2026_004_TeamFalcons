@@ -104,6 +104,28 @@ static uint32_t vr_now_ms(void)
                     + (uint64_t)ts.tv_nsec / 1000000u);
 }
 
+/* Stage timing for the round.  The numbers are relative to the release
+ * that started the budget, so the gaps between the stages show up in the
+ * serial log instead of only in the total. */
+
+static uint32_t vr_elapsed_ms(void)
+{
+  uint32_t now = vr_now_ms();
+
+  if (g_vr.s.submit_ms == 0 || now < g_vr.s.submit_ms)
+    {
+      return 0;
+    }
+
+  return now - g_vr.s.submit_ms;
+}
+
+static void vr_log_stage(const char *stage)
+{
+  syslog(LOG_INFO, "[vgvoice] stage=%s t=%u\n", stage,
+         (unsigned)vr_elapsed_ms());
+}
+
 /* ── UI snapshot ────────────────────────────────────────────────── */
 
 static void vr_ui_set_status(const char *status)
@@ -212,14 +234,43 @@ static bool vr_stage_asr(char *text, size_t cap)
 
   vr_ui_set_status("识别中");
   vr_ui_publish();
+  vr_log_stage("asr_begin");
 
   __atomic_fetch_add(&g_vr.asr_requests, 1, __ATOMIC_RELAXED);
-  rc = vg_voice_cloud_asr(g_vr.asr_src[0] ? g_vr.asr_src : VG_VC_CLIP_PATH,
-                          &ctl, text, cap, &info);
+
+  /* The recording is still in RAM: upload it from there.  A file is only
+   * read when a caller named one, which is the diagnostic path. */
+
+  {
+    size_t bytes = vg_voice_clip_bytes();
+    int16_t *pcm = NULL;
+
+    if (g_vr.asr_src[0] == '\0' && bytes >= 2)
+      {
+        pcm = malloc(bytes);
+        if (pcm != NULL)
+          {
+            bytes = vg_voice_clip_copy(pcm, bytes);
+          }
+      }
+
+    if (pcm != NULL)
+      {
+        rc = vg_voice_cloud_asr_buffer(pcm, bytes, &ctl, text, cap, &info);
+        free(pcm);
+      }
+    else
+      {
+        rc = vg_voice_cloud_asr(g_vr.asr_src[0] ? g_vr.asr_src
+                                                : VG_VC_CLIP_PATH,
+                                &ctl, text, cap, &info);
+      }
+  }
 
   syslog(LOG_INFO, "[vgvoice] asr rc=%s status=%d req=%u resp=%u ms=%u\n",
          vg_vc_result_name(rc), info.status, (unsigned)info.req_bytes,
          (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
+  vr_log_stage("asr_end");
 
   if (rc == VG_VC_CANCELLED)
     {
@@ -431,18 +482,77 @@ static void vr_show_error(void)
   vr_ui_publish();
 }
 
+/* Execute the resolved read-only tool and render the answer from the
+ * facts it publishes.  The tool runs through the agent tool registry, so
+ * the same permission check, rate limit and audit path apply as in a
+ * ReAct round, and the answer never comes from the model text. */
+
+static uint32_t vr_answer_from_tool(uint32_t gen, const char *tool,
+                                    const char *tool_json,
+                                    uint32_t config_version)
+{
+  char display[VG_VOICE_DISPLAY_MAX];
+  char speech[VG_VS_TEXT_MAX];
+  struct vg_voice_facts facts;
+  char out[2048];
+  bool captured;
+  int rc;
+
+  if (!vg_voice_facts_capture_begin(&facts))
+    {
+      vr_ui_error("数据查询忙，请重试");
+      return vg_vs_agent_result(&g_vr.s, gen, false, "facts busy",
+                                vr_now_ms());
+    }
+
+  out[0] = '\0';
+  rc = tool_registry_execute(tool, tool_json, out, sizeof(out));
+  captured = vg_voice_facts_capture_end();
+  syslog(LOG_INFO, "[vgvoice] intent read %s rc=%d captured=%d seq=%u\n",
+         tool, rc, captured, (unsigned)facts.seq);
+  vr_log_stage("facts_end");
+  if (g_vr.cancel) return 0;
+
+#ifdef CONFIG_VG_BUS_DISCOVER
+  if (vg_live_points_gen() != config_version)
+    {
+      vr_ui_error("点表已变更，请重新提问");
+      return vg_vs_agent_result(&g_vr.s, gen, false, "config changed",
+                                vr_now_ms());
+    }
+#endif
+
+  facts.config_version = config_version;
+  if (rc != 0 || !captured ||
+      (int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0 ||
+      !vr_render_answer(&facts, display, sizeof(display), speech,
+                         sizeof(speech)))
+    {
+      vr_ui_error("没有拿到可核对的数据，请重试");
+      return vg_vs_agent_result(&g_vr.s, gen, false, "no facts",
+                                vr_now_ms());
+    }
+
+  /* The session keeps only a short copy for its own bookkeeping; the full
+   * list is published to the overlay separately. */
+
+  pthread_mutex_lock(&g_vr.ui_lock);
+  snprintf(g_vr.ui.answer, sizeof(g_vr.ui.answer), "%s", display);
+  pthread_mutex_unlock(&g_vr.ui_lock);
+
+  return vg_vs_agent_result(&g_vr.s, gen, true, speech, vr_now_ms());
+}
+
 static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 {
   char question[320];
   char reason[128];
-  char display[VG_VOICE_DISPLAY_MAX];
-  char speech[VG_VS_TEXT_MAX];
   char tool[32];
   char tool_json[96];
-  struct vg_voice_facts facts;
   uint32_t config_version = g_vr.s.config_version;
   tool[0] = '\0';
   tool_json[0] = '\0';
+  vr_log_stage("agent_begin");
 
   if (!vr_build_question(text, question, sizeof(question), tool, sizeof(tool),
                          tool_json, sizeof(tool_json), reason, sizeof(reason)))
@@ -451,6 +561,19 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
       return vg_vs_agent_result(&g_vr.s, gen, false, reason, vr_now_ms());
     }
 
+#ifdef CONFIG_VG_VOICE_DIRECT_TOOL
+  /* The intent and the exact point are already resolved here, and the
+   * answer is rendered from the published facts, so a model round would
+   * only repeat that choice while spending 5 to 9 s of the 30 s budget
+   * on the request.  The read-only tool runs directly instead. */
+
+  vr_ui_set_status("查询中");
+  vr_ui_publish();
+  vg_vs_agent_started(&g_vr.s, gen, vr_now_ms());
+  vr_log_stage("tool_direct");
+
+  return vr_answer_from_tool(gen, tool, tool_json, config_version);
+#else
   for (;;)
     {
       int queued;
@@ -486,6 +609,7 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   vr_ui_set_status("查询中");
   vr_ui_publish();
+  vr_log_stage("agent_queued");
 
   vg_vs_agent_started(&g_vr.s, gen, vr_now_ms());
 
@@ -511,11 +635,8 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
     }
 
   {
-    char out[2048];
-    bool captured;
-    int rc;
-
     vg_agent_round_clear();
+    vr_log_stage("agent_reply");
     if (g_vr.cancel) return 0;
     if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
       {
@@ -523,50 +644,14 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
         return vg_vs_agent_result(&g_vr.s, gen, false, "agent timeout",
                                   vr_now_ms());
       }
-
-    /* C already resolved the intent and exact point.  Read once more via
-     * that tool and capture only this thread's publication.  A model tool,
-     * background tool or late old request cannot supply this answer. */
-    if (!vg_voice_facts_capture_begin(&facts))
-      {
-        vr_ui_error("数据查询忙，请重试");
-        return vg_vs_agent_result(&g_vr.s, gen, false, "facts busy",
-                                  vr_now_ms());
-      }
-    out[0] = '\0';
-    rc = tool_registry_execute(tool, tool_json, out, sizeof(out));
-    captured = vg_voice_facts_capture_end();
-    syslog(LOG_INFO, "[vgvoice] intent read %s rc=%d captured=%d seq=%u\n",
-           tool, rc, captured, (unsigned)facts.seq);
-    if (g_vr.cancel) return 0;
-#ifdef CONFIG_VG_BUS_DISCOVER
-    if (vg_live_points_gen() != config_version)
-      {
-        vr_ui_error("点表已变更，请重新提问");
-        return vg_vs_agent_result(&g_vr.s, gen, false, "config changed",
-                                  vr_now_ms());
-      }
-#endif
-    facts.config_version = config_version;
-    if (rc != 0 || !captured ||
-        (int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0 ||
-        !vr_render_answer(&facts, display, sizeof(display), speech,
-                           sizeof(speech)))
-      {
-        vr_ui_error("没有拿到可核对的数据，请重试");
-        return vg_vs_agent_result(&g_vr.s, gen, false, "no facts",
-                                  vr_now_ms());
-      }
   }
 
-  /* The session keeps only a short copy for its own bookkeeping; the full
-   * list is published to the overlay separately. */
+  /* C already resolved the intent and exact point.  Read once more via
+   * that tool and capture only this thread's publication.  A model tool,
+   * background tool or late old request cannot supply this answer. */
 
-  pthread_mutex_lock(&g_vr.ui_lock);
-  snprintf(g_vr.ui.answer, sizeof(g_vr.ui.answer), "%s", display);
-  pthread_mutex_unlock(&g_vr.ui_lock);
-
-  return vg_vs_agent_result(&g_vr.s, gen, true, speech, vr_now_ms());
+  return vr_answer_from_tool(gen, tool, tool_json, config_version);
+#endif
 }
 
 static uint32_t vr_stage_tts(uint32_t gen)
@@ -580,6 +665,7 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
   vr_ui_set_status("合成语音");
   vr_ui_publish();
+  vr_log_stage("tts_begin");
 
   __atomic_fetch_add(&g_vr.tts_requests, 1, __ATOMIC_RELAXED);
   rc = vg_voice_cloud_tts(g_vr.s.answer, VG_VC_TTS_WAV_PATH, &ctl, &info);
@@ -587,6 +673,7 @@ static uint32_t vr_stage_tts(uint32_t gen)
   syslog(LOG_INFO, "[vgvoice] tts rc=%s status=%d pcm=%u resp=%u ms=%u\n",
          vg_vc_result_name(rc), info.status, (unsigned)info.audio_bytes,
          (unsigned)info.resp_bytes, (unsigned)info.elapsed_ms);
+  vr_log_stage("tts_end");
 
   if (g_vr.cancel)
     {
@@ -616,6 +703,7 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
   syslog(LOG_INFO, "[vgvoice] first_playable gen=%u elapsed_ms=%u\n",
          (unsigned)gen, (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
+  vr_log_stage("play_posted");
   vr_ui_set_status("播报中");
   vr_ui_publish();
 
@@ -714,6 +802,10 @@ static void vr_run_actions(uint32_t actions)
             }
           else
             {
+              /* The round uploads the samples that stay in RAM, so the
+               * recording is not written to the eMMC. */
+
+              vg_voice_set_archive_wav(false);
               g_vr.cancel = g_vr.end_pending || g_vr.press_pending || g_vr.quit;
               g_vr.record_generation = gen;
               vr_ui_clear_error();
@@ -738,6 +830,7 @@ static void vr_run_actions(uint32_t actions)
           /* The recorder stops the PDM stream, drains and writes the WAV;
            * 2 s was tight enough to lose a round right after playback. */
 
+          vr_log_stage("asr_wait_recorder");
           if (!vr_wait_voice_idle(5000))
             {
               vr_ui_error("录音未正常结束");

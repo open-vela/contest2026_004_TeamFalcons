@@ -25,6 +25,141 @@
 
 #define VA_LINE_MAX 192
 
+/* The spoken summary has to fit the synthesis time inside the 30 s round
+ * budget: the cloud voice service produces audio at roughly a quarter of
+ * real time, so every extra syllable is another second of waiting.  The
+ * display text keeps the whole list, the speech keeps the facts that fit.
+ * This is the limit the summary obeys. */
+
+#define VA_SPEECH_MAX_UNITS 12
+
+/* One unit is one thing the voice has to say: a Chinese character or one
+ * Latin word or number.  Punctuation only adds a pause. */
+static size_t va_speech_units_n(const char *s, size_t n)
+{
+  size_t units = 0;
+  size_t i = 0;
+  bool in_word = false;
+
+  while (i < n && s[i] != '\0')
+    {
+      unsigned char c = (unsigned char)s[i];
+      unsigned long cp;
+      int len;
+
+      if (c < 0x80)
+        {
+          cp = c;
+          len = 1;
+        }
+      else if ((c & 0xe0) == 0xc0)
+        {
+          cp = c & 0x1fu;
+          len = 2;
+        }
+      else if ((c & 0xf0) == 0xe0)
+        {
+          cp = c & 0x0fu;
+          len = 3;
+        }
+      else if ((c & 0xf8) == 0xf0)
+        {
+          cp = c & 0x07u;
+          len = 4;
+        }
+      else
+        {
+          i++;
+          in_word = false;
+          continue;
+        }
+
+      if (i + (size_t)len > n)
+        {
+          break;
+        }
+
+      for (int k = 1; k < len; k++)
+        {
+          cp = (cp << 6) | ((unsigned char)s[i + k] & 0x3fu);
+        }
+
+      if (cp >= 0x4e00 && cp <= 0x9fff)
+        {
+          units++;
+          in_word = false;
+        }
+      else if (cp < 0x80)
+        {
+          if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') ||
+              (c >= 'A' && c <= 'Z'))
+            {
+              if (!in_word)
+                {
+                  units++;
+                  in_word = true;
+                }
+            }
+          else
+            {
+              in_word = false;
+            }
+        }
+
+      i += (size_t)len;
+    }
+
+  return units;
+}
+
+static size_t va_speech_units(const char *s)
+{
+  return va_speech_units_n(s, s != NULL ? strlen(s) : 0);
+}
+
+/* Cut the summary back to the last sentence that fits and say that the
+ * rest is on the screen.  The cut is always at a full stop, so a number is
+ * never spoken as a different number. */
+static void va_speech_cap(char *s, size_t cap)
+{
+  size_t len;
+  size_t best = 0;
+  const char *p;
+
+  if (s == NULL || cap == 0)
+    {
+      return;
+    }
+
+  if (va_speech_units(s) <= VA_SPEECH_MAX_UNITS)
+    {
+      return;
+    }
+
+  len = strlen(s);
+
+  for (p = s; (p = strstr(p, "。")) != NULL; p += strlen("。"))
+    {
+      size_t end = (size_t)(p - s) + strlen("。");
+
+      if (end >= len)
+        {
+          break;
+        }
+
+      if (va_speech_units_n(s, end) <= VA_SPEECH_MAX_UNITS - 2)
+        {
+          best = end;
+        }
+    }
+
+  if (best > 0)
+    {
+      s[best] = '\0';
+      strncat(s, "等。", cap - strlen(s) - 1);
+    }
+}
+
 /* ── small formatting helpers ───────────────────────────────────── */
 
 static int va_append(char *buf, size_t cap, size_t *off, const char *fmt, ...)
@@ -260,24 +395,30 @@ int vg_va_render_point(const struct vg_voice_facts *f,
 
   /* Speech: same facts, shorter. */
 
+  /* Speech: the reading itself.  The display keeps the state and the
+   * age of the sample; every extra clause is synthesis time the user
+   * waits for. */
+
   if (!f->point_online)
     {
-      va_append(speech, scap, &s, "%s 离线，最近成功采样 %u 秒前。",
-                f->point_name, va_secs(f->point_age_ms));
+      va_append(speech, scap, &s, "%s 离线。", f->point_name);
     }
   else if (!f->point_has_value)
     {
-      va_append(speech, scap, &s, "%s 在线，但本次快照没有数值。",
-                f->point_name);
+      va_append(speech, scap, &s, "%s 暂无数值。", f->point_name);
+    }
+  else if (f->point_unit[0] != '\0')
+    {
+      va_append(speech, scap, &s, "%s %s %s。", f->point_name, value,
+                f->point_unit);
     }
   else
     {
-      va_append(speech, scap, &s, "%s %s %s，%s，采样 %u 秒前。",
-                f->point_name, value, f->point_unit,
-                stale ? "数据已过期" : "在线", va_secs(f->point_age_ms));
+      va_append(speech, scap, &s, "%s %s。", f->point_name, value);
     }
 
   va_trim_speech(speech, scap);
+  va_speech_cap(speech, scap);
   return (int)d;
 }
 
@@ -378,10 +519,13 @@ int vg_va_render_anomalies(const struct vg_voice_facts *f,
                 f->anomaly_total - listed);
     }
 
-  /* Speech: total and the first three.  Severity order is the order the
-   * snapshot already uses, so the summary never promotes a lesser item. */
+  /* Speech: the count and the worst item.  Severity order is the order
+   * the snapshot already uses, so the summary never promotes a lesser
+   * item.  The remaining items stay on the screen: the voice service
+   * needs about a second and a half per spoken unit, and the round has
+   * one budget for recognition, query and synthesis. */
 
-  va_append(speech, scap, &s, "当前有 %d 个异常点位。", f->anomaly_total);
+  va_append(speech, scap, &s, "共 %d 个异常。", f->anomaly_total);
 
   {
     int top = listed < 3 ? listed : 3;
@@ -393,25 +537,22 @@ int vg_va_render_anomalies(const struct vg_voice_facts *f,
         if ((a->flags & VG_RUNTIME_ANOMALY_F_THRESHOLD) != 0)
           {
             va_num(value, sizeof(value), a->value);
-            va_append(speech, scap, &s, "第%d个，%s，%s %s，超过%s阈值。",
-                      i + 1, a->id, value,
-                      (a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE) ? "且离线"
-                                                               : "",
+            va_append(speech, scap, &s, "%s %s %s。", a->id, value,
                       vg_va_rank_label(a->rank));
           }
         else if ((a->flags & VG_RUNTIME_ANOMALY_F_OFFLINE) != 0)
           {
-            va_append(speech, scap, &s, "第%d个，%s，离线。", i + 1, a->id);
+            va_append(speech, scap, &s, "%s 离线。", a->id);
           }
         else
           {
-            va_append(speech, scap, &s, "第%d个，%s，数据过期。", i + 1,
-                      a->id);
+            va_append(speech, scap, &s, "%s 数据过期。", a->id);
           }
       }
   }
 
   va_trim_speech(speech, scap);
+  va_speech_cap(speech, scap);
   return (int)d;
 }
 
@@ -452,8 +593,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "触发于本次启动第 %u 秒",
                   r->id, va_kind_label(r->kind), value,
                   va_cmp_symbol("ge"), threshold, va_secs(r->raise_ms));
-        va_append(speech, scap, &s, "%s 的%s告警还在，当前值 %s。", r->id,
-                  va_kind_label(r->kind), value);
+        va_append(speech, scap, &s, "%s 告警仍在。", r->id);
         break;
 
       case VG_RUNTIME_RECOVERY_RECOVERED:
@@ -463,8 +603,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "事件记录完整，触发与恢复属于同一实例 %u",
                   r->id, va_kind_label(r->kind), va_secs(r->raise_ms),
                   va_secs(r->clear_ms), va_secs(r->duration_ms), r->episode);
-        va_append(speech, scap, &s, "%s 的%s告警已经恢复，持续 %u 秒。",
-                  r->id, va_kind_label(r->kind), va_secs(r->duration_ms));
+        va_append(speech, scap, &s, "%s 告警已恢复。", r->id);
         break;
 
       case VG_RUNTIME_RECOVERY_RECOVERED_PARTIAL:
@@ -473,9 +612,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "触发记录已被事件环覆盖，无法给出持续时长\n"
                   "恢复事件实例 %u",
                   r->id, va_kind_label(r->kind), r->episode);
-        va_append(speech, scap, &s,
-                  "%s 的%s告警有恢复记录，但触发记录已被覆盖，无法给出持续时长。",
-                  r->id, va_kind_label(r->kind));
+        va_append(speech, scap, &s, "%s 有恢复记录，起点丢失。", r->id);
         break;
 
       case VG_RUNTIME_RECOVERY_UNKNOWN:
@@ -484,9 +621,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "无法确认 %s 的%s告警恢复情况\n"
                   "本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",
                   r->id, va_kind_label(r->kind));
-        va_append(speech, scap, &s,
-                  "无法确认 %s 的告警恢复情况，本次启动没有保留相关事件。",
-                  r->id);
+        va_append(speech, scap, &s, "%s 恢复无法确认。", r->id);
         break;
     }
 
@@ -498,6 +633,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
     }
 
   va_trim_speech(speech, scap);
+  va_speech_cap(speech, scap);
   return (int)d;
 }
 

@@ -27,6 +27,11 @@ struct vg_pcm_wav
   uint32_t data_bytes;
 };
 
+/* Build a 44-byte WAV header for 16-bit mono PCM.  The ASR upload
+ * streams a header of its own instead of reading one from a file. */
+void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
+                             uint32_t data_bytes);
+
 /* Parse the RIFF header and locate the data chunk.  Returns 0 or -errno.
  * Only PCM 16-bit files are accepted by the callers here. */
 int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out);

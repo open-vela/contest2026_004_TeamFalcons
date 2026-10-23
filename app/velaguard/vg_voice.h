@@ -110,6 +110,16 @@ int vg_voice_record_for(uint32_t ms);
 enum vg_voice_result vg_voice_record_end(bool cancelled);
 enum vg_voice_result vg_voice_cancel(void);
 enum vg_voice_result vg_voice_finish(bool cancelled);
+/* The captured samples stay in RAM until the next recording starts.
+ * The cloud round copies them out and uploads them without writing a
+ * WAV file, so the raw recording never reaches the eMMC. */
+size_t vg_voice_clip_bytes(void);
+size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes);
+
+/* Whether the recorder also writes the WAV file.  The local record and
+ * playback diagnostic needs it; the cloud round turns it off. */
+void vg_voice_set_archive_wav(bool enable);
+
 bool vg_voice_wait_idle(uint32_t limit_ms);
 void vg_voice_get_stats(struct vg_voice_stats *out);
 enum vg_voice_state vg_voice_state(void);

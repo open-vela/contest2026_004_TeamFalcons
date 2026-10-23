@@ -26,6 +26,7 @@
 #include <netutils/cJSON.h>
 
 #include <agent_http.h>
+#include "vg_voice.h"
 #include "vg_voice_cloud.h"
 #include "vg_voice_pcm.h"
 
@@ -77,24 +78,36 @@ static enum vg_vc_result vc_from_transport(int ret)
 enum vc_src_state
 {
   VC_SRC_PREFIX = 0,
+  VC_SRC_HEADER,
   VC_SRC_BODY,
   VC_SRC_FLUSH,
   VC_SRC_SUFFIX,
   VC_SRC_DONE
 };
 
+/* The request body carries one WAV file as base64.  The WAV header is
+ * generated here and the samples come either from a file or from the
+ * recording that is still in RAM, so an upload never needs a second copy
+ * of the audio on the file system. */
+
 struct vc_body_src
 {
   const char *prefix;
   const char *suffix;
-  FILE       *f;
+  FILE       *f;                /* file source, or NULL */
+  const uint8_t *mem;           /* memory source, or NULL */
+  size_t     mem_len;
+  size_t     mem_off;
+  uint16_t   src_channels;      /* 1 or 2 */
+  uint32_t   rate;
+  uint32_t   out_samples;       /* mono samples in the uploaded WAV */
   struct vg_b64_stream b64;
   enum vc_src_state state;
   uint8_t in[VC_READ_CHUNK];
+  uint8_t mono[VC_READ_CHUNK / 2];
   char    out[VC_B64_CHUNK];
   size_t  out_len;
   size_t  out_off;
-  size_t  file_bytes;
   size_t  emitted;
 };
 
@@ -113,12 +126,46 @@ static int vc_src_fill(struct vc_body_src *s)
           }
 
         memcpy(s->out, s->prefix, s->out_len);
-        s->state = VC_SRC_BODY;
+        s->state = VC_SRC_HEADER;
+        break;
+
+      case VC_SRC_HEADER:
+        {
+          uint8_t hdr[VG_PCM_WAV_HDR];
+          size_t n;
+
+          /* The uploaded file is always 16-bit mono, whatever the
+           * recording format was. */
+
+          vg_pcm_wav_header_mono(hdr, s->rate, s->out_samples * 2u);
+          n = vg_b64_stream_feed(&s->b64, hdr, sizeof(hdr), s->out,
+                                 sizeof(s->out));
+          s->state = VC_SRC_BODY;
+          if (n == 0)
+            {
+              return vc_src_fill(s);
+            }
+
+          s->out_len = n;
+        }
         break;
 
       case VC_SRC_BODY:
         {
-          size_t got = fread(s->in, 1, sizeof(s->in), s->f);
+          size_t got = 0;
+
+          if (s->mem != NULL)
+            {
+              size_t left = s->mem_len - s->mem_off;
+
+              got = (left > sizeof(s->in)) ? sizeof(s->in) : left;
+              memcpy(s->in, s->mem + s->mem_off, got);
+              s->mem_off += got;
+            }
+          else if (s->f != NULL)
+            {
+              got = fread(s->in, 1, sizeof(s->in), s->f);
+            }
 
           if (got == 0)
             {
@@ -126,8 +173,30 @@ static int vc_src_fill(struct vc_body_src *s)
               return vc_src_fill(s);
             }
 
-          s->out_len = vg_b64_stream_feed(&s->b64, s->in, got, s->out,
-                                          sizeof(s->out));
+          if (s->src_channels == 2)
+            {
+              /* Keep the first channel of every frame, so a stereo
+               * recording is uploaded as the mono the service expects
+               * without a second file. */
+
+              size_t frames = got / 4u;
+              size_t i;
+
+              for (i = 0; i < frames; i++)
+                {
+                  s->mono[i * 2] = s->in[i * 4];
+                  s->mono[i * 2 + 1] = s->in[i * 4 + 1];
+                }
+
+              s->out_len = vg_b64_stream_feed(&s->b64, s->mono, frames * 2u,
+                                              s->out, sizeof(s->out));
+            }
+          else
+            {
+              s->out_len = vg_b64_stream_feed(&s->b64, s->in, got, s->out,
+                                              sizeof(s->out));
+            }
+
           if (s->out_len == 0)
             {
               /* Not an error: the encoder is carrying a partial group. */
@@ -294,32 +363,121 @@ static const char *vc_extract_content(cJSON *root)
 
 /* ── ASR ────────────────────────────────────────────────────────── */
 
+/* The upload always carries one 16-bit mono WAV.  The samples come from
+ * the file that was given or from the recording that is still in RAM, so
+ * the recognition never needs a second copy of the audio on the file
+ * system. */
+
+static const char vc_asr_prefix[] =
+    "{\"model\":\"" CONFIG_VG_VOICE_ASR_MODEL "\","
+    "\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"input_audio\","
+    "\"input_audio\":{\"data\":\"data:audio/wav;base64,";
+static const char vc_asr_suffix[] =
+    "\"}}]}],\"asr_options\":{\"language\":\"zh\"}}";
+
+/* Post the prepared body and read the transcript out of the reply. */
+static enum vg_vc_result vc_asr_post(struct vc_body_src *src, size_t body_len,
+                                     const vela_req_ctl_t *ctl, char *text,
+                                     size_t cap, struct vg_vc_info *info)
+{
+  char resp[VC_RESP_MAX];
+  size_t body_out = 0;
+  int status = 0;
+  int ret;
+  vela_body_src_t body;
+
+  body.len = body_len;
+  body.read = vc_src_read;
+  body.ctx = src;
+
+  ret = agent_http_post_stream(NULL, &body, NULL, resp, sizeof(resp),
+                               &body_out, &status, ctl);
+
+  info->status = status;
+  info->resp_bytes = (uint32_t)body_out;
+  info->req_bytes = (uint32_t)body_len;
+
+  if (ret != 0)
+    {
+      enum vg_vc_result rc = vc_from_transport(ret);
+
+      syslog(LOG_ERR, "[%s] asr: transport failed: %d (%s)\n", TAG, ret,
+             vg_vc_result_name(rc));
+      return rc;
+    }
+
+  if (status != 200)
+    {
+      syslog(LOG_ERR, "[%s] asr: http %d\n", TAG, status);
+      return VG_VC_HTTP;
+    }
+
+  {
+    cJSON *root = cJSON_Parse(resp);
+    const char *content;
+
+    if (root == NULL)
+      {
+        return VG_VC_FORMAT;
+      }
+
+    content = vc_extract_content(root);
+
+    if (content == NULL)
+      {
+        cJSON_Delete(root);
+        return VG_VC_FORMAT;
+      }
+
+    if (content[0] == '\0')
+      {
+        cJSON_Delete(root);
+        return VG_VC_EMPTY;
+      }
+
+    if (strlen(content) >= cap)
+      {
+        /* A cut transcript could name a different point.  Refuse it
+         * instead of sending a truncated question to the agent. */
+
+        cJSON_Delete(root);
+        return VG_VC_FORMAT;
+      }
+
+    snprintf(text, cap, "%s", content);
+    cJSON_Delete(root);
+  }
+
+  return VG_VC_OK;
+}
+
+/* The elapsed time covers the whole recognition, file work included. */
+static enum vg_vc_result vc_asr_done(enum vg_vc_result rc,
+                                     struct vg_vc_info *info,
+                                     const struct timespec *mono_start)
+{
+  struct timespec mono_end;
+
+  clock_gettime(CLOCK_MONOTONIC, &mono_end);
+  info->elapsed_ms =
+      (uint32_t)((mono_end.tv_sec - mono_start->tv_sec) * 1000
+                 + (mono_end.tv_nsec - mono_start->tv_nsec) / 1000000);
+  return rc;
+}
+
 enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
                                      const vela_req_ctl_t *ctl,
                                      char *text, size_t cap,
                                      struct vg_vc_info *info)
 {
-  static const char prefix[] =
-      "{\"model\":\"" CONFIG_VG_VOICE_ASR_MODEL "\","
-      "\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"input_audio\","
-      "\"input_audio\":{\"data\":\"data:audio/wav;base64,";
-  static const char suffix[] =
-      "\"}}]}],\"asr_options\":{\"language\":\"zh\"}}";
-
   struct vg_pcm_wav wav;
   struct vc_body_src src;
   struct vg_vc_info local;
-  char resp[VC_RESP_MAX];
-  char mono_path[64];
-  size_t body_len = 0;
-  size_t body_out = 0;
-  size_t b64_len;
-  int status = 0;
-  int ret;
-  enum vg_vc_result rc;
-  struct stat st;
   struct timespec mono_start;
-  struct timespec mono_end;
+  size_t body_len;
+  size_t b64_len;
+  size_t upload_bytes;
+  enum vg_vc_result rc;
 
   if (info == NULL)
     {
@@ -341,141 +499,137 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
       clip_path = VG_VC_CLIP_PATH;
     }
 
-  snprintf(mono_path, sizeof(mono_path), "%s", VG_VC_CLIP_MONO_PATH);
-
-  ret = vg_pcm_wav_downmix_mono(clip_path, mono_path);
-  if (ret != 0)
+  if (vg_pcm_wav_probe(clip_path, &wav) != 0 || wav.bits != 16 ||
+      wav.channels == 0 || wav.channels > 2 || wav.data_bytes == 0)
     {
-      syslog(LOG_ERR, "[%s] asr: cannot prepare upload wav: %d\n", TAG, ret);
+      syslog(LOG_ERR, "[%s] asr: %s is not a 16-bit wav\n", TAG, clip_path);
       vg_voice_cloud_cleanup();
       return VG_VC_IO;
     }
 
-  if (vg_pcm_wav_probe(mono_path, &wav) != 0)
-    {
-      vg_voice_cloud_cleanup();
-      return VG_VC_IO;
-    }
+  /* A file that ends before its data chunk claims would make the request
+   * shorter than the length it announces, and the server would wait for
+   * bytes that never come. */
 
-  if (stat(mono_path, &st) != 0 || st.st_size <= 0)
-    {
-      vg_voice_cloud_cleanup();
-      return VG_VC_IO;
-    }
+  {
+    struct stat st;
 
-  src.file_bytes = (size_t)st.st_size;
-  b64_len = 4u * ((src.file_bytes + 2u) / 3u);
+    if (stat(clip_path, &st) == 0 && st.st_size > (off_t)wav.data_off)
+      {
+        size_t avail = (size_t)st.st_size - wav.data_off;
 
-  src.prefix = prefix;
-  src.suffix = suffix;
-  src.f = fopen(mono_path, "rb");
+        if (avail < wav.data_bytes)
+          {
+            wav.data_bytes = (uint32_t)avail;
+          }
+      }
+  }
+
+  memset(&src, 0, sizeof(src));
+  src.prefix = vc_asr_prefix;
+  src.suffix = vc_asr_suffix;
+  src.src_channels = wav.channels;
+  src.rate = wav.rate;
+  src.out_samples = wav.data_bytes / ((uint32_t)wav.channels * 2u);
+
+  src.f = fopen(clip_path, "rb");
   if (src.f == NULL)
     {
       vg_voice_cloud_cleanup();
       return VG_VC_IO;
     }
 
-  memset(&src.b64, 0, sizeof(src.b64));
+  if (fseek(src.f, (long)wav.data_off, SEEK_SET) != 0)
+    {
+      fclose(src.f);
+      vg_voice_cloud_cleanup();
+      return VG_VC_IO;
+    }
+
+  upload_bytes = VG_PCM_WAV_HDR + (size_t)src.out_samples * 2u;
+  b64_len = 4u * ((upload_bytes + 2u) / 3u);
+  body_len = strlen(vc_asr_prefix) + b64_len + strlen(vc_asr_suffix);
+
   src.state = VC_SRC_PREFIX;
-  src.out_len = 0;
-  src.out_off = 0;
-  src.emitted = 0;
 
-  body_len = strlen(prefix) + b64_len + strlen(suffix);
-
-  {
-    vela_body_src_t body;
-
-    body.len = body_len;
-    body.read = vc_src_read;
-    body.ctx = &src;
-
-    ret = agent_http_post_stream(NULL, &body, NULL, resp, sizeof(resp),
-                               &body_out, &status, ctl);
-  }
+  rc = vc_asr_post(&src, body_len, ctl, text, cap, info);
 
   fclose(src.f);
   src.f = NULL;
 
-  info->status = status;
-  info->resp_bytes = (uint32_t)body_out;
-  info->req_bytes = (uint32_t)body_len;
+  rc = vc_asr_done(rc, info, &mono_start);
 
-  if (ret != 0)
-    {
-      rc = vc_from_transport(ret);
-      syslog(LOG_ERR, "[%s] asr: transport failed: %d (%s)\n", TAG, ret,
-             vg_vc_result_name(rc));
-      goto out;
-    }
-
-  if (status != 200)
-    {
-      syslog(LOG_ERR, "[%s] asr: http %d\n", TAG, status);
-      rc = VG_VC_HTTP;
-      goto out;
-    }
-
-  {
-    cJSON *root = cJSON_Parse(resp);
-    const char *content;
-
-    if (root == NULL)
-      {
-        rc = VG_VC_FORMAT;
-        goto out;
-      }
-
-    content = vc_extract_content(root);
-
-    if (content == NULL)
-      {
-        cJSON_Delete(root);
-        rc = VG_VC_FORMAT;
-        goto out;
-      }
-
-    if (content[0] == '\0')
-      {
-        cJSON_Delete(root);
-        rc = VG_VC_EMPTY;
-        goto out;
-      }
-
-    if (strlen(content) >= cap)
-      {
-        /* A cut transcript could name a different point.  Refuse it
-         * instead of sending a truncated question to the agent. */
-
-        cJSON_Delete(root);
-        rc = VG_VC_FORMAT;
-        goto out;
-      }
-
-    snprintf(text, cap, "%s", content);
-    cJSON_Delete(root);
-  }
-
-  rc = VG_VC_OK;
-
-out:
-  clock_gettime(CLOCK_MONOTONIC, &mono_end);
-  info->elapsed_ms =
-      (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
-                 + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
-
-  /* The recording exists only for this recognition.  The mono copy goes
-   * with it; neither is retained for a retry. */
+  /* The recording exists only for this recognition; neither the file nor
+   * a mono copy is kept for a retry. */
 
   vg_voice_cloud_cleanup();
   return rc;
 }
 
+/* Recognise a recording that is still in RAM.  The board keeps the
+ * captured samples until the next recording, so the upload needs neither
+ * a WAV file nor a mono copy of it on the eMMC. */
+enum vg_vc_result vg_voice_cloud_asr_buffer(const int16_t *mono,
+                                            size_t mono_bytes,
+                                            const vela_req_ctl_t *ctl,
+                                            char *text, size_t cap,
+                                            struct vg_vc_info *info)
+{
+  struct vc_body_src src;
+  struct vg_vc_info local;
+  struct timespec mono_start;
+  size_t body_len;
+  size_t b64_len;
+  size_t upload_bytes;
+  enum vg_vc_result rc;
+
+  if (info == NULL)
+    {
+      info = &local;
+    }
+
+  memset(info, 0, sizeof(*info));
+  clock_gettime(CLOCK_MONOTONIC, &mono_start);
+
+  if (text == NULL || cap == 0 || mono == NULL || mono_bytes < 2)
+    {
+      return VG_VC_IO;
+    }
+
+  text[0] = '\0';
+
+  memset(&src, 0, sizeof(src));
+  src.prefix = vc_asr_prefix;
+  src.suffix = vc_asr_suffix;
+  src.mem = (const uint8_t *)mono;
+  src.mem_len = mono_bytes;
+  src.src_channels = 1;
+  src.rate = VG_VOICE_RATE_HZ;
+  src.out_samples = (uint32_t)(mono_bytes / 2u);
+  src.state = VC_SRC_PREFIX;
+
+  upload_bytes = VG_PCM_WAV_HDR + mono_bytes;
+  b64_len = 4u * ((upload_bytes + 2u) / 3u);
+  body_len = strlen(vc_asr_prefix) + b64_len + strlen(vc_asr_suffix);
+
+  rc = vc_asr_post(&src, body_len, ctl, text, cap, info);
+  rc = vc_asr_done(rc, info, &mono_start);
+  return rc;
+}
+
 /* ── TTS ────────────────────────────────────────────────────────── */
+
+/* The synthesised samples are kept in RAM until the reply is complete
+ * and are then resampled into the WAV the player takes.  An answer is a
+ * few seconds of speech, so the buffer stays far below the limit below,
+ * and no intermediate file is written to the eMMC. */
+#define VC_PCM_MAX_BYTES (512u * 1024u)
 
 struct vc_tts_sink
 {
-  int    fd;
+  uint8_t *pcm;
+  size_t   pcm_len;
+  size_t   pcm_cap;
   char  *line;
   size_t line_len;
   size_t line_cap;
@@ -483,6 +637,34 @@ struct vc_tts_sink
   bool   done;
   int    error;
 };
+
+static int vc_tts_pcm_reserve(struct vc_tts_sink *s, size_t extra)
+{
+  size_t need = s->pcm_len + extra;
+  uint8_t *buf;
+
+  if (need <= s->pcm_cap)
+    {
+      return 0;
+    }
+
+  if (need > VC_PCM_MAX_BYTES)
+    {
+      syslog(LOG_ERR, "[%s] tts: reply over %u bytes\n", TAG,
+             (unsigned)VC_PCM_MAX_BYTES);
+      return -1;
+    }
+
+  buf = realloc(s->pcm, need);
+  if (buf == NULL)
+    {
+      return -1;
+    }
+
+  s->pcm = buf;
+  s->pcm_cap = need;
+  return 0;
+}
 
 static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 {
@@ -512,9 +694,15 @@ static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
           return -1;
         }
 
-      if (n > 0 && write(s->fd, pcm, (size_t)n) != n)
+      if (n > 0)
         {
-          return -1;
+          if (vc_tts_pcm_reserve(s, (size_t)n) != 0)
+            {
+              return -1;
+            }
+
+          memcpy(s->pcm + s->pcm_len, pcm, (size_t)n);
+          s->pcm_len += (size_t)n;
         }
 
       s->pcm_bytes += (size_t)n;
@@ -662,7 +850,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 {
   struct vg_vc_info local;
   struct vc_tts_sink sink;
-  struct stat st;
   char escaped[VG_VC_TEXT_MAX * 2];
   char *body = NULL;
   char resp[VC_RESP_MAX];
@@ -715,14 +902,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       return VG_VC_IO;
     }
 
-  sink.fd = open(VG_VC_TTS_PCM_PATH, O_CREAT | O_TRUNC | O_WRONLY, 0600);
-  if (sink.fd < 0)
-    {
-      free(sink.line);
-      free(body);
-      return VG_VC_IO;
-    }
-
   {
     vela_resp_sink_t rs;
 
@@ -737,12 +916,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
   info->resp_bytes = (uint32_t)body_out;
   info->req_bytes = (uint32_t)strlen(body);
 
-  if (close(sink.fd) != 0 && ret == 0)
-    {
-      ret = ERROR;
-    }
-
-  sink.fd = -1;
   info->audio_bytes = (uint32_t)sink.pcm_bytes;
 
   if (ret != 0 || sink.error != 0)
@@ -763,24 +936,19 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       goto out;
     }
 
-  /* Convert 24 kHz mono to the 16 kHz stereo the player was verified with. */
-
-  if (stat(VG_VC_TTS_PCM_PATH, &st) != 0 || st.st_size < 2)
-    {
-      rc = VG_VC_IO;
-      goto out;
-    }
+  /* Convert 24 kHz mono to the 16 kHz stereo the player was verified
+   * with.  The samples are already in RAM, so this is one pass into the
+   * WAV file and no intermediate file is involved. */
 
   {
-    FILE *f = fopen(VG_VC_TTS_PCM_PATH, "rb");
     int16_t *pcm_in;
     int16_t *pcm_out;
-    size_t samples = (size_t)st.st_size / 2;
+    size_t samples = sink.pcm_len / 2;
     size_t done = 0;
     size_t out_total = (samples / 3u) * 2u;
     struct vg_pcm_writer w;
 
-    if (f == NULL)
+    if (samples == 0)
       {
         rc = VG_VC_IO;
         goto out;
@@ -793,7 +961,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       {
         free(pcm_in);
         free(pcm_out);
-        fclose(f);
         rc = VG_VC_IO;
         goto out;
       }
@@ -802,7 +969,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       {
         free(pcm_in);
         free(pcm_out);
-        fclose(f);
         rc = VG_VC_IO;
         goto out;
       }
@@ -821,11 +987,8 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
             batch = VC_PCM_SAMPLES;
           }
 
-        got = fread(pcm_in, 2, batch, f);
-        if (got == 0)
-          {
-            break;
-          }
+        memcpy(pcm_in, sink.pcm + done * 2, batch * 2);
+        got = batch;
 
         out_n = vg_pcm_resample_24k_16k(pcm_in, got, pcm_out,
                                         VC_PCM_SAMPLES * 2u);
@@ -848,7 +1011,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
         {
           free(pcm_in);
           free(pcm_out);
-          fclose(f);
           rc = VG_VC_IO;
           goto out;
         }
@@ -856,7 +1018,6 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 
     free(pcm_in);
     free(pcm_out);
-    fclose(f);
   }
 
   clock_gettime(CLOCK_MONOTONIC, &mono_end);
@@ -879,6 +1040,7 @@ out:
     }
 
   free(sink.line);
+  free(sink.pcm);
   free(body);
   return rc;
 }

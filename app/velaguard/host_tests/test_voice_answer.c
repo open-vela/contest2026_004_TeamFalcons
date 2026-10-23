@@ -201,13 +201,14 @@ static void test_anomalies_many(void)
   CHECK_STR_CONTAINS(display, "当前异常 12 个点位");
   CHECK(strstr(display, "其余") == NULL);
 
-  /* Speech summarises three and names the total. */
+  /* Speech names the total and the worst item.  The rest of the set
+   * stays on the screen: the voice service needs about a second and a
+   * half per spoken unit and the round has one budget. */
 
   CHECK_STR_CONTAINS(speech, "12");
   CHECK_STR_CONTAINS(speech, "ups_temp");
-  CHECK_STR_CONTAINS(speech, "ups_bat");
-  CHECK_STR_CONTAINS(speech, "bms_1");
   CHECK(strstr(speech, "sensor_3") == NULL);
+  CHECK(strstr(speech, "sensor_11") == NULL);
   CHECK(vg_va_text_facts_consistent(&f, display));
   CHECK(vg_va_text_facts_consistent(&f, speech));
 
@@ -267,7 +268,7 @@ static void test_recovery(void)
                               sizeof(speech)) > 0);
   CHECK_STR_CONTAINS(display, "已恢复");
   CHECK_STR_CONTAINS(display, "199 秒");
-  CHECK_STR_CONTAINS(speech, "199 秒");
+  CHECK_STR_CONTAINS(speech, "已恢复");
   CHECK(vg_va_text_facts_consistent(&f, display));
   CHECK(vg_va_text_facts_consistent(&f, speech));
 

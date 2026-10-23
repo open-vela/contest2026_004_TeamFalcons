@@ -54,6 +54,12 @@ static void wav_header(uint8_t h[VG_PCM_WAV_HDR], uint16_t channels,
   put_le32(h + 40, data_bytes);
 }
 
+void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
+                             uint32_t data_bytes)
+{
+  wav_header(hdr, 1, rate, data_bytes);
+}
+
 int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out)
 {
   FILE *f;

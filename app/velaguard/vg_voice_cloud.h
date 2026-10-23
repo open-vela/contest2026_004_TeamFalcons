@@ -3,8 +3,10 @@
  *
  * BVO-11: cloud speech adaptation.
  *
- *   ASR   the recorded WAV is downmixed, base64-encoded in pieces and sent
- *         as one JSON request; the transcript comes back in the reply.
+ *   ASR   the recorded samples are turned into one mono WAV in pieces,
+ *         base64-encoded and sent as one JSON request; the transcript
+ *         comes back in the reply.  The samples can come from a file or
+ *         from the recording that is still in RAM.
  *   TTS   the answer text is synthesised as 24 kHz mono PCM, resampled to
  *         the 16 kHz stereo the player already accepts, and written to a
  *         WAV the caller can hand to NxPlayer.
@@ -75,6 +77,16 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
                                      const vela_req_ctl_t *ctl,
                                      char *text, size_t cap,
                                      struct vg_vc_info *info);
+
+/* Recognise a recording that is still in RAM.  The samples are 16 kHz mono
+ * 16-bit; the request carries them as one mono WAV.  This is the path the
+ * product round uses, so the audio never has to be written to the eMMC
+ * twice. */
+enum vg_vc_result vg_voice_cloud_asr_buffer(const int16_t *mono,
+                                            size_t mono_bytes,
+                                            const vela_req_ctl_t *ctl,
+                                            char *text, size_t cap,
+                                            struct vg_vc_info *info);
 
 /* Synthesise text into wav_out at 16 kHz stereo.  Returns VG_VC_OK only when
  * the whole file was written; on failure no partial file is left behind. */

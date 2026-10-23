@@ -90,6 +90,7 @@ static volatile bool g_request_active;
 static bool g_quit;
 static bool g_fault;
 static bool g_inited;
+static bool g_archive_wav = true;
 static volatile bool g_running;
 static struct vg_pdm_filter g_filter;
 static int16_t *g_pcm;
@@ -598,32 +599,33 @@ static void voice_finish(bool cancelled, bool play)
     }
   g_stats.last_result = VG_VOICE_OK;
 
-  /* Both paths need the file on disk.  The cloud round recognises it and
-   * never plays it, but it still has to exist: writing only inside the
-   * playback path left the recogniser opening a path that was never
-   * created. */
+  /* The local record and playback path needs the file on disk.  The cloud
+   * round uploads the samples that are still in RAM, so there the
+   * recording is not written at all: a raw recording has no reason to
+   * reach the eMMC. */
 
-  {
-    uint32_t stage_start = voice_ms();
-    int wret = voice_write_wav();
-    g_stats.stage_ms = voice_ms() - stage_start;
+  if (play || g_archive_wav)
+    {
+      uint32_t stage_start = voice_ms();
+      int wret = voice_write_wav();
+      g_stats.stage_ms = voice_ms() - stage_start;
 
-    if (wret < 0)
-      {
-        if (wret == -ECANCELED)
-          {
-            g_stats.last_result = VG_VOICE_CANCELLED;
-            voice_clear_pcm();
-            voice_publish(VG_VOICE_IDLE);
-          }
-        else
-          {
-            voice_fail(VG_VOICE_ERR_FILE, false);
-          }
+      if (wret < 0)
+        {
+          if (wret == -ECANCELED)
+            {
+              g_stats.last_result = VG_VOICE_CANCELLED;
+              voice_clear_pcm();
+              voice_publish(VG_VOICE_IDLE);
+            }
+          else
+            {
+              voice_fail(VG_VOICE_ERR_FILE, false);
+            }
 
-        return;
-      }
-  }
+          return;
+        }
+    }
 
   if (play)
     {
@@ -834,6 +836,35 @@ int vg_voice_shutdown(void)
   voice_publish(VG_VOICE_IDLE);
   nxmutex_unlock(&g_init_lock);
   return 0;
+}
+
+size_t vg_voice_clip_bytes(void)
+{
+  return g_pcm_bytes;
+}
+
+size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes)
+{
+  size_t bytes;
+
+  if (dst == NULL || g_pcm == NULL)
+    {
+      return 0;
+    }
+
+  bytes = g_pcm_bytes;
+  if (bytes > dst_bytes)
+    {
+      bytes = dst_bytes & ~(size_t)1;
+    }
+
+  memcpy(dst, g_pcm, bytes);
+  return bytes;
+}
+
+void vg_voice_set_archive_wav(bool enable)
+{
+  g_archive_wav = enable;
 }
 
 int vg_voice_record_for(uint32_t ms)
