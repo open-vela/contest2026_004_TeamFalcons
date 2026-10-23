@@ -149,6 +149,7 @@ expect_dev_config()
         grep -q '^CONFIG_STM32H7_SAI2_A=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H7_SAI_CAPTURE=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_VOICE_LOOPBACK=y$' "$NUTTX_ROOT/.config" &&
+        ! grep -q '^CONFIG_VG_VOICE_DIRECT_TOOL=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_AUDIO_PROBE=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config"

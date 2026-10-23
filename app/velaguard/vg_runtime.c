@@ -9,11 +9,14 @@
 #include "vg_frame_stats.h"
 
 #include <errno.h>
+#include <pthread.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+
+static pthread_mutex_t g_snapshot_lock = PTHREAD_MUTEX_INITIALIZER;
 
 struct vg_runtime_point
 {
@@ -207,7 +210,7 @@ static struct vg_runtime_point *find_or_add(const char *id)
   return &g_pts[free_i];
 }
 
-void vg_runtime_init(void)
+static void runtime_init_locked(void)
 {
   if (g_inited)
     {
@@ -245,7 +248,7 @@ uint32_t vg_runtime_uptime_s(void)
   return (now - g_boot_mono_ms) / 1000u;
 }
 
-void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
+static void runtime_note_sample_locked(const char *id, uint8_t slave, bool online,
                             float value, enum vg_runtime_kind kind,
                             float threshold, const char *cmp,
                             const char *level)
@@ -257,7 +260,7 @@ void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
 
   if (!g_inited)
     {
-      vg_runtime_init();
+      runtime_init_locked();
     }
 
   p = find_or_add(id);
@@ -270,16 +273,19 @@ void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
   was_online = p->online != 0;
   prev_kind = p->kind;
   p->slave = slave;
-  p->last_value = value;
-  p->last_thr = threshold;
-  if (cmp)
+  if (online)
     {
-      snprintf(p->cmp, sizeof(p->cmp), "%s", cmp);
+      p->last_value = value;
+      p->last_thr = threshold;
+      if (cmp) snprintf(p->cmp, sizeof(p->cmp), "%s", cmp);
+      if (level && level[0]) snprintf(p->level, sizeof(p->level), "%s", level);
     }
-
-  if (level && level[0] != '\0')
+  else
     {
-      snprintf(p->level, sizeof(p->level), "%s", level);
+      /* A failed read proves no new value and cannot clear a threshold.
+       * Retain that episode until a successful sample proves recovery. */
+      kind = prev_kind == VG_RUNTIME_KIND_THRESHOLD
+               ? VG_RUNTIME_KIND_THRESHOLD : VG_RUNTIME_KIND_OFFLINE;
     }
 
   if (online)
@@ -1173,7 +1179,7 @@ static uint8_t anomaly_rank(uint8_t flags, const char *level)
   return 3;
 }
 
-int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
+static int runtime_anomalies_locked(struct vg_runtime_anomaly *out, int max,
                          int *total_out, uint32_t stale_ms)
 {
   struct vg_runtime_anomaly all[VG_RUNTIME_MAX_POINTS];
@@ -1194,7 +1200,7 @@ int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
 
   if (!g_inited)
     {
-      vg_runtime_init();
+      runtime_init_locked();
     }
 
   now = mono_ms();
@@ -1311,7 +1317,7 @@ int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
   return total;
 }
 
-int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
+static int runtime_recovery_locked(const char *id, enum vg_runtime_kind kind,
                         struct vg_runtime_recovery *out)
 {
   const struct vg_runtime_event *latest = NULL;
@@ -1328,7 +1334,7 @@ int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
 
   if (!g_inited)
     {
-      vg_runtime_init();
+      runtime_init_locked();
     }
 
   snprintf(out->id, sizeof(out->id), "%s", id);
@@ -1415,6 +1421,7 @@ int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
     }
 
   out->episode = latest->episode;
+  snprintf(out->cmp, sizeof(out->cmp), "%s", latest->cmp);
 
   if (latest->action == VG_RUNTIME_ACT_RAISE)
     {
@@ -1457,41 +1464,62 @@ int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
 
 uint32_t vg_runtime_boot_id(void)
 {
-  if (!g_inited)
-    {
-      vg_runtime_init();
-    }
-
-  return g_boot_id;
+  vg_runtime_init();
+  return g_boot_id; /* immutable after the synchronized initializer */
 }
 
 uint32_t vg_runtime_events_dropped(void)
 {
-  if (!g_inited)
-    {
-      vg_runtime_init();
-    }
-
-  return g_ev_dropped;
+  vg_runtime_init();
+  pthread_mutex_lock(&g_snapshot_lock);
+  uint32_t dropped = g_ev_dropped;
+  pthread_mutex_unlock(&g_snapshot_lock);
+  return dropped;
 }
 
 int vg_runtime_points_seen(void)
 {
   int seen = 0;
-  int i;
-
-  if (!g_inited)
-    {
-      vg_runtime_init();
-    }
-
-  for (i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
-    {
-      if (g_pts[i].used)
-        {
-          seen++;
-        }
-    }
-
+  vg_runtime_init();
+  pthread_mutex_lock(&g_snapshot_lock);
+  for (int i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
+    if (g_pts[i].used) seen++;
+  pthread_mutex_unlock(&g_snapshot_lock);
   return seen;
+}
+
+/* Acquisition and the two voice snapshot queries share one publication
+ * lock. No file, TLS, model or speech operation runs while it is held. */
+void vg_runtime_init(void)
+{
+  pthread_mutex_lock(&g_snapshot_lock);
+  runtime_init_locked();
+  pthread_mutex_unlock(&g_snapshot_lock);
+}
+
+void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
+                            float value, enum vg_runtime_kind kind,
+                            float threshold, const char *cmp, const char *level)
+{
+  pthread_mutex_lock(&g_snapshot_lock);
+  runtime_note_sample_locked(id, slave, online, value, kind, threshold, cmp, level);
+  pthread_mutex_unlock(&g_snapshot_lock);
+}
+
+int vg_runtime_anomalies(struct vg_runtime_anomaly *out, int max,
+                         int *total, uint32_t stale_ms)
+{
+  pthread_mutex_lock(&g_snapshot_lock);
+  int n = runtime_anomalies_locked(out, max, total, stale_ms);
+  pthread_mutex_unlock(&g_snapshot_lock);
+  return n;
+}
+
+int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
+                        struct vg_runtime_recovery *out)
+{
+  pthread_mutex_lock(&g_snapshot_lock);
+  int ret = runtime_recovery_locked(id, kind, out);
+  pthread_mutex_unlock(&g_snapshot_lock);
+  return ret;
 }

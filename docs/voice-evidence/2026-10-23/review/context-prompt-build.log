@@ -1,0 +1,17 @@
+../packages/ai_agent/src/tools/skill_loader.c: In function ‘compute_skills_hash’:
+../packages/ai_agent/src/tools/skill_loader.c:452:41: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 219 [-Wformat-truncation=]
+  452 |         snprintf(path, sizeof(path), "%s%s", AGENT_SKILLS_DIR, name);
+      |                                         ^~
+../packages/ai_agent/src/tools/skill_loader.c:452:9: note: ‘snprintf’ output between 38 and 293 bytes into a destination of size 256
+  452 |         snprintf(path, sizeof(path), "%s%s", AGENT_SKILLS_DIR, name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../packages/ai_agent/src/tools/skill_loader.c: In function ‘skill_loader_build_summary’:
+../packages/ai_agent/src/tools/skill_loader.c:368:51: warning: ‘%s’ directive output may be truncated writing up to 255 bytes into a region of size 219 [-Wformat-truncation=]
+  368 |         snprintf(full_path, sizeof(full_path), "%s%s", AGENT_SKILLS_DIR, name);
+      |                                                   ^~
+../packages/ai_agent/src/tools/skill_loader.c:368:9: note: ‘snprintf’ output between 38 and 293 bytes into a destination of size 256
+  368 |         snprintf(full_path, sizeof(full_path), "%s%s", AGENT_SKILLS_DIR, name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/hello19y/.local/bin/ld: /tmp/ccUKZ6vB.o: in function `skill_loader_refresh':
+/home/hello19y/openvela/contest2026_004_TeamFalcons/../packages/ai_agent/src/tools/skill_loader.c:494:(.text+0x1d78): undefined reference to `tool_registry_invalidate'
+collect2: error: ld returned 1 exit status

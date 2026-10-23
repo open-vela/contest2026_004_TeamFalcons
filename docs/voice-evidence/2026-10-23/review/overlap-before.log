@@ -1,0 +1,4 @@
+FAIL: offline must not clear an active threshold episode
+FAIL: threshold and offline coexist in one point
+FAIL: offline retains last successful reading and threshold severity
+test_runtime_anomaly: 3 failure(s)

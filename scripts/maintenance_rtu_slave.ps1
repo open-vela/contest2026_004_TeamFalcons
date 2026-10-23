@@ -19,7 +19,9 @@ $ControlPath = [IO.Path]::GetFullPath($ControlPath)
 $LogPath = [IO.Path]::GetFullPath($LogPath)
 [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($LogPath)) | Out-Null
 # Modes: normal, warn (temp=30 C), critical (temp=36 C), offline
-# (all slave responses suppressed), offline1 (only slave 1 suppressed), stop.
+# (all slave responses suppressed), offline1/2/12, critical_offline2, stop.
+# Extra combinations are bounded voice evidence fixtures; the board remains
+# the sole master and confirmed point configuration is unchanged.
 if (!(Test-Path -LiteralPath $ControlPath)) { [IO.File]::WriteAllText($ControlPath,'normal') }
 Add-Type -TypeDefinition @'
 using System;
@@ -31,7 +33,7 @@ using System.Threading;
 public static class VelaMaintenanceSlave {
  static ushort Crc(byte[] a,int n) { ushort c=0xffff; for(int i=0;i<n;i++){c^=a[i];for(int j=0;j<8;j++)c=(ushort)(((c&1)!=0)?(c>>1)^0xa001:c>>1);}return c; }
  static int Value(int slave,int reg,string mode) {
-  if(slave==1&&reg==0)return mode=="critical"?360:mode=="warn"?300:240;
+  if(slave==1&&reg==0)return mode.StartsWith("critical")?360:mode=="warn"?300:240;
   if(slave==1&&reg==1)return 500;
   if(slave==2&&reg==2)return 0;
   if(slave==3&&reg==0)return 10;
@@ -57,7 +59,7 @@ public static class VelaMaintenanceSlave {
     if(timer.ElapsedMilliseconds>=refresh) {
      try { string m=File.ReadAllText(control).Trim().ToLowerInvariant();
       if(m=="stop")break;
-      if(m=="normal"||m=="warn"||m=="critical"||m=="offline"||m=="offline1"){
+      if(m=="normal"||m=="warn"||m=="critical"||m=="offline"||m=="offline1"||m=="offline2"||m=="offline12"||m=="critical_offline2"){
        if(m!=mode)w.WriteLine("MODE {0:o} {1}",DateTime.Now,m);mode=m;
       }
      }catch(IOException){}refresh=timer.ElapsedMilliseconds+250;
@@ -67,7 +69,9 @@ public static class VelaMaintenanceSlave {
     while(rx.Count>=8){byte[] q=rx.GetRange(0,8).ToArray();ushort crc=Crc(q,6);
      if(q[6]!=(byte)crc||q[7]!=(byte)(crc>>8)){rx.RemoveAt(0);bad++;continue;}
      rx.RemoveRange(0,8);requests++;int s=q[0],fc=q[1],reg=(q[2]<<8)|q[3],qty=(q[4]<<8)|q[5];
-     if(s<1||s>7||mode=="offline"||(mode=="offline1"&&s==1)){ignored++;continue;}
+     if(s<1||s>7||mode=="offline"||
+        ((mode=="offline1"||mode=="offline12")&&s==1)||
+        ((mode=="offline2"||mode=="offline12"||mode=="critical_offline2")&&s==2)){ignored++;continue;}
      byte error=0;if(fc!=3&&fc!=4)error=1;else if(qty<1||qty>125)error=3;
      if(error==0)for(int i=0;i<qty;i++)if(Value(s,reg+i,mode)<0){error=2;break;}
      byte[] response=error!=0?new byte[]{(byte)s,(byte)(fc|0x80),error,0,0}:new byte[5+qty*2];

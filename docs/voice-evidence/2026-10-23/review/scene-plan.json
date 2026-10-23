@@ -1,0 +1,497 @@
+[
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "mode": "normal"
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "mode": "critical"
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery temp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 16000,
+    "timeout_ms": 19000,
+    "mode": "offline1"
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery temp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "mode": "normal"
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery temp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 16000,
+    "timeout_ms": 19000,
+    "mode": "offline2"
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo RING_1",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_2",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_3",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_4",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_5",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_6",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_7",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_8",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_9",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_10",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_11",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_12",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_13",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_14",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_15",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_16",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_17",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_18",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_19",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_20",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_21",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "echo RING_22",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "critical_offline2"
+  },
+  {
+    "command": "",
+    "wait_ms": 8000,
+    "timeout_ms": 10000,
+    "mode": "offline2"
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "mode": "normal"
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_alarm_recovery temp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

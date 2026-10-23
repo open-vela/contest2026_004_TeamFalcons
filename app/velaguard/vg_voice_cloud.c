@@ -3,10 +3,9 @@
  *
  * BVO-11: ASR upload and TTS download over the agent's HTTPS transport.
  *
- * Neither direction ever holds a whole recording or a whole reply in RAM.
- * The request body is produced 4 KB at a time from the file, and the TTS
- * reply is consumed one SSE line at a time, so the peak is one chunk rather
- * than the 640 KB a 15 s recording becomes after base64.
+ * ASR streams base64 from a bounded PCM recording or diagnostic file. TTS
+ * accumulates at most 512 KB of decoded PCM before conversion to a WAV.
+ * The original microphone recording is owned and wiped by the round caller.
  ****************************************************************************/
 
 #include <nuttx/config.h>
@@ -591,7 +590,8 @@ enum vg_vc_result vg_voice_cloud_asr_buffer(const int16_t *mono,
   memset(info, 0, sizeof(*info));
   clock_gettime(CLOCK_MONOTONIC, &mono_start);
 
-  if (text == NULL || cap == 0 || mono == NULL || mono_bytes < 2)
+  if (text == NULL || cap == 0 || mono == NULL || mono_bytes < 2 ||
+      mono_bytes > VG_VOICE_PCM_MAX_BYTES || (mono_bytes & 1u) != 0)
     {
       return VG_VC_IO;
     }
@@ -779,9 +779,7 @@ static int vc_tts_line(struct vc_tts_sink *s)
 
     if (root == NULL)
       {
-        /* An SSE keep-alive or an event we do not use is not an error. */
-
-        return 0;
+        return -1;
       }
 
     choices = cJSON_GetObjectItem(root, "choices");
@@ -789,6 +787,9 @@ static int vc_tts_line(struct vc_tts_sink *s)
     delta = (first != NULL) ? cJSON_GetObjectItem(first, "delta") : NULL;
     audio = (delta != NULL) ? cJSON_GetObjectItem(delta, "audio") : NULL;
     data = (audio != NULL) ? cJSON_GetObjectItem(audio, "data") : NULL;
+    cJSON *finish = first ? cJSON_GetObjectItem(first, "finish_reason") : NULL;
+    if (cJSON_IsString(finish) && strcmp(finish->valuestring, "stop") == 0)
+      s->done = true;
 
     if (cJSON_IsString(data) && data->valuestring != NULL)
       {
@@ -930,7 +931,8 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       goto out;
     }
 
-  if (sink.pcm_bytes == 0)
+  if (sink.pcm_bytes == 0 || (sink.pcm_bytes & 1u) ||
+      sink.line_len != 0 || !sink.done)
     {
       rc = VG_VC_FORMAT;
       goto out;
@@ -975,6 +977,14 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 
     while (done < samples)
       {
+        struct timespec now;
+        clock_gettime(CLOCK_MONOTONIC, &now);
+        uint32_t now_ms = (uint32_t)((uint64_t)now.tv_sec * 1000 + now.tv_nsec / 1000000);
+        if (agent_http_stop(ctl, now_ms))
+          {
+            rc = agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT;
+            break;
+          }
         size_t batch = samples - done;
         size_t got;
         int out_n;
@@ -1011,7 +1021,7 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
         {
           free(pcm_in);
           free(pcm_out);
-          rc = VG_VC_IO;
+          if (rc == VG_VC_OK) rc = VG_VC_IO;
           goto out;
         }
     }
@@ -1024,7 +1034,10 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
   info->elapsed_ms =
       (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
                  + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
-  rc = VG_VC_OK;
+  uint32_t final_ms = (uint32_t)((uint64_t)mono_end.tv_sec * 1000 + mono_end.tv_nsec / 1000000);
+  rc = agent_http_stop(ctl, final_ms)
+      ? (agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT)
+      : VG_VC_OK;
 
 out:
   clock_gettime(CLOCK_MONOTONIC, &mono_end);

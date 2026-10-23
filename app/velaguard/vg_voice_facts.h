@@ -45,6 +45,7 @@ struct vg_voice_facts
   bool     point_has_value;
   float    point_value;
   uint32_t point_age_ms;
+  char     point_cmp[4];
   bool     point_has_warn;
   float    point_warn;
   bool     point_has_crit;
@@ -60,7 +61,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
                                   const char *unit, bool online,
                                   bool has_value, float value,
                                   uint32_t age_ms, bool has_warn, float warn,
-                                  bool has_crit, float crit);
+                                  bool has_crit, float crit, const char *cmp);
 
 /* Copy the newest snapshot.  Returns false when nothing has been published. */
 bool vg_voice_facts_copy(struct vg_voice_facts *out);

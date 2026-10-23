@@ -481,6 +481,13 @@ int vg_mqtt_session_open(vg_tcp_backend_t backend, const char *net_name)
   int i;
 
   vg_mqtt_session_close();
+  if (CONFIG_VG_MQTT_BROKER_HOST[0] == '\0')
+    {
+      static bool reported;
+      if (!reported) printf("vgnet: MQTT broker is not configured\n");
+      reported = true;
+      return -ENODEV;
+    }
   strlcpy(g_net, net_name ? net_name : "none", sizeof(g_net));
   port_str(port, sizeof(port));
   id = vg_device_id();

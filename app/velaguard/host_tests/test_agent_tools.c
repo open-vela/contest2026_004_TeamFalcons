@@ -201,7 +201,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
                                   const char *unit, bool online,
                                   bool has_value, float value,
                                   uint32_t age_ms, bool has_warn, float warn,
-                                  bool has_crit, float crit)
+                                  bool has_crit, float crit, const char *cmp)
 {
   (void)id;
   (void)name;
@@ -214,6 +214,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
   (void)warn;
   (void)has_crit;
   (void)crit;
+  (void)cmp;
   g_facts_point_calls++;
 }
 

@@ -8,7 +8,7 @@ uint32_t vg_runtime_boot_id(void) { return 73; }
 static void point(const char *id, float value)
 {
   vg_voice_facts_publish_point(id, id, "V", true, true, value, 50,
-                                false, 0, false, 0);
+                                false, 0, false, 0, "le");
 }
 static void *other_publisher(void *arg)
 {
@@ -34,7 +34,7 @@ int main(void)
   assert(!pthread_join(other, NULL));
   assert(vg_voice_facts_capture_end());
   assert(!strcmp(captured.point_id, "ups_load") && captured.point_value == 45);
-  assert(captured.boot_id == 73 && captured.config_version == 9);
+  assert(captured.boot_id == 73 && captured.config_version == 9 && !strcmp(captured.point_cmp, "le"));
   assert(vg_voice_facts_copy(&global));
   assert(!strcmp(global.point_id, "late_old_request"));
   point("after_request", 888);

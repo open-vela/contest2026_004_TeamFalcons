@@ -229,7 +229,7 @@ static int tool_point_read(const char *query, char *out, size_t cap)
           vg_voice_facts_publish_point(p->id, p->name, p->unit, p->ok,
                                        p->has_sample && p->ok, p->value,
                                        p->age_ms, p->has_warn, p->warn,
-                                       p->has_crit, p->crit);
+                                       p->has_crit, p->crit, p->cmp);
         }
         break;
 

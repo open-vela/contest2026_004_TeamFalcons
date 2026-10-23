@@ -184,6 +184,13 @@ static void test_recovery(void)
   expect(rec.has_duration == true, "duration available");
   expect(rec.episode != 0, "episode id recorded");
 
+  /* Low-side thresholds retain their operator in recovery evidence. */
+  vg_runtime_note_sample("p_low", 1, true, 1, VG_RUNTIME_KIND_THRESHOLD,
+                         10, "le", "warn");
+  expect(vg_runtime_recovery("p_low", VG_RUNTIME_KIND_THRESHOLD, &rec) == 0,
+         "low threshold recovery query");
+  expect(strcmp(rec.cmp, "le") == 0, "recovery keeps low-side comparator");
+
   /* Raised, still open. */
   note("p_act", 1, VG_RUNTIME_KIND_NONE, 50.0f, 0, NULL);
   note("p_act", 1, VG_RUNTIME_KIND_THRESHOLD, 95.0f, 80.0f, "crit");
@@ -192,6 +199,31 @@ static void test_recovery(void)
          "active query succeeds");
   expect(rec.state == VG_RUNTIME_RECOVERY_ACTIVE, "open episode is active");
   expect(rec.history_complete == true, "raise retained");
+
+  /* Losing communication is not evidence of recovery. */
+  note("p_overlap", 1, VG_RUNTIME_KIND_THRESHOLD, 95, 80, "crit");
+  uint32_t episode;
+  vg_runtime_recovery("p_overlap", VG_RUNTIME_KIND_THRESHOLD, &rec);
+  episode = rec.episode;
+  note("p_overlap", 0, VG_RUNTIME_KIND_OFFLINE, 0, 0, "offline");
+  vg_runtime_recovery("p_overlap", VG_RUNTIME_KIND_THRESHOLD, &rec);
+  expect(rec.state == VG_RUNTIME_RECOVERY_ACTIVE && rec.episode == episode,
+         "offline must not clear an active threshold episode");
+  struct vg_runtime_anomaly combined[VG_RUNTIME_MAX_POINTS];
+  int total;
+  int count = vg_runtime_anomalies(combined, VG_RUNTIME_MAX_POINTS, &total, 0);
+  int idx = find_item(combined, count, "p_overlap");
+  expect(idx >= 0, "combined alarm is present");
+  if (idx >= 0) {
+    expect(combined[idx].flags == (VG_RUNTIME_ANOMALY_F_THRESHOLD | VG_RUNTIME_ANOMALY_F_OFFLINE),
+           "threshold and offline coexist in one point");
+    expect(combined[idx].value == 95 && combined[idx].threshold == 80 && combined[idx].rank == 0,
+           "offline retains last successful reading and threshold severity");
+  }
+  note("p_overlap", 1, VG_RUNTIME_KIND_NONE, 40, 0, NULL);
+  vg_runtime_recovery("p_overlap", VG_RUNTIME_KIND_THRESHOLD, &rec);
+  expect(rec.state == VG_RUNTIME_RECOVERY_RECOVERED && rec.episode == episode,
+         "only an online normal sample closes the same threshold episode");
 
   /* Normal now, but nothing was ever raised: cannot claim a recovery. */
   note("p_calm", 1, VG_RUNTIME_KIND_NONE, 50.0f, 0, NULL);

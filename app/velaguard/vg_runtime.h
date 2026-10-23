@@ -144,6 +144,7 @@ struct vg_runtime_recovery
   time_t   clear_wall;
   float    value;
   float    threshold;
+  char     cmp[4];
   uint32_t episode;
 };
 

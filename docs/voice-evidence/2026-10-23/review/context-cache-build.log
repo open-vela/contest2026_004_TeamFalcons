@@ -1,0 +1,4 @@
+../packages/ai_agent/src/core/context_builder.c:40:10: fatal error: cJSON.h: No such file or directory
+   40 | #include "cJSON.h"
+      |          ^~~~~~~~~
+compilation terminated.

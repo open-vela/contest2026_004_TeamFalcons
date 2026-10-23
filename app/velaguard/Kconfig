@@ -248,8 +248,8 @@ config VG_VOICE_STACKSIZE
 		The task runs decimation, bounded WAV writes and NxPlayer control.
 
 config VG_VOICE_DIRECT_TOOL
-	bool "Run the resolved voice query without a model round"
-	default y
+	bool "Run the resolved voice query without a model round (diagnostic only)"
+	default n
 	depends on VG_VOICE_LOOPBACK
 	---help---
 		The C layer resolves the three voice intents and the exact point

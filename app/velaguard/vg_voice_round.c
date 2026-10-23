@@ -77,6 +77,7 @@ struct voice_round
   volatile bool        mute_value;
   volatile bool        quit;
   uint32_t             record_generation;
+  uint32_t             clip_generation;
   uint32_t             asr_requests;
   uint32_t             tts_requests;
   char                 asr_src[80];
@@ -242,28 +243,25 @@ static bool vr_stage_asr(char *text, size_t cap)
    * read when a caller named one, which is the diagnostic path. */
 
   {
-    size_t bytes = vg_voice_clip_bytes();
+    size_t bytes = 0;
     int16_t *pcm = NULL;
-
-    if (g_vr.asr_src[0] == '\0' && bytes >= 2)
+    if (g_vr.asr_src[0] != '\0')
       {
-        pcm = malloc(bytes);
-        if (pcm != NULL)
-          {
-            bytes = vg_voice_clip_copy(pcm, bytes);
-          }
+        (void)vg_voice_finish_owned(g_vr.clip_generation, true);
+        rc = vg_voice_cloud_asr(g_vr.asr_src, &ctl, text, cap, &info);
       }
-
-    if (pcm != NULL)
+    else if (vg_voice_clip_take_owned(g_vr.clip_generation, &pcm, &bytes) == 0)
       {
         rc = vg_voice_cloud_asr_buffer(pcm, bytes, &ctl, text, cap, &info);
+        /* Volatile stores keep raw-audio cleanup before free observable. */
+        volatile unsigned char *wipe = (volatile unsigned char *)pcm;
+        for (size_t i = 0; i < bytes; i++) wipe[i] = 0;
         free(pcm);
       }
     else
       {
-        rc = vg_voice_cloud_asr(g_vr.asr_src[0] ? g_vr.asr_src
-                                                : VG_VC_CLIP_PATH,
-                                &ctl, text, cap, &info);
+        memset(&info, 0, sizeof(info));
+        rc = VG_VC_IO;
       }
   }
 
@@ -725,6 +723,7 @@ static uint32_t vr_stage_tts(uint32_t gen)
       {
         if ((idle = vr_wait_voice_idle(100))) break;
       }
+    bool completed = idle;
     if (!idle)
       {
         vg_voice_cancel();
@@ -733,7 +732,12 @@ static uint32_t vr_stage_tts(uint32_t gen)
     if (idle) unlink(VG_VC_TTS_WAV_PATH);
     if (g_vr.cancel) return 0;
 
-    actions |= vg_vs_play_done(&g_vr.s, gen, vr_now_ms());
+    struct vg_voice_stats played;
+    vg_voice_get_stats(&played);
+    if (!completed || !idle || played.last_result != VG_VOICE_OK)
+      actions |= vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
+    else
+      actions |= vg_vs_play_done(&g_vr.s, gen, vr_now_ms());
     return actions;
   }
 }
@@ -804,6 +808,7 @@ static void vr_run_actions(uint32_t actions)
             {
               g_vr.cancel = g_vr.end_pending || g_vr.press_pending || g_vr.quit;
               g_vr.record_generation = gen;
+              g_vr.clip_generation = gen;
               vr_ui_clear_error();
               vr_ui_set_status("录音中");
 
@@ -883,6 +888,8 @@ static void vr_run_actions(uint32_t actions)
 
       if ((actions & VG_VS_ACT_RELEASE_AUDIO) != 0)
         {
+          if (g_vr.clip_generation)
+            (void)vg_voice_finish_owned(g_vr.clip_generation, true);
           vg_voice_cloud_cleanup();
           if (vg_voice_wait_idle(0)) unlink(VG_VC_TTS_WAV_PATH);
         }

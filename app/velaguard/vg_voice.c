@@ -10,6 +10,7 @@
 
 #include "vg_voice.h"
 #include "vg_pdm_filter.h"
+#include "vg_voice_pcm.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -50,12 +51,22 @@
 #  define CONFIG_NXPLAYER_MSG_PRIO 1
 #endif
 
+struct voice_clip_transfer
+{
+  sem_t done;
+  int16_t *pcm;
+  size_t bytes;
+  int result;
+};
+
 struct voice_request
 {
   enum { REQ_BEGIN, REQ_END, REQ_END_SILENT, REQ_CANCEL, REQ_PLAY,
-         REQ_QUIT } type;
+         REQ_QUIT, REQ_TAKE_PCM } type;
   uint32_t generation;
   uint32_t limit_ms;
+  bool archive_wav;
+  struct voice_clip_transfer *transfer;
   char     path[80];      /* REQ_PLAY: file to play, copied by the caller */
 };
 
@@ -121,6 +132,7 @@ static void voice_publish(enum vg_voice_state state)
 {
   irqstate_t flags;
   g_stats.state = state;
+  g_stats.retained_pcm_bytes = (uint32_t)g_pcm_bytes;
   flags = enter_critical_section();
   g_published = g_stats;
   leave_critical_section(flags);
@@ -472,6 +484,7 @@ static int voice_start(const struct voice_request *request)
       return -EBUSY;
     }
   voice_clear_pcm();
+  g_archive_wav = request->archive_wav;
   vg_pdm_filter_init(&g_filter);
   g_produced = g_consumed = 0;
   g_sequence = g_expected_sequence = 0;
@@ -518,6 +531,13 @@ static int voice_play_path(const char *path)
       nxplayer_setvolume(g_player, VOICE_PLAY_VOLUME);
     }
 
+  struct vg_pcm_wav wav;
+  if (vg_pcm_wav_probe(path, &wav) != 0 || wav.rate == 0 ||
+      wav.channels == 0 || wav.data_bytes == 0) return -EINVAL;
+  uint64_t duration = (uint64_t)wav.data_bytes * 1000 /
+                        ((uint64_t)wav.rate * wav.channels * 2);
+  if (duration > 60000) return -EFBIG;
+
   ret = nxplayer_playfile(g_player, path, AUDIO_FMT_UNDEF, AUDIO_FMT_UNDEF);
   if (ret < 0)
     {
@@ -525,6 +545,8 @@ static int voice_play_path(const char *path)
       return ret;
     }
 
+  g_stats.last_ms = duration ? (uint32_t)duration : 1;
+  g_stats.last_result = VG_VOICE_OK;
   g_play_started_ms = voice_ms();
   voice_publish(VG_VOICE_PLAYING);
   return 0;
@@ -663,6 +685,24 @@ static int voice_task(int argc, char **argv)
                 }
               voice_start(&request);
             }
+          else if (request.type == REQ_TAKE_PCM)
+            {
+              struct voice_clip_transfer *t = request.transfer;
+              t->result = -ESTALE;
+              if (request.generation == g_generation &&
+                  g_stats.state == VG_VOICE_IDLE && !g_archive_wav)
+                {
+                  t->bytes = g_pcm_bytes;
+                  t->pcm = t->bytes ? malloc(t->bytes) : NULL;
+                  t->result = t->pcm ? 0 : -ENOMEM;
+                  if (t->pcm) memcpy(t->pcm, g_pcm, t->bytes);
+                  /* The worker owns both source and cleanup. No raw copy
+                   * remains after this handoff, including allocation failure. */
+                  voice_clear_pcm();
+                  voice_publish(VG_VOICE_IDLE);
+                }
+              nxsem_post(&t->done);
+            }
           else if (request.type == REQ_PLAY)
             {
               if (g_stats.state == VG_VOICE_RECORDING)
@@ -702,6 +742,12 @@ static int voice_task(int argc, char **argv)
                       voice_publish(VG_VOICE_IDLE);
                     }
                 }
+              else if (request.type == REQ_CANCEL &&
+                       g_stats.state == VG_VOICE_IDLE)
+                {
+                  voice_clear_pcm();
+                  voice_publish(VG_VOICE_IDLE);
+                }
             }
           g_request_active = false;
         }
@@ -717,7 +763,7 @@ static int voice_task(int argc, char **argv)
           else if (voice_ms() - g_started_ms >= g_limit_ms)
             {
               if (g_limit_ms == VG_VOICE_MAX_MS) g_stats.timeouts++;
-              voice_finish(false, true);
+              voice_finish(false, g_archive_wav);
             }
         }
       else if (g_stats.state == VG_VOICE_PLAYING)
@@ -840,26 +886,37 @@ int vg_voice_shutdown(void)
 
 size_t vg_voice_clip_bytes(void)
 {
-  return g_pcm_bytes;
+  struct vg_voice_stats stats;
+  vg_voice_get_stats(&stats);
+  return stats.retained_pcm_bytes;
 }
 
-size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes)
+int vg_voice_clip_take_owned(uint32_t generation, int16_t **pcm, size_t *bytes)
 {
-  size_t bytes;
-
-  if (dst == NULL || g_pcm == NULL)
+  struct voice_clip_transfer transfer = {0};
+  int ret;
+  if (!pcm || !bytes || !generation) return -EINVAL;
+  *pcm = NULL;
+  *bytes = 0;
+  nxmutex_lock(&g_init_lock);
+  if (!g_inited || !g_running)
     {
-      return 0;
+      nxmutex_unlock(&g_init_lock);
+      return -ENODEV;
     }
-
-  bytes = g_pcm_bytes;
-  if (bytes > dst_bytes)
+  nxsem_init(&transfer.done, 0, 0);
+  ret = voice_post((struct voice_request){ .type = REQ_TAKE_PCM,
+      .generation = generation, .transfer = &transfer });
+  if (ret >= 0)
     {
-      bytes = dst_bytes & ~(size_t)1;
+      nxsem_wait_uninterruptible(&transfer.done);
+      ret = transfer.result;
+      *pcm = transfer.pcm;
+      *bytes = transfer.bytes;
     }
-
-  memcpy(dst, g_pcm, bytes);
-  return bytes;
+  nxsem_destroy(&transfer.done);
+  nxmutex_unlock(&g_init_lock);
+  return ret;
 }
 
 int vg_voice_record_for(uint32_t ms)
@@ -871,9 +928,8 @@ int vg_voice_record_for(uint32_t ms)
 
   /* The local diagnostic plays the recording back, so it needs the file. */
 
-  g_archive_wav = true;
   ret = voice_post((struct voice_request){ .type = REQ_BEGIN,
-                                          .limit_ms = ms });
+                                          .limit_ms = ms, .archive_wav = true });
   return ret < 0 ? ret : 0;
 }
 
@@ -886,7 +942,6 @@ int vg_voice_record_begin_owned(uint32_t *generation)
   /* The cloud round uploads the samples that stay in RAM, so the raw
    * recording has no reason to reach the eMMC. */
 
-  g_archive_wav = false;
   ret = voice_post((struct voice_request){ .type = REQ_BEGIN,
                                           .limit_ms = VG_VOICE_MAX_MS });
   if (ret < 0) return ret;

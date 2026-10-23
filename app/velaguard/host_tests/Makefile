@@ -94,7 +94,7 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_runtime_concurrent test_tls_send_pressure test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -103,6 +103,10 @@ test: test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts
 	./test_voice_session
 	./test_voice_intent
 	python3 ../../../scripts/voice_test/dns_fixture.py --run ./test_dns_control
+	./test_runtime_concurrent
+	./test_tls_send_pressure
+	./test_context_cache
+	./test_voice_cloud
 	./test_llm_runtime_config
 	./test_voice_scope
 	./test_voice_facts
@@ -140,6 +144,10 @@ test: test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts
 
 clean:
 	rm -f test_dns_control
+	rm -f test_runtime_concurrent
+	rm -f test_tls_send_pressure
+	rm -f test_context_cache
+	rm -f test_voice_cloud
 	rm -f test_llm_runtime_config
 	rm -f test_voice_scope
 	rm -f test_voice_facts
@@ -213,3 +221,19 @@ test_llm_runtime_config: $(AI_AGENT_ROOT)/tests/test_llm_runtime_config.c $(AI_A
 
 test_dns_control: test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_dnsquery.c $(OPENVELA_ROOT)/nuttx/include/nuttx/net/dns.h
 	$(CC) $(CFLAGS) -Idns_stubs -I$(OPENVELA_ROOT)/nuttx/libs/libc -idirafter $(OPENVELA_ROOT)/nuttx/include -o $@ test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_dnsquery.c
+
+
+test_voice_cloud: test_voice_cloud.c ../vg_voice_cloud.c ../vg_voice_pcm.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -Istubs -include stubs/vg_host_shim.h -DCONFIG_VG_VOICE_LOOPBACK=1 -DCONFIG_EXAMPLES_AI_AGENT_VELA=1 -I$(AI_AGENT_INC) -DVG_VOICE_DIR='"/tmp/vg-cloud-test-dir"' -o $@ $^ -lm
+
+
+test_context_cache: $(AI_AGENT_ROOT)/tests/test_context_cache.c $(AI_AGENT_ROOT)/src/core/context_builder.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../netutils/cjson/cJSON -DCONTEXT_BODY_REFRESH_MS=30 -DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR='"/tmp/vg-context-cache-test-data"' -o $@ $^ -Wl,--gc-sections -lm
+
+
+test_tls_send_pressure: $(AI_AGENT_ROOT)/tests/test_tls_send_pressure.c $(AI_AGENT_ROOT)/src/infra/vela_tls.c
+	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../crypto/mbedtls/mbedtls/include -o $@ $< -Wl,--gc-sections
+
+
+test_runtime_concurrent: test_runtime_concurrent.c ../vg_runtime.c ../vg_frame_stats.c
+	$(CC) $(CFLAGS) -o $@ $^

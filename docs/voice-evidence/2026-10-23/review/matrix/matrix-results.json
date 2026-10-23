@@ -1,0 +1,302 @@
+[
+  {
+    "id": "anomaly01",
+    "intent": "anomaly",
+    "first_playable_ms": 25880,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly02",
+    "intent": "anomaly",
+    "first_playable_ms": 26700,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly03",
+    "intent": "anomaly",
+    "first_playable_ms": 22410,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly04",
+    "intent": "anomaly",
+    "first_playable_ms": 23350,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly05",
+    "intent": "anomaly",
+    "first_playable_ms": 22830,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly06",
+    "intent": "anomaly",
+    "first_playable_ms": 22370,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly07",
+    "intent": "anomaly",
+    "first_playable_ms": 21320,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly08",
+    "intent": "anomaly",
+    "first_playable_ms": 23240,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly09",
+    "intent": "anomaly",
+    "first_playable_ms": 22990,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "anomaly10",
+    "intent": "anomaly",
+    "first_playable_ms": 26240,
+    "state": 8,
+    "speech_failed": 0,
+    "text_correct": true,
+    "complete": true,
+    "answer": "当前没有异常点位。"
+  },
+  {
+    "id": "point01",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "ups_load UPS负载：40 %\n采样 2 秒前\n阈值：警告 ≥ 70 %，严重 ≥ 90 %\n数据来自已确认点表，配置版本 1"
+  },
+  {
+    "id": "point02",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "ups_load UPS负载：40 %\n采样 1 秒前\n阈值：警告 ≥ 70 %，严重 ≥ 90 %\n数据来自已确认点表，配置版本 1"
+  },
+  {
+    "id": "point03",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "ups_load UPS负载：40 %\n采样 4 秒前\n阈值：警告 ≥ 70 %，严重 ≥ 90 %\n数据来自已确认点表，配置版本 1"
+  },
+  {
+    "id": "point04",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=查询超时"
+  },
+  {
+    "id": "point05",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=查询超时"
+  },
+  {
+    "id": "point06",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=查询超时"
+  },
+  {
+    "id": "point07",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "ups_load UPS负载：40 %\n采样 3 秒前\n阈值：警告 ≥ 70 %，严重 ≥ 90 %\n数据来自已确认点表，配置版本 1"
+  },
+  {
+    "id": "point08",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "ups_load UPS负载：40 %\n采样 2 秒前\n阈值：警告 ≥ 70 %，严重 ≥ 90 %\n数据来自已确认点表，配置版本 1"
+  },
+  {
+    "id": "point09",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=查询超时"
+  },
+  {
+    "id": "point10",
+    "intent": "point",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=查询超时"
+  },
+  {
+    "id": "recovery01",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery02",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery03",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery04",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery05",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery06",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery07",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0,
+    "text_correct": false,
+    "complete": false,
+    "answer": "e=没有找到这个点位，请报点位 ID 或完整名称"
+  },
+  {
+    "id": "recovery08",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery09",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  },
+  {
+    "id": "recovery10",
+    "intent": "recovery",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1,
+    "text_correct": true,
+    "complete": false,
+    "answer": "无法确认 ups_load 的阈值告警恢复情况\n本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+  }
+]

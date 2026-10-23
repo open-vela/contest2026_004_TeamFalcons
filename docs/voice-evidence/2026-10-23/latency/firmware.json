@@ -8,7 +8,7 @@
     "nuttx.elf": "389a20b0954f776228b91af7b03efef551aead267a8e13cdfde43ae893aaa163"
   },
   "reflashed_image": {
-    "note": "同一源码树在 11:31 重新构建并烧录，用于留档；与上面镜像只有构建时间戳不同",
+    "note": "同一源码树在 11:31 重新构建并烧录，用于留档；两个镜像的二进制差异尚未核验，不能仅根据同一源码树认定差异只有构建时间戳",
     "nuttx.hex": "8f27fcd79d78c405b8c67d96c28bd13fa4f774ef45551a0c934e88ad2e21eb3f",
     "nuttx.bin": "223c7bb5c5139d1caad0e5903d3857657774e12ca479ffc22f1073cb0c723507",
     "nuttx.elf": "5dc55f6a257e8742c94109da7525d693da599b71d0f31a22d75d3104712e092c"

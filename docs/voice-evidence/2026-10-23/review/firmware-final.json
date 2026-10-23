@@ -1,0 +1,67 @@
+{
+  "time": "2026-10-23T13:19:17.589293+08:00",
+  "purpose": "Model/top-three contract restored; add offline threshold preservation and controlled TLS BIO packet-pressure handling",
+  ".": {
+    "head": "df8c3e886936eac8d9cea6db79840158516ab9af",
+    "branch": "velaguard/maintenance-stability",
+    "files": {
+      "app/velaguard/Kconfig": "60ad69d780172abdf0db98036e8b1fe91ff51befd7ae5cf69a9c0736dd12c3f5",
+      "app/velaguard/host_tests/test_agent_tools.c": "74a2e6fad135bec3cd14b91ebdc7ba92b609281776e0ee99434c95100982c41f",
+      "app/velaguard/host_tests/test_runtime_anomaly.c": "13810ccf7f1e8d7d9a30432dfcc66d24da266d5ff80cfb8f6c834bff34cd1fe6",
+      "app/velaguard/host_tests/test_voice_answer.c": "2137300d7c7d275904a97a2c3060766df6c28607317d427ff8a86d6502ea842c",
+      "app/velaguard/host_tests/test_voice_facts.c": "7bf947fd5dee8496201930c08c403e84e74ee24c1bb933b2ff9014d572cd0d4a",
+      "app/velaguard/vg_agent_tools.c": "85c7e4ce33b96e02614628bc7c3fe1d1a765302eec30b2a46a0b31d4a962be84",
+      "app/velaguard/vg_mqtt_session.c": "d641c8443666e33b9d88efe3af72d7c3387127beafa7711c50e1df253c0d80ef",
+      "app/velaguard/vg_runtime.c": "3f80a4c6aeedf3217bd67c2074e22d98220485f0f58bb43be92270856bcca676",
+      "app/velaguard/vg_runtime.h": "2c7deb3590dee7faf3cb78ec9fe97f6b60ee78b3dc8c0c81bf54423934239a7c",
+      "app/velaguard/vg_voice.c": "4922ee28d6b0350f5b172a755b0f77a23cb2701684632d8edfb4b949c1751681",
+      "app/velaguard/vg_voice.h": "a115f20ea388a1d44e4ec1f201c0a1f2490cdb923fb8008c22c9a10a989460a6",
+      "app/velaguard/vg_voice_answer.c": "7fc4ed7e8d91f9d8c1bf5c6b5d41f74bbfe5cbdeb147e95059b77f922d34eb76",
+      "app/velaguard/vg_voice_cloud.c": "784e81dcf8b347a184916774abe047a914f473639d54ebf4c9a90ec1602c315b",
+      "app/velaguard/vg_voice_cloud.h": "cf8c3e033062d03baa2829245a8a54ccd2020150769daadfb293fca8ada7eaa0",
+      "app/velaguard/vg_voice_facts.c": "f464be8936515b58d84937c80e2b01b35a4881e06f7a128bde508c7283bde370",
+      "app/velaguard/vg_voice_facts.h": "c83c86d2f7e6eaad186eb152b6a235824849c1d1422240730a33fd0b7e5a3aec",
+      "app/velaguard/vg_voice_pcm.c": "80ce8634a0b64e23c34961c7b41d81d1c829d95f12bec76ec2a2aca301e6e05f",
+      "app/velaguard/vg_voice_pcm.h": "f8cbab8dc51b3a33dbb0a77178afdf302dbab1277b62e1595cb8f5515877f311",
+      "app/velaguard/vg_voice_round.c": "95efb59aed3181379db057c2de5dcccacb62cba69b1d7c3a9751e871926b7cad",
+      "app/velaguard/vgvoice.c": "210ebb3c17b999f98a8f6d3224e26efb2196e0aef0a7d2f90a2ea885320a318f",
+      "scripts/build.sh": "6d7c0fd6908d02231b95d921eca9705a09d59abbd5f588fadfe93fe17aac9349",
+      "scripts/configs/velaguard-lvgl.defconfig": "d3c84c6f61c62ce53a98aef42f3b6dc61f7aa706a2e9021b0721a3a429578081"
+    }
+  },
+  "../packages/ai_agent": {
+    "head": "4d444f56ac6b327db0798fb8a1ee2f05e36c81a5",
+    "branch": "velaguard/rsp01-response-timing",
+    "files": {
+      "src/core/agent_loop.c": "d766840545a30df31f73cb912cd7e33e19b21369cb4f5c4e62c6577fcdc8ed76",
+      "src/core/context_builder.c": "a601fec7bbd02bb33a604cadf1647a4ad8b3bf0922096f53e30d5af4f7dbbaf8",
+      "src/infra/vela_tls.c": "ad829457cf1ebec24ad928088a41860439eedd2eac40bd5446e3c7c9cda495d0",
+      "src/tools/skill_loader.c": "29d43d758353083bc230d97a1354bb6edcae89d2fa3a8d0bb423dfe732c8c628",
+      "src/tools/voice_scope.c": "5085553381372f14facd6981b7066da7b426c12c7ba393f758829c54e396781e",
+      "src/tools/voice_scope.h": "211df5dd54897e31d11690908810afebdc63cd921163d6a8382d7581de89aabc",
+      "tests/test_voice_scope.c": "152d08840c030b704d4f4babaf6d40a5816db8814f24cd070043882cd1192403"
+    }
+  },
+  "../nuttx": {
+    "head": "cdfd23cdf0b1f621da52fed29d677df5390724c0",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk",
+    "files": {}
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266",
+    "files": {}
+  },
+  "config_sha256": "3fddd137fdafcab6db5022a2f0caf2120b7b802f7229e29db91598ee6674fa36",
+  "image": {
+    "nuttx.hex": "0faf354cd972c63b8f83c5132879b34c8756f8d8231c6d80e899f5a82b01da7f",
+    "nuttx.bin": "777099383d546fabbe0ce33ce4cfc88f6e125b13cd7c4fe864cdd86853ff3ff9",
+    "nuttx.elf": "33f2a9bf2307d94a9d11a6e416fd544b04dda7f4bdb4564ff3fc17ea0eda7fc3",
+    "qspi_bootstub.hex": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e"
+  },
+  "contract_config": {
+    "CONFIG_VG_VOICE_DIRECT_TOOL": false,
+    "CONFIG_IOB_NBUFFERS": "128",
+    "CONFIG_NET_SOLINGER": "y"
+  }
+}

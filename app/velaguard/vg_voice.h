@@ -66,6 +66,7 @@ struct vg_voice_stats
   uint32_t dma_errors;
   uint32_t last_ms;
   uint32_t last_bytes;
+  uint32_t retained_pcm_bytes;
   uint32_t last_samples;
   enum vg_voice_result last_result;
   uint32_t peak_abs;
@@ -110,11 +111,12 @@ int vg_voice_record_for(uint32_t ms);
 enum vg_voice_result vg_voice_record_end(bool cancelled);
 enum vg_voice_result vg_voice_cancel(void);
 enum vg_voice_result vg_voice_finish(bool cancelled);
-/* The captured samples stay in RAM until the next recording starts.
- * The cloud round copies them out and uploads them without writing a
- * WAV file, so the raw recording never reaches the eMMC. */
+/* Metadata only. Product recording is transferred once to ASR, then wiped. */
 size_t vg_voice_clip_bytes(void);
-size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes);
+/* Synchronous handoff through the audio worker. Only the completed cloud
+ * recording with this generation may be taken. Source is cleared even on
+ * allocation failure. Caller wipes and frees the returned buffer. */
+int vg_voice_clip_take_owned(uint32_t generation, int16_t **pcm, size_t *bytes);
 
 bool vg_voice_wait_idle(uint32_t limit_ms);
 void vg_voice_get_stats(struct vg_voice_stats *out);

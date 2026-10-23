@@ -1,0 +1,9 @@
+=== context_build_system_prompt canary test (dir=/tmp/vg-context-prompt-review) ===
+[context_prompt] cap=4096  len=4095   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=2048  len=2047   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=1024  len=1023   rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=512   len=511    rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=64    len=63     rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=1     len=0      rc=0 front=ok  rear=ok  len=ok  -> PASS
+[context_prompt] cap=0     len=0      rc=0 front=ok  rear=ok  len=ok  -> PASS
+=== ALL PASS ===

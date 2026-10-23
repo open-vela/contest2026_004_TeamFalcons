@@ -234,6 +234,23 @@ static void test_tts_failure_retries_speech_only(void)
   expect(vg_vs_state(&s) == VG_VS_TTS, "state tts after retry");
 }
 
+static void test_play_failure_retains_answer(void)
+{
+  struct vg_voice_session s;
+  uint32_t t = 1000;
+  vg_vs_init(&s, t);
+  to_asr(&s, &t);
+  uint32_t gen = vg_vs_generation(&s);
+  vg_vs_asr_result(&s, gen, true, "UPS负载", t);
+  vg_vs_agent_result(&s, gen, true, "负载 40%", t);
+  vg_vs_tts_result(&s, gen, true, t);
+  uint32_t a = vg_vs_tts_result(&s, gen, false, t + 1000);
+  expect(a & VG_VS_ACT_SHOW_RESULT, "player failure keeps visible answer");
+  expect(s.speech_failed && s.state == VG_VS_RESULT, "player failure is not a completed speech");
+  a = vg_vs_retry_tts(&s, t + 2000);
+  expect((a & VG_VS_ACT_START_TTS) && !(a & VG_VS_ACT_QUEUE_AGENT), "player failure retries speech only");
+}
+
 static void test_budget(void)
 {
   struct vg_voice_session s;
@@ -444,6 +461,7 @@ int main(void)
   test_mute_skips_tts();
   test_empty_transcript();
   test_tts_failure_retries_speech_only();
+  test_play_failure_retains_answer();
   test_budget();
   test_retry_budget();
   test_record_cap_and_short();

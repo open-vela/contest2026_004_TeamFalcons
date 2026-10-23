@@ -1,0 +1,7 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -DCONFIG_VG_VOICE_LOOPBACK=1 -DCONFIG_EXAMPLES_AI_AGENT_VELA=1 -I../../../../packages/ai_agent/include -DVG_VOICE_DIR='"/tmp/vg-cloud-test-dir"' -o test_voice_cloud test_voice_cloud.c ../vg_voice_cloud.c ../vg_voice_pcm.c ../../../../apps/netutils/cjson/cJSON/cJSON.c
+/home/hello19y/.local/bin/ld: /tmp/ccDlJIvn.o: in function `print_number':
+cJSON.c:(.text+0xba3): undefined reference to `floor'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:221: test_voice_cloud] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

@@ -330,7 +330,7 @@ uint32_t vg_vs_agent_result(struct vg_voice_session *s, uint32_t generation,
 uint32_t vg_vs_tts_result(struct vg_voice_session *s, uint32_t generation,
                           bool ok, uint32_t now_ms)
 {
-  if (s == NULL || s->state != VG_VS_TTS || generation != s->generation)
+  if (s == NULL || (s->state != VG_VS_TTS && !(s->state == VG_VS_PLAYING && !ok)) || generation != s->generation)
     {
       return 0;
     }

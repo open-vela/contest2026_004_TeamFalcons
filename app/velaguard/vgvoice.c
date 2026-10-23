@@ -99,7 +99,8 @@ static void vgvoice_status(void)
 
   vg_voice_get_stats(&s);
 
-  printf("vgvoice: state=%s\n", vg_voice_state_name(s.state));
+  printf("vgvoice: state=%s retained_pcm=%u\n", vg_voice_state_name(s.state),
+         (unsigned)vg_voice_clip_bytes());
   printf("vgvoice: rounds=%u played=%u cancelled=%u too_short=%u "
          "failures=%u timeouts=%u\n",
          (unsigned)s.rounds, (unsigned)s.played, (unsigned)s.cancelled,
@@ -464,6 +465,7 @@ int main(int argc, FAR char *argv[])
 
       if (argc >= 3 && strcmp(argv[2], "press") == 0)
         {
+          vg_voice_round_set_asr_source(NULL);
           vg_voice_round_press_sim(true);
           printf("vgvoice: round press synthetic\n");
           return EXIT_SUCCESS;

@@ -49,6 +49,7 @@ static void fill_point(struct vg_voice_facts *f)
   snprintf(f->point_id, sizeof(f->point_id), "ups_load");
   snprintf(f->point_name, sizeof(f->point_name), "UPS负载");
   snprintf(f->point_unit, sizeof(f->point_unit), "%s", "%");
+  snprintf(f->point_cmp, sizeof(f->point_cmp), "ge");
   f->point_online = true;
   f->point_has_value = true;
   f->point_value = 45.2f;
@@ -96,6 +97,15 @@ static void test_point(void)
   CHECK_STR_CONTAINS(speech, "45.2");
   CHECK(vg_va_text_facts_consistent(&f, display));
   CHECK(vg_va_text_facts_consistent(&f, speech));
+
+  snprintf(f.point_cmp, sizeof(f.point_cmp), "le");
+  f.point_age_ms = 30000;
+  vg_va_render_point(&f, display, sizeof(display), speech, sizeof(speech));
+  CHECK_STR_CONTAINS(display, "警告 ≤ 80");
+  CHECK_STR_CONTAINS(speech, "数据过期");
+  snprintf(f.point_cmp, sizeof(f.point_cmp), "eq");
+  vg_va_render_point(&f, display, sizeof(display), speech, sizeof(speech));
+  CHECK_STR_CONTAINS(display, "严重 = 90");
 
   /* Offline: no value may be presented as current. */
 
@@ -207,6 +217,8 @@ static void test_anomalies_many(void)
 
   CHECK_STR_CONTAINS(speech, "12");
   CHECK_STR_CONTAINS(speech, "ups_temp");
+  CHECK_STR_CONTAINS(speech, "ups_bat");
+  CHECK_STR_CONTAINS(speech, "bms_1");
   CHECK(strstr(speech, "sensor_3") == NULL);
   CHECK(strstr(speech, "sensor_11") == NULL);
   CHECK(vg_va_text_facts_consistent(&f, display));

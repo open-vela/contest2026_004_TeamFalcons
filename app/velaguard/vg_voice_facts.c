@@ -6,6 +6,7 @@
 
 #include <pthread.h>
 #include <string.h>
+#include <stdio.h>
 
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 static struct vg_voice_facts g_facts;
@@ -125,7 +126,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
                                   const char *unit, bool online,
                                   bool has_value, float value,
                                   uint32_t age_ms, bool has_warn, float warn,
-                                  bool has_crit, float crit)
+                                  bool has_crit, float crit, const char *cmp)
 {
   pthread_mutex_lock(&g_lock);
   facts_begin_locked();
@@ -138,6 +139,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
   g_facts.point_warn = warn;
   g_facts.point_has_crit = has_crit;
   g_facts.point_crit = crit;
+  snprintf(g_facts.point_cmp, sizeof(g_facts.point_cmp), "%s", cmp ? cmp : "");
 
   if (id != NULL)
     {
