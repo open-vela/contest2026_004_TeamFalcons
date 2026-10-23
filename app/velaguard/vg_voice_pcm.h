@@ -14,6 +14,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <stdint.h>
 
 #define VG_PCM_WAV_HDR 44
@@ -35,6 +36,7 @@ void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
 /* Parse the RIFF header and locate the data chunk.  Returns 0 or -errno.
  * Only PCM 16-bit files are accepted by the callers here. */
 int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out);
+int vg_pcm_wav_probe_stream(FILE *f, struct vg_pcm_wav *out);
 
 /* Copy a 16-bit WAV as mono, taking the first channel of every frame.
  * The sample rate is preserved.  Returns 0 or -errno. */

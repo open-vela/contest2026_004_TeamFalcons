@@ -1,0 +1,54 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+2026-10-23T14:28:03.7759816+08:00 CMD cat /proc/3/group/fd
+cat /proc/3/group/fd
+
+FD  OFLAGS  TYPE POS       PATH           
+0   3       1    0         /dev/console 
+ 1   3       1    0         /dev/console 
+ 2   3       1    0         /dev/console 
+ 3   3       1    0         /dev/ttyS1   
+ 4   3       9    0         socket:[domain 2, type 6, proto 0
+ 5   3       9    0         icmp:[dev eth0, id 0, flg 1
+ 6   1025    3    0                      
+ nsh> [K
+2026-10-23T14:28:04.0896096+08:00 CMD cat /proc/12/group/fd
+cat /proc/12/group/fd
+
+FD  OFLAGS  TYPE POS       PATH           
+0   3       1    0         /dev/console 
+ 1   3       1    0         /dev/console 
+ 2   3       1    0         /dev/console 
+ 3   3       1    0         /dev/ttyS1   
+ 4   1027    1    0         /dev/fb0     
+ 5   3       9    0         udp:[0.0.0.0:0<->0.0.0.0:0, tx 0/0, rx 0/0, flg 1
+ 6   1089    1    0         /dev/input0  
+ 7   3       1    0         /dev/ttyS2   
+ nsh> [K
+2026-10-23T14:28:04.4027982+08:00 CMD cat /proc/14/group/fd
+cat /proc/14/group/fd
+
+FD  OFLAGS  TYPE POS       PATH           
+0   3       1    0         /dev/console 
+ 1   3       1    0         /dev/console 
+ 2   3       1    0         /dev/console 
+ 3   3       1    0         /dev/ttyS1   
+ nsh> [K
+2026-10-23T14:28:04.7173760+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=23
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=23
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=22
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=24
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=24
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=24
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=24
+nsh> [K
+2026-10-23T14:28:05.0409567+08:00 CMD vgagent audit
+vgagent audit
+vgagent: audit submitted=22 written=20 pending=0 lost=2 running=1 rc=0
+nsh> [K
+2026-10-23T14:28:05.3509402+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819608     899480    5920128    1236008    5795432   1106     15 Umem
+nsh> [K

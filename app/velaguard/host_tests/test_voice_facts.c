@@ -49,6 +49,12 @@ int main(void)
   assert(vg_voice_facts_capture_begin(&captured));
   vg_voice_facts_publish_recovery(&recovery, 100);
   assert(vg_voice_facts_capture_end() && captured.has_recovery);
-  puts("test_voice_facts: OK (old/concurrent publication rejected, failed tool, private copy, three intents)");
+  /* Test capture_begin_any captures from another thread */
+  assert(vg_voice_facts_capture_begin_any(&captured));
+  assert(!pthread_create(&other, NULL, other_publisher, NULL));
+  assert(!pthread_join(other, NULL));
+  assert(vg_voice_facts_capture_end());
+  assert(!strcmp(captured.point_id, "late_old_request") && captured.point_value == 999);
+  puts("test_voice_facts: OK (old/concurrent publication rejected, failed tool, private copy, three intents, capture_any)");
   return 0;
 }

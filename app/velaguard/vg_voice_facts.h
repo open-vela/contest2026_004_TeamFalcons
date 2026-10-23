@@ -77,6 +77,11 @@ void     vg_voice_facts_set_config_version(uint32_t version);
  * caller owns out until end; other publishers cannot replace this copy.
  * A failed/blocked tool with no publication makes end return false. */
 bool vg_voice_facts_capture_begin(struct vg_voice_facts *out);
+
+/* Capture publications made by any thread (e.g. the agent worker during
+ * a voice ReAct round).  Single capture at a time. */
+bool vg_voice_facts_capture_begin_any(struct vg_voice_facts *out);
+
 bool vg_voice_facts_capture_end(void);
 
 #endif /* __APP_VELAGUARD_VG_VOICE_FACTS_H */

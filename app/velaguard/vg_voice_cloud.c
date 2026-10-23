@@ -498,10 +498,21 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
       clip_path = VG_VC_CLIP_PATH;
     }
 
-  if (vg_pcm_wav_probe(clip_path, &wav) != 0 || wav.bits != 16 ||
+  src.f = fopen(clip_path, "rb");
+  if (src.f == NULL)
+    {
+      vg_voice_cloud_cleanup();
+      return VG_VC_IO;
+    }
+
+  int probe_rc = vg_pcm_wav_probe_stream(src.f, &wav);
+  if (probe_rc != 0 || wav.bits != 16 ||
       wav.channels == 0 || wav.channels > 2 || wav.data_bytes == 0)
     {
-      syslog(LOG_ERR, "[%s] asr: %s is not a 16-bit wav\n", TAG, clip_path);
+      syslog(LOG_ERR, "[%s] asr: wav probe failed rc=%d bits=%u channels=%u\n",
+             TAG, probe_rc, wav.bits, wav.channels);
+      fclose(src.f);
+      src.f = NULL;
       vg_voice_cloud_cleanup();
       return VG_VC_IO;
     }
@@ -510,33 +521,27 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
    * shorter than the length it announces, and the server would wait for
    * bytes that never come. */
 
-  {
-    struct stat st;
+  if (fseek(src.f, 0, SEEK_END) == 0)
+    {
+      long fsize = ftell(src.f);
+      if (fsize > (long)wav.data_off)
+        {
+          size_t avail = (size_t)fsize - (size_t)wav.data_off;
+          if (avail < wav.data_bytes)
+            {
+              wav.data_bytes = (uint32_t)avail;
+            }
+        }
+    }
 
-    if (stat(clip_path, &st) == 0 && st.st_size > (off_t)wav.data_off)
-      {
-        size_t avail = (size_t)st.st_size - wav.data_off;
-
-        if (avail < wav.data_bytes)
-          {
-            wav.data_bytes = (uint32_t)avail;
-          }
-      }
-  }
-
+  FILE *f = src.f;
   memset(&src, 0, sizeof(src));
+  src.f = f;
   src.prefix = vc_asr_prefix;
   src.suffix = vc_asr_suffix;
   src.src_channels = wav.channels;
   src.rate = wav.rate;
   src.out_samples = wav.data_bytes / ((uint32_t)wav.channels * 2u);
-
-  src.f = fopen(clip_path, "rb");
-  if (src.f == NULL)
-    {
-      vg_voice_cloud_cleanup();
-      return VG_VC_IO;
-    }
 
   if (fseek(src.f, (long)wav.data_off, SEEK_SET) != 0)
     {
@@ -633,6 +638,7 @@ struct vc_tts_sink
   char  *line;
   size_t line_len;
   size_t line_cap;
+  char  *payload;
   size_t pcm_bytes;
   bool   done;
   int    error;
@@ -641,6 +647,7 @@ struct vc_tts_sink
 static int vc_tts_pcm_reserve(struct vc_tts_sink *s, size_t extra)
 {
   size_t need = s->pcm_len + extra;
+  size_t ncap;
   uint8_t *buf;
 
   if (need <= s->pcm_cap)
@@ -655,14 +662,25 @@ static int vc_tts_pcm_reserve(struct vc_tts_sink *s, size_t extra)
       return -1;
     }
 
-  buf = realloc(s->pcm, need);
+  ncap = (s->pcm_cap == 0) ? 32768 : s->pcm_cap * 2;
+  while (ncap < need)
+    {
+      ncap *= 2;
+    }
+
+  if (ncap > VC_PCM_MAX_BYTES)
+    {
+      ncap = VC_PCM_MAX_BYTES;
+    }
+
+  buf = realloc(s->pcm, ncap);
   if (buf == NULL)
     {
       return -1;
     }
 
   s->pcm = buf;
-  s->pcm_cap = need;
+  s->pcm_cap = ncap;
   return 0;
 }
 
@@ -716,6 +734,7 @@ static int vc_tts_grow(struct vc_tts_sink *s)
 {
   size_t ncap = (s->line_cap == 0) ? VC_SSE_LINE_INIT : s->line_cap * 2;
   char *line;
+  char *payload;
 
   if (ncap > VC_SSE_LINE_MAX)
     {
@@ -728,14 +747,21 @@ static int vc_tts_grow(struct vc_tts_sink *s)
       return -1;
     }
 
+  payload = realloc(s->payload, ncap);
+  if (payload == NULL)
+    {
+      s->line = line;
+      return -1;
+    }
+
   s->line = line;
+  s->payload = payload;
   s->line_cap = ncap;
   return 0;
 }
 
 static int vc_tts_line(struct vc_tts_sink *s)
 {
-  char *payload;
   int rc;
 
   if (s->line_len == 0)
@@ -745,37 +771,27 @@ static int vc_tts_line(struct vc_tts_sink *s)
 
   s->line[s->line_len] = '\0';
 
-  payload = malloc(s->line_len + 1);
-  if (payload == NULL)
-    {
-      return -1;
-    }
-
-  rc = vg_sse_line_data(s->line, s->line_len, payload, s->line_len + 1);
+  rc = vg_sse_line_data(s->line, s->line_len, s->payload, s->line_cap);
   s->line_len = 0;
 
   if (rc == -1)
     {
       s->done = true;
-      free(payload);
       return 0;
     }
 
   if (rc <= 0)
     {
-      free(payload);
       return (rc == -2) ? -1 : 0;
     }
 
   {
-    cJSON *root = cJSON_Parse(payload);
+    cJSON *root = cJSON_Parse(s->payload);
     cJSON *choices;
     cJSON *first;
     cJSON *delta;
     cJSON *audio;
     cJSON *data;
-
-    free(payload);
 
     if (root == NULL)
       {
@@ -825,6 +841,11 @@ static int vc_tts_write(void *ctx, const char *data, size_t len)
               return -1;
             }
 
+          if (s->done)
+            {
+              return 1;
+            }
+
           continue;
         }
 
@@ -842,7 +863,7 @@ static int vc_tts_write(void *ctx, const char *data, size_t len)
       s->line[s->line_len++] = data[i];
     }
 
-  return 0;
+  return s->done ? 1 : 0;
 }
 
 enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
@@ -1053,6 +1074,7 @@ out:
     }
 
   free(sink.line);
+  free(sink.payload);
   free(sink.pcm);
   free(body);
   return rc;

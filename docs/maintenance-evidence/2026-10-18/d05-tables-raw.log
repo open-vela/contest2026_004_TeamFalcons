@@ -1,0 +1,28 @@
+########## boot settle len=0 ##########
+
+
+########## ls -l /data/velaguard/config ########## len=239
+ls -l /data/velaguard/config
+/data/velaguard/config:
+ -rw-rw-rw-   0          12 probe.txt
+ -rw-rw-rw-   0        2078 points.json
+ -rw-rw-rw-   0          86 point_table_a.json
+ -rw-rw-rw-   0          86 point_table_b.json
+nsh> [K
+
+########## ls -l /data/velaguard/discover ########## len=231
+ls -l /data/velaguard/discover
+/data/velaguard/discover:
+ -rw-rw-rw-   0        2167 point_table_candidate.json
+ -rw-rw-rw-   0        4552 discover_state.bin
+ -rw-rw-rw-   0        2280 point_table_candidate.json.bak
+nsh> [K
+
+########## cat /data/velaguard/config/points.json ########## len=2049
+cat /data/velaguard/config/points.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1.000,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.010,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}
+nsh> [K
+
+########## cat /data/velaguard/discover/point_table_candidate.json ########## len=2154
+cat /data/velaguard/discover/point_table_candidate.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.00999999977648258,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}nsh> [K

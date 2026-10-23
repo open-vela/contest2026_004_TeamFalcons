@@ -457,6 +457,16 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
   va_num(value, sizeof(value), r->value);
   va_num(threshold, sizeof(threshold), r->threshold);
 
+  char id_spoken[32];
+  size_t id_len = strlen(r->id);
+  if (id_len >= sizeof(id_spoken)) id_len = sizeof(id_spoken) - 1;
+  memcpy(id_spoken, r->id, id_len);
+  id_spoken[id_len] = '\0';
+  for (size_t k = 0; k < id_len; k++)
+    {
+      if (id_spoken[k] == '_') id_spoken[k] = ' ';
+    }
+
   switch (r->state)
     {
       case VG_RUNTIME_RECOVERY_ACTIVE:
@@ -470,7 +480,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
             va_append(display, dcap, &d, "\n触发于本次启动第 %u 秒",
                       va_secs(r->raise_ms));
           }
-        va_append(speech, scap, &s, "%s 告警仍在。", r->id);
+        va_append(speech, scap, &s, "%s 告警仍在。", id_spoken);
         break;
 
       case VG_RUNTIME_RECOVERY_RECOVERED:
@@ -480,7 +490,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "事件记录完整，触发与恢复属于同一实例 %u",
                   r->id, va_kind_label(r->kind), va_secs(r->raise_ms),
                   va_secs(r->clear_ms), va_secs(r->duration_ms), r->episode);
-        va_append(speech, scap, &s, "%s 告警已恢复。", r->id);
+        va_append(speech, scap, &s, "%s 告警已恢复。", id_spoken);
         break;
 
       case VG_RUNTIME_RECOVERY_RECOVERED_PARTIAL:
@@ -489,7 +499,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "触发记录已被事件环覆盖，无法给出持续时长\n"
                   "恢复事件实例 %u",
                   r->id, va_kind_label(r->kind), r->episode);
-        va_append(speech, scap, &s, "%s 有恢复记录，起点丢失。", r->id);
+        va_append(speech, scap, &s, "%s 有恢复记录，起点丢失。", id_spoken);
         break;
 
       case VG_RUNTIME_RECOVERY_UNKNOWN:
@@ -498,7 +508,7 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
                   "无法确认 %s 的%s告警恢复情况\n"
                   "本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",
                   r->id, va_kind_label(r->kind));
-        va_append(speech, scap, &s, "%s 恢复无法确认。", r->id);
+        va_append(speech, scap, &s, "%s 恢复无法确认。", id_spoken);
         break;
     }
 

@@ -1065,7 +1065,7 @@ static bool board_bus_busy(void)
 }
 
 static void write_live_snapshot(FAR const struct vg_discover_summary *live,
-                                int n)
+                                int n, uint32_t generation)
 {
   int i;
 
@@ -1092,7 +1092,7 @@ static void write_live_snapshot(FAR const struct vg_discover_summary *live,
     }
   }
 
-  (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
+  (void)vg_live_snapshot_publish(generation, &g_live_snap_out);
 }
 
 static FAR void *vg_hmi_acq_thread(FAR void *arg)
@@ -1124,8 +1124,9 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
     if(n <= 0) {
       pthread_mutex_lock(&g_live_lock);
       g_live_n = 0;
-      write_live_snapshot(&live, 0);
+      write_live_snapshot(&live, 0, poll_gen);
       pthread_mutex_unlock(&g_live_lock);
+      (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
       usleep(500000);
       continue;
     }
@@ -1153,9 +1154,10 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
           g_live_on[i] = 0;
         }
         g_live_n = n;
-        write_live_snapshot(&live, n);
+        write_live_snapshot(&live, n, poll_gen);
         g_live_cycle++;
         pthread_mutex_unlock(&g_live_lock);
+        (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
         usleep(500000);
         continue;
       }
@@ -1181,10 +1183,11 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
           }
         }
         g_live_n = n;
-        write_live_snapshot(&live, n);
+        write_live_snapshot(&live, n, poll_gen);
         g_live_cycle++;
       }
       pthread_mutex_unlock(&g_live_lock);
+      (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
     }
 
     if(ok > 0) {

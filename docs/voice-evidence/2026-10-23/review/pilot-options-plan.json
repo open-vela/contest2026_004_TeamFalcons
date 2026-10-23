@@ -1,0 +1,122 @@
+[
+  {
+    "command": "",
+    "wait_ms": 15000,
+    "timeout_ms": 18000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo OPTIONS_point",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/point01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 1000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo OPTIONS_recovery",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 1000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

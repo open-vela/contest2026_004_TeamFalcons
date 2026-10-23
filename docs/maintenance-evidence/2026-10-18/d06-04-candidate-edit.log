@@ -1,0 +1,169 @@
+########## boot settle len=5164 ##########
+vgnet: manager started
+vgtime: sync started
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-18 19:16:32
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.350, +1350)	 check_stack_size: tid: 9, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.360, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.360, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.370, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.370, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.370, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.380, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(1.390, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.390, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.400, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.410, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.410, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.420, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.430, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.430, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.440, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.450, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.450, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.460, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.470, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.470, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.480, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.490, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.490, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.500, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.510, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(1.520, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(1.520, +0)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(1.540, +20)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vghmi: live ok=14/14 a1=24.0
+vgagent: ai_agent autostart ok (sta[ckagent] AI Agent - Vela AI Agent starting (build: 2026-10-18 17:43:24)
+=32768)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +110ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +270ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +280ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +550ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +560ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +630ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1360ms] P3: llm_proxy_init (rc=0)
+vghmi: live ok=14/14 a1=24.0
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1800ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Registered tool: web_search
+[tools] Registered tool: news_search
+[tools] Registered tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Registered tool: edit_file
+[tools] Registered tool: list_dir
+[tools] Registered tool: cron_add
+[tools] Registered tool: cron_list
+[tools] Registered tool: cron_remove
+[tools] Registered tool: fetch_url
+[tools] Registered tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Registered tool: get_battery
+[tools] Registered tool: get_wear_state
+[tools] Registered tool: get_screen_state
+[tools] Registered tool: get_heartrate
+[tools] Registered tool: get_steps
+[tools] Registered tool: vibrate
+[tools] Registered tool: feishu_doc_create
+[tools] Registered tool: feishu_doc_write
+[tools] Registered tool: feishu_doc_read
+[tools] Registered tool: feishu_doc_list
+[tools] Registered tool: feishu_chat_members
+[tools] Registered tool: feishu_send_mention
+[tools] Registered tool: music_search
+[tools] Reg
+
+
+########## vgpoint set temp -N 温度验收 ########## len=76
+vgpoint set temp -N 温度验收
+vgpoint: OK cmd=set table=candidate n=14
+nsh> [K
+
+########## vgpoint list -c ########## len=1756
+vgpoint list -c
+vgpoint: POINT id=temp name=温度验收 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=candidate n=14
+nsh> [K
+
+########## vgpoint list ########## len=1751
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+
+########## vgpoint get ########## len=885
+vgpoint get
+vgpoint: VALUE id=temp value=24 ok=1 unit=C age_ms=570
+vgpoint: VALUE id=humid value=50 ok=1 unit=%RH age_ms=570
+vgpoint: VALUE id=flood value=0 ok=1 unit=- age_ms=570
+vgpoint: VALUE id=smoke value=1 ok=1 unit=% age_ms=570
+vgpoint: VALUE id=acu_ret value=25 ok=1 unit=C age_ms=570
+vgpoint: VALUE id=acu_set value=24 ok=1 unit=C age_ms=570
+vgpoint: VALUE id=acu_run value=1 ok=1 unit=- age_ms=570
+vgpoint: VALUE id=ups_load value=40 ok=1 unit=% age_ms=570
+vgpoint: VALUE id=ups_soc value=80 ok=1 unit=% age_ms=570
+vgpoint: VALUE id=ups_bypass value=0 ok=1 unit=- age_ms=570
+vgpoint: VALUE id=volt_a value=230 ok=1 unit=V age_ms=570
+vgpoint: VALUE id=pwr_kw value=3 ok=1 unit=kW age_ms=570
+vgpoint: VALUE id=energy_kwh value=123.4 ok=1 unit=kWh age_ms=570
+vgpoint: VALUE id=door value=0 ok=1 unit=- age_ms=570
+vgpoint: OK cmd=get table=committed n=14
+nsh> [K
+
+########## cat /data/velaguard/discover/point_table_candidate.json ########## len=2156
+cat /data/velaguard/discover/point_table_candidate.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度验收","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.00999999977648258,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}nsh> [K
+
+########## cat /data/velaguard/config/points.json ########## len=2049
+cat /data/velaguard/config/points.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1.000,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.010,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}
+nsh> [K

@@ -1,0 +1,26 @@
+[build] TARGET=velaguard-lvgl preset=stm32h750b-dk:velaguard-lvgl MODE=build DEBUG=0
+[build] ensure contest app link...
+Contest app openvela link is ready.
+[build] regenerate packages/demos/Kconfig...
+mkkconfig in /home/hello19y/openvela/packages/demos
+[build] verify upstream public trees (no patches)...
+[upstream] nuttx: VelaGuard changes present (velaguard/ptt-user1-stm32h750b-dk)
+[upstream] apps: VelaGuard changes present (velaguard/netinit-esp8266)
+[upstream] MQTT-C: VelaGuard changes present (velaguard/mqtt-pal-hook)
+[upstream] ai_agent: maintenance dependencies present (velaguard/rsp01-response-timing)
+[1KCC:  misc/lib_utsname.c [1K[1KCC:  src/tools/tool_audit.c [1KCC:  vg_agent_tools.c [1K[1K[1KIN: libs/libc/libc.a -> staging/libc.a [1K[1KIN: /home/hello19y/openvela/apps/libapps.a -> staging/libapps.a [1K[1KCPP:  /home/hello19y/openvela/nuttx/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld-> /home/hello19y/openvela/nuttx/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld.tmp [1KLD: nuttx
+Memory region         Used Size  Region Size  %age Used
+            itcm:           0 B        64 KB      0.00%
+           flash:     1490680 B       128 MB      1.11%
+           dtcm1:           0 B        64 KB      0.00%
+           dtcm2:           0 B        64 KB      0.00%
+            sram:      355556 B       512 KB     67.82%
+           sram1:           0 B       128 KB      0.00%
+           sram2:           0 B       128 KB      0.00%
+           sram3:           0 B        32 KB      0.00%
+           sram4:           0 B        64 KB      0.00%
+           bbram:           0 B         4 KB      0.00%
+           sdram:           0 B         8 MB      0.00%
+CP: nuttx.hex
+CP: nuttx.bin
+staged: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/nuttx.hex（发布构建，TARGET=velaguard-lvgl）

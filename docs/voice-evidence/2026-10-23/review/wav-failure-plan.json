@@ -1,0 +1,52 @@
+[
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent audit flush",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "hexdump -n 64 /data/velaguard/voice/point02.wav",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ps",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ls /proc/3/group",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ls /proc/14/group",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice asr /data/velaguard/voice/point02.wav 20000",
+    "wait_ms": 300,
+    "timeout_ms": 25000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

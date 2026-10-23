@@ -1,0 +1,547 @@
+[
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_anomaly03",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly03.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly04",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly04.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly05",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly05.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly06",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly06.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly07",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly07.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly08",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly08.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly09",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly09.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo CASE_anomaly10",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly10.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 100,
+    "timeout_ms": 37000,
+    "wait_for": "[vgvoice] round_settled",
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent audit flush",
+    "wait_ms": 300,
+    "timeout_ms": 8000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 8000,
+    "optional_prompt": true
+  }
+]

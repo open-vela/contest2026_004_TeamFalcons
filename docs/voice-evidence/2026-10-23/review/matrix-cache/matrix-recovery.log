@@ -1,0 +1,191 @@
+2026-10-23T14:22:19.0056677+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=17 tts=11
+nsh> [K
+2026-10-23T14:22:19.3112333+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819608     899680    5919928    1236008    5795432   1108     13 Umem
+nsh> [K
+2026-10-23T14:22:19.6379387+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-23T14:22:19.9483081+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=64
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=54
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=180 lat_avg=55
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=63
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=110 lat_avg=58
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=110 lat_avg=59
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=55
+nsh> [K
+2026-10-23T14:22:20.2583592+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=525 wall=2026-10-23T14:22:21
+vgruntime: slave=1 boot_total=392 boot_ok=392 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=52 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=195 boot_ok=195 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=250 boot_lat_avg=50 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=195 boot_ok=195 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=45 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=585 boot_ok=585 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=47 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=585 boot_ok=585 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=220 boot_lat_avg=48 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=585 boot_ok=585 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=170 boot_lat_avg=47 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=195 boot_ok=195 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=220 boot_lat_avg=49 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=2732 boot_ok=2732 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=526120 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=526120 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=526130 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=526130 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=526220 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=526230 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=526230 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=526290 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=526290 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=526290 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=526340 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=526340 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=526340 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=526430 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+nsh> [K
+2026-10-23T14:22:20.9775553+08:00 CMD vgvoice mute off
+vgvoice mute off
+[vgvoice] mute preference not saved: -110
+vgvoice: muted=0
+nsh> [K
+2026-10-23T14:22:21.3840236+08:00 CMD echo CASE_recovery01
+echo CASE_recovery01
+CASE_recovery01
+nsh> [K
+2026-10-23T14:22:21.6000579+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery01.wav
+nsh> [K
+2026-10-23T14:22:22.1317183+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vgvoice] asr: /data/velaguard/voice/recovery01.wav is not a 16-bit wav
+
+2026-10-23T14:22:22.6512463+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=970
+[vgvoice] round_settled gen=52 state=9 failed=0 elapsed_ms=970
+
+2026-10-23T14:22:23.1358178+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=52 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-23T14:22:23.4484002+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-23T14:22:23.7598267+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=18 tts=11
+nsh> [K
+2026-10-23T14:22:23.9787549+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T14:22:24.1962533+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K
+2026-10-23T14:22:26.2001166+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T14:22:26.4030871+08:00 CMD echo CASE_recovery02
+echo CASE_recovery02
+CASE_recovery02
+nsh> [K
+2026-10-23T14:22:26.6228413+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery02.wav
+nsh> [K
+2026-10-23T14:22:27.1273699+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vgvoice] asr: /data/velaguard/voice/recovery02.wav is not a 16-bit wav
+
+2026-10-23T14:22:27.6367583+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=660
+[vgvoice] round_settled gen=55 state=9 failed=0 elapsed_ms=660
+
+2026-10-23T14:22:27.9726827+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=55 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-23T14:22:28.2846511+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-23T14:22:28.5986438+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=19 tts=11
+nsh> [K
+2026-10-23T14:22:28.8132896+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T14:22:29.0297229+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K
+2026-10-23T14:22:31.0329299+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T14:22:31.2483315+08:00 CMD echo CASE_recovery03
+echo CASE_recovery03
+CASE_recovery03
+nsh> [K
+2026-10-23T14:22:31.4491793+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery03.wav
+nsh> [K
+2026-10-23T14:22:31.9804281+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vgvoice] asr: /data/velaguard/voice/recovery03.wav is not a 16-bit wav
+
+2026-10-23T14:22:32.5126260+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=650
+[vgvoice] round_settled gen=58 state=9 failed=0 elapsed_ms=650
+
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+NSH prompt timeout: 
+所在位置 C:\Users\19y\AppData\Local\Temp\vgflash\nsh_plan_cache.ps1:52 字符: 50
++ ... iseconds -ge $limit) { throw ('NSH prompt timeout: '+$step.command) }
++                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (NSH prompt timeout: :String) [], RuntimeException
+    + FullyQualifiedErrorId : NSH prompt timeout: 
+ 

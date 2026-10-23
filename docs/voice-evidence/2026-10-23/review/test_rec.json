@@ -1,0 +1,37 @@
+[
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 35000,
+    "timeout_ms": 40000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

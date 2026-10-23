@@ -1,0 +1,15 @@
+s_sensor_n=14 (dumping 14)
+s_sensors[00] id=temp name=温度
+s_sensors[01] id=humid name=湿度
+s_sensors[02] id=flood name=水浸
+s_sensors[03] id=smoke name=烟雾
+s_sensors[04] id=acu_ret name=回风温度
+s_sensors[05] id=acu_set name=设定温度
+s_sensors[06] id=acu_run name=空调运行
+s_sensors[07] id=ups_load name=UPS负载
+s_sensors[08] id=ups_soc name=UPS电池
+s_sensors[09] id=ups_bypass name=UPS旁路
+s_sensors[10] id=volt_a name=A相电压
+s_sensors[11] id=pwr_kw name=有功功率
+s_sensors[12] id=energy_kwh name=正向电能
+s_sensors[13] id=door name=门磁

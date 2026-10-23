@@ -1,0 +1,7 @@
+/home/hello19y/.local/bin/ld: /home/hello19y/.local/opt/sysroot/usr/bin/../lib/gcc/x86_64-linux-gnu/14/libasan.a(asan_interceptors.o): in function `___interceptor_lgamma.part.0':
+(.text+0x1732c): undefined reference to `signgam'
+/home/hello19y/.local/bin/ld: /home/hello19y/.local/opt/sysroot/usr/bin/../lib/gcc/x86_64-linux-gnu/14/libasan.a(asan_interceptors.o): in function `___interceptor_lgammaf.part.0':
+(.text+0x175ca): undefined reference to `signgam'
+/home/hello19y/.local/bin/ld: /home/hello19y/.local/opt/sysroot/usr/bin/../lib/gcc/x86_64-linux-gnu/14/libasan.a(asan_interceptors.o): in function `___interceptor_lgammal.part.0':
+(.text+0x17868): undefined reference to `signgam'
+collect2: error: ld returned 1 exit status

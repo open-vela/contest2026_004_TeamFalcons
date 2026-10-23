@@ -17,6 +17,7 @@
  ****************************************************************************/
 
 #include <nuttx/config.h>
+#include <tools/tool_audit.h>
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 
@@ -60,6 +61,7 @@ static void usage(void)
 {
   printf("Usage:\n");
   printf("  vgagent status\n");
+  printf("  vgagent audit [flush] (read-only counters / bounded diagnostic drain)\n");
   printf("  vgagent advice\n");
   printf("  vgagent ask <text>\n");
   printf("  vgagent askbudget <100..30000 ms> <text> (voice-path diagnostic)\n");
@@ -258,6 +260,20 @@ int main(int argc, char *argv[])
     {
       usage();
       return 1;
+    }
+
+  if (strcmp(argv[1], "audit") == 0)
+    {
+      int rc = 0;
+      tool_audit_stats_t stats;
+      if (argc == 3 && strcmp(argv[2], "flush") == 0)
+        rc = tool_audit_flush(5000);
+      tool_audit_get_stats(&stats);
+      printf("vgagent: audit submitted=%u written=%u pending=%u lost=%u running=%d rc=%d\n",
+             (unsigned)stats.submitted, (unsigned)stats.written,
+             (unsigned)stats.pending, (unsigned)stats.lost,
+             stats.writer_running, rc);
+      return rc == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
     }
 
   if (strcmp(argv[1], "status") == 0)

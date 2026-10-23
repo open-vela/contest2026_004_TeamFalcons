@@ -61,6 +61,17 @@ int vg_point_table_read(FAR struct vg_discover_summary *sum,
   return 0;
 }
 
+int vg_live_points_view(struct vg_discover_summary *table,
+                        struct vg_live_snapshot *snap, uint32_t *generation)
+{
+  if (g_table_rc) return g_table_rc;
+  *table = g_table;
+  memset(snap, 0, sizeof(*snap));
+  if (!g_snap_rc) *snap = g_snap;
+  if (generation) *generation = 1;
+  return table->n_points;
+}
+
 int vg_point_store_root_ok(FAR const char *root)
 {
   (void)root;

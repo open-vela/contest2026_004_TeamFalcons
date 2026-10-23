@@ -1,0 +1,104 @@
+########## boot settle len=58 ##########
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## uname -a ########## len=89
+uname -a
+NuttX  0.0.0 43702275f28-dirty Oct 18 2026 18:41:50 arm stm32h750b-dk
+nsh> [K
+
+########## vgpoint list ########## len=1751
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+
+########## vgpoint list -c ########## len=1754
+vgpoint list -c
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=candidate n=14
+nsh> [K
+
+########## vgpoint get ########## len=885
+vgpoint get
+vgpoint: VALUE id=temp value=24 ok=1 unit=C age_ms=810
+vgpoint: VALUE id=humid value=50 ok=1 unit=%RH age_ms=810
+vgpoint: VALUE id=flood value=0 ok=1 unit=- age_ms=810
+vgpoint: VALUE id=smoke value=1 ok=1 unit=% age_ms=810
+vgpoint: VALUE id=acu_ret value=25 ok=1 unit=C age_ms=810
+vgpoint: VALUE id=acu_set value=24 ok=1 unit=C age_ms=810
+vgpoint: VALUE id=acu_run value=1 ok=1 unit=- age_ms=810
+vgpoint: VALUE id=ups_load value=40 ok=1 unit=% age_ms=810
+vgpoint: VALUE id=ups_soc value=80 ok=1 unit=% age_ms=810
+vgpoint: VALUE id=ups_bypass value=0 ok=1 unit=- age_ms=810
+vgpoint: VALUE id=volt_a value=230 ok=1 unit=V age_ms=810
+vgpoint: VALUE id=pwr_kw value=3 ok=1 unit=kW age_ms=810
+vgpoint: VALUE id=energy_kwh value=123.4 ok=1 unit=kWh age_ms=810
+vgpoint: VALUE id=door value=0 ok=1 unit=- age_ms=810
+vgpoint: OK cmd=get table=committed n=14
+nsh> [K
+
+########## vgnet status ########## len=191
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.117 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+
+########## vgcfg dump ########## len=71
+vgcfg dump
+vgcfg: OK seq=6 schema=1 committed=1 name=vgpoint
+nsh> [K
+
+########## ls -l /data/velaguard/config ########## len=239
+ls -l /data/velaguard/config
+/data/velaguard/config:
+ -rw-rw-rw-   0          12 probe.txt
+ -rw-rw-rw-   0        2078 points.json
+ -rw-rw-rw-   0          86 point_table_a.json
+ -rw-rw-rw-   0          86 point_table_b.json
+nsh> [K
+
+########## ls -l /data/velaguard/discover ########## len=289
+ls -l /data/velaguard/discover
+/data/velaguard/discover:
+ -rw-rw-rw-   0        2167 point_table_candidate.json
+ -rw-rw-rw-   0        4552 discover_state.bin
+ -rw-rw-rw-   0        2280 point_table_candidate.json.bak
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## cat /data/velaguard/config/points.json ########## len=2049
+cat /data/velaguard/config/points.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1.000,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.010,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}
+nsh> [K
+
+########## cat /data/velaguard/discover/point_table_candidate.json ########## len=2154
+cat /data/velaguard/discover/point_table_candidate.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100000001490116,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.00999999977648258,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100000001490116,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}nsh> [K

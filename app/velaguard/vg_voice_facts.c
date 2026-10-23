@@ -15,10 +15,12 @@ static uint32_t g_seq;
 static uint32_t g_config_version;
 static struct vg_voice_facts *g_capture;
 static pthread_t g_capture_owner;
+static bool g_capture_any;
 
 static void capture_locked(void)
 {
-  if (g_capture != NULL && pthread_equal(g_capture_owner, pthread_self()))
+  if (g_capture != NULL &&
+      (g_capture_any || pthread_equal(g_capture_owner, pthread_self())))
     {
       *g_capture = g_facts;
     }
@@ -34,6 +36,24 @@ bool vg_voice_facts_capture_begin(struct vg_voice_facts *out)
     {
       memset(out, 0, sizeof(*out));
       g_capture = out;
+      g_capture_any = false;
+      g_capture_owner = pthread_self();
+    }
+  pthread_mutex_unlock(&g_lock);
+  return ok;
+}
+
+bool vg_voice_facts_capture_begin_any(struct vg_voice_facts *out)
+{
+  bool ok;
+  if (out == NULL) return false;
+  pthread_mutex_lock(&g_lock);
+  ok = g_capture == NULL;
+  if (ok)
+    {
+      memset(out, 0, sizeof(*out));
+      g_capture = out;
+      g_capture_any = true;
       g_capture_owner = pthread_self();
     }
   pthread_mutex_unlock(&g_lock);
@@ -48,6 +68,7 @@ bool vg_voice_facts_capture_end(void)
     {
       ok = g_capture->seq != 0;
       g_capture = NULL;
+      g_capture_any = false;
     }
   pthread_mutex_unlock(&g_lock);
   return ok;

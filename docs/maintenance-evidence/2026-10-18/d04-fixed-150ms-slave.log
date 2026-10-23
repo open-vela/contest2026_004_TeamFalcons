@@ -70,3 +70,7 @@ STATUS 2026-10-18T18:57:57.7351794+08:00 elapsed_s=351.7 mode=normal requests=12
 STATUS 2026-10-18T18:58:07.7413634+08:00 elapsed_s=361.7 mode=normal requests=1300 replies=1300 suppressed=0 crc_scan=2
 STATUS 2026-10-18T18:58:17.7418522+08:00 elapsed_s=371.7 mode=normal requests=1337 replies=1337 suppressed=0 crc_scan=2
 STATUS 2026-10-18T18:58:27.7836762+08:00 elapsed_s=381.8 mode=normal requests=1373 replies=1373 suppressed=0 crc_scan=2
+STATUS 2026-10-18T18:58:37.7961116+08:00 elapsed_s=391.8 mode=normal requests=1411 replies=1411 suppressed=0 crc_scan=2
+STATUS 2026-10-18T18:58:47.8030200+08:00 elapsed_s=401.8 mode=normal requests=1447 replies=1447 suppressed=0 crc_scan=2
+STATUS 2026-10-18T18:58:57.8031944+08:00 elapsed_s=411.8 mode=normal requests=1483 replies=1483 suppressed=0 crc_scan=2
+STATUS 2026-10-18T18:59:07.9174414+08:00 elapsed_s=421.9 mode=normal requests=1522 replies=1522 suppressed=0 crc_scan=2

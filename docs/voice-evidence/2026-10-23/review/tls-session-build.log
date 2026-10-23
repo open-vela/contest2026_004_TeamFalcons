@@ -1,0 +1,3 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -DCONFIG_VG_HMI -ffunction-sections -fdata-sections -include ../../../../packages/ai_agent/tests/stub/host_compat.h -I../../../../packages/ai_agent/tests/stub -I../../../../packages/ai_agent/src -I../../../../packages/ai_agent/include -I../../../../apps/include/../crypto/mbedtls/mbedtls/include -o test_tls_voice_session ../../../../packages/ai_agent/tests/test_tls_voice_session.c -Wl,--gc-sections
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

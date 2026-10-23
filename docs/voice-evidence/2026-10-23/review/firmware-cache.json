@@ -1,0 +1,85 @@
+{
+  "time": "2026-10-23T14:13:07.622866+08:00",
+  "purpose": "Model/top-three contract retained; current-generation RAM data view and bounded asynchronous tool audit; no product deadline or spoken items removed",
+  ".": {
+    "head": "829019d9274eb62cbb5f87d723523e79e2152eba",
+    "branch": "velaguard/maintenance-stability",
+    "files": {
+      "app/velaguard/Kconfig": "60ad69d780172abdf0db98036e8b1fe91ff51befd7ae5cf69a9c0736dd12c3f5",
+      "app/velaguard/host_tests/Makefile": "e08dacb4e8ae7a66f17482dd6a89a3efca44df22bf094e827e1af986802a891f",
+      "app/velaguard/host_tests/test_agent_tools.c": "d2a7a94f2a511c2cdf0221bcbe0cc6112b815084da0a25ae11e12bfca346d634",
+      "app/velaguard/host_tests/test_runtime_anomaly.c": "13810ccf7f1e8d7d9a30432dfcc66d24da266d5ff80cfb8f6c834bff34cd1fe6",
+      "app/velaguard/host_tests/test_runtime_concurrent.c": "08f9b2f73d8dc0b8263dd5cdaa364c976223d67299c3f07838ee5d64c53d8c78",
+      "app/velaguard/host_tests/test_voice_answer.c": "2137300d7c7d275904a97a2c3060766df6c28607317d427ff8a86d6502ea842c",
+      "app/velaguard/host_tests/test_voice_cloud.c": "b528b93b474b46d29783cf256131a2b443639cbb42452fce9dfa68ea4b0c854e",
+      "app/velaguard/host_tests/test_voice_facts.c": "7bf947fd5dee8496201930c08c403e84e74ee24c1bb933b2ff9014d572cd0d4a",
+      "app/velaguard/host_tests/test_voice_session.c": "0c1a71f03cb9cd63a29d1507e5f0d1c5b219386e24bf16a28b51dcbafd0fe068",
+      "app/velaguard/vg_agent_tools.c": "c4492c7e88f311035d5e3b7b0a92b7a5e55a221fbd8bacd6616419bdef82bd4a",
+      "app/velaguard/vg_discover.h": "eb39e0ceec0a3dd8172d6a3bc171a515141323eb3e1d829c45332ea9f60cc4c1",
+      "app/velaguard/vg_mqtt_session.c": "d641c8443666e33b9d88efe3af72d7c3387127beafa7711c50e1df253c0d80ef",
+      "app/velaguard/vg_point_table.c": "43a75f6087af9d34289da565dd02c702043e81bd412f79d6aa948bc71d227dcc",
+      "app/velaguard/vg_runtime.c": "1244911551fc51771d334fb04c418526c766716d41e62fa60ee0548416e5402b",
+      "app/velaguard/vg_runtime.h": "2c7deb3590dee7faf3cb78ec9fe97f6b60ee78b3dc8c0c81bf54423934239a7c",
+      "app/velaguard/vg_ui_backend_board.c": "e6cc5b2c2d2d61213d5caf3b09a027b26f3c56982b02ad06ac5b7531461c1495",
+      "app/velaguard/vg_voice.c": "9bd91f83fdecc865be77292c4edb9a20833e29e4d5a1696991dbcf3dbf8be88b",
+      "app/velaguard/vg_voice.h": "a115f20ea388a1d44e4ec1f201c0a1f2490cdb923fb8008c22c9a10a989460a6",
+      "app/velaguard/vg_voice_answer.c": "7fc4ed7e8d91f9d8c1bf5c6b5d41f74bbfe5cbdeb147e95059b77f922d34eb76",
+      "app/velaguard/vg_voice_cloud.c": "784e81dcf8b347a184916774abe047a914f473639d54ebf4c9a90ec1602c315b",
+      "app/velaguard/vg_voice_cloud.h": "cf8c3e033062d03baa2829245a8a54ccd2020150769daadfb293fca8ada7eaa0",
+      "app/velaguard/vg_voice_facts.c": "f464be8936515b58d84937c80e2b01b35a4881e06f7a128bde508c7283bde370",
+      "app/velaguard/vg_voice_facts.h": "c83c86d2f7e6eaad186eb152b6a235824849c1d1422240730a33fd0b7e5a3aec",
+      "app/velaguard/vg_voice_pcm.c": "80ce8634a0b64e23c34961c7b41d81d1c829d95f12bec76ec2a2aca301e6e05f",
+      "app/velaguard/vg_voice_pcm.h": "f8cbab8dc51b3a33dbb0a77178afdf302dbab1277b62e1595cb8f5515877f311",
+      "app/velaguard/vg_voice_round.c": "c15ce29200ffd3c9189bb2d58a71fca1ea267f213128329a65a1578e03df3765",
+      "app/velaguard/vg_voice_session.c": "111cd5fa85fe988900abf6144faecf1f2dea19bc26f5d3f7462ef9ad8e4cb345",
+      "app/velaguard/vgagent.c": "1662db0af662e18e604039e764f02f33acd386bcf258f84f0cf7f763ac17a084",
+      "app/velaguard/vgvoice.c": "210ebb3c17b999f98a8f6d3224e26efb2196e0aef0a7d2f90a2ea885320a318f",
+      "scripts/build.sh": "6d7c0fd6908d02231b95d921eca9705a09d59abbd5f588fadfe93fe17aac9349",
+      "scripts/configs/velaguard-lvgl.defconfig": "d3c84c6f61c62ce53a98aef42f3b6dc61f7aa706a2e9021b0721a3a429578081"
+    }
+  },
+  "../packages/ai_agent": {
+    "head": "90e50d252095f32b37bcaccef797bf2a9ddaf0c6",
+    "branch": "velaguard/rsp01-response-timing",
+    "files": {
+      "CMakeLists.txt": "b0f04f6e047aae9ba1fef57f87a629d2d77314cca435a9c601c66babecfbb31a",
+      "Makefile": "3dbdb5087456d9773007ee503e4cd3d6ea7c6f6e8b780f5512299dfe29742007",
+      "include/tools/tool_audit.h": "255327bcbf0ce76679c9d74cec1ba657d3f51b1190435f60bb08a0b69a500d95",
+      "src/core/agent_loop.c": "d766840545a30df31f73cb912cd7e33e19b21369cb4f5c4e62c6577fcdc8ed76",
+      "src/core/context_builder.c": "a601fec7bbd02bb33a604cadf1647a4ad8b3bf0922096f53e30d5af4f7dbbaf8",
+      "src/infra/vela_tls.c": "78f372e6a2614ea25f3856f5ed42b46107b9d69cecd63a9557b802db89d7a321",
+      "src/llm/llm_proxy.c": "8b4ee84bd877383b6be77e8baeb3666fa44fa94e65a4efffbc92ef3104ae595f",
+      "src/tools/skill_loader.c": "29d43d758353083bc230d97a1354bb6edcae89d2fa3a8d0bb423dfe732c8c628",
+      "src/tools/tool_audit.c": "f3d87bb4588fa90bb0ade1dfd8d5dd90ce21b02d61ea6eb2007cb87591f4500d",
+      "src/tools/tool_registry.c": "a877706625e555ab59ad7b8ba0fa08b3261a9ad7730fd5676a202c188c79de60",
+      "src/tools/voice_scope.c": "a10033a4d0044fa897458d414f2c279bbcf0b2cee98c1a4c97bdbf912ee4eb60",
+      "src/tools/voice_scope.h": "fb7a3a6ec11ce96a37f7cd7740db53a9d88027f04bf70f53b8bd4d25859b6457",
+      "tests/test_context_cache.c": "dfd5ffd8e4ee2c4fa2f229c206a7790e6317f2fa7200530fd68c2f5955cdfeec",
+      "tests/test_tls_send_pressure.c": "0c2bc091c8281d2b84843724ecd5a52a0aeb74eac047df3f1b8b598852de5723",
+      "tests/test_tool_audit.c": "6d2e2c6e9b6b0a468f78a11ba4d94a4ead3b6c3de909fb51606b83a74a789e0f",
+      "tests/test_voice_scope.c": "5231aa7afff79dd3b45ef4e68dfb30598947d7b4eabab5f185009705b8cc6df5"
+    }
+  },
+  "../nuttx": {
+    "head": "cdfd23cdf0b1f621da52fed29d677df5390724c0",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk",
+    "files": {}
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266",
+    "files": {}
+  },
+  "config_sha256": "3fddd137fdafcab6db5022a2f0caf2120b7b802f7229e29db91598ee6674fa36",
+  "image": {
+    "nuttx.hex": "ccd882ad8dd78902884ad16a3a2f6b299b9aa411090a78ee02a63af84e1f057f",
+    "nuttx.bin": "5af5262db2afbcff2891cf0c95268f8dc83096a6c3039e238c5ab859528a3b34",
+    "nuttx.elf": "08b1823ed262e50e6e769d9550cd5d24d1672b572fd389ef6b974b6f77c951da",
+    "qspi_bootstub.hex": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e"
+  },
+  "contract_config": {
+    "CONFIG_VG_VOICE_DIRECT_TOOL": false,
+    "CONFIG_IOB_NBUFFERS": "128",
+    "CONFIG_NET_SOLINGER": "y"
+  }
+}

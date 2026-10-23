@@ -1,0 +1,32 @@
+[
+  {
+    "command": "echo PLAYBACK_DURATION_5S",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/playback05.wav http://192.168.137.1:8080/playback05.wav",
+    "wait_ms": 1000,
+    "timeout_ms": 60000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice play /data/velaguard/voice/playback05.wav",
+    "wait_ms": 6500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "rm /data/velaguard/voice/playback05.wav",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

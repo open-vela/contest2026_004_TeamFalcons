@@ -1,0 +1,11 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_discover test_discover.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_vgpoint test_vgpoint.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_render test_runtime_render.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -DVG_AGENT_TOOLS_HOST_TEST=1 -I../../../../apps/include -I../../../../packages/ai_agent/include -o test_agent_tools test_agent_tools.c \
+  ../vg_agent_tools.c ../vg_agent_query.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+/home/hello19y/.local/bin/ld: /tmp/ccGoxWdz.o: in function `collect_points':
+vg_agent_tools.c:(.text+0x70): undefined reference to `vg_live_points_view'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:84: test_agent_tools] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

@@ -1,0 +1,3 @@
+s_sensor_n=14 (dumping 2)
+s_sensors[00] id=temp name=温度
+s_sensors[01] id=humid name=湿度

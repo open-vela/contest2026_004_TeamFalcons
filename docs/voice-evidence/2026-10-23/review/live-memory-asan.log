@@ -1,0 +1,1 @@
+test_live_memory: OK (current boot only, confirmed generation, invalid source, coherent samples, config replacement invalidates old data)

@@ -1,0 +1,150 @@
+########## boot settle len=4499 ##########
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1327 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 10676 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3582 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad5176300000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 17311 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792350051
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM watchdog: call took 128150 ms (limit 120s), treating as timeout
+[trace:6ad5176300000000] iter=0 tool=(none) latency=128150ms llm=fail backend=0
+[trace:6ad5176300000000] END status=timeout iters=1 tools=0 llm_ms=128150 elapsed=128s backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30c1f2ca board=30c57710
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1316 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3582 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad517eb35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 17300 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792350187
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6ad517eb35c3b13a] iter=0 tool=read_file latency=5710ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 787 bytes
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 20497 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6ad517eb35c3b13a] iter=1 tool=vg_run_report latency=7620ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 721 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 21469 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6ad517eb35c3b13a] iter=2 tool=write_file latency=112550ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30c57710\nreq=2\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=温度离线,先查总线通信\nev=近期总线成功率58%,超时187次,温度已离线112秒\natt=检查从站4接线与地址,恢复后确认数值刷新\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=湿度离线,疑总线超时\nev=与其余7点同时离线,总线超时187次,无CRC错\natt=排查网关与从站链路,恢复后核对湿度
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1528 bytes)
+[agent] Tool write_file result: 64 bytes
+[agent] Local tool shortcut: skip LLM round
+[trace:6ad517eb35c3b13a] END status=ok iters=3 tools=3 llm_ms=125880 elapsed=131s backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=2 live_req=2
+[vgadvice] round ended, advice for this alarm set kept
+
+
+########## uname -a ########## len=89
+uname -a
+NuttX  0.0.0 43702275f28-dirty Oct 18 2026 18:41:50 arm stm32h750b-dk
+nsh> [K
+
+########## vgpoint list ########## len=1751
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+
+########## vgpoint list -c ########## len=1754
+vgpoint list -c
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=candidate n=14
+nsh> [K
+
+########## vgpoint get ########## len=901
+vgpoint get
+vgpoint: VALUE id=temp value=- ok=0 unit=C age_ms=12070
+vgpoint: VALUE id=humid value=- ok=0 unit=%RH age_ms=12070
+vgpoint: VALUE id=flood value=- ok=0 unit=- age_ms=12070
+vgpoint: VALUE id=smoke value=- ok=0 unit=% age_ms=12070
+vgpoint: VALUE id=acu_ret value=- ok=0 unit=C age_ms=12070
+vgpoint: VALUE id=acu_set value=- ok=0 unit=C age_ms=12070
+vgpoint: VALUE id=acu_run value=- ok=0 unit=- age_ms=12070
+vgpoint: VALUE id=ups_load value=- ok=0 unit=% age_ms=12070
+vgpoint: VALUE id=ups_soc value=- ok=0 unit=% age_ms=12070
+vgpoint: VALUE id=ups_bypass value=- ok=0 unit=- age_ms=12070
+vgpoint: VALUE id=volt_a value=- ok=0 unit=V age_ms=12070
+vgpoint: VALUE id=pwr_kw value=- ok=0 unit=kW age_ms=12070
+vgpoint: VALUE id=energy_kwh value=- ok=0 unit=kWh age_ms=12070
+vgpoint: VALUE id=door value=- ok=0 unit=- age_ms=12070
+vgpoint: OK cmd=get table=committed n=14
+nsh> [K
+
+########## vgnet status ########## len=191
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.117 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+
+########## vgcfg dump ########## len=71
+vgcfg dump
+vgcfg: OK seq=6 schema=1 committed=1 name=vgpoint
+nsh> [K

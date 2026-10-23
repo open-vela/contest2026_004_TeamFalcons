@@ -1,0 +1,28 @@
+{
+  "time": "2026-10-23T06:51:11.441626+00:00",
+  "host": "token-plan-cn.xiaomimimo.com",
+  "client": "host Python ssl; certificate verification enabled; no HTTP request or credential transmitted",
+  "results": [
+    {
+      "attempt": 1,
+      "version": "TLSv1.2",
+      "session_reused": false,
+      "handshake_ms": 145,
+      "ticket_available": true
+    },
+    {
+      "attempt": 2,
+      "version": "TLSv1.2",
+      "session_reused": true,
+      "handshake_ms": 77,
+      "ticket_available": true
+    },
+    {
+      "attempt": 3,
+      "version": "TLSv1.2",
+      "session_reused": true,
+      "handshake_ms": 85,
+      "ticket_available": true
+    }
+  ]
+}

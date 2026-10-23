@@ -1,0 +1,68 @@
+2026-10-23T14:25:12.8683628+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K
+2026-10-23T14:25:13.1653471+08:00 CMD vgagent audit flush
+vgagent audit flush
+vgagent: audit submitted=22 written=20 pending=0 lost=2 running=1 rc=-5
+nsh> [K
+2026-10-23T14:25:13.4744492+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+nsh: ls: stat failed: 110
+nsh> [K
+2026-10-23T14:25:13.7813000+08:00 CMD hexdump -n 64 /data/velaguard/voice/point02.wav
+hexdump -n 64 /data/velaguard/voice/point02.wav
+nsh: hexdump: open failed: 2
+nsh> [K
+2026-10-23T14:25:14.1041176+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%   0.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  51.1% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000888  44.9%   0.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001944  23.8%   2.3% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Ready              0000000000000000 0012264 0001128   9.1%   4.0% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x900145bd 0
+    7     3 200 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0000744  36.7%   2.2% ESP8266 0x9006798d 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x9006953d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001648  40.6%   0.0% vgvoice
+   10     3 100 RR       pthread   - Ready              0000000000000000 0049128 0029136  59.3%   6.8% velaguard_app_main 0x90016bd1 0
+   11    11  90 RR       Task      - Ready              0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  26.2% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006304  77.1%   4.4% vghmi 0x90014e01 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002c7dd 0x30007020
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90032d75 0x30007140
+   17    14  50 FIFO     pthread   - Ready              0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002c7dd 0x240572c8
+   26    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0013188  40.2%   0.0% ai_agent 0x9002e471 0x30011e18
+   27    14  40 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0008168 0001528  18.7%   0.0% ai_agent 0x90067489 0x300271c0
+nsh> [K
+2026-10-23T14:25:14.4120306+08:00 CMD ls /proc/3/group
+ls /proc/3/group
+/proc/3/group:
+ status
+ fd
+ env
+nsh> [K
+2026-10-23T14:25:14.7248762+08:00 CMD ls /proc/14/group
+ls /proc/14/group
+/proc/14/group:
+ status
+ fd
+ env
+nsh> [K
+2026-10-23T14:25:15.0355030+08:00 CMD vgvoice asr /data/velaguard/voice/point02.wav 20000
+vgvoice asr /data/velaguard/voice/point02.wav 20000
+[vgvoice] asr: /data/velaguard/voice/point02.wav is not a 16-bit wav
+vgvoice: asr rc=io status=0 req=0 resp=0 ms=0
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-23T14:25:15.5127974+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-23T14:25:15.8343416+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819608     899456    5920152    1236008    5795432   1105     15 Umem
+nsh> [K

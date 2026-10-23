@@ -1,0 +1,32 @@
+[
+  {
+    "command": "cat /proc/3/group/fd",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/12/group/fd",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/14/group/fd",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent audit",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  }
+]

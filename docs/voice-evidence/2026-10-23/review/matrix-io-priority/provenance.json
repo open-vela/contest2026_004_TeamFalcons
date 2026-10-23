@@ -1,0 +1,7 @@
+{
+  "anomaly_combined": "literal concatenation of part1 then part2; part2 starts at anomaly03; no repeat or omitted failed attempt",
+  "parts": {
+    "matrix-anomaly-part1.log": "8d92cfc7c9312c6628e68280a2a5b11b010fba7aaf4fbc2bd0f5001e193e81d0",
+    "matrix-anomaly-part2.log": "dc48b6dd78729b62738438ce2a02dabaebfa7228b69325a89cd38b6375010f42"
+  }
+}

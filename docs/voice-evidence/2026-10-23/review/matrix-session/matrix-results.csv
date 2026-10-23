@@ -1,0 +1,67 @@
+id,intent,first_playable_ms,state,speech_failed,text_correct,complete,answer,asr_ms,agent_ms,facts_ms,tts_ms,tts_result,settled_ms
+anomaly01,anomaly,22190,8,0,True,True,当前没有异常点位。,9330,5140,10,7700,ok,26250
+anomaly02,anomaly,21730,8,0,True,True,当前没有异常点位。,8930,4950,10,7830,ok,24720
+anomaly03,anomaly,21270,8,0,True,True,当前没有异常点位。,8850,4200,10,8190,ok,24620
+anomaly04,anomaly,22380,8,0,True,True,当前没有异常点位。,,5150,10,8410,ok,26690
+anomaly05,anomaly,23720,8,0,True,True,当前没有异常点位。,7780,6900,20,8980,ok,
+anomaly06,anomaly,21360,8,0,True,True,当前没有异常点位。,7560,5790,10,7980,ok,
+anomaly07,anomaly,19890,8,0,True,True,当前没有异常点位。,8000,2910,20,8930,ok,23670
+anomaly08,anomaly,18690,8,0,True,True,当前没有异常点位。,7980,2880,10,7800,ok,21600
+anomaly09,anomaly,22770,8,0,True,True,当前没有异常点位。,11390,3010,20,8340,ok,25880
+anomaly10,anomaly,22120,8,0,True,True,当前没有异常点位。,9720,4740,20,7610,ok,24980
+point01,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",9340,4250,10,17120,timeout,30730
+point02,point,28260,8,0,True,True,"ups_load UPS负载：40 %
+采样 0 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",10060,3870,10,14280,ok,33360
+point03,point,29750,8,0,True,True,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",10300,4830,10,14590,ok,35040
+point04,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 3 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",9150,9430,10,14770,timeout,33380
+point05,point,27600,8,0,True,True,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",9150,4460,20,13950,ok,
+point06,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 0 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",8580,10580,20,12770,timeout,
+point07,point,,9,0,False,False,,9670,,,,,30020
+point08,point,27790,8,0,True,True,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",9600,2890,10,15270,ok,31580
+point09,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",10620,3020,10,17040,timeout,
+point10,point,27040,8,0,True,True,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",9410,2790,10,14800,ok,32540
+recovery01,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",9090,5990,20,16070,timeout,31190
+recovery02,recovery,29940,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",11550,3450,20,14900,ok,35000
+recovery03,recovery,27470,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",9730,4520,10,13190,ok,31550
+recovery04,recovery,26340,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",11290,2770,10,12250,ok,31080
+recovery05,recovery,27980,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",10590,2630,10,14740,ok,33330
+recovery06,recovery,26440,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",8840,3600,10,13960,ok,30920
+recovery07,recovery,,9,0,False,False,e=没有找到这个点位，请报点位 ID 或完整名称,10490,,,,,10510
+recovery08,recovery,27420,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",9850,3430,10,14120,ok,32930
+recovery09,recovery,29070,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",11300,4440,10,13290,ok,34090
+recovery10,recovery,27690,8,0,True,True,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复",10080,3020,10,14560,ok,31550

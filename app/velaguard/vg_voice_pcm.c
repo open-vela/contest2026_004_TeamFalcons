@@ -60,29 +60,21 @@ void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
   wav_header(hdr, 1, rate, data_bytes);
 }
 
-int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out)
+int vg_pcm_wav_probe_stream(FILE *f, struct vg_pcm_wav *out)
 {
-  FILE *f;
   uint8_t hdr[12];
   bool have_fmt = false;
 
-  if (path == NULL || out == NULL)
+  if (f == NULL || out == NULL)
     {
       return -EINVAL;
     }
 
   memset(out, 0, sizeof(*out));
 
-  f = fopen(path, "rb");
-  if (f == NULL)
-    {
-      return -errno;
-    }
-
   if (fread(hdr, 1, sizeof(hdr), f) != sizeof(hdr) ||
       memcmp(hdr, "RIFF", 4) != 0 || memcmp(hdr + 8, "WAVE", 4) != 0)
     {
-      fclose(f);
       return -EINVAL;
     }
 
@@ -123,7 +115,6 @@ int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out)
 
           out->data_off = (uint32_t)pos;
           out->data_bytes = size;
-          fclose(f);
           return 0;
         }
 
@@ -134,8 +125,28 @@ int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out)
         }
     }
 
-  fclose(f);
   return -EINVAL;
+}
+
+int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out)
+{
+  FILE *f;
+  int ret;
+
+  if (path == NULL || out == NULL)
+    {
+      return -EINVAL;
+    }
+
+  f = fopen(path, "rb");
+  if (f == NULL)
+    {
+      return -errno;
+    }
+
+  ret = vg_pcm_wav_probe_stream(f, out);
+  fclose(f);
+  return ret;
 }
 
 int vg_pcm_wav_downmix_mono(const char *src, const char *dst)

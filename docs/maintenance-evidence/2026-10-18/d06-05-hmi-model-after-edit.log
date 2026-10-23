@@ -1,0 +1,4 @@
+s_sensor_n=14 (dumping 3)
+s_sensors[00] id=temp name=温度
+s_sensors[01] id=humid name=湿度
+s_sensors[02] id=flood name=水浸

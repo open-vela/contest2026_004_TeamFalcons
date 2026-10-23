@@ -506,6 +506,8 @@ static pthread_mutex_t g_bus_mtx = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t g_live_mtx = PTHREAD_MUTEX_INITIALIZER;
 static struct vg_discover_summary g_live;
 static uint32_t g_live_gen;
+static struct vg_live_snapshot g_memory_snapshot;
+static uint32_t g_memory_generation;
 
 int vg_bus_try_lock(void)
 {
@@ -542,7 +544,9 @@ int vg_live_points_replace(FAR const struct vg_discover_summary *sum)
   pthread_mutex_lock(&g_live_mtx);
   if (sum == NULL) memset(&g_live, 0, sizeof(g_live));
   else memcpy(&g_live, sum, sizeof(g_live));
-  g_live_gen++;
+  if (++g_live_gen == 0) ++g_live_gen;
+  memset(&g_memory_snapshot, 0, sizeof(g_memory_snapshot));
+  g_memory_generation = 0;
   pthread_mutex_unlock(&g_live_mtx);
   return 0;
 }
@@ -1221,4 +1225,47 @@ int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,
   sum->baud = 9600;
   snprintf(sum->devpath, sizeof(sum->devpath), "/dev/rs485");
   return vg_point_table_write_candidate(sum, cand_path);
+}
+
+
+int vg_live_snapshot_publish(uint32_t generation,
+                             FAR const struct vg_live_snapshot *snap)
+{
+  if (!snap || snap->n < 0 || snap->n > VG_DISCOVER_MAX_POINTS || !snap->tick_ms)
+    return -EINVAL;
+  pthread_mutex_lock(&g_live_mtx);
+  int ret = -ESTALE;
+  if (generation == g_live_gen && generation != 0)
+    {
+      ret = -EINVAL;
+      bool valid = snap->n == g_live.n_points;
+      for (int i = 0; valid && i < snap->n; i++)
+        valid = strncmp(snap->samples[i].id, g_live.points[i].id,
+                        sizeof(snap->samples[i].id)) == 0;
+      if (valid)
+        {
+          g_memory_snapshot = *snap;
+          g_memory_generation = generation;
+          ret = 0;
+        }
+    }
+  pthread_mutex_unlock(&g_live_mtx);
+  return ret;
+}
+
+int vg_live_points_view(FAR struct vg_discover_summary *table,
+                        FAR struct vg_live_snapshot *snap,
+                        FAR uint32_t *generation)
+{
+  if (!table || !snap) return -EINVAL;
+  pthread_mutex_lock(&g_live_mtx);
+  *table = g_live;
+  if (generation) *generation = g_live_gen;
+  if (g_memory_generation == g_live_gen && g_memory_generation != 0)
+    *snap = g_memory_snapshot;
+  else
+    memset(snap, 0, sizeof(*snap));
+  int n = g_live.n_points;
+  pthread_mutex_unlock(&g_live_mtx);
+  return n;
 }

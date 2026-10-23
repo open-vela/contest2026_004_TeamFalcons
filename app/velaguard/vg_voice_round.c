@@ -57,7 +57,7 @@
 #define VR_STACK_SIZE   49152
 #define VR_PRIORITY     118
 #define VR_TICK_MS      50
-#define VR_AGENT_POLL_MS 100
+#define VR_AGENT_POLL_MS 10
 #define VR_PLAY_EXTRA_MS 5000u
 
 struct voice_round
@@ -350,6 +350,7 @@ static bool vr_wait_agent(uint32_t deadline_ms)
 static bool vr_build_question(const char *text, char *question, size_t qcap,
                               char *tool, size_t tcap,
                               char *tool_json, size_t jcap,
+                              char *target_id, size_t icap,
                               char *reason, size_t rcap)
 {
   struct vg_voice_intent_result intent;
@@ -359,6 +360,11 @@ static bool vr_build_question(const char *text, char *question, size_t qcap,
   const char *point_id;
   int n = 0;
   int rc;
+
+  if (target_id && icap > 0)
+    {
+      target_id[0] = '\0';
+    }
 
   if (vg_vi_classify(text, &intent) == VG_VI_REFUSED)
     {
@@ -423,6 +429,11 @@ static bool vr_build_question(const char *text, char *question, size_t qcap,
       return false;
     }
 
+  if (target_id && icap > 0)
+    {
+      snprintf(target_id, icap, "%s", point_id);
+    }
+
   if (intent.intent == VG_VI_RECOVERY)
     {
       snprintf(question, qcap,
@@ -463,6 +474,13 @@ static bool vr_render_answer(const struct vg_voice_facts *f, char *display,
 
 /* ── action execution ───────────────────────────────────────────── */
 
+static void vr_log_settled(void)
+{
+  syslog(LOG_INFO, "[vgvoice] round_settled gen=%u state=%u failed=%u elapsed_ms=%u\n",
+         (unsigned)g_vr.s.generation, (unsigned)g_vr.s.state,
+         g_vr.s.speech_failed, (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
+}
+
 static void vr_show_result(void)
 {
   struct vg_voice_session *s = &g_vr.s;
@@ -472,12 +490,14 @@ static void vr_show_result(void)
            (unsigned)s->generation, (unsigned)(vr_now_ms() - s->submit_ms));
   vr_ui_set_status(s->speech_failed ? "播报失败，可重试播报" : "");
   vr_ui_publish();
+  vr_log_settled();
 }
 
 static void vr_show_error(void)
 {
   vr_ui_set_status("出错了");
   vr_ui_publish();
+  vr_log_settled();
 }
 
 /* Execute the resolved read-only tool and render the answer from the
@@ -547,13 +567,21 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
   char reason[128];
   char tool[32];
   char tool_json[96];
+  char target_id[48];
+  char display[VG_VOICE_DISPLAY_MAX];
+  char speech[VG_VS_TEXT_MAX];
+  struct vg_voice_facts agent_facts;
+  bool capturing = false;
+  bool captured = false;
   uint32_t config_version = g_vr.s.config_version;
   tool[0] = '\0';
   tool_json[0] = '\0';
+  target_id[0] = '\0';
   vr_log_stage("agent_begin");
 
   if (!vr_build_question(text, question, sizeof(question), tool, sizeof(tool),
-                         tool_json, sizeof(tool_json), reason, sizeof(reason)))
+                         tool_json, sizeof(tool_json), target_id,
+                         sizeof(target_id), reason, sizeof(reason)))
     {
       vr_ui_error(reason);
       return vg_vs_agent_result(&g_vr.s, gen, false, reason, vr_now_ms());
@@ -572,15 +600,25 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   return vr_answer_from_tool(gen, tool, tool_json, config_version);
 #else
+  capturing = vg_voice_facts_capture_begin_any(&agent_facts);
+
   for (;;)
     {
       int queued;
       if (g_vr.cancel)
         {
+          if (capturing)
+            {
+              vg_voice_facts_capture_end();
+            }
           return 0;
         }
       if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
         {
+          if (capturing)
+            {
+              vg_voice_facts_capture_end();
+            }
           vr_ui_error("等待查询超时");
           return vg_vs_agent_result(&g_vr.s, gen, false,
                                     "agent queue timeout", vr_now_ms());
@@ -592,6 +630,10 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
         }
       if (queued != -EBUSY)
         {
+          if (capturing)
+            {
+              vg_voice_facts_capture_end();
+            }
           vr_ui_error("查询暂不可用，请稍后再试");
           return vg_vs_agent_result(&g_vr.s, gen, false,
                                     "agent unavailable", vr_now_ms());
@@ -613,6 +655,11 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   if (!vr_wait_agent(g_vr.s.deadline_ms))
     {
+      if (capturing)
+        {
+          vg_voice_facts_capture_end();
+        }
+
       /* The round may still be running; its reply is discarded because the
        * generation no longer matches once this call returns an error. */
 
@@ -635,6 +682,10 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
   {
     vg_agent_round_clear();
     vr_log_stage("agent_reply");
+    if (capturing)
+      {
+        captured = vg_voice_facts_capture_end();
+      }
     if (g_vr.cancel) return 0;
     if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
       {
@@ -644,9 +695,60 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
       }
   }
 
-  /* C already resolved the intent and exact point.  Read once more via
-   * that tool and capture only this thread's publication.  A model tool,
-   * background tool or late old request cannot supply this answer. */
+  /* If the agent tool invocation already published matching facts, reuse
+   * them directly to save 400-800 ms of redundant tool execution. */
+
+  bool facts_match = false;
+  if (captured && agent_facts.seq != 0)
+    {
+      if (strcmp(tool, "vg_anomaly_read") == 0)
+        {
+          facts_match = agent_facts.anomaly_seen > 0;
+        }
+      else if (strcmp(tool, "vg_alarm_recovery") == 0)
+        {
+          facts_match = agent_facts.has_recovery &&
+                        strcmp(agent_facts.recovery.id, target_id) == 0;
+        }
+      else if (strcmp(tool, "vg_point_read") == 0)
+        {
+          facts_match = agent_facts.has_point &&
+                        strcmp(agent_facts.point_id, target_id) == 0;
+        }
+    }
+
+  if (facts_match)
+    {
+      syslog(LOG_INFO, "[vgvoice] reused agent facts for %s seq=%u\n",
+             tool, (unsigned)agent_facts.seq);
+      syslog(LOG_INFO, "[vgvoice] intent read %s rc=0 captured=1 seq=%u\n",
+             tool, (unsigned)agent_facts.seq);
+      vr_log_stage("facts_end");
+
+#ifdef CONFIG_VG_BUS_DISCOVER
+      if (vg_live_points_gen() != config_version)
+        {
+          vr_ui_error("点表已变更，请重新提问");
+          return vg_vs_agent_result(&g_vr.s, gen, false, "config changed",
+                                    vr_now_ms());
+        }
+#endif
+
+      agent_facts.config_version = config_version;
+      if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) > 0 &&
+          vr_render_answer(&agent_facts, display, sizeof(display), speech,
+                           sizeof(speech)))
+        {
+          pthread_mutex_lock(&g_vr.ui_lock);
+          snprintf(g_vr.ui.answer, sizeof(g_vr.ui.answer), "%s", display);
+          pthread_mutex_unlock(&g_vr.ui_lock);
+
+          return vg_vs_agent_result(&g_vr.s, gen, true, speech, vr_now_ms());
+        }
+    }
+
+  /* Fallback: read once more via the tool and capture only this thread's
+   * publication if the model tool did not supply matching facts. */
 
   return vr_answer_from_tool(gen, tool, tool_json, config_version);
 #endif

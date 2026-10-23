@@ -103,6 +103,19 @@ static enum vg_agent_query_rc collect_points(struct vg_agent_point *out,
     }
 
   *n_out = 0;
+#ifdef CONFIG_VG_HMI_DISCOVER
+  rc_read = vg_live_points_view(&table, &snap, NULL);
+  if (rc_read <= 0) return VG_AGENT_QUERY_NO_TABLE;
+  if (snap.tick_ms != 0)
+    {
+      uint32_t now = vg_live_now_ms();
+      if ((int32_t)(now - snap.tick_ms) >= 0)
+        {
+          have_snap = true;
+          age = now - snap.tick_ms;
+        }
+    }
+#else
   rc_read = vg_point_table_read(&table, CONFIG_VG_DISCOVER_POINTS_PATH);
 
   if (rc_read == -ENOENT)
@@ -140,6 +153,8 @@ static enum vg_agent_query_rc collect_points(struct vg_agent_point *out,
           age = now - snap.tick_ms;
         }
     }
+
+#endif
 
   for (i = 0; i < table.n_points && i < VG_AGENT_QUERY_MAX; i++)
     {

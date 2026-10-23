@@ -8,12 +8,14 @@
   {
     "command": "vgagent tool vg_anomaly_read",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgruntime dump",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "",
@@ -24,12 +26,14 @@
   {
     "command": "vgagent tool vg_anomaly_read",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgagent tool vg_alarm_recovery temp",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "",
@@ -40,17 +44,20 @@
   {
     "command": "vgagent tool vg_anomaly_read",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgagent tool vg_alarm_recovery temp",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgruntime dump",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "",
@@ -61,7 +68,8 @@
   {
     "command": "vgagent tool vg_alarm_recovery temp",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "",
@@ -72,12 +80,14 @@
   {
     "command": "vgagent tool vg_anomaly_read",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "echo RING_1",
@@ -456,12 +466,14 @@
   {
     "command": "vgruntime dump",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "",
@@ -472,26 +484,107 @@
   {
     "command": "vgagent tool vg_alarm_recovery {\\\"point_id\\\":\\\"flood\\\",\\\"kind\\\":\\\"offline\\\"}",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgagent tool vg_alarm_recovery temp",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "vgstats dump",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "free",
     "wait_ms": 300,
-    "timeout_ms": 10000
+    "timeout_ms": 10000,
+    "optional_prompt": true
   },
   {
     "command": "cat /proc/net/tcp",
     "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "",
+    "mode": "offline12",
+    "wait_ms": 16000,
+    "timeout_ms": 19000
+  },
+  {
+    "command": "echo THREE_ANOMALIES_MODEL_VOICE",
+    "wait_ms": 300,
     "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "mode": "normal",
+    "wait_ms": 12000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "vgagent audit flush",
+    "wait_ms": 1000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
   }
 ]

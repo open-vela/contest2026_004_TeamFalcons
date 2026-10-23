@@ -144,6 +144,14 @@ uint32_t vg_live_points_gen(void);
 int vg_live_points_copy(FAR struct vg_discover_summary *out);
 int vg_live_points_copy_versioned(FAR struct vg_discover_summary *out, FAR uint32_t *generation);
 
+/* 本次启动的内存快照。发布时必须匹配已确认配置版本；
+ * 换表后先使旧样本失效，再等待正常采集发布新样本。 */
+int vg_live_snapshot_publish(uint32_t generation,
+                             FAR const struct vg_live_snapshot *snap);
+int vg_live_points_view(FAR struct vg_discover_summary *table,
+                        FAR struct vg_live_snapshot *snap,
+                        FAR uint32_t *generation);
+
 int vg_point_validate_id(FAR const char *id);
 int vg_point_validate_name(FAR const char *name);
 int vg_point_cmdline_len(int argc, char *argv[]);

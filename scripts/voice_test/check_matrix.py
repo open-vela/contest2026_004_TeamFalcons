@@ -26,18 +26,40 @@ for group, tool in [('anomaly', 'vg_anomaly_read'), ('point', 'vg_point_read'), 
             bool(re.search(r'^ups_load UPS负载：40(?:\.0+)?\s*%', answer)) if group == 'point' else
             '无法确认 ups_load' in answer and '当前正常不能证明' in answer)
         correct = bool(private and private[1] == tool and consistent)
+        stages = {name: int(value) for name, value in
+                  re.findall(r'\[vgvoice\] stage=(\w+) t=(\d+)', block)}
+        def duration(begin, end):
+            if begin not in stages or end not in stages:
+                return None
+            return stages[end] - stages[begin]
+        settled = re.search(r'round_settled gen=\d+ state=\d+ failed=\d+ elapsed_ms=(\d+)', block)
+        tts = re.search(r'\[vgvoice\] tts rc=(\w+)', block)
         ms = int(ready[1]) if ready else None
+        # 串口并发输出可能截断数字；与已完成阶段矛盾的字段不能计为成功证据。
+        if ms is not None and ms < stages.get('tts_end', 0):
+            ms = None
+        settled_ms = int(settled[1]) if settled else None
+        if settled_ms is not None and settled_ms < max(stages.values(), default=0):
+            settled_ms = None
         complete = bool(ms is not None and ms <= 30000 and state and
                         state[1] == '8' and state[2] == '0' and correct)
         rows.append(dict(id=marker[1], intent=group, first_playable_ms=ms,
             state=int(state[1]) if state else None,
             speech_failed=int(state[2]) if state else None,
-            text_correct=correct, complete=complete, answer=answer))
+            text_correct=correct, complete=complete, answer=answer,
+            asr_ms=duration('asr_begin', 'asr_end'),
+            agent_ms=duration('agent_begin', 'agent_reply'),
+            facts_ms=duration('agent_reply', 'facts_end'),
+            tts_ms=duration('tts_begin', 'tts_end'),
+            tts_result=tts[1] if tts else None,
+            settled_ms=settled_ms))
 expected = {item['id'] for item in json.loads((a.directory / 'cases.json').read_text())}
 if len(rows) != 30 or {row['id'] for row in rows} != expected:
     raise SystemExit('Incomplete or duplicated 30-case evidence; cannot report a complete matrix')
 summary = {'attempts': len(rows), 'complete': sum(row['complete'] for row in rows),
-           'correct_text': sum(row['text_correct'] for row in rows), 'groups': {}}
+           'correct_text': sum(row['text_correct'] for row in rows),
+           'settled_over_30s': sum(row['settled_ms'] is not None and row['settled_ms'] > 30000 for row in rows),
+           'groups': {}}
 for group in ['anomaly', 'point', 'recovery']:
     selected = [row for row in rows if row['intent'] == group]
     times = [row['first_playable_ms'] for row in selected if row['complete']]
