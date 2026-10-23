@@ -85,7 +85,7 @@ ai_agent 框架改动已本地提交 d9da371；没有推送。
 1. **后台 abandon 后 ASR 变慢的说法证伪**。分段显示 preemption 轮 ASR 慢在 body（上传吞吐段）翻倍，dns/tls/send 与空闲基线一致；在 critical 模式下等后台解释完成、无任何 abandon 的普通轮，body 同样翻倍（3040ms 空闲基线 vs 5100/6340/7640ms 告警态）。结论：变慢与 abandon 无关，是告警模式下系统共存的吞吐特性——LVCL 重绘使 LTDC 显示扫描与 ETH DMA 争用 SDRAM 带宽的假设与延迟型阶段不变、吞吐型阶段翻倍的观测一致（未做硬件级验证）。若要在此负载下达标，需要产品决策（语音前台期间节流非必要重绘），不是缺陷修复。
 2. **press 立即提交的说法证伪，15 秒上限生产链路实际通过**。此前把阶段行 t 值（相对 15 秒自动截断时的 submit_ms）误读为按 press 计时。重读 record-limit-offline.log：录音实测 14.95 秒、478350 字节，自动提交后 ASR 因 eth0 关闭按设计失败（req=0，无任何上传），取消回收干净、PCM=0。两次运行一致。此前 README 所记会话残留缺陷与播放后 press 缺陷撤销；press 到录音的单独验证见 press-flow-test.log。
 
-preemption 第七次尝试（preemption-final7.log）：暂停/恢复标记正常，ASR 9.4 秒（告警负载），TTS 以 rc=net 连接失败收场。七次尝试的语音轮次分别败于告警负载下 ASR 吞吐翻倍、TTS 服务窗口波动（body 8.6-9.2 秒或瞬时网络错误）；两项都不是合同内软件缺陷，达标需上述设计决策配合较好的服务窗口。
+preemption 共八次尝试（preemption-final2 至 final8，含 final6-timed 分段版）：暂停/恢复/后台续跑标记全部正常，语音轮次分别败于告警负载下 ASR 吞吐段翻倍（body 5100-7640ms）与 TTS 服务窗口波动（body 8.6-9.6 秒或瞬时网络错误）；两项都不是合同内软件缺陷，达标需上述设计决策配合较好的服务窗口。非空异常共六次尝试（nonempty-anomaly-final2 至 final6），文字与只读基准始终一致，完整播报败因同上。误覆盖的 final5 原始日志已从 git 提交恢复，覆盖产生的结果另存 final6/final8。
 
 ## 矩阵 #4 与 eMMC 卡死事故
 
