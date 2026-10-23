@@ -1,0 +1,492 @@
+2026-10-23T10:50:59.7046379+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K2026-10-23T10:51:00.3146353+08:00 CMD echo CASE_recovery01
+echo CASE_recovery01
+CASE_recovery01
+nsh> [K2026-10-23T10:51:00.5376357+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery01.wav
+nsh> [K2026-10-23T10:51:00.8502497+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:51:01.1524166+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752661
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=120549 resp=471 ms=8010
+[vgvoice] stage=asr_end t=8400
+[vgvoice] stage=agent_begin t=8410
+[vgvoice] stage=tool_direct t=8590
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=19
+[vgvoice] stage=facts_end t=9040
+[vgvoice] stage=tts_begin t=9040
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752670
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=314880 resp=0 ms=23350
+[vgvoice] stage=tts_end t=32680
+2026-10-23T10:51:33.6059792+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=55 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载恢复了吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:51:33.9233666+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载恢复了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:51:34.2366147+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=19 tts=19
+nsh> [K2026-10-23T10:51:34.5512322+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:51:34.8634892+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:51:35.1754292+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:51:35.7125279+08:00 CMD echo CASE_recovery02
+echo CASE_recovery02
+CASE_recovery02
+nsh> [K2026-10-23T10:51:35.9502178+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery02.wav
+nsh> [K2026-10-23T10:51:36.2770341+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:51:36.5883510+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752697
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=164497 resp=487 ms=10280
+[vgvoice] stage=asr_end t=10690
+[vgvoice] stage=agent_begin t=10690
+[vgvoice] stage=tool_direct t=11000
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=20
+[vgvoice] stage=facts_end t=11570
+[vgvoice] stage=tts_begin t=11570
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752708
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=276480 resp=0 ms=23790
+[vgvoice] stage=tts_end t=35700
+2026-10-23T10:52:12.0509059+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=58 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=请问UPS负载的告警解除了吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:52:12.3619842+08:00 CMD vgvoice round text
+vgvoice round text
+q=请问UPS负载的告警解除了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:52:12.6761743+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=20 tts=20
+nsh> [K2026-10-23T10:52:12.9895992+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:52:13.3019794+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:52:13.6135798+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:52:14.1269678+08:00 CMD echo CASE_recovery03
+echo CASE_recovery03
+CASE_recovery03
+nsh> [K2026-10-23T10:52:14.3377198+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery03.wav
+nsh> [K2026-10-23T10:52:14.6494650+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:52:14.9586234+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752736
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=131429 resp=474 ms=8840
+[vgvoice] stage=asr_end t=9690
+[vgvoice] stage=agent_begin t=9700
+[vgvoice] stage=tool_direct t=9910
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=21
+[vgvoice] stage=facts_end t=10580
+[vgvoice] stage=tts_begin t=10590
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752746
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=22290
+[vgvoice] stage=tts_end t=33350
+2026-10-23T10:52:48.1872558+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=61 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载还在报警吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:52:48.5122560+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载还在报警吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:52:48.8215867+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=21 tts=21
+nsh> [K2026-10-23T10:52:49.1413564+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:52:49.4584013+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:52:49.7677613+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:52:50.2766940+08:00 CMD echo CASE_recovery04
+echo CASE_recovery04
+CASE_recovery04
+nsh> [K2026-10-23T10:52:50.4943051+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery04.wav
+nsh> [K2026-10-23T10:52:50.8029136+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:52:51.1124152+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752772
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=163217 resp=483 ms=10360
+[vgvoice] stage=asr_end t=10910
+[vgvoice] stage=agent_begin t=10910
+[vgvoice] stage=tool_direct t=11120
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=22
+[vgvoice] stage=facts_end t=11580
+[vgvoice] stage=tts_begin t=11580
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752783
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgvoice] tts rc=ok status=200 pcm=284160 resp=0 ms=24240
+[vgvoice] stage=tts_end t=36170
+2026-10-23T10:53:27.0639588+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=64 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=帮我看看UPS负载恢复没有。
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:53:27.3851829+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我看看UPS负载恢复没有。
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:53:27.6959248+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=22 tts=22
+nsh> [K2026-10-23T10:53:28.0067235+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:53:28.3166699+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:53:28.6266192+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:53:29.1330549+08:00 CMD echo CASE_recovery05
+echo CASE_recovery05
+CASE_recovery05
+nsh> [K2026-10-23T10:53:29.3503739+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery05.wav
+nsh> [K2026-10-23T10:53:29.6630122+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:53:29.9747478+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752810
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=143589 resp=481 ms=9540
+[vgvoice] stage=asr_end t=10010
+[vgvoice] stage=agent_begin t=10010
+[vgvoice] stage=tool_direct t=10240
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=23
+[vgvoice] stage=facts_end t=10650
+[vgvoice] stage=tts_begin t=10650
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752821
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=25150
+[vgvoice] stage=tts_end t=36140
+2026-10-23T10:54:05.8632112+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=67 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载的告警消除了吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:54:06.1744880+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载的告警消除了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:54:06.4885982+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=23 tts=23
+nsh> [K2026-10-23T10:54:06.7987973+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:54:07.1090213+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:54:07.4333948+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:54:07.9551343+08:00 CMD echo CASE_recovery06
+echo CASE_recovery06
+CASE_recovery06
+nsh> [K2026-10-23T10:54:08.1743692+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery06.wav
+nsh> [K2026-10-23T10:54:08.4829497+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:54:08.8069773+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752849
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=121189 resp=471 ms=7770
+[vgvoice] stage=asr_end t=8210
+[vgvoice] stage=agent_begin t=8210
+[vgvoice] stage=tool_direct t=8330
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=24
+[vgvoice] stage=facts_end t=8640
+[vgvoice] stage=tts_begin t=8640
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752857
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=24300
+[vgvoice] stage=tts_end t=33010
+2026-10-23T10:54:41.5744385+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=70 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载正常了吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:54:41.8848806+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载正常了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:54:42.1954212+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=24 tts=24
+nsh> [K2026-10-23T10:54:42.5092829+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:54:42.8218905+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:54:43.1388633+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:54:43.6423772+08:00 CMD echo CASE_recovery07
+echo CASE_recovery07
+CASE_recovery07
+nsh> [K2026-10-23T10:54:43.8622624+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery07.wav
+nsh> [K2026-10-23T10:54:44.1792102+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=0
+nsh> [K2026-10-23T10:54:44.4949515+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752885
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=138897 resp=474 ms=9460
+[vgvoice] stage=asr_end t=9950
+[vgvoice] stage=agent_begin t=9950
+[driver] marker timeout: stage=tts_end
+2026-10-23T10:55:44.8245996+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=74 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=现在UPS负载环保吗？
+vgvoice: round a=0 bytes
+vgvoice: round error=没有找到这个点位，请报点位 ID 或完整名称
+nsh> [K2026-10-23T10:55:45.1350525+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在UPS负载环保吗？
+a=
+e=没有找到这个点位，请报点位 ID 或完整名称
+nsh> [K2026-10-23T10:55:45.4451050+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=25 tts=24
+nsh> [K2026-10-23T10:55:45.7579345+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:55:46.0706420+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:55:46.3825028+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:55:46.9120459+08:00 CMD echo CASE_recovery08
+echo CASE_recovery08
+CASE_recovery08
+nsh> [K2026-10-23T10:55:47.1312549+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery08.wav
+nsh> [K2026-10-23T10:55:47.4497259+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:55:47.7651879+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752948
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=129937 resp=474 ms=8590
+[vgvoice] stage=asr_end t=8940
+[vgvoice] stage=agent_begin t=8940
+[vgvoice] stage=tool_direct t=9160
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=25
+[vgvoice] stage=facts_end t=9590
+[vgvoice] stage=tts_begin t=9600
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752957
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=24760
+[vgvoice] stage=tts_end t=34580
+2026-10-23T10:56:22.1496930+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=76 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载恢复了没有？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:56:22.4569205+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载恢复了没有？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:56:22.7667628+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=26 tts=25
+nsh> [K2026-10-23T10:56:23.0791361+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:56:23.3928650+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:56:23.7042155+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:56:24.2321763+08:00 CMD echo CASE_recovery09
+echo CASE_recovery09
+CASE_recovery09
+nsh> [K2026-10-23T10:56:24.4349845+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery09.wav
+nsh> [K2026-10-23T10:56:24.7647874+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:56:25.0775256+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752986
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgvoice] asr rc=ok status=200 req=177721 resp=493 ms=11070
+[vgvoice] stage=asr_end t=11450
+[vgvoice] stage=agent_begin t=11450
+[vgvoice] stage=tool_direct t=11810
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=26
+[vgvoice] stage=facts_end t=12320
+[vgvoice] stage=tts_begin t=12330
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752997
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=24090
+[vgvoice] stage=tts_end t=36770
+2026-10-23T10:57:01.6055829+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=79 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=我想知道UPS负载的告警恢复了吗？
+vgvoice: round a=131 bytes
+nsh> [K2026-10-23T10:57:01.9296669+08:00 CMD vgvoice round text
+vgvoice round text
+q=我想知道UPS负载的告警恢复了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K2026-10-23T10:57:02.2594196+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=27 tts=26
+nsh> [K2026-10-23T10:57:02.5694632+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:57:02.8778967+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:57:03.1874693+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:57:03.7001023+08:00 CMD echo CASE_recovery10
+echo CASE_recovery10
+CASE_recovery10
+nsh> [K2026-10-23T10:57:03.9312819+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery10.wav
+nsh> [K2026-10-23T10:57:04.2411643+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:57:04.5560888+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792753025
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=146149 resp=480 ms=9460
+[vgvoice] stage=asr_end t=9790
+[vgvoice] stage=agent_begin t=9790
+[vgvoice] stage=tool_direct t=10090
+[tools] Executed vg tool: vg_alarm_recovery
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=27
+[vgvoice] stage=facts_end t=10730
+[vgvoice] stage=tts_begin t=10740
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792753035
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256

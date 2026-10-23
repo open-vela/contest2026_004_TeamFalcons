@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-23",
+  "purpose": "BVO-14 性能修复：语音整轮首次可播放从 27.7-30.0 s 降到 15-26 s，固定 30 条 29 条完整播报",
+  "tested_image": {
+    "note": "30 条固定测试集使用的镜像，2026-10-23 11:05 构建并烧录",
+    "nuttx.hex": "916ce9456b840ef5028bff8b3961e4bb44494e79b01de8c10267151d7701a0c7",
+    "nuttx.bin": "f5577efd60c5bc98957049a3605c77bfd5e205717c638b23f77de22e0ab1516c",
+    "nuttx.elf": "389a20b0954f776228b91af7b03efef551aead267a8e13cdfde43ae893aaa163"
+  },
+  "reflashed_image": {
+    "note": "同一源码树在 11:31 重新构建并烧录，用于留档；与上面镜像只有构建时间戳不同",
+    "nuttx.hex": "8f27fcd79d78c405b8c67d96c28bd13fa4f774ef45551a0c934e88ad2e21eb3f",
+    "nuttx.bin": "223c7bb5c5139d1caad0e5903d3857657774e12ca479ffc22f1073cb0c723507",
+    "nuttx.elf": "5dc55f6a257e8742c94109da7525d693da599b71d0f31a22d75d3104712e092c"
+  },
+  "qspi_bootstub.hex": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e",
+  "sources": {
+    "contest_repo": {
+      "path": "contest2026_004_TeamFalcons",
+      "branch": "velaguard/maintenance-stability",
+      "head": "45c4f17",
+      "note": "代码改动在 2ba3764 与 45c4f17 两个提交里"
+    },
+    "nuttx": {
+      "path": "nuttx",
+      "branch": "velaguard/ptt-user1-stm32h750b-dk",
+      "head": "cdfd23cdf0b1f621da52fed29d677df5390724c0",
+      "dirty_files": [
+        "boards/arm/stm32h7/stm32h750b-dk/configs/velaguard-lvgl/defconfig（本地未提交：含板级凭据与 IOB 缓冲设置，不入库）"
+      ]
+    },
+    "ai_agent": {
+      "path": "packages/ai_agent",
+      "branch": "velaguard/rsp01-response-timing",
+      "head": "4d444f5",
+      "dirty_files": []
+    }
+  },
+  "config": {
+    "CONFIG_IOB_NBUFFERS": 128,
+    "CONFIG_IOB_NCHAINS": 128,
+    "CONFIG_VG_VOICE_DIRECT_TOOL": "y",
+    "note": "IOB 数量决定 TCP 接收窗口，24 个缓冲只有约 4.7 KB 窗口"
+  },
+  "flash_method": "STM32CubeProgrammer CLI via scripts/flash.ps1 (internal stub -> QSPI XIP)"
+}

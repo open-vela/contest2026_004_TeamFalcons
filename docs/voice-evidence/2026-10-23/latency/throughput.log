@@ -1,0 +1,6 @@
+HTTP 1MB download from the Windows host, COM3 serial with millisecond stamps.
+Command: wget http://192.168.137.1:8000/test1m.bin
+
+      9 wget http://192.168.137.1:8000/test1m.bin
+
+  10072 nsh> 

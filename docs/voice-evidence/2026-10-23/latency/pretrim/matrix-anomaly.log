@@ -1,0 +1,502 @@
+2026-10-23T10:39:20.1176168+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K2026-10-23T10:39:20.6419367+08:00 CMD echo CASE_anomaly01
+echo CASE_anomaly01
+CASE_anomaly01
+nsh> [K2026-10-23T10:39:20.8579602+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K2026-10-23T10:39:21.1844588+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:39:21.4913648+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792751962
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=111377 resp=471 ms=7410
+[vgvoice] stage=asr_end t=7930
+[vgvoice] stage=agent_begin t=7930
+[vgvoice] stage=tool_direct t=7930
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=4
+[vgvoice] stage=facts_end t=8280
+[vgvoice] stage=tts_begin t=8280
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792751970
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=8400
+[vgvoice] stage=tts_end t=16800
+[vgvoice] first_playable gen=7 elapsed_ms=16810
+[vgvoice] stage=play_posted t=16810
+2026-10-23T10:39:38.0730333+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=7 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:39:38.3855799+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些异常？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:39:38.6975187+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=4 tts=4
+nsh> [K2026-10-23T10:39:39.0111650+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:39:39.3242525+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:39:39.6341767+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些异常？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:39:40.1643966+08:00 CMD echo CASE_anomaly02
+echo CASE_anomaly02
+CASE_anomaly02
+nsh> [K2026-10-23T10:39:40.3826040+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly02.wav
+vgvoice round ask /data/velaguard/voice/anomaly02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly02.wav
+nsh> [K2026-10-23T10:39:40.6929271+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:39:41.0068920+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792751981
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=127161 resp=477 ms=7930
+[vgvoice] stage=asr_end t=8390
+[vgvoice] stage=agent_begin t=8390
+[vgvoice] stage=tool_direct t=8400
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=5
+[vgvoice] stage=facts_end t=8880
+[vgvoice] stage=tts_begin t=8880
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792751990
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=92160 resp=0 ms=7230
+[vgvoice] stage=tts_end t=1632026-10-23T10:39:57.0887419+08:00 CMD vgvoice round
+20
+[vgvoice] first_playable gen=9 elapsed_ms=16320
+[vgvoice] stage=play_posted t=16330
+vgvoice round
+vgvoice: round visible=1 state=6 gen=9 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=当前有哪些异常点位？
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:39:57.3923075+08:00 CMD vgvoice round text
+vgvoice round text
+q=当前有哪些异常点位？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:39:57.7225021+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=5 tts=5
+nsh> [K2026-10-23T10:39:58.0353087+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:39:58.3452532+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:39:58.6558343+08:00 CMD vgvoice round text
+vgvoice round text
+q=当前有哪些异常点位？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:39:59.1871063+08:00 CMD echo CASE_anomaly03
+echo CASE_anomaly03
+CASE_anomaly03
+nsh> [K2026-10-23T10:39:59.4045518+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly03.wav
+vgvoice round ask /data/velaguard/voice/anomaly03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly03.wav
+nsh> [K2026-10-23T10:39:59.7320541+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:40:00.0578309+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752001
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=124817 resp=477 ms=8530
+[vgvoice] stage=asr_end t=9080
+[vgvoice] stage=agent_begin t=9090
+[vgvoice] stage=tool_direct t=9090
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=6
+[vgvoice] stage=facts_end t=9660
+[vgvoice] stage=tts_begin t=9660
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752010
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=7410
+[vgvoice] stage=tts_end t=17270
+[vgvoice] first_playable gen=11 elapsed_ms=17270
+[vgvoice] stage=play_posted t=17282026-10-23T10:40:17.0592575+08:00 CMD vgvoice round
+0
+vgvoice round
+vgvoice: round visible=1 state=6 gen=11 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=请问现在有什么告警？
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:40:17.3655516+08:00 CMD vgvoice round text
+vgvoice round text
+q=请问现在有什么告警？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:40:17.6954897+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=6 tts=6
+nsh> [K2026-10-23T10:40:18.0049315+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:40:18.3183601+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:40:18.6278372+08:00 CMD vgvoice round text
+vgvoice round text
+q=请问现在有什么告警？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:40:19.1555610+08:00 CMD echo CASE_anomaly04
+echo CASE_anomaly04
+CASE_anomaly04
+nsh> [K2026-10-23T10:40:19.3745627+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly04.wav
+vgvoice round ask /data/velaguard/voice/anomaly04.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly04.wav
+nsh> [K2026-10-23T10:40:19.6998545+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K2026-10-23T10:40:20.0110151+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[driver] marker timeout: stage=tts_end
+2026-10-23T10:41:20.3494723+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=14 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K2026-10-23T10:41:20.6594417+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:41:20.9682726+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=6 tts=6
+nsh> [K2026-10-23T10:41:21.2912553+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:41:21.6025000+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:41:21.9113539+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:41:22.4232802+08:00 CMD echo CASE_anomaly05
+echo CASE_anomaly05
+CASE_anomaly05
+nsh> [K2026-10-23T10:41:22.6409376+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly05.wav
+vgvoice round ask /data/velaguard/voice/anomaly05.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly05.wav
+nsh> [K2026-10-23T10:41:22.9521757+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:41:23.2635195+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752084
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=109029 resp=471 ms=7640
+[vgvoice] stage=asr_end t=8200
+[vgvoice] stage=agent_begin t=8200
+[vgvoice] stage=tool_direct t=8210
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=7
+[vgvoice] stage=facts_end t=8400
+[vgvoice] stage=tts_begin t=8400
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752092
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=7000
+[vgvoice] stage=tts_end t=15600
+[vgvoice] first_playable gen=16 elapsed_ms=15610
+[vgvoice] stage=play_posted t=15610
+2026-10-23T10:41:38.6455140+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=16 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=现场有没有异常？
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:41:38.9563161+08:00 CMD vgvoice round text
+vgvoice round text
+q=现场有没有异常？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:41:39.2671876+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=7 tts=7
+nsh> [K2026-10-23T10:41:39.5791585+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:41:39.8886937+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:41:40.2153311+08:00 CMD vgvoice round text
+vgvoice round text
+q=现场有没有异常？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:41:40.7400166+08:00 CMD echo CASE_anomaly06
+echo CASE_anomaly06
+CASE_anomaly06
+nsh> [K2026-10-23T10:41:40.9572631+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly06.wav
+vgvoice round ask /data/velaguard/voice/anomaly06.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly06.wav
+nsh> [K2026-10-23T10:41:41.2701925+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=nsh> [K10
+[vgvoice] stage=asr_begin t=90
+2026-10-23T10:41:41.5833979+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752102
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=102841 resp=468 ms=7020
+[vgvoice] stage=asr_end t=7750
+[vgvoice] stage=agent_begin t=7750
+[vgvoice] stage=tool_direct t=7760
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=8
+[vgvoice] stage=facts_end t=8360
+[vgvoice] stage=tts_begin t=8360
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752110
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=8100
+[vgvoice] stage=tts_end t=16760
+[vgvoice] first_playable gen=18 elapsed_ms=16760
+[vgvoice] stage=play_posted t=16760
+2026-10-23T10:41:58.1294626+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=18 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=列出当前异常。
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:41:58.4376692+08:00 CMD vgvoice round text
+vgvoice round text
+q=列出当前异常。
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:41:58.7625411+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=8 tts=8
+nsh> [K2026-10-23T10:41:59.0729380+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:41:59.3803480+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:41:59.6923449+08:00 CMD vgvoice round text
+vgvoice round text
+q=列出当前异常。
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:42:00.2185324+08:00 CMD echo CASE_anomaly07
+echo CASE_anomaly07
+CASE_anomaly07
+nsh> [K2026-10-23T10:42:00.4192533+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly07.wav
+vgvoice round ask /data/velaguard/voice/anomaly07.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly07.wav
+nsh> [K2026-10-23T10:42:00.7272026+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:42:01.0379974+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752121
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=108601 resp=471 ms=7500
+[vgvoice] stage=asr_end t=7980
+[vgvoice] stage=agent_begin t=7990
+[vgvoice] stage=tool_direct t=7990
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=9
+[vgvoice] stage=facts_end t=8630
+[vgvoice] stage=tts_begin t=8630
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752130
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=7890
+[vgvoice] stage=tts_end t=16730
+[vgvoice] first_playable gen=20 2026-10-23T10:42:17.5005829+08:00 CMD vgvoice round
+elapsed_ms=16730
+[vgvoice] stage=play_posted t=16740
+vgvoice round
+vgvoice: round visible=1 state=6 gen=20 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=现在有哪些报警？
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:42:17.8152540+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些报警？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:42:18.1295285+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=9 tts=9
+nsh> [K2026-10-23T10:42:18.4414337+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:42:18.7547632+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:42:19.0612368+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些报警？
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:42:19.5742654+08:00 CMD echo CASE_anomaly08
+echo CASE_anomaly08
+CASE_anomaly08
+nsh> [K2026-10-23T10:42:19.7931809+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly08.wav
+vgvoice round ask /data/velaguard/voice/anomaly08.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly08.wav
+nsh> [K2026-10-23T10:42:20.1059077+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:42:20.4193255+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752141
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=108389 resp=471 ms=8030
+[vgvoice] stage=asr_end t=8680
+[vgvoice] stage=agent_begin t=8690
+[vgvoice] stage=tool_direct t=8690
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=10
+[vgvoice] stage=facts_end t=9440
+[vgvoice] stage=tts_begin t=9450
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752150
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=92160 resp=0 ms=7140
+[vgvoice] stage=tts_end t=16800
+[vgvoice] first_playable gen=22 elapsed_ms=16800
+[v2026-10-23T10:42:36.9623220+08:00 CMD vgvoice round
+gvoice] stage=play_posted t=16800
+vgvoice round
+vgvoice: round visible=1 state=6 gen=22 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=请查看异常点位。
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:42:37.2827923+08:00 CMD vgvoice round text
+vgvoice round text
+q=请查看异常点位。
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:42:37.5922572+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=10 tts=10
+nsh> [K2026-10-23T10:42:37.9212648+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:42:38.2453456+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:42:38.5558117+08:00 CMD vgvoice round text
+vgvoice round text
+q=请查看异常点位。
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:42:39.0848816+08:00 CMD echo CASE_anomaly09
+echo CASE_anomaly09
+CASE_anomaly09
+nsh> [K2026-10-23T10:42:39.3046714+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly09.wav
+vgvoice round ask /data/velaguard/voice/anomaly09.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly09.wav
+nsh> [K2026-10-23T10:42:39.6155832+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K2026-10-23T10:42:39.9275970+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[driver] marker timeout: stage=tts_end
+2026-10-23T10:43:40.2419147+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=25 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K2026-10-23T10:43:40.5544679+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:43:40.8698600+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=10 tts=10
+nsh> [K2026-10-23T10:43:41.1785870+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:43:41.4921242+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:43:41.8029992+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:43:42.3125923+08:00 CMD echo CASE_anomaly10
+echo CASE_anomaly10
+CASE_anomaly10
+nsh> [K2026-10-23T10:43:42.5348831+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly10.wav
+vgvoice round ask /data/velaguard/voice/anomaly10.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly10.wav
+nsh> [K2026-10-23T10:43:42.8495355+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:43:43.1628994+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752224
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=138897 resp=480 ms=9660
+[vgvoice] stage=asr_end t=10310
+[vgvoice] stage=agent_begin t=10320
+[vgvoice] stage=tool_direct t=10320
+[tools] Executed vg tool: vg_anomaly_read
+[vgvoice] intent read vg_anomaly_read rc=0 captured=1 seq=11
+[vgvoice] stage=facts_end t=10780
+[vgvoice] stage=tts_begin t=10780
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752234
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgvoice] tts rc=ok status=200 pcm=107520 resp=0 ms=7020
+[vgvoice] stage=tts_end t=18120
+[vgvoice] first_playable gen=27 elapsed_ms=18120
+[vgvoice] stage=play_posted t=18130
+2026-10-23T10:44:01.0695405+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=27 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=帮我看看哪些点位异常。
+vgvoice: round a=27 bytes
+nsh> [K2026-10-23T10:44:01.3803391+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我看看哪些点位异常。
+a=当前没有异常点位。
+nsh> [K2026-10-23T10:44:01.6917399+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=11 tts=11
+nsh> [K2026-10-23T10:44:02.0082121+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:44:02.3176303+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:44:02.6282958+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我看看哪些点位异常。
+a=当前没有异常点位。
+nsh> [K

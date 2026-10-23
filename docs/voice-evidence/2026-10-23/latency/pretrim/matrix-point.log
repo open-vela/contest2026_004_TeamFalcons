@@ -1,0 +1,512 @@
+2026-10-23T10:44:04.4034329+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K2026-10-23T10:44:04.9855687+08:00 CMD echo CASE_point01
+echo CASE_point01
+CASE_point01
+nsh> [K2026-10-23T10:44:05.2022751+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K2026-10-23T10:44:05.5152874+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=179275222026-10-23T10:44:05.8390044+08:00 CMD vgvoice round hold on
+46
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=115429 resp=468 ms=7840
+[vgvoice] stage=asr_end t=8240
+[vgvoice] stage=agent_begin t=8240
+[vgvoice] stage=tool_direct t=8470
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=12
+[vgvoice] stage=facts_end t=9200
+[vgvoice] stage=tts_begin t=9200
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752255
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=199680 resp=0 ms=18820
+[vgvoice] stage=tts_end t=28520
+[vgvoice] first_playable gen=29 elapsed_ms=28520
+[vgvoice] stage=play_posted t=28520
+2026-10-23T10:44:34.1000089+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=29 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=UPS负载是多少？
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:44:34.4107240+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载是多少？
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:44:34.7233306+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=12 tts=12
+nsh> [K2026-10-23T10:44:35.0354434+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:44:35.3508019+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:44:35.6667807+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载是多少？
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:44:36.1979447+08:00 CMD echo CASE_point02
+echo CASE_point02
+CASE_point02
+nsh> [K2026-10-23T10:44:36.3998130+08:00 CMD vgvoice round ask /data/velaguard/voice/point02.wav
+vgvoice round ask /data/velaguard/voice/point02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point02.wav
+nsh> [K2026-10-23T10:44:36.7102279+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K2026-10-23T10:44:37.0219922+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[driver] marker timeout: stage=tts_end
+2026-10-23T10:45:37.3604183+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=32 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K2026-10-23T10:45:37.6735248+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:45:37.9847655+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=12 tts=12
+nsh> [K2026-10-23T10:45:38.2973820+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:45:38.6082572+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:45:38.9300078+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:45:39.4596457+08:00 CMD echo CASE_point03
+echo CASE_point03
+CASE_point03
+nsh> [K2026-10-23T10:45:39.6779221+08:00 CMD vgvoice round ask /data/velaguard/voice/point03.wav
+vgvoice round ask /data/velaguard/voice/point03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point03.wav
+nsh> [K2026-10-23T10:45:39.9911462+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:45:40.3023186+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752341
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=131641 resp=474 ms=9080
+[vgvoice] stage=asr_end t=9610
+[vgvoice] stage=agent_begin t=9610
+[vgvoice] stage=tool_direct t=10010
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=13
+[vgvoice] stage=facts_end t=10800
+[vgvoice] stage=tts_begin t=10810
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752351
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=207360 resp=0 ms=18190
+[vgvoice] stage=tts_end t=29270
+[vgvoice] first_playable gen=34 elapsed_ms=29270
+[vgvoice] stage=play_posted t=29270
+2026-10-23T10:46:09.3682573+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=34 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=查一下UPS负载的值。
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:46:09.6802556+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下UPS负载的值。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:46:09.9928317+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=13 tts=13
+nsh> [K2026-10-23T10:46:10.3046368+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:46:10.6174235+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:46:10.9291526+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下UPS负载的值。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:46:11.4579723+08:00 CMD echo CASE_point04
+echo CASE_point04
+CASE_point04
+nsh> [K2026-10-23T10:46:11.6763294+08:00 CMD vgvoice round ask /data/velaguard/voice/point04.wav
+vgvoice round ask /data/velaguard/voice/point04.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point04.wav
+nsh> [K2026-10-23T10:46:11.9901946+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:46:12.3035936+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752373
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=114789 resp=468 ms=7430
+[vgvoice] stage=asr_end t=7990
+[vgvoice] stage=agent_begin t=7990
+[vgvoice] stage=tool_direct t=8190
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=14
+[vgvoice] stage=facts_end t=9040
+[vgvoice] stage=tts_begin t=9040
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752381
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=199680 resp=0 ms=17960
+[vgvoice] stage=tts_end t=27360
+[vgvoice] first_playable gen=36 elapsed_ms=27370
+[vgv2026-10-23T10:46:39.4217138+08:00 CMD vgvoice round
+oice] stage=play_posted t=27370
+vgvoice round
+vgvoice: round visible=1 state=6 gen=36 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=帮我查UPS负载。
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:46:39.7381580+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我查UPS负载。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:46:40.0495270+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=14 tts=14
+nsh> [K2026-10-23T10:46:40.3618047+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:46:40.6744351+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:46:40.9876244+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我查UPS负载。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:46:41.5152857+08:00 CMD echo CASE_point05
+echo CASE_point05
+CASE_point05
+nsh> [K2026-10-23T10:46:41.7317790+08:00 CMD vgvoice round ask /data/velaguard/voice/point05.wav
+vgvoice round ask /data/velaguard/voice/point05.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point05.wav
+nsh> [K2026-10-23T10:46:42.0543238+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K2026-10-23T10:46:42.3680794+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[driver] marker timeout: stage=tts_end
+2026-10-23T10:47:42.6816620+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=39 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K2026-10-23T10:47:42.9832619+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:47:43.2859524+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=14 tts=14
+nsh> [K2026-10-23T10:47:43.6026057+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:47:43.9145183+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:47:44.2281477+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:47:44.7594302+08:00 CMD echo CASE_point06
+echo CASE_point06
+CASE_point06
+nsh> [K2026-10-23T10:47:44.9760220+08:00 CMD vgvoice round ask /data/velaguard/voice/point06.wav
+vgvoice round ask /data/velaguard/voice/point06.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point06.wav
+nsh> [K2026-10-23T10:47:45.2853889+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:47:45.5940949+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752466
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=104121 resp=465 ms=7650
+[vgvoice] stage=asr_end t=8200
+[vgvoice] stage=agent_begin t=8200
+[vgvoice] stage=tool_direct t=8580
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=15
+[vgvoice] stage=facts_end t=9670
+[vgvoice] stage=tts_begin t=9680
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752475
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=199680 resp=0 ms=16500
+[vgvoice] stage=tts_end t=26370
+[vgvoice] first_playable gen=41 elapsed_ms=26370
+[vgvoice] stage=play_posted t=26380
+2026-10-23T10:48:11.7879551+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=41 muted=0 failed=0
+vgvoice: round status=播报中
+vgvoice: round q=看看UPS负载。
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:48:12.0997094+08:00 CMD vgvoice round text
+vgvoice round text
+q=看看UPS负载。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:48:12.4104461+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=15 tts=15
+nsh> [K2026-10-23T10:48:12.7254361+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:48:13.0404296+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:48:13.3563293+08:00 CMD vgvoice round text
+vgvoice round text
+q=看看UPS负载。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:48:13.8807596+08:00 CMD echo CASE_point07
+echo CASE_point07
+CASE_point07
+nsh> [K2026-10-23T10:48:14.1029973+08:00 CMD vgvoice round ask /data/velaguard/voice/point07.wav
+vgvoice round ask /data/velaguard/voice/point07.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point07.wav
+nsh> [K2026-10-23T10:48:14.4165916+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K2026-10-23T10:48:14.7295954+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[driver] marker timeout: stage=tts_end
+2026-10-23T10:49:15.0681251+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=44 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K2026-10-23T10:49:15.3767661+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:49:15.6869767+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=15 tts=15
+nsh> [K2026-10-23T10:49:16.0049203+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:49:16.3182490+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:49:16.6395101+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:49:17.1542533+08:00 CMD echo CASE_point08
+echo CASE_point08
+CASE_point08
+nsh> [K2026-10-23T10:49:17.3722580+08:00 CMD vgvoice round ask /data/velaguard/voice/point08.wav
+vgvoice round ask /data/velaguard/voice/point08.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point08.wav
+nsh> [K2026-10-23T10:49:17.6825763+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:49:17.9942529+08:00 CMD vgvoice round hold on
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752558
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=135697 resp=474 ms=9280
+[vgvoice] stage=asr_end t=9620
+[vgvoice] stage=agent_begin t=9630
+[vgvoice] stage=tool_direct t=9860
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=16
+[vgvoice] stage=facts_end t=10780
+[vgvoice] stage=tts_begin t=10780
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752569
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=222720 resp=0 ms=18970
+[vgvoice] stage=tts_end t=30000
+2026-10-23T10:49:47.7216680+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=46 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=当前UPS负载怎么样？
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:49:48.0247695+08:00 CMD vgvoice round text
+vgvoice round text
+q=当前UPS负载怎么样？
+a=ups_load UPS负载：40 %
+采样 3 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:49:48.3378592+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=16 tts=16
+nsh> [K2026-10-23T10:49:48.6484387+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:49:48.9576143+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:49:49.2762440+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:49:49.8033565+08:00 CMD echo CASE_point09
+echo CASE_point09
+CASE_point09
+nsh> [K2026-10-23T10:49:50.0232543+08:00 CMD vgvoice round ask /data/velaguard/voice/point09.wav
+vgvoice round ask /data/velaguard/voice/point09.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point09.wav
+nsh> [K2026-10-23T10:49:50.3345571+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K2026-10-23T10:49:50.6465904+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752591
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=146789 resp=480 ms=9900
+[vgvoice] stage=asr_end t=10340
+[vgvoice] stage=agent_begin t=10340
+[vgvoice] stage=tool_direct t=10570
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=17
+[vgvoice] stage=facts_end t=11480
+[vgvoice] stage=tts_begin t=11490
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752602
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgvoice] tts rc=ok status=200 pcm=199680 resp=0 ms=20100
+[vgvoice] stage=tts_end t=32080
+2026-10-23T10:50:22.5453145+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=49 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=我想知道UPS负载的数值。
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:50:22.8882536+08:00 CMD vgvoice round text
+vgvoice round text
+q=我想知道UPS负载的数值。
+a=ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:50:23.1888360+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=17 tts=17
+nsh> [K2026-10-23T10:50:23.5005723+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:50:23.8115670+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:50:24.1383048+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K2026-10-23T10:50:24.6532310+08:00 CMD echo CASE_point10
+echo CASE_point10
+CASE_point10
+nsh> [K2026-10-23T10:50:24.8882545+08:00 CMD vgvoice round ask /data/velaguard/voice/point10.wav
+vgvoice round ask /data/velaguard/voice/point10.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point10.wav
+nsh> [K2026-10-23T10:50:25.2032355+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K2026-10-23T10:50:25.5162295+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752626
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=131857 resp=474 ms=9100
+[vgvoice] stage=asr_end t=9840
+[vgvoice] stage=agent_begin t=9840
+[vgvoice] stage=tool_direct t=10090
+[tools] Executed vg tool: vg_point_read
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=18
+[vgvoice] stage=facts_end t=10830
+[vgvoice] stage=tts_begin t=10830
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792752636
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=222720 resp=0 ms=20150
+[vgvoice] stage=tts_end t=31110
+2026-10-23T10:50:56.3542651+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=6 gen=52 muted=0 failed=0
+vgvoice: round status=合成语音
+vgvoice: round q=UPS负载读数是多少？
+vgvoice: round a=129 bytes
+nsh> [K2026-10-23T10:50:56.6632620+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载读数是多少？
+a=ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K2026-10-23T10:50:56.9740597+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=18 tts=18
+nsh> [K2026-10-23T10:50:57.2862535+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K2026-10-23T10:50:57.5968547+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K2026-10-23T10:50:57.9087107+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K

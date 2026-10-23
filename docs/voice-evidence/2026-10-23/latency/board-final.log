@@ -1,0 +1,72 @@
+     28 [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+    829 CMD vgvoice round counts    860 vgvoice round counts
+vgvoice: requests asr=30 tts=29
+nsh> [K   2340 CMD free   2356 free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6810424     851496    5958928    117556   2357 0    2388    5795432   1097      8 Umem
+nsh> [K   4349 CMD cat /proc/net/tcp   4365 cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0     4365     4381 0      0    192.168.137.4:8501       8.148.67.174:1883  
+nsh> [K   6362 CMD ls -l /data/velaguard/voice   6378 ls -l /data/velaguard/voice
+   6393 /data/velaguard/voice:
+   6409  -rw-rw-rw-   0       46124 q1.wav
+   6425  -rw-r   6425 w-rw-    6426      6441 0       86446 point01.wav
+ -rw-rw-rw-   0           8 pref.txt
+   6456  -rw-rw-rw-   0       90286 r   6472 ecovery01.wav
+   6488  -rw-rw-rw-   0       83406 anomaly01.wav
+   6503  -rw-rw-rw-   0       95246 anomaly02.wav
+   6565  -rw-rw-rw-   0       93486 anomaly03.wav
+   6581  -rw-rw-rw-   0       97006 anomaly04.wav
+   6628  -rw-rw-rw-   0       81646 anomaly05.wav
+   6644  -rw-rw-rw-   0       77006 anomaly06.wav
+   6660  -rw-rw-rw-   0       81326 anomaly07.wav
+   6676  -rw-rw-   6676 rw   6676 -   6676     6692   0       81166 anomaly08.wav
+   6739  -rw-rw-rw-   0       96846 anomaly09.wav
+   6770  -rw-rw-rw-   0      104046 anomaly10.wav
+   6801  -rw-rw-rw-   0      103246 point02.wav
+   6816  -rw-rw-rw-   0       986   6816 0   6831 6 point03.wav
+   6863  -rw-rw-rw-   0       85966 point04.wav
+   6926  -rw-rw-rw-   0       93006 point05.wav
+   6958  -rw-rw-rw-   0     6974      77966 point06.wav
+   7069  -rw-rw-rw-   0      108686 point07.wav
+   7132  -rw-rw-rw-   0      101646 point08.wav
+   7147  -rw-rw-rw-   0      10996   7147 6   7164  point09.wav
+   7226  -rw-rw-rw-   0       98766 point10.wav
+   7289  -rw-rw-rw-   0      123246 recovery02.wav
+   7352  -rw-rw-rw-   0       98446 recovery03.wav
+   7493  -rw-rw-rw-   0      122286 recovery04.wav
+   7601  -rw-rw-rw-   0      107566 recovery05.wav
+   7617  -rw-rw-rw-   0       90766 rec   7617 o   7617 ve   7632 ry06.wav
+   7647  -rw-rw-rw-   0      104046 recovery07.wav
+   7678  -rw-rw-rw-   0       9732   7678 6   7694  recovery08.wav
+   7726  -rw-rw-rw-   0      133166 recovery09.wav
+   7803  -rw-rw-rw-   0      109486 recovery10.wav
+nsh> [K   8874 CMD vgstats dump   8890 vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=22
+vgst   8890 a   8906 ts: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=34
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min   8906 =   8922 20 lat_max=140 lat_avg=42
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=22
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 t   8938 imeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=23
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=23
+vgstats: slave=7 window   8938 =   8954 64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=40
+nsh> [K  10883 CMD ps  10899 ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO       10899 Kth  10900 re  10900 a  10900 d  10914    - Ready              0000000000000000 0001000 0000536  53.6%  25.8% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000  10914 68  10914 8  10930   34.8%  14.1% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000888  44.9%   1.2% lpwork 0x24000280 0x240002c8
+      10930 3  10946      3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            000000000  10946 00  10946 0  10947 0  10961 000 0008168 0001928  23.6%   2.5% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264 0002768  22.5%   5.6% ve  10978 laguard_app_main 0x90010915 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014429 0
+    7     3 200 R  10978 R   10978    10994      pthread   - Waiting  Semaphore 0000000000000000 0002024 0000744  36.7%   4.3% ESP8266 0x90067001 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002  10994 0  10994 2  11009 4 0001072  52.9%   0.0% netinit 0x90068e25 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001600  39.4%   0.0% vgvoice
+   10     3 100 RR    11009    11024     pthread   - Ready              0000000000000000 0049128 0033536  68.2%  10.9% velaguard_app_main 0x90016801 0
+   11    11  90 RR       Task      - Waiting  Semapho  11040 re 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0008968  18.2%  22.7% vghmi vghmi
+   13    12   11040 1  11056 00 RR       pthread   - Waiting  Signal    0000000000000000 0008168 0006304  77.1%  11.3% vghmi 0x90014c69 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000   11056 00  11056 3  11071 2696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000768   6.2%   0.0% ai_agent 0x9002c  11071 40  11086 5 0x2407f4a8
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90032945 0x2407fd70
+   17    14  50 FIFO     11086     11102 pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002c405 0x240596a8
+nsh> [K
