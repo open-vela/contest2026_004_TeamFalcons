@@ -1,0 +1,43 @@
+id,intent,first_playable_ms,state,speech_failed,text_correct,complete,answer,asr_ms,agent_ms,facts_ms,tts_ms,tts_result,settled_ms
+anomaly01,anomaly,14750,8,0,True,True,当前没有异常点位。,4170,4270,10,6200,ok,17740
+anomaly02,anomaly,16160,8,0,True,True,当前没有异常点位。,4370,4930,10,6750,ok,19540
+anomaly03,anomaly,15640,8,0,True,True,当前没有异常点位。,4550,4360,10,6600,ok,19090
+anomaly04,anomaly,16110,8,0,True,True,当前没有异常点位。,4610,4480,10,6850,ok,19310
+anomaly05,anomaly,16960,8,0,True,True,当前没有异常点位。,4500,4220,10,8110,ok,20090
+anomaly06,anomaly,17150,8,0,True,True,当前没有异常点位。,4220,5800,10,7030,ok,20630
+anomaly07,anomaly,15840,8,0,True,True,当前没有异常点位。,4110,4220,10,7400,ok,18810
+anomaly08,anomaly,18130,8,0,True,True,当前没有异常点位。,4020,6110,10,7790,ok,20970
+anomaly09,anomaly,15730,8,0,True,True,当前没有异常点位。,4540,4110,10,6940,ok,18690
+anomaly10,anomaly,15970,8,0,True,True,当前没有异常点位。,4690,4400,10,6770,ok,18780
+point01,point,25820,8,0,True,True,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",4200,6430,20,15040,ok,29940
+point02,point,27060,8,0,True,True,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",5110,4770,10,17060,ok,
+point03,point,23210,8,0,True,True,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",5050,4180,10,13890,ok,28140
+point04,point,25130,8,0,True,True,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1",3850,4650,10,16430,ok,29330
+point05,point,,9,0,False,False,e=识别失败，请重试,550,,,,,
+point06,point,,9,0,False,False,e=识别失败，请重试,560,,,,,750
+point07,point,,9,0,False,False,e=识别失败，请重试,730,,,,,890
+point08,point,,9,0,False,False,e=识别失败，请重试,590,,,,,750
+point09,point,,9,0,False,False,e=识别失败，请重试,450,,,,,620
+point10,point,,9,0,False,False,e=识别失败，请重试,450,,,,,650
+recovery01,recovery,,9,0,False,False,e=识别失败，请重试,460,,,,,650
+recovery02,recovery,,9,0,False,False,e=识别失败，请重试,450,,,,,640
+recovery03,recovery,,9,0,False,False,e=识别失败，请重试,860,,,,,1050
+recovery04,recovery,,9,0,False,False,e=识别失败，请重试,620,,,,,750
+recovery05,recovery,,9,0,False,False,e=识别失败，请重试,450,,,,,620
+recovery06,recovery,,9,0,False,False,e=识别失败，请重试,450,,,,,620
+recovery07,recovery,,9,0,False,False,e=识别失败，请重试,620,,,,,780
+recovery08,recovery,,9,0,False,False,e=识别失败，请重试,450,,,,,630
+recovery09,recovery,,9,0,False,False,e=识别失败，请重试,500,,,,,640
+recovery10,recovery,,9,0,False,False,e=识别失败，请重试,830,,,,,

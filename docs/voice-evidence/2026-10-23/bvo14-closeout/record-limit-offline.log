@@ -1,0 +1,77 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T01:28:41.9219771+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:28:44.1468504+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-24T01:28:44.4259394+08:00 CMD ifconfig eth0 down
+ifconfig eth0 down
+nsh> [K
+2026-10-24T01:28:45.9534109+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:255.255.255.255 DRaddr:255.255.255.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     057d  02ff  0014  026a
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0000  0000
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         0658  03e7  0007  026a
+  Rexmit     ----  000f  ----  ----
+nsh> [K
+2026-10-24T01:28:46.2650372+08:00 CMD echo RECORD_LIMIT_OFFLINE
+echo RECORD_LIMIT_OFFLINE
+RECORD_LIMIT_OFFLINE
+nsh> [K
+2026-10-24T01:28:46.5158269+08:00 CMD vgvoice round press
+vgvoice round press
+vgvoice: round press synthetic
+nsh> [K[vgvoice] stage=asr_wait_recorder t=60
+[vgvoice] stage=asr_begin t=260
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=260
+[vgvoice] round_settled gen=11 state=9 failed=0 elapsed_ms=270
+
+2026-10-24T01:29:03.0398556+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:29:05.5602579+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=0 state=0 gen=12 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-24T01:29:05.8120793+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=3 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=14950 samples=239175 bytes=478350
+vgvoice: level peak=5381 rms=35
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=233 drained=234 overwritten=0 wraps=116 elapsed_ms=14950 rate=127986 B/s
+vgvoice: tail_bytes=4668 stage_ms=0
+vgvoice: generation=3 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=18 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:29:06.0770103+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=3 tts=2
+nsh> [K
+2026-10-24T01:29:06.3285799+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     924632    5894368    1458904    5795432   1111     16 Umem
+nsh> [K

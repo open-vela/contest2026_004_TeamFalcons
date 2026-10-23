@@ -1,0 +1,50 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+2026-10-24T01:23:41.2919791+08:00 CMD echo REBOOT_AFTER_WEDGE
+echo REBOOT_AFTER_WEDGE
+REBOOT_AFTER_WEDGE
+nsh> [K
+2026-10-24T01:23:41.6084244+08:00 CMD reboot
+reboot
+nsh: reboot: command not found
+nsh> [K
+
+2026-10-24T01:24:02.6364234+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.198 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     22a4  1048  0019  1243
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0000  0000
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         279a  1546  000a  124a
+  Rexmit     ----  0039  ----  ----
+nsh> [K
+2026-10-24T01:24:02.9612528+08:00 CMD ls /data/velaguard/voice/
+ls /data/velaguard/voice/
+nsh: ls: stat failed: 110
+nsh> [K
+2026-10-24T01:24:03.7685064+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=40 played=17 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=500 samples=7983 bytes=15966
+vgvoice: level peak=5381 rms=108
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=500 rate=127736 B/s
+vgvoice: tail_bytes=6524 stage_ms=0
+vgvoice: generation=40 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=5 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:24:04.0798065+08:00 CMD vgagent status
+vgagent status
+round: state=idle gen=17 owner=none
+llm: credentials=MISSING provision_file=absent
+nsh> [K

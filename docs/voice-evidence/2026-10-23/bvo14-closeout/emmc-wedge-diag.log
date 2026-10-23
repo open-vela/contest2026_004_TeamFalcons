@@ -1,0 +1,55 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+2026-10-24T01:22:41.6086305+08:00 CMD echo WEDGED_DIAG
+echo WEDGED_DIAG
+WEDGED_DIAG
+nsh> [K
+2026-10-24T01:22:41.9280439+08:00 CMD ls /data/velaguard/voice/
+ls /data/velaguard/voice/
+nsh: ls: stat failed: 110
+nsh> [K
+2026-10-24T01:22:42.4586626+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%   0.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  50.5% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000840  42.5%   0.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001928  23.6%   1.6% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   4.4% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014691 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000744  36.7%   0.0% ESP8266 0x9005a3f9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x9005af51 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001648  40.6%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0033400  67.9%   7.5% velaguard_app_main 0x90017085 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0008968  18.2%  27.2% vghmi vghmi
+   13    12 100 RR       pthread   - Ready              0000000000000000 0008168 0006304  77.1%   5.8% vghmi 0x90014ed5 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000920   7.5%   0.0% ai_agent 0x9002d639 0x30009370
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90033bd5 0x30011b38
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d639 0x30011bd0
+   54    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0014464  44.1%   0.0% ai_agent 0x9002f2cd 0x30011b38
+   55    14 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001528  18.7%   0.0% ai_agent 0x9006d529 0x30027380
+nsh> [K
+2026-10-24T01:22:42.9598503+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     932864    5886136    1434024    5795432   1113     15 Umem
+nsh> [K
+2026-10-24T01:22:43.2739502+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=40 played=17 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=500 samples=7983 bytes=15966
+vgvoice: level peak=5381 rms=108
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=500 rate=127736 B/s
+vgvoice: tail_bytes=6524 stage_ms=0
+vgvoice: generation=40 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=5 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:22:43.5869255+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K

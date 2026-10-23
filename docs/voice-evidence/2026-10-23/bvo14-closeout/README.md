@@ -77,3 +77,19 @@ ai_agent 框架改动已本地提交 d9da371；没有推送。
 2. **NSH 计划工具 wait_for 预置竞态**：asr_early/asr_late 的取消命令晚到 35 秒，整轮早已播完，ASR 阶段的真实取消从未被执行。最小复现（dbg-wait-repro-plan.json）确认命令空等待步骤的 `$seen` 预置拿到空值：标记在等待步骤开始前已输出，预置继承是唯一接住它的机制。修复为新增 `$sinceCmd` 滚动缓冲（每次读取原位追加、仅发送命令时清空），空命令等待继承上一命令以来的全部输出，不再依赖步骤间变量交接。
 
 修复后的回归单独编号记录在 `cancel/*-final2.log`（新固件 106f947b，见 firmware-final2.json）。
+
+## 矩阵 #4 与 eMMC 卡死事故
+
+`matrix-foreground4/` 在最终固件上跑到第 15 条（point05，01:17:51）时 /data 上的文件打开开始全部返回 errno=110（ETIMEDOUT），此后 16 条连续 ASR 即时失败，矩阵以 14/30 中止。这不是语音链路问题：point01-04 与整组异常在此前全部通过，卡死跨案例持续。`emmc-wedge-diag.log` 显示用户态线程无卡死、堆正常、无 TCP 残留，阻塞在内核/驱动层；`emmc-wedge-reboot.log` 证明 NSH 热重启后 /data 仍不可用，最终经 SWD 复位（flash.ps1 重烧同镜像）恢复，见 post-swdreset-boot.log。该签名与 23:37 ab-pilot 中一次 ASR 即时 io 失败加 skills 目录瞬时打不开一致，属于先于今晚改动存在的板级/驱动故障，疑似交接文件禁止介入的 QA-04 总线冻结家族，本轮仅记录证据不查根因。矩阵 #4 计入硬件故障中止，不计入指标；矩阵 #3 的 28/30 仍是有效指标证据，最终固件与矩阵 #3 固件的差异仅 errno 日志和矩阵路径不可达的录音取消清理。
+
+NSH 计划工具最终版本带 `HARNESS v2026-10-24c` 标记和 STEP/PRESEED/TAIL 步骤日志，每次运行自证版本与缓冲状态；矩阵 #4 的日志里可以看到 PRESEED hasMarker=False 被每轮合并匹配兜住的实例。
+
+## 取消、播放与场景收尾结果
+
+取消与坏输入场景在两代固件上分别留档：`cancel/*-fg2.log` 为回退固件（4eb9eb9c）10 场景全量，`cancel/*-final2*.log` 为最终固件（106f947b）关键复验。record_early 取消回收 250 ms 且 PCM 为零（修复后），asr_early/asr_late 分别在 ASR 上传 940/2720 ms 处真实取消生效、回收 1040/430 ms、PCM 为零；model_early 150 ms、model_late 10 ms、tts 1140 ms、playing 1900 ms 均达标；missing/not_wav 明确报错；取消后真实查询 20.9 秒完整恢复。`press-flow-test.log` 进一步证明真实麦克风录音 3 秒后取消 170 ms 回收、PCM 为零。15 秒录音上限的完整生产链路（断网录音自动提交）因当晚板端不稳定未再取得，其证据仍为诊断镜像的 record-limit-local.log；本轮还观察到播放后立即 press 会被立即提交吞掉录音、以及计划中途夭折后的 press 同样立即提交，指向会话残留状态缺陷，未及修复，复现步骤在 press-flow-test-plan.json 与 record-limit-offline2.log。
+
+播放时长回归通过：`playback5s-final2.log` 记录 5 秒 WAV 自然播放，`played=1`、`last result=ok ms=5000`，播放器自然空闲，排除沿用录音时长提前停止；人耳听音仍属人工。
+
+非空异常（critical 从站模式）五次尝试：文字均正确（`nonempty-anomaly-final2.log` 记录 当前异常 1 个点位 完整总数加明细，与只读工具基准一致），但三次 TTS 在预算内未完成、两次计划被并发后台输出中断，未取得完整播报证据。preemption 五次尝试：后台暂停（owner=1/2 均出现）、语音后恢复、原后台请求继续执行三个机制标记全部取得（恢复后的告警解释在后续日志完成 3 次工具迭代），但语音轮次五次全部超预算。两者共同的前置现象被定位为一个真实延迟交互：后台请求被 abandon 后紧接的 ASR 恒定变慢（6.6-8.9 秒，同夜正常窗口 3.5-5.0 秒，5/5 次），叠加 TTS 预算即超 30 秒；被放弃的 TLS 连接拆线如何干扰新连接未及排查，列为独立缺陷。
+
+当晚 eMMC 卡死共三次（23:37 瞬时、01:17 持续、01:36-01:40 持续），每次都在 SWD 复位后 10-22 分钟内，热重启不能恢复；01:47 复位后音频模块又出现卡在录音等待的独立现象（server-probe2.log），再复位后恢复（server-probe3.log 单轮 26.2 秒首播完成）。触发器未能定位，后台代理请求密集 /data 读写与报警提示音都是候选；按交接约束不进入 QA-04 根因，全部原始日志保留。`final-resources3.log` 为最终资源快照：堆稳定、retained_pcm=0、voice 目录无残留、/data 健康时无 errno=110。

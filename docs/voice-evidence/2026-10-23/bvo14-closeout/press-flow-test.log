@@ -1,0 +1,73 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+2026-10-24T01:32:52.6530618+08:00 CMD echo PRESS_FLOW_TEST
+echo PRESS_FLOW_TEST
+PRESS_FLOW_TEST
+nsh> [K
+2026-10-24T01:32:52.9680363+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:32:55.1872904+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=4 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=430 samples=6896 bytes=13792
+vgvoice: level peak=5381 rms=115
+vgvoice: dma dr[opskills] Skills summary: ped=1086 bytes
+0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=430 rate=128302 B/s
+vgvoice: tail_bytes=6018 stage_ms=0
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=20000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:32:55.4993011+08:00 CMD vgvoice round press
+vgvoice round press
+vgvoice: round press synthetic
+nsh> [K
+2026-10-24T01:32:58.5220752+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=recording retained_pcm=0
+vgvoice: rounds=4 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=430 samples=6896 bytes=13792
+vgvoice: level peak=5381 rms=115
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=6 drained=7 overwritten=0 wraps=3 elapsed_ms=430 rate=128302 B/s
+vgvoice: tail_bytes=6018 stage_ms=0
+vgvoice: generation=5 queue_highwater=1 copy_max_us=0 filter_max_us=20000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:32:58.8341392+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=1 gen=17 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-24T01:32:59.1440828+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K[vgvoice] cancel_settled elapsed_ms=170 retained_pcm=0 controlled_active=0
+
+2026-10-24T01:33:01.6516188+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=5 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=3610 samples=57719 bytes=115438
+vgvoice: level peak=5380 rms=52
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=56 drained=57 overwritten=0 wraps=28 elapsed_ms=3610 rate=127909 B/s
+vgvoice: tail_bytes=3001 stage_ms=0
+vgvoice: generation=5 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=12 clip=0 tick_us=10000
+nsh> [K

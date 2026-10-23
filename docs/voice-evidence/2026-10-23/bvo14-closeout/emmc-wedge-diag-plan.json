@@ -1,0 +1,37 @@
+[
+ {
+  "command": "echo WEDGED_DIAG",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "ls /data/velaguard/voice/",
+  "wait_ms": 500,
+  "timeout_ms": 8000,
+  "optional_prompt": true
+ },
+ {
+  "command": "ps",
+  "wait_ms": 500,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "free",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice status",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "cat /proc/net/tcp",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ }
+]

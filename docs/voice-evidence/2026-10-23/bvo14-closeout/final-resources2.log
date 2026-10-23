@@ -1,0 +1,132 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T01:44:04.9853844+08:00 CMD echo RESOURCE_FINAL
+echo RESOURCE_FINAL
+RESOURCE_FINAL
+nsh> [K
+2026-10-24T01:44:05.3065992+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  27.1% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%   5.9% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000760  38.4%   1.6% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0002000  24.4%   1.6% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   4.7% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014691 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000736  36.3%  11.0% ESP8266 0x9005a3f9 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.5% netinit 0x9005af51 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001048  25.8%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0001624   3.3%  13.4% velaguard_app_main 0x90017085 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.5% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0008968  18.2%  21.4% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168 0006288  76.9%  10.1% vghmi 0x90014ed5 0
+   14    12 100 RR       pthread   - Waiting  Mutex:-1  0000000000000000 0008168 0003512  42.9%   0.0% vghmi 0x9001566d 0
+   15    15 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   16    15  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000768   6.2%   0.0% ai_agent 0x9002d639 0x30001bf0
+   17    15   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000976  23.9%   0.0% ai_agent 0x90033bd5 0x3000b6f0
+   18    15  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d639 0x3000ba18
+   19    15  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0001048   3.2%   0.0% ai_agent 0x9002f2cd 0x3000b6f0
+nsh> [K
+2026-10-24T01:44:05.6306230+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     899912    5919088     934712    5795432   1102      7 Umem
+nsh> [K
+2026-10-24T01:44:05.9406824+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-24T01:44:06.2537087+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=2 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=350 samples=5676 bytes=11352
+vgvoice: level peak=5387 rms=124
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=350 rate=129745 B/s
+vgvoice: tail_bytes=4451 stage_ms=0
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=5 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T01:44:06.5825522+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=210 lat_avg=49
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=100 lat_avg=29
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=160 lat_avg=30
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=100 lat_avg=32
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=10 lat_max=210 lat_avg=37
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=33
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=180 lat_avg=32
+nsh> [K
+2026-10-24T01:44:06.8939641+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=207 wall=2026-10-24T01:44:06
+vgruntime: slave=1 boot_total=208 boot_ok=208 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=40 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=104 boot_ok=104 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=140 boot_lat_avg=28 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=104 boot_ok=104 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=312 boot_ok=312 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=32 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=312 boot_ok=312 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=210 boot_lat_avg=32 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=309 boot_ok=309 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=103 boot_ok=103 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=1452 boot_ok=1452 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=205920 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=205930 offline_s=0 last_ok_ago_s=1 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=205940 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=205950 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=205960 offline_s=0 last_ok_ago_s=1 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=205970 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=205980 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=205990 offline_s=0 last_ok_ago_s=1 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=206000 offline_s=0 last_ok_ago_s=1 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=206010 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=206020 offline_s=0 last_ok_ago_s=1 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=206030 offline_s=0 last_ok_ago_s=1 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=206040 offline_s=0 last_ok_ago_s=1 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=206050 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: event t_boot_s=2 wall=2026-10-24T01:33:57 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=40 wall=2026-10-24T01:34:35 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=51 wall=2026-10-24T01:34:46 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=101 wall=2026-10-24T01:42:20 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=125 wall=2026-10-24T01:42:44 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=188 wall=2026-10-24T01:43:47 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+nsh> [K
+2026-10-24T01:44:07.2696831+08:00 CMD vgagent audit
+vgagent audit
+vgagent: audit submitted=2 written=0 pending=2 lost=0 running=1 rc=0
+nsh> [K
+2026-10-24T01:44:08.2952208+08:00 CMD ls /data/velaguard/voice/
+ls /data/velaguard/voice/
+/data/velaguard/voice:
+ q1.wav
+ point01.wav
+ pref.txt
+ recovery01.wav
+ anomaly01.wav
+ anomaly02.wav
+ anomaly03.wav
+ anomaly04.wav
+ anomaly05.wav
+ anomaly06.wav
+ anomaly07.wav
+ anomaly08.wav
+ anomaly09.wav
+ anomaly10.wav
+ point02.wav
+ point03.wav
+ point04.wav
+ point05.wav
+ point06.wav
+ point07.wav
+ point08.wav
+ point09.wav
+ point10.wav
+ recovery02.wav
+ recovery03.wav
+ recovery04.wav
+ recovery05.wav
+ recovery06.wav
+ recovery07.wav
+ recovery08.wav
+ recovery09.wav
+ recovery10.wav
+nsh> [K

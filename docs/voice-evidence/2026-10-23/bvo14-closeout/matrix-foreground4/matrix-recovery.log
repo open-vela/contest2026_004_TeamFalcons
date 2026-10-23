@@ -1,0 +1,688 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T01:18:25.1329785+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=29 tts=17
+nsh> [K
+2026-10-24T01:18:25.4288027+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     932888    5886112    1434024    5795432   1114     14 Umem
+nsh> [K
+2026-10-24T01:18:25.7375119+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-24T01:18:26.0454477+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=45
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=50
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=54
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=47
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=49
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=42
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=50
+nsh> [K
+2026-10-24T01:18:26.3709140+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=1371 wall=2026-10-24T01:18:27
+vgruntime: slave=1 boot_total=1426 boot_ok=1426 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=713 boot_ok=713 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=130 boot_lat_avg=29 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=713 boot_ok=713 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=130 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=2139 boot_ok=2139 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=270 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=2137 boot_ok=2137 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=330 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=2136 boot_ok=2136 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=220 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=712 boot_ok=712 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=9976 boot_ok=9976 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=1369210 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=1369220 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=1369230 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=1369240 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=1369250 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=1369260 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=1369270 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=1369280 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=1369290 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=1369300 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=1369310 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=1369320 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=1369330 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=1369340 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+nsh> [K
+2026-10-24T01:18:26.6842572+08:00 CMD vgvoice mute off
+vgvoice mute off
+[vgvoice] mute preference not saved: -110
+vgvoice: muted=0
+nsh> [K
+2026-10-24T01:18:26.9944368+08:00 CMD echo CASE_recovery01
+echo CASE_recovery01
+CASE_recovery01
+nsh> [K
+2026-10-24T01:18:27.2122625+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery01.wav
+nsh> [K
+2026-10-24T01:18:27.7376324+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=190
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:28.2676103+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=650
+[vgvoice] round_settled gen=103 state=9 failed=0 elapsed_ms=650
+
+PRESEED seen=418 hasMarker=True
+
+2026-10-24T01:18:28.5946299+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=103 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:28.9192472+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:29.2439872+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=30 tts=17
+nsh> [K
+2026-10-24T01:18:29.4577637+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:29.6696253+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:31.6978101+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:31.9143376+08:00 CMD echo CASE_recovery02
+echo CASE_recovery02
+CASE_recovery02
+nsh> [K
+2026-10-24T01:18:32.1320600+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery02.wav
+nsh> [K
+2026-10-24T01:18:32.6572579+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=190
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:33.1643044+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=640
+[vgvoice] round_settled gen=106 state=9 failed=0 elapsed_ms=640
+
+2026-10-24T01:18:33.5031232+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=106 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:33.8244339+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:34.1332647+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=31 tts=17
+nsh> [K
+2026-10-24T01:18:34.3521567+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:34.5720335+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:36.5752832+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:36.7906750+08:00 CMD echo CASE_recovery03
+echo CASE_recovery03
+CASE_recovery03
+nsh> [K
+2026-10-24T01:18:37.0068471+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery03.wav
+nsh> [K
+2026-10-24T01:18:37.5353941+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+nsh> [K[vgvoice] stage=asr_begin t=190
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:38.0396805+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=1050
+[vgvoice] round_settled gen=109 state=9 failed=0 elapsed_ms=1050
+
+2026-10-24T01:18:38.6917871+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=109 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:39.0015641+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:39.3156280+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=32 tts=17
+nsh> [K
+2026-10-24T01:18:39.5311023+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:39.7312547+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:41.7322521+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:41.9346691+08:00 CMD echo CASE_recovery04
+echo CASE_recovery04
+CASE_recovery04
+nsh> [K
+2026-10-24T01:18:42.1572559+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery04.wav
+nsh> [K
+2026-10-24T01:18:42.6862340+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=130
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:43.1987717+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=750
+[vgvoice] round_settled gen=112 state=9 failed=0 elapsed_ms=750
+
+2026-10-24T01:18:43.5395202+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=112 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:43.8472769+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:44.1583644+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=33 tts=17
+nsh> [K
+2026-10-24T01:18:44.3732638+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:44.5918188+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:46.5922778+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:46.7922658+08:00 CMD echo CASE_recovery05
+echo CASE_recovery05
+CASE_recovery05
+nsh> [K
+2026-10-24T01:18:47.0069281+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery05.wav
+nsh> [K
+2026-10-24T01:18:47.5332614+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+nsh> [K[vgvoice] stage=asr_begin t=170
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:48.0425156+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=620
+[vgvoice] round_settled gen=115 state=9 failed=0 elapsed_ms=620
+
+PRESEED seen=418 hasMarker=True
+
+2026-10-24T01:18:48.3805672+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=115 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:48.6892327+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:49.0002488+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=34 tts=17
+nsh> [K
+2026-10-24T01:18:49.2182494+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:49.4363605+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:51.4441625+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:51.6603977+08:00 CMD echo CASE_recovery06
+echo CASE_recovery06
+CASE_recovery06
+nsh> [K
+2026-10-24T01:18:51.8770288+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery06.wav
+nsh> [K
+2026-10-24T01:18:52.3788844+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+nsh> [K[vgvoice] stage=asr_begin t=170
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:52.9041953+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=620
+[vgvoice] round_settled gen=118 state=9 failed=0 elapsed_ms=620
+
+PRESEED seen=418 hasMarker=True
+
+2026-10-24T01:18:53.2470519+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=118 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:53.5592572+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:53.8852476+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=35 tts=17
+nsh> [K
+2026-10-24T01:18:54.1015350+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:54.3195605+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:18:56.3456978+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:18:56.5642482+08:00 CMD echo CASE_recovery07
+echo CASE_recovery07
+CASE_recovery07
+nsh> [K
+2026-10-24T01:18:56.7823312+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery07.wav
+nsh> [K
+2026-10-24T01:18:57.3136410+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=160
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:18:57.8233102+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=780
+[vgvoice] round_settled gen=121 state=9 failed=0 elapsed_ms=780
+
+2026-10-24T01:18:58.1688194+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=121 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:58.4992484+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:18:58.8101019+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=36 tts=17
+nsh> [K
+2026-10-24T01:18:59.0127117+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:18:59.2282547+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_actinsh> [Kve=0
+
+2026-10-24T01:19:01.2581734+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:19:01.4753753+08:00 CMD echo CASE_recovery08
+echo CASE_recovery08
+CASE_recovery08
+nsh> [K
+2026-10-24T01:19:01.6928092+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery08.wav
+nsh> [K
+2026-10-24T01:19:02.2238020+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+nsh> [K[vgvoice] stage=asr_begin t=180
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:19:02.7538338+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=630
+[vgvoice] round_settled gen=124 state=9 failed=0 elapsed_ms=630
+
+PRESEED seen=418 hasMarker=True
+
+2026-10-24T01:19:03.0917793+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=124 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:03.4173169+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:03.7300485+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=37 tts=17
+nsh> [K
+2026-10-24T01:19:03.9473198+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:19:04.1632438+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:19:06.1819109+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:19:06.3992526+08:00 CMD echo CASE_recovery09
+echo CASE_recovery09
+CASE_recovery09
+nsh> [K
+2026-10-24T01:19:06.6170384+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery09.wav
+nsh> [K
+2026-10-24T01:19:07.1460318+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=140
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:19:07.6530736+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=640
+[vgvoice] round_settled gen=127 state=9 failed=0 elapsed_ms=640
+
+2026-10-24T01:19:08.0053502+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=127 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:08.3170555+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:08.6302479+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=38 tts=17
+nsh> [K
+2026-10-24T01:19:08.8479077+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:19:09.0652732+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:19:11.0734851+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:19:11.2919399+08:00 CMD echo CASE_recovery10
+echo CASE_recovery10
+CASE_recovery10
+nsh> [K
+2026-10-24T01:19:11.5122551+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery10.wav
+nsh> [K
+2026-10-24T01:19:12.0267335+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=300
+
+2026-10-24T01:19:12.5576145+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vgvoice] asr: open clip failed errno=110
+
+PRESEED seen=216 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=1130
+[vgvoice] round_settled gen=130 state=9 failed=0 elTAIL seen=347 sc=239
+
+apsed_ms=1130
+2026-10-24T01:19:13.2755652+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=130 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:13.5853716+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:19:13.8962619+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=39 tts=17
+nsh> [K
+2026-10-24T01:19:14.1144397+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:19:14.3292600+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:19:16.3357716+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-24T01:19:16.5509180+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=39 tts=17
+nsh> [K
+2026-10-24T01:19:16.8618883+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=33400 headroom=15728
+nsh> [K
+2026-10-24T01:19:17.1792712+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     932864    5886136    1434024    5795432   1113     16 Umem
+nsh> [K
+2026-10-24T01:19:17.4912461+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-24T01:19:17.8033605+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=10 lat_max=110 lat_avg=38
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=46
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=45
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=110 lat_avg=31
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=32
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=110 lat_avg=32
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=49
+nsh> [K
+2026-10-24T01:19:18.1145430+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=1422 wall=2026-10-24T01:19:19
+vgruntime: slave=1 boot_total=1474 boot_ok=1474 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=737 boot_ok=737 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=130 boot_lat_avg=29 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=737 boot_ok=737 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=130 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=2211 boot_ok=2211 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=270 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=2211 boot_ok=2211 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=330 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=2210 boot_ok=2210 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=220 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=736 boot_ok=736 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=10316 boot_ok=10316 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=1420950 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=1420960 offline_s=0 last_ok_ago_s=1 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=1420970 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=1420980 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=1420990 offline_s=0 last_ok_ago_s=1 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=1421000 offline_s=0 last_ok_ago_s=1 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=1421010 offline_s=0 last_ok_ago_s=1 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=1421020 offline_s=0 last_ok_ago_s=1 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=1421030 offline_s=0 last_ok_ago_s=1 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=1421040 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=1421050 offline_s=0 last_ok_ago_s=1 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=1421060 offline_s=0 last_ok_ago_s=1 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=1421070 offline_s=0 last_ok_ago_s=1 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=1421080 offline_s=0 last_ok_ago_s=1 value=0 kind=none
+nsh> [K
+2026-10-24T01:19:18.4270487+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+nsh: ls: stat failed: 110
+nsh> [K
+2026-10-24T01:19:18.7380516+08:00 CMD vgagent audit flush
+vgagent audit flush
+vgagent: audit submitted=17 written=17 pending=0 lost=0 running=1 rc=0
+nsh> [K
+2026-10-24T01:19:19.0481591+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=40 played=17 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=500 samples=7983 bytes=15966
+vgvoice: level peak=5381 rms=108
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=500 rate=127736 B/s
+vgvoice: tail_bytes=6524 stage_ms=0
+vgvoice: generation=40 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=5 clip=0 tick_us=10000
+nsh> [K

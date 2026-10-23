@@ -1,0 +1,42 @@
+[
+ {
+  "command": "echo REBOOT_AFTER_WEDGE",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "reboot",
+  "wait_ms": 1000,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "",
+  "wait_ms": 20000,
+  "timeout_ms": 23000
+ },
+ {
+  "command": "ifconfig",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "ls /data/velaguard/voice/",
+  "wait_ms": 800,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice status",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgagent status",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ }
+]

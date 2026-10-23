@@ -1,0 +1,80 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T01:35:28.7091470+08:00 CMD ifconfig eth0 up
+ifconfig eth0 up
+nsh> [K
+2026-10-24T01:35:31.7055687+08:00 CMD ifconfig eth0 dhcp
+ifconfig eth0 dhcp
+nsh> [K
+2026-10-24T01:35:36.7322659+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.53 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     0aab  0470  0019  0620
+Dropped      0002  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0004  0004
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         0c2a  05fe  000c  0620
+  Rexmit     ----  001d  ----  ----
+nsh> [K
+2026-10-24T01:35:37.0595059+08:00 CMD route ipv4
+route ipv4
+nsh: route: command not found
+nsh> [K
+2026-10-24T01:35:37.3702580+08:00 CMD echo NET_RECOVERY_ROUND
+echo NET_RECOVERY_ROUND
+NET_RECOVERY_ROUND
+nsh> [K
+2026-10-24T01:35:37.5892780+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T01:35:38.1207232+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=190
+[vgvoice] asr: open clip failed errno=110
+
+2026-10-24T01:35:38.6492927+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vgvoice] asr rc=io status=0 req=0 resp=0 ms=0
+[vgvoice] stage=asr_end t=1210
+[vgvoice] round_settled gen=30 state=9 failed=0 elapsed_ms=1210
+
+2026-10-24T01:35:39.5044072+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别失败，请重试
+nsh> [K
+2026-10-24T01:35:39.8120156+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-24T01:35:40.0298776+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T01:35:42.5532619+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=9 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=480 samples=7724 bytes=15448
+vgvoice: level peak=5385 rms=110
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=480 rate=128745 B/s
+vgvoice: tail_bytes=4454 stage_ms=0
+vgvoice: generation=9 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=2 clip=0 tick_us=10000
+nsh> [K
