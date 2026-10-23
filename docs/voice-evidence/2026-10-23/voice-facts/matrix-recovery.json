@@ -1,0 +1,617 @@
+[
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice mute off",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery01",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery02",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery02.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery03",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery03.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery04",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery04.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery05",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery05.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery06",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery06.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery07",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery07.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery08",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery08.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery09",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery09.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "echo CASE_recovery10",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/recovery10.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round hold off",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2000,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 200,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgruntime dump",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ls -l /data/velaguard/voice",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

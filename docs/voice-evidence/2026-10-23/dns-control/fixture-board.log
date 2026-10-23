@@ -1,0 +1,2 @@
+DNS fixture 192.168.137.1:8053 udp/tcp max_workers=4 max_requests=200
+DNS fixture stopped requests=36

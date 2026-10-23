@@ -129,6 +129,7 @@ expect_dev_config()
         grep -q '^CONFIG_INIT_STACKSIZE=8192$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STACK_COLORATION=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_NET_STATISTICS=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_NET_SOLINGER=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_SCHED_CHILD_STATUS=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI_AUTOSTART=y' "$NUTTX_ROOT/.config" &&
@@ -273,6 +274,11 @@ need_clean=0
 if ! compiler_mode_ok; then
   apply_compiler_mode
   need_clean=1
+fi
+
+if ! expect_dev_config; then
+  echo "[build] ERROR: Kconfig 未保留本预设的必需配置，停止构建。" >&2
+  exit 1
 fi
 
 cd "$NUTTX_ROOT"

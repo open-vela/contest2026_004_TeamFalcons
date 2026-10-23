@@ -1,0 +1,11 @@
+DNS fixture 127.0.0.1:47201 udp/tcp max_workers=4 max_requests=200
+vg-dns-control-test: app/velaguard/host_tests/test_dns_control.c:45: query: Assertion `rc==expected && n==0' failed.
+DNS fixture stopped requests=9
+Traceback (most recent call last):
+  File "/home/hello19y/openvela/contest2026_004_TeamFalcons/scripts/voice_test/dns_fixture.py", line 107, in <module>
+    subprocess.run([str(Path(a.run).resolve()),str(port)],check=True,timeout=a.seconds)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/tmp/vg-dns-control-test', '47201']' died with <Signals.SIGABRT: 6>.

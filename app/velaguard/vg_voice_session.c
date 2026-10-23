@@ -464,8 +464,8 @@ uint32_t vg_vs_tick(struct vg_voice_session *s, uint32_t now_ms)
         {
           s->state = VG_VS_IDLE;
           s->generation++;
-          actions |= VG_VS_ACT_HIDE_OVERLAY;
         }
+      actions |= VG_VS_ACT_HIDE_OVERLAY;
     }
 
   return actions;
@@ -505,13 +505,8 @@ uint32_t vg_vs_end(struct vg_voice_session *s, uint32_t now_ms)
 
   actions = cancel_actions(s->state);
 
-  if (s->state != VG_VS_IDLE)
-    {
-      /* The overlay shows recording, progress, answers and errors alike;
-       * ending the session has to take whichever of those is on screen. */
-
-      actions |= VG_VS_ACT_HIDE_OVERLAY;
-    }
+  /* Ending also clears a previously hidden answer held by the overlay. */
+  actions |= VG_VS_ACT_HIDE_OVERLAY;
 
   if (s->state == VG_VS_PLAYING || s->state == VG_VS_TTS)
     {

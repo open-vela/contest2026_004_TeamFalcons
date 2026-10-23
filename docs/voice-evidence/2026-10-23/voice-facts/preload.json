@@ -1,0 +1,177 @@
+[
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "uname -a",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice mute on",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly01.wav http://192.168.137.1:8080/anomaly01.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly02.wav http://192.168.137.1:8080/anomaly02.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly03.wav http://192.168.137.1:8080/anomaly03.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly04.wav http://192.168.137.1:8080/anomaly04.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly05.wav http://192.168.137.1:8080/anomaly05.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly06.wav http://192.168.137.1:8080/anomaly06.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly07.wav http://192.168.137.1:8080/anomaly07.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly08.wav http://192.168.137.1:8080/anomaly08.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly09.wav http://192.168.137.1:8080/anomaly09.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/anomaly10.wav http://192.168.137.1:8080/anomaly10.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point01.wav http://192.168.137.1:8080/point01.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point02.wav http://192.168.137.1:8080/point02.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point03.wav http://192.168.137.1:8080/point03.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point04.wav http://192.168.137.1:8080/point04.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point05.wav http://192.168.137.1:8080/point05.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point06.wav http://192.168.137.1:8080/point06.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point07.wav http://192.168.137.1:8080/point07.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point08.wav http://192.168.137.1:8080/point08.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point09.wav http://192.168.137.1:8080/point09.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/point10.wav http://192.168.137.1:8080/point10.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery01.wav http://192.168.137.1:8080/recovery01.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery02.wav http://192.168.137.1:8080/recovery02.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery03.wav http://192.168.137.1:8080/recovery03.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery04.wav http://192.168.137.1:8080/recovery04.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery05.wav http://192.168.137.1:8080/recovery05.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery06.wav http://192.168.137.1:8080/recovery06.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery07.wav http://192.168.137.1:8080/recovery07.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery08.wav http://192.168.137.1:8080/recovery08.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery09.wav http://192.168.137.1:8080/recovery09.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "wget -o /data/velaguard/voice/recovery10.wav http://192.168.137.1:8080/recovery10.wav",
+    "wait_ms": 100,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ls /data/velaguard/voice",
+    "wait_ms": 500,
+    "timeout_ms": 10000
+  }
+]

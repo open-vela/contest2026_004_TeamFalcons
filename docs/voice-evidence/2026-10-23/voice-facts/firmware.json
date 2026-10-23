@@ -1,0 +1,39 @@
+{
+  ".": {
+    "head": "7dcd243f31f619aae088013695f3fb9c8a859402",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "fca4f26223f4ec818c9f241b89c846ffae831fc8",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "e8e227926aa48135a4f462220342b40d24dc0677",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "sources": {
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../nuttx/arch/arm/src/stm32h7/stm32_mpuinit.c": "cde1ada7721db7a7e20eb69f5c37650dcdee0a4756bf80e458da5dd4681afbc9",
+    "app/velaguard/vg_voice_facts.c": "d0a66443f23651e3f221b873a80d04d7b79e2678010a0cdbd0e7def13271cca6",
+    "app/velaguard/vg_voice_facts.h": "083dc6d99cce914bed294bec1e0177d32dada51f0a016d6d973e0deaadcd9564",
+    "app/velaguard/vg_voice_round.c": "015c076e9b5c9b7c99506407dfb3723433446d0ec6a75b3fd33d3de4da843dc8",
+    "app/velaguard/vg_voice_session.c": "6a46cd0408adab2cdfcf744d540b97a0c0de0e6a0bdf811846497442076d432b",
+    "app/velaguard/vg_agent_round.c": "b753999476751981eaa167402b1a59efa4c4971117883b2ce2074ad82eb618ba",
+    "app/velaguard/vgvoice.c": "9763171fb97cef9e47e5d5f7b30bc9c2769fbe16087c871285439bd845fc96ed",
+    "../packages/ai_agent/Makefile": "02c2f90f5f48d35a656a49bccc617c4b8a7133fd9593a9fb35d190f6b7798f84",
+    "../packages/ai_agent/src/core/agent_loop.c": "3134f5ed32b092ef67aa2a8c59067db578ce58ad5d57adf811410fc9ba1e5713",
+    "../packages/ai_agent/src/tools/voice_scope.c": "e75336c0de9387b314ec046a3abf41fa93d2725dfc9c04cf6e40f3a33a3faaff",
+    "../packages/ai_agent/src/tools/voice_scope.h": "87b8eda9a18191b60dc1d18bc2200e2a908864b8613d18191f6f4a1d9223c555"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "1dc13b0fdc1d2e6d6179d6f24fae702bb817ea96970934b63878cfb0af7d34b9",
+    ".debug/nuttx.bin": "5cfe86bd9ca3064093a29ae5c6fbdc9be1c86c2724bad609970653821dba2f58",
+    ".debug/nuttx.elf": "3ad0fac9621bce3e50fa312b7a3977fda1aede745263d6b5c30bf1159bfee4e8"
+  },
+  "time": "2026-10-23T08:10:46.269979+08:00",
+  "description": "Private thread-captured intent snapshot, voice-only C tool scope, explicit end/idle cleanup, cancellable playback"
+}

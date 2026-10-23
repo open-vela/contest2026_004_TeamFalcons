@@ -1,0 +1,307 @@
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-23 08:53:56
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.530, +2530)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.540, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.550, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.550, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.560, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.570, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.580, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.590, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.590, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.600, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.610, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.610, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.620, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.630, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.630, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.640, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.650, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.650, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.660, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.670, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.670, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.680, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.680, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.690, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.700, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.710, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.720, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vghmi: live ok=14/14 a1=24.0
+vgagent: ai_agent autostart ok (stac[k=agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 22:51:07)32
+768)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +170ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +390ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +400ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +700ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +710ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +880ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1500ms] P3: llm_proxy_init (rc=0)
+vghmi: live ok=14/14 a1=24.0
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1880ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2450ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2460ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2930ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2940ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2990ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbe
+
+2026-10-23T08:56:14.6046558+08:00 CMD uname -a
+uname -a
+NuttX  0.0.0 fca4f26223f-dirty Oct 23 2026 08:48:21 arm stm32h750b-dk
+nsh> [K
+2026-10-23T08:56:14.9288874+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6836120     850648    5985472     851208    5795432   1088      5 Umem
+nsh> [K
+2026-10-23T08:56:15.2365083+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.174:8501       8.148.67.174:1883  
+nsh> [K
+2026-10-23T08:56:15.5473949+08:00 CMD cat /proc/net/udp
+cat /proc/net/udp
+nsh> [K
+2026-10-23T08:56:15.8515224+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=20
+nsh> [K
+2026-10-23T08:56:15.9779279+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:16.3112737+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=230
+nsh> [K
+2026-10-23T08:56:16.5698347+08:00 CMD vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice: dnsprobe rc=0 count=1 ms=140
+nsh> [K
+2026-10-23T08:56:16.7292166+08:00 CMD vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:17.0840269+08:00 CMD vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=230
+nsh> [K
+2026-10-23T08:56:17.3457291+08:00 CMD vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-74 count=0 ms=20
+nsh> [K
+2026-10-23T08:56:17.4587721+08:00 CMD vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-84 count=0 ms=20
+nsh> [K
+2026-10-23T08:56:17.5862533+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=20
+nsh> [K
+2026-10-23T08:56:17.7039556+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=20
+nsh> [K
+2026-10-23T08:56:17.8113874+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:18.1517085+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=230
+nsh> [K
+2026-10-23T08:56:18.4082367+08:00 CMD vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice: dnsprobe rc=0 count=1 ms=150
+nsh> [K
+2026-10-23T08:56:18.5915613+08:00 CMD vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:18.9364404+08:00 CMD vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=240
+nsh> [K
+2026-10-23T08:56:19.2230550+08:00 CMD vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-74 count=0 ms=20
+nsh> [K
+2026-10-23T08:56:19.3461059+08:00 CMD vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-84 count=0 ms=20
+nsh> [K
+2026-10-23T08:56:19.4786974+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=20
+nsh> [K
+2026-10-23T08:56:19.6050915+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=20
+nsh> [K
+2026-10-23T08:56:19.7072314+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice dnsprobe stall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:20.0539183+08:00 CMD vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=230
+nsh> [
+K2026-10-23T08:56:20.2972101+08:00 CMD vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000
+vgvoice: dnsprobe rc=0 count=1 ms=130
+nsh> [K
+2026-10-23T08:56:20.4568644+08:00 CMD vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300
+vgvoice: dnsprobe rc=-110 count=0 ms=310
+nsh> [K
+2026-10-23T08:56:20.7977323+08:00 CMD vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150
+vgvoice: dnsprobe rc=-125 count=0 ms=240
+nsh> [K
+2026-10-23T08:56:21.0554183+08:00 CMD vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-74 count=0 ms=30
+nsh> [K
+2026-10-23T08:56:21.1792089+08:00 CMD vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice dnsprobe short.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=-84 count=0 ms=30
+nsh> [K
+2026-10-23T08:56:21.2971685+08:00 CMD vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice dnsprobe ok.test 192.168.137.1 8053 2000
+vgvoice: dnsprobe rc=0 count=1 ms=30
+nsh> [K
+2026-10-23T08:56:21.4291177+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6836120     850648    5985472     888960    5795432   1088      5 Umem
+nsh> [K
+2026-10-23T08:56:21.7347569+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.174:8501       8.148.67.174:1883  
+     2: 09  68   0 240    0   0      0  192.168.137.174:8503      192.168.137.1:8053  
+     3: 09  68   0 240    0   0      0  192.168.137.174:8504      192.168.137.1:8053  
+     4: 09  68   0 240    0   0      0  192.168.137.174:8506      192.168.137.1:8053  
+     5: 09  68   0 240    0   0      0  192.168.137.174:8507      192.168.137.1:8053  
+     6: 09  68   0 240    0   0      0  192.168.137.174:8509      192.168.137.1:8053  
+     7: 09  68   0 240    0   0      0  192.168.137.174:8510      192.168.137.1:8053  
+nsh> [K
+2026-10-23T08:56:22.0478323+08:00 CMD cat /proc/net/udp
+cat /proc/net/udp
+nsh> [K
+2026-10-23T08:56:22.3666540+08:00 CMD vgvoice asr /data/velaguard/voice/q1.wav 30000
+vgvoice asr /data/velaguard/voice/q1.wav 30000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792745784
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: asr rc=ok status=200 req=61669 resp=471 ms=4500
+vgvoice: asr text=现在有哪些异常？
+nsh> [K
+2026-10-23T08:56:27.1727260+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6836120     850672    5985448     934880    5795432   1089      5 Umem
+nsh> [K
+2026-10-23T08:56:27.4884705+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.174:8501       8.148.67.174:1883  
+     2: 09  68   0 240    0   0      0  192.168.137.174:8503      192.168.137.1:8053  
+     3: 09  68   0 240    0   0      0  192.168.137.174:8504      192.168.137.1:8053  
+     4: 09  68   0 240    0   0      0  192.168.137.174:8506      192.168.137.1:8053  
+     5: 09  68   0 240    0   0      0  192.168.137.174:8507      192.168.137.1:8053  
+     6: 09  68   0 240    0   0      0  192.168.137.174:8509      192.168.137.1:8053  
+     7: 09  68   0 240    0   0      0  192.168.137.174:8510      192.168.137.1:8053  
+nsh> [K
+2026-10-23T08:56:27.8136683+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=22
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=21
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=21
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=22
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=10 lat_max=30 lat_avg=22
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=21
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=21
+nsh> [K

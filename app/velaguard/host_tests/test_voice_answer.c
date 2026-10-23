@@ -133,6 +133,7 @@ static void test_anomalies_empty(void)
   CHECK(vg_va_render_anomalies(&f, display, sizeof(display), speech,
                                sizeof(speech)) > 0);
   CHECK_STR_CONTAINS(display, "当前没有异常点位");
+  CHECK(strstr(display, "0 个已确认点位") == NULL);
   CHECK_STR_CONTAINS(speech, "当前没有异常点位");
   CHECK(vg_va_text_facts_consistent(&f, display));
   CHECK(vg_va_text_facts_consistent(&f, speech));

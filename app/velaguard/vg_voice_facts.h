@@ -3,11 +3,9 @@
  *
  * BVO-10: the snapshot a spoken answer is built from.
  *
- * The agent tool that answers a voice question publishes what it actually
- * read, under one sequence number.  The overlay and the speech renderer both
- * consume that snapshot, so the scrollable list and the spoken summary cannot
- * come from two different reads.  A model answer is checked against the same
- * snapshot before it is shown (vg_va_text_facts_consistent).
+ * Tools publish what they read under one sequence number. A voice round
+ * performs its resolved read with a thread-owned capture, then renders both
+ * display and speech from that private copy. Model prose is not displayed.
  *
  * The snapshot is process memory, replaced as a whole.  It is not a log and
  * is never written to eMMC.
@@ -67,12 +65,17 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
 /* Copy the newest snapshot.  Returns false when nothing has been published. */
 bool vg_voice_facts_copy(struct vg_voice_facts *out);
 
-/* Copy only when the newest snapshot still carries seq.  A voice round reads
- * the sequence before it starts and uses this afterwards, so a later question
- * cannot supply the facts for an earlier answer. */
+/* Copy only when the newest publication still carries seq. This is a
+ * sequence lookup, not request identity; use capture for a voice answer. */
 bool vg_voice_facts_copy_seq(uint32_t seq, struct vg_voice_facts *out);
 
 uint32_t vg_voice_facts_seq(void);
 void     vg_voice_facts_set_config_version(uint32_t version);
+
+/* Capture only publications made synchronously by the calling thread.  The
+ * caller owns out until end; other publishers cannot replace this copy.
+ * A failed/blocked tool with no publication makes end return false. */
+bool vg_voice_facts_capture_begin(struct vg_voice_facts *out);
+bool vg_voice_facts_capture_end(void);
 
 #endif /* __APP_VELAGUARD_VG_VOICE_FACTS_H */

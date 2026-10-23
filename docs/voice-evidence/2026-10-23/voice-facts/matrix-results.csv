@@ -1,0 +1,61 @@
+id,intent,first_playable_ms,state,speech_failed,text_correct,complete,answer
+anomaly01,anomaly,27670,8,0,True,True,当前没有异常点位。
+anomaly02,anomaly,28720,8,0,True,True,当前没有异常点位。
+anomaly03,anomaly,29520,8,0,True,True,当前没有异常点位。
+anomaly04,anomaly,,8,1,True,False,当前没有异常点位。
+anomaly05,anomaly,28370,8,0,True,True,当前没有异常点位。
+anomaly06,anomaly,29320,8,0,True,True,当前没有异常点位。
+anomaly07,anomaly,27660,8,0,True,True,当前没有异常点位。
+anomaly08,anomaly,,8,1,True,False,当前没有异常点位。
+anomaly09,anomaly,29980,8,0,True,True,当前没有异常点位。
+anomaly10,anomaly,29470,8,0,True,True,当前没有异常点位。
+point01,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 1 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point02,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point03,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point04,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point05,point,,9,0,False,False,e=查询超时
+point06,point,,9,0,False,False,e=识别失败，请重试
+point07,point,,9,0,False,False,e=识别失败，请重试
+point08,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 3 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point09,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 3 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+point10,point,,8,1,True,False,"ups_load UPS负载：40 %
+采样 2 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1"
+recovery01,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery02,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery03,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery04,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery05,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery06,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery07,recovery,,9,0,False,False,e=没有找到这个点位，请报点位 ID 或完整名称
+recovery08,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery09,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"
+recovery10,recovery,,8,1,True,False,"无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复"

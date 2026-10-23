@@ -1,0 +1,62 @@
+[
+  {
+    "id": "point01",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point02",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point03",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point04",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point05",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0
+  },
+  {
+    "id": "point06",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0
+  },
+  {
+    "id": "point07",
+    "first_playable_ms": null,
+    "state": 9,
+    "speech_failed": 0
+  },
+  {
+    "id": "point08",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point09",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "point10",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  }
+]

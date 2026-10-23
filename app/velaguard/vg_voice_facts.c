@@ -12,6 +12,45 @@ static struct vg_voice_facts g_facts;
 static bool g_published;
 static uint32_t g_seq;
 static uint32_t g_config_version;
+static struct vg_voice_facts *g_capture;
+static pthread_t g_capture_owner;
+
+static void capture_locked(void)
+{
+  if (g_capture != NULL && pthread_equal(g_capture_owner, pthread_self()))
+    {
+      *g_capture = g_facts;
+    }
+}
+
+bool vg_voice_facts_capture_begin(struct vg_voice_facts *out)
+{
+  bool ok;
+  if (out == NULL) return false;
+  pthread_mutex_lock(&g_lock);
+  ok = g_capture == NULL;
+  if (ok)
+    {
+      memset(out, 0, sizeof(*out));
+      g_capture = out;
+      g_capture_owner = pthread_self();
+    }
+  pthread_mutex_unlock(&g_lock);
+  return ok;
+}
+
+bool vg_voice_facts_capture_end(void)
+{
+  bool ok = false;
+  pthread_mutex_lock(&g_lock);
+  if (g_capture != NULL && pthread_equal(g_capture_owner, pthread_self()))
+    {
+      ok = g_capture->seq != 0;
+      g_capture = NULL;
+    }
+  pthread_mutex_unlock(&g_lock);
+  return ok;
+}
 
 void vg_voice_facts_set_config_version(uint32_t version)
 {
@@ -24,7 +63,8 @@ void vg_voice_facts_set_config_version(uint32_t version)
 static struct vg_voice_facts *facts_begin_locked(void)
 {
   memset(&g_facts, 0, sizeof(g_facts));
-  g_facts.seq = ++g_seq;
+  if (++g_seq == 0) ++g_seq;
+  g_facts.seq = g_seq;
   g_facts.boot_id = vg_runtime_boot_id();
   g_facts.config_version = g_config_version;
   g_published = true;
@@ -60,6 +100,7 @@ void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
       f->anomalies[i] = items[i];
     }
 
+  capture_locked();
   pthread_mutex_unlock(&g_lock);
 }
 
@@ -76,6 +117,7 @@ void vg_voice_facts_publish_recovery(const struct vg_runtime_recovery *rec,
     }
 
   g_facts.data_age_ms = age_ms;
+  capture_locked();
   pthread_mutex_unlock(&g_lock);
 }
 
@@ -112,6 +154,7 @@ void vg_voice_facts_publish_point(const char *id, const char *name,
       strncpy(g_facts.point_unit, unit, sizeof(g_facts.point_unit) - 1);
     }
 
+  capture_locked();
   pthread_mutex_unlock(&g_lock);
 }
 

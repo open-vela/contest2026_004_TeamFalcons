@@ -1,0 +1,42 @@
+{
+  ".": {
+    "head": "7dcd243f31f619aae088013695f3fb9c8a859402",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "fca4f26223f4ec818c9f241b89c846ffae831fc8",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "e8e227926aa48135a4f462220342b40d24dc0677",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "sources": {
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../nuttx/arch/arm/src/stm32h7/stm32_mpuinit.c": "cde1ada7721db7a7e20eb69f5c37650dcdee0a4756bf80e458da5dd4681afbc9",
+    "app/velaguard/vg_voice_facts.c": "d0a66443f23651e3f221b873a80d04d7b79e2678010a0cdbd0e7def13271cca6",
+    "app/velaguard/vg_voice_facts.h": "083dc6d99cce914bed294bec1e0177d32dada51f0a016d6d973e0deaadcd9564",
+    "app/velaguard/vg_voice_round.c": "0b9e270b0775e62266158757484c3fd66546105f2c53180acccab692d8b983c0",
+    "app/velaguard/vg_voice_session.c": "6a46cd0408adab2cdfcf744d540b97a0c0de0e6a0bdf811846497442076d432b",
+    "app/velaguard/vg_agent_round.c": "b753999476751981eaa167402b1a59efa4c4971117883b2ce2074ad82eb618ba",
+    "app/velaguard/vgvoice.c": "a02ccbb528976585a23ffd5619de50cf32640f8adff94bcaa224b98a09fe5875",
+    "../packages/ai_agent/Makefile": "02c2f90f5f48d35a656a49bccc617c4b8a7133fd9593a9fb35d190f6b7798f84",
+    "../packages/ai_agent/src/core/agent_loop.c": "3134f5ed32b092ef67aa2a8c59067db578ce58ad5d57adf811410fc9ba1e5713",
+    "../packages/ai_agent/src/tools/voice_scope.c": "e75336c0de9387b314ec046a3abf41fa93d2725dfc9c04cf6e40f3a33a3faaff",
+    "../packages/ai_agent/src/tools/voice_scope.h": "87b8eda9a18191b60dc1d18bc2200e2a908864b8613d18191f6f4a1d9223c555",
+    "app/velaguard/vg_voice_intent.c": "a6807b8b743705e957a2b9973140a126ebd4c23a2661e722d6d23e29b28bde82",
+    "app/velaguard/vg_voice_intent.h": "a2e7315fe29a916331c05d7beec7703aec98f6ea7ee2e80f0dcc0aeab50a7fc0",
+    "app/velaguard/vg_voice_round.h": "5cbeb926fb77fa839ca533eefbe40431415d49db85f8536f2813755cbbdc2581"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "2e3df2a671e528f3104ca94c78eaed3db8189863096ae1a3b71a23d0c4296ed1",
+    ".debug/nuttx.bin": "f2827f5f8c377b3ba2cd8285911538d97182a060fc80cd379acf1fbe429aa7e7",
+    ".debug/nuttx.elf": "ed33e5ec9fcbbd59f6f3c8b7ef520c3b80645621ec2087a86b20f553d4cbde8d"
+  },
+  "time": "2026-10-23T08:16:43.683276+08:00",
+  "description": "Private thread-captured intent snapshot, voice-only C tool scope, explicit end/idle cleanup, cancellable playback; ASR punctuation, exact point identity, explicit pronoun context, cloud counters and readiness timing"
+}

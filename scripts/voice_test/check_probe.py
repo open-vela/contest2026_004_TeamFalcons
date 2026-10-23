@@ -10,7 +10,8 @@ p.add_argument('log', type=Path)
 p.add_argument('--minimum', type=int, default=25)
 a = p.parse_args()
 text = a.log.read_text(encoding='utf-8', errors='replace')
-blocks = re.split(r'^\d{4}-[^\n]* CMD ', text, flags=re.M)[1:]
+text = re.sub(r'\x1b\[[0-?]*[ -/]*[@-~]', '', text)
+blocks = re.split(r'^[ \t]*\d{4}-[^\n]* CMD ', text, flags=re.M)[1:]
 counts = Counter()
 failures = []
 for block in blocks:

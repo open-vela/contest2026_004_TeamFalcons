@@ -375,6 +375,11 @@ static void test_idle_and_page(void)
 
   a = vg_vs_tick(&s, t + 16000 + VG_VS_IDLE_MS);
   expect(vg_vs_context_point(&s)[0] == '\0', "idle releases the context");
+  expect((a & VG_VS_ACT_HIDE_OVERLAY) != 0,
+         "idle expiry clears the hidden overlay answer too");
+  a = vg_vs_end(&s, t + 16001 + VG_VS_IDLE_MS);
+  expect((a & VG_VS_ACT_HIDE_OVERLAY) != 0,
+         "explicit end clears an already hidden overlay");
 }
 
 static void test_result_hold(void)

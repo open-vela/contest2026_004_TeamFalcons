@@ -1,0 +1,62 @@
+[
+  {
+    "id": "anomaly01",
+    "first_playable_ms": 27670,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly02",
+    "first_playable_ms": 28720,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly03",
+    "first_playable_ms": 29520,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly04",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "anomaly05",
+    "first_playable_ms": 28370,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly06",
+    "first_playable_ms": 29320,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly07",
+    "first_playable_ms": 27660,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly08",
+    "first_playable_ms": null,
+    "state": 8,
+    "speech_failed": 1
+  },
+  {
+    "id": "anomaly09",
+    "first_playable_ms": 29980,
+    "state": 8,
+    "speech_failed": 0
+  },
+  {
+    "id": "anomaly10",
+    "first_playable_ms": 29470,
+    "state": 8,
+    "speech_failed": 0
+  }
+]

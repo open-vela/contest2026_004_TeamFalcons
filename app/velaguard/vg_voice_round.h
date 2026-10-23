@@ -49,6 +49,8 @@ void vg_voice_round_stop(void);
 
 /* Snapshot for the overlay.  Returns false when the round has not started. */
 bool vg_voice_round_ui(struct vg_voice_ui *out);
+/* Diagnostic counters, read atomically; no recording or conversation data. */
+int vg_voice_round_counts(uint32_t *asr, uint32_t *tts);
 
 /* Preference, persisted by the caller (BVO-13). */
 void vg_voice_round_set_muted(bool muted);

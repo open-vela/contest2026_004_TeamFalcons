@@ -405,6 +405,7 @@ bool vg_agent_round_reclaim(enum vg_agent_round_owner mine, uint32_t grace_ms)
       if (g_owner == VG_AGENT_ROUND_OWNER_VOICE)
         {
           memset(g_req, 0, sizeof(g_req));
+          memset(g_reply, 0, sizeof(g_reply));
         }
       g_state = VG_AGENT_ROUND_IDLE;
       g_owner = VG_AGENT_ROUND_OWNER_NONE;
@@ -425,6 +426,7 @@ void vg_agent_round_clear(void)
       if (g_owner == VG_AGENT_ROUND_OWNER_VOICE)
         {
           memset(g_req, 0, sizeof(g_req));
+          memset(g_reply, 0, sizeof(g_reply));
         }
       g_state = VG_AGENT_ROUND_IDLE;
       g_owner = VG_AGENT_ROUND_OWNER_NONE;
@@ -449,6 +451,7 @@ static void round_abandon(bool check_owner, enum vg_agent_round_owner owner)
       if (g_owner == VG_AGENT_ROUND_OWNER_VOICE)
         {
           memset(g_req, 0, sizeof(g_req));
+          memset(g_reply, 0, sizeof(g_reply));
         }
       g_state = VG_AGENT_ROUND_IDLE;
       g_owner = VG_AGENT_ROUND_OWNER_NONE;

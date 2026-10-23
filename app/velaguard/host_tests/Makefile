@@ -94,7 +94,7 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -102,6 +102,10 @@ test: test_net_policy test_config_store test_frame_stats test_runtime test_runti
 	./test_runtime_anomaly
 	./test_voice_session
 	./test_voice_intent
+	python3 ../../../scripts/voice_test/dns_fixture.py --run ./test_dns_control
+	./test_llm_runtime_config
+	./test_voice_scope
+	./test_voice_facts
 	./test_voice_answer
 	./test_voice_pref
 	./test_discover
@@ -135,6 +139,10 @@ test: test_net_policy test_config_store test_frame_stats test_runtime test_runti
 	python3 test_board_pins.py
 
 clean:
+	rm -f test_dns_control
+	rm -f test_llm_runtime_config
+	rm -f test_voice_scope
+	rm -f test_voice_facts
 	rm -f test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles
 	rm -f test_voice_intent test_voice_answer test_voice_pref test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
 
@@ -189,3 +197,19 @@ test_voice_intent: test_voice_intent.c ../vg_voice_intent.c ../vg_voice_intent.h
 test_voice_answer: test_voice_answer.c ../vg_voice_answer.c ../vg_voice_answer.h \
                    ../vg_voice_facts.h ../vg_runtime.h ../vg_agent_query.h
 	$(CC) $(CFLAGS) -o $@ test_voice_answer.c ../vg_voice_answer.c
+
+
+test_voice_facts: test_voice_facts.c ../vg_voice_facts.c ../vg_voice_facts.h
+	$(CC) $(CFLAGS) -o $@ test_voice_facts.c ../vg_voice_facts.c
+
+
+test_voice_scope: $(AI_AGENT_ROOT)/tests/test_voice_scope.c $(AI_AGENT_ROOT)/src/tools/voice_scope.c $(AI_AGENT_ROOT)/src/llm/llm_parse.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -DCONFIG_VG_HMI -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../netutils/cjson/cJSON -o $@ $^ -Wl,--gc-sections -lm
+
+
+test_llm_runtime_config: $(AI_AGENT_ROOT)/tests/test_llm_runtime_config.c $(AI_AGENT_ROOT)/src/llm/llm_proxy.c
+	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../netutils/cjson/cJSON -o $@ $^ -Wl,--gc-sections
+
+
+test_dns_control: test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_dnsquery.c $(OPENVELA_ROOT)/nuttx/include/nuttx/net/dns.h
+	$(CC) $(CFLAGS) -Idns_stubs -I$(OPENVELA_ROOT)/nuttx/libs/libc -idirafter $(OPENVELA_ROOT)/nuttx/include -o $@ test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_dnsquery.c

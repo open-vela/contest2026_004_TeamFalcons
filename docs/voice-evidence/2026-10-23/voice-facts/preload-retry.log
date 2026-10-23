@@ -1,0 +1,263 @@
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-23 08:24:26
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.630, +1630)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.640, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.650, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.650, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.650, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.650, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nvgptt: watching /dev/buttons (led=2)
+uttx_fbdev.c:115
+[User]	(1.660, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(1.670, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.680, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.690, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.690, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.700, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.710, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.710, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.720, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.730, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.730, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.740, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.740, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.750, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.760, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.770, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.770, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.780, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.780, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.790, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(1.800, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(1.810, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(1.820, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vghmi: live ok=14/14 a1=24.0
+vgagent: ai_agent autostart ok (stack=32768)
+LED num: 3[
+agent] AI Agent - Vela AI Agent starting (build: 2026-10-22 22:51:07)
+Hello[agent] [boot + 10ms] P0: timezone set
+from openvela contest 2026 team 004!
+[agent] [boot +80ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +140ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +140ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +300ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +310ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +370ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +570ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +710ms] P3: llm_router_init (rc=0)
+vghmi: live ok=14/14 a1=24.0
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1270ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1290ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system 
+vgtime: synced 2026-10-23 08:27:46
+
+2026-10-23T08:27:54.4271558+08:00 CMD uname -a
+uname -a
+NuttX  0.0.0 fca4f26223f-dirty Oct 23 2026 08:25:00 arm stm32h750b-dk
+nsh> [K
+2026-10-23T08:27:54.9364231+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=0 tts=0
+nsh> [K
+2026-10-23T08:27:55.4382017+08:00 CMD vgvoice mute on
+vgvoice mute on
+vgvoice: muted=1
+nsh> [K
+2026-10-23T08:27:55.9781833+08:00 CMD wget -o /data/velaguard/voice/anomaly01.wav http://192.168.137.1:8080/anomaly01.wav
+wget -o /data/velaguard/voice/anomaly01.wav http://192.168.137.1:8080/anomaly01.wav
+nsh> [K
+2026-10-23T08:27:56.7976600+08:00 CMD wget -o /data/velaguard/voice/anomaly02.wav http://192.168.137.1:8080/anomaly02.wav
+wget -o /data/velaguard/voice/anomaly02.wav http://192.168.137.1:8080/anomaly02.wav
+nsh> [K
+2026-10-23T08:27:57.8137657+08:00 CMD wget -o /data/velaguard/voice/anomaly03.wav http://192.168.137.1:8080/anomaly03.wav
+wget -o /data/velaguard/voice/anomaly03.wav http://192.168.137.1:8080/anomaly03.wav
+nsh> [K
+2026-10-23T08:27:58.5901742+08:00 CMD wget -o /data/velaguard/voice/anomaly04.wav http://192.168.137.1:8080/anomaly04.wav
+wget -o /data/velaguard/voice/anomaly04.wav http://192.168.137.1:8080/anomaly04.wav
+nsh> [K
+2026-10-23T08:27:59.5771822+08:00 CMD wget -o /data/velaguard/voice/anomaly05.wav http://192.168.137.1:8080/anomaly05.wav
+wget -o /data/velaguard/voice/anomaly05.wav http://192.168.137.1:8080/anomaly05.wav
+nsh> [K
+2026-10-23T08:28:00.2787173+08:00 CMD wget -o /data/velaguard/voice/anomaly06.wav http://192.168.137.1:8080/anomaly06.wav
+wget -o /data/velaguard/voice/anomaly06.wav http://192.168.137.1:8080/anomaly06.wav
+nsh> [K
+2026-10-23T08:28:01.1190364+08:00 CMD wget -o /data/velaguard/voice/anomaly07.wav http://192.168.137.1:8080/anomaly07.wav
+wget -o /data/velaguard/voice/anomaly07.wav http://192.168.137.1:8080/anomaly07.wav
+nsh> [K
+2026-10-23T08:28:01.7973563+08:00 CMD wget -o /data/velaguard/voice/anomaly08.wav http://192.168.137.1:8080/anomaly08.wav
+wget -o /data/velaguard/voice/anomaly08.wav http://192.168.137.1:8080/anomaly08.wav
+nsh> [K
+2026-10-23T08:28:02.6864583+08:00 CMD wget -o /data/velaguard/voice/anomaly09.wav http://192.168.137.1:8080/anomaly09.wav
+wget -o /data/velaguard/voice/anomaly09.wav http://192.168.137.1:8080/anomaly09.wav
+nsh> [K
+2026-10-23T08:28:03.6816239+08:00 CMD wget -o /data/velaguard/voice/anomaly10.wav http://192.168.137.1:8080/anomaly10.wav
+wget -o /data/velaguard/voice/anomaly10.wav http://192.168.137.1:8080/anomaly10.wav
+nsh> [K
+2026-10-23T08:28:04.5414877+08:00 CMD wget -o /data/velaguard/voice/point01.wav http://192.168.137.1:8080/point01.wav
+wget -o /data/velaguard/voice/point01.wav http://192.168.137.1:8080/point01.wav
+nsh> [K
+2026-10-23T08:28:05.4998772+08:00 CMD wget -o /data/velaguard/voice/point02.wav http://192.168.137.1:8080/point02.wav
+wget -o /data/velaguard/voice/point02.wav http://192.168.137.1:8080/point02.wav
+nsh> [K
+2026-10-23T08:28:06.3254887+08:00 CMD wget -o /data/velaguard/voice/point03.wav http://192.168.137.1:8080/point03.wav
+wget -o /data/velaguard/voice/point03.wav http://192.168.137.1:8080/point03.wav
+nsh> [K
+2026-10-23T08:28:07.2838599+08:00 CMD wget -o /data/velaguard/voice/point04.wav http://192.168.137.1:8080/point04.wav
+wget -o /data/velaguard/voice/point04.wav http://192.168.137.1:8080/point04.wav
+nsh> [K
+2026-10-23T08:28:08.1241684+08:00 CMD wget -o /data/velaguard/voice/point05.wav http://192.168.137.1:8080/point05.wav
+wget -o /data/velaguard/voice/point05.wav http://192.168.137.1:8080/point05.wav
+nsh> [K
+2026-10-23T08:28:08.9714285+08:00 CMD wget -o /data/velaguard/voice/point06.wav http://192.168.137.1:8080/point06.wav
+wget -o /data/velaguard/voice/point06.wav http://192.168.137.1:8080/point06.wav
+nsh> [K
+2026-10-23T08:28:09.7431856+08:00 CMD wget -o /data/velaguard/voice/point07.wav http://192.168.137.1:8080/point07.wav
+wget -o /data/velaguard/voice/point07.wav http://192.168.137.1:8080/point07.wav
+nsh> [K
+2026-10-23T08:28:10.6594616+08:00 CMD wget -o /data/velaguard/voice/point08.wav http://192.168.137.1:8080/point08.wav
+wget -o /data/velaguard/voice/point08.wav http://192.168.137.1:8080/point08.wav
+nsh> [K
+2026-10-23T08:28:11.6590326+08:00 CMD wget -o /data/velaguard/voice/point09.wav http://192.168.137.1:8080/point09.wav
+wget -o /data/velaguard/voice/point09.wav http://192.168.137.1:8080/point09.wav
+nsh> [K
+2026-10-23T08:28:12.8075739+08:00 CMD wget -o /data/velaguard/voice/point10.wav http://192.168.137.1:8080/point10.wav
+wget -o /data/velaguard/voice/point10.wav http://192.168.137.1:8080/point10.wav
+nsh> [K
+2026-10-23T08:28:13.6035271+08:00 CMD wget -o /data/velaguard/voice/recovery01.wav http://192.168.137.1:8080/recovery01.wav
+wget -o /data/velaguard/voice/recovery01.wav http://192.168.137.1:8080/recovery01.wav
+nsh> [K
+2026-10-23T08:28:14.4739704+08:00 CMD wget -o /data/velaguard/voice/recovery02.wav http://192.168.137.1:8080/recovery02.wav
+wget -o /data/velaguard/voice/recovery02.wav http://192.168.137.1:8080/recovery02.wav
+nsh> [K
+2026-10-23T08:28:15.4716598+08:00 CMD wget -o /data/velaguard/voice/recovery03.wav http://192.168.137.1:8080/recovery03.wav
+wget -o /data/velaguard/voice/recovery03.wav http://192.168.137.1:8080/recovery03.wav
+nsh> [K
+2026-10-23T08:28:16.4459528+08:00 CMD wget -o /data/velaguard/voice/recovery04.wav http://192.168.137.1:8080/recovery04.wav
+wget -o /data/velaguard/voice/recovery04.wav http://192.168.137.1:8080/recovery04.wav
+nsh> [K
+2026-10-23T08:28:17.6245130+08:00 CMD wget -o /data/velaguard/voice/recovery05.wav http://192.168.137.1:8080/recovery05.wav
+wget -o /data/velaguard/voice/recovery05.wav http://192.168.137.1:8080/recovery05.wav
+nsh> [K
+2026-10-23T08:28:18.4370226+08:00 CMD wget -o /data/velaguard/voice/recovery06.wav http://192.168.137.1:8080/recovery06.wav
+wget -o /data/velaguard/voice/recovery06.wav http://192.168.137.1:8080/recovery06.wav
+nsh> [K
+2026-10-23T08:28:19.3615001+08:00 CMD wget -o /data/velaguard/voice/recovery07.wav http://192.168.137.1:8080/recovery07.wav
+wget -o /data/velaguard/voice/recovery07.wav http://192.168.137.1:8080/recovery07.wav
+nsh> [K
+2026-10-23T08:28:20.3008950+08:00 CMD wget -o /data/velaguard/voice/recovery08.wav http://192.168.137.1:8080/recovery08.wav
+wget -o /data/velaguard/voice/recovery08.wav http://192.168.137.1:8080/recovery08.wav
+nsh> [K
+2026-10-23T08:28:21.0848751+08:00 CMD wget -o /data/velaguard/voice/recovery09.wav http://192.168.137.1:8080/recovery09.wav
+wget -o /data/velaguard/voice/recovery09.wav http://192.168.137.1:8080/recovery09.wav
+nsh> [K
+2026-10-23T08:28:22.2848169+08:00 CMD wget -o /data/velaguard/voice/recovery10.wav http://192.168.137.1:8080/recovery10.wav
+wget -o /data/velaguard/voice/recovery10.wav http://192.168.137.1:8080/recovery10.wav
+nsh> [K
+2026-10-23T08:28:23.4323761+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0       86446 point01.wav
+ -rw-rw-rw-   0           8 pref.txt
+ -rw-rw-rw-   0       90286 recovery01.wav
+ -rw-rw-rw-   0       83406 anomaly01.wav
+ -rw-rw-rw-   0       95246 anomaly02.wav
+ -rw-rw-rw-   0       93486 anomaly03.wav
+ -rw-rw-rw-   0       97006 anomaly04.wav
+ -rw-rw-rw-   0       81646 anomaly05.wav
+ -rw-rw-rw-   0       77006 anomaly06.wav
+ -rw-rw-rw-   0       81326 anomaly07.wav
+ -rw-rw-rw-   0       81166 anomaly08.wav
+ -rw-rw-rw-   0       96846 anomaly09.wav
+ -rw-rw-rw-   0      104046 anomaly10.wav
+ -rw-rw-rw-   0      103246 point02.wav
+ -rw-rw-rw-   0       98606 point03.wav
+ -rw-rw-rw-   0       85966 point04.wav
+ -rw-rw-rw-   0       93006 point05.wav
+ -rw-rw-rw-   0       77966 point06.wav
+ -rw-rw-rw-   0      108686 point07.wav
+ -rw-rw-rw-   0      101646 point08.wav
+ -rw-rw-rw-   0      109966 point09.wav
+ -rw-rw-rw-   0       98766 point10.wav
+ -rw-rw-rw-   0      123246 recovery02.wav
+ -rw-rw-rw-   0       98446 recovery03.wav
+ -rw-rw-rw-   0      122286 recovery04.wav
+ -rw-rw-rw-   0      107566 recovery05.wav
+ -rw-rw-rw-   0       90766 recovery06.wav
+ -rw-rw-rw-   0      104046 recovery07.wav
+ -rw-rw-rw-   0       97326 recovery08.wav
+ -rw-rw-rw-   0      133166 recovery09.wav
+ -rw-rw-rw-   0      109486 recovery10.wav
+nsh> [K

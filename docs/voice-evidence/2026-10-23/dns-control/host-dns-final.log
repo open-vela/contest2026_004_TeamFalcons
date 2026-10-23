@@ -1,0 +1,87 @@
+DNS fixture 127.0.0.1:47144 udp/tcp max_workers=4 max_requests=200
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=100
+case=tcp.test rc=0 count=1 ms=17
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=102
+ERROR: DNS wrong response ID (expected 48855, got 48854)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=0
+case=ok.test rc=0 count=1 ms=1
+case=ok.test rc=0 count=1 ms=0
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=100
+case=tcp.test rc=0 count=1 ms=17
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=102
+ERROR: DNS wrong response ID (expected 10405, got 10404)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=1
+case=ok.test rc=0 count=1 ms=0
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=100
+case=tcp.test rc=0 count=1 ms=17
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=103
+ERROR: DNS wrong response ID (expected 48788, got 48789)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=0
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=1
+case=ok.test rc=0 count=1 ms=0
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=101
+case=tcp.test rc=0 count=1 ms=16
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=102
+ERROR: DNS wrong response ID (expected 6722, got 6723)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=1
+case=ok.test rc=0 count=1 ms=0
+test_dns_control: OK (36 fault/recovery calls, split TCP, cancellation, deadline, no fd leak, cache isolation)
+DNS fixture stopped requests=49

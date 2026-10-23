@@ -48,6 +48,30 @@ static void trim(char *s)
     }
 
   n = strlen(s);
+  for (;;)
+    {
+      if (n > 0 && (s[n - 1] == ' ' || s[n - 1] == '\t' ||
+                    s[n - 1] == '\r' || s[n - 1] == '\n'))
+        {
+          s[--n] = '\0';
+          continue;
+        }
+      static const char *const punctuation[] =
+        { "?", "!", ".", ",", ";", "？", "！", "。", "，", "；", NULL };
+      bool removed = false;
+      for (int i = 0; punctuation[i] != NULL; i++)
+        {
+          size_t len = strlen(punctuation[i]);
+          if (n >= len && strcmp(s + n - len, punctuation[i]) == 0)
+            {
+              n -= len;
+              s[n] = '\0';
+              removed = true;
+              break;
+            }
+        }
+      if (!removed) break;
+    }
   while (n > 0 && (s[n - 1] == ' ' || s[n - 1] == '\t' ||
                    s[n - 1] == '\r' || s[n - 1] == '\n'))
     {
@@ -97,7 +121,7 @@ static const char *const k_suffix[] =
   "的值", "值", "现在", "当前", "怎么样", "如何",
   "恢复了吗", "恢复没有", "恢复了没有", "恢复", "解除了吗", "解除",
   "消除了吗", "消除", "正常了吗", "正常了没", "正常没有", "正常么",
-  "好了吗", "好了", "还报吗", "还在报吗", "还报警吗", "还在报警吗",
+  "好了吗", "好了没有", "好了没", "好了", "还报吗", "还在报吗", "还报警吗", "还在报警吗",
   "报警吗", "告警吗", "异常吗", "还在吗",
   "的告警", "的报警", "告警", "报警", "呢", "吗", "了", "呀", "啊", "的",
   NULL
@@ -144,7 +168,7 @@ int vg_vi_point_token(const char *text, char *out, size_t cap)
 
   out[0] = '\0';
 
-  if (text == NULL || text[0] == '\0')
+  if (text == NULL || text[0] == '\0' || strlen(text) >= sizeof(buf))
     {
       return 0;
     }
@@ -388,13 +412,26 @@ vg_vi_resolve_point(const char *text, const struct vg_agent_point *points,
       return VG_AGENT_QUERY_ARG;
     }
 
+  /* Exact identity wins before removing grammatical endings. */
+  rc = vg_agent_query_match(points, n, text, out);
+  if (rc == VG_AGENT_QUERY_AMBIG ||
+      (rc == VG_AGENT_QUERY_OK && out->mode != VG_AGENT_MATCH_NAME_SUB))
+    {
+      if (token != NULL && token_cap > 0)
+        snprintf(token, token_cap, "%s", text);
+      return rc;
+    }
+
   if (vg_vi_point_token(text, buf, sizeof(buf)) <= 0)
     {
       return VG_AGENT_QUERY_NOT_FOUND;
     }
 
+  if (token != NULL && token_cap > 0)
+    snprintf(token, token_cap, "%s", buf);
   rc = vg_agent_query_match(points, n, buf, out);
-  if (rc == VG_AGENT_QUERY_OK || rc == VG_AGENT_QUERY_AMBIG)
+  if ((rc == VG_AGENT_QUERY_OK && out->mode != VG_AGENT_MATCH_NAME_SUB) ||
+      rc == VG_AGENT_QUERY_AMBIG)
     {
       if (token != NULL && token_cap > 0)
         {
@@ -421,7 +458,8 @@ vg_vi_resolve_point(const char *text, const struct vg_agent_point *points,
   if (strcmp(buf, text) != 0)
     {
       rc = vg_agent_query_match(points, n, text, out);
-      if (rc == VG_AGENT_QUERY_OK || rc == VG_AGENT_QUERY_AMBIG)
+      if ((rc == VG_AGENT_QUERY_OK && out->mode != VG_AGENT_MATCH_NAME_SUB) ||
+          rc == VG_AGENT_QUERY_AMBIG)
         {
           if (token != NULL && token_cap > 0)
             {
@@ -433,4 +471,14 @@ vg_vi_resolve_point(const char *text, const struct vg_agent_point *points,
     }
 
   return VG_AGENT_QUERY_NOT_FOUND;
+}
+
+
+bool vg_vi_is_followup(const char *text)
+{
+  char token[VG_AGENT_QUERY_STR_MAX];
+  if (vg_vi_point_token(text, token, sizeof(token)) <= 0) return false;
+  return strcmp(token, "它") == 0 || strcmp(token, "那它") == 0 ||
+         strcmp(token, "这个点位") == 0 || strcmp(token, "该点位") == 0 ||
+         strcmp(token, "刚才那个点位") == 0;
 }

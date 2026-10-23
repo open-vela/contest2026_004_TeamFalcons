@@ -57,6 +57,16 @@ static uint32_t vgvoice_now_ms(void)
 #endif
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
+#ifdef CONFIG_NETDB_DNSCLIENT
+#include <nuttx/net/dns.h>
+#include <arpa/inet.h>
+static int vgvoice_dns_budget(void *arg)
+{
+  vela_req_ctl_t *ctl = arg;
+  if (agent_http_cancelled(ctl)) return -ECANCELED;
+  return agent_http_budget_ms(ctl, vgvoice_now_ms());
+}
+#endif
 struct vgvoice_probe_cancel
 {
   volatile int cancel;
@@ -134,7 +144,7 @@ int main(int argc, FAR char *argv[])
       printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
       printf("       vgvoice asr [wav] [budget_ms] | tts <text> | play <wav>\n");
-      printf("       vgvoice mute [on|off] | round [press|release|ask <wav>]\n");
+      printf("       vgvoice mute [on|off] | round [press|release|ask <wav>|end|text|retry|stack]\n");
 #endif
       return EXIT_FAILURE;
     }
@@ -297,6 +307,67 @@ int main(int argc, FAR char *argv[])
       return EXIT_SUCCESS;
     }
 
+#ifdef CONFIG_NETDB_DNSCLIENT
+  if (strcmp(cmd, "dnsprobe") == 0)
+    {
+      char *end;
+      unsigned long budget, port, cancel_after = 0;
+      struct sockaddr_in server = {0};
+      struct sockaddr_storage address[4];
+      struct dns_query_control_s control = {0};
+      struct vgvoice_probe_cancel cancellation = {0};
+      vela_req_ctl_t ctl;
+      pthread_t cancel_thread;
+      uint32_t start;
+      int n = 4;
+      int rc;
+      if (argc != 6 && argc != 7)
+        {
+          printf("vgvoice: dnsprobe host server-ip port budget_ms [cancel_ms]\n");
+          return EXIT_FAILURE;
+        }
+      if (inet_pton(AF_INET, argv[3], &server.sin_addr) != 1)
+        return EXIT_FAILURE;
+      port = strtoul(argv[4], &end, 10);
+      if (*end || !port || port > 65535) return EXIT_FAILURE;
+      budget = strtoul(argv[5], &end, 10);
+      if (*end || !budget || budget > 30000) return EXIT_FAILURE;
+      if (argc == 7)
+        {
+          cancel_after = strtoul(argv[6], &end, 10);
+          if (*end || !cancel_after || cancel_after > budget)
+            return EXIT_FAILURE;
+        }
+      start = vgvoice_now_ms();
+      ctl.deadline_ms = start + (uint32_t)budget;
+      if (ctl.deadline_ms == 0) ctl.deadline_ms = 1;
+      ctl.cancel = &cancellation.cancel;
+      if (cancel_after)
+        {
+          pthread_attr_t attr;
+          cancellation.at_ms = start + (uint32_t)cancel_after;
+          pthread_attr_init(&attr);
+          pthread_attr_setstacksize(&attr, 2048);
+          rc = pthread_create(&cancel_thread, &attr,
+                              vgvoice_probe_cancel_worker, &cancellation);
+          pthread_attr_destroy(&attr);
+          if (rc) return EXIT_FAILURE;
+        }
+      server.sin_family = AF_INET;
+      server.sin_port = htons((uint16_t)port);
+      control.budget_ms = vgvoice_dns_budget;
+      control.arg = &ctl;
+      control.server = (const struct sockaddr *)&server;
+      control.serverlen = sizeof(server);
+      rc = dns_query_controlled(argv[2], address, &n, &control);
+      cancellation.done = true;
+      if (cancel_after) pthread_join(cancel_thread, NULL);
+      printf("vgvoice: dnsprobe rc=%d count=%d ms=%u\n", rc, n,
+             (unsigned)(vgvoice_now_ms() - start));
+      return rc == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+#endif
+
   if (strcmp(cmd, "netprobe") == 0)
     {
       /* NSH-only transport diagnostic: always use a fixed invalid test
@@ -453,6 +524,23 @@ int main(int argc, FAR char *argv[])
           printf("vgvoice: overlay not built\n");
           return EXIT_FAILURE;
 #endif
+        }
+
+      if (argc == 4 && strcmp(argv[2], "hold") == 0 &&
+          (strcmp(argv[3], "on") == 0 || strcmp(argv[3], "off") == 0))
+        {
+          vg_voice_round_hold(strcmp(argv[3], "on") == 0);
+          printf("vgvoice: round hold=%s requested\n", argv[3]);
+          return EXIT_SUCCESS;
+        }
+
+      if (argc == 3 && strcmp(argv[2], "counts") == 0)
+        {
+          uint32_t asr, tts;
+          if (vg_voice_round_counts(&asr, &tts) != 0) return EXIT_FAILURE;
+          printf("vgvoice: requests asr=%u tts=%u\n",
+                 (unsigned)asr, (unsigned)tts);
+          return EXIT_SUCCESS;
         }
 
       if (argc >= 3 && strcmp(argv[2], "retry") == 0)

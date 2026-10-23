@@ -1,0 +1,197 @@
+[
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "uname -a",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/udp",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe short.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe short.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe stall.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcp.test 192.168.137.1 8053 3000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe tcpstall.test 192.168.137.1 8053 300",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe half.test 192.168.137.1 8053 2000 150",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe wrongid.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe short.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice dnsprobe ok.test 192.168.137.1 8053 2000",
+    "wait_ms": 100,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/udp",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice asr /data/velaguard/voice/q1.wav 30000",
+    "wait_ms": 300,
+    "timeout_ms": 40000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgstats dump",
+    "wait_ms": 300,
+    "timeout_ms": 8000
+  }
+]

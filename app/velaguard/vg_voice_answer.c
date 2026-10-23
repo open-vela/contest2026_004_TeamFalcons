@@ -351,17 +351,14 @@ int vg_va_render_anomalies(const struct vg_voice_facts *f,
 
   if (f->anomaly_seen <= 0)
     {
-      va_append(display, dcap, &d,
-                "采集尚未完成，暂时无法确认异常（已确认点位 %d 个）。",
-                f->anomaly_total);
+      va_append(display, dcap, &d, "采集尚未完成，暂时无法确认异常。");
       va_append(speech, scap, &s, "采集尚未完成，暂时无法确认异常。");
       return (int)d;
     }
 
   if (f->anomaly_total <= 0)
     {
-      va_append(display, dcap, &d, "当前没有异常点位，共 %d 个已确认点位。",
-                f->anomaly_total);
+      va_append(display, dcap, &d, "当前没有异常点位。");
       va_append(speech, scap, &s, "当前没有异常点位。");
       return (int)d;
     }

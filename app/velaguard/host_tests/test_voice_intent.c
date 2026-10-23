@@ -147,6 +147,27 @@ static void test_resolve(void)
                             sizeof(token)) == VG_AGENT_QUERY_OK);
   CHECK(res.index == 0);
 
+  CHECK(vg_vi_point_token(" UPS负载是多少？ ", token, sizeof(token)) > 0);
+  CHECK(strcmp(token, "UPS负载") == 0);
+  CHECK(vg_vi_point_token("UPS负载的报警好了没有？", token, sizeof(token)) > 0);
+  CHECK(strcmp(token, "UPS负载") == 0);
+  CHECK(vg_vi_resolve_point("UPS负载是多少？", p, n, &res, token,
+                            sizeof(token)) == VG_AGENT_QUERY_OK);
+  CHECK(res.index == 0);
+  CHECK(vg_vi_resolve_point("UPS负载恢复了吗。", p, n, &res, token,
+                            sizeof(token)) == VG_AGENT_QUERY_OK);
+  CHECK(vg_vi_resolve_point("负载", p, n, &res, token,
+                            sizeof(token)) == VG_AGENT_QUERY_NOT_FOUND);
+  CHECK(strcmp(token, "负载") == 0);
+  CHECK(vg_vi_resolve_point("ups_09是多少？", p, n, &res, token,
+                            sizeof(token)) == VG_AGENT_QUERY_NOT_FOUND);
+  CHECK(strcmp(token, "ups_09") == 0);
+  CHECK(!vg_vi_is_followup("ups_09是多少？"));
+  CHECK(!vg_vi_is_followup("不存在的测点"));
+  CHECK(!vg_vi_is_followup("恢复了吗"));
+  CHECK(vg_vi_is_followup("它呢？"));
+  CHECK(vg_vi_is_followup("它恢复了吗？"));
+
   /* Two points share the name 温度: ambiguous, not first match. */
 
   CHECK(vg_vi_resolve_point("温度是多少", p, n, &res, token, sizeof(token)) ==

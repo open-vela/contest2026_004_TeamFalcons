@@ -1,0 +1,7 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -DCONFIG_VG_HMI -I../../../../packages/ai_agent/src -I../../../../apps/include/../netutils/cjson/cJSON -o test_voice_scope ../../../../packages/ai_agent/tests/test_voice_scope.c ../../../../packages/ai_agent/src/tools/voice_scope.c ../../../../apps/netutils/cjson/cJSON/cJSON.c
+/home/hello19y/.local/bin/ld: /tmp/ccsWfKHO.o: in function `print_number':
+cJSON.c:(.text+0xba3): undefined reference to `floor'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:203: test_voice_scope] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

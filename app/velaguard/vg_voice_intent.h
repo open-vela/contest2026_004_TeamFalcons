@@ -56,14 +56,19 @@ int vg_vi_normalize_digits(const char *in, char *out, size_t cap);
 
 /* Resolve the sentence to one point.
  *
- * Order: exact id, exact name, unique substring, then the digit-normalized
+ * Order: exact id/name before stripping fillers, exact extracted id/name,
+ * then the digit-normalized
  * token against ids only.  Two points sharing a name are ambiguous; the
  * caller must ask for the id instead of choosing one.  The token that was
- * actually matched is copied to token when the caller provides a buffer.
+ * extracted is copied to token even on not-found. Unique name substrings
+ * do not select a point in the voice interface.
  */
 enum vg_agent_query_rc
 vg_vi_resolve_point(const char *text, const struct vg_agent_point *points,
                     int n, struct vg_agent_query_result *out,
                     char *token, size_t token_cap);
+
+/* Only an explicit pronoun may reuse the most recent resolved point. */
+bool vg_vi_is_followup(const char *text);
 
 #endif /* __APP_VELAGUARD_VG_VOICE_INTENT_H */

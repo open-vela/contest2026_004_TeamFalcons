@@ -1,0 +1,4 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -ffunction-sections -fdata-sections -include ../../../../packages/ai_agent/tests/stub/host_compat.h -I../../../../packages/ai_agent/tests/stub -I../../../../packages/ai_agent/src -I../../../../packages/ai_agent/include -I../../../../apps/include/../netutils/cjson/cJSON -o test_llm_runtime_config ../../../../packages/ai_agent/tests/test_llm_runtime_config.c ../../../../packages/ai_agent/src/llm/llm_proxy.c -Wl,--gc-sections
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+test_llm_runtime_config: OK (runtime selection writes zero config fields, legacy persists)
