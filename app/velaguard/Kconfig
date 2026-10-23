@@ -88,20 +88,20 @@ if VG_NET_FAILOVER
 
 config VG_WIFI_SSID
 	string "ESP-01S Wi-Fi SSID (hot-standby join)"
-	default "19y"
+	default ""
 	---help---
 		Default AP SSID loaded into RAM at boot. Overridable at runtime
 		via "vgnet wifi <ssid> <psk>".
 
 config VG_WIFI_PASSWORD
 	string "ESP-01S Wi-Fi password"
-	default "12345678"
+	default ""
 	---help---
 		Default AP PSK paired with VG_WIFI_SSID (test credentials).
 
 config VG_MQTT_BROKER_HOST
 	string "Dashboard MQTT broker host"
-	default "8.148.67.174"
+	default ""
 	---help---
 		Plaintext MQTT-C broker for status/telemetry/alarm/point_table.
 		CONNACK marks the session online.
@@ -114,17 +114,15 @@ config VG_MQTT_BROKER_PORT
 
 config VG_MQTT_USERNAME
 	string "MQTT username (TEST)"
-	default "velaguard"
+	default ""
 	---help---
-		Plaintext TEST credentials for the dashboard broker.
-		Rotate after the contest. Do not print this in logs.
+		凭据由本地运行配置提供，不提交到仓库，也不得输出到日志。
 
 config VG_MQTT_PASSWORD
 	string "MQTT password (TEST)"
-	default "2f4505862d80e2ccb8fd5ff0739e172f"
+	default ""
 	---help---
-		Plaintext TEST password. Goes into the contest git tree.
-		Rotate after the contest. Do not print this in logs.
+		凭据由本地运行配置提供，不提交到仓库，也不得输出到日志。
 
 config VG_MQTT_KEEPALIVE
 	int "MQTT keepalive seconds"
@@ -246,6 +244,23 @@ config VG_VOICE_STACKSIZE
 	default 4096
 	---help---
 		The task runs decimation, bounded WAV writes and NxPlayer control.
+
+config VG_VOICE_TLS_CACHE
+	bool "Experimental TLS session cache for voice"
+	default n
+	depends on EXAMPLES_AI_AGENT_VELA
+	---help---
+		诊断用会话恢复缓存。出现完整握手签名校验失败后默认关闭，
+		待独立验证长期生命周期后再启用。
+
+config VG_VOICE_TEST_FIXTURE
+	bool "Local voice fault fixture (diagnostic image only)"
+	default n
+	depends on EXAMPLES_AI_AGENT_VELA
+	---help---
+		仅用于无人值守的整轮故障验收。NSH 显式选择固定夹具场景后，
+		ASR/TTS 只连接固定本地主机，并使用无效测试凭据。
+		不修改 provision，不注册为设备端 Agent 工具。发布预设关闭此项。
 
 config VG_VOICE_DIRECT_TOOL
 	bool "Run the resolved voice query without a model round (diagnostic only)"

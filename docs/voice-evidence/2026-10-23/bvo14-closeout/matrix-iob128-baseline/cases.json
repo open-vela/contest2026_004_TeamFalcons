@@ -1,0 +1,182 @@
+[
+  {
+    "id": "anomaly01",
+    "intent": "anomaly",
+    "text": "现在有哪些异常",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly02",
+    "intent": "anomaly",
+    "text": "当前有哪些异常点位",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly03",
+    "intent": "anomaly",
+    "text": "请问现在有什么告警",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly04",
+    "intent": "anomaly",
+    "text": "帮我看看当前的异常",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly05",
+    "intent": "anomaly",
+    "text": "现场有没有异常",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly06",
+    "intent": "anomaly",
+    "text": "列出当前异常",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly07",
+    "intent": "anomaly",
+    "text": "现在有哪些报警",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly08",
+    "intent": "anomaly",
+    "text": "请查看异常点位",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly09",
+    "intent": "anomaly",
+    "text": "当前有哪些严重告警",
+    "expected_point": null
+  },
+  {
+    "id": "anomaly10",
+    "intent": "anomaly",
+    "text": "帮我看看哪些点位异常",
+    "expected_point": null
+  },
+  {
+    "id": "point01",
+    "intent": "point",
+    "text": "UPS负载是多少",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point02",
+    "intent": "point",
+    "text": "请问UPS负载是多少",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point03",
+    "intent": "point",
+    "text": "查一下UPS负载的值",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point04",
+    "intent": "point",
+    "text": "帮我查UPS负载",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point05",
+    "intent": "point",
+    "text": "UPS负载现在的值",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point06",
+    "intent": "point",
+    "text": "看看UPS负载",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point07",
+    "intent": "point",
+    "text": "告诉我UPS负载是多少",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point08",
+    "intent": "point",
+    "text": "当前UPS负载怎么样",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point09",
+    "intent": "point",
+    "text": "我想知道UPS负载的数值",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "point10",
+    "intent": "point",
+    "text": "UPS负载读数是多少",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery01",
+    "intent": "recovery",
+    "text": "UPS负载恢复了吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery02",
+    "intent": "recovery",
+    "text": "请问UPS负载的告警解除了吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery03",
+    "intent": "recovery",
+    "text": "UPS负载还在报警吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery04",
+    "intent": "recovery",
+    "text": "帮我看看UPS负载恢复没有",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery05",
+    "intent": "recovery",
+    "text": "UPS负载的告警消除了吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery06",
+    "intent": "recovery",
+    "text": "UPS负载正常了吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery07",
+    "intent": "recovery",
+    "text": "现在UPS负载还报吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery08",
+    "intent": "recovery",
+    "text": "UPS负载恢复了没有",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery09",
+    "intent": "recovery",
+    "text": "我想知道UPS负载的告警恢复了吗",
+    "expected_point": "ups_load"
+  },
+  {
+    "id": "recovery10",
+    "intent": "recovery",
+    "text": "UPS负载的报警好了没有",
+    "expected_point": "ups_load"
+  }
+]

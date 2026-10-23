@@ -1,0 +1,40 @@
+{
+  "time": "2026-10-23T19:24:43.710824+08:00",
+  "purpose": "request-bound voice facts; model and top-three retained",
+  "repos": {
+    ".": {
+      "head": "fb7210ef268d8c8a68340433e9ee936b31a6e773",
+      "branch": "velaguard/maintenance-stability"
+    },
+    "../packages/ai_agent": {
+      "head": "b66573ae2629c82b7a19b936b99f4e2ed864f49c",
+      "branch": "velaguard/rsp01-response-timing"
+    },
+    "../nuttx": {
+      "head": "cdfd23cdf0b1f621da52fed29d677df5390724c0",
+      "branch": "velaguard/ptt-user1-stm32h750b-dk"
+    },
+    "../apps": {
+      "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+      "branch": "velaguard/netinit-esp8266"
+    }
+  },
+  "files": {
+    "app/velaguard/host_tests/test_voice_facts.c": "328467ee564f005b61422bb6605e3a5ef68581c6d1db319d772a989632ce063e",
+    "app/velaguard/vg_agent_round.c": "54bd0bfce23cdfb99efab92e74c03fb6156cf809f6458463555efdfbb79315ff",
+    "app/velaguard/vg_agent_round.h": "8541d083b08257f6fbcd500903b236edc6f45f1b398432ee81fec8eca4d0e82d",
+    "app/velaguard/vg_voice_facts.c": "74269c47a08a69d6c3accc52d1274e17f3e997d6eafc5fe40dc98a10a45655c4",
+    "app/velaguard/vg_voice_facts.h": "f1b870d03bee5e2189724edd54f2b2c816c173173719a31daa4ae361bdecc6a8",
+    "app/velaguard/vg_voice_round.c": "c75415dd0ad67cc03b1978f6cec85a000578325324ed6857b0a1a73f4db39351",
+    "../packages/ai_agent/include/velaclaw/client.h": "6583fe992d241a16f3ccd9551167713fc11578323afbad1384fbb824a8df40fb",
+    "../packages/ai_agent/src/sdk/velaclaw_client_local.c": "2a9203ff80bbe08b29a7ed07717106e5fdccbaadb2a0d1e06c3c31d55496e534",
+    "../packages/ai_agent/tests/test_local_client.c": "c8d78d24954252a31a3e39f950ae129269ac04b72597d91a01128c4a991fb194"
+  },
+  "images": {
+    "nuttx.hex": "f4e59a547112c70f38ec04c53c32912caa6141103c330dd2a800e4d7f07e8fda",
+    "nuttx.bin": "1cd448558197ea2b028a94f1baa8506603c082e4ca4077919dc100f5dda9972f",
+    "nuttx.elf": "5ccd26f9cdeda7059845d4b6f5dd74cf6605b2cb0e1b6241be1800acf50265b0",
+    "qspi_bootstub.hex": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e"
+  },
+  "config_sha256": "a5610f117705d4a9fb32eea79813dd0fd751e48345e357db4dc58cb1ce141f37"
+}

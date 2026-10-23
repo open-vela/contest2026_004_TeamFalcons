@@ -78,10 +78,14 @@ void     vg_voice_facts_set_config_version(uint32_t version);
  * A failed/blocked tool with no publication makes end return false. */
 bool vg_voice_facts_capture_begin(struct vg_voice_facts *out);
 
-/* Capture publications made by any thread (e.g. the agent worker during
- * a voice ReAct round).  Single capture at a time. */
-bool vg_voice_facts_capture_begin_any(struct vg_voice_facts *out);
+/* 跨线程复用仅接受当前客户端请求及其处理线程，且配置版本必须匹配。 */
+bool vg_voice_facts_capture_request(struct vg_voice_facts *out,
+                                    uint32_t serial, uint32_t config_version);
+/* ai_agent 的可选观察钩子，主机测试也复用同一入口。 */
+void velaclaw_request_observe(const char *app_id, const char *request_id, void *cookie, bool begin);
 
 bool vg_voice_facts_capture_end(void);
+/* 仅用于判断受控语音模型请求是否已离开 SDK 处理作用域。 */
+bool vg_voice_facts_request_active(void);
 
 #endif /* __APP_VELAGUARD_VG_VOICE_FACTS_H */

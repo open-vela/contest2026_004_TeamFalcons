@@ -1,0 +1,1 @@
+test_llm_runtime_config: OK (runtime selection writes zero config fields, legacy persists)

@@ -98,6 +98,7 @@ int main(void)
       else
         {
           assert(r != VG_VC_OK && access(path, F_OK) != 0);
+          if (mode == 2) assert(r == VG_VC_FORMAT);
           if (mode == 5) assert(r == VG_VC_TIMEOUT);
           if (mode == 6) assert(r == VG_VC_HTTP && info.status == 429);
           if (mode == 8) assert(r == VG_VC_CANCELLED);

@@ -1,0 +1,61 @@
+[
+  {
+    "command": "",
+    "wait_ms": 20000,
+    "timeout_ms": 23000
+  },
+  {
+    "command": "ifconfig",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "route ipv4",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgmqtt status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "ps",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgagent audit",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  }
+]

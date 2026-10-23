@@ -1,0 +1,14 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -DCONFIG_VG_VOICE_LOOPBACK=1 -DCONFIG_EXAMPLES_AI_AGENT_VELA=1 -I../../../../packages/ai_agent/include -DVG_VOICE_DIR='"/tmp/vg-cloud-test-dir"' -o test_voice_cloud test_voice_cloud.c ../vg_voice_cloud.c ../vg_voice_pcm.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+../vg_voice_cloud.c: In function ‘vg_voice_cloud_tts’:
+../vg_voice_cloud.c:988:11: error: implicit declaration of function ‘vela_req_cancelled’ [-Wimplicit-function-declaration]
+  988 |       if (vela_req_cancelled(ctl)) rc = VG_VC_CANCELLED;
+      |           ^~~~~~~~~~~~~~~~~~
+../vg_voice_cloud.c:990:16: error: implicit declaration of function ‘vela_req_budget_ms’ [-Wimplicit-function-declaration]
+  990 |                vela_req_budget_ms(ctl, vc_now_ms()) == 0) rc = VG_VC_TIMEOUT;
+      |                ^~~~~~~~~~~~~~~~~~
+../vg_voice_cloud.c:990:40: error: implicit declaration of function ‘vc_now_ms’ [-Wimplicit-function-declaration]
+  990 |                vela_req_budget_ms(ctl, vc_now_ms()) == 0) rc = VG_VC_TIMEOUT;
+      |                                        ^~~~~~~~~
+make: *** [Makefile:232: test_voice_cloud] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

@@ -1,0 +1,1030 @@
+2026-10-23T21:00:03.6343623+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=20 tts=20
+nsh> [K
+2026-10-23T21:00:03.9382491+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     899608    5919392    1434032    5795432   1106     14 Umem
+nsh> [K
+2026-10-23T21:00:04.2611995+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-23T21:00:04.5736059+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=140 lat_avg=62
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=140 lat_avg=65
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=140 lat_avg=64
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=170 lat_avg=64
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=62
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=290 lat_avg=62
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=200 lat_avg=63
+nsh> [K
+2026-10-23T21:00:04.8815923+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=654 wall=2026-10-23T21:00:06
+vgruntime: slave=1 boot_total=442 boot_ok=442 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=52 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=220 boot_ok=220 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=50 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=220 boot_ok=220 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=49 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=660 boot_ok=660 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=310 boot_lat_avg=51 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=660 boot_ok=660 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=250 boot_lat_avg=51 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=660 boot_ok=660 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=290 boot_lat_avg=50 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=220 boot_ok=220 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=220 boot_lat_avg=51 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=3082 boot_ok=3082 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=652250 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=652260 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=652270 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=652280 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=652280 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=652300 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=652300 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=652310 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=652320 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=652330 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=652340 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=652350 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=652360 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=652370 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+nsh> [K
+2026-10-23T21:00:05.1957165+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-23T21:00:05.7848664+08:00 CMD echo CASE_recovery01
+echo CASE_recovery01
+CASE_recovery01
+nsh> [K
+2026-10-23T21:00:05.9994230+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice round ask /data/velaguard/voice/recovery01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery01.wav
+nsh> [K
+2026-10-23T21:00:06.5083587+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789208
+
+2026-10-23T21:00:07.0308225+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=120549 resp=471 ms=4610
+[vgvoice] stage=asr_end t=5060
+[vgvoice] stage=agent_begin t=5070
+[vgvoice] stage=agent_queued t=5070
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:21
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcadd27548055] BEGIN chat=velaguard:voice:21 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789213
+[agent] Dispatching response → local_client:velaguard:voice:21
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=572 text=0 reasoning=0 toolargs=24 calls=1 finish=tool_calls tokens=508/22/530
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcadd27548055] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=210(fused) setup=0 tls=1530 send=200 ttfb=na body=8350 pool=na build=10 parse=0 http=10210 backoff=0 total=10310 req=2010 resp=572 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcadd27548055] iter=0 tool=vg_alarm_recovery latency=10410ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 110 ms
+[trace:6adbcadd27548055] tool_iter=0 tool=vg_alarm_recovery tool_ms=110 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcadd27548055] END status=ok iters=1 tools=1 llm_ms=10410 tool_ms=110 elapsed_ms=10920 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:21
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=16300
+[vgvoice] reused agent facts for vg_alarm_recovery seq=21
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=21
+[vgvoice] stage=facts_end t=16310
+[vgvoice] stage=tts_begin t=16320
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789224
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=timeout status=200 pcm=122880 resp=0 ms=13770
+[vgvoice] stage=tts_end t=31380
+[vgvoice] round_settled gen=62 state=8 failed=1 elapsed_ms=31380
+
+2026-10-23T21:00:37.9235369+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=62 muted=0 failed=1
+vgvoice: round status=播报失败，可重试播报
+vgvoice: round q=UPS负载恢复了吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:00:38.2452887+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载恢复了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:00:38.5548399+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=21 tts=21
+nsh> [K
+2026-10-23T21:00:38.7740161+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:00:38.9910672+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=100 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:00:41.0125859+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:00:41.2298325+08:00 CMD echo CASE_recovery02
+echo CASE_recovery02
+CASE_recovery02
+nsh> [K
+2026-10-23T21:00:41.4474063+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice round ask /data/velaguard/voice/recovery02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery02.wav
+nsh> [K
+2026-10-23T21:00:41.9779764+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789243
+
+2026-10-23T21:00:42.5063079+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=164497 resp=487 ms=4940
+[vgvoice] stage=asr_end t=5580
+[vgvoice] stage=agent_begin t=5580
+[vgvoice] stage=agent_queued t=5590
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:22
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcb007c5fff76] BEGIN chat=velaguard:voice:22 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789249
+[agent] Dispatching response → local_client:velaguard:voice:22
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=571 text=0 reasoning=0 toolargs=24 calls=1 finish=tool_calls tokens=508/22/530
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcb007c5fff76] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=0 tls=3240 send=120 ttfb=na body=6770 pool=na build=80 parse=0 http=10390 backoff=0 total=10480 req=2010 resp=571 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcb007c5fff76] iter=0 tool=vg_alarm_recovery latency=10500ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 30 ms
+[trace:6adbcb007c5fff76] tool_iter=0 tool=vg_alarm_recovery tool_ms=30 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcb007c5fff76] END status=ok iters=1 tools=1 llm_ms=10500 tool_ms=30 elapsed_ms=11020 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:22
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=16790
+[vgvoice] reused agent facts for vg_alarm_recovery seq=22
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=22
+[vgvoice] stage=facts_end t=16800
+[vgvoice] stage=tts_begin t=16840
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789260
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=timeout status=200 pcm=161280 resp=0 ms=13290
+[vgvoice] stage=tts_end t=31110
+[vgvoice] round_settled gen=65 state=8 failed=1 elapsed_ms=31120
+
+2026-10-23T21:01:13.1400908+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=65 muted=0 failed=1
+vgvoice: round status=播报失败，可重试播报
+vgvoice: round q=请问UPS负载的告警解除了吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:01:13.4495720+08:00 CMD vgvoice round text
+vgvoice round text
+q=请问UPS负载的告警解除了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:01:13.7593760+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=22 tts=22
+nsh> [K
+2026-10-23T21:01:13.9768427+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:01:14.1934662+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:01:16.2232536+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:01:16.4380958+08:00 CMD echo CASE_recovery03
+echo CASE_recovery03
+CASE_recovery03
+nsh> [K
+2026-10-23T21:01:16.6546269+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice round ask /data/velaguard/voice/recovery03.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery03.wav
+nsh> [K
+2026-10-23T21:01:17.1690313+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10nsh> [K
+
+2026-10-23T21:01:17.6954264+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789279
+
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=131429 resp=474 ms=5540
+[vgvoice] stage=asr_end t=6120
+[vgvoice] stage=agent_begin t=6120
+[vgvoice] stage=agent_queued t=6120
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:23
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcb24296a9fad] BEGIN chat=velaguard:voice:23 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789284
+[agent] Dispatching response → local_client:velaguard:voice:23
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=598 text=0 reasoning=0 toolargs=45 calls=1 finish=tool_calls tokens=508/30/538
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcb24296a9fad] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=20 tls=2120 send=100 ttfb=na body=1710 pool=na build=10 parse=0 http=4150 backoff=0 total=4160 req=2010 resp=598 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcb24296a9fad] iter=0 tool=vg_alarm_recovery latency=4260ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load", "kind": "threshold"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 200 ms
+[trace:6adbcb24296a9fad] tool_iter=0 tool=vg_alarm_recovery tool_ms=200 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcb24296a9fad] END status=ok iters=1 tools=1 llm_ms=4260 tool_ms=200 elapsed_ms=4620 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:23
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=11090
+[vgvoice] reused agent facts for vg_alarm_recovery seq=23
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=23
+[vgvoice] stage=facts_end t=11100
+[vgvoice] stage=tts_begin t=11140
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789289
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=107520 resp=0 ms=13530
+[vgvoice] stage=tts_end t=25160
+[vgvoice] first_playable gen=67 elapsed_ms=25160
+[vgvoice] stage=play_posted t=25170
+[vgvoice] round_settled gen=68 state=8 failed=0 elapsed_ms=28320
+
+2026-10-23T21:01:45.5846202+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=68 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=UPS负载还在报警吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:01:45.8962543+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载还在报警吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:01:46.2077115+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=23 tts=23
+nsh> [K
+2026-10-23T21:01:46.4252585+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:01:46.6415132+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:01:48.6486558+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:01:48.8648628+08:00 CMD echo CASE_recovery04
+echo CASE_recovery04
+CASE_recovery04
+nsh> [K
+2026-10-23T21:01:49.0813263+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice round ask /data/velaguard/voice/recovery04.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery04.wav
+nsh> [K
+2026-10-23T21:01:49.5909299+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789311
+
+2026-10-23T21:01:50.1158624+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=163217 resp=483 ms=4950
+[vgvoice] stage=asr_end t=5590
+[vgvoice] stage=agent_begin t=5590
+[vgvoice] stage=agent_queued t=5600
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:24
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcb442ebff98e] BEGIN chat=velaguard:voice:24 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789316
+[agent] Dispatching response → local_client:velaguard:voice:24
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=598 text=0 reasoning=0 toolargs=45 calls=1 finish=tool_calls tokens=508/30/538
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcb442ebff98e] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=10 tls=1950 send=190 ttfb=na body=1620 pool=na build=10 parse=30 http=3790 backoff=0 total=3920 req=2010 resp=598 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcb442ebff98e] iter=0 tool=vg_alarm_recovery latency=4100ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load", "kind": "threshold"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 530 ms
+[trace:6adbcb442ebff98e] tool_iter=0 tool=vg_alarm_recovery tool_ms=530 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcb442ebff98e] END status=ok iters=1 tools=1 llm_ms=4100 tool_ms=530 elapsed_ms=4860 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:24
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=10680
+[vgvoice] reused agent facts for vg_alarm_recovery seq=24
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=24
+[vgvoice] stage=facts_end t=10700
+[vgvoice] stage=tts_begin t=10700
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789321
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=115200 resp=0 ms=13180
+[vgvoice] stage=tts_end t=24220
+[vgvoice] first_playable gen=70 elapsed_ms=24220
+[vgvoice] stage=play_posted t=24220
+[vgvoice] round_settled gen=71 state=8 failed=0 elapsed_ms=28840
+
+2026-10-23T21:02:18.4812326+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=71 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=帮我看看UPS负载恢复没有。
+vgvoice: round a=131 bytes
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+2026-10-23T21:02:18.7917012+08:00 CMD vgvoice round text
+vgvoice round text
+q=帮我看看UPS负载恢复没有。
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:02:19.0998791+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=24 tts=24
+nsh> [K
+2026-10-23T21:02:19.3160594+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:02:19.5309116+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+
+2026-10-23T21:02:21.5355274+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:02:21.7512926+08:00 CMD echo CASE_recovery05
+echo CASE_recovery05
+CASE_recovery05
+nsh> [K
+2026-10-23T21:02:21.9687772+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice round ask /data/velaguard/voice/recovery05.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery05.wav
+nsh> [K
+2026-10-23T21:02:22.5117525+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K
+2026-10-23T21:02:23.0320582+08:00 CMD vgvoice round hold on
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789344
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=143589 resp=481 ms=6230
+[vgvoice] stage=asr_end t=7060
+[vgvoice] stage=agent_begin t=7060
+[vgvoice] stage=agent_queued t=7070
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:25
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcb67155f88ba] BEGIN chat=velaguard:voice:25 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789351
+[agent] Dispatching response → local_client:velaguard:voice:25
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=598 text=0 reasoning=0 toolargs=45 calls=1 finish=tool_calls tokens=508/30/538
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcb67155f88ba] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=190(fused) setup=20 tls=1940 send=200 ttfb=na body=1720 pool=na build=90 parse=0 http=4090 backoff=0 total=4180 req=2010 resp=598 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcb67155f88ba] iter=0 tool=vg_alarm_recovery latency=4190ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load", "kind": "threshold"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 430 ms
+[trace:6adbcb67155f88ba] tool_iter=0 tool=vg_alarm_recovery tool_ms=430 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcb67155f88ba] END status=ok iters=1 tools=1 llm_ms=4190 tool_ms=430 elapsed_ms=4940 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:25
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=12250
+[vgvoice] reused agent facts for vg_alarm_recovery seq=25
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=25
+[vgvoice] stage=facts_end t=12270
+[vgvoice] stage=tts_begin t=12270
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789356
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=115200 resp=0 ms=13350
+[vgvoice] stage=tts_end t=25840
+[vgvoice] first_playable gen=73 elapsed_ms=25850
+[vgvoice] stage=play_posted t=25850
+[vgvoice] round_settled gen=74 state=8 failed=0 elapsed_ms=29360
+
+2026-10-23T21:02:52.0543681+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=74 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=UPS负载的告警消除了吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:02:52.3627401+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载的告警消除了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:02:52.6832078+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=25 tts=25
+nsh> [K
+2026-10-23T21:02:52.9005133+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:02:53.1144840+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:02:55.1457709+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:02:55.3647242+08:00 CMD echo CASE_recovery06
+echo CASE_recovery06
+CASE_recovery06
+nsh> [K
+2026-10-23T21:02:55.5828273+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice round ask /data/velaguard/voice/recovery06.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery06.wav
+nsh> [K
+2026-10-23T21:02:56.1095897+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789377
+
+2026-10-23T21:02:56.6154801+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=121189 resp=471 ms=4200
+[vgvoice] stage=asr_end t=4760
+[vgvoice] stage=agent_begin t=4760
+[vgvoice] stage=agent_queued t=4770
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:26
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcb864dacc680] BEGIN chat=velaguard:voice:26 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789382
+[agent] Dispatching response → local_client:velaguard:voice:26
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=573 text=0 reasoning=0 toolargs=24 calls=1 finish=tool_calls tokens=508/22/530
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcb864dacc680] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=0 tls=1840 send=190 ttfb=na body=2360 pool=na build=80 parse=0 http=4430 backoff=0 total=4520 req=2010 resp=573 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcb864dacc680] iter=0 tool=vg_alarm_recovery latency=4620ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 120 ms
+[trace:6adbcb864dacc680] tool_iter=0 tool=vg_alarm_recovery tool_ms=120 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcb864dacc680] END status=ok iters=1 tools=1 llm_ms=4620 tool_ms=120 elapsed_ms=5060 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:26
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=10140
+[vgvoice] reused agent facts for vg_alarm_recovery seq=26
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=26
+[vgvoice] stage=facts_end t=10150
+[vgvoice] stage=tts_begin t=10160
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789387
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=115200 resp=0 ms=12510
+[vgvoice] stage=tts_end t=22910
+[vgvoice] first_playable gen=76 elapsed_ms=22920
+[vgvoice] stage=play_posted t=22920
+[vgvoice] round_settled gen=77 state=8 failed=0 elapsed_ms=27390
+
+2026-10-23T21:03:23.5890823+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=77 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=UPS负载正常了吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:03:23.9014037+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载正常了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:03:24.2100157+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=26 tts=26
+nsh> [K
+2026-10-23T21:03:24.4296882+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:03:24.6466201+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:03:26.6503391+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:03:26.8695432+08:00 CMD echo CASE_recovery07
+echo CASE_recovery07
+CASE_recovery07
+nsh> [K
+2026-10-23T21:03:27.0904470+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice round ask /data/velaguard/voice/recovery07.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery07.wav
+nsh> [K
+2026-10-23T21:03:27.6021058+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789409
+
+2026-10-23T21:03:28.1301890+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=138897 resp=474 ms=5030
+[vgvoice] stage=asr_end t=5600
+[vgvoice] stage=agent_begin t=5610
+[vgvoice] round_settled gen=80 state=9 failed=0 elapsed_ms=5610
+
+2026-10-23T21:03:33.3120003+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=80 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=现在UPS负载环保吗？
+vgvoice: round a=0 bytes
+vgvoice: round error=没有找到这个点位，请报点位 ID 或完整名称
+nsh> [K
+2026-10-23T21:03:33.6374395+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在UPS负载环保吗？
+a=
+e=没有找到这个点位，请报点位 ID 或完整名称
+nsh> [K
+2026-10-23T21:03:33.9674422+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=27 tts=26
+nsh> [K
+2026-10-23T21:03:34.1687944+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:03:34.3726603+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=80 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:03:36.3906164+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:03:36.6092737+08:00 CMD echo CASE_recovery08
+echo CASE_recovery08
+CASE_recovery08
+nsh> [K
+2026-10-23T21:03:36.8410132+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice round ask /data/velaguard/voice/recovery08.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery08.wav
+nsh> [K
+2026-10-23T21:03:37.3652576+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=20
+[vgvoice] stage=asr_begin t=20
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789418
+
+2026-10-23T21:03:37.8672525+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=129937 resp=474 ms=4490
+[vgvoice] stage=asr_end t=5650
+[vgvoice] stage=agent_begin t=5650
+[vgvoice] stage=agent_queued t=5660
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:27
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcbb03c538634] BEGIN chat=velaguard:voice:27 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789424
+[agent] Dispatching response → local_client:velaguard:voice:27
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=573 text=0 reasoning=0 toolargs=24 calls=1 finish=tool_calls tokens=508/22/530
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcbb03c538634] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=90 tls=1920 send=210 ttfb=na body=1820 pool=na build=10 parse=0 http=4080 backoff=0 total=4090 req=2010 resp=573 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcbb03c538634] iter=0 tool=vg_alarm_recovery latency=4190ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 210 ms
+[trace:6adbcbb03c538634] tool_iter=0 tool=vg_alarm_recovery tool_ms=210 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcbb03c538634] END status=ok iters=1 tools=1 llm_ms=4190 tool_ms=210 elapsed_ms=4710 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:27
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=10670
+[vgvoice] reused agent facts for vg_alarm_recovery seq=27
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=27
+[vgvoice] stage=facts_end t=10690
+[vgvoice] stage=tts_begin t=10690
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789429
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=11080
+[vgvoice] stage=tts_end t=22140
+[vgvoice] first_playable gen=82 elapsed_ms=22140
+[vgvoice] stage=play_posted t=22150
+[vgvoice] round_settled gen=83 state=8 failed=0 elapsed_ms=26270
+
+2026-10-23T21:04:03.6896800+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=83 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=UPS负载恢复了没有？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:04:03.9985770+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载恢复了没有？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:04:04.3220394+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=28 tts=27
+nsh> [K
+2026-10-23T21:04:04.5398168+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:04:04.7532510+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:04:06.7706712+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:04:06.9872658+08:00 CMD echo CASE_recovery09
+echo CASE_recovery09
+CASE_recovery09
+nsh> [K
+2026-10-23T21:04:07.2049541+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice round ask /data/velaguard/voice/recovery09.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery09.wav
+nsh> [K
+2026-10-23T21:04:07.7062586+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789449
+
+2026-10-23T21:04:08.2330959+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=177721 resp=493 ms=5760
+[vgvoice] stage=asr_end t=6470
+[vgvoice] stage=agent_begin t=6470
+[vgvoice] stage=agent_queued t=6480
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:28
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcbcf75a02c31] BEGIN chat=velaguard:voice:28 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789455
+[agent] Dispatching response → local_client:velaguard:voice:28
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=598 text=0 reasoning=0 toolargs=45 calls=1 finish=tool_calls tokens=508/30/538
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcbcf75a02c31] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=20 tls=1930 send=190 ttfb=na body=7540 pool=na build=90 parse=10 http=9800 backoff=0 total=9900 req=2010 resp=598 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcbcf75a02c31] iter=0 tool=vg_alarm_recovery latency=9980ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load", "kind": "threshold"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 110 ms
+[trace:6adbcbcf75a02c31] tool_iter=0 tool=vg_alarm_recovery tool_ms=110 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcbcf75a02c31] END status=ok iters=1 tools=1 llm_ms=9980 tool_ms=110 elapsed_ms=10340 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:28
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=17050
+[vgvoice] reused agent facts for vg_alarm_recovery seq=28
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=28
+[vgvoice] stage=facts_end t=17060
+[vgvoice] stage=tts_begin t=17070
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789466
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=107520 resp=0 ms=11940
+[vgvoice] stage=tts_end t=29250
+[vgvoice] first_playable gen=85 elapsed_ms=29260
+[vgvoice] stage=play_posted t=29260
+[vgvoice] round_settled gen=86 state=8 failed=0 elapsed_ms=33100
+
+2026-10-23T21:04:40.9169829+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=86 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=我想知道UPS负载的告警恢复了吗？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:04:41.2258159+08:00 CMD vgvoice round text
+vgvoice round text
+q=我想知道UPS负载的告警恢复了吗？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:04:41.5378904+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=29 tts=28
+nsh> [K
+2026-10-23T21:04:41.7568206+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:04:41.9728849+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:04:44.0032274+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:04:44.2215009+08:00 CMD echo CASE_recovery10
+echo CASE_recovery10
+CASE_recovery10
+nsh> [K
+2026-10-23T21:04:44.4381196+08:00 CMD vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice round ask /data/velaguard/voice/recovery10.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/recovery10.wav
+nsh> [K
+2026-10-23T21:04:44.9690197+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K
+2026-10-23T21:04:45.4790422+08:00 CMD vgvoice round hold on
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789486
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=146149 resp=480 ms=5060
+[vgvoice] stage=asr_end t=5590
+[vgvoice] stage=agent_begin t=5590
+[vgvoice] stage=agent_queued t=5600
+[vgagent] round submitted: 82 bytes
+[agent] Processing message from local_client:velaguard:voice:29
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbcbf334ed435a] BEGIN chat=velaguard:voice:29 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2010 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789492
+[agent] Dispatching response → local_client:velaguard:voice:29
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=573 text=0 reasoning=0 toolargs=24 calls=1 finish=tool_calls tokens=508/22/530
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbcbf334ed435a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=80 tls=5030 send=110 ttfb=na body=1090 pool=na build=20 parse=0 http=6420 backoff=0 total=6450 req=2010 resp=573 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbcbf334ed435a] iter=0 tool=vg_alarm_recovery latency=6560ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"point_id": "ups_load"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 114 bytes, 350 ms
+[trace:6adbcbf334ed435a] tool_iter=0 tool=vg_alarm_recovery tool_ms=350 out=114 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbcbf334ed435a] END status=ok iters=1 tools=1 llm_ms=6560 tool_ms=350 elapsed_ms=7280 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:29
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=13200
+[vgvoice] reused agent facts for vg_alarm_recovery seq=29
+[vgvoice] intent read vg_alarm_recovery rc=0 captured=1 seq=29
+[vgvoice] stage=facts_end t=13210
+[vgvoice] stage=tts_begin t=13220
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792789499
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts rc=ok status=200 pcm=122880 resp=0 ms=13580
+[vgvoice] stage=tts_end t=27150
+[vgvoice] first_playable gen=88 elapsed_ms=27150
+[vgvoice] stage=play_posted t=27160
+[vgvoice] round_settled gen=89 state=8 failed=0 elapsed_ms=32040
+
+2026-10-23T21:05:17.0644929+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=8 gen=89 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=UPS负载的报警好了没有？
+vgvoice: round a=131 bytes
+nsh> [K
+2026-10-23T21:05:17.3747600+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载的报警好了没有？
+a=无法确认 ups_load 的阈值告警恢复情况
+本次启动没有保留相关事件，当前正常不能证明告警曾经恢复
+nsh> [K
+2026-10-23T21:05:17.6973726+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=30 tts=29
+nsh> [K
+2026-10-23T21:05:17.9143796+08:00 CMD vgvoice round hold off
+vgvoice round hold off
+vgvoice: round hold=off requested
+nsh> [K
+2026-10-23T21:05:18.1322546+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T21:05:20.1582538+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-23T21:05:20.3752544+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=30 tts=29
+nsh> [K
+2026-10-23T21:05:20.6868350+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=33432 headroom=15696
+nsh> [K
+2026-10-23T21:05:20.9975987+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     899672    5919328    1509832    5795432   1106     15 Umem
+nsh> [K
+2026-10-23T21:05:21.3133995+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-23T21:05:21.6248414+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=58
+vgstats: slave=2 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=310 lat_avg=63
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=61
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=64
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=58
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=150 lat_avg=65
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=63
+nsh> [K
+2026-10-23T21:05:21.9505326+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=971 wall=2026-10-23T21:05:23
+vgruntime: slave=1 boot_total=624 boot_ok=624 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=54 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=311 boot_ok=311 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=310 boot_lat_avg=53 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=311 boot_ok=311 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=52 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=933 boot_ok=933 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=310 boot_lat_avg=54 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=933 boot_ok=933 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=260 boot_lat_avg=54 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=933 boot_ok=933 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=290 boot_lat_avg=54 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=311 boot_ok=311 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=220 boot_lat_avg=53 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=4356 boot_ok=4356 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=969320 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=969330 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=969340 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=969350 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=969360 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=969370 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=969380 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=969390 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=969400 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=969410 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=969420 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=969430 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=969440 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=969450 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+nsh> [K
+2026-10-23T21:05:22.2792575+08:00 CMD ls -l /data/velaguard/voice
+ls -l /data/velaguard/voice
+/data/velaguard/voice:
+ -rw-rw-rw-   0       46124 q1.wav
+ -rw-rw-rw-   0       86446 point01.wav
+ -rw-rw-rw-   0           8 pref.txt
+ -rw-rw-rw-   0       90286 recovery01.wav
+ -rw-rw-rw-   0       83406 anomaly01.wav
+ -rw-rw-rw-   0       95246 anomaly02.wav
+ -rw-rw-rw-   0       93486 anomaly03.wav
+ -rw-rw-rw-   0       97006 anomaly04.wav
+ -rw-rw-rw-   0       81646 anomaly05.wav
+ -rw-rw-rw-   0       77006 anomaly06.wav
+ -rw-rw-rw-   0       81326 anomaly07.wav
+ -rw-rw-rw-   0       81166 anomaly08.wav
+ -rw-rw-rw-   0       96846 anomaly09.wav
+ -rw-rw-rw-   0      104046 anomaly10.wav
+ -rw-rw-rw-   0      103246 point02.wav
+ -rw-rw-rw-   0       98606 point03.wav
+ -rw-rw-rw-   0       85966 point04.wav
+ -rw-rw-rw-   0       93006 point05.wav
+ -rw-rw-rw-   0       77966 point06.wav
+ -rw-rw-rw-   0      108686 point07.wav
+ -rw-rw-rw-   0      101646 point08.wav
+ -rw-rw-rw-   0      109966 point09.wav
+ -rw-rw-rw-   0       98766 point10.wav
+ -rw-rw-rw-   0      123246 recovery02.wav
+ -rw-rw-rw-   0       98446 recovery03.wav
+ -rw-rw-rw-   0      122286 recovery04.wav
+ -rw-rw-rw-   0      107566 recovery05.wav
+ -rw-rw-rw-   0       90766 recovery06.wav
+ -rw-rw-rw-   0      104046 recovery07.wav
+ -rw-rw-rw-   0       97326 recovery08.wav
+ -rw-rw-rw-   0      133166 recovery09.wav
+ -rw-rw-rw-   0      109486 recovery10.wav
+nsh> [K
+2026-10-23T21:05:24.0062642+08:00 CMD vgagent audit flush
+vgagent audit flush
+vgagent: audit submitted=29 written=29 pending=0 lost=0 running=1 rc=0
+nsh> [K
+2026-10-23T21:05:24.3192562+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=30 played=26 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2560 samples=7750 bytes=15500
+vgvoice: level peak=7370 rms=133
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=32080 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=480 rate=129170 B/s
+vgvoice: tail_bytes=4658 stage_ms=0
+vgvoice: generation=30 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=5 clip=0 tick_us=10000
+nsh> [K

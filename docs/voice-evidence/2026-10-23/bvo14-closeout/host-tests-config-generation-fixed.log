@@ -1,0 +1,237 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_anomaly test_runtime_anomaly.c ../vg_runtime.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_voice_answer test_voice_answer.c ../vg_voice_answer.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_discover test_discover.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_vgpoint test_vgpoint.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_render test_runtime_render.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_maintenance test_maintenance.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_point_commit test_point_commit.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -Wl,--wrap=vg_file_replace -lm
+./test_net_policy
+test_net_policy: all passed
+./test_config_store
+test_config_store: OK
+./test_frame_stats
+test_frame_stats: OK
+./test_runtime
+test_runtime: OK
+./test_runtime_anomaly
+test_runtime_anomaly: ok
+./test_voice_session
+test_voice_session: ok
+./test_voice_intent
+test_voice_intent: ok
+python3 ../../../scripts/voice_test/dns_fixture.py --run ./test_dns_control
+DNS fixture 127.0.0.1:44643 udp/tcp max_workers=4 max_requests=200
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=101
+case=tcp.test rc=0 count=1 ms=16
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=101
+ERROR: DNS wrong response ID (expected 11765, got 11764)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=1
+case=ok.test rc=0 count=1 ms=0
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=100
+case=tcp.test rc=0 count=1 ms=17
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=102
+ERROR: DNS wrong response ID (expected 49380, got 49381)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=0
+case=ok.test rc=0 count=1 ms=1
+case=ok.test rc=0 count=1 ms=0
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=101
+case=tcp.test rc=0 count=1 ms=16
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=102
+ERROR: DNS wrong response ID (expected 35238, got 35239)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=0
+case=ok.test rc=0 count=1 ms=1
+case=ok.test rc=0 count=1 ms=1
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=stall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=stall.test rc=-125 count=0 ms=100
+case=tcp.test rc=0 count=1 ms=17
+ERROR: recv failed: -110
+ERROR: IPv4 dns_recv_response failed: -110, server address: 127.0.0.1
+case=tcpstall.test rc=-110 count=0 ms=150
+ERROR: recv failed: -125
+ERROR: IPv4 dns_recv_response failed: -125, server address: 127.0.0.1
+case=half.test rc=-125 count=0 ms=101
+ERROR: DNS wrong response ID (expected 30824, got 30825)
+ERROR: IPv4 dns_recv_response failed: -74, server address: 127.0.0.1
+case=wrongid.test rc=-74 count=0 ms=1
+ERROR: DNS response is too short
+ERROR: IPv4 dns_recv_response failed: -84, server address: 127.0.0.1
+case=short.test rc=-84 count=0 ms=1
+case=ok.test rc=0 count=1 ms=0
+test_dns_control: OK (36 fault/recovery calls, split TCP, cancellation, deadline, no fd leak, cache isolation)
+DNS fixture stopped requests=49
+./test_tls_stream_upload
+test_tls_stream_upload: OK (bounded coalescing, exact bytes, partial writes, legacy size, invalid/short sources, cancel/deadline)
+./test_tls_voice_session
+test_tls_voice_session: OK (host/port/control isolation, expiry, clock wrap, API failures, clear, TLS 1.3 excluded)
+./test_live_memory
+test_live_memory: OK (current boot only, confirmed generation, invalid source, coherent samples, config replacement invalidates old data)
+./test_tool_audit
+test_tool_audit: OK (blocked writer, fast enqueue, bounded overflow counted, drain, real redaction, no forged line)
+./test_runtime_concurrent
+test_runtime_concurrent: OK (30000 acquisition updates with 20000 coherent voice queries)
+./test_tls_send_pressure
+test_tls_send_pressure: OK (ENOMEM -> WANT_WRITE at BIO, successful retry, fatal errors unchanged)
+./test_context_cache
+test_context_cache: OK (query used complete prior snapshot during blocked refresh, 0 ms)
+./test_voice_cloud
+test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup)
+./test_llm_runtime_config
+test_llm_runtime_config: OK (runtime selection writes zero config fields, legacy persists)
+./test_voice_scope
+test_voice_scope: OK (voice-only identity, exact allowlist, schema filtering, malformed input)
+./test_voice_facts
+test_voice_facts: OK (private copy, stale request/client/thread/config rejected, request publisher scope, failed tool, three intents)
+./test_voice_answer
+test_voice_answer: ok
+./test_voice_pref
+test_voice_pref: ok
+./test_discover
+test_discover: OK
+./test_vgpoint
+test_vgpoint: OK
+./test_alarm_eval
+test_alarm_eval: ok
+./test_time_sync
+test_time_sync: all passed
+./test_hmi_perf
+[PASS] window empty after init
+[PASS] no samples after init
+[PASS] uptime starts at zero
+[PASS] total count grows to 300
+[PASS] total duration accumulates
+[PASS] max tracks the largest span
+[PASS] window caps at 256 samples
+[PASS] window keeps the most recent 256 samples in order
+[PASS] stray end does not create a sample
+[PASS] unpaired begin counted as incomplete
+[PASS] paired begin/end records one real sample
+[PASS] wraparound uses unsigned difference
+[PASS] p50 nearest-rank of 5
+[PASS] p95 nearest-rank of 5
+[PASS] 0 pct clamps to minimum
+[PASS] 100 pct is maximum
+[PASS] single sample rank
+[PASS] empty input is zero
+[PASS] every span is recorded or counted as dropped
+[PASS] window stays bounded under concurrency
+[PASS] static stats budget under 8 KiB
+[INFO] vg_hmi_perf budget = 6424 bytes
+
+test_hmi_perf: ALL PASS
+./test_runtime_render
+[PASS] versioned point table copy and stale poll detection
+[PASS] alarm file serialization format
+test_runtime_render: ALL PASS
+./test_hmi_sched
+[PASS] zero idle sleeps minimum
+[PASS] no-timer-ready sleeps minimum
+[PASS] 1 ms stays 1
+[PASS] 5 ms stays 5
+[PASS] 10 ms stays 10
+[PASS] 11 ms clamps to max
+[PASS] large idle clamps to max
+[PASS] indev read target is 10 ms
+[PASS] sleep max matches indev read period
+test_hmi_sched: ALL PASS
+./test_mqtt_payload
+test_mqtt_payload: OK
+./test_ai_contract
+test_ai_contract: ok
+./test_advice_policy
+test_advice_policy: ok
+./test_provision_creds
+test_provision_creds: OK
+./test_agent_query
+test_agent_query: OK
+./test_agent_tools
+test_agent_tools: OK
+./test_maintenance
+test_maintenance: 0 failure(s)
+./test_file_store
+test_file_store: OK (ENOSPC, short write, primary/backup verification, sync, rename, concurrent, name budget)
+./test_shell_runner
+test_shell_runner: OK (timeout, closed pipe, overflow, recovery, reap)
+./test_local_client
+test_local_client: OK (busy, stale, duplicate, control lifetime, isolated cancel, close, recovery)
+./test_file_policy
+test_file_policy: OK (symlink, dangling target, config, firmware facts, allowed report)
+./test_discover_io
+test_discover_io: OK (bounds before I/O, errno, narrow scalar, capacity)
+./test_agent_round
+test_agent_round: OK (timeout, stale submit, owner isolation, shared budget, voice priority, background resume)
+./test_shell_output
+test_shell_output: OK (exact canaries, metadata bounds, product allowlist)
+./test_modbus_port
+test_modbus_port: OK (early reply preserved, pre-request flush, drain failure)
+./test_point_commit
+vgdiscover: applied 1 points → commit-test.json
+vgdiscover: applied 1 points → commit-test.json
+test_point_commit: OK (concurrent commits, failed write, explicit empty table)
+./test_mqtt_session
+vgnet: mqtt pub point_table failed injected
+test_mqtt_session: OK (failed updated table retried after earlier success)
+./test_ptt
+test_ptt: all checks passed
+./test_ptt_cycles
+test_ptt_cycles: all checks passed
+./test_pdm_filter
+golden: 256 samples compared
+chunked: 9 boundaries compared
+gain: all-ones peak 32421, all-zeros peak -32422, tail -625
+dc: 0.48 density, mean of the tail -112
+short: refused empty calls
+test_pdm_filter: OK
+python3 test_boot_stack.py
+test_boot_stack: OK (system entry stack=8192)
+python3 test_board_pins.py
+test_board_pins: OK (LCD G0/G1 PJ7/PJ8, preserve SDRAM A10/A11)
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

@@ -1,0 +1,235 @@
+2026-10-23T20:30:02.8048756+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:05.0047062+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-23T20:30:05.2811504+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-23T20:30:06.1009580+08:00 CMD echo FAULT_asrempty_1
+echo FAULT_asrempty_1
+FAULT_asrempty_1
+nsh> [K
+2026-10-23T20:30:06.3805698+08:00 CMD vgvoice fixture asrempty
+vgvoice fixture asrempty
+vgvoice: diagnostic fixture rc=0
+nsh> [K
+2026-10-23T20:30:06.6599121+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K
+2026-10-23T20:30:07.1675793+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792787408
+
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[vgvoice] asr rc=empty status=200 req=111377 resp=43 ms=3620
+[vgvoice] stage=asr_end t=4280
+[vgvoice] round_settled gen=14 state=9 failed=0 elapsed_ms=4280
+
+2026-10-23T20:30:11.5053544+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=14 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:11.7844648+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:12.0635737+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=4 tts=3
+nsh> [K
+2026-10-23T20:30:12.3431576+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:14.7601070+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=4 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=470 samples=7577 bytes=15154
+vgvoice: level peak=7370 rms=137
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=470 rate=128978 B/s
+vgvoice: tail_bytes=3276 stage_ms=0
+vgvoice: generation=4 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-23T20:30:15.0383419+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6818944     899456    5919488    1433864    5795432   1104     12 Umem
+nsh> [K
+2026-10-23T20:30:15.3174924+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:17.5437714+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-23T20:30:17.8244256+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-23T20:30:18.5320549+08:00 CMD echo FAULT_asrempty_2
+echo FAULT_asrempty_2
+FAULT_asrempty_2
+nsh> [K
+2026-10-23T20:30:18.7943167+08:00 CMD vgvoice fixture asrempty
+vgvoice fixture asrempty
+vgvoice: diagnostic fixture rc=0
+nsh> [K
+2026-10-23T20:30:19.0565373+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K
+2026-10-23T20:30:19.5810625+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+nsh> [K
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792787421
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[vgvoice] asr rc=empty status=200 req=111377 resp=43 ms=4100
+[vgvoice] stage=asr_end t=4780
+[vgvoice] round_settled gen=18 state=9 failed=0 elapsed_ms=4790
+
+2026-10-23T20:30:24.4493307+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=18 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:24.7280529+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:25.0069627+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=5 tts=3
+nsh> [K
+2026-10-23T20:30:25.2826528+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:27.7089840+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=5 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=510 samples=8199 bytes=16398
+vgvoice: level peak=7424 rms=132
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=8 drained=9 overwritten=0 wraps=4 elapsed_ms=510 rate=128623 B/s
+vgvoice: tail_bytes=62 stage_ms=0
+vgvoice: generation=5 queue_highwater=2 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-23T20:30:27.9849869+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6818944     899456    5919488    1433864    5795432   1104     11 Umem
+nsh> [K
+2026-10-23T20:30:28.2475353+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:30.4734102+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-23T20:30:30.7539156+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-23T20:30:31.4325384+08:00 CMD echo FAULT_asrempty_3
+echo FAULT_asrempty_3
+FAULT_asrempty_3
+nsh> [K
+2026-10-23T20:30:31.7119611+08:00 CMD vgvoice fixture asrempty
+vgvoice fixture asrempty
+vgvoice: diagnostic fixture rc=0
+nsh> [K
+2026-10-23T20:30:31.9909635+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K
+2026-10-23T20:30:32.5194083+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K
+[vela_tls] Handshake start: Host=192.168.137.1, UNIX=1792787434
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgvoice] asr rc=empty status=200 req=111377 resp=43 ms=4130
+[vgvoice] stage=asr_end t=4870
+[vgvoice] round_settled gen=22 state=9 failed=0 elapsed_ms=4870
+
+2026-10-23T20:30:37.4865737+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=22 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=
+vgvoice: round a=0 bytes
+vgvoice: round error=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:37.7444878+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=没有听清，请再说一次
+nsh> [K
+2026-10-23T20:30:38.0225039+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=6 tts=3
+nsh> [K
+2026-10-23T20:30:38.2991144+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-23T20:30:40.7158289+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=6 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=490 samples=7931 bytes=15862
+vgvoice: level peak=7382 rms=133
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=7 drained=8 overwritten=0 wraps=3 elapsed_ms=490 rate=129487 B/s
+vgvoice: tail_bytes=6105 stage_ms=0
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=4 clip=0 tick_us=10000
+nsh> [K
+2026-10-23T20:30:40.9788198+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6818944     899448    5919496    1433864    5795432   1104     12 Umem
+nsh> [K

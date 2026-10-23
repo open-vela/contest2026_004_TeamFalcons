@@ -1,0 +1,91 @@
+[
+  {
+    "command": "",
+    "mode": "critical",
+    "wait_ms": 18000,
+    "timeout_ms": 21000
+  },
+  {
+    "command": "vgagent tool vg_anomaly_read",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo BACKGROUND_PREEMPT_VOICE",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/point01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 500,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "",
+    "wait_ms": 38000,
+    "timeout_ms": 41000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2500,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "",
+    "mode": "normal",
+    "wait_ms": 12000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgagent audit flush",
+    "wait_ms": 1000,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  }
+]

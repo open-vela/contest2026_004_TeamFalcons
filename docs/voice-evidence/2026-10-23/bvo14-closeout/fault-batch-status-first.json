@@ -1,0 +1,38 @@
+[
+  {
+    "profile": "asrbad",
+    "harness_exit": 0
+  },
+  {
+    "profile": "asrtruncate",
+    "harness_exit": 0
+  },
+  {
+    "profile": "asrdns",
+    "harness_exit": 0
+  },
+  {
+    "profile": "asrstall",
+    "harness_exit": 0
+  },
+  {
+    "profile": "tts401",
+    "harness_exit": 0
+  },
+  {
+    "profile": "tts429",
+    "harness_exit": 0
+  },
+  {
+    "profile": "ttstruncate",
+    "harness_exit": 0
+  },
+  {
+    "profile": "ttsbad",
+    "harness_exit": 0
+  },
+  {
+    "profile": "ttsstall",
+    "harness_exit": 0
+  }
+]

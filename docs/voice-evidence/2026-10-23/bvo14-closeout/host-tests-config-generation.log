@@ -1,0 +1,12 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_live_memory test_live_memory.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_concurrent test_runtime_concurrent.c ../vg_runtime.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime test_runtime.c ../vg_runtime.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_anomaly test_runtime_anomaly.c ../vg_runtime.c ../vg_frame_stats.c
+test_runtime_anomaly.c: In function ‘main’:
+test_runtime_anomaly.c:320:53: error: ‘ESTALE’ undeclared (first use in this function)
+  320 |       VG_RUNTIME_KIND_THRESHOLD,80,"ge","crit") == -ESTALE,"old publication rejected");
+      |                                                     ^~~~~~
+test_runtime_anomaly.c:320:53: note: each undeclared identifier is reported only once for each function it appears in
+make: *** [Makefile:31: test_runtime_anomaly] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

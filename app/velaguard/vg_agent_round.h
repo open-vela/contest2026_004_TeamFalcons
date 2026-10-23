@@ -84,6 +84,13 @@ enum vg_agent_round_owner vg_agent_round_owner(void);
 
 void vg_agent_round_tick(void);
 
+/* 当前语音请求的关联序号；其他所有者或空闲返回 0。 */
+uint32_t vg_agent_round_voice_serial(void);
+/* 文字/播报结束后释放前台优先权，恢复被挂起的后台请求。 */
+void vg_agent_round_voice_release(void);
+/* ASR 开始前暂停后台并保留请求，失败或取消也必须 release。 */
+int vg_agent_round_voice_reserve(void);
+
 /* State and bookkeeping for the consumer side. */
 
 enum vg_agent_round_state vg_agent_round_state(void);

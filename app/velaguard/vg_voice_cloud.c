@@ -374,6 +374,49 @@ static const char vc_asr_prefix[] =
 static const char vc_asr_suffix[] =
     "\"}}]}],\"asr_options\":{\"language\":\"zh\"}}";
 
+#ifdef CONFIG_VG_VOICE_TEST_FIXTURE
+#include <pthread.h>
+static pthread_mutex_t g_fixture_lock = PTHREAD_MUTEX_INITIALIZER;
+static char g_fixture_mode[24];
+int vg_voice_cloud_fixture(const char *mode)
+{
+  static const char *const modes[] = {"off", "asr401", "asr429", "asrempty",
+    "asrbad", "asrtruncate", "asrstall", "asrdns", "tts401", "tts429",
+    "ttstruncate", "ttsbad", "ttsstall", NULL};
+  bool valid = false;
+  for (int i=0; mode && modes[i]; i++) if (!strcmp(mode,modes[i])) valid=true;
+  if (!valid) return -EINVAL;
+  pthread_mutex_lock(&g_fixture_lock);
+  snprintf(g_fixture_mode,sizeof(g_fixture_mode),"%s",strcmp(mode,"off")?mode:"");
+  pthread_mutex_unlock(&g_fixture_lock);
+  return 0;
+}
+#endif
+
+static int vc_post(bool asr, const char *data, const vela_body_src_t *body,
+                    const vela_resp_sink_t *sink, char *response, size_t cap,
+                    size_t *bytes, int *status, const vela_req_ctl_t *ctl)
+{
+#ifdef CONFIG_VG_VOICE_TEST_FIXTURE
+  char mode[24], path[40];
+  pthread_mutex_lock(&g_fixture_lock);
+  memcpy(mode,g_fixture_mode,sizeof(mode));
+  /* 只注入一次目标请求；TTS 重试回到真实服务，保留原文字。 */
+  if (mode[0] && (!asr || !strncmp(mode,"asr",3))) g_fixture_mode[0] = 0;
+  pthread_mutex_unlock(&g_fixture_lock);
+  if (mode[0]) {
+    const char *profile = asr ? (!strncmp(mode,"asr",3)?mode:"ok_asr") : mode;
+    snprintf(path,sizeof(path),"/%s",profile);
+    return agent_http_probe_post_stream(!strcmp(mode,"asrdns") ?
+        "vg-voice-fixture.invalid":"192.168.137.1", "8443",path,data,body,sink,
+        response,cap,bytes,status,ctl);
+  }
+#else
+  (void)asr;
+#endif
+  return agent_http_post_stream(data,body,sink,response,cap,bytes,status,ctl);
+}
+
 /* Post the prepared body and read the transcript out of the reply. */
 static enum vg_vc_result vc_asr_post(struct vc_body_src *src, size_t body_len,
                                      const vela_req_ctl_t *ctl, char *text,
@@ -389,7 +432,7 @@ static enum vg_vc_result vc_asr_post(struct vc_body_src *src, size_t body_len,
   body.read = vc_src_read;
   body.ctx = src;
 
-  ret = agent_http_post_stream(NULL, &body, NULL, resp, sizeof(resp),
+  ret = vc_post(true, NULL, &body, NULL, resp, sizeof(resp),
                                &body_out, &status, ctl);
 
   info->status = status;
@@ -930,7 +973,7 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
     rs.write = vc_tts_write;
     rs.ctx = &sink;
 
-    ret = agent_http_post_stream(body, NULL, &rs, resp, sizeof(resp),
+    ret = vc_post(false, body, NULL, &rs, resp, sizeof(resp),
                                &body_out, &status, ctl);
   }
 
@@ -942,7 +985,13 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 
   if (ret != 0 || sink.error != 0)
     {
-      rc = (ret != 0) ? vc_from_transport(ret) : VG_VC_FORMAT;
+      struct timespec now;
+      clock_gettime(CLOCK_MONOTONIC, &now);
+      uint32_t ms = (uint32_t)((uint64_t)now.tv_sec * 1000 + now.tv_nsec / 1000000);
+      if (agent_http_cancelled(ctl)) rc = VG_VC_CANCELLED;
+      else if (ret == AGENT_HTTP_ERR_TIMEOUT || agent_http_stop(ctl, ms)) rc = VG_VC_TIMEOUT;
+      else if (sink.error != 0) rc = VG_VC_FORMAT;
+      else rc = (ret != 0) ? vc_from_transport(ret) : VG_VC_FORMAT;
       goto out;
     }
 

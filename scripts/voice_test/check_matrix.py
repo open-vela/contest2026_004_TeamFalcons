@@ -12,6 +12,7 @@ a = p.parse_args()
 rows = []
 for group, tool in [('anomaly', 'vg_anomaly_read'), ('point', 'vg_point_read'), ('recovery', 'vg_alarm_recovery')]:
     log = (a.directory / f'matrix-{group}.log').read_text()
+    log = re.sub(r'\x1b\[[0-9;]*[A-Za-z]', '', log).replace('nsh> ', '')
     for marker in re.finditer(r'CMD echo CASE_(' + group + r'\d{2})', log):
         block = log[marker.end():]
         next_case = re.search(r'CMD echo CASE_', block)

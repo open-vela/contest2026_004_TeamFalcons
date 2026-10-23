@@ -1,0 +1,147 @@
+[
+  {
+    "command": "",
+    "wait_ms": 18000,
+    "timeout_ms": 21000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_1",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_2",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_3",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_4",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_5",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_6",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_7",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "echo FULL_HANDSHAKE_8",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "",
+    "wait_ms": 10000,
+    "timeout_ms": 13000
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "ps",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "free",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  },
+  {
+    "command": "vgagent audit",
+    "wait_ms": 300,
+    "timeout_ms": 10000
+  }
+]

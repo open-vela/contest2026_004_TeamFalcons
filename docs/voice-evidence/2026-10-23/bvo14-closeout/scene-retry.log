@@ -1,0 +1,1283 @@
+2026-10-23T19:31:30.6061739+08:00 FIXTURE_MODE normal
+[skills] Skills summary: 1086 bytes
+[vela_tls] body progress: gaps=1 first_read=8030ms total=2007 bytes
+[vela_tls] body gap 1: idle=1660ms at=9690ms bytes=2002
+[llm] Resp bytes=1990 text=0 reasoning=833 toolargs=542 calls=1 finish=tool_calls tokens=3305/487/3792
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb5a43e0b8753] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=8020 body=1680 pool=0 build=10 parse=10 http=10100 backoff=0 total=10120 req=11229 resp=1990 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb5a43e0b8753] iter=2 tool=write_file latency=10140ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=4\nn=2\n[1]\nid=temp\nepoch=6\nsev=crit\nunres=0\nsum=温度越临界值，尽快核查降温\nev=实测36度超35度阈值，本次上电反复越限又解除\natt=确认探头位置与柜内通风，判断是否真实超温\n[2]\nid=flood\nepoch=1\nsev=offline\nunres=0\nsum=水浸点离线，先查供电接线\nev=离线约71秒数据过期，总线近窗成功率94%无CRC错\natt=检查水浸传感器�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (454 bytes)
+[agent] Tool write_file result: 63 bytes, 3180 ms
+[trace:6adbb5a43e0b8753] tool_iter=2 tool=write_file tool_ms=3180 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb5a43e0b8753] END status=ok iters=3 tools=3 llm_ms=15710 tool_ms=6850 elapsed_ms=22050 backend=0
+[agent] Dispatching response → local_client:velaguard:5
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=4 live_req=4
+[vgadvice] asked for 2 alarms req=5
+[vgagent] round submitted: 823 bytes
+[agent] Processing message from local_client:velaguard:6
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb5c36c4b424c] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7387 bytes)
+[agent] Dispatching response → local_client:velaguard:6
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=938 text=0 reasoning=58 toolargs=71 calls=2 finish=tool_calls tokens=2112/77/2189
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb5c36c4b424c] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=2090 body=0 pool=0 build=0 parse=0 http=2390 backoff=0 total=2400 req=7387 resp=938 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb5c36c4b424c] iter=0 tool=read_file latency=2420ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 600 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2670 ms
+[trace:6adbb5c36c4b424c] tool_iter=0 tool=read_file tool_ms=2670 out=1874 ok=1
+[trace:6adbb5c36c4b424c] tool_iter=0 tool=vg_point_read tool_ms=600 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9882 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=936 text=0 reasoning=76 toolargs=20 calls=2 finish=tool_calls tokens=2756/78/2834
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb5c36c4b424c] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=210 ttfb=7130 body=0 pool=0 build=10 parse=0 http=7460 backoff=0 total=7470 req=9882 resp=936 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb5c36c4b424c] iter=1 tool=vg_run_report latency=7490ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 754 bytes, 280 ms
+[trace:6adbb5c36c4b424c] tool_iter=1 tool=vg_run_report tool_ms=280 out=754 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 920 ms
+[trace:6adbb5c36c4b424c] tool_iter=1 tool=vg_point_read tool_ms=920 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11185 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=1337 text=0 reasoning=216 toolargs=524 calls=1 finish=tool_calls tokens=3219/276/3495
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb5c36c4b424c] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=6760 body=0 pool=0 build=10 parse=0 http=7310 backoff=0 total=7330 req=11185 resp=1337 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb5c36c4b424c] iter=2 tool=write_file latency=7350ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=5\nn=2\n[1]\nid=temp\nepoch=7\nsev=crit\nunres=0\nsum=温度持续超阈值且反复跳变\nev=实测36度超阈值35度，时间线多次越限又解除\natt=查散热与探头位置，并核对总线从站2通信质量\n[2]\nid=flood\nepoch=1\nsev=offline\nunres=0\nsum=水浸点离线读数失败\nev=读取返回失败，已离线101秒，近窗超时38次\natt=查该点接线与供电，确认从站地
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (436 bytes)
+[agent] Tool write_file result: 63 bytes, 3370 ms
+[trace:6adbb5c36c4b424c] tool_iter=2 tool=write_file tool_ms=3370 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb5c36c4b424c] END status=ok iters=3 tools=3 llm_ms=17260 tool_ms=7840 elapsed_ms=24420 backend=0
+[agent] Dispatching response → local_client:velaguard:6
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=5 live_req=5
+[vgadvice] round ended, advice for this alarm set kept
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:31:42.6316402+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=0 shown=0 seen=14 boot=00001752
+nsh> [K
+2026-10-23T19:31:42.9422261+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=390 wall=2026-10-23T19:31:44
+vgruntime: slave=1 boot_total=276 boot_ok=270 boot_crc=0 boot_timeout=6 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=32 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=138 boot_ok=82 boot_crc=0 boot_timeout=56 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=670 boot_lat_avg=37 win_total=64 win_ok=8 win_crc=0 win_timeout=56 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=138 boot_ok=138 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=414 boot_ok=414 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=32 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=414 boot_ok=414 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=414 boot_ok=414 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=138 boot_ok=138 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=150 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=1932 boot_ok=1870 boot_crc=0 boot_timeout=62 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=390430 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=390440 offline_s=0 last_ok_ago_s=0 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=198780 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=390460 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=390470 offline_s=0 last_ok_ago_s=0 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=390480 offline_s=0 last_ok_ago_s=0 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=390490 offline_s=0 last_ok_ago_s=0 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=390500 offline_s=0 last_ok_ago_s=0 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=390510 offline_s=0 last_ok_ago_s=0 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=390520 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=390530 offline_s=0 last_ok_ago_s=0 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=390540 offline_s=0 last_ok_ago_s=0 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=390550 offline_s=0 last_ok_ago_s=0 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=390560 offline_s=0 last_ok_ago_s=0 value=0 kind=none
+vgruntime: event t_boot_s=128 wall=2026-10-23T19:27:22 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=158 wall=2026-10-23T19:27:52 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=185 wall=2026-10-23T19:28:19 id=flood action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=189 wall=2026-10-23T19:28:23 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=197 wall=2026-10-23T19:28:31 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=208 wall=2026-10-23T19:28:42 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=215 wall=2026-10-23T19:28:49 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=222 wall=2026-10-23T19:28:56 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=230 wall=2026-10-23T19:29:04 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=238 wall=2026-10-23T19:29:12 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=246 wall=2026-10-23T19:29:20 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=256 wall=2026-10-23T19:29:30 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=264 wall=2026-10-23T19:29:39 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=272 wall=2026-10-23T19:29:47 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=376 wall=2026-10-23T19:31:31 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=378 wall=2026-10-23T19:31:33 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+nsh> [K
+2026-10-23T19:31:43.4600036+08:00 FIXTURE_MODE critical
+[vgadvice] asked for 1 alarms req=6
+[vgagent] round submitted: 745 bytes
+[agent] Processing message from local_client:velaguard:7
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb62c142c97da] BEGIN chat=velaguard:7 chan=local_client
+[agent] Cache hit, skipping LLM call
+[trace:6adbb62c142c97da] iter=0 tool=(none) latency=0ms llm=ok backend=0
+[trace:6adbb62c142c97da] END status=ok iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=20 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgagent] round finished: reply
+[vgadvice] advice file answers req=5, live round is req=6: coverage decides
+[vgadvice] advice loaded: 2 entries file_req=5 live_req=6
+
+2026-10-23T19:31:55.4847392+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=1 shown=1 seen=14 boot=00001752
+- id=temp rank=crit flags=threshold value=36.0 threshold=35.0 age_ms=450 since_ms=10470
+nsh> [K
+2026-10-23T19:31:55.9650769+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=active history_complete=true duration_ms=0 episode=9 boot=00001752
+nsh> [K
+2026-10-23T19:31:56.2820585+08:00 FIXTURE_MODE offline1
+[skills] Skills summary: 1086 bytes
+[vgadvice] asked for 2 alarms req=7
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:8
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb64d73b6c3ea] BEGIN chat=velaguard:8 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7388 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:8
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792783949
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=927 text=0 reasoning=84 toolargs=56 calls=2 finish=tool_calls tokens=2110/72/2182
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb64d73b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=700 send=190 ttfb=2530 body=0 pool=0 build=10 parse=10 http=3550 backoff=0 total=3570 req=7388 resp=927 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb64d73b6c3ea] iter=0 tool=read_file latency=3590ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 736 bytes, 320 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2170 ms
+[trace:6adbb64d73b6c3ea] tool_iter=0 tool=read_file tool_ms=2170 out=1874 ok=1
+[trace:6adbb64d73b6c3ea] tool_iter=0 tool=vg_run_report tool_ms=320 out=736 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10534 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=1153 text=0 reasoning=259 toolargs=41 calls=2 finish=tool_calls tokens=3085/122/3207
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb64d73b6c3ea] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=230 ttfb=3890 body=0 pool=0 build=0 parse=10 http=4230 backoff=0 total=4250 req=10534 resp=1153 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb64d73b6c3ea] iter=1 tool=vg_anomaly_read latency=4260ms llm=ok backend=0
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 250 bytes, 120 ms
+[trace:6adbb64d73b6c3ea] tool_iter=1 tool=vg_anomaly_read tool_ms=120 out=250 ok=1
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 107 bytes, 170 ms
+[trace:6adbb64d73b6c3ea] tool_iter=1 tool=vg_alarm_recovery tool_ms=170 out=107 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11354 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:32:41.2850338+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=2 shown=2 seen=14 boot=00001752
+- id=temp rank=crit flags=threshold,offline,stale value=36.0 threshold=35.0 age_ms=25860 since_ms=20850
+- id=humid rank=offline flags=offline,stale value=50.0 threshold=0.0 age_ms=25860 since_ms=20850
+nsh> [K
+2026-10-23T19:32:41.5982189+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=active history_complete=true duration_ms=0 episode=9 boot=00001752
+nsh> [K
+2026-10-23T19:32:41.9991606+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=449 wall=2026-10-23T19:32:43
+vgruntime: slave=1 boot_total=305 boot_ok=280 boot_crc=0 boot_timeout=25 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=180 boot_lat_avg=32 win_total=64 win_ok=45 win_crc=0 win_timeout=19 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=152 boot_ok=96 boot_crc=0 boot_timeout=56 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=670 boot_lat_avg=40 win_total=64 win_ok=21 win_crc=0 win_timeout=43 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=152 boot_ok=152 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=456 boot_ok=456 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=456 boot_ok=456 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=456 boot_ok=456 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=152 boot_ok=152 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=150 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=2129 boot_ok=2048 boot_crc=0 boot_timeout=81 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=427930 offline_s=21 last_ok_ago_s=26 value=36 kind=threshold
+vgruntime: point id=humid slave=1 online=0 online_ms=427930 offline_s=21 last_ok_ago_s=26 value=50 kind=offline
+vgruntime: point id=flood slave=2 online=1 online_ms=257840 offline_s=0 last_ok_ago_s=2 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=449520 offline_s=0 last_ok_ago_s=2 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=449530 offline_s=0 last_ok_ago_s=2 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=449550 offline_s=0 last_ok_ago_s=2 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=449550 offline_s=0 last_ok_ago_s=2 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=449560 offline_s=0 last_ok_ago_s=2 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=449570 offline_s=0 last_ok_ago_s=2 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=449580 offline_s=0 last_ok_ago_s=2 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=449590 offline_s=0 last_ok_ago_s=2 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=449600 offline_s=0 last_ok_ago_s=2 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=449610 offline_s=0 last_ok_ago_s=2 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=449620 offline_s=0 last_ok_ago_s=2 value=0 kind=none
+vgruntime: event t_boot_s=128 wall=2026-10-23T19:27:22 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=158 wall=2026-10-23T19:27:52 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=185 wall=2026-10-23T19:28:19 id=flood action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=189 wall=2026-10-23T19:28:23 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=197 wall=2026-10-23T19:28:31 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=208 wall=2026-10-23T19:28:42 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=215 wall=2026-10-23T19:28:49 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=222 wall=2026-10-23T19:28:56 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=230 wall=2026-10-23T19:29:04 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=238 wall=2026-10-23T19:29:12 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=246 wall=2026-10-23T19:29:20 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=256 wall=2026-10-23T19:29:30 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=264 wall=2026-10-23T19:29:39 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=272 wall=2026-10-23T19:29:47 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=376 wall=2026-10-23T19:31:31 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=378 wall=2026-10-23T19:31:33 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=392 wall=2026-10-23T19:31:47 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=427 wall=2026-10-23T19:32:22 id=temp action=raise kind=offline value=36 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=427 wall=2026-10-23T19:32:22 id=humid action=raise kind=offline value=50 thr=0 cmp=ge reason=modbus_fail_offline
+nsh> [K
+2026-10-23T19:32:42.5361003+08:00 FIXTURE_MODE normal
+[llm] Resp bytes=1305 text=0 reasoning=677 toolargs=40 calls=1 finish=tool_calls tokens=3331/203/3534
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb64d73b6c3ea] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=4800 body=10 pool=0 build=0 parse=0 http=5350 backoff=0 total=5360 req=11354 resp=1305 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb64d73b6c3ea] iter=2 tool=vg_alarm_recovery latency=5370ms llm=ok backend=0
+[agent] Tool call: vg_alarm_recovery args={"kind": "offline", "point_id": "humid"}
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 108 bytes, 580 ms
+[trace:6adbb64d73b6c3ea] tool_iter=2 tool=vg_alarm_recovery tool_ms=580 out=108 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_alarm_recovery)
+[trace:6adbb64d73b6c3ea] END status=ok iters=3 tools=3 llm_ms=13220 tool_ms=3360 elapsed_ms=16310 backend=0
+[agent] Dispatching response → local_client:velaguard:8
+[vgagent] round finished: reply
+[vgadvice] advice file answers req=5, live round is req=7: coverage decides
+[vgadvice] advice loaded: 2 entries file_req=5 live_req=7
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:32:54.5579551+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=recovered history_complete=true duration_ms=62190 episode=9 boot=00001752
+nsh> [K
+2026-10-23T19:32:54.8759528+08:00 FIXTURE_MODE offline2
+[vgadvice] asked for 1 alarms req=8
+[vgagent] round submitted: 741 bytes
+[agent] Processing message from local_client:velaguard:9
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb68276c64bb0] BEGIN chat=velaguard:9 chan=local_client
+[agent] Cache hit, skipping LLM call
+[trace:6adbb68276c64bb0] iter=0 tool=(none) latency=0ms llm=ok backend=0
+[trace:6adbb68276c64bb0] END status=ok iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=10 backend=0
+[agent] Dispatching response → local_client:velaguard:9
+[vgagent] round finished: reply
+[vgadvice] advice file answers req=5, live round is req=8: coverage decides
+[vgadvice] advice loaded: 2 entries file_req=5 live_req=8
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:33:39.8867662+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=1 shown=1 seen=14 boot=00001752
+- id=flood rank=offline flags=offline,stale value=0.0 threshold=0.0 age_ms=31380 since_ms=28380
+nsh> [K
+2026-10-23T19:33:40.2125379+08:00 CMD vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=flood kind=offline state=active history_complete=true duration_ms=0 episode=12 boot=00001752
+nsh> [K
+2026-10-23T19:33:40.5233076+08:00 CMD echo RING_1
+echo RING_1
+RING_1
+nsh> [K
+2026-10-23T19:33:40.8369907+08:00 FIXTURE_MODE critical_offline2
+[vgadvice] asked for 2 alarms req=9
+[vgagent] round submitted: 821 bytes
+[agent] Processing message from local_client:velaguard:10
+[context] System prompt built: 3163 bytes
+
+2026-10-23T19:33:48.8529023+08:00 FIXTURE_MODE offline2
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb6a104dd668b] BEGIN chat=velaguard:10 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8872 bytes)
+[agent] Dispatching response → local_client:velaguard:10
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=644 text=0 reasoning=26 toolargs=54 calls=1 finish=tool_calls tokens=2735/35/2770
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb6a104dd668b] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=280 ttfb=3860 body=0 pool=0 build=10 parse=0 http=4260 backoff=0 total=4280 req=8872 resp=644 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbb6a104dd668b] iter=0 tool=read_file latency=4290ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/alarm_interpretation.md"}
+[tools] Executing tool: read_file
+
+2026-10-23T19:33:56.8841620+08:00 CMD echo RING_2
+echo RING_2
+RING_2
+nsh> [K
+2026-10-23T19:33:57.2027613+08:00 FIXTURE_MODE critical_offline2
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2850 ms
+[trace:6adbb6a104dd668b] tool_iter=0 tool=read_file tool_ms=2850 out=1874 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11067 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=881 text=0 reasoning=311 toolargs=2 calls=1 finish=tool_calls tokens=3314/83/3397
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb6a104dd668b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=240 ttfb=2580 body=0 pool=0 build=10 parse=10 http=2930 backoff=0 total=2960 req=11067 resp=881 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6adbb6a104dd668b] iter=1 tool=vg_run_report latency=2970ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 736 bytes, 70 ms
+[trace:6adbb6a104dd668b] tool_iter=1 tool=vg_run_report tool_ms=70 out=736 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12054 bytes)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:34:05.2362603+08:00 FIXTURE_MODE offline2
+[llm] Resp bytes=1419 text=0 reasoning=172 toolargs=650 calls=1 finish=tool_calls tokens=3763/301/4064
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb6a104dd668b] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=430 ttfb=7230 body=0 pool=0 build=10 parse=0 http=7780 backoff=0 total=7790 req=12054 resp=1419 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb6a104dd668b] iter=2 tool=write_file latency=7810ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=9\nn=2\n[1]\nid=temp\nepoch=9\nsev=crit\nunres=0\nsum=温度超阈值需现场核查散热\nev=温度验收点读数36度已超35度阈值，本次上电内两次越限又解除，属反复超限\natt=关注空调与通风是否正常，连续三次越限应到现场测温确认\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=1\nsum=水浸点离线暂无法判明状态\nev=水浸点离线33秒且本次上电�
+[tools] Executing tool: write_file
+
+2026-10-23T19:34:13.2398229+08:00 CMD echo RING_3
+echo RING_3
+RING_3
+nsh> [K
+2026-10-23T19:34:13.5530339+08:00 FIXTURE_MODE critical_offline2
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (562 bytes)
+[agent] Tool write_file result: 63 bytes, 6180 ms
+[trace:6adbb6a104dd668b] tool_iter=2 tool=write_file tool_ms=6180 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb6a104dd668b] END status=ok iters=3 tools=3 llm_ms=15070 tool_ms=9100 elapsed_ms=24400 backend=0
+[agent] Dispatching response → local_client:velaguard:10
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=9 live_req=9
+[vgadvice] round ended, advice for this alarm set kept
+[vgadvice] asked for 2 alarms req=10
+[vgagent] round submitted: 823 bytes
+[agent] Processing message from local_client:velaguard:11
+
+2026-10-23T19:34:21.5871783+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb6c351d2c243] BEGIN chat=velaguard:11 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8874 bytes)
+[agent] Dispatching response → local_client:velaguard:11
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=912 text=0 reasoning=33 toolargs=71 calls=2 finish=tool_calls tokens=2737/73/2810
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb6c351d2c243] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=1760 body=0 pool=0 build=0 parse=0 http=2140 backoff=0 total=2150 req=8874 resp=912 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb6c351d2c243] iter=0 tool=read_file latency=2170ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 340 ms
+
+2026-10-23T19:34:29.5957373+08:00 CMD echo RING_4
+echo RING_4
+RING_4
+nsh> [K
+2026-10-23T19:34:29.9127012+08:00 FIXTURE_MODE critical_offline2
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2630 ms
+[trace:6adbb6c351d2c243] tool_iter=0 tool=read_file tool_ms=2630 out=1874 ok=1
+[trace:6adbb6c351d2c243] tool_iter=0 tool=vg_point_read tool_ms=340 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11369 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=792 text=0 reasoning=92 toolargs=20 calls=2 finish=tool_calls tokens=3377/53/3430
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb6c351d2c243] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=280 ttfb=1510 body=0 pool=0 build=10 parse=0 http=1900 backoff=0 total=1910 req=11369 resp=792 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb6c351d2c243] iter=1 tool=vg_run_report latency=1940ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 753 bytes, 370 ms
+[trace:6adbb6c351d2c243] tool_iter=1 tool=vg_run_report tool_ms=370 out=753 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 690 ms
+[trace:6adbb6c351d2c243] tool_iter=1 tool=vg_point_read tool_ms=690 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12671 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:34:37.9292036+08:00 FIXTURE_MODE offline2
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=1448 text=0 reasoning=286 toolargs=563 calls=1 finish=tool_calls tokens=3844/311/4155
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb6c351d2c243] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=330 ttfb=5680 body=10 pool=0 build=0 parse=0 http=6230 backoff=0 total=6240 req=12671 resp=1448 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb6c351d2c243] iter=2 tool=write_file latency=6260ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=10\nn=2\n[1]\nid=temp\nepoch=11\nsev=crit\nunres=0\nsum=温度反复越限又解除需排查\nev=时间线显示19:33至19:34多次越限36大于35又解除，现值24\natt=关注测点是否抖动或接触不良，确认现场实际温度\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸测点通信离线待恢复\nev=本次读取失败，离线已1分20秒，总线近窗成功率92%\natt=关注�
+[tools] Executing tool: write_file
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (475 bytes)
+[agent] Tool write_file result: 63 bytes, 3710 ms
+[trace:6adbb6c351d2c243] tool_iter=2 tool=write_file tool_ms=3710 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb6c351d2c243] END status=ok iters=3 tools=3 llm_ms=10370 tool_ms=7740 elapsed_ms=17620 backend=0
+[agent] Dispatching response → local_client:velaguard:11
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=10 live_req=10
+[vgadvice] round ended, advice for this alarm set kept
+
+2026-10-23T19:34:45.9549143+08:00 CMD echo RING_5
+echo RING_5
+RING_5
+nsh> [K
+2026-10-23T19:34:46.2837193+08:00 FIXTURE_MODE critical_offline2
+[vgadvice] asked for 2 alarms req=11
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:12
+
+2026-10-23T19:34:54.3134426+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb6e534493003] BEGIN chat=velaguard:12 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:12
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:35:02.3357068+08:00 CMD echo RING_6
+echo RING_6
+RING_6
+nsh> [K
+2026-10-23T19:35:02.6529594+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=938 text=0 reasoning=60 toolargs=71 calls=2 finish=tool_calls tokens=2738/78/2816
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb6e534493003] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=240 ttfb=5040 body=10 pool=0 build=10 parse=0 http=5410 backoff=0 total=5420 req=8875 resp=938 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb6e534493003] iter=0 tool=read_file latency=5430ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 500 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1990 ms
+[trace:6adbb6e534493003] tool_iter=0 tool=read_file tool_ms=1990 out=1874 ok=1
+[trace:6adbb6e534493003] tool_iter=0 tool=vg_point_read tool_ms=500 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11370 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=1028 text=0 reasoning=325 toolargs=20 calls=2 finish=tool_calls tokens=3383/119/3502
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb6e534493003] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=410 ttfb=2280 body=0 pool=0 build=0 parse=10 http=2800 backoff=0 total=2820 req=11370 resp=1028 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb6e534493003] iter=1 tool=vg_run_report latency=2830ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 765 bytes, 490 ms
+[trace:6adbb6e534493003] tool_iter=1 tool=vg_run_report tool_ms=490 out=765 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 710 ms
+[trace:6adbb6e534493003] tool_iter=1 tool=vg_point_read tool_ms=710 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12684 bytes)
+
+2026-10-23T19:35:10.6805592+08:00 FIXTURE_MODE offline2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:35:18.7069631+08:00 CMD echo RING_7
+echo RING_7
+RING_7
+nsh> [K
+2026-10-23T19:35:19.0258789+08:00 FIXTURE_MODE critical_offline2
+
+2026-10-23T19:35:27.0393835+08:00 FIXTURE_MODE offline2
+[vela_tls] body progress: gaps=2 first_read=8020ms total=3026 bytes
+[vela_tls] body gap 1: idle=5010ms at=13030ms bytes=12
+[vela_tls] body gap 2: idle=5000ms at=18030ms bytes=18
+[llm] Resp bytes=2999 text=0 reasoning=1701 toolargs=636 calls=1 finish=tool_calls tokens=3926/833/4759
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb6e534493003] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=340 ttfb=8020 body=10990 pool=0 build=10 parse=0 http=19460 backoff=0 total=19480 req=12684 resp=2999 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb6e534493003] iter=2 tool=write_file latency=19500ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=11\nn=2\n[1]\nid=temp\nepoch=13\nsev=crit\nunres=0\nsum=温度反复越限需现场核查降温\nev=报告显示十九时三十四至三十五分四次越限又解除，当前二十四度\natt=关注告警反复抖动原因，核对探头位置与现场冷源是否正常\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸点离线先排查总线通信\nev=报告显示水浸离线一分五十八秒�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (548 bytes)
+[agent] Tool write_file result: 63 bytes, 3630 ms
+[trace:6adbb6e534493003] tool_iter=2 tool=write_file tool_ms=3630 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb6e534493003] END status=ok iters=3 tools=3 llm_ms=27760 tool_ms=7320 elapsed_ms=34320 backend=0
+
+2026-10-23T19:35:35.0501487+08:00 CMD echo RING_8
+echo RING_8
+RING_8
+nsh> [K
+2026-10-23T19:35:35.3705739+08:00 FIXTURE_MODE critical_offline2
+[agent] Dispatching response → local_client:velaguard:12
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=11 live_req=11
+[vgadvice] round ended, advice for this alarm set kept
+[vgadvice] asked for 2 alarms req=12
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:13
+
+2026-10-23T19:35:43.4046960+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:35:51.4069765+08:00 CMD echo RING_9
+echo RING_9
+RING_9
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb719455dba1a] BEGIN chat=velaguard:13 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:13
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:35:51.7258568+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=672 text=0 reasoning=51 toolargs=54 calls=1 finish=tool_calls tokens=2738/41/2779
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb719455dba1a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=1230 body=0 pool=0 build=10 parse=0 http=1610 backoff=0 total=1630 req=8875 resp=672 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbb719455dba1a] iter=0 tool=read_file latency=1650ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/alarm_interpretation.md"}
+[tools] Executing tool: read_file
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1740 ms
+[trace:6adbb719455dba1a] tool_iter=0 tool=read_file tool_ms=1740 out=1874 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11070 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:35:59.7553065+08:00 FIXTURE_MODE offline2
+[llm] Resp bytes=1128 text=0 reasoning=554 toolargs=2 calls=1 finish=tool_calls tokens=3323/128/3451
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb719455dba1a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=650 ttfb=4960 body=0 pool=0 build=10 parse=10 http=5720 backoff=0 total=5740 req=11070 resp=1128 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6adbb719455dba1a] iter=1 tool=vg_run_report latency=5750ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 773 bytes, 240 ms
+[trace:6adbb719455dba1a] tool_iter=1 tool=vg_run_report tool_ms=240 out=773 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12094 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:36:07.7752568+08:00 CMD echo RING_10
+echo RING_10
+RING_10
+nsh> [K
+2026-10-23T19:36:08.0874761+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=1295 text=0 reasoning=91 toolargs=609 calls=1 finish=tool_calls tokens=3849/244/4093
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb719455dba1a] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=450 ttfb=7100 body=0 pool=0 build=10 parse=0 http=7670 backoff=0 total=7690 req=12094 resp=1295 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb719455dba1a] iter=2 tool=write_file latency=7710ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=12\nn=2\n[1]\nid=temp\nepoch=16\nsev=crit\nunres=0\nsum=温度临界越限且反复跳变需关注\nev=当前36度超阈值35度，时间线显示多次越限又解除，处于临界波动\natt=关注温度是否持续上升，检查散热与通风是否正常\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸点位离线需现场核查\nev=水浸点离线2分49秒，总线近窗成功率89%，从�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (521 bytes)
+[agent] Tool write_file result: 63 bytes, 3970 ms
+[trace:6adbb719455dba1a] tool_iter=2 tool=write_file tool_ms=3970 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb719455dba1a] END status=ok iters=3 tools=3 llm_ms=15110 tool_ms=5950 elapsed_ms=21270 backend=0
+[agent] Dispatching response → local_client:velaguard:13
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=12 live_req=12
+[vgadvice] asked for 2 alarms req=13
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:14
+
+2026-10-23T19:36:16.1168469+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb7372a3159a6] BEGIN chat=velaguard:14 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:14
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:36:24.1356512+08:00 CMD echo RING_11
+echo RING_11
+RING_11
+nsh> [K
+2026-10-23T19:36:24.4520001+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=1071 text=0 reasoning=81 toolargs=71 calls=2 finish=tool_calls tokens=2738/94/2832
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7372a3159a6] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=260 ttfb=3160 body=0 pool=0 build=0 parse=0 http=3700 backoff=0 total=3710 req=8875 resp=1071 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb7372a3159a6] iter=0 tool=read_file latency=3730ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 890 ms
+[skills] Skills summary: 1086 bytes
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 3580 ms
+[trace:6adbb7372a3159a6] tool_iter=0 tool=read_file tool_ms=3580 out=1874 ok=1
+[trace:6adbb7372a3159a6] tool_iter=0 tool=vg_point_read tool_ms=890 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11370 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=940 text=0 reasoning=240 toolargs=20 calls=2 finish=tool_calls tokens=3387/91/3478
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7372a3159a6] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=2600 body=0 pool=0 build=10 parse=0 http=2990 backoff=0 total=3000 req=11370 resp=940 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb7372a3159a6] iter=1 tool=vg_run_report latency=3020ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 773 bytes, 140 ms
+[trace:6adbb7372a3159a6] tool_iter=1 tool=vg_run_report tool_ms=140 out=773 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 180 ms
+[trace:6adbb7372a3159a6] tool_iter=1 tool=vg_point_read tool_ms=180 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12692 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:36:32.4785313+08:00 FIXTURE_MODE offline2
+[llm] Resp bytes=1359 text=0 reasoning=161 toolargs=601 calls=1 finish=tool_calls tokens=3910/286/4196
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb7372a3159a6] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=320 ttfb=5490 body=0 pool=0 build=0 parse=0 http=5920 backoff=0 total=5930 req=12692 resp=1359 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb7372a3159a6] iter=2 tool=write_file latency=5990ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=13\nn=2\n[1]\nid=temp\nepoch=18\nsev=crit\nunres=0\nsum=温度三次越限又解除，属间歇超限\nev=运行报告显示19:35至19:36温度反复36度越限并解除，当前读24度\natt=关注通风散热与传感器接触，观察是否再次越限\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=1\nsum=水浸点读取失败，离线待观察\nev=点位读失败无实时值，已离线3分20秒，从站
+[tools] Executing tool: write_file
+
+2026-10-23T19:36:40.5045844+08:00 CMD echo RING_12
+echo RING_12
+RING_12
+nsh> [K
+2026-10-23T19:36:40.8707212+08:00 FIXTURE_MODE critical_offline2
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (513 bytes)
+[agent] Tool write_file result: 63 bytes, 4310 ms
+[trace:6adbb7372a3159a6] tool_iter=2 tool=write_file tool_ms=4310 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb7372a3159a6] END status=ok iters=3 tools=3 llm_ms=12740 tool_ms=9100 elapsed_ms=21040 backend=0
+[agent] Dispatching response → local_client:velaguard:14
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=13 live_req=13
+[vgadvice] round ended, advice for this alarm set kept
+[vgadvice] asked for 2 alarms req=14
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:15
+[context] System prompt built: 3163 bytes
+
+2026-10-23T19:36:48.8897629+08:00 FIXTURE_MODE offline2
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb75510f4ce5d] BEGIN chat=velaguard:15 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:15
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=976 text=0 reasoning=96 toolargs=71 calls=2 finish=tool_calls tokens=2738/86/2824
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb75510f4ce5d] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=260 ttfb=2800 body=0 pool=0 build=0 parse=10 http=3170 backoff=0 total=3190 req=8875 resp=976 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb75510f4ce5d] iter=0 tool=read_file latency=3210ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 190 ms
+
+2026-10-23T19:36:56.8990938+08:00 CMD echo RING_13
+echo RING_13
+RING_13
+nsh> [K
+2026-10-23T19:36:57.2146862+08:00 FIXTURE_MODE critical_offline2
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2500 ms
+[trace:6adbb75510f4ce5d] tool_iter=0 tool=read_file tool_ms=2500 out=1874 ok=1
+[trace:6adbb75510f4ce5d] tool_iter=0 tool=vg_point_read tool_ms=190 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11370 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=825 text=0 reasoning=125 toolargs=20 calls=2 finish=tool_calls tokens=3391/60/3451
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb75510f4ce5d] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=2060 body=0 pool=0 build=0 parse=0 http=2440 backoff=0 total=2450 req=11370 resp=825 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb75510f4ce5d] iter=1 tool=vg_run_report latency=2470ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 766 bytes, 660 ms
+[trace:6adbb75510f4ce5d] tool_iter=1 tool=vg_run_report tool_ms=660 out=766 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 1460 ms
+[trace:6adbb75510f4ce5d] tool_iter=1 tool=vg_point_read tool_ms=1460 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12685 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:37:05.2321132+08:00 FIXTURE_MODE offline2
+[vela_tls] body progress: gaps=1 first_read=8020ms total=1421 bytes
+[vela_tls] body gap 1: idle=1030ms at=9050ms bytes=1416
+[llm] Resp bytes=1404 text=0 reasoning=172 toolargs=634 calls=1 finish=tool_calls tokens=3879/275/4154
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb75510f4ce5d] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=330 ttfb=8010 body=1060 pool=0 build=10 parse=0 http=9510 backoff=0 total=9530 req=12685 resp=1404 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb75510f4ce5d] iter=2 tool=write_file latency=9540ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=14\nn=2\n[1]\nid=temp\nepoch=20\nsev=crit\nunres=0\nsum=温度反复越限，建议核查现场散热\nev=运行报告记录温度多次36度超35度阈值并反复解除，当前读数24度已回落\natt=关注温度是否再次越限及波动原因，如通风或空调运行情况\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸点位读数失败，建议排查通信\nev=水浸点位当前读�
+[tools] Executing tool: write_file
+
+2026-10-23T19:37:13.2327298+08:00 CMD echo RING_14
+echo RING_14
+RING_14
+nsh> [K
+2026-10-23T19:37:13.5637680+08:00 FIXTURE_MODE critical_offline2
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (546 bytes)
+[agent] Tool write_file result: 63 bytes, 5040 ms
+[trace:6adbb75510f4ce5d] tool_iter=2 tool=write_file tool_ms=5040 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb75510f4ce5d] END status=ok iters=3 tools=3 llm_ms=15220 tool_ms=9850 elapsed_ms=24460 backend=0
+[agent] Dispatching response → local_client:velaguard:15
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=14 live_req=14
+[vgadvice] round ended, advice for this alarm set kept
+[vgadvice] asked for 2 alarms req=15
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:16
+
+2026-10-23T19:37:21.6119593+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb776681cfb4a] BEGIN chat=velaguard:16 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:16
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=1193 text=0 reasoning=202 toolargs=71 calls=2 finish=tool_calls tokens=2738/126/2864
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb776681cfb4a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=250 ttfb=4220 body=0 pool=0 build=0 parse=0 http=4590 backoff=0 total=4600 req=8875 resp=1193 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb776681cfb4a] iter=0 tool=read_file latency=4620ms llm=ok backend=0
+
+2026-10-23T19:37:29.6233893+08:00 CMD echo RING_15
+echo RING_15
+RING_15
+nsh> [K
+2026-10-23T19:37:29.9541491+08:00 FIXTURE_MODE critical_offline2
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 1080 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2740 ms
+[trace:6adbb776681cfb4a] tool_iter=0 tool=read_file tool_ms=2740 out=1874 ok=1
+[trace:6adbb776681cfb4a] tool_iter=0 tool=vg_point_read tool_ms=1080 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11370 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:37:37.9860904+08:00 FIXTURE_MODE offline2
+[llm] Resp bytes=1116 text=0 reasoning=414 toolargs=20 calls=2 finish=tool_calls tokens=3419/133/3552
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb776681cfb4a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=270 ttfb=5740 body=0 pool=0 build=10 parse=10 http=6120 backoff=0 total=6140 req=11370 resp=1116 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb776681cfb4a] iter=1 tool=vg_run_report latency=6150ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 773 bytes, 230 ms
+[trace:6adbb776681cfb4a] tool_iter=1 tool=vg_run_report tool_ms=230 out=773 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 1140 ms
+[trace:6adbb776681cfb4a] tool_iter=1 tool=vg_point_read tool_ms=1140 out=91 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12692 bytes)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:37:46.0176014+08:00 CMD echo RING_16
+echo RING_16
+RING_16
+nsh> [K
+2026-10-23T19:37:46.3332808+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=1575 text=0 reasoning=436 toolargs=539 calls=1 finish=tool_calls tokens=3984/353/4337
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb776681cfb4a] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=330 ttfb=6230 body=0 pool=0 build=10 parse=10 http=6860 backoff=0 total=6890 req=12692 resp=1575 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb776681cfb4a] iter=2 tool=write_file latency=6900ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=15\nn=2\n[1]\nid=temp\nepoch=22\nsev=crit\nunres=0\nsum=温度反复越限，需现场核查\nev=报告记录温度多次36度越限又解除，阈值35度\natt=关注是否临界波动或探头位置，查看从站2通信\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=1\nsum=水浸点离线，读取失败待查\nev=点位离线4分26秒且当前读取失败，无新数据\natt=关注水浸从站供电与接
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (451 bytes)
+[agent] Tool write_file result: 63 bytes, 3710 ms
+[trace:6adbb776681cfb4a] tool_iter=2 tool=write_file tool_ms=3710 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb776681cfb4a] END status=ok iters=3 tools=3 llm_ms=17670 tool_ms=8900 elapsed_ms=25480 backend=0
+[agent] Dispatching response → local_client:velaguard:16
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=15 live_req=15
+[vgadvice] asked for 2 alarms req=16
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:17
+
+2026-10-23T19:37:54.3689904+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb79a6608a121] BEGIN chat=velaguard:17 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 8875 bytes)
+[agent] Dispatching response → local_client:velaguard:17
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:38:02.3969671+08:00 CMD echo RING_17
+echo RING_17
+RING_17
+nsh> [K
+2026-10-23T19:38:02.7135270+08:00 FIXTURE_MODE critical_offline2
+[llm] Resp bytes=944 text=0 reasoning=66 toolargs=71 calls=2 finish=tool_calls tokens=2738/79/2817
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb79a6608a121] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=410 ttfb=2190 body=0 pool=0 build=20 parse=0 http=2720 backoff=0 total=2740 req=8875 resp=944 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb79a6608a121] iter=0 tool=read_file latency=2760ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 800 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2330 ms
+[trace:6adbb79a6608a121] tool_iter=0 tool=read_file tool_ms=2330 out=1874 ok=1
+[trace:6adbb79a6608a121] tool_iter=0 tool=vg_point_read tool_ms=800 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11370 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=995 text=0 reasoning=286 toolargs=22 calls=2 finish=tool_calls tokens=3384/115/3499
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb79a6608a121] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=250 ttfb=3770 body=0 pool=0 build=0 parse=0 http=4240 backoff=0 total=4250 req=11370 resp=995 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb79a6608a121] iter=1 tool=vg_run_report latency=4270ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 773 bytes, 300 ms
+[trace:6adbb79a6608a121] tool_iter=1 tool=vg_run_report tool_ms=300 out=773 ok=1
+
+2026-10-23T19:38:10.7360976+08:00 FIXTURE_MODE offline2
+[tools] Executed vg tool: vg_alarm_recovery
+[agent] Tool vg_alarm_recovery result: 109 bytes, 1980 ms
+[trace:6adbb79a6608a121] tool_iter=1 tool=vg_alarm_recovery tool_ms=1980 out=109 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12716 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:38:18.7588587+08:00 CMD echo RING_18
+echo RING_18
+RING_18
+nsh> [K
+2026-10-23T19:38:19.0742896+08:00 FIXTURE_MODE critical_offline2
+
+2026-10-23T19:38:27.0827415+08:00 FIXTURE_MODE offline2
+[vela_tls] body progress: gaps=2 first_read=8020ms total=3529 bytes
+[vela_tls] body gap 1: idle=4980ms at=13000ms bytes=12
+[vela_tls] body gap 2: idle=4290ms at=17290ms bytes=3524
+[llm] Resp bytes=3507 text=0 reasoning=2238 toolargs=617 calls=1 finish=tool_calls tokens=3935/951/4886
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb79a6608a121] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=320 ttfb=8010 body=9300 pool=0 build=0 parse=10 http=17740 backoff=0 total=17760 req=12716 resp=3507 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb79a6608a121] iter=2 tool=write_file latency=17780ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=16\nn=2\n[1]\nid=temp\nepoch=24\nsev=crit\nunres=0\nsum=温度反复越限，查散热与探头\nev=运行报告记19:37至19:38四次越限又解除，峰值36超阈35，现值24\natt=关注是否临界来回跳变，核对探头安装位置与通风散热\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸点离线279秒，先查通信\nev=运行报告显示flood离线4分58秒，总线超时167�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (529 bytes)
+[agent] Tool write_file result: 63 bytes, 3300 ms
+[trace:6adbb79a6608a121] tool_iter=2 tool=write_file tool_ms=3300 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb79a6608a121] END status=ok iters=3 tools=3 llm_ms=24810 tool_ms=8710 elapsed_ms=32840 backend=0
+[agent] Dispatching response → local_client:velaguard:17
+
+2026-10-23T19:38:35.0865739+08:00 CMD echo RING_19
+echo RING_19
+RING_19
+nsh> [K
+2026-10-23T19:38:35.4030392+08:00 FIXTURE_MODE critical_offline2
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=16 live_req=16
+[vgadvice] round ended, advice for this alarm set kept
+[vgadvice] asked for 2 alarms req=17
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:18
+
+2026-10-23T19:38:43.4275896+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb7c94ca7b26b] BEGIN chat=velaguard:18 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7491 bytes)
+[agent] Dispatching response → local_client:velaguard:18
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:38:51.4494626+08:00 CMD echo RING_20
+echo RING_20
+RING_20
+nsh> [K
+2026-10-23T19:38:51.7611776+08:00 FIXTURE_MODE critical_offline2
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=1066 text=0 reasoning=185 toolargs=71 calls=2 finish=tool_calls tokens=2139/116/2255
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7c94ca7b26b] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=5700 body=0 pool=0 build=0 parse=0 http=6010 backoff=0 total=6030 req=7491 resp=1066 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb7c94ca7b26b] iter=0 tool=read_file latency=6050ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 260 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 3350 ms
+[trace:6adbb7c94ca7b26b] tool_iter=0 tool=read_file tool_ms=3350 out=1874 ok=1
+[trace:6adbb7c94ca7b26b] tool_iter=0 tool=vg_point_read tool_ms=260 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9986 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:38:59.7855592+08:00 FIXTURE_MODE offline2
+[llm] Resp bytes=1207 text=0 reasoning=502 toolargs=20 calls=2 finish=tool_calls tokens=2822/166/2988
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7c94ca7b26b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=210 ttfb=8080 body=290 pool=0 build=0 parse=10 http=8840 backoff=0 total=8860 req=9986 resp=1207 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb7c94ca7b26b] iter=1 tool=vg_point_read latency=8870ms llm=ok backend=0
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 140 ms
+[trace:6adbb7c94ca7b26b] tool_iter=1 tool=vg_point_read tool_ms=140 out=91 ok=1
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 766 bytes, 200 ms
+[trace:6adbb7c94ca7b26b] tool_iter=1 tool=vg_run_report tool_ms=200 out=766 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11301 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:39:07.8116967+08:00 CMD echo RING_21
+echo RING_21
+RING_21
+nsh> [K
+2026-10-23T19:39:08.1445921+08:00 FIXTURE_MODE critical_offline2
+
+2026-10-23T19:39:16.2126983+08:00 FIXTURE_MODE offline2
+[vela_tls] body progress: gaps=1 first_read=8050ms total=1803 bytes
+[vela_tls] body gap 1: idle=3800ms at=11850ms bytes=1798
+[llm] Resp bytes=1786 text=0 reasoning=592 toolargs=590 calls=1 finish=tool_calls tokens=3416/389/3805
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb7c94ca7b26b] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=260 ttfb=8040 body=3820 pool=0 build=10 parse=10 http=12240 backoff=0 total=12270 req=11301 resp=1786 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb7c94ca7b26b] iter=2 tool=write_file latency=12280ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=17\nn=2\n[1]\nid=temp\nepoch=27\nsev=crit\nunres=0\nsum=检查柜内通风散热是否正常\nev=曾多次越限36大于35，现值24已回落，时间线显示越限解除\natt=关注温升来源与传感器安装位置，观察是否再次越限\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=排查水浸探头通信与接线\nev=水浸点读取失败离线328秒，最差从站2成功率仅40%，超�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (502 bytes)
+[agent] Tool write_file result: 63 bytes, 4310 ms
+[trace:6adbb7c94ca7b26b] tool_iter=2 tool=write_file tool_ms=4310 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb7c94ca7b26b] END status=ok iters=3 tools=3 llm_ms=27200 tool_ms=8260 elapsed_ms=35470 backend=0
+
+2026-10-23T19:39:24.2208125+08:00 CMD echo RING_22
+echo RING_22
+RING_22
+nsh> [K[agent] Dispatching response → local_client:velaguard:18
+[vgagent] round finished: reply
+
+2026-10-23T19:39:24.5362672+08:00 FIXTURE_MODE critical_offline2
+[vgadvice] advice loaded: 2 entries file_req=17 live_req=17
+[vgadvice] round ended, advice for this alarm set kept
+[skills] Skills summary: 1086 bytes
+[vgadvice] asked for 2 alarms req=18
+[vgagent] round submitted: 824 bytes
+[agent] Processing message from local_client:velaguard:19
+
+2026-10-23T19:39:32.5640290+08:00 FIXTURE_MODE offline2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb7fa6d3f180b] BEGIN chat=velaguard:19 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7389 bytes)
+[agent] Dispatching response → local_client:velaguard:19
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=851 text=0 reasoning=118 toolargs=56 calls=2 finish=tool_calls tokens=2114/67/2181
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7fa6d3f180b] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=210 ttfb=2070 body=0 pool=0 build=0 parse=0 http=2390 backoff=0 total=2400 req=7389 resp=851 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adbb7fa6d3f180b] iter=0 tool=read_file latency=2420ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 147 bytes, 710 ms
+
+2026-10-23T19:39:40.5891261+08:00 CMD vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=867 wall=2026-10-23T19:39:42
+vgruntime: slave=1 boot_total=534 boot_ok=508 boot_crc=0 boot_timeout=26 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=190 boot_lat_avg=33 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=267 boot_ok=102 boot_crc=0 boot_timeout=165 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=670 boot_lat_avg=40 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=267 boot_ok=267 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=29 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=801 boot_ok=801 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=200 boot_lat_avg=30 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=801 boot_ok=801 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=10 boot_lat_max=200 boot_lat_avg=31 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=799 boot_ok=799 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=210 boot_lat_avg=29 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=266 boot_ok=266 boot_crc=0 boot_timeout=0 boot_echo=0 boot_other=0 boot_lat_min=20 boot_lat_max=170 boot_lat_avg=32 win_total=64 win_ok=64 win_crc=0 win_timeout=0 win_echo=0 win_other=0
+vgruntime: bus boot_total=3735 boot_ok=3544 boot_crc=0 boot_timeout=191 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=1 online_ms=841010 offline_s=0 last_ok_ago_s=3 value=24 kind=none
+vgruntime: point id=humid slave=1 online=1 online_ms=841020 offline_s=0 last_ok_ago_s=3 value=50 kind=none
+vgruntime: point id=flood slave=2 online=0 online_ms=287360 offline_s=389 last_ok_ago_s=392 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=1 online_ms=868110 offline_s=0 last_ok_ago_s=3 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=868120 offline_s=0 last_ok_ago_s=3 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=868130 offline_s=0 last_ok_ago_s=3 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=868150 offline_s=0 last_ok_ago_s=3 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=868160 offline_s=0 last_ok_ago_s=3 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=868160 offline_s=0 last_ok_ago_s=3 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=868170 offline_s=0 last_ok_ago_s=3 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=1 online_ms=868180 offline_s=0 last_ok_ago_s=3 value=230 kind=none
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=868190 offline_s=0 last_ok_ago_s=3 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=868200 offline_s=0 last_ok_ago_s=3 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=868210 offline_s=0 last_ok_ago_s=3 value=0 kind=none
+vgruntime: event t_boot_s=610 wall=2026-10-23T19:35:25 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=620 wall=2026-10-23T19:35:35 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=628 wall=2026-10-23T19:35:43 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=635 wall=2026-10-23T19:35:50 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=642 wall=2026-10-23T19:35:57 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=651 wall=2026-10-23T19:36:06 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=658 wall=2026-10-23T19:36:13 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=666 wall=2026-10-23T19:36:21 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=677 wall=2026-10-23T19:36:32 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=684 wall=2026-10-23T19:36:39 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=692 wall=2026-10-23T19:36:47 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=699 wall=2026-10-23T19:36:54 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=710 wall=2026-10-23T19:37:05 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=718 wall=2026-10-23T19:37:13 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=725 wall=2026-10-23T19:37:20 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=732 wall=2026-10-23T19:37:27 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=741 wall=2026-10-23T19:37:35 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=748 wall=2026-10-23T19:37:42 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=759 wall=2026-10-23T19:37:53 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=766 wall=2026-10-23T19:38:00 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=774 wall=2026-10-23T19:38:08 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=782 wall=2026-10-23T19:38:16 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=790 wall=2026-10-23T19:38:24 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=800 wall=2026-10-23T19:38:34 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=808 wall=2026-10-23T19:38:42 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=815 wall=2026-10-23T19:38:49 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=822 wall=2026-10-23T19:38:56 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=830 wall=2026-10-23T19:39:04 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=841 wall=2026-10-23T19:39:15 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=848 wall=2026-10-23T19:39:22 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+vgruntime: event t_boot_s=857 wall=2026-10-23T19:39:32 id=temp action=raise kind=threshold value=36 thr=35 cmp=ge reason=threshold_ge
+vgruntime: event t_boot_s=864 wall=2026-10-23T19:39:39 id=temp action=clear kind=threshold value=24 thr=0 cmp=ge reason=threshold_cleared
+nsh> [K
+2026-10-23T19:39:41.4223162+08:00 CMD vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=flood kind=offline state=active history_complete=false duration_ms=0 episode=0 boot=00001752
+nsh> [K
+2026-10-23T19:39:41.7526530+08:00 FIXTURE_MODE normal
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 4160 ms
+[trace:6adbb7fa6d3f180b] tool_iter=0 tool=read_file tool_ms=4160 out=1874 ok=1
+[trace:6adbb7fa6d3f180b] tool_iter=0 tool=vg_anomaly_read tool_ms=710 out=147 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9921 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:39:53.7831860+08:00 CMD vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+vgagent tool vg_alarm_recovery {\"point_id\":\"flood\",\"kind\":\"offline\"}
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=flood kind=offline state=recovered_partial history_complete=false duration_ms=0 episode=12 boot=00001752
+nsh> [K
+2026-10-23T19:39:54.0932676+08:00 CMD vgagent tool vg_alarm_recovery temp
+vgagent tool vg_alarm_recovery temp
+[tools] Executed vg tool: vg_alarm_recovery
+tool vg_alarm_recovery rc=0
+vgrecovery: id=temp kind=threshold state=recovered history_complete=true duration_ms=7020 episode=34 boot=00001752
+nsh> [K
+2026-10-23T19:39:54.4140496+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=190 lat_avg=35
+vgstats: slave=2 window=64 total=64 ok=6 crc=0 timeout=58 echo=0 other=0 lat_min=20 lat_max=30 lat_avg=25
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=120 lat_avg=28
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=200 lat_avg=33
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=180 lat_avg=29
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=130 lat_avg=27
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=170 lat_avg=31
+nsh> [K
+2026-10-23T19:39:54.7192554+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6818840    1053376    5765464    1192736    5729888   1237      6 Umem
+nsh> [K
+2026-10-23T19:39:55.0392501+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 04  61   1   0    0   0      0  192.168.137.100:4574       198.18.0.125:443   
+nsh> [K
+2026-10-23T19:39:55.3539524+08:00 FIXTURE_MODE offline12
+[skills] Skills summary: 1086 bytes
+[vela_tls] body progress: gaps=9 first_read=8060ms total=1199 bytes
+[vela_tls] body gap 1: idle=5000ms at=13060ms bytes=12
+[vela_tls] body gap 2: idle=5000ms at=18060ms bytes=18
+[vela_tls] body gap 3: idle=5000ms at=23060ms bytes=24
+[vela_tls] body gap 4: idle=5000ms at=28060ms bytes=30
+[vela_tls] body gap 5: idle=5000ms at=33060ms bytes=36
+[vela_tls] body gap 6: idle=5000ms at=38060ms bytes=42
+[vela_tls] body gap 7: idle=5000ms at=43060ms bytes=48
+[vela_tls] body gap 8: idle=5000ms at=48060ms bytes=54
+[llm] Resp bytes=1142 text=0 reasoning=303 toolargs=19 calls=2 finish=tool_calls tokens=2795/115/2910
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adbb7fa6d3f180b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=230 ttfb=8060 body=42170 pool=0 build=0 parse=0 http=50750 backoff=0 total=50760 req=9921 resp=1142 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6adbb7fa6d3f180b] iter=1 tool=vg_run_report latency=50780ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 735 bytes, 270 ms
+[trace:6adbb7fa6d3f180b] tool_iter=1 tool=vg_run_report tool_ms=270 out=735 ok=1
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 106 bytes, 1260 ms
+[trace:6adbb7fa6d3f180b] tool_iter=1 tool=vg_point_read tool_ms=1260 out=106 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11219 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[skills] Skills summary: 1086 bytes
+
+2026-10-23T19:40:40.3561015+08:00 CMD echo THREE_ANOMALIES_MODEL_VOICE
+echo THREE_ANOMALIES_MODEL_VOICE
+THREE_ANOMALIES_MODEL_VOICE
+nsh> [K
+2026-10-23T19:40:40.6674519+08:00 CMD vgagent tool vg_anomaly_read
+vgagent tool vg_anomaly_read
+[tools] Executed vg tool: vg_anomaly_read
+tool vg_anomaly_read rc=0
+vganomaly: total=14 shown=12 seen=14 boot=00001752
+- id=flood rank=offline flags=offline,stale value=0.0 threshold=0.0 age_ms=23600 since_ms=17600
+- id=humid rank=offline flags=offline,stale value=50.0 threshold=0.0 age_ms=23600 since_ms=17600
+- id=temp rank=offline flags=offline,stale value=24.0 threshold=0.0 age_ms=23600 since_ms=17600
+- id=acu_ret rank=stale flags=stale value=25.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=acu_run rank=stale flags=stale value=1.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=acu_set rank=stale flags=stale value=24.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=door rank=stale flags=stale value=0.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=energy_kwh rank=stale flags=stale value=123.4 threshold=0.0 age_ms=5540 since_ms=5540
+- id=pwr_kw rank=stale flags=stale value=3.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=smoke rank=stale flags=stale value=1.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=ups_bypass rank=stale flags=stale value=0.0 threshold=0.0 age_ms=5540 since_ms=5540
+- id=ups_load rank=stale flags=stale value=40.0 threshold=0.0 age_ms=5540 since_ms=5540
+- omitted=2
+nsh> [K
+2026-10-23T19:40:40.9742903+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-23T19:40:41.2823065+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K
+2026-10-23T19:40:41.7886880+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+[vgvoice] stage=asr_begin t=10
+nsh> [K
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792784444
+[vela_tls] voice session offered=0 handshake_ms=1120
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=111377 resp=471 ms=12180
+[vgvoice] stage=asr_end t=13470
+[vgvoice] stage=agent_begin t=13480
+[vela_tls] body progress: gaps=3 first_read=8060ms total=2506 bytes
+[vela_tls] body gap 1: idle=5060ms at=13120ms bytes=12
+[vela_tls] body gap 2: idle=5200ms at=18320ms bytes=18
+[vela_tls] body gap 3: idle=3210ms at=21530ms bytes=2501
+[llm] Resp bytes=2479 text=0 reasoning=1284 toolargs=568 calls=1 finish=tool_calls tokens=3307/639/3946
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb7fa6d3f180b] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=260 ttfb=8060 body=13670 pool=0 build=0 parse=90 http=22270 backoff=0 total=22370 req=11219 resp=2479 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adbb7fa6d3f180b] iter=2 tool=write_file latency=22380ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30ce7b3b\nreq=18\nn=2\n[1]\nid=temp\nepoch=30\nsev=crit\nunres=1\nsum=当前读失败，无法确认温度是否仍越限\nev=曾报36度超35度阈值，现读取失败且点位离线\natt=排查温度探头接线与从站通信后复测\n[2]\nid=flood\nepoch=2\nsev=offline\nunres=0\nsum=水浸点离线超6分钟，先查通信链路\nev=离线约377秒数据过期，总线超时212次，从站2成功率仅39%\natt=�
+[tools] Executing tool: write_file
+[vgvoice] round_settled gen=6 state=9 failed=0 elapsed_ms=30080
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (480 bytes)
+[agent] Tool write_file result: 63 bytes, 19470 ms
+[trace:6adbb7fa6d3f180b] tool_iter=2 tool=write_file tool_ms=19470 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adbb7fa6d3f180b] END status=ok iters=3 tools=3 llm_ms=75580 tool_ms=25870 elapsed_ms=101210 backend=0
+
+2026-10-23T19:41:20.3050101+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=1 state=9 gen=6 muted=0 failed=0
+vgvoice: round status=出错了
+vgvoice: round q=现在有哪些异常？
+vgvoice: round a=0 bytes
+vgvoice: round error=等待查询超时
+nsh> [K
+2026-10-23T19:41:20.6177465+08:00 CMD vgvoice round text
+vgvoice round text
+q=现在有哪些异常？
+a=
+e=等待查询超时
+nsh> [K
+2026-10-23T19:41:20.9288692+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K[agent] Dispatching response → local_client:velaguard:19
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 2 entries file_req=18 live_req=18
+
+2026-10-23T19:41:23.4438097+08:00 FIXTURE_MODE normal
+[vgadvice] asked for 3 alarms req=19
+[vgagent] round submitted: 903 bytes
+[agent] Processing message from local_client:velaguard:20
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbb86c03884cea] BEGIN chat=velaguard:20 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7469 bytes)
+[agent] Dispatching response → local_client:velaguard:20
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=653 text=0 reasoning=33 toolargs=54 calls=1 finish=tool_calls tokens=2156/37/2193
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adbb86c03884cea] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=2300 body=0 pool=0 build=10 parse=10 http=2620 backoff=0 total=2640 req=7469 resp=653 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adbb86c03884cea] iter=0 tool=read_file latency=2650ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/alarm_interpretation.md"}
+[tools] Executing tool: read_file
+
+2026-10-23T19:41:35.4544136+08:00 CMD vgagent audit flush
+vgagent audit flush
+vgagent: audit submitted=90 written=90 pending=0 lost=0 running=1 rc=0
+nsh> [K[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 2040 ms
+[trace:6adbb86c03884cea] tool_iter=0 tool=read_file tool_ms=2040 out=1874 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9664 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+2026-10-23T19:41:36.4582112+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=2 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=350 samples=5637 bytes=11274
+vgvoice: level peak=7371 rms=151
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=5 drained=6 overwritten=0 wraps=2 elapsed_ms=350 rate=128865 B/s
+vgvoice: tail_bytes=4143 stage_ms=0
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=24 clip=0 tick_us=10000
+nsh> [K
+2026-10-23T19:41:36.7670274+08:00 CMD vgstats dump
+vgstats dump
+vgstats: slave=1 window=64 total=64 ok=39 crc=0 timeout=25 echo=0 other=0 lat_min=20 lat_max=190 lat_avg=33
+vgstats: slave=2 window=64 total=64 ok=12 crc=0 timeout=52 echo=0 other=0 lat_min=20 lat_max=40 lat_avg=25
+vgstats: slave=3 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=210 lat_avg=33
+vgstats: slave=4 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=220 lat_avg=32
+vgstats: slave=5 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=140 lat_avg=31
+vgstats: slave=6 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=110 lat_avg=35
+vgstats: slave=7 window=64 total=64 ok=64 crc=0 timeout=0 echo=0 other=0 lat_min=20 lat_max=170 lat_avg=35
+nsh> [K

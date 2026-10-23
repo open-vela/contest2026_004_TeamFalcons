@@ -1,0 +1,9 @@
+{
+  "time": "2026-10-23T19:22:28.885458",
+  "existing_process_id": 34188,
+  "control": "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/maintenance-slave-mode.txt",
+  "windows_control": "\\\\wsl.localhost\\Debian\\home\\hello19y\\openvela\\contest2026_004_TeamFalcons\\.debug\\maintenance-slave-mode.txt",
+  "initial_mode": "normal",
+  "log_start_bytes": 255177,
+  "note": "Reuse existing project FC03/04 slave; no second master; restore original normal mode after bounded scene tests."
+}

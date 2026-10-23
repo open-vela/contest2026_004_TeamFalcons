@@ -34,6 +34,7 @@ MODE="build"
 DEBUG=0
 SYNC_UPSTREAM=0
 HMI_PERF=0
+VOICE_FIXTURE=0
 
 # shellcheck source=vg_mainline_target.sh
 . "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
@@ -52,6 +53,9 @@ for arg in "$@"; do
     --hmi-perf)
       HMI_PERF=1
       ;;
+    --voice-fixture)
+      VOICE_FIXTURE=1
+      ;;
     net|min|lvgl|velaguard|velaguard-lvgl|ai-probe|emmc)
       TARGET="$(vg_normalize_build_target "$arg")"
       ;;
@@ -63,6 +67,11 @@ for arg in "$@"; do
 done
 
 TARGET="$(vg_normalize_build_target "$TARGET")"
+
+if [ "$VOICE_FIXTURE" = 1 ] && [ "$TARGET" != "velaguard-lvgl" ]; then
+  echo "error: --voice-fixture 仅适用于作品主线" >&2
+  exit 1
+fi
 
 if [ "$HMI_PERF" = 1 ] && [ "$TARGET" != "velaguard-lvgl" ]; then
   echo "error: --hmi-perf 仅适用于作品主线 velaguard-lvgl，不适用于 $TARGET" >&2
@@ -150,6 +159,8 @@ expect_dev_config()
         grep -q '^CONFIG_STM32H7_SAI_CAPTURE=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_VOICE_LOOPBACK=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_VOICE_DIRECT_TOOL=y$' "$NUTTX_ROOT/.config" &&
+        ! grep -q '^CONFIG_VG_VOICE_TLS_CACHE=y$' "$NUTTX_ROOT/.config" &&
+        { [ "$VOICE_FIXTURE" = 1 ] || ! grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config"; } &&
         grep -q '^CONFIG_VG_AUDIO_PROBE=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config"
@@ -268,6 +279,14 @@ if [ "$HMI_PERF" = 1 ]; then
   make -C "$NUTTX_ROOT" olddefconfig
   # App objects compile with -DVG_HMI_PERF_ENABLED; drop stale objects so
   # the toggle cannot leave half-old binaries behind.
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
+fi
+
+if [ "$VOICE_FIXTURE" = 1 ]; then
+  echo "[build] diagnostic image: enabling fixed local voice fault fixture"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_VOICE_TEST_FIXTURE
+  make -C "$NUTTX_ROOT" olddefconfig
+  grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config" || exit 1
   rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 

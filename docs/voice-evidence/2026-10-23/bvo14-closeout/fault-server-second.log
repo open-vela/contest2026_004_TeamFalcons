@@ -1,0 +1,38 @@
+voice fault fixture ready
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttstruncate", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttstruncate", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttstruncate", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsstall", "test_credential": true}
+{"connection_end": "ConnectionResetError"}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsstall", "test_credential": true}
+{"connection_end": "ConnectionResetError"}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsstall", "test_credential": true}
+{"connection_end": "ConnectionResetError"}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttsbad", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/tts429", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/ttstruncate", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/tts401", "test_credential": true}
+{"path": "/ok_asr", "test_credential": true}
+{"path": "/tts429", "test_credential": true}
+{"connection_end": "ConnectionResetError"}
+voice fault fixture stopped 33

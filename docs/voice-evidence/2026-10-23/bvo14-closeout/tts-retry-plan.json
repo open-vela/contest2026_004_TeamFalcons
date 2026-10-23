@@ -1,0 +1,106 @@
+[
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2200,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round hold on",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice mute off",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice fixture tts429",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "echo RETRY_TTS_ONLY",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav",
+    "wait_ms": 500,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "",
+    "wait_for": "round_settled",
+    "wait_ms": 100,
+    "timeout_ms": 35000,
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round retry",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "",
+    "wait_for": "round_settled",
+    "wait_ms": 100,
+    "timeout_ms": 25000,
+    "optional_wait": true
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2400,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 250,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  }
+]

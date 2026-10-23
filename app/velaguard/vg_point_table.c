@@ -32,6 +32,7 @@
 #include "vg_discover.h"
 
 void vg_mqtt_notify_point_table(void) __attribute__((weak));
+void vg_runtime_config_changed(uint32_t version) __attribute__((weak));
 
 #ifdef CONFIG_VG_CONFIG_STORE
 #include "vg_config_store.h"
@@ -547,6 +548,7 @@ int vg_live_points_replace(FAR const struct vg_discover_summary *sum)
   if (++g_live_gen == 0) ++g_live_gen;
   memset(&g_memory_snapshot, 0, sizeof(g_memory_snapshot));
   g_memory_generation = 0;
+  if (vg_runtime_config_changed) vg_runtime_config_changed(g_live_gen);
   pthread_mutex_unlock(&g_live_mtx);
   return 0;
 }

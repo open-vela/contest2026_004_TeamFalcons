@@ -994,6 +994,7 @@ static pthread_mutex_t g_live_lock = PTHREAD_MUTEX_INITIALIZER;
 static float g_live_v[VG_LIVE_MAX];
 static uint8_t g_live_on[VG_LIVE_MAX];
 static volatile int g_live_n;
+static uint32_t g_live_generation;
 static volatile bool g_acq_started;
 static uint32_t g_imported_gen;
 /* Bumped by the acq thread after each completed poll; the 1 Hz model tick
@@ -1124,6 +1125,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
     if(n <= 0) {
       pthread_mutex_lock(&g_live_lock);
       g_live_n = 0;
+      g_live_generation = poll_gen;
       write_live_snapshot(&live, 0, poll_gen);
       pthread_mutex_unlock(&g_live_lock);
       (void)vg_live_snapshot_write(CONFIG_VG_LIVE_VALUES_PATH, &g_live_snap_out);
@@ -1154,6 +1156,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
           g_live_on[i] = 0;
         }
         g_live_n = n;
+        g_live_generation = poll_gen;
         write_live_snapshot(&live, n, poll_gen);
         g_live_cycle++;
         pthread_mutex_unlock(&g_live_lock);
@@ -1183,6 +1186,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
           }
         }
         g_live_n = n;
+        g_live_generation = poll_gen;
         write_live_snapshot(&live, n, poll_gen);
         g_live_cycle++;
       }
@@ -1250,7 +1254,7 @@ bool vg_ui_backend_apply_live(void)
 
   pthread_mutex_lock(&g_live_lock);
   cur_cycle = g_live_cycle;
-  if(cur_cycle == applied_cycle) {
+  if(g_live_generation != g_imported_gen || cur_cycle == applied_cycle) {
     pthread_mutex_unlock(&g_live_lock);
     return changed;
   }
@@ -1307,7 +1311,7 @@ bool vg_ui_backend_apply_live(void)
         }
       }
 
-      vg_runtime_note_sample(sensors[j].id, sensors[j].slave_addr,
+      vg_runtime_note_sample_versioned(g_imported_gen, sensors[j].id, sensors[j].slave_addr,
                              sensors[j].online, sensors[j].value, kind,
                              thr, sensors[j].cmp,
                              sensors[j].severity == VG_SEV_CRIT ? "crit" :

@@ -38,14 +38,14 @@ static uint32_t                    g_finished_ms;
 static char g_req[VG_ROUND_REQ_MAX];
 static char g_reply[VG_ROUND_REPLY_MAX];
 static bool g_suspended;
+static bool g_voice_foreground;
 static enum vg_agent_round_owner g_suspended_owner;
 static char g_suspended_req[VG_ROUND_REQ_MAX];
 
-/* At most one background request can be deferred before submission.  A
- * running request keeps its owner and is never cancelled by voice. */
+/* 语音可挂起一条后台请求，先取消后台传输，播报结束后再以原请求排队。 */
 static void restore_background_locked(void)
 {
-  if (!g_suspended)
+  if (!g_suspended || g_voice_foreground)
     {
       return;
     }
@@ -53,6 +53,7 @@ static void restore_background_locked(void)
   memcpy(g_req, g_suspended_req, sizeof(g_req));
   memset(g_suspended_req, 0, sizeof(g_suspended_req));
   g_owner = g_suspended_owner;
+  syslog(LOG_INFO,"[%s] resumed background owner=%u\n",TAG,(unsigned)g_owner);
   g_suspended = false;
   g_deadline_ms = 0;
   g_state = VG_AGENT_ROUND_QUEUED;
@@ -157,17 +158,23 @@ static int round_queue(const char *text,
    * eMMC.  Both consumers clear their own result within a tick, so this only
    * ever costs the new request one worker iteration. */
 
+  if (owner != VG_AGENT_ROUND_OWNER_VOICE && g_voice_foreground)
+    { pthread_mutex_unlock(&g_lock); return -EBUSY; }
+
   if (g_state != VG_AGENT_ROUND_IDLE)
     {
       if (owner == VG_AGENT_ROUND_OWNER_VOICE &&
-          g_state == VG_AGENT_ROUND_QUEUED && !g_submitting &&
-          !g_suspended &&
+          (g_state == VG_AGENT_ROUND_QUEUED || g_state == VG_AGENT_ROUND_RUNNING) &&
+          !g_submitting && !g_suspended &&
           (g_owner == VG_AGENT_ROUND_OWNER_ADVICE ||
            g_owner == VG_AGENT_ROUND_OWNER_DAILY))
         {
           memcpy(g_suspended_req, g_req, sizeof(g_req));
           g_suspended_owner = g_owner;
           g_suspended = true;
+          syslog(LOG_INFO,"[%s] paused background owner=%u for voice\n",TAG,(unsigned)g_owner);
+          if (g_state == VG_AGENT_ROUND_RUNNING && g_client != NULL)
+            velaclaw_client_abandon(g_client);
         }
       else
         {
@@ -179,6 +186,7 @@ static int round_queue(const char *text,
   if (++g_request_serial == 0) ++g_request_serial;
   memcpy(g_req, text, len + 1);
   g_owner = owner;
+  if (owner == VG_AGENT_ROUND_OWNER_VOICE) g_voice_foreground = true;
   g_deadline_ms = deadline_ms;
   g_state = VG_AGENT_ROUND_QUEUED;
   g_started_ms = vg_agent_round_now_ms();
@@ -204,6 +212,49 @@ int vg_agent_round_queue_voice(const char *text, uint32_t deadline_ms)
       return -ETIMEDOUT;
     }
   return round_queue(text, VG_AGENT_ROUND_OWNER_VOICE, deadline_ms);
+}
+
+uint32_t vg_agent_round_voice_serial(void)
+{
+  pthread_mutex_lock(&g_lock);
+  uint32_t serial = g_owner == VG_AGENT_ROUND_OWNER_VOICE &&
+                    (g_state == VG_AGENT_ROUND_QUEUED ||
+                     g_state == VG_AGENT_ROUND_RUNNING) ? g_request_serial : 0;
+  pthread_mutex_unlock(&g_lock);
+  return serial;
+}
+
+/* ASR 也占用前台预算；先暂停后台，避免识别上传与后台模型争用网络。 */
+int vg_agent_round_voice_reserve(void)
+{
+  pthread_mutex_lock(&g_lock);
+  if (g_state != VG_AGENT_ROUND_IDLE)
+    {
+      if ((g_state != VG_AGENT_ROUND_QUEUED && g_state != VG_AGENT_ROUND_RUNNING) ||
+          g_submitting || g_suspended ||
+          (g_owner != VG_AGENT_ROUND_OWNER_ADVICE && g_owner != VG_AGENT_ROUND_OWNER_DAILY))
+        { pthread_mutex_unlock(&g_lock); return -EBUSY; }
+      memcpy(g_suspended_req, g_req, sizeof(g_req));
+      g_suspended_owner = g_owner;
+      g_suspended = true;
+      if (g_state == VG_AGENT_ROUND_RUNNING && g_client != NULL)
+        velaclaw_client_abandon(g_client);
+      if (++g_request_serial == 0) ++g_request_serial;
+      syslog(LOG_INFO,"[%s] paused background owner=%u before ASR\n",TAG,(unsigned)g_owner);
+      g_state = VG_AGENT_ROUND_IDLE;
+      g_owner = VG_AGENT_ROUND_OWNER_NONE;
+    }
+  g_voice_foreground = true;
+  pthread_mutex_unlock(&g_lock);
+  return 0;
+}
+
+void vg_agent_round_voice_release(void)
+{
+  pthread_mutex_lock(&g_lock);
+  g_voice_foreground = false;
+  if (g_state == VG_AGENT_ROUND_IDLE) restore_background_locked();
+  pthread_mutex_unlock(&g_lock);
 }
 
 static void round_submit(void)
@@ -250,8 +301,10 @@ static void round_submit(void)
     }
   else
     {
-      rc = velaclaw_ask_async(client, &ask, round_reply,
-                            (void *)(uintptr_t)serial);
+      uint32_t background_deadline = vg_agent_round_now_ms() + VG_AGENT_ROUND_TIMEOUT_MS;
+      if (!background_deadline) background_deadline = 1;
+      rc = velaclaw_ask_async_background(client, &ask, background_deadline,
+                                        round_reply, (void *)(uintptr_t)serial);
     }
 
   pthread_mutex_lock(&g_lock);

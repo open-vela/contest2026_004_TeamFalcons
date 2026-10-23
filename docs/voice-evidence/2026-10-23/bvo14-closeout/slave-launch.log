@@ -1,0 +1,7 @@
+使用“7”个参数调用“Run”时发生异常:“对端口“COM7”的访问被拒绝。”
+所在位置 C:\Users\19y\AppData\Local\Temp\vgflash\closeout_rtu_slave.ps1:90 字符: 1
++ [VelaMaintenanceSlave]::Run($ComPort,$ControlPath,$LogPath,$Hours,$En ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnauthorizedAccessException
+ 

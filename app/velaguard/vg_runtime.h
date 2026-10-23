@@ -43,6 +43,13 @@ enum vg_runtime_action
 };
 
 void vg_runtime_init(void);
+/* 由已确认表发布时调用；更换配置会使运行态和事件历史失效，不制造 CLEAR。
+ * 之后仅接受同一配置代际的采样，旧代际和无代际采样均不能写入。 */
+void vg_runtime_config_changed(uint32_t version);
+int vg_runtime_note_sample_versioned(uint32_t version, const char *id,
+                            uint8_t slave, bool online, float value,
+                            enum vg_runtime_kind kind, float threshold,
+                            const char *cmp, const char *level);
 
 /* Note one sample after HMI/model update. kind is active alarm kind or NONE. */
 void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,

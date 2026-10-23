@@ -1,0 +1,27 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+2026-10-23T19:23:54.2436566+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.99 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     7bc7  1e45  0026  5d5c
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0000  0000
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         80f2  2369  0016  5d73
+  Rexmit     ----  0057  ----  ----
+nsh> [K
+2026-10-23T19:23:54.5388119+08:00 CMD cat /proc/net/route/ipv4
+cat /proc/net/route/ipv4
+nsh: cat: Could not open /proc/net/route/ipv4 (is procfs mounted?)
+nsh: cat: open failed: 2
+nsh> [K
+2026-10-23T19:23:54.8494583+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=33240 headroom=15888
+nsh> [K

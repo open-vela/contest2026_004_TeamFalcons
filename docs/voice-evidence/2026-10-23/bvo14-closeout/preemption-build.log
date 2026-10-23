@@ -1,0 +1,7 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -I../../../../packages/ai_agent/include -o test_agent_round test_agent_round.c ../vg_agent_round.c -Wl,--wrap=clock_gettime
+/home/hello19y/.local/bin/ld: /tmp/ccn3UOmJ.o: in function `round_submit':
+vg_agent_round.c:(.text+0x6b3): undefined reference to `velaclaw_ask_async_background'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:196: test_agent_round] Error 1
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

@@ -1,0 +1,55 @@
+{
+  "attempts": 42,
+  "passed": 36,
+  "profiles": {
+    "asr401": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asr429": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asrempty": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asrbad": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asrtruncate": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asrdns": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "asrstall": {
+      "attempts": 3,
+      "passed": 3
+    },
+    "tts401": {
+      "attempts": 4,
+      "passed": 3
+    },
+    "tts429": {
+      "attempts": 4,
+      "passed": 3
+    },
+    "ttstruncate": {
+      "attempts": 4,
+      "passed": 3
+    },
+    "ttsbad": {
+      "attempts": 6,
+      "passed": 3
+    },
+    "ttsstall": {
+      "attempts": 3,
+      "passed": 3
+    }
+  },
+  "coverage_complete": true
+}

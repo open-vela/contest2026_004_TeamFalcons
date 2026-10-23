@@ -1,0 +1,10 @@
+{
+  "time": "2026-10-23T13:15:36.663216+00:00",
+  "artifact_files_scanned": 169,
+  "known_private_credential_matches": 0,
+  "sdk_head": "76920a34600fc84c1f09a13a0fd41dd2ee954236",
+  "current_firmware": "firmware-foreground.json",
+  "native_foreground_regression": "not started",
+  "baseline": "matrix-iob128-baseline/matrix-summary.json",
+  "bvo14": "incomplete"
+}

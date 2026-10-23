@@ -1,0 +1,14 @@
+[
+  {
+    "profile": "ttsbad-fixed",
+    "harness_exit": 0
+  },
+  {
+    "profile": "tts429-retry",
+    "harness_exit": 0
+  },
+  {
+    "profile": "ttstruncate-retry",
+    "harness_exit": 0
+  }
+]

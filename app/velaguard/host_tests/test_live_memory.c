@@ -7,6 +7,8 @@
 #include "vg_discover.h"
 
 static uint32_t generation;
+static uint32_t runtime_version;
+void vg_runtime_config_changed(uint32_t version) { runtime_version = version; }
 static void *publish(void *arg)
 {
   (void)arg;
@@ -28,6 +30,7 @@ int main(void)
   strcpy(table.points[0].id, "one"); strcpy(table.points[1].id, "two");
   assert(!vg_live_points_replace(&table));
   generation = vg_live_points_gen();
+  assert(runtime_version == generation);
   assert(vg_live_points_view(&copied, &got, NULL) == 2 && got.tick_ms == 0);
   s.n = 2; s.tick_ms = 1;
   strcpy(s.samples[0].id, "one"); strcpy(s.samples[1].id, "two");
@@ -47,6 +50,7 @@ int main(void)
   assert(!pthread_join(writer, NULL));
   table.n_points = 1; strcpy(table.points[0].id, "replacement");
   assert(!vg_live_points_replace(&table));
+  assert(runtime_version == vg_live_points_gen() && runtime_version != generation);
   assert(vg_live_points_view(&copied, &got, NULL) == 1 && !got.tick_ms && !got.n);
   assert(!strcmp(copied.points[0].id, "replacement"));
   assert(vg_live_snapshot_publish(generation, &s) == -ESTALE);

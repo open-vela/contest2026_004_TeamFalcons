@@ -29,7 +29,15 @@ try {
    if(!$FixtureControlPath -or $step.mode -notin @('normal','warn','critical','offline','offline1','offline2','offline12','critical_offline2')) {
     throw 'Invalid fixture mode or missing FixtureControlPath'
    }
-   [IO.File]::WriteAllText($FixtureControlPath,[string]$step.mode)
+   # 从站读取控制文件时会短暂持有 Windows 共享锁；仅对此类 IO 冲突限时重试。
+   $modeDeadline=[Diagnostics.Stopwatch]::StartNew()
+   while($true) {
+    try { [IO.File]::WriteAllText($FixtureControlPath,[string]$step.mode); break }
+    catch [IO.IOException] {
+     if($modeDeadline.ElapsedMilliseconds -ge 2000) { throw }
+     Start-Sleep -Milliseconds 20
+    }
+   }
    Log-Line ((Get-Date -Format o)+' FIXTURE_MODE '+$step.mode)
   }
   $elapsed=[Diagnostics.Stopwatch]::StartNew()

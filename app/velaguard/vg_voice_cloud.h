@@ -96,6 +96,10 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
 
 /* Remove the recording and every intermediate file.  Called after the round
  * ends, on success, failure and cancel alike. */
+#ifdef CONFIG_VG_VOICE_TEST_FIXTURE
+int vg_voice_cloud_fixture(const char *mode);
+#endif
+
 void vg_voice_cloud_cleanup(void);
 
 #endif /* __APP_VELAGUARD_VG_VOICE_CLOUD_H */

@@ -80,6 +80,7 @@ struct voice_round
   uint32_t             clip_generation;
   uint32_t             asr_requests;
   uint32_t             tts_requests;
+  uint32_t             end_requested_ms;
   char                 asr_src[80];
   bool                 muted;
   bool                 hold;
@@ -232,6 +233,14 @@ static bool vr_stage_asr(char *text, size_t cap)
 
   ctl.deadline_ms = g_vr.s.deadline_ms;
   ctl.cancel = &g_vr.cancel;
+
+  while (vg_agent_round_voice_reserve() != 0)
+    {
+      if (g_vr.cancel) return false;
+      if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
+        { vr_ui_error("等待查询超时，请重试"); return false; }
+      usleep(20000);
+    }
 
   vr_ui_set_status("识别中");
   vr_ui_publish();
@@ -481,8 +490,21 @@ static void vr_log_settled(void)
          g_vr.s.speech_failed, (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
 }
 
+static void vr_log_cancel_settled(void)
+{
+  uint32_t started=__atomic_load_n(&g_vr.end_requested_ms,__ATOMIC_RELAXED);
+  if (!started || g_vr.s.state != VG_VS_IDLE || vg_voice_facts_request_active()) return;
+  struct vg_voice_stats audio;
+  vg_voice_get_stats(&audio);
+  if (audio.state != VG_VOICE_IDLE || vg_voice_clip_bytes() != 0) return;
+  __atomic_store_n(&g_vr.end_requested_ms,0,__ATOMIC_RELAXED);
+  syslog(LOG_INFO,"[vgvoice] cancel_settled elapsed_ms=%u retained_pcm=0 controlled_active=0\n",
+         (unsigned)(vr_now_ms()-started));
+}
+
 static void vr_show_result(void)
 {
+  vg_agent_round_voice_release();
   struct vg_voice_session *s = &g_vr.s;
 
   if (s->muted)
@@ -495,6 +517,7 @@ static void vr_show_result(void)
 
 static void vr_show_error(void)
 {
+  vg_agent_round_voice_release();
   vr_ui_set_status("出错了");
   vr_ui_publish();
   vr_log_settled();
@@ -600,7 +623,6 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   return vr_answer_from_tool(gen, tool, tool_json, config_version);
 #else
-  capturing = vg_voice_facts_capture_begin_any(&agent_facts);
 
   for (;;)
     {
@@ -626,6 +648,9 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
       queued = vg_agent_round_queue_voice(question, g_vr.s.deadline_ms);
       if (queued == 0)
         {
+          vg_voice_facts_set_config_version(config_version);
+          capturing = vg_voice_facts_capture_request(&agent_facts,
+                          vg_agent_round_voice_serial(), config_version);
           break;
         }
       if (queued != -EBUSY)
@@ -708,6 +733,7 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
       else if (strcmp(tool, "vg_alarm_recovery") == 0)
         {
           facts_match = agent_facts.has_recovery &&
+                        agent_facts.recovery.kind == VG_RUNTIME_KIND_THRESHOLD &&
                         strcmp(agent_facts.recovery.id, target_id) == 0;
         }
       else if (strcmp(tool, "vg_point_read") == 0)
@@ -762,6 +788,15 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
   ctl.deadline_ms = g_vr.s.deadline_ms;
   ctl.cancel = &g_vr.cancel;
+
+  /* 重试播报也要暂停已恢复的后台请求，且沿用本次播报预算。 */
+  while (vg_agent_round_voice_reserve() != 0)
+    {
+      if (g_vr.cancel) return 0;
+      if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
+        return vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
+      usleep(20000);
+    }
 
   vr_ui_set_status("合成语音");
   vr_ui_publish();
@@ -979,6 +1014,7 @@ static void vr_run_actions(uint32_t actions)
 
       if ((actions & VG_VS_ACT_HIDE_OVERLAY) != 0)
         {
+          vg_agent_round_voice_release();
           pthread_mutex_lock(&g_vr.ui_lock);
           g_vr.ui.visible = false;
           g_vr.ui.status[0] = '\0';
@@ -1088,6 +1124,7 @@ static void *vr_thread(void *arg)
 
       actions = vg_vs_tick(&g_vr.s, now);
       vr_run_actions(actions);
+      vr_log_cancel_settled();
 
       if (g_vr.s.state == VG_VS_RESULT && !g_vr.hold)
         {
@@ -1326,6 +1363,9 @@ void vg_voice_round_end(void)
       return;
     }
 
+  uint32_t empty=0, now=vr_now_ms();
+  __atomic_compare_exchange_n(&g_vr.end_requested_ms,&empty,now?now:1,false,
+                              __ATOMIC_RELAXED,__ATOMIC_RELAXED);
   g_vr.cancel = 1;
   g_vr.end_pending = true;
   sem_post(&g_vr.wake);

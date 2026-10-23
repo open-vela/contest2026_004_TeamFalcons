@@ -15,15 +15,58 @@ static uint32_t g_seq;
 static uint32_t g_config_version;
 static struct vg_voice_facts *g_capture;
 static pthread_t g_capture_owner;
-static bool g_capture_any;
+static uint32_t g_capture_request;
+static uint32_t g_capture_config;
+static bool g_publisher_valid;
+static pthread_t g_publisher;
+static uint32_t g_active_request;
+static pthread_t g_request_thread;
 
 static void capture_locked(void)
 {
-  if (g_capture != NULL &&
-      (g_capture_any || pthread_equal(g_capture_owner, pthread_self())))
+  if (g_capture == NULL) return;
+  if (g_capture_request != 0)
     {
-      *g_capture = g_facts;
+      if (!g_publisher_valid || !pthread_equal(g_publisher, pthread_self()) ||
+          g_facts.config_version != g_capture_config || g_capture->seq != 0)
+        return;
     }
+  else if (!pthread_equal(g_capture_owner, pthread_self())) return;
+  *g_capture = g_facts;
+}
+
+void velaclaw_request_observe(const char *app_id, const char *request_id, void *cookie, bool begin)
+{
+  pthread_mutex_lock(&g_lock);
+  if (begin && app_id && !strcmp(app_id,"velaguard") && request_id &&
+      !strncmp(request_id,"velaguard:voice:",16))
+    {
+      if (app_id && !strcmp(app_id,"velaguard"))
+        { g_active_request=(uint32_t)(uintptr_t)cookie; g_request_thread=pthread_self(); }
+      if (g_capture != NULL && g_capture_request != 0 && app_id != NULL &&
+          strcmp(app_id, "velaguard") == 0 &&
+          (uintptr_t)cookie == g_capture_request)
+        {
+          g_publisher = pthread_self();
+          g_publisher_valid = true;
+        }
+    }
+  else
+    {
+      if (g_publisher_valid && pthread_equal(g_publisher, pthread_self()))
+        g_publisher_valid = false;
+      if (g_active_request && pthread_equal(g_request_thread,pthread_self()))
+        g_active_request = 0;
+    }
+  pthread_mutex_unlock(&g_lock);
+}
+
+bool vg_voice_facts_request_active(void)
+{
+  pthread_mutex_lock(&g_lock);
+  bool active = g_active_request != 0;
+  pthread_mutex_unlock(&g_lock);
+  return active;
 }
 
 bool vg_voice_facts_capture_begin(struct vg_voice_facts *out)
@@ -36,24 +79,28 @@ bool vg_voice_facts_capture_begin(struct vg_voice_facts *out)
     {
       memset(out, 0, sizeof(*out));
       g_capture = out;
-      g_capture_any = false;
+      g_capture_request = 0;
+      g_publisher_valid = false;
       g_capture_owner = pthread_self();
     }
   pthread_mutex_unlock(&g_lock);
   return ok;
 }
 
-bool vg_voice_facts_capture_begin_any(struct vg_voice_facts *out)
+bool vg_voice_facts_capture_request(struct vg_voice_facts *out,
+                                    uint32_t serial, uint32_t config_version)
 {
   bool ok;
-  if (out == NULL) return false;
+  if (out == NULL || serial == 0) return false;
   pthread_mutex_lock(&g_lock);
   ok = g_capture == NULL;
   if (ok)
     {
       memset(out, 0, sizeof(*out));
       g_capture = out;
-      g_capture_any = true;
+      g_capture_request = serial;
+      g_capture_config = config_version;
+      g_publisher_valid = false;
       g_capture_owner = pthread_self();
     }
   pthread_mutex_unlock(&g_lock);
@@ -68,7 +115,8 @@ bool vg_voice_facts_capture_end(void)
     {
       ok = g_capture->seq != 0;
       g_capture = NULL;
-      g_capture_any = false;
+      g_capture_request = 0;
+      g_publisher_valid = false;
     }
   pthread_mutex_unlock(&g_lock);
   return ok;

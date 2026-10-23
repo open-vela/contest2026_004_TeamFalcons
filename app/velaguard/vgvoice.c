@@ -369,6 +369,18 @@ int main(int argc, FAR char *argv[])
     }
 #endif
 
+#ifdef CONFIG_VG_VOICE_TEST_FIXTURE
+  if (strcmp(cmd, "fixture") == 0)
+    {
+      struct vg_voice_ui ui;
+      if (argc != 3 || !vg_voice_round_ui(&ui) || ui.state != 0)
+        { printf("vgvoice: fixture requires idle round and one mode\n"); return EXIT_FAILURE; }
+      int rc = vg_voice_cloud_fixture(argv[2]);
+      printf("vgvoice: diagnostic fixture rc=%d\n",rc);
+      return rc == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+#endif
+
   if (strcmp(cmd, "netprobe") == 0)
     {
       /* NSH-only transport diagnostic: always use a fixed invalid test

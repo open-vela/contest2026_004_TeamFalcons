@@ -1,0 +1,66 @@
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+2026-10-23T20:02:36.4864952+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  17.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  37.5% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000752  38.0%   0.5% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001872  22.9%   2.2% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   3.3% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x900145bd 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000752  37.1%   9.8% ESP8266 0x90067dcd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x90068925 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001648  40.6%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0033432  68.0%   7.0% velaguard_app_main 0x90016f11 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  14.8% vghmi vghmi
+   13    12 100 RR       pthread   - Ready              0000000000000000 0008168 0006288  76.9%   4.2% vghmi 0x90014e01 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Ready              0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002ca99 0x3001ab10
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90033035 0x3001ac30
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002ca99 0x2406adc8
+   23    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0014124  43.1%   0.0% ai_agent 0x9002e72d 0x30025c10
+   24    14 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001512  18.5%   0.0% ai_agent 0x9006d441 0x30044ef0
+   86    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0003512  42.9%   3.0% vghmi 0x90015589 0
+   89    14  60 RR       pthread   - Waiting  Signal    0000000000000000 0016360 0003360  20.5%   0.0% ai_agent 0x90030c15 0
+nsh> [K
+2026-10-23T20:02:36.7830936+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6738968     924624    5814344    1259024    5795432   1111      5 Umem
+nsh> [K
+2026-10-23T20:02:37.0928251+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=33432 headroom=15696
+nsh> [K
+2026-10-23T20:02:37.4067716+08:00 CMD vgagent audit
+vgagent audit
+vgagent: audit submitted=3 written=3 pending=0 lost=0 running=1 rc=0
+nsh> [K
+2026-10-23T20:02:37.7172297+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+nsh> [K
+2026-10-23T20:02:38.0435994+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792785759
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=360
+nsh> [K
+2026-10-23T20:02:38.4457655+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792785759
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=360
+nsh> [K
+2026-10-23T20:02:38.8457814+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6738968     928600    5810368    1259024    5795432   1121      6 Umem
+nsh> [K

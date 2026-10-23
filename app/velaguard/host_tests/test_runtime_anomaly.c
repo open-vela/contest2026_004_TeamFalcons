@@ -1,3 +1,4 @@
+#include <errno.h>
 /****************************************************************************
  * app/velaguard/host_tests/test_runtime_anomaly.c
  *
@@ -305,6 +306,25 @@ int main(void)
   test_recovery();
   test_partial_recovery();
   test_points_seen();
+
+  /* 模拟已确认表换代，不调用或代答任何板端 apply。 */
+  vg_runtime_config_changed(10);
+  expect(vg_runtime_points_seen() == 0, "new config discards old members");
+  expect(vg_runtime_note_sample_versioned(10,"same",1,true,99,
+      VG_RUNTIME_KIND_THRESHOLD,80,"ge","crit") == 0,"current config accepted");
+  struct vg_runtime_recovery scoped;
+  expect(vg_runtime_recovery("same",VG_RUNTIME_KIND_THRESHOLD,&scoped)==0 &&
+      scoped.state == VG_RUNTIME_RECOVERY_ACTIVE,"new config active episode");
+  vg_runtime_config_changed(11); /* 删除 */
+  vg_runtime_config_changed(12); /* 同名重新添加 */
+  expect(vg_runtime_note_sample_versioned(10,"same",1,true,99,
+      VG_RUNTIME_KIND_THRESHOLD,80,"ge","crit") == -ESTALE,"old publication rejected");
+  expect(vg_runtime_note_sample_versioned(12,"same",2,true,40,
+      VG_RUNTIME_KIND_NONE,80,"ge",NULL)==0,"readded point samples normally");
+  expect(vg_runtime_recovery("same",VG_RUNTIME_KIND_THRESHOLD,&scoped)==0 &&
+      scoped.state == VG_RUNTIME_RECOVERY_UNKNOWN,"readded id has no inherited recovery");
+  note("removed",0,VG_RUNTIME_KIND_OFFLINE,0,0,"offline");
+  expect(vg_runtime_points_seen()==1,"unversioned stale writer rejected");
 
   if (g_fail != 0)
     {

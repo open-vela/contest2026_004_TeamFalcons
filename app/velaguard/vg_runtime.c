@@ -64,6 +64,7 @@ static uint32_t g_ev_dropped;
 static uint32_t g_episode_seq;
 static uint32_t g_boot_id;
 static int g_inited;
+static uint32_t g_config_version;
 
 static uint32_t mono_ms(void)
 {
@@ -1497,12 +1498,43 @@ void vg_runtime_init(void)
   pthread_mutex_unlock(&g_snapshot_lock);
 }
 
+void vg_runtime_config_changed(uint32_t version)
+{
+  if (!version) return;
+  pthread_mutex_lock(&g_snapshot_lock);
+  runtime_init_locked();
+  if (version != g_config_version)
+    {
+      /* 配置换代后旧实例不能归给同名新点；不产生虚假的恢复事件。 */
+      memset(g_pts, 0, sizeof(g_pts));
+      memset(g_ev, 0, sizeof(g_ev));
+      g_ev_pos = g_ev_len = 0;
+      g_ev_dropped = 0;
+      g_config_version = version;
+    }
+  pthread_mutex_unlock(&g_snapshot_lock);
+}
+
+int vg_runtime_note_sample_versioned(uint32_t version, const char *id,
+                            uint8_t slave, bool online, float value,
+                            enum vg_runtime_kind kind, float threshold,
+                            const char *cmp, const char *level)
+{
+  pthread_mutex_lock(&g_snapshot_lock);
+  if (!version || version != g_config_version)
+    { pthread_mutex_unlock(&g_snapshot_lock); return -ESTALE; }
+  runtime_note_sample_locked(id, slave, online, value, kind, threshold, cmp, level);
+  pthread_mutex_unlock(&g_snapshot_lock);
+  return 0;
+}
+
 void vg_runtime_note_sample(const char *id, uint8_t slave, bool online,
                             float value, enum vg_runtime_kind kind,
                             float threshold, const char *cmp, const char *level)
 {
   pthread_mutex_lock(&g_snapshot_lock);
-  runtime_note_sample_locked(id, slave, online, value, kind, threshold, cmp, level);
+  if (!g_config_version)
+    runtime_note_sample_locked(id, slave, online, value, kind, threshold, cmp, level);
   pthread_mutex_unlock(&g_snapshot_lock);
 }
 

@@ -1,0 +1,20 @@
+[
+  {
+    "command": "ifconfig",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "cat /proc/net/route/ipv4",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 300,
+    "timeout_ms": 10000,
+    "optional_prompt": true
+  }
+]
