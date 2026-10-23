@@ -116,10 +116,6 @@ enum vg_voice_result vg_voice_finish(bool cancelled);
 size_t vg_voice_clip_bytes(void);
 size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes);
 
-/* Whether the recorder also writes the WAV file.  The local record and
- * playback diagnostic needs it; the cloud round turns it off. */
-void vg_voice_set_archive_wav(bool enable);
-
 bool vg_voice_wait_idle(uint32_t limit_ms);
 void vg_voice_get_stats(struct vg_voice_stats *out);
 enum vg_voice_state vg_voice_state(void);

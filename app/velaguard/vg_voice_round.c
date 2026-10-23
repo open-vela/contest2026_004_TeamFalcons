@@ -802,10 +802,6 @@ static void vr_run_actions(uint32_t actions)
             }
           else
             {
-              /* The round uploads the samples that stay in RAM, so the
-               * recording is not written to the eMMC. */
-
-              vg_voice_set_archive_wav(false);
               g_vr.cancel = g_vr.end_pending || g_vr.press_pending || g_vr.quit;
               g_vr.record_generation = gen;
               vr_ui_clear_error();

@@ -862,17 +862,16 @@ size_t vg_voice_clip_copy(int16_t *dst, size_t dst_bytes)
   return bytes;
 }
 
-void vg_voice_set_archive_wav(bool enable)
-{
-  g_archive_wav = enable;
-}
-
 int vg_voice_record_for(uint32_t ms)
 {
   int ret = vg_voice_init();
   if (ret < 0) return ret;
   if (ms < VOICE_MIN_MS || ms > VG_VOICE_MAX_MS) return -EINVAL;
   if (g_fault) return -EBUSY;
+
+  /* The local diagnostic plays the recording back, so it needs the file. */
+
+  g_archive_wav = true;
   ret = voice_post((struct voice_request){ .type = REQ_BEGIN,
                                           .limit_ms = ms });
   return ret < 0 ? ret : 0;
@@ -883,6 +882,11 @@ int vg_voice_record_begin_owned(uint32_t *generation)
   int ret = vg_voice_init();
   if (ret < 0) return ret;
   if (g_fault || generation == NULL) return -EBUSY;
+
+  /* The cloud round uploads the samples that stay in RAM, so the raw
+   * recording has no reason to reach the eMMC. */
+
+  g_archive_wav = false;
   ret = voice_post((struct voice_request){ .type = REQ_BEGIN,
                                           .limit_ms = VG_VOICE_MAX_MS });
   if (ret < 0) return ret;
