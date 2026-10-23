@@ -1,0 +1,37 @@
+{
+  ".": {
+    "head": "8d07290f85335b2a55fc74a456bf361c59fbf71e",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "6f11173642c5227a3c3e0e19a6fe21c84f8a0014",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "f4ef5f7ef6f410db35eabbe4de9e54e294ce2f28",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "df17af7a0687bd6dd0afceb8672f6c36c9e507a922fae5d60e6c6f7d7a5e7cbc",
+    ".debug/nuttx.bin": "627f10d6591e10732f2b94a885a21d8bbf0ab4d77312254c83a2e6f2da16b4fb",
+    ".debug/nuttx.elf": "d20319cd967981d0b738837450029b9a087df6c30f9177449b73c039062f869d"
+  },
+  "sources": {
+    "app/velaguard/vg_agent_round.c": "20c5ecaff725fd09bc13f62da88c1ba8f96aa201f6449ad3676b9fb792105281",
+    "app/velaguard/vg_agent_round.h": "98b771ca5c0d173a011bd5442258ac44bf0bce9703900255c3d796519346582f",
+    "app/velaguard/vg_voice_round.c": "6471476175f8f86ba5cf809490bd9407dd6965779c280534c843b1db7bd4224b",
+    "app/velaguard/vgagent.c": "c80937792aa78b6ac9bead6f9a4a59524dfe8aa0ba7c9b83c5d378dc65c40d9b",
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../packages/ai_agent/include/velaclaw/client.h": "d4fa2068fe81610c04e6e1a77a3c4b513a9085b0cbda305521624377e8a8397e",
+    "../packages/ai_agent/src/sdk/velaclaw_client_local.c": "c6efa33714f69db41c31c639b3621e2cd7bd3fa2c2f8ca7167b7d049d0b5ad9f",
+    "../packages/ai_agent/src/core/agent_loop.c": "0ffc13ebe7c8ed673656d17368169778c4274f24d87886cbe5f91d2545c0bdae",
+    "../packages/ai_agent/src/llm/llm_proxy.c": "4d0db456db0aa1360b4233a1737a18722f1581fa684a19a8f1f40311b80cf9b9",
+    "../packages/ai_agent/src/llm/llm_proxy.h": "cb1e0a265c92d3c0efd314e81a970c38bc6adcd6eacb08bda809423b2294bd4b"
+  },
+  "time": "2026-10-23T07:49:51.138669+08:00",
+  "description": "Controlled voice deadline propagated into core/LLM, request-scoped cancellation, bounded background deferral, no controlled session persistence"
+}

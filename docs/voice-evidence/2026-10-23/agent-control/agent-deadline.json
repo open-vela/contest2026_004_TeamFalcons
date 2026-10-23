@@ -1,0 +1,67 @@
+[
+  {
+    "command": "",
+    "wait_ms": 12000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "uname -a",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "ls /data/agent/sessions",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent askbudget 30000 当前有哪些异常",
+    "wait_ms": 1200,
+    "timeout_ms": 35000
+  },
+  {
+    "command": "vgagent askbudget 300 当前有哪些异常",
+    "wait_ms": 1000,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent askbudget 500 当前有哪些异常",
+    "wait_ms": 1000,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent askbudget 1000 当前有哪些异常",
+    "wait_ms": 1500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent askbudget 30000 当前有哪些异常",
+    "wait_ms": 1500,
+    "timeout_ms": 35000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "ls /data/agent/sessions",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "free",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  }
+]

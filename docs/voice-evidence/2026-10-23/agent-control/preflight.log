@@ -1,0 +1,18 @@
+2026-10-23T07:46:11.6986577+08:00 CMD uname -a
+uname -a
+NuttX  0.0.0 6f11173642c-dirty Oct 22 2026 23:10:56 arm stm32h750b-dk
+nsh> [K
+2026-10-23T07:46:12.2042568+08:00 CMD vgagent status
+vgagent status
+round: state=idle gen=2 owner=none
+llm: credentials=ready provision_file=present
+reply: OK: wrote 1667 bytes to /data/velaguard/reports/alarm_advice.txt
+nsh> [K
+2026-10-23T07:46:12.7142412+08:00 CMD vgvoice mute
+vgvoice mute
+vgvoice: muted=0
+nsh> [K
+2026-10-23T07:46:13.2350183+08:00 CMD vgvoice round stack
+vgvoice round stack
+vgvoice: stack size=49128 used=884 headroom=48244
+nsh> [K

@@ -45,9 +45,9 @@ enum vg_agent_round_owner
 
 /* Total budget for one round, in milliseconds.  Measured rounds on this board
  * run 100-190 s wall clock (six ReAct iterations, ~105 s inside the LLM), so
- * this is deliberately far above the 120 s per-call watchdog.  Expiry only
- * means "stop waiting": the artifact carries boot and req, so a late answer
- * is rejected by vg_ai_advice_parse() rather than mistaken for a later round. */
+ * this is deliberately far above the 120 s per-call watchdog.  This default
+ * applies to background rounds.  Voice uses queue_voice's original deadline
+ * and physically cancels the model transport when abandoned or expired. */
 
 #define VG_AGENT_ROUND_TIMEOUT_MS       300000u
 
@@ -72,6 +72,9 @@ int vg_agent_round_queue(const char *text);
 
 int vg_agent_round_queue_owned(const char *text,
                                enum vg_agent_round_owner owner);
+
+/* A voice question spends the original deadline, including ASR and queue. */
+int vg_agent_round_queue_voice(const char *text, uint32_t deadline_ms);
 
 /* Owner of the current round, or NONE when idle. */
 
@@ -100,6 +103,7 @@ void vg_agent_round_clear(void);
  * state returns to IDLE and the client slot is released, so the next question
  * is not refused as busy; a late reply is dropped by its serial. */
 void vg_agent_round_abandon(void);
+void vg_agent_round_abandon_owned(enum vg_agent_round_owner owner);
 
 /* How long a finished result may sit unclaimed before any other flow may
  * release it.  The queue refuses to start a round while a terminal state is

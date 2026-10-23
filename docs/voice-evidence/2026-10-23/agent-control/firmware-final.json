@@ -1,0 +1,38 @@
+{
+  ".": {
+    "head": "8d07290f85335b2a55fc74a456bf361c59fbf71e",
+    "branch": "velaguard/maintenance-stability"
+  },
+  "../nuttx": {
+    "head": "6f11173642c5227a3c3e0e19a6fe21c84f8a0014",
+    "branch": "velaguard/ptt-user1-stm32h750b-dk"
+  },
+  "../apps": {
+    "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+    "branch": "velaguard/netinit-esp8266"
+  },
+  "../packages/ai_agent": {
+    "head": "f4ef5f7ef6f410db35eabbe4de9e54e294ce2f28",
+    "branch": "velaguard/rsp01-response-timing"
+  },
+  "artifact": {
+    ".debug/nuttx.hex": "9ecb2a99f1aa415dc80cbdbc7ebe0144b7f324ea6d492d2a1f92bd438314d432",
+    ".debug/nuttx.bin": "3cd1694bf09fc69a19e167ab1dffea5a614692a332be588c8f45dc185bafa8b4",
+    ".debug/nuttx.elf": "acd39bc1c123a511cd09efcd801962818f3b2caf4a10adb5bc5e043a2d10f8a1"
+  },
+  "sources": {
+    "app/velaguard/vg_agent_round.c": "20c5ecaff725fd09bc13f62da88c1ba8f96aa201f6449ad3676b9fb792105281",
+    "app/velaguard/vg_agent_round.h": "98b771ca5c0d173a011bd5442258ac44bf0bce9703900255c3d796519346582f",
+    "app/velaguard/vg_voice_round.c": "9cc6513441f353e1d548da7a02f5107a969c1fc96a92c27718676ff31a29e928",
+    "app/velaguard/vgagent.c": "8ce1e5e276221ae8e5b8977c764af222fe87b6455c9fd6b94f147daa14d97390",
+    "../nuttx/.config": "b442c582aa0ced5f942a3e000dd5f6847d2d3c4490c0002122c8ccab9bb16855",
+    "../packages/ai_agent/include/velaclaw/client.h": "aa9a3c0b583af4509af65449baefd60be51d28999b52139e893f0b8ebdede572",
+    "../packages/ai_agent/src/sdk/velaclaw_client_local.c": "a06644db4b8b158cc99238af63927b1d276e79deae971787a3b548dd4b366a27",
+    "../packages/ai_agent/src/core/agent_loop.c": "5d43816f01f45242cbd3c4f74665eb79998431edd2fa5501ff93d6beb4fdb315",
+    "../packages/ai_agent/src/llm/llm_proxy.c": "4d0db456db0aa1360b4233a1737a18722f1581fa684a19a8f1f40311b80cf9b9",
+    "../packages/ai_agent/src/llm/llm_proxy.h": "cb1e0a265c92d3c0efd314e81a970c38bc6adcd6eacb08bda809423b2294bd4b",
+    "../nuttx/arch/arm/src/stm32h7/stm32_mpuinit.c": "cde1ada7721db7a7e20eb69f5c37650dcdee0a4756bf80e458da5dd4681afbc9"
+  },
+  "time": "2026-10-23T07:58:25.873047+08:00",
+  "description": "Controlled voice deadline propagated into core/LLM, request-scoped cancellation, bounded background deferral, no controlled session persistence; SDRAM normal noncacheable nonshareable; end sets cancel immediately, stage transitions preserve cancellation, core failure callback"
+}

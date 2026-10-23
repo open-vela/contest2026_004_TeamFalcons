@@ -62,6 +62,7 @@ static void usage(void)
   printf("  vgagent status\n");
   printf("  vgagent advice\n");
   printf("  vgagent ask <text>\n");
+  printf("  vgagent askbudget <100..30000 ms> <text> (voice-path diagnostic)\n");
   printf("  vgagent clear\n");
   printf("  vgagent tools\n");
   printf("  vgagent model <name>   (keeps host and key)\n");
@@ -183,6 +184,8 @@ static const char *owner_name(enum vg_agent_round_owner owner)
         return "advice";
       case VG_AGENT_ROUND_OWNER_DAILY:
         return "daily";
+      case VG_AGENT_ROUND_OWNER_VOICE:
+        return "voice";
       case VG_AGENT_ROUND_OWNER_NONE:
         return "none";
       default:
@@ -247,6 +250,8 @@ int main(int argc, char *argv[])
 {
   static char ask[VGAGENT_ASK_MAX];
   uint32_t start;
+  uint32_t budget = VG_AGENT_ROUND_TIMEOUT_MS;
+  bool controlled = false;
   int rc;
 
   if (argc < 2)
@@ -306,36 +311,72 @@ int main(int argc, char *argv[])
       return run_tool_cmd(argc, argv);
     }
 
-  if (strcmp(argv[1], "ask") != 0)
+  controlled = strcmp(argv[1], "askbudget") == 0;
+  if (controlled)
+    {
+      char *end;
+      unsigned long parsed;
+      if (argc < 4)
+        {
+          usage();
+          return 1;
+        }
+      parsed = strtoul(argv[2], &end, 10);
+      if (*end != '\0' || parsed < 100 || parsed > 30000)
+        {
+          usage();
+          return 1;
+        }
+      budget = (uint32_t)parsed;
+    }
+
+  if (!controlled && strcmp(argv[1], "ask") != 0)
     {
       usage();
       return 1;
     }
 
-  if (join_args(argc, argv, ask, sizeof(ask)) != 0)
+  if (join_args(argc - (controlled ? 1 : 0),
+                argv + (controlled ? 1 : 0), ask, sizeof(ask)) != 0)
     {
       fprintf(stderr, "vgagent: empty or oversized question\n");
       return 1;
     }
 
-  vg_agent_round_clear();
+  if (!controlled || vg_agent_round_owner() == VG_AGENT_ROUND_OWNER_VOICE)
+    {
+      vg_agent_round_clear();
+    }
 
-  rc = vg_agent_round_queue(ask);
+  start = vg_agent_round_now_ms();
+  uint32_t deadline = start + budget;
+  if (deadline == 0)
+    {
+      deadline = 1;
+    }
+  rc = controlled ? vg_agent_round_queue_voice(ask, deadline)
+                  : vg_agent_round_queue(ask);
   if (rc != 0)
     {
       fprintf(stderr, "vgagent: queue failed: %d\n", rc);
       return 1;
     }
 
-  printf("vgagent: queued %u bytes, waiting (up to %u s)...\n",
-         (unsigned)strlen(ask),
-         (unsigned)(VG_AGENT_ROUND_TIMEOUT_MS / 1000u));
+  if (controlled)
+    {
+      printf("vgagent: queued %u bytes, budget_ms=%u controlled=1\n",
+             (unsigned)strlen(ask), (unsigned)budget);
+    }
+  else
+    {
+      printf("vgagent: queued %u bytes, waiting (up to %u s)...\n",
+             (unsigned)strlen(ask),
+             (unsigned)(VG_AGENT_ROUND_TIMEOUT_MS / 1000u));
+    }
 
   /* Drive the channel from here as well: outside the HMI this is the only
    * ticker, and alongside it the submission guard keeps the two from
    * pushing the same request twice. */
-
-  start = vg_agent_round_now_ms();
 
   while (vg_agent_round_busy())
     {
@@ -343,12 +384,14 @@ int main(int argc, char *argv[])
       usleep(200000);
 
       if (vg_agent_round_now_ms() - start >
-          VG_AGENT_ROUND_TIMEOUT_MS + 10000u)
+          budget + (controlled ? 2000u : 10000u))
         {
           break;
         }
     }
 
+  printf("vgagent: elapsed_ms=%u\n",
+         (unsigned)(vg_agent_round_now_ms() - start));
   print_status();
 
   /* Release the slot: the queue refuses a new round while any result is

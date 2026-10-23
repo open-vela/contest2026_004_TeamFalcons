@@ -1,0 +1,22 @@
+[
+  {
+    "command": "uname -a",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice mute",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  }
+]

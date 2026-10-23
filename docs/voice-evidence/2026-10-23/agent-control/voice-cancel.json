@@ -1,0 +1,97 @@
+[
+  {
+    "command": "vgagent askbudget 2500 当前有哪些异常",
+    "wait_ms": 1400,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent askbudget 3500 当前有哪些异常",
+    "wait_ms": 1400,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice mute on",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/q1.wav",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 11000,
+    "timeout_ms": 15000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 2500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgagent status",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round ask /data/velaguard/voice/q1.wav",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 32000,
+    "timeout_ms": 35000
+  },
+  {
+    "command": "vgvoice round",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 1500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice mute off",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "ls /data/agent/sessions",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "ls /data/velaguard/voice",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "vgvoice round stack",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "free",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  },
+  {
+    "command": "cat /proc/net/tcp",
+    "wait_ms": 500,
+    "timeout_ms": 8000
+  }
+]

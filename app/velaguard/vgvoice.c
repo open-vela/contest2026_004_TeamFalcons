@@ -462,6 +462,19 @@ int main(int argc, FAR char *argv[])
           return EXIT_SUCCESS;
         }
 
+      if (argc >= 3 && strcmp(argv[2], "end") == 0)
+        {
+          vg_voice_round_end();
+          printf("vgvoice: round end requested\n");
+          return EXIT_SUCCESS;
+        }
+
+      if (argc >= 3)
+        {
+          fprintf(stderr, "vgvoice: unknown round command: %s\n", argv[2]);
+          return EXIT_FAILURE;
+        }
+
       if (!vg_voice_round_ui(&ui))
         {
           printf("vgvoice: round not started\n");

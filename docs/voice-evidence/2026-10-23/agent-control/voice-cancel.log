@@ -1,0 +1,111 @@
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:6
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adb121503cd357a] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792741909
+[agent] Dispatching response → local_client:velaguard:6
+2026-10-23T07:51:48.8599926+08:00 CMD vgagent askbudget 2500 当前有哪些异常
+vgagent askbudget 2500 当前有哪些异常
+vgagent: queue failed: -16
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-23T07:51:50.2683598+08:00 CMD vgagent askbudget 3500 当前有哪些异常
+vgagent askbudget 3500 当前有哪些异常
+vgagent: queue failed: -16
+nsh> [K
+2026-10-23T07:51:51.6916058+08:00 CMD vgvoice mute on
+vgvoice mute on
+vgvoice: muted=1
+nsh> [K
+2026-10-23T07:51:52.2156208+08:00 CMD vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice round ask /data/velaguard/voice/q1.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/q1.wav
+nsh> [K
+2026-10-23T07:51:52.7224765+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792741917
+HARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=d027d3c4 MMFAR=d027d3c4
+HARDFAULT: stacked PC=90092ac0 LR=90092b33
+dump_assert_info: Current Version: NuttX  0.0.0 6f11173642c-dirty Oct 23 2026 07:47:04 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x90010915
+up_dump_register: R0: 24004bf0 R1: 00000000 R2: 900b8ef2  R3: 240045d8
+up_dump_register: R4: 38004be8 R5: 00000003 R6: 900b8ef2  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004558 R10: 00000006 R11: 38007a70
+up_dump_register: R12: 00000009 SP: 38007880 LR: 90001b1f  PC: 90001b1f
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x38004cf0
+dump_stackinfo:   size: 00012264
+dump_stackinfo:     sp: 0x38007880
+stack_dump:  38007860: 38007cd8 00000ac0 38007cd8 38007880 38004cf0 00002fe8 24004558 90001ccb
+stack_dump:  38007880: 900d1d43 00000000 38004c98 38000480 90010915 0000000a 00000000 00000000
+stack_dump:  380078a0: 38004be8 24004bf0 900b8ef2 00000000 00000000 7474754e 40000058 38007930
+stack_dump:  380078c0: 00000000 900082b7 0000000b 00000008 0000000b 380079d0 900b8ef1 90000e8d
+stack_dump:  380078e0: 32623333 39303039 302e3000 0000302e 24000264 90001073 00000000 66368ecc
+stack_dump:  38007900: 37313131 32343633 69642d63 20797472 2074634f 32203332 20363230 343a3730
+stack_dump:  38007920: 34303a37 900b8e00 38007968 900077a9 6d72612b 90008c00 90008c4f 00000000
+stack_dump:  38007940: 90008289 0000000a 00000000 38007a70 00000003 240045d8 38007a70 d027d3c0
+stack_dump:  38007960: 00000000 2404cd69 38007a70 900014c1 00000001 d027d3c4 38004be8 90000e8d
+stack_dump:  38007980: 00000080 00000007 00000001 380004fc 00000003 90001073 00000080 24000264
+stack_dump:  380079a0: 00000000 00000001 00000001 000000d1 00000000 ffffffe9 00000000 00000000
+stack_dump:  380079c0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380079e0: 00000000 00000000 00000000 00000000 00000000 00000000 00000002 38004be8
+stack_dump:  38007a00: 00000000 00000000 00000000 9000250d 900022e2 01000000 00000000 00000000
+stack_dump:  38007a20: 00000000 00000000 00000000 00000000 00000000 00000000 0000000b 38007b38
+stack_dump:  38007a40: 00000000 90000e8d 00000080 00000007 38007c40 38004be8 00000000 90001073
+stack_dump:  38007a60: 38004be8 38007adc 00000000 38004c40 38007b48 00000080 00000000 00000001
+stack_dump:  38007a80: 380004fc 00000003 d027d3c0 00000000 2404cd69 900badc7 00000000 ffffffe9
+stack_dump:  38007aa0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38007ac0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38007ae0: 300411b0 d027d3c4 00000000 300411b0 d027d4f0 90092b33 90092ac0 21000000
+stack_dump:  38007b00: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38007b20: 00000000 00000000 00000000 00000000 00000000 3fe80000 00000000 0000002d
+stack_dump:  38007b40: 00000000 9000a79d d027d3c0 00000003 2400327c 30047de8 00000000 90092b33
+stack_dump:  38007b60: 00000000 30047de8 00000003 00000002 00000001 900963d3 00000000 00000003
+stack_dump:  38007b80: 00000001 9009646f d027d320 38007bf8 00000001 00000000 00019500 900684a5
+stack_dump:  38007ba0: 00000000 00019500 00000000 d027d460 900badc7 00000000 00000000 0189a8c0
+stack_dump:  38007bc0: 00000000 00700028 00000000 38007bf8 90008215 2403827c 24038278 00000001
+stack_dump:  38007be0: 00000000 00019500 00000000 00018fa6 900badc7 9004d32d 38007c87 900ccc32
+stack_dump:  38007c00: 00200001 03e80000 2403827c 9004d2e5 38007c74 9004d409 0189a8c0 30687465
+stack_dump:  38007c20: 00000000 00000000 00000000 00003006 00000000 00000000 00000000 00000000
+stack_dump:  38007c40: 00000001 2401b850 240003b4 9001096b 38007c58 90000e0d 01010101 ffff0000
+stack_dump:  38007c60: 00000000 00000000 00000000 00000000 00000000 31000101 312e3239 312e3836
+stack_dump:  38007c80: 312e3733 31003638 312e3239 312e3836 312e3733 00000000 00000000 900a4165
+stack_dump:  38007ca0: 90010915 00000000 00000000 00000000 00000000 00000000 00000000 900a416d
+stack_dump:  38007cc0: 00000064 900b87c7 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24052c80      1000       536    53.6%      2.4%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240073f8      1976       688    34.8%     12.0%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006bf8      1976       744    37.6%      1.8%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168      1864    22.8%      0.0%   velaguard_app_main 0x9000cbd1 0
+dump_task:       5     3 100 RR       pthread -   Running            0000000000000000 0x38004cf0     12264      2752    22.4%      1.2%   velaguard_app_main 0x90010915 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x90014429 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       728    35.9%      1.8%   ESP8266 0x900675c9 0
+dump_task:       8     3  80 RR       pthread -   Ready              0000000000000000 0x3800a150      2024      1072    52.9%      0.0%   netinit 0x90068395 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b208      4056      1408    34.7%      0.6%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x24063698     49128     24680    50.2%     33.1%   velaguard_app_main 0x90016699 0
+dump_task:      11    11  90 RR       Task    -   Ready              0000000000000000 0x3800ca98      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Ready              0000000000000000 0x2406f6b8     49104      8968    18.2%     43.9%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x30003070      8168      6288    76.9%      0.6%   vghmi 0x90014c69 0
+dump_task:      14    14 100 RR       Task    -   Ready              0000000000000000 0x300058b0     32696      2344     7.1%      0.0%   ai_agent ai_agent --daemon
+dump_task:      15    14  50 FIFO     pthread -   Ready              0000000000000000 0x3000f180     12264       904     7.3%      0.0%   ai_agent 0x9002c215 0x30005108
+dump_task:      16    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x30012188      4072       976    23.9%      0.0%   ai_agent 0x90032505 0x30005208
+dump_task:      17    14  50 FIFO     pthread -   Ready              0000000000000000 0x30013190     28648      1232     4.3%      0.0%   ai_agent 0x9002c215 0x24053248
+dump_task:      20    14  60 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x24023788     32744     10780    32.9%      0.0%   ai_agent 0x9002dea9 0x30005060
+dump_task:      26    12 100 RR       pthread -   Ready              0000000000000000 0x3001a198      8168      3512    42.9%      2.4%   vghmi 0x900153cd 0
+
+2026-10-23T07:52:03.7338754+08:00 CMD vgvoice round
+NSH prompt timeout: vgvoice round
+所在位置 C:\Users\19y\AppData\Local\Temp\vgflash\nsh_plan.ps1:34 字符: 50
++ ... iseconds -ge $limit) { throw ('NSH prompt timeout: '+$step.command) }
++                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (NSH prompt timeout: vgvoice round:String) [], RuntimeException
+    + FullyQualifiedErrorId : NSH prompt timeout: vgvoice round
+ 

@@ -202,7 +202,6 @@ static bool vr_stage_asr(char *text, size_t cap)
   enum vg_vc_result rc;
   vela_req_ctl_t ctl;
 
-  g_vr.cancel = 0;
   ctl.deadline_ms = g_vr.s.deadline_ms;
   ctl.cancel = &g_vr.cancel;
 
@@ -482,11 +481,37 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
   agent_llm_cache_forget(question);
 
-  if (vg_agent_round_queue_owned(question, VG_AGENT_ROUND_OWNER_VOICE) != 0)
+  for (;;)
     {
-      vr_ui_error("上一个问题仍在处理，请稍后再试");
-      return vg_vs_agent_result(&g_vr.s, gen, false,
-                                "agent busy", vr_now_ms());
+      int queued;
+      if (g_vr.cancel)
+        {
+          return 0;
+        }
+      if ((int32_t)(g_vr.s.deadline_ms - vr_now_ms()) <= 0)
+        {
+          vr_ui_error("等待查询超时");
+          return vg_vs_agent_result(&g_vr.s, gen, false,
+                                    "agent queue timeout", vr_now_ms());
+        }
+      queued = vg_agent_round_queue_voice(question, g_vr.s.deadline_ms);
+      if (queued == 0)
+        {
+          break;
+        }
+      if (queued != -EBUSY)
+        {
+          vr_ui_error("查询暂不可用，请稍后再试");
+          return vg_vs_agent_result(&g_vr.s, gen, false,
+                                    "agent unavailable", vr_now_ms());
+        }
+
+      /* Keep the one pending voice question within its original budget.
+       * The background owner finishes and consumes its own result. */
+      vr_ui_set_status("等待后台任务");
+      vr_ui_publish();
+      vg_agent_round_tick();
+      usleep(VR_AGENT_POLL_MS * 1000u);
     }
 
   vr_ui_set_status("查询中");
@@ -507,7 +532,7 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
       /* Give up the agent slot: otherwise the discarded round keeps the client
        * busy and the next question is refused for up to its 300 s timeout. */
 
-      vg_agent_round_abandon();
+      vg_agent_round_abandon_owned(VG_AGENT_ROUND_OWNER_VOICE);
 
       vr_ui_error("查询超时");
       return vg_vs_agent_result(&g_vr.s, gen, false, "agent timeout",
@@ -574,7 +599,6 @@ static uint32_t vr_stage_tts(uint32_t gen)
   enum vg_vc_result rc;
   vela_req_ctl_t ctl;
 
-  g_vr.cancel = 0;
   ctl.deadline_ms = g_vr.s.deadline_ms;
   ctl.cancel = &g_vr.cancel;
 
@@ -655,7 +679,7 @@ static void vr_run_actions(uint32_t actions)
            * the replacement can be submitted; the old reply is dropped by
            * its serial. */
 
-          vg_agent_round_abandon();
+          vg_agent_round_abandon_owned(VG_AGENT_ROUND_OWNER_VOICE);
         }
 
       if ((actions & VG_VS_ACT_STOP_RECORD) != 0)
@@ -689,6 +713,7 @@ static void vr_run_actions(uint32_t actions)
             }
           else
             {
+              g_vr.cancel = g_vr.end_pending || g_vr.press_pending || g_vr.quit;
               g_vr.record_generation = gen;
               vr_ui_clear_error();
               vr_ui_set_status("录音中");
@@ -706,6 +731,8 @@ static void vr_run_actions(uint32_t actions)
           char text[VG_VS_TEXT_MAX];
 
           text[0] = '\0';
+
+          if (g_vr.cancel) return;
 
           /* The recorder stops the PDM stream, drains and writes the WAV;
            * 2 s was tight enough to lose a round right after playback. */
@@ -733,11 +760,13 @@ static void vr_run_actions(uint32_t actions)
 
       if ((actions & VG_VS_ACT_QUEUE_AGENT) != 0)
         {
+          if (g_vr.cancel) return;
           next |= vr_stage_agent(g_vr.s.text, g_vr.s.generation);
         }
 
       if ((actions & VG_VS_ACT_START_TTS) != 0)
         {
+          if (g_vr.cancel) return;
           next |= vr_stage_tts(g_vr.s.generation);
         }
 
@@ -826,6 +855,7 @@ static void *vr_thread(void *arg)
       if (g_vr.retry_pending)
         {
           g_vr.retry_pending = false;
+          g_vr.cancel = g_vr.end_pending || g_vr.press_pending || g_vr.quit;
           vr_run_actions(vg_vs_retry_tts(&g_vr.s, now));
           now = vr_now_ms();
         }
@@ -937,7 +967,9 @@ void vg_voice_round_stop(void)
       return;
     }
 
+  g_vr.cancel = 1;
   g_vr.quit = true;
+  vg_agent_round_abandon_owned(VG_AGENT_ROUND_OWNER_VOICE);
   sem_post(&g_vr.wake);
   pthread_join(g_vr.thread, NULL);
   g_vr.started = false;
@@ -1079,6 +1111,7 @@ void vg_voice_round_end(void)
       return;
     }
 
+  g_vr.cancel = 1;
   g_vr.end_pending = true;
   sem_post(&g_vr.wake);
 }
