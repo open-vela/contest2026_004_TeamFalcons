@@ -1,0 +1,18 @@
+[
+  {
+    "plan": "final-boot-plan.json",
+    "harness_exit": 0
+  },
+  {
+    "plan": "matrix-anomaly.json",
+    "harness_exit": 0
+  },
+  {
+    "plan": "matrix-point.json",
+    "harness_exit": 0
+  },
+  {
+    "plan": "matrix-recovery.json",
+    "harness_exit": 0
+  }
+]

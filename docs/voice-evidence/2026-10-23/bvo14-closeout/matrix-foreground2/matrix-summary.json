@@ -1,0 +1,29 @@
+{
+  "attempts": 30,
+  "complete": 22,
+  "correct_text": 29,
+  "settled_over_30s": 12,
+  "groups": {
+    "anomaly": {
+      "attempts": 10,
+      "complete": 10,
+      "correct_text": 10,
+      "median_ms_success": 19340.0,
+      "max_ms_success": 29570
+    },
+    "point": {
+      "attempts": 10,
+      "complete": 8,
+      "correct_text": 10,
+      "median_ms_success": 26010.0,
+      "max_ms_success": 29400
+    },
+    "recovery": {
+      "attempts": 10,
+      "complete": 4,
+      "correct_text": 9,
+      "median_ms_success": 26935.0,
+      "max_ms_success": 28510
+    }
+  }
+}

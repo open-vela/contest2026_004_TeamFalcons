@@ -22,6 +22,8 @@ $port.RtsEnable=$true
 $run=[Diagnostics.Stopwatch]::StartNew()
 $port.Open()
 $lastResponse=''
+$sinceCmd=''
+Log-Line 'HARNESS v2026-10-24c stepdbg+livemerge'
 try {
  foreach($step in $steps) {
   if ($run.ElapsedMilliseconds -gt 900000) { throw 'Plan exceeded 15 minutes' }
@@ -43,7 +45,8 @@ try {
   $elapsed=[Diagnostics.Stopwatch]::StartNew()
   $seen=''
   # 无命令的等待继承上一响应，避免漏掉快速失败的完成标记。
-  if(!$step.command -and $step.wait_for) { $seen=$lastResponse }
+Log-Line ('STEP cmd=['+$step.command+'] lr='+$lastResponse.Length+' sc='+$sinceCmd.Length)
+  if(!$step.command -and $step.wait_for) { $seen=($lastResponse+$sinceCmd); Log-Line ('PRESEED seen='+$seen.Length+' hasMarker='+$seen.Contains([string]$step.wait_for)) }
   $limit=60000
   if($step.timeout_ms) { $limit=[int]$step.timeout_ms }
   if($limit -lt 1 -or $limit -gt 60000) { throw 'Invalid timeout_ms' }
@@ -51,6 +54,7 @@ try {
    # Drain old output before sending, so an old prompt cannot complete this step.
    if($port.BytesToRead -gt 0) { Log-Chunk ($port.ReadExisting()) }
    Log-Line ((Get-Date -Format o)+' CMD '+$step.command)
+   $sinceCmd=''
    $port.Write($step.command+"`r")
   }
   while($true) {
@@ -58,13 +62,16 @@ try {
     $chunk=$port.ReadExisting()
     Log-Chunk $chunk
     $seen=($seen+$chunk)
+    $sinceCmd=($sinceCmd+$chunk)
     if($seen.Length -gt 16384) { $seen=$seen.Substring($seen.Length-16384) }
+    if($sinceCmd.Length -gt 16384) { $sinceCmd=$sinceCmd.Substring($sinceCmd.Length-16384) }
    }
    $ready=(-not $step.command) -or $seen.Contains('nsh>')
    if($step.wait_for) {
+    $hay = if($step.command){$seen}else{$seen+$sinceCmd}
     $pos=0
     foreach($needle in @($step.wait_for)) {
-     $found=$seen.IndexOf([string]$needle,$pos,[StringComparison]::Ordinal)
+     $found=$hay.IndexOf([string]$needle,$pos,[StringComparison]::Ordinal)
      if($found -lt 0) { $ready=$false; break }
      $pos=$found+([string]$needle).Length
     }
@@ -82,7 +89,9 @@ try {
   # 等待末尾输出完成，避免元数据与下一条命令交错。
   Start-Sleep -Milliseconds 200
   if($port.BytesToRead -gt 0) {
-   $tail=$port.ReadExisting(); Log-Chunk $tail; $seen+=$tail
+   $tail=$port.ReadExisting(); Log-Chunk $tail; $seen+=$tail; $sinceCmd+=$tail
+   Log-Line ('TAIL seen='+$seen.Length+' sc='+$sinceCmd.Length)
+   if($sinceCmd.Length -gt 16384) { $sinceCmd=$sinceCmd.Substring($sinceCmd.Length-16384) }
   }
   $lastResponse=$seen
   Log-Line ''

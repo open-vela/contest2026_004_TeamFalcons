@@ -544,6 +544,7 @@ enum vg_vc_result vg_voice_cloud_asr(const char *clip_path,
   src.f = fopen(clip_path, "rb");
   if (src.f == NULL)
     {
+      syslog(LOG_ERR, "[%s] asr: open clip failed errno=%d\n", TAG, errno);
       vg_voice_cloud_cleanup();
       return VG_VC_IO;
     }

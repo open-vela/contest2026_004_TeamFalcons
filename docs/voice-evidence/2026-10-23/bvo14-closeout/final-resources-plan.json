@@ -1,0 +1,55 @@
+[
+ {
+  "command": "echo RESOURCE_FINAL",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "ps",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "free",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "cat /proc/net/tcp",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice status",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgstats dump",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgruntime dump",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgagent audit",
+  "wait_ms": 1000,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "ls /data/velaguard/voice/",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ }
+]

@@ -919,6 +919,13 @@ static void vr_run_actions(uint32_t actions)
               (void)vg_voice_finish_owned_silent(g_vr.record_generation);
               g_vr.record_generation = 0;
             }
+          /* END_SILENT 会在采集槽里留下原始 PCM 等待上传取用；取消路径
+           * 没有后续取用，必须显式清零释放，否则残留音频留在内存。 */
+          if (g_vr.clip_generation != 0)
+            {
+              (void)vg_voice_finish_owned(g_vr.clip_generation, true);
+              g_vr.clip_generation = 0;
+            }
         }
 
       if ((actions & VG_VS_ACT_START_RECORD) != 0)

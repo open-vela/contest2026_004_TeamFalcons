@@ -1,0 +1,64 @@
+[
+ {
+  "command": "vgvoice round end",
+  "wait_ms": 2200,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round hold on",
+  "wait_ms": 250,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "ifconfig eth0 down",
+  "wait_ms": 1500,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "ifconfig",
+  "wait_ms": 300,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "echo RECORD_LIMIT_OFFLINE",
+  "wait_ms": 250,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round press",
+  "wait_ms": 16500,
+  "timeout_ms": 19000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice round end",
+  "wait_ms": 2500,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round",
+  "wait_ms": 250,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice status",
+  "wait_ms": 250,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice round counts",
+  "wait_ms": 250,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "free",
+  "wait_ms": 250,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ }
+]

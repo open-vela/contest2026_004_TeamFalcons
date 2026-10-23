@@ -1,0 +1,45 @@
+[
+ {
+  "command": "vgvoice round end",
+  "wait_ms": 2200,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round hold on",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "echo DBG_wait_repro",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav",
+  "wait_ms": 500,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round release",
+  "wait_ms": 300,
+  "timeout_ms": 35000,
+  "optional_prompt": true
+ },
+ {
+  "command": "",
+  "wait_ms": 200,
+  "timeout_ms": 8000,
+  "wait_for": "stage=asr_begin",
+  "optional_wait": true
+ },
+ {
+  "command": "echo DBG_WAIT_DONE",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice round end",
+  "wait_ms": 2500,
+  "timeout_ms": 10000
+ }
+]

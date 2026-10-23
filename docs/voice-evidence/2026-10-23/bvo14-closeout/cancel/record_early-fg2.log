@@ -1,0 +1,67 @@
+2026-10-24T00:35:21.3000001+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T00:35:23.3064112+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-24T00:35:23.6179206+08:00 CMD echo CANCEL_record_early
+echo CANCEL_record_early
+CANCEL_record_early
+nsh> [K
+2026-10-24T00:35:23.9299660+08:00 CMD vgvoice round press
+vgvoice round press
+vgvoice: round press synthetic
+nsh> [K
+2026-10-24T00:35:24.9577880+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K
+2026-10-24T00:35:27.4617948+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=0 state=0 gen=183 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-24T00:35:27.7725015+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=31570
+vgvoice: rounds=61 played=50 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=980 samples=15785 bytes=31570
+vgvoice: level peak=5444 rms=84
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=980 rate=128864 B/s
+vgvoice: tail_bytes=3407 stage_ms=0
+vgvoice: generation=61 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=1 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T00:35:28.0839714+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=60 tts=58
+nsh> [K
+2026-10-24T00:35:28.3954083+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K
+2026-10-24T00:35:30.9065188+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=31570
+vgvoice: rounds=61 played=50 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=980 samples=15785 bytes=31570
+vgvoice: level peak=5444 rms=84
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=15 drained=16 overwritten=0 wraps=7 elapsed_ms=980 rate=128864 B/s
+vgvoice: tail_bytes=3407 stage_ms=0
+vgvoice: generation=61 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=1 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T00:35:31.2212143+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     899520    5919480    1434304    5795432   1105     13 Umem
+nsh> [K

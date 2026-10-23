@@ -1,0 +1,136 @@
+2026-10-24T00:37:05.7480139+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T00:37:07.7551330+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+2026-10-24T00:37:08.0606952+08:00 CMD echo CANCEL_model_early
+echo CANCEL_model_early
+CANCEL_model_early
+nsh> [K
+2026-10-24T00:37:08.3820379+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K
+2026-10-24T00:37:08.6922542+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=20
+nsh> [K
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792802230
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr rc=ok status=200 req=111377 resp=471 ms=3970
+[vgvoice] stage=asr_end t=4430
+[vgvoice] stage=agent_begin t=4430
+[vgvoice] stage=agent_queued t=4440
+[vgagent] round submitted: 92 bytes
+[agent] Processing me
+2026-10-24T00:37:13.1818873+08:00 CMD ps
+sps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%   4.6% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  13.3% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000904  45.7%   2.6% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001928  23.6%   0.6% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   2.4% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x90014691 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000752  37.1%   9.8% ESP8266 0x9005a3cd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x9005af25 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001648  40.6%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0049128 0033400  67.9%   5.3% velaguard_app_main 0x90017071 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  57.1% vghmi vghmi
+   13    12 100 RR       pthread   - Ready              0000000000000000 0008168 0006304  77.1%   2.9% vghmi 0x90014ed5 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002d621 0x30007278
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90033bbd 0x30011b40
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d621 0x30011bd8
+   31    14  60 FIFO     pthread   - Ready              0000000000000000 0032744 0014560  44.4%   0.0% ai_agent 0x9002f2b5 0x30011b40
+   50    14 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001528  18.7%   0.0% ai_agent 0x9006d501 0x30029298
+nsh> [K
+2026-10-24T00:37:13.7034708+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [Ksage from local_client:velaguard:voice:61
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adbfdbb0e94e402] BEGIN chat=velaguard:voice:61 chan=local_client
+[trace:6adbfdbb0e94e402] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=10 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:61
+[vgvoice] cancel_settled elapsed_ms=150 retained_pcm=0 controlled_active=0
+
+2026-10-24T00:37:16.2322514+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=0 state=0 gen=198 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K
+2026-10-24T00:37:16.5362356+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=64 played=52 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=240 samples=3724 bytes=7448
+vgvoice: level peak=5396 rms=150
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=240 rate=124154 B/s
+vgvoice: tail_bytes=5221 stage_ms=0
+vgvoice: generation=64 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=8 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T00:37:16.8564566+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=63 tts=60
+nsh> [K
+2026-10-24T00:37:17.1616853+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T00:37:19.6646338+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  22.6% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%   6.7% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000904  45.7%   1.2% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001928  23.6%   1.8% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   4.7% velaguard_app_main 0x900108e5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.5% velaguard_app_main 0x90014691 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000752  37.1%  11.1% ESP8266 0x9005a3cd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x9005af25 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001648  40.6%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0033400  67.9%  12.1% velaguard_app_main 0x90017071 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Ready              0000000000000000 0049104 0008968  18.2%  26.2% vghmi vghmi
+   13    12 100 RR       pthread   - Ready              0000000000000000 0008168 0006304  77.1%  10.2% vghmi 0x90014ed5 0
+   14    14 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   15    14  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002d621 0x30007278
+   16    14   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90033bbd 0x30011b40
+   17    14  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d621 0x30011bd8
+   31    14  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0014560  44.4%   0.0% ai_agent 0x9002f2b5 0x30011b40
+   50    14 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001528  18.7%   0.0% ai_agent 0x9006d501 0x30029298
+nsh> [K
+2026-10-24T00:37:19.9741381+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=64 played=52 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=240 samples=3724 bytes=7448
+vgvoice: level peak=5396 rms=150
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=3 drained=4 overwritten=0 wraps=1 elapsed_ms=240 rate=124154 B/s
+vgvoice: tail_bytes=5221 stage_ms=0
+vgvoice: generation=64 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=8 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T00:37:20.2801785+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6819000     899544    5919456    1434304    5795432   1105     13 Umem
+nsh> [K
