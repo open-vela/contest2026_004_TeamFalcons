@@ -1,0 +1,315 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 18:42:17
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.920, +2920)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.930, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.940, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nvgptt: watching /dev/buttons (led=2)
+uttx_fbdev.c:115
+[User]	(2.950, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.960, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.970, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.970, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.980, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.990, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.990, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.000, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.010, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.010, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.020, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.030, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.030, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.040, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.050, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.050, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.060, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.070, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.070, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.080, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.090, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.100, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.110, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 18:42:17
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.900, +2900)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.910, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.910, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.920, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.920, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.920, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nvgptt: watching /dev/buttons (led=2)
+uttx_fbdev.c:115
+[User]	(2.930, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.940, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.950, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.950, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.960, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.970, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.970, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.980, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.990, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.990, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.000, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.010, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.010, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.020, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.030, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.030, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.040, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.050, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.050, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.060, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.070, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.080, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.090, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED num: 3
+Hello from openvela contest 2026 team 004![agent] 
+AI Agent - Vela AI Agent starting (build: 2026-10-24 18:43:26)
+[agent] [boot +10ms] P0: timezone set
+vgnet: MQTT broker is not configured
+[agent] [boot +180ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +570ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +580ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +930ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +940ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +1050ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1460ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1670ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_member
+
+2026-10-24T18:47:51.2125616+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-24T18:47:52.0363433+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T18:47:54.5423534+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+nsh> [K[vgvoice] cancel_settled elapsed_ms=180 retained_pcm=0 controlled_active=0
+
+2026-10-24T18:47:57.0719042+08:00 CMD vgvoice asr /data/velaguard/voice/point01.wav
+vgvoice asr /data/velaguard/voice/point01.wav
+HARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=00000029 MMFAR=00000029
+HARDFAULT: stacked PC=900a6482 LR=90096bf5
+dump_assert_info: Current Version: NuttX  0.0.0 cdfd23cdf0b-dirty Oct 24 2026 18:43:25 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: vgvoice process: vgvoice 0x900b4be5
+up_dump_register: R0: 24004d50 R1: 00000000 R2: 900bca7a  R3: 24004738
+up_dump_register: R4: 2407fa08 R5: 00000003 R6: 900bca7a  R7: 00000000
+up_dump_register: R8: 00000001 R9: 240046b8 R10: 00000006 R11: 30022bb8
+up_dump_register: R12: 00000009 SP: 300229c8 LR: 90001b1f  PC: 90001b1f
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x300226a0
+dump_stackinfo:   size: 00032680
+dump_stackinfo:     sp: 0x300229c8
+stack_dump:  300229a8: 3002a648 00007fa8 300239a8 300229c8 300226a0 00007fa8 240046b8 90001ccb
+stack_dump:  300229c8: 900d8704 00000000 2407fab8 2407fab8 900b4be5 0000000a 00000000 00000000
+stack_dump:  300229e8: 2407fa08 24004d50 900bca7a 00000000 00000000 7474754e 40000058 30022a78
+stack_dump:  30022a08: 00000000 900082b7 000000a2 00000008 0000001c 00000024 900bca79 000000b4
+stack_dump:  30022a28: 36626635 39303039 302e3000 0000302e deadbeef 000000ff 00000019 6463ca54
+stack_dump:  30022a48: 33326466 30666463 69642d62 20797472 2074634f 32203432 20363230 343a3831
+stack_dump:  30022a68: 35323a33 900bca00 30022ab0 900077a9 6d72612b 90008c00 90008c4f 0000000e
+stack_dump:  30022a88: 90008289 0000000a 00000081 30022bb8 00000003 24004738 30022bb8 30022cc8
+stack_dump:  30022aa8: 300253d8 300253d8 30022bb8 900014c1 00000001 00000029 2407fa08 90000e8d
+stack_dump:  30022ac8: 00000000 00000007 30016188 00000001 2407fb34 90001073 000000a6 00000072
+stack_dump:  30022ae8: 0000009a 000000c9 00000009 00000078 00000065 0000002f 0000008a 00000005
+stack_dump:  30022b08: 00000021 0000000f 000000e1 00000024 00000012 000000f0 00000082 00000045
+stack_dump:  30022b28: 00000035 00000093 000000da 0000008e 00000096 0000008f 000000db 000000bd
+stack_dump:  30022b48: 00000036 000000d0 000000ce 00000094 00000013 0000005c 000000d2 000000f1
+stack_dump:  30022b68: 00000040 00000046 00000083 00000038 00000066 000000dd 000000fd 00000030
+stack_dump:  30022b88: 000000bf 00000006 0000008b 00000062 000000b3 00000025 000000e2 00000098
+stack_dump:  30022ba8: 00000022 00000088 00000091 00000010 30022c90 00000000 900bcd92 30016188
+stack_dump:  30022bc8: 00000001 2407fb34 30022cc8 300253d8 300253d8 30023218 00000000 ffffffe9
+stack_dump:  30022be8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c28: 30016188 00000000 3001619c 00000011 24052d28 90096bf5 900a6482 61000000
+stack_dump:  30022c48: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c68: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c88: 00000000 90096bed 2407fb34 900bcd92 900bcd92 00000001 30022ce0 00000008
+stack_dump:  30022ca8: 900c6d3b 90096ced 900bcd92 30022cc8 00000030 00000030 900354b1 00000001
+stack_dump:  30022cc8: 00000030 900354a1 00000030 3002321c 00000000 90060997 00000000 00000000
+stack_dump:  30022ce8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d48: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d68: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d88: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022da8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022dc8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022de8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e08: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e48: 00000000 00000000 00000000 00000000 00000000 00000000 3002321c 00000000
+stack_dump:  30022e68: 900c6d3b 900354a1 30025518 90060ac7 00000000 00000000 00000000 00000000
+stack_dump:  30022e88: 00000000 00000000 00000000 00000000 30022fe0 00000000 30022fe0 30025768
+stack_dump:  30022ea8: 300298cc 900356df 00000008 deadbeef deadbeef 30023138 3002321c deadbeef
+stack_dump:  30022ec8: 0000b716 deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022ee8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022f08: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022f28: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 0000b3b0 300298cc
+stack_dump:  30022f48: 3002575c 30025518 900c78ee 30025598 300253d8 30025768 300298cc 3002575c
+stack_dump:  30022f68: 30025518 900c78ee 30025598 300253d8 300257b8 90036009 300298cc deadbeef
+stack_dump:  30022f88: deadbeef 0000b716 deadbeef deadbeef 0000b716 00000000 deadbeef 00000000
+stack_dump:  30022fa8: 00000000 300257b8 00001000 00000000 deadbe00 00000000 00000000 00000000
+stack_dump:  30022fc8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022fe8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023008: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023028: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023048: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023068: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023088: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023108: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023128: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023148: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023168: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023188: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231e8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023208: 00000000 00000000 00000000 00000000 ffffffff 00000000 00000000 00000000
+stack_dump:  30023228: 00000000 ffffffff 00000000 00000030 00002710 0000000e 00000000 00000000
+stack_dump:  30023248: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 63636362
+stack_dump:  30023268: 63636362 63636362 63636362 fbfbfbaa fbfbfbaa fbfbfbaa fbfbfbaa cf6c6c6f
+stack_dump:  30023288: ac0f0f0d cf6c6c6f ac0f0f0d 6a8d8d7d 917676d7 6a8d8d7d 917676d7 c1ed5453
+stack_dump:  300232a8: 6de25b5e a28e3731 0e81383c c1818a96 50f7fc41 3a7a713c ab0c07eb 288faa9e
+stack_dump:  300232c8: 456df1c0 e7e3c6f1 e962fecd df2b312b 8fdccd6a b5a6bc56 1eaabbbd 52fd0664
+stack_dump:  300232e8: 1790f7a4 f0733155 1911cf98 0ba9bb6d 84757607 31d3ca51 2f7971ec 9ce8b0e7
+stack_dump:  30023308: 8b784743 7b0b7616 621ab98e a10bed74 257e9b73 14ad5122 3bd420ce 170af810
+stack_dump:  30023328: 9c72bf53 e779c945 856370cb 36f0bc6b 138e2718 0723763a 3cf756f4 00000000
+stack_dump:  30023348: 00000000 00000000 00000000 900354a1 00000000 00000000 00000000 7fffffff
+stack_dump:  30023368: 00000004 00000000 00000000 00000000 00000001 00000001 00000000 00000000
+stack_dump:  30023388: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300233a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300233c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300233e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023408: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023428: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023448: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023468: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023488: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023508: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023528: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023548: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023568: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023588: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023608: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023628: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023648: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023668: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023688: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023708: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023728: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023748: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023768: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023788: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023808: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023828: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023848: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023868: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023888: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238a8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238c8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238e8: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023908: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023928: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023948: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023968: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023988: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300239a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24059ac4      1000       536    53.6%     22.5%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24007558      1976       688    34.8%      3.6%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006d58      1976       624    31.5%      0.9%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38002bf8      8168      1488    18.2%      0.9%   velaguard_app_main 0x9000cbd1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264      1128     9.1%      5.4%   velaguard_app_main 0x90010915 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x900146c1 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       744    36.7%      6.3%   ESP8266 0x9005b8b5 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024      1072    52.9%      0.9%   netinit 0x9005d465 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b460      4056      1048    25.8%      7.2%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x2406a4e0     49128      1576     3.2%     14.4%   velaguard_app_main 0x90017331 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ccf0      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x30000040     49104      9068    18.4%     33.3%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3000c030      8168      6288    76.9%      4.5%   vghmi 0x90014f05 0
+dump_task:      14    14 100 RR       Task    -   Waiting Signal     0000000000000000 0x3000e068     32696      2344     7.1%      0.0%   ai_agent ai_agent --daemon
+dump_task:      15    14  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x30018650     12264       768     6.2%      0.0%   ai_agent 0x9002d8e1 0x3800ae68
+dump_task:      16    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x2407e908      4072       976    23.9%      0.0%   ai_agent 0x90033ed5 0x3800ae78
+dump_task:      17    14  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001b658     28648      1232     4.3%      0.0%   ai_agent 0x9002d8e1 0x2407e4f8

@@ -1,0 +1,101 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adcf75135c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7887 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792866129
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 10:22:11 GMT
+Content-Type: application/json
+Content-Length: 103
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-stor
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6adcf75135c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=0 tls=640 send=280 ttfb=60 body=30 pool=na build=0 parse=10 http=1140 backoff=0 total=1160 req=7887 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6adcf75135c3b13a] iter=0 tool=(none) latency=1160ms llm=fail backend=0
+[trace:6adcf75135c3b13a] END status=fail iters=1 tools=0 llm_ms=1160 tool_ms=0 elapsed_ms=1200 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30ca57a2
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+
+2026-10-24T18:24:06.8453494+08:00 CMD vgvoice dnsprobe token-plan-cn.xiaomimimo.com 192.168.137.1 53 5000
+vgvoice dnsprobe token-plan-cn.xiaomimimo.com 192.168.137.1 53 5000
+vgvoice: dnsprobe rc=0 count=1 ms=30
+nsh> [K
+2026-10-24T18:24:07.8649886+08:00 CMD vgvoice ttss 测试
+vgvoice ttss 测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792866249
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vgvoice] tts phases dns=20 tls=170 send=-1 ttfb=-1 body=-1 http=210
+vgvoice: ttss rc=net status=0 pcm=0 ms=210 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K
+2026-10-24T18:24:09.8804655+08:00 CMD vgvoice ttss 第二次测试
+vgvoice ttss 第二次测试
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792866251
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vgvoice] tts phases dns=20 tls=190 send=-1 ttfb=-1 body=-1 http=220
+vgvoice: ttss rc=net status=0 pcm=0 ms=220 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K
+2026-10-24T18:24:11.9073459+08:00 CMD vgvoice asr /data/velaguard/voice/point01.wav
+vgvoice asr /data/velaguard/voice/point01.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792866253
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 10:24:14 GMT
+Content-Length: 0
+Connection: keep-alive
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=20 tls=490 send=1120 ttfb=10 body=20 http=1680
+[vgvoice] asr: http 400
+vgvoice: asr rc=http status=400 req=115429 resp=0 ms=1720
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-24T18:24:14.1166777+08:00 CMD vgvoice asr /data/velaguard/voice/anomaly01.wav
+vgvoice asr /data/velaguard/voice/anomaly01.wav
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792866255
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 10:24:17 GMT
+Content-Length: 0
+Connection: keep-alive
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=20 tls=480 send=930 ttfb=40 body=20 http=1510
+[vgvoice] asr: http 400
+vgvoice: asr rc=http status=400 req=111377 resp=0 ms=1590
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-24T18:24:16.1516617+08:00 CMD xxd /data/velaguard/voice/anomaly01.wav 2>&1 | head -2
+xxd /data/velaguard/voice/anomaly01.wav 2>&1 | head -2
+sh [56:100]
+nsh: head: command not found
+nsh> [K

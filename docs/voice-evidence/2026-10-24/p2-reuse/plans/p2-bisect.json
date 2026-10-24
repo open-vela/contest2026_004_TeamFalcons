@@ -1,0 +1,5 @@
+[
+ {"command": "", "wait_ms": 3000, "timeout_ms": 5000},
+ {"command": "vgvoice ttss 当前没有异常点位", "wait_ms": 2000, "timeout_ms": 45000},
+ {"command": "vgvoice asr /data/velaguard/voice/anomaly01.wav", "wait_ms": 2000, "timeout_ms": 45000}
+]

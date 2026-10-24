@@ -1058,6 +1058,68 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
 /* ── action loop ────────────────────────────────────────────────── */
 
+#ifdef CONFIG_AI_AGENT_VOICE_CONN_SLOT
+
+/* P2 phase 1: warm the ASR/TTS keep-alive connection while the user is
+ * still speaking.  The handshake is the deep part (mbedTLS peaks around
+ * 12 KB of stack; 24 KB leaves margin), so this gets its own thread —
+ * the round thread is busy owning the recorder.  Never joined: the
+ * transport's own deadline and cancel checks bound its life, and the
+ * single-flight guard keeps one thread at a time.  A cancel observed
+ * mid-handshake destroys the half-built connection; one that finished
+ * before the cancel stays published and only helps the next round. */
+
+static volatile int g_preconnect_running;
+
+static void *vr_preconnect_thread(void *arg)
+{
+  vela_req_ctl_t ctl;
+  agent_llm_timing_t t;
+  uint32_t t0;
+
+  (void)arg;
+  ctl.deadline_ms = vr_now_ms() + 8000u;
+  ctl.cancel = &g_vr.cancel;
+
+  agent_timing_reset(&t);
+  t0 = vr_now_ms();
+  int rc = agent_http_voice_preconnect(&ctl, &t);
+
+  syslog(LOG_INFO, "[vgvoice] voice_preconnect rc=%d dns=%d tls=%d ms=%u\n",
+         rc, (int)t.dns_tcp_ms, (int)t.tls_ms,
+         (unsigned)(vr_now_ms() - t0));
+
+  g_preconnect_running = 0;
+  return NULL;
+}
+
+static void vr_preconnect_start(void)
+{
+  pthread_attr_t attr;
+  pthread_t tid;
+  int expected = 0;
+
+  if (!__atomic_compare_exchange_n(&g_preconnect_running, &expected, 1,
+                                   false, __ATOMIC_ACQ_REL,
+                                   __ATOMIC_RELAXED))
+    {
+      return;   /* one in flight */
+    }
+
+  pthread_attr_init(&attr);
+  pthread_attr_setstacksize(&attr, 24576);
+
+  if (pthread_create(&tid, &attr, vr_preconnect_thread, NULL) != 0)
+    {
+      g_preconnect_running = 0;
+      return;
+    }
+
+  pthread_detach(tid);
+}
+
+#endif /* CONFIG_AI_AGENT_VOICE_CONN_SLOT */
+
 static void vr_run_actions(uint32_t actions)
 {
   int guard;
@@ -1132,6 +1194,13 @@ static void vr_run_actions(uint32_t actions)
               g_vr.clip_generation = gen;
               vr_ui_clear_error();
               vr_ui_set_status("录音中");
+
+#ifdef CONFIG_AI_AGENT_VOICE_CONN_SLOT
+              /* The round thread will be busy with the recorder until
+               * release; warm the connection it needs right after. */
+
+              vr_preconnect_start();
+#endif
 
               pthread_mutex_lock(&g_vr.ui_lock);
               g_vr.ui.answer[0] = '\0';

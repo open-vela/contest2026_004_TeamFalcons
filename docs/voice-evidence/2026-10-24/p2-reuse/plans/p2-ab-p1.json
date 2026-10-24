@@ -1,0 +1,10 @@
+[
+ {"command": "", "wait_ms": 15000, "timeout_ms": 18000},
+ {"command": "vgvoice mute off", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice asr /data/velaguard/voice/point01.wav", "wait_ms": 2000, "timeout_ms": 45000},
+ {"command": "vgvoice asr /data/velaguard/voice/anomaly01.wav", "wait_ms": 2000, "timeout_ms": 45000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 50000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 3000, "timeout_ms": 15000, "optional_prompt": true}
+]

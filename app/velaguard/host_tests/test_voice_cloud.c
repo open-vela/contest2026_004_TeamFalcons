@@ -105,6 +105,17 @@ int agent_http_post_stream_timed(const char *post, const vela_body_src_t *body,
   return 0;
 }
 
+/* vc_post routes through the voice-slot entry now; the fake is the same
+ * body so the fixture matrix drives both paths. */
+int agent_http_post_stream_voice_timed(const char *post,
+    const vela_body_src_t *body, const vela_resp_sink_t *sink, char *resp,
+    size_t cap, size_t *out, int *status, agent_llm_timing_t *timing,
+    const vela_req_ctl_t *ctl)
+{
+  return agent_http_post_stream_timed(post, body, sink, resp, cap, out,
+                                      status, timing, ctl);
+}
+
 int main(void)
 {
   int16_t pcm[] = {0, 1, 2, 3, 4, 5};

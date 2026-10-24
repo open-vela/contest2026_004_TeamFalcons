@@ -35,7 +35,14 @@ if ($endpoint -match '^https?://') {
   } else { $llmHost = $rest }
 }
 
-$obj = @{ host = $llmHost; path = $path; port = $portNum; model = 'mimo-v2.5'; api_key = $key }
+# The LLM model the voice agent actually uses (matches gen-agent-secrets.sh).
+# A stale provisioned model makes every agent round fail with
+# "Unsupported model" once the plan drops it.
+$model = 'mimo-v2.6-flash'
+$modelFile = Join-Path $ContestRoot "secrets\agent_llm.model"
+if (Test-Path $modelFile) { $m = (Get-Content -LiteralPath $modelFile -Raw).Trim(); if ($m) { $model = $m } }
+
+$obj = @{ host = $llmHost; path = $path; port = $portNum; model = $model; api_key = $key }
 $obj | ConvertTo-Json -Compress | Out-File -LiteralPath $plain -Encoding ascii -NoNewline
 
 $port = New-Object System.IO.Ports.SerialPort $ComPort, 115200

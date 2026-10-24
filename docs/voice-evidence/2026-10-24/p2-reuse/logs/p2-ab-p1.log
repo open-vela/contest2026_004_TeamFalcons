@@ -1,0 +1,264 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vghmi: live ok=0/14 a1=0.0
+vgtime: synced 2026-10-24 18:40:17
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adcfbb000000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867248
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 10:40:50 GMT
+Content-Type: application/json
+Content-Length: 103
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-stor
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6adcfbb000000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=720 send=110 ttfb=50 body=30 pool=na build=0 parse=10 http=1030 backoff=0 total=1040 req=7871 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6adcfbb000000000] iter=0 tool=(none) latency=1040ms llm=fail backend=0
+[trace:6adcfbb000000000] END status=fail iters=1 tools=0 llm_ms=1040 tool_ms=0 elapsed_ms=1080 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30ca5456
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+vgnet: manager started
+vgtime: sync started
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 18:42:17
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.970, +2970)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.980, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.980, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.990, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.990, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.990, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(3.000, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(3.010, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.020, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.020, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.030, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.040, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.040, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.050, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.060, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.060, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.070, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.080, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.080, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.090, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.100, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.100, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.110, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.120, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.120, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.130, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.140, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.150, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.160, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscree
+vghmi: live ok=0/14 a1=0.0
+
+2026-10-24T18:44:39.5610320+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-24T18:44:40.4473963+08:00 CMD vgvoice asr /data/velaguard/voice/point01.wav
+vgvoice asr /data/velaguard/voice/point01.wav
+HARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=00000029 MMFAR=00000029
+HARDFAULT: stacked PC=900a6482 LR=90096bf5
+dump_assert_info: Current Version: NuttX  0.0.0 cdfd23cdf0b-dirty Oct 24 2026 18:43:25 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: vgvoice process: vgvoice 0x900b4be5
+up_dump_register: R0: 24004d50 R1: 00000000 R2: 900bca7a  R3: 24004738
+up_dump_register: R4: 2407fa70 R5: 00000003 R6: 900bca7a  R7: 00000000
+up_dump_register: R8: 00000001 R9: 240046b8 R10: 00000006 R11: 30022be0
+up_dump_register: R12: 00000009 SP: 300229f0 LR: 90001b1f  PC: 90001b1f
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x300226c8
+dump_stackinfo:   size: 00032680
+dump_stackinfo:     sp: 0x300229f0
+stack_dump:  300229d0: 3002a670 00007fa8 300239d0 300229f0 300226c8 00007fa8 240046b8 90001ccb
+stack_dump:  300229f0: 900d8704 00000000 2407fb20 2407fb20 900b4be5 0000000a 00000000 00000000
+stack_dump:  30022a10: 2407fa70 24004d50 900bca7a 00000000 00000000 7474754e 40000058 30022aa0
+stack_dump:  30022a30: 00000000 900082b7 000000a2 00000008 0000001c 00000024 900bca79 000000b4
+stack_dump:  30022a50: 36626635 39303039 302e3000 0000302e deadbeef 000000ff 00000019 6463ca54
+stack_dump:  30022a70: 33326466 30666463 69642d62 20797472 2074634f 32203432 20363230 343a3831
+stack_dump:  30022a90: 35323a33 900bca00 30022ad8 900077a9 6d72612b 90008c00 90008c4f 0000000e
+stack_dump:  30022ab0: 90008289 0000000a 00000081 30022be0 00000003 24004738 30022be0 30022cf0
+stack_dump:  30022ad0: 30025400 30025400 30022be0 900014c1 00000001 00000029 2407fa70 90000e8d
+stack_dump:  30022af0: 00000000 00000007 30016448 00000001 2407fb9c 90001073 000000a6 00000072
+stack_dump:  30022b10: 0000009a 000000c9 00000009 00000078 00000065 0000002f 0000008a 00000005
+stack_dump:  30022b30: 00000021 0000000f 000000e1 00000024 00000012 000000f0 00000082 00000045
+stack_dump:  30022b50: 00000035 00000093 000000da 0000008e 00000096 0000008f 000000db 000000bd
+stack_dump:  30022b70: 00000036 000000d0 000000ce 00000094 00000013 0000005c 000000d2 000000f1
+stack_dump:  30022b90: 00000040 00000046 00000083 00000038 00000066 000000dd 000000fd 00000030
+stack_dump:  30022bb0: 000000bf 00000006 0000008b 00000062 000000b3 00000025 000000e2 00000098
+stack_dump:  30022bd0: 00000022 00000088 00000091 00000010 30022cb8 00000000 900bcd92 30016448
+stack_dump:  30022bf0: 00000001 2407fb9c 30022cf0 30025400 30025400 30023240 00000000 ffffffe9
+stack_dump:  30022c10: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c30: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c50: 30016448 00000000 3001645c 00000011 24052d28 90096bf5 900a6482 61000000
+stack_dump:  30022c70: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022c90: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022cb0: 00000000 90096bed 2407fb9c 900bcd92 900bcd92 00000001 30022d08 00000008
+stack_dump:  30022cd0: 900c6d3b 90096ced 900bcd92 30022cf0 00000030 00000030 900354b1 00000001
+stack_dump:  30022cf0: 00000030 900354a1 00000030 30023244 00000000 90060997 00000000 00000000
+stack_dump:  30022d10: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d30: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d50: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d70: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022d90: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022db0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022dd0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022df0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e10: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e30: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e50: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30022e70: 00000000 00000000 00000000 00000000 00000000 00000000 30023244 00000000
+stack_dump:  30022e90: 900c6d3b 900354a1 30025540 90060ac7 00000000 00000000 00000000 00000000
+stack_dump:  30022eb0: 00000000 00000000 00000000 00000000 30023008 00000000 30023008 30025790
+stack_dump:  30022ed0: 300298f4 900356df 00000008 deadbeef deadbeef 30023160 30023244 deadbeef
+stack_dump:  30022ef0: 00008c8c deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022f10: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022f30: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30022f50: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef 000088b8 300298f4
+stack_dump:  30022f70: 30025784 30025540 900c78ee 300255c0 30025400 30025790 300298f4 30025784
+stack_dump:  30022f90: 30025540 900c78ee 300255c0 30025400 300257e0 90036009 300298f4 deadbeef
+stack_dump:  30022fb0: deadbeef 00008c8c deadbeef deadbeef 00008c8c 00000000 deadbeef 00000000
+stack_dump:  30022fd0: 00000000 300257e0 00001000 00000000 deadbe00 00000000 00000000 00000000
+stack_dump:  30022ff0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023010: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023030: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023050: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023070: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023090: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230b0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300230f0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023110: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023130: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023150: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023170: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023190: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231b0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  300231f0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023210: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30023230: 00000000 00000000 00000000 00000000 ffffffff 00000000 00000000 00000000
+stack_dump:  30023250: 00000000 ffffffff 00000000 00000030 00002710 0000000e 00000000 00000000
+stack_dump:  30023270: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 63636362
+stack_dump:  30023290: 63636362 63636362 63636362 fbfbfbaa fbfbfbaa fbfbfbaa fbfbfbaa cf6c6c6f
+stack_dump:  300232b0: ac0f0f0d cf6c6c6f ac0f0f0d 6a8d8d7d 917676d7 6a8d8d7d 917676d7 c1ed5453
+stack_dump:  300232d0: 6de25b5e a28e3731 0e81383c c1818a96 50f7fc41 3a7a713c ab0c07eb 288faa9e
+stack_dump:  300232f0: 456df1c0 e7e3c6f1 e962fecd df2b312b 8fdccd6a b5a6bc56 1eaabbbd 52fd0664
+stack_dump:  30023310: 1790f7a4 f0733155 1911cf98 0ba9bb6d 84757607 31d3ca51 2f7971ec 9ce8b0e7
+stack_dump:  30023330: 8b784743 7b0b7616 621ab98e a10bed74 257e9b73 14ad5122 3bd420ce 170af810
+stack_dump:  30023350: 9c72bf53 e779c945 856370cb 36f0bc6b 138e2718 0723763a 3cf756f4 00000000
+stack_dump:  30023370: 00000000 00000000 00000000 900354a1 00000000 00000000 00000000 7fffffff
+stack_dump:  30023390: 00000004 00000000 00000000 00000000 00000001 00000001 00000000 00000000
+stack_dump:  300233b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300233d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300233f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023410: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023430: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023450: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023470: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023490: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300234f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023510: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023530: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023550: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023570: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023590: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300235f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023610: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023630: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023650: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023670: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023690: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300236f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023710: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023730: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023750: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023770: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023790: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300237f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023810: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023830: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023850: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023870: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023890: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238d0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300238f0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023910: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023930: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023950: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023970: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  30023990: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300239b0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  300239d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24059ac4      1000       536    53.6%     26.8%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24007558      1976       688    34.8%     23.1%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006d58      1976       616    31.1%      0.6%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38002bf8      8168      1488    18.2%      0.0%   velaguard_app_main 0x9000cbd1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38004cf0     12264      1128     9.1%      3.7%   velaguard_app_main 0x90010915 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x900146c1 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       696    34.3%      7.5%   ESP8266 0x9005b8b5 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024      1072    52.9%      0.0%   netinit 0x9005d465 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b470      4056       664    16.3%      0.0%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x2406a4e0     49128       744     1.5%     12.5%   velaguard_app_main 0x90017331 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ccf0      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x30000040     49104      8968    18.2%     23.1%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3000c030      8168      6288    76.9%      1.8%   vghmi 0x90014f05 0
+dump_task:      14    14 100 RR       Task    -   Waiting Signal     0000000000000000 0x3000e068     32696      2344     7.1%      0.0%   ai_agent ai_agent --daemon
+dump_task:      15    14  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x30018678     12264       912     7.4%      0.0%   ai_agent 0x9002d8e1 0x3800ace8
+dump_task:      16    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x2407e908      4072       976    23.9%      0.0%   ai_agent 0x90033ed5 0x3800acf8
+dump_task:      17    14  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001b680     28648      1232     4.3%      0.0%   ai_agent 0x9002d8e1 0x2405a090

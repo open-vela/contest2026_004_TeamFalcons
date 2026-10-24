@@ -438,8 +438,12 @@ static int vc_post(bool asr, const char *data, const vela_body_src_t *body,
 #else
   (void)asr;
 #endif
-  return agent_http_post_stream_timed(data,body,sink,response,cap,bytes,status,
-                                      timing,ctl);
+  /* The voice entry rides the ASR/TTS keep-alive slot when
+   * CONFIG_AI_AGENT_VOICE_CONN_SLOT is on and is byte-identical to the
+   * plain entry otherwise, so this routes unconditionally. */
+
+  return agent_http_post_stream_voice_timed(data, body, sink, response, cap,
+                                            bytes, status, timing, ctl);
 }
 
 /* Post the prepared body and read the transcript out of the reply. */

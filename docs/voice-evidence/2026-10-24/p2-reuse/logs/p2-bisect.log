@@ -1,0 +1,95 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vgtime: synced 2026-10-24 17:55:57
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adcf14a00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792864586
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6adcf14a00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=900 send=110 ttfb=50 body=0 pool=na build=0 parse=10 http=1160 backoff=0 total=1180 req=7871 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6adcf14a00000000] iter=0 tool=(none) latency=1180ms llm=fail backend=0
+[trace:6adcf14a00000000] END status=fail iters=1 tools=0 llm_ms=1180 tool_ms=0 elapsed_ms=1220 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30ca59c6
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adcf27835c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7887 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792864888
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6adcf27835c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=1100 send=100 ttfb=50 body=0 pool=na build=10 parse=10 http=1380 backoff=0 total=1410 req=7887 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6adcf27835c3b13a] iter=0 tool=(none) latency=1410ms llm=fail backend=0
+[trace:6adcf27835c3b13a] END status=fail iters=1 tools=0 llm_ms=1410 tool_ms=0 elapsed_ms=1450 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30ca59c6
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+
+2026-10-24T18:03:44.9147472+08:00 CMD vgvoice ttss 当前没有异常点位
+vgvoice ttss 当前没有异常点位
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792865025
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=520 send=290 ttfb=60 body=0 http=920
+vgvoice: ttss rc=http status=400 pcm=0 ms=930 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K
+2026-10-24T18:03:46.9443358+08:00 CMD vgvoice asr /data/velaguard/voice/anomaly01.wav
+vgvoice asr /data/velaguard/voice/anomaly01.wav
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792865028
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr phases dns=20 tls=520 send=800 ttfb=100 body=0 http=1460
+[vgvoice] asr: http 400
+vgvoice: asr rc=http status=400 req=111377 resp=0 ms=1510
+vgvoice: asr text=(empty)
+nsh> [K

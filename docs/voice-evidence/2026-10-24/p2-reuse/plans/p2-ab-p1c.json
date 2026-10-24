@@ -1,0 +1,6 @@
+[
+ {"command": "", "wait_ms": 15000, "timeout_ms": 18000},
+ {"command": "vgvoice status", "wait_ms": 800, "timeout_ms": 12000, "optional_prompt": true},
+ {"command": "ls /data/velaguard/voice/", "wait_ms": 500, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice asr /data/velaguard/voice/anomaly01.wav", "wait_ms": 2000, "timeout_ms": 30000}
+]

@@ -1,0 +1,196 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 18:42:17
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(3.170, +3170)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(3.190, +20)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(3.190, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(3.190, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(3.190, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(3.190, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(3.200, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(3.210, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.220, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.230, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.230, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.240, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.250, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.250, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.260, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.270, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.270, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.280, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.290, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.290, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.300, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.310, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.310, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.320, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.320, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.330, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.340, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.350, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.360, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 18:42:17
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.920, +2920)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.940, +20)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.940, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.950, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.950, +0)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nutvgptt: watching /dev/buttons (led=2)
+tx_fbdev.c:116
+[User]	(2.960, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.970, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.980, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.980, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.990, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.000, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.000, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.010, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.020, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.020, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.030, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.040, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.040, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.050, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.060, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.060, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.070, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.080, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.080, +0)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.090, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.100, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.110, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+[vgllm] monitor started, interval=30000 ms
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867340
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[vgllm] link down: rc=-1 status=0
+vgagent: ai_agent autostart ok (stack=32768)[agent] AI Agent - Vela AI Agent starting (build: 2026-10-24 19:02:28)
+
+LE[agent] [boot +D10ms] P0: timezone set
+ num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +160ms] P0: storage ready
+vgnet: MQTT broker is not configured
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +340ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +350ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +840ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +850ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +920ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1320ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1560ms]
+vghmi: live ok=0/14 a1=0.0
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867371
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 11:04:50 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgllm] link up: rc=0 status=401
+
+2026-10-24T19:04:52.9251383+08:00 CMD vgvoice prebuf
+vgvoice prebuf
+vgvoice: prebuf 200 ms
+nsh> [K
+2026-10-24T19:04:53.3286217+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-24T19:04:54.0529263+08:00 CMD vgvoice asr /data/velaguard/voice/point01.wav
+vgvoice asr /data/velaguard/voice/point01.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867376
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 11:04:56 GMT
+Content-Length: 0
+Connection: keep-alive
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=20 tls=490 send=900 ttfb=0 body=20 http=1440
+[vgvoice] asr: http 400
+vgvoice: asr rc=http status=400 req=115429 resp=0 ms=1480
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-24T19:04:56.0663857+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867378
+
+2026-10-24T19:04:56.5747116+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=100
+[vgvoice] clip_prep src=file bytes=0 ms=0
+
+PRESEED seen=362 hasMarker=False
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792867379
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=1040
+[vgvoice] voice_preconnect rc=0 dns=20 tls=1000 ms=1040
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 11:05:01 GMT
+Content-Length: 0
+Connection: close
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=110 tls=770 send=2660 ttfb=0 body=20 http=3580
+[vgvoice] asr: http 400
+[vgvoice] asr rc=http status=400 req=115429 resp=0 ms=3870
+[vgvoice] stage=asr_end t=4710
+[vgvoice] round_settled gen=2 state=9 failed=0 elapsed_ms=4710
+
+2026-10-24T19:05:01.5331514+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=70 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T19:05:04.5445532+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6803440     911136    5892304     972376    5795432   1142      7 Umem
+nsh> [K

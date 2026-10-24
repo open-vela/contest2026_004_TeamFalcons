@@ -69,6 +69,11 @@ class Connection:
         self.tls = ssl.create_default_context().wrap_socket(
             raw, server_hostname=host)
         self.phases["tls_ms"] = round((time.monotonic() - t0) * 1000, 1)
+        # P4 对照：主机侧协商到的协议版本与密码套件。板端 mbedTLS 3.4.0
+        # 默认钉在 TLS1.2（MBEDTLS_SSL_PROTO_TLS1_3 未编译），这里记录
+        # 服务端实际能谈到的版本，作为 TLS 1.3 收益评估的参考上界。
+        self.phases["tls_version"] = self.tls.version()
+        self.phases["tls_cipher"] = self.tls.cipher()[0]
         self.tls.settimeout(60)
 
     def close(self):

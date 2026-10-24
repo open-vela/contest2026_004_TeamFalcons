@@ -1,0 +1,4 @@
+[
+ {"command": "", "wait_ms": 3000, "timeout_ms": 5000},
+ {"command": "vgprovision status", "wait_ms": 500, "timeout_ms": 10000, "optional_prompt": true}
+]
