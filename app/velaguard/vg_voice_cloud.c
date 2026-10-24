@@ -58,6 +58,7 @@ const char *vg_vc_result_name(enum vg_vc_result r)
       case VG_VC_IO:        return "io";
       case VG_VC_NO_CRED:   return "no_cred";
       case VG_VC_NO_TEXT:   return "no_text";
+      case VG_VC_TRUNCATED: return "truncated";
       default:              return "?";
     }
 }
@@ -731,6 +732,11 @@ struct vc_tts_sink
   uint32_t block_ms[VC_TTS_OBS_MAX];
   uint8_t block_count;
   uint32_t last_block_ms;
+  /* Streaming mode: a non-NULL push receives decoded 24 kHz mono as it
+   * arrives instead of accumulating it in pcm.  Every observation field
+   * above keeps working; pcm_bytes still counts decoded bytes. */
+  int (*push)(void *ctx, const uint8_t *pcm, size_t bytes);
+  void *push_ctx;
 };
 
 /* All block offsets are measured from the moment the request body finished
@@ -831,21 +837,42 @@ static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 
       if (n > 0)
         {
-          bool was_empty = (s->pcm_len == 0);
-
-          if (vc_tts_pcm_reserve(s, (size_t)n) != 0)
+          if (s->push != NULL)
             {
-              return -1;
+              /* Streaming: hand the piece over now; a full consumer
+               * queue blocks here, which the transport turns into TCP
+               * backpressure.  A non-zero return fails the request. */
+
+              if (!s->first_pcm_seen)
+                {
+                  s->first_pcm_seen = true;
+                  s->first_pcm_ms =
+                      agent_elapsed_ms(vc_tts_anchor(s), agent_mono_ms());
+                }
+
+              if (s->push(s->push_ctx, pcm, (size_t)n) != 0)
+                {
+                  return -1;
+                }
             }
-
-          memcpy(s->pcm + s->pcm_len, pcm, (size_t)n);
-          s->pcm_len += (size_t)n;
-
-          if (was_empty && !s->first_pcm_seen)
+          else
             {
-              s->first_pcm_seen = true;
-              s->first_pcm_ms =
-                  agent_elapsed_ms(vc_tts_anchor(s), agent_mono_ms());
+              bool was_empty = (s->pcm_len == 0);
+
+              if (vc_tts_pcm_reserve(s, (size_t)n) != 0)
+                {
+                  return -1;
+                }
+
+              memcpy(s->pcm + s->pcm_len, pcm, (size_t)n);
+              s->pcm_len += (size_t)n;
+
+              if (was_empty && !s->first_pcm_seen)
+                {
+                  s->first_pcm_seen = true;
+                  s->first_pcm_ms =
+                      agent_elapsed_ms(vc_tts_anchor(s), agent_mono_ms());
+                }
             }
         }
 
@@ -1018,32 +1045,30 @@ static int vc_tts_write(void *ctx, const char *data, size_t len)
   return s->done ? 1 : 0;
 }
 
-enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
-                                     const vela_req_ctl_t *ctl,
-                                     struct vg_vc_info *info)
+/* Shared TTS request core: build the body, run the POST through the
+ * caller's sink (accumulating or streaming), log the phases and the
+ * block rhythm, and classify the outcome.  The caller owns the sink
+ * buffers and, on VG_VC_OK, the follow-up (WAV tail or player EOF).
+ * info must already be zeroed; *mono_start records the request start. */
+
+static enum vg_vc_result vc_tts_request(const char *text,
+                                        struct vc_tts_sink *sink,
+                                        const vela_req_ctl_t *ctl,
+                                        struct vg_vc_info *info,
+                                        struct timespec *mono_start)
 {
-  struct vg_vc_info local;
-  struct vc_tts_sink sink;
   char escaped[VG_VC_TEXT_MAX * 2];
   char *body = NULL;
   char resp[VC_RESP_MAX];
-  const char *out_path = (wav_out != NULL) ? wav_out : VG_VC_TTS_WAV_PATH;
   size_t body_cap;
+  size_t body_len = 0;
   size_t body_out = 0;
   int status = 0;
   int ret;
   enum vg_vc_result rc = VG_VC_OK;
-  struct timespec mono_start;
   struct timespec mono_end;
 
-  if (info == NULL)
-    {
-      info = &local;
-    }
-
-  memset(info, 0, sizeof(*info));
-
-  clock_gettime(CLOCK_MONOTONIC, &mono_start);
+  clock_gettime(CLOCK_MONOTONIC, mono_start);
 
   if (text == NULL || text[0] == '\0')
     {
@@ -1068,34 +1093,30 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
            "\"audio\":{\"format\":\"pcm16\",\"voice\":\""
            CONFIG_VG_VOICE_TTS_VOICE "\"},\"stream\":true}",
            escaped);
-
-  memset(&sink, 0, sizeof(sink));
-  if (vc_tts_grow(&sink) < 0)
-    {
-      free(body);
-      return VG_VC_IO;
-    }
+  body_len = strlen(body);
 
   {
     vela_resp_sink_t rs;
     agent_llm_timing_t t;
 
     rs.write = vc_tts_write;
-    rs.ctx = &sink;
+    rs.ctx = sink;
 
     vc_timing_init(&t);
-    sink.timing = &t;
-    sink.t0 = agent_mono_ms();
+    sink->timing = &t;
+    sink->t0 = agent_mono_ms();
     ret = vc_post(false, body, NULL, &rs, resp, sizeof(resp),
-                               &body_out, &status, ctl, &t);
+                  &body_out, &status, ctl, &t);
     vc_timing_log("tts", &t);
   }
+
+  free(body);
 
   /* One line per round: the service's chunking rhythm as this endpoint
    * actually delivered it.  first_pcm and the block offsets are what the
    * streaming-playback prebuffer choice will be decided against, so they
    * are logged on failure paths too whenever any block arrived. */
-  if (sink.block_count > 0)
+  if (sink->block_count > 0)
     {
       char blocks[VC_TTS_OBS_MAX * 8];
       char first_line[16];
@@ -1103,14 +1124,14 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       char last_block[16];
       size_t off = 0;
       int i;
-      int shown = sink.block_count < VC_TTS_OBS_MAX
-                      ? sink.block_count : VC_TTS_OBS_MAX;
+      int shown = sink->block_count < VC_TTS_OBS_MAX
+                      ? sink->block_count : VC_TTS_OBS_MAX;
 
       for (i = 0; i < shown; i++)
         {
           int w = snprintf(blocks + off, sizeof(blocks) - off,
                            i ? ",%u" : "%u",
-                           (unsigned)sink.block_ms[i]);
+                           (unsigned)sink->block_ms[i]);
           if (w < 0 || (size_t)w >= sizeof(blocks) - off)
             {
               break;
@@ -1120,33 +1141,33 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
         }
 
       snprintf(last_block, sizeof(last_block), "%u",
-               (unsigned)sink.last_block_ms);
+               (unsigned)sink->last_block_ms);
 
       syslog(LOG_INFO,
              "[%s] tts_blocks n=%u first_line=%s first_pcm=%s blocks=%s "
              "last=%s bytes=%u\n",
-             TAG, (unsigned)sink.block_count,
+             TAG, (unsigned)sink->block_count,
              vc_ms_or_na(first_line, sizeof(first_line),
-                         sink.first_line_seen, sink.first_line_ms),
+                         sink->first_line_seen, sink->first_line_ms),
              vc_ms_or_na(first_pcm, sizeof(first_pcm),
-                         sink.first_pcm_seen, sink.first_pcm_ms),
-             blocks, last_block, (unsigned)sink.pcm_bytes);
+                         sink->first_pcm_seen, sink->first_pcm_ms),
+             blocks, last_block, (unsigned)sink->pcm_bytes);
     }
 
   info->status = status;
   info->resp_bytes = (uint32_t)body_out;
-  info->req_bytes = (uint32_t)strlen(body);
+  info->req_bytes = (uint32_t)body_len;
 
-  info->audio_bytes = (uint32_t)sink.pcm_bytes;
+  info->audio_bytes = (uint32_t)sink->pcm_bytes;
 
-  if (ret != 0 || sink.error != 0)
+  if (ret != 0 || sink->error != 0)
     {
       struct timespec now;
       clock_gettime(CLOCK_MONOTONIC, &now);
       uint32_t ms = (uint32_t)((uint64_t)now.tv_sec * 1000 + now.tv_nsec / 1000000);
       if (agent_http_cancelled(ctl)) rc = VG_VC_CANCELLED;
       else if (ret == AGENT_HTTP_ERR_TIMEOUT || agent_http_stop(ctl, ms)) rc = VG_VC_TIMEOUT;
-      else if (sink.error != 0) rc = VG_VC_FORMAT;
+      else if (sink->error != 0) rc = VG_VC_FORMAT;
       else rc = (ret != 0) ? vc_from_transport(ret) : VG_VC_FORMAT;
       goto out;
     }
@@ -1157,120 +1178,175 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
       goto out;
     }
 
-  if (sink.pcm_bytes == 0 || (sink.pcm_bytes & 1u) ||
-      sink.line_len != 0 || !sink.done)
+  /* A stream that ended without its terminator (or with a half-read
+   * line) was cut, not malformed; with streaming playback some of it
+   * may already be audible, which partial marks. */
+
+  if (!sink->done || sink->line_len != 0)
+    {
+      rc = VG_VC_TRUNCATED;
+      goto out;
+    }
+
+  if (sink->pcm_bytes == 0 || (sink->pcm_bytes & 1u))
     {
       rc = VG_VC_FORMAT;
       goto out;
     }
 
-  /* Convert 24 kHz mono to the 16 kHz stereo the player was verified
-   * with.  The samples are already in RAM, so this is one pass into the
-   * WAV file and no intermediate file is involved. */
-
-  {
-    int16_t *pcm_in;
-    int16_t *pcm_out;
-    size_t samples = sink.pcm_len / 2;
-    size_t done = 0;
-    size_t out_total = (samples / 3u) * 2u;
-    struct vg_pcm_writer w;
-
-    if (samples == 0)
-      {
-        rc = VG_VC_IO;
-        goto out;
-      }
-
-    pcm_in = malloc(VC_PCM_SAMPLES * sizeof(int16_t));
-    pcm_out = malloc((VC_PCM_SAMPLES * 2u) * sizeof(int16_t));
-
-    if (pcm_in == NULL || pcm_out == NULL)
-      {
-        free(pcm_in);
-        free(pcm_out);
-        rc = VG_VC_IO;
-        goto out;
-      }
-
-    if (vg_pcm_writer_open(&w, out_path, out_total) != 0)
-      {
-        free(pcm_in);
-        free(pcm_out);
-        rc = VG_VC_IO;
-        goto out;
-      }
-
-    while (done < samples)
-      {
-        struct timespec now;
-        clock_gettime(CLOCK_MONOTONIC, &now);
-        uint32_t now_ms = (uint32_t)((uint64_t)now.tv_sec * 1000 + now.tv_nsec / 1000000);
-        if (agent_http_stop(ctl, now_ms))
-          {
-            rc = agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT;
-            break;
-          }
-        size_t batch = samples - done;
-        size_t got;
-        int out_n;
-
-        /* 15360 is a multiple of 3, so the 3:2 resampler never drops a
-         * partial group in the middle of the signal. */
-
-        if (batch > VC_PCM_SAMPLES)
-          {
-            batch = VC_PCM_SAMPLES;
-          }
-
-        memcpy(pcm_in, sink.pcm + done * 2, batch * 2);
-        got = batch;
-
-        out_n = vg_pcm_resample_24k_16k(pcm_in, got, pcm_out,
-                                        VC_PCM_SAMPLES * 2u);
-        if (out_n < 0 || vg_pcm_writer_write(&w, pcm_out,
-                                             (size_t)out_n) != 0)
-          {
-            break;
-          }
-
-        done += got;
-      }
-
-    /* Close unconditionally: the writer holds the output FILE, and a short
-     * read above would otherwise leave it open. */
-
-    {
-      int close_ret = vg_pcm_writer_close(&w);
-
-      if (done != samples || close_ret != 0)
-        {
-          free(pcm_in);
-          free(pcm_out);
-          if (rc == VG_VC_OK) rc = VG_VC_IO;
-          goto out;
-        }
-    }
-
-    free(pcm_in);
-    free(pcm_out);
-  }
-
-  clock_gettime(CLOCK_MONOTONIC, &mono_end);
-  info->elapsed_ms =
-      (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
-                 + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
-  uint32_t final_ms = (uint32_t)((uint64_t)mono_end.tv_sec * 1000 + mono_end.tv_nsec / 1000000);
-  rc = agent_http_stop(ctl, final_ms)
-      ? (agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT)
-      : VG_VC_OK;
-
 out:
   clock_gettime(CLOCK_MONOTONIC, &mono_end);
   info->elapsed_ms =
+      (uint32_t)((mono_end.tv_sec - mono_start->tv_sec) * 1000
+                 + (mono_end.tv_nsec - mono_start->tv_nsec) / 1000000);
+
+  if (rc != VG_VC_OK)
+    {
+      info->partial = (sink->pcm_bytes > 0) ? 1u : 0u;
+    }
+
+  return rc;
+}
+
+/* Convert the accumulated 24 kHz mono to the 16 kHz stereo WAV the file
+ * player takes.  The samples are already in RAM, so this is one pass and
+ * no intermediate file is involved. */
+
+static enum vg_vc_result vc_tts_write_wav(struct vc_tts_sink *sink,
+                                          const char *out_path,
+                                          const vela_req_ctl_t *ctl)
+{
+  int16_t *pcm_in;
+  int16_t *pcm_out;
+  size_t samples = sink->pcm_len / 2;
+  size_t done = 0;
+  size_t out_total = (samples / 3u) * 2u;
+  struct vg_pcm_writer w;
+  enum vg_vc_result rc = VG_VC_OK;
+
+  if (samples == 0)
+    {
+      return VG_VC_IO;
+    }
+
+  pcm_in = malloc(VC_PCM_SAMPLES * sizeof(int16_t));
+  pcm_out = malloc((VC_PCM_SAMPLES * 2u) * sizeof(int16_t));
+
+  if (pcm_in == NULL || pcm_out == NULL)
+    {
+      free(pcm_in);
+      free(pcm_out);
+      return VG_VC_IO;
+    }
+
+  if (vg_pcm_writer_open(&w, out_path, out_total) != 0)
+    {
+      free(pcm_in);
+      free(pcm_out);
+      return VG_VC_IO;
+    }
+
+  while (done < samples)
+    {
+      struct timespec now;
+      clock_gettime(CLOCK_MONOTONIC, &now);
+      uint32_t now_ms = (uint32_t)((uint64_t)now.tv_sec * 1000 + now.tv_nsec / 1000000);
+      if (agent_http_stop(ctl, now_ms))
+        {
+          rc = agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT;
+          break;
+        }
+      size_t batch = samples - done;
+      size_t got;
+      int out_n;
+
+      /* 15360 is a multiple of 3, so the 3:2 resampler never drops a
+       * partial group in the middle of the signal. */
+
+      if (batch > VC_PCM_SAMPLES)
+        {
+          batch = VC_PCM_SAMPLES;
+        }
+
+      memcpy(pcm_in, sink->pcm + done * 2, batch * 2);
+      got = batch;
+
+      out_n = vg_pcm_resample_24k_16k(pcm_in, got, pcm_out,
+                                      VC_PCM_SAMPLES * 2u);
+      if (out_n < 0 || vg_pcm_writer_write(&w, pcm_out,
+                                           (size_t)out_n) != 0)
+        {
+          break;
+        }
+
+      done += got;
+    }
+
+  /* Close unconditionally: the writer holds the output FILE, and a short
+   * read above would otherwise leave it open. */
+
+  {
+    int close_ret = vg_pcm_writer_close(&w);
+
+    if (done != samples || close_ret != 0)
+      {
+        if (rc == VG_VC_OK) rc = VG_VC_IO;
+      }
+  }
+
+  free(pcm_in);
+  free(pcm_out);
+  return rc;
+}
+
+enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
+                                     const vela_req_ctl_t *ctl,
+                                     struct vg_vc_info *info)
+{
+  struct vg_vc_info local;
+  struct vc_tts_sink sink;
+  const char *out_path = (wav_out != NULL) ? wav_out : VG_VC_TTS_WAV_PATH;
+  enum vg_vc_result rc;
+  struct timespec mono_start;
+  struct timespec mono_end;
+
+  if (info == NULL)
+    {
+      info = &local;
+    }
+
+  memset(info, 0, sizeof(*info));
+  memset(&sink, 0, sizeof(sink));
+
+  if (vc_tts_grow(&sink) < 0)
+    {
+      return VG_VC_IO;
+    }
+
+  rc = vc_tts_request(text, &sink, ctl, info, &mono_start);
+  if (rc != VG_VC_OK)
+    {
+      goto out;
+    }
+
+  rc = vc_tts_write_wav(&sink, out_path, ctl);
+  if (rc != VG_VC_OK)
+    {
+      goto out;
+    }
+
+  clock_gettime(CLOCK_MONOTONIC, &mono_end);
+  info->elapsed_ms =
       (uint32_t)((mono_end.tv_sec - mono_start.tv_sec) * 1000
                  + (mono_end.tv_nsec - mono_start.tv_nsec) / 1000000);
+  {
+    uint32_t final_ms = (uint32_t)((uint64_t)mono_end.tv_sec * 1000 + mono_end.tv_nsec / 1000000);
+    rc = agent_http_stop(ctl, final_ms)
+             ? (agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT)
+             : VG_VC_OK;
+  }
 
+out:
   unlink(VG_VC_TTS_PCM_PATH);
 
   if (rc != VG_VC_OK)
@@ -1281,7 +1357,60 @@ out:
   free(sink.line);
   free(sink.payload);
   free(sink.pcm);
-  free(body);
+  return rc;
+}
+
+enum vg_vc_result vg_voice_cloud_tts_stream(
+    const char *text,
+    int (*push)(void *ctx, const uint8_t *pcm24k, size_t bytes), void *push_ctx,
+    const vela_req_ctl_t *ctl, struct vg_vc_info *info)
+{
+  struct vg_vc_info local;
+  struct vc_tts_sink sink;
+  enum vg_vc_result rc;
+  struct timespec mono_start;
+
+  if (info == NULL)
+    {
+      info = &local;
+    }
+
+  memset(info, 0, sizeof(*info));
+  memset(&sink, 0, sizeof(sink));
+
+  if (vc_tts_grow(&sink) < 0)
+    {
+      return VG_VC_IO;
+    }
+
+  sink.push = push;
+  sink.push_ctx = push_ctx;
+  info->streamed = 1;
+
+  rc = vc_tts_request(text, &sink, ctl, info, &mono_start);
+
+  if (rc == VG_VC_OK)
+    {
+      /* Same closing check as the WAV path: a round cancelled while the
+       * last bytes were in flight must not report success, even though
+       * the consumer already saw the audio. */
+
+      struct timespec mono_end;
+      uint32_t final_ms;
+
+      clock_gettime(CLOCK_MONOTONIC, &mono_end);
+      final_ms = (uint32_t)((uint64_t)mono_end.tv_sec * 1000
+                            + mono_end.tv_nsec / 1000000);
+
+      if (agent_http_stop(ctl, final_ms))
+        {
+          rc = agent_http_cancelled(ctl) ? VG_VC_CANCELLED : VG_VC_TIMEOUT;
+          info->partial = (sink.pcm_bytes > 0) ? 1u : 0u;
+        }
+    }
+
+  free(sink.line);
+  free(sink.payload);
   return rc;
 }
 

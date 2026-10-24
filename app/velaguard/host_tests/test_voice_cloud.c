@@ -19,6 +19,18 @@ static uint32_t now_ms(void)
 
 /* Test the real adapter without credentials, DNS changes or cloud quotas. */
 static int skip_timing;
+static uint8_t stream_cap[65536];
+static size_t stream_n;
+static int stream_aborted;   /* the consumer sees the abort path via CANCELLED */
+
+static int stream_push(void *ctx, const uint8_t *pcm, size_t bytes)
+{
+  (void)ctx;
+  assert(stream_n + bytes <= sizeof(stream_cap));
+  memcpy(stream_cap + stream_n, pcm, bytes);
+  stream_n += bytes;
+  return 0;
+}
 int agent_http_post_stream(const char *post, const vela_body_src_t *body,
     const vela_resp_sink_t *sink, char *resp, size_t cap, size_t *out,
     int *status, const vela_req_ctl_t *ctl)
@@ -135,6 +147,74 @@ int main(void)
   ctl.deadline_ms = now_ms() + 5000;
   assert(vg_voice_cloud_tts("测试", path, &ctl, &info) == VG_VC_OK);
   unlink(path);
-  puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup, timing anchors)");
+
+  /* Streaming variant: the same fake transport drives the consumer in
+   * place of the WAV file.  The 24 kHz mono pieces must arrive whole and
+   * in order, truncation must be a distinct failure with partial set,
+   * and cancellation must not report success. */
+
+  {
+    static const uint8_t pcm12[12] =
+      { 0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0 };
+
+    for (mode = 0; mode <= 8; mode++)
+      {
+        enum vg_vc_result r;
+
+        cancelled = 0;
+        ctl.deadline_ms = now_ms() + 5000;
+        stream_n = 0;
+        stream_aborted = 0;
+        r = vg_voice_cloud_tts_stream("测试", stream_push, NULL, &ctl,
+                                      &info);
+        if (mode == 0 || mode == 7)
+          {
+            assert(r == VG_VC_OK);
+            assert(info.streamed == 1 && info.partial == 0);
+            assert(stream_n == 12);
+            assert(memcmp(stream_cap, pcm12, 12) == 0);
+          }
+        else
+          {
+            assert(r != VG_VC_OK);
+            if (mode == 1)
+              {
+                /* audio delivered, then the stream ended without [DONE] */
+
+                assert(r == VG_VC_TRUNCATED);
+                assert(info.partial == 1);
+                assert(stream_n == 12);
+              }
+            if (mode == 3)
+              {
+                /* the final SSE line lost its newline, so it was never
+                 * parsed: truncated with nothing delivered */
+
+                assert(r == VG_VC_TRUNCATED);
+                assert(info.partial == 0);
+                assert(stream_n == 0);
+              }
+            if (mode == 2) assert(r == VG_VC_FORMAT && info.partial == 0);
+            if (mode == 4) assert(r == VG_VC_FORMAT && info.partial == 1);
+            if (mode == 5) assert(r == VG_VC_TIMEOUT);
+            if (mode == 6) assert(r == VG_VC_HTTP && info.status == 429);
+            if (mode == 8) assert(r == VG_VC_CANCELLED);
+          }
+      }
+
+    /* The anchor fallback applies to the streaming path as well. */
+
+    mode = 0;
+    skip_timing = 1;
+    cancelled = 0;
+    ctl.deadline_ms = now_ms() + 5000;
+    stream_n = 0;
+    assert(vg_voice_cloud_tts_stream("测试", stream_push, NULL, &ctl,
+                                     &info) == VG_VC_OK);
+    assert(stream_n == 12);
+    skip_timing = 0;
+  }
+
+  puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup, timing anchors, streaming consumer, truncated/partial classification)");
   return 0;
 }

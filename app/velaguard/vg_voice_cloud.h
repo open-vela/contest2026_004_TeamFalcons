@@ -57,7 +57,8 @@ enum vg_vc_result
   VG_VC_FORMAT,     /* reply was not the documented shape */
   VG_VC_IO,         /* local file */
   VG_VC_NO_CRED,    /* no API key configured */
-  VG_VC_NO_TEXT     /* TTS asked to speak an empty string */
+  VG_VC_NO_TEXT,    /* TTS asked to speak an empty string */
+  VG_VC_TRUNCATED   /* TTS stream cut before its terminator */
 };
 
 struct vg_vc_info
@@ -67,6 +68,13 @@ struct vg_vc_info
   uint32_t resp_bytes;
   uint32_t audio_bytes;  /* TTS: PCM before resampling */
   uint32_t elapsed_ms;
+  /* Streaming playback only; the round fills them from the player stats
+   * once playback ends. */
+  uint32_t played_bytes; /* stereo bytes handed to the driver */
+  uint32_t underruns;
+  uint32_t stall_ms;
+  uint8_t  partial;      /* failure path: some audio was already audible */
+  uint8_t  streamed;
 };
 
 const char *vg_vc_result_name(enum vg_vc_result r);
@@ -93,6 +101,18 @@ enum vg_vc_result vg_voice_cloud_asr_buffer(const int16_t *mono,
 enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
                                      const vela_req_ctl_t *ctl,
                                      struct vg_vc_info *info);
+
+/* Streaming variant: decoded 24 kHz mono PCM is handed to push(ctx, ...)
+ * as it arrives, so playback can start while the SSE stream is open.  The
+ * consumer must accept whole-sample chunks and may block on its own queue
+ * (the transport then applies TCP backpressure); it returns non-zero to
+ * fail the request.  Returns VG_VC_OK only when the stream completed
+ * cleanly; VG_VC_TRUNCATED when it was cut, with info->partial set
+ * whenever any audio had already been delivered. */
+enum vg_vc_result vg_voice_cloud_tts_stream(
+    const char *text,
+    int (*push)(void *ctx, const uint8_t *pcm24k, size_t bytes), void *push_ctx,
+    const vela_req_ctl_t *ctl, struct vg_vc_info *info);
 
 /* Remove the recording and every intermediate file.  Called after the round
  * ends, on success, failure and cancel alike. */
