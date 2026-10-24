@@ -30,6 +30,9 @@ TTS_BLOCKS_RE = re.compile(
     r"\[vgvoice\] tts_blocks n=(\d+) first_line=(\S+) first_pcm=(\S+) "
     r"blocks=([\d,]*) last=(\S+) bytes=(\d+)")
 CLIP_PREP_RE = re.compile(r"\[vgvoice\] clip_prep src=(\w+) bytes=(\d+) ms=(\d+)")
+TTS_PLAYER_RE = re.compile(
+    r"\[vgvoice\] tts_player played=(\d+) pushed=(\d+) underruns=(\d+) "
+    r"stall_ms=(\d+) restarts=(\d+) complete=(\d+) ms=(\d+)")
 FIRST_PLAYABLE_RE = re.compile(r"first_playable gen=\d+ elapsed_ms=(\d+)")
 SETTLED_RE = re.compile(
     r"round_settled gen=\d+ state=\d+ failed=\d+ elapsed_ms=(\d+)")
@@ -74,12 +77,24 @@ def analyse_block(block):
         "agent_ms": stage_span(stages, "agent_begin", "agent_reply"),
         "facts_ms": stage_span(stages, "agent_reply", "facts_end"),
         "tts_ms": stage_span(stages, "tts_begin", "tts_end"),
+        # 旧路径：投递到播完。流式轮的 play_posted 在下载开始前记录，
+        # 该跨度与下载重叠、不再与旧值同义，仅作参考。
         "play_ms": stage_span(stages, "play_posted", "play_done"),
+        # 流式路径：驱动真正开始消费到播完。
+        "play_stream_ms": stage_span(stages, "play_start", "play_done"),
+        # 流式路径：TTS 开始到真实出声，即流式改动的核心收益指标。
+        "first_sound_ms": stage_span(stages, "tts_begin", "play_start"),
         "clip_prep": None,
         "tts_blocks": None,
         "tts_first_pcm": None,
         "tts_last_block": None,
         "tts_block_offsets": None,
+        "tts_underruns": None,
+        "tts_stall_ms": None,
+        "tts_restarts": None,
+        "tts_player_complete": None,
+        "tts_played_bytes": None,
+        "tts_pushed_bytes": None,
         "llm_iterations": None,
         "llm_send_ms": None,
         "llm_ttfb_ms": None,
@@ -126,11 +141,24 @@ def analyse_block(block):
                             "bytes": int(prep.group(2)),
                             "ms": int(prep.group(3))}
 
+    player = TTS_PLAYER_RE.search(block)
+    if player:
+        row["tts_underruns"] = int(player.group(3))
+        row["tts_stall_ms"] = int(player.group(4))
+        row["tts_restarts"] = int(player.group(5))
+        row["tts_player_complete"] = int(player.group(6))
+        row["tts_played_bytes"] = int(player.group(1))
+        row["tts_pushed_bytes"] = int(player.group(2))
+
     ready = FIRST_PLAYABLE_RE.search(block)
     fp = int(ready.group(1)) if ready else None
-    # 串口截断防御：与已完成阶段矛盾的首播值不能算成功证据。
-    if fp is not None and fp < stages.get("tts_end", 0):
-        fp = None
+    # 串口截断防御：与已完成阶段矛盾的首播值不能算成功证据。流式轮的
+    # first_playable 由播放线程在 play_start 时刻记录，必然早于 tts_end
+    # （下载与播放重叠），以 play_start 为界；旧路径仍以 tts_end 为界。
+    if fp is not None:
+        bound = stages.get("play_start", stages.get("tts_end", 0))
+        if fp < bound:
+            fp = None
     row["first_playable_ms"] = fp
 
     settled = SETTLED_RE.search(block)

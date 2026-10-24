@@ -253,6 +253,33 @@ config VG_VOICE_TLS_CACHE
 		诊断用会话恢复缓存。出现完整握手签名校验失败后默认关闭，
 		待独立验证长期生命周期后再启用。
 
+config VG_VOICE_TTS_STREAM
+	bool "TTS streaming playback (bounded ring + direct ioctl player)"
+	default n
+	depends on EXAMPLES_AI_AGENT_VELA
+	---help---
+		P1: 播报不等收齐。TTS 的 SSE 块解码后立即进有界环形缓冲，
+		由直接驱动 /dev/audio/pcm0p 的队列播放器消费（格式仍为
+		16 kHz 立体声 16 bit）。播放器启动失败时该轮自动退回
+		原 WAV 文件路径。关闭则完全走原路径。
+
+config VG_VOICE_TTS_PREBUF_MS
+	int "TTS streaming prebuffer (ms)"
+	range 50 1000
+	default 200
+	depends on VG_VOICE_TTS_STREAM
+	---help---
+		起播前缓存的音频量；运行时可用 vgvoice prebuf <ms> 调整
+		（下轮生效），用于 100/200/400 档位对照实验。
+
+config VG_VOICE_TTS_RING_BYTES
+	int "TTS streaming ring size (bytes, power of two)"
+	default 131072
+	depends on VG_VOICE_TTS_STREAM
+	---help---
+		环形缓冲容量（16 kHz 单声道，131072 字节约 4.1 秒音频）。
+		必须为 2 的幂。
+
 config VG_VOICE_TEST_FIXTURE
 	bool "Local voice fault fixture (diagnostic image only)"
 	default n

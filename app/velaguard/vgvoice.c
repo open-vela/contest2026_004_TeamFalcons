@@ -37,6 +37,38 @@
 #ifdef VG_VOICE_ROUND
 #include "vg_voice_overlay.h"
 #endif
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+#include "vg_tts_player.h"
+#include "vg_voice_pcm.h"
+
+/* Off the NSH stack (16 KB would not fit): the ttss feed adapter. */
+
+static struct
+{
+  struct vg_pcm_rs24_16 rs;
+  int16_t out[5472];
+} g_ttss_feed;
+
+static int vgvoice_ttss_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
+{
+  struct vg_pcm_rs24_16 *rs = (struct vg_pcm_rs24_16 *)ctx;
+  long n = vg_pcm_rs24_16_feed(rs, pcm24k, bytes,
+                               g_ttss_feed.out, 5472);
+
+  if (n < 0)
+    {
+      return -1;
+    }
+
+  if (n > 0 && vg_tts_player_push((const uint8_t *)g_ttss_feed.out,
+                                  (size_t)n * 2u) != 0)
+    {
+      return -1;
+    }
+
+  return 0;
+}
+#endif /* CONFIG_VG_VOICE_TTS_STREAM */
 
 /* The cloud adapter is the same code the round uses.  These two commands make
  * it reachable without a button press, so the request shape and the audio
@@ -276,6 +308,165 @@ int main(int argc, FAR char *argv[])
 
       return (rc == VG_VC_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
     }
+
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+  if (strcmp(cmd, "prebuf") == 0)
+    {
+      if (argc >= 3)
+        {
+          long ms = strtol(argv[2], NULL, 0);
+
+          if (ms <= 0)
+            {
+              printf("vgvoice: prebuf out of range\n");
+              return EXIT_FAILURE;
+            }
+
+          printf("vgvoice: prebuf -> %d ms\n",
+                 vg_tts_player_set_prebuf_ms((uint32_t)ms));
+        }
+      else
+        {
+          printf("vgvoice: prebuf %u ms\n",
+                 (unsigned)vg_tts_player_prebuf_ms());
+        }
+
+      return EXIT_SUCCESS;
+    }
+
+  if (strcmp(cmd, "ttss") == 0 && argc >= 3)
+    {
+      /* 诊断命令：不经轮次的流式合成+播放，用于预缓冲档位实验。
+       * 不持有语音前台保留，可能与后台轮竞争网络——实验请在空闲
+       * 时执行。 */
+
+      struct vg_vc_info info;
+      vela_req_ctl_t ctl;
+      struct vg_tts_player_stats st;
+      char text[VG_VC_TEXT_MAX];
+      enum vg_vc_result rc;
+      size_t used = 0;
+      int i;
+
+      text[0] = '\0';
+      for (i = 2; i < argc; i++)
+        {
+          int n = snprintf(text + used, sizeof(text) - used, "%s%s",
+                           (i > 2) ? " " : "", argv[i]);
+
+          if (n < 0 || (size_t)n >= sizeof(text) - used)
+            {
+              printf("vgvoice: text too long\n");
+              return EXIT_FAILURE;
+            }
+
+          used += (size_t)n;
+        }
+
+      ctl.deadline_ms = vgvoice_now_ms() + 30000u;
+      ctl.cancel = NULL;
+
+      if (vg_tts_player_start(vg_tts_player_prebuf_ms(), NULL, NULL,
+                              NULL) != 0)
+        {
+          printf("vgvoice: player start failed\n");
+          return EXIT_FAILURE;
+        }
+
+      vg_pcm_rs24_16_init(&g_ttss_feed.rs);
+      rc = vg_voice_cloud_tts_stream(text, vgvoice_ttss_push, &g_ttss_feed,
+                                     &ctl, &info);
+      printf("vgvoice: ttss rc=%s status=%d pcm=%u ms=%u partial=%u\n",
+             vg_vc_result_name(rc), info.status,
+             (unsigned)info.audio_bytes, (unsigned)info.elapsed_ms,
+             (unsigned)info.partial);
+
+      if (rc == VG_VC_OK)
+        {
+          vg_tts_player_eof();
+        }
+      else
+        {
+          vg_tts_player_abort();
+        }
+
+      (void)vg_tts_player_wait(info.audio_bytes / 32u + 10000u, &st);
+      printf("vgvoice: ttss played=%u underruns=%u stall_ms=%u "
+             "restarts=%u complete=%u\n",
+             (unsigned)st.played_bytes, (unsigned)st.underruns,
+             (unsigned)st.stall_ms, (unsigned)st.restarts,
+             st.complete ? 1u : 0u);
+
+      return (rc == VG_VC_OK && st.complete) ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+
+  if (strcmp(cmd, "streamtest") == 0 && argc >= 3)
+    {
+      /* 确定性欠载发生器：把 16 kHz 单声道 WAV 按 1/4 实时速率喂给
+       * 播放器，不依赖网络。播放器应在每个块间进入欠载等待并自
+       * 行恢复；underruns/restarts 计数即恢复机制的板端证据。 */
+
+      struct vg_pcm_wav w;
+      struct vg_tts_player_stats st;
+      FILE *f;
+      uint8_t buf[2048];
+      uint32_t pushed = 0;
+      int n;
+
+      if (vg_pcm_wav_probe(argv[2], &w) != 0 || w.channels != 1 ||
+          w.rate != 16000 || w.bits != 16)
+        {
+          printf("vgvoice: streamtest needs a 16 kHz mono 16-bit wav\n");
+          return EXIT_FAILURE;
+        }
+
+      if (vg_tts_player_start(vg_tts_player_prebuf_ms(), NULL, NULL,
+                              NULL) != 0)
+        {
+          printf("vgvoice: player start failed\n");
+          return EXIT_FAILURE;
+        }
+
+      f = fopen(argv[2], "rb");
+      if (f == NULL)
+        {
+          vg_tts_player_abort();
+          (void)vg_tts_player_wait(3000, &st);
+          printf("vgvoice: cannot open %s\n", argv[2]);
+          return EXIT_FAILURE;
+        }
+
+      fseek(f, (long)w.data_off, SEEK_SET);
+
+      /* 2048 bytes 是 64 ms 音频；每块间隔 256 ms，即 1/4 实时。
+       * 上限 4 秒音频，保证命令有界。 */
+
+      while (pushed < 128000u &&
+             (n = fread(buf, 1, sizeof(buf), f)) > 0)
+        {
+          if (vg_tts_player_push(buf, (size_t)n) != 0)
+            {
+              printf("vgvoice: streamtest push failed\n");
+              break;
+            }
+
+          pushed += (uint32_t)n;
+          usleep(192000);
+        }
+
+      fclose(f);
+      vg_tts_player_eof();
+      (void)vg_tts_player_wait(pushed / 32u + 10000u, &st);
+
+      printf("vgvoice: streamtest pushed=%u played=%u underruns=%u "
+             "stall_ms=%u restarts=%u complete=%u\n",
+             (unsigned)pushed, (unsigned)st.played_bytes,
+             (unsigned)st.underruns, (unsigned)st.stall_ms,
+             (unsigned)st.restarts, st.complete ? 1u : 0u);
+
+      return st.complete ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+#endif /* CONFIG_VG_VOICE_TTS_STREAM */
 
   if (strcmp(cmd, "mute") == 0)
     {
@@ -644,6 +835,9 @@ int main(int argc, FAR char *argv[])
   printf("usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>\n");
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
   printf("       vgvoice asr [wav] | tts <text> | play <wav>\n");
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+  printf("       vgvoice prebuf [ms] | ttss <text> | streamtest <wav>\n");
+#endif
 #endif
   return EXIT_FAILURE;
 }

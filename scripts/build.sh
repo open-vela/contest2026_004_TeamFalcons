@@ -173,6 +173,7 @@ expect_dev_config()
         grep -q '^CONFIG_STM32H7_SAI2_A=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H7_SAI_CAPTURE=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_VOICE_LOOPBACK=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_VG_VOICE_TTS_STREAM=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_VOICE_DIRECT_TOOL=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_VOICE_TLS_CACHE=y$' "$NUTTX_ROOT/.config" &&
         { [ "$VOICE_FIXTURE" = 1 ] || ! grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config"; } &&

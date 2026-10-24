@@ -98,6 +98,9 @@ CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c \
 # audio helpers above do not.
 ifeq ($(CONFIG_EXAMPLES_AI_AGENT_VELA),y)
 CSRCS    += vg_voice_cloud.c vg_voice_round.c vg_voice_pref.c
+ifeq ($(CONFIG_VG_VOICE_TTS_STREAM),y)
+CSRCS    += vg_tts_player.c
+endif
 # The overlay is one of the gui/ wildcard sources; it needs the round's API,
 # so it is filtered out below when this is not set.
 VG_VOICE_ROUND_ENABLED := y

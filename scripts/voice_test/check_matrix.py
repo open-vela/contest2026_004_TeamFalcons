@@ -37,8 +37,12 @@ for group, tool in [('anomaly', 'vg_anomaly_read'), ('point', 'vg_point_read'), 
         tts = re.search(r'\[vgvoice\] tts rc=(\w+)', block)
         ms = int(ready[1]) if ready else None
         # 串口并发输出可能截断数字；与已完成阶段矛盾的字段不能计为成功证据。
-        if ms is not None and ms < stages.get('tts_end', 0):
-            ms = None
+        # 流式轮的 first_playable 由播放线程在 play_start 时刻记录，必然早于
+        # tts_end（下载与播放重叠），有 play_start 阶段时以它为界。
+        if ms is not None:
+            bound = stages.get('play_start', stages.get('tts_end', 0))
+            if ms < bound:
+                ms = None
         settled_ms = int(settled[1]) if settled else None
         if settled_ms is not None and settled_ms < max(stages.values(), default=0):
             settled_ms = None

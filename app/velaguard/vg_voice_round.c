@@ -44,6 +44,10 @@
 #include "vg_voice_cloud.h"
 #include "vg_voice_facts.h"
 #include "vg_voice_intent.h"
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+#  include "vg_tts_player.h"
+#  include "vg_voice_pcm.h"
+#endif
 #include "vg_voice_round.h"
 #include "vg_voice_session.h"
 
@@ -798,6 +802,57 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 #endif
 }
 
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+
+/* Streaming playback adapter: the cloud sink hands over 24 kHz mono
+ * pieces; the incremental resampler turns them into the 16 kHz mono the
+ * ring player takes.  One decode chunk is at most VC_PCM_CHUNK bytes
+ * (8192 samples in, 5463 out), so this output size never rejects one. */
+
+#define VR_TTS_FEED_SAMPLES 5472
+
+struct vr_tts_feed
+{
+  struct vg_pcm_rs24_16 rs;
+  int16_t out[VR_TTS_FEED_SAMPLES];
+};
+
+static int vr_tts_feed_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
+{
+  struct vr_tts_feed *f = (struct vr_tts_feed *)ctx;
+  long n = vg_pcm_rs24_16_feed(&f->rs, pcm24k, bytes, f->out,
+                               VR_TTS_FEED_SAMPLES);
+
+  if (n < 0)
+    {
+      return -1;
+    }
+
+  if (n > 0 && vg_tts_player_push((const uint8_t *)f->out,
+                                  (size_t)n * 2u) != 0)
+    {
+      return -1;
+    }
+
+  return 0;
+}
+
+/* Runs on the player thread the moment the driver starts consuming.  The
+ * two log lines are the real first-sound markers; the UI status was set
+ * before the request, so nothing here touches shared round state beyond
+ * the submit anchor, which is stable for the whole TTS stage. */
+
+static void vr_tts_started(void *arg)
+{
+  uint32_t gen = *(const uint32_t *)arg;
+
+  syslog(LOG_INFO, "[vgvoice] first_playable gen=%u elapsed_ms=%u\n",
+         (unsigned)gen, (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
+  vr_log_stage("play_start");
+}
+
+#endif /* CONFIG_VG_VOICE_TTS_STREAM */
+
 static uint32_t vr_stage_tts(uint32_t gen)
 {
   struct vg_vc_info info;
@@ -819,6 +874,103 @@ static uint32_t vr_stage_tts(uint32_t gen)
   vr_ui_set_status("合成语音");
   vr_ui_publish();
   vr_log_stage("tts_begin");
+
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+  {
+    uint32_t started_gen = gen;
+
+    if (vg_tts_player_start(vg_tts_player_prebuf_ms(), &g_vr.cancel,
+                            vr_tts_started, &started_gen) == 0)
+      {
+        struct vr_tts_feed feed;
+        struct vg_tts_player_stats pstats;
+        uint32_t actions;
+        uint32_t limit;
+        int wr;
+
+        /* The span anchor the phase scripts read; the real first-sound
+         * marker is the play_start stage the player thread logs. */
+
+        vr_log_stage("play_posted");
+        vr_ui_set_status("播报中");
+        vr_ui_publish();
+
+        __atomic_fetch_add(&g_vr.tts_requests, 1, __ATOMIC_RELAXED);
+        vg_pcm_rs24_16_init(&feed.rs);
+        rc = vg_voice_cloud_tts_stream(g_vr.s.answer, vr_tts_feed_push,
+                                       &feed, &ctl, &info);
+
+        syslog(LOG_INFO,
+               "[vgvoice] tts rc=%s status=%d pcm=%u resp=%u ms=%u "
+               "stream=1 partial=%u\n",
+               vg_vc_result_name(rc), info.status,
+               (unsigned)info.audio_bytes, (unsigned)info.resp_bytes,
+               (unsigned)info.elapsed_ms, (unsigned)info.partial);
+        vr_log_stage("tts_end");
+
+        if (rc != VG_VC_OK)
+          {
+            /* Truncation, cancellation or transport failure: stop the
+             * device right away and report a failed playback; whatever
+             * was audible is already marked partial above. */
+
+            vg_tts_player_abort();
+            (void)vg_tts_player_wait(3000, &pstats);
+
+            if (g_vr.cancel)
+              {
+                return 0;
+              }
+
+            return vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
+          }
+
+        vg_tts_player_eof();
+        actions = vg_vs_tts_result(&g_vr.s, gen, true, vr_now_ms());
+
+        /* Drain: everything pushed has to finish.  The bound is the
+         * audio duration itself (32 mono bytes per ms) plus the same
+         * slack the WAV wait uses; completion comes from the driver. */
+
+        limit = info.audio_bytes / 32u + VR_PLAY_EXTRA_MS;
+        wr = vg_tts_player_wait(limit, &pstats);
+
+        info.played_bytes = pstats.played_bytes;
+        info.underruns = pstats.underruns;
+        info.stall_ms = pstats.stall_ms;
+
+        syslog(LOG_INFO,
+               "[vgvoice] tts_player played=%u pushed=%u underruns=%u "
+               "stall_ms=%u restarts=%u complete=%u ms=%u\n",
+               (unsigned)pstats.played_bytes,
+               (unsigned)pstats.pushed_bytes,
+               (unsigned)pstats.underruns, (unsigned)pstats.stall_ms,
+               (unsigned)pstats.restarts, pstats.complete ? 1u : 0u,
+               (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
+
+        if (g_vr.cancel)
+          {
+            return 0;
+          }
+
+        if (wr != 0 || !pstats.complete || pstats.failed)
+          {
+            actions |= vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
+          }
+        else
+          {
+            vr_log_stage("play_done");
+            actions |= vg_vs_play_done(&g_vr.s, gen, vr_now_ms());
+          }
+
+        return actions;
+      }
+  }
+
+  /* The player could not open the device: this round falls back to the
+   * WAV path below.  The decision happens before the request is sent,
+   * so no synthesised audio is lost. */
+#endif /* CONFIG_VG_VOICE_TTS_STREAM */
 
   __atomic_fetch_add(&g_vr.tts_requests, 1, __ATOMIC_RELAXED);
   rc = vg_voice_cloud_tts(g_vr.s.answer, VG_VC_TTS_WAV_PATH, &ctl, &info);
