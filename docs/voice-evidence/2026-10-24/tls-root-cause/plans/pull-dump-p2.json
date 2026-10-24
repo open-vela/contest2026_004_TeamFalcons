@@ -1,0 +1,37 @@
+[
+ {
+  "command": "echo PULLP2_BEGIN",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "ls /data/forensics",
+  "wait_ms": 500,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "cat /data/forensics/tls-0/meta.txt",
+  "wait_ms": 800,
+  "timeout_ms": 15000
+ },
+ {
+  "command": "cat /data/forensics/tls-0/bundle.b64",
+  "wait_ms": 4500,
+  "timeout_ms": 30000
+ },
+ {
+  "command": "cat /data/forensics/tls-1/meta.txt",
+  "wait_ms": 800,
+  "timeout_ms": 15000
+ },
+ {
+  "command": "cat /data/forensics/tls-1/bundle.b64",
+  "wait_ms": 4500,
+  "timeout_ms": 30000
+ },
+ {
+  "command": "echo PULLP2_END",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ }
+]

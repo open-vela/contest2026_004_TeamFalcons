@@ -1,0 +1,27 @@
+[
+ {
+  "command": "echo P3_BEGIN",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "cat /data/forensics/tls-0/bundle.b64",
+  "wait_ms": 6500,
+  "timeout_ms": 40000
+ },
+ {
+  "command": "cat /data/forensics/tls-1/bundle.b64",
+  "wait_ms": 6500,
+  "timeout_ms": 40000
+ },
+ {
+  "command": "cat /data/forensics/tls-2/bundle.b64",
+  "wait_ms": 6500,
+  "timeout_ms": 40000
+ },
+ {
+  "command": "echo P3_END",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ }
+]

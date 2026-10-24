@@ -321,6 +321,9 @@ fi
 if [ "$TLS_FORENSICS" = 1 ]; then
   echo "[build] diagnostic image: enabling TLS handshake forensics capture"
   kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_AI_AGENT_TLS_FORENSICS
+  # 健康探测每 30s 产生一次后台 TLS，会与被测握手争用唯一捕获槽；取证
+  # 镜像期间关闭，避免失败样本静默丢失。
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --disable CONFIG_VG_LLM_HEALTH
   make -C "$NUTTX_ROOT" olddefconfig
   grep -q '^CONFIG_AI_AGENT_TLS_FORENSICS=y$' "$NUTTX_ROOT/.config" || exit 1
   rm -rf "$SCRIPT_DIR/../build/velaguard"
@@ -338,8 +341,10 @@ if [ "$TLS_POOL" = 1 ]; then
   grep -q '^CONFIG_AI_AGENT_TLS_POOL=y$' "$NUTTX_ROOT/.config" || exit 1
   grep -q '^CONFIG_MBEDTLS_PLATFORM_MEMORY=y$' "$NUTTX_ROOT/.config" || exit 1
   # MBEDTLS_PLATFORM_MEMORY 改变 mbedtls 库本身的编译内容；不清旧对象会
-  # 链接不到 mbedtls_platform_set_calloc_free。
+  # 链接不到 mbedtls_platform_set_calloc_free。ai_agent 的对象同样依赖
+  # Kconfig 宏（平铺构建不自动重编包对象），一并清理。
   find "$OPENVELA_ROOT/apps/crypto/mbedtls/mbedtls/library" -name '*.o' -delete 2>/dev/null
+  find "$OPENVELA_ROOT/packages/ai_agent" -name '*.o' -delete 2>/dev/null
   rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 

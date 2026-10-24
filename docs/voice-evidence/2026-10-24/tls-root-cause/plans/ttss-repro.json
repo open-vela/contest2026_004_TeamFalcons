@@ -1,0 +1,54 @@
+[
+ {
+  "command": "echo TTSS_REPRO_BEGIN",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice ttss 你好，这是TLS取证复现测试",
+  "wait_ms": 2000,
+  "timeout_ms": 45000,
+  "wait_for": "ttss rc="
+ },
+ {
+  "command": "vgvoice ttss 第二次取证复现",
+  "wait_ms": 2000,
+  "timeout_ms": 45000,
+  "wait_for": "ttss rc="
+ },
+ {
+  "command": "vgvoice ttss 第三次取证复现",
+  "wait_ms": 2000,
+  "timeout_ms": 45000,
+  "wait_for": "ttss rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "echo TTSS_REPRO_END",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ }
+]
