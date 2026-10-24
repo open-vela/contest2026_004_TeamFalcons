@@ -1,0 +1,52 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+
+2026-10-24T08:46:01.6214517+08:00 CMD ifconfig
+ifconfig
+Unknown command: ifconfig (type 'help')
+vela> EXPECTED_MARKER_MISSING: ifconfig; raw response retained
+
+2026-10-24T08:46:11.6400098+08:00 CMD route ipv4
+route ipv4
+Unknown command: route (type 'help')
+vela> [skills] Skills summary: 1086 bytes
+EXPECTED_MARKER_MISSING: route ipv4; raw response retained
+
+2026-10-24T08:46:21.6472512+08:00 CMD vgmqtt status
+vgmqtt status
+Unknown command: vgmqtt (type 'help')
+vela> EXPECTED_MARKER_MISSING: vgmqtt status; raw response retained
+
+2026-10-24T08:46:31.6781954+08:00 CMD vgagent status
+vgagent status
+Unknown command: vgagent (type 'help')
+vela> EXPECTED_MARKER_MISSING: vgagent status; raw response retained
+
+2026-10-24T08:46:41.6993456+08:00 CMD vgvoice status
+vgvoice status
+Unknown command: vgvoice (type 'help')
+vela> EXPECTED_MARKER_MISSING: vgvoice status; raw response retained
+
+2026-10-24T08:46:51.7187675+08:00 CMD vgvoice round stack
+vgvoice round stack
+Unknown command: vgvoice (type 'help')
+vela> [skills] Skills summary: 1086 bytes
+EXPECTED_MARKER_MISSING: vgvoice round stack; raw response retained
+
+2026-10-24T08:47:01.7552935+08:00 CMD ps
+ps
+Unknown command: ps (type 'help')
+vela> EXPECTED_MARKER_MISSING: ps; raw response retained
+
+2026-10-24T08:47:11.7838694+08:00 CMD free
+free
+Unknown command: free (type 'help')
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+EXPECTED_MARKER_MISSING: free; raw response retained
+
+2026-10-24T08:47:21.8052605+08:00 CMD vgagent audit
+vgagent audit
+Unknown command: vgagent (type 'help')
+vela> [skills] Skills summary: 1086 bytes
+EXPECTED_MARKER_MISSING: vgagent audit; raw response retained
+

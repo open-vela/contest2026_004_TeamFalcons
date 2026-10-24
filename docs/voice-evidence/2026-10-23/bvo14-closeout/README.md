@@ -85,7 +85,11 @@ ai_agent 框架改动已本地提交 d9da371；没有推送。
 1. **后台 abandon 后 ASR 变慢的说法证伪**。分段显示 preemption 轮 ASR 慢在 body（上传吞吐段）翻倍，dns/tls/send 与空闲基线一致；在 critical 模式下等后台解释完成、无任何 abandon 的普通轮，body 同样翻倍（3040ms 空闲基线 vs 5100/6340/7640ms 告警态）。结论：变慢与 abandon 无关，是告警模式下系统共存的吞吐特性——LVCL 重绘使 LTDC 显示扫描与 ETH DMA 争用 SDRAM 带宽的假设与延迟型阶段不变、吞吐型阶段翻倍的观测一致（未做硬件级验证）。若要在此负载下达标，需要产品决策（语音前台期间节流非必要重绘），不是缺陷修复。
 2. **press 立即提交的说法证伪，15 秒上限生产链路实际通过**。此前把阶段行 t 值（相对 15 秒自动截断时的 submit_ms）误读为按 press 计时。重读 record-limit-offline.log：录音实测 14.95 秒、478350 字节，自动提交后 ASR 因 eth0 关闭按设计失败（req=0，无任何上传），取消回收干净、PCM=0。两次运行一致。此前 README 所记会话残留缺陷与播放后 press 缺陷撤销；press 到录音的单独验证见 press-flow-test.log。
 
-preemption 共八次尝试（preemption-final2 至 final8，含 final6-timed 分段版）：暂停/恢复/后台续跑标记全部正常，语音轮次分别败于告警负载下 ASR 吞吐段翻倍（body 5100-7640ms）与 TTS 服务窗口波动（body 8.6-9.6 秒或瞬时网络错误）；两项都不是合同内软件缺陷，达标需上述设计决策配合较好的服务窗口。非空异常共六次尝试（nonempty-anomaly-final2 至 final6），文字与只读基准始终一致，完整播报败因同上。误覆盖的 final5 原始日志已从 git 提交恢复，覆盖产生的结果另存 final6/final8。
+preemption 前八次尝试败因在后续修复后重新认定：告警负载下 ASR 吞吐段翻倍的主因是本地软件负载，不是外部条件。两处修复——日报已存在检查 30 秒缓存（原先每 100 毫秒 stat 加整读校验 eMMC）与语音浮窗可见期间门控底层 UI 失效刷新（原先告警态每秒重建过滤索引并整页失效，浮窗之下全部是不可见重绘）——之后 critical 模式 ASR body 从 5100-7640ms 降至 1840-2100ms（与 normal 持平），TTS body 从 8.6-10.6s 降至 4.4-6.0s（此前归因服务窗口的慢有相当部分也是本地渲染争用）。第十次 preemption（preemption-final10.log）与第八次非空异常（nonempty-anomaly-final8.log）在预算内完整通过：首播 15.76 与 17.61 秒、整轮 19.9 与 22.1 秒、failed=0，暂停/恢复/后台续跑标记齐全，非空答案含总数与完整明细。分段计时与 overlaygate 对照数据见 overlaygate-*.log 与 dailycache-*.log。误覆盖的 final5 原始日志已从 git 提交恢复，覆盖产生的结果另存 final6/final8。
+
+## 交付固件与最终矩阵
+
+firmware-final3.json 对应交付固件：RR100 回退、ASR/TTS 分段计时、录音取消 PCM 清理、浮窗中文字库（含 ≥≤ 字形）、日报检查缓存、浮窗 UI 失效门控，fixture/cache/directtool 全关。该固件上的场景实测（preemption、非空异常、播放、对照轮）均在此目录；原计划再补一次完整 30 条矩阵（matrix-final/），但运行时发现板端已被更换为非 VelaGuard 固件（vela> 提示符、无 vgvoice 命令，08:47 现场），矩阵以 NSH 超时中止且不再重启板端。指标证据仍为 matrix-foreground3 的 28/30；最终固件与矩阵固件的四处差异中，分段计时与录音取消清理不改变矩阵路径行为，字库与两项负载修复只会加快链路（场景实测首播 15.8-17.6 秒）。复跑方法：确认板端为 firmware-final3 镜像后执行 handoff-tools/run_matrix_final.py。
 
 ## 矩阵 #4 与 eMMC 卡死事故
 

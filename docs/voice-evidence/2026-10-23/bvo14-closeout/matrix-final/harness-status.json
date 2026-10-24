@@ -1,0 +1,10 @@
+[
+  {
+    "plan": "final-boot-plan.json",
+    "harness_exit": 0
+  },
+  {
+    "plan": "matrix-anomaly.json",
+    "harness_exit": 1
+  }
+]
