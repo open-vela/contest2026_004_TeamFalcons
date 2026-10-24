@@ -60,6 +60,12 @@ void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
   wav_header(hdr, 1, rate, data_bytes);
 }
 
+void vg_pcm_wav_header_stereo(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
+                              uint32_t data_bytes)
+{
+  wav_header(hdr, 2, rate, data_bytes);
+}
+
 int vg_pcm_wav_probe_stream(FILE *f, struct vg_pcm_wav *out)
 {
   uint8_t hdr[12];

@@ -49,6 +49,7 @@ static volatile int g_hold;          /* 1: keep DEQUEUEs back */
 static volatile int g_start_count;
 static volatile int g_started_flag;
 static volatile int g_enqueued;
+static volatile int g_header_seen;   /* pcm_decode: header once per session */
 static mqd_t g_drv_mq = (mqd_t)-1;
 static struct ap_buffer_s *g_apbs[8];
 static int g_napb;
@@ -116,6 +117,9 @@ int __wrap_ioctl(int fd, unsigned long req, ...)
         }
 
       case AUDIOIOC_RESERVE:
+        g_header_seen = 0;
+        return 0;
+
       case AUDIOIOC_RELEASE:
       case AUDIOIOC_UNREGISTERMQ:
       case AUDIOIOC_STOP:
@@ -189,11 +193,34 @@ int __wrap_ioctl(int fd, unsigned long req, ...)
         {
           struct audio_buf_desc_s *d = arg;
           struct ap_buffer_s *apb = d->u.buffer;
-          size_t samples = apb->nbytes / 4u;
-          const int16_t *s = (const int16_t *)(const void *)apb->samp;
+          size_t off = 0;
+          const uint8_t *h = apb->samp;
+          const int16_t *s;
+          size_t samples;
           size_t i;
 
           g_enqueued++;
+
+          if (!g_header_seen)
+            {
+              /* /dev/audio/pcm0p is the pcm_decode wrapper: the first
+               * buffer of a session must carry a WAV header, which it
+               * parses and skips before playing what follows. */
+
+              CHECK(apb->nbytes >= 44);
+              CHECK(memcmp(h, "RIFF", 4) == 0);
+              CHECK(memcmp(h + 8, "WAVE", 4) == 0);
+              CHECK(memcmp(h + 36, "data", 4) == 0);
+              CHECK(h[20] == 1 && h[21] == 0);        /* PCM */
+              CHECK(h[22] == 2 && h[23] == 0);        /* stereo */
+              CHECK(h[24] == 0x80 && h[25] == 0x3e);  /* 16000 Hz LE */
+              CHECK(h[34] == 16 && h[35] == 0);       /* 16-bit */
+              off = 44;
+              g_header_seen = 1;
+            }
+
+          s = (const int16_t *)(const void *)(apb->samp + off);
+          samples = (apb->nbytes - off) / 4u;
 
           for (i = 0; i < samples; i++)
             {

@@ -36,9 +36,14 @@
 #include <nuttx/audio/audio.h>
 
 #include "vg_tts_player.h"
+#include "vg_voice_pcm.h"
 
 #ifndef CONFIG_VG_VOICE_TTS_RING_BYTES
 #define CONFIG_VG_VOICE_TTS_RING_BYTES 131072
+#endif
+
+#ifndef CONFIG_VG_VOICE_TTS_PREBUF_MS
+#define CONFIG_VG_VOICE_TTS_PREBUF_MS 200
 #endif
 
 #if (CONFIG_VG_VOICE_TTS_RING_BYTES & (CONFIG_VG_VOICE_TTS_RING_BYTES - 1)) != 0
@@ -94,6 +99,7 @@ struct vg_tts_state
   void *on_started_arg;
   uint32_t prebuf_ms;
   uint32_t prebuf_bytes;
+  bool header_pending;   /* pcm0p wants a WAV header before the PCM */
 
   pthread_t thread;
   bool thread_valid;
@@ -106,6 +112,7 @@ static struct vg_tts_state g_pl =
   .fd = -1,
   .mq = (mqd_t)-1,
   .lock = PTHREAD_MUTEX_INITIALIZER,
+  .prebuf_ms = CONFIG_VG_VOICE_TTS_PREBUF_MS,
 };
 
 static uint32_t now_ms(void)
@@ -171,9 +178,15 @@ static size_t ring_take(uint8_t *dst, size_t max_bytes)
   return take;
 }
 
-/* Fill one driver buffer from the ring and enqueue it.  Returns 1 when
- * a buffer was enqueued, 0 when there was nothing to send (the caller
- * decides whether that is an underrun or the end), -1 on error. */
+/* Fill one driver buffer from the ring and enqueue it.  The very first
+ * buffer of a session carries a 44-byte WAV header: /dev/audio/pcm0p is
+ * the pcm_decode wrapper, which parses that header to configure the
+ * codec (nuttx/audio/pcm_decode.c pcm_enqueuebuffer) and then plays the
+ * raw stereo PCM that follows — exactly what nxplayer feeds it when it
+ * plays a file.  The data-chunk length is never reconciled with the
+ * stream, so a large placeholder stands in for the unknown total.
+ * Returns 1 when a buffer was enqueued, 0 when there was nothing to
+ * send, -1 on error. */
 
 static int fill_and_enqueue(struct ap_buffer_s *apb)
 {
@@ -181,25 +194,48 @@ static int fill_and_enqueue(struct ap_buffer_s *apb)
   size_t mono_bytes;
   size_t samples;
   bool final;
+  bool with_header = false;
   struct audio_buf_desc_s desc;
   int16_t *s;
   const int16_t *m;
   size_t i;
 
   pthread_mutex_lock(&g_pl.lock);
-  mono_bytes = ring_take(mono, g_pl.apb_bytes / 4u);
+
+  if (g_pl.header_pending)
+    {
+      mono_bytes = ring_take(mono, g_pl.apb_bytes / 4u);
+    }
+  else
+    {
+      /* Leave room for the header; whole samples only. */
+
+      size_t cap = (g_pl.apb_bytes - VG_PCM_WAV_HDR) / 4u;
+      cap &= ~(size_t)1u;
+      mono_bytes = ring_take(mono, cap);
+    }
+
+  if (mono_bytes == 0)
+    {
+      pthread_mutex_unlock(&g_pl.lock);
+      return 0;
+    }
+
+  with_header = !g_pl.header_pending;
+  g_pl.header_pending = true;
   final = g_pl.eof && (g_pl.wr == g_pl.rd);
   pthread_mutex_unlock(&g_pl.lock);
   sem_post(&g_pl.activity);
 
-  if (mono_bytes == 0)
-    {
-      return 0;
-    }
-
   samples = mono_bytes / 2u;
   s = (int16_t *)(void *)apb->samp;
   m = (const int16_t *)(const void *)mono;
+
+  if (with_header)
+    {
+      vg_pcm_wav_header_stereo(apb->samp, 16000, 0x3ffffff0u);
+      s = (int16_t *)(void *)(apb->samp + VG_PCM_WAV_HDR);
+    }
 
   for (i = 0; i < samples; i++)
     {
@@ -207,7 +243,8 @@ static int fill_and_enqueue(struct ap_buffer_s *apb)
       s[2 * i + 1] = m[i];
     }
 
-  apb->nbytes = (apb_samp_t)(samples * 4u);
+  apb->nbytes = (apb_samp_t)((size_t)samples * 4u +
+                              (with_header ? VG_PCM_WAV_HDR : 0u));
   apb->curbyte = 0;
   apb->flags = final ? AUDIO_APB_FINAL : 0;
 
@@ -589,7 +626,13 @@ static void *vg_tts_thread(void *arg)
             }
         }
 
-      if (outstanding == 0)
+      if (g_pl.stats.failed)
+        {
+          /* The enqueue failed; do not dress that up as completion. */
+
+          running = false;
+        }
+      else if (outstanding == 0)
         {
           complete = true;
           running = false;
@@ -697,7 +740,7 @@ static void *vg_tts_thread(void *arg)
                   /* Hold the buffer: when every outstanding buffer has
                    * come back, everything enqueued has been played. */
 
-                  if (outstanding == 0)
+                  if (outstanding == 0 && !g_pl.stats.failed)
                     {
                       complete = true;
                     }
@@ -838,6 +881,7 @@ int vg_tts_player_start(uint32_t prebuf_ms, const volatile int *cancel,
   g_pl.wr = 0;
   g_pl.eof = false;
   g_pl.abort_req = false;
+  g_pl.header_pending = false;
   g_pl.thread_done = false;
   g_pl.thread_valid = false;
   memset(&g_pl.stats, 0, sizeof(g_pl.stats));

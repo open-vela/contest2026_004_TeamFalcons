@@ -33,6 +33,12 @@ struct vg_pcm_wav
 void vg_pcm_wav_header_mono(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
                              uint32_t data_bytes);
 
+/* Same for stereo.  The pcm_decode wrapper on /dev/audio/pcm0p parses a
+ * WAV header out of the first enqueued buffer to configure the codec,
+ * so the streaming player prefixes its stream with one. */
+void vg_pcm_wav_header_stereo(uint8_t hdr[VG_PCM_WAV_HDR], uint32_t rate,
+                              uint32_t data_bytes);
+
 /* Parse the RIFF header and locate the data chunk.  Returns 0 or -errno.
  * Only PCM 16-bit files are accepted by the callers here. */
 int vg_pcm_wav_probe(const char *path, struct vg_pcm_wav *out);

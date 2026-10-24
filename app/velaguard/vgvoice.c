@@ -392,10 +392,10 @@ int main(int argc, FAR char *argv[])
 
       (void)vg_tts_player_wait(info.audio_bytes / 32u + 10000u, &st);
       printf("vgvoice: ttss played=%u underruns=%u stall_ms=%u "
-             "restarts=%u complete=%u\n",
+             "restarts=%u complete=%u failed=%u err=%d\n",
              (unsigned)st.played_bytes, (unsigned)st.underruns,
              (unsigned)st.stall_ms, (unsigned)st.restarts,
-             st.complete ? 1u : 0u);
+             st.complete ? 1u : 0u, st.failed ? 1u : 0u, st.err);
 
       return (rc == VG_VC_OK && st.complete) ? EXIT_SUCCESS : EXIT_FAILURE;
     }
@@ -459,10 +459,11 @@ int main(int argc, FAR char *argv[])
       (void)vg_tts_player_wait(pushed / 32u + 10000u, &st);
 
       printf("vgvoice: streamtest pushed=%u played=%u underruns=%u "
-             "stall_ms=%u restarts=%u complete=%u\n",
+             "stall_ms=%u restarts=%u complete=%u failed=%u err=%d\n",
              (unsigned)pushed, (unsigned)st.played_bytes,
              (unsigned)st.underruns, (unsigned)st.stall_ms,
-             (unsigned)st.restarts, st.complete ? 1u : 0u);
+             (unsigned)st.restarts, st.complete ? 1u : 0u,
+             st.failed ? 1u : 0u, st.err);
 
       return st.complete ? EXIT_SUCCESS : EXIT_FAILURE;
     }

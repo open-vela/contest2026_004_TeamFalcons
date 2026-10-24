@@ -212,8 +212,9 @@ test_voice_pcm: test_voice_pcm.c ../vg_voice_pcm.c ../vg_voice_pcm.h
 # --wrap=ioctl/open/close and the stub nuttx/audio/audio.h in stubs/.
 
 test_tts_player: test_tts_player.c ../vg_tts_player.c ../vg_tts_player.h \
+                 ../vg_voice_pcm.c ../vg_voice_pcm.h \
                  stubs/nuttx/audio/audio.h
-	$(CC) $(CFLAGS) -Istubs -o $@ test_tts_player.c \
+	$(CC) $(CFLAGS) -Istubs -o $@ test_tts_player.c ../vg_voice_pcm.c \
 	  -Wl,--wrap=ioctl,--wrap=open,--wrap=close -lrt
 
 test_voice_intent: test_voice_intent.c ../vg_voice_intent.c ../vg_voice_intent.h \
