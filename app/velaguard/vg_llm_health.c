@@ -29,6 +29,10 @@
 #include "vg_agent_round.h"
 #include "vg_llm_health.h"
 
+#ifdef VG_VOICE_ROUND
+#  include "vg_voice_round.h"
+#endif
+
 #define TAG "vgllm"
 
 /* One probe is bounded well below the interval: a hung endpoint must not
@@ -119,6 +123,21 @@ static void probe_once(void)
     {
       return;
     }
+
+#ifdef VG_VOICE_ROUND
+  /* The voice pipeline makes its own HTTPS calls (ASR, TTS) outside the
+   * agent round channel, so the round-busy check above does not cover
+   * recording through playback.  Skip while any voice phase is active. */
+
+  {
+    static struct vg_voice_ui ui;
+
+    if (vg_voice_round_ui(&ui) && ui.state != VG_VS_IDLE)
+      {
+        return;
+      }
+  }
+#endif
 
   host[0] = '\0';
   path[0] = '\0';
