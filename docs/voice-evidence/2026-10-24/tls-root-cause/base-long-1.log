@@ -1,0 +1,378 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 10:47:12
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.420, +2420)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.430, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.430, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.430, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.430, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.440, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_vgptt: watching /dev/buttons (led=2)
+nuttx_fbdev.c:115
+[User]	(2.450, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.460, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.470, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.470, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.480, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.490, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.490, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.500, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.510, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.510, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.520, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.530, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.530, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.540, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.550, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.550, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.560, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.570, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.570, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.580, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.590, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.600, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.610, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768[)agent] AI Agent - Vela AI Agent starting (build: 2026-10-23 20:47:21)
+
+LE[agent] [boot +10ms] P0: timezone set
+D num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +110ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +210ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +220ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +370ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +380ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +430ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +600ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +710ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +980ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +990ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +1280ms] P
+2026-10-24T10:50:25.8113592+08:00 CMD echo TLSLONG_BEGIN
+echo TLSLONG_BEGIN
+TLSLONG_BEGIN
+nsh> [K
+2026-10-24T10:50:26.1246502+08:00 FIXTURE_MODE critical
+
+
+2026-10-24T10:50:32.1578021+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838890
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:32.5762301+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838890
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:32.9956458+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838890
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:33.4075677+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838891
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:33.8336143+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838891
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:34.2582577+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838892
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:34.6608765+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838892
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:35.0847082+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838892
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:35.4888237+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838893
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:35.9187446+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838893
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:36.3477561+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838894
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:36.7598126+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838894
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:37.1685193+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838895
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:37.5972753+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838895
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:38.0079711+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838895
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:38.4167520+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838896
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:38.8195009+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838896
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:39.2442829+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838897
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:39.6493863+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838897
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:40.0764258+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838897
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:40.5073552+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838898
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:40.9096000+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838898
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:41.3141760+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838899
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:41.7292432+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838899
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:42.1603842+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838900
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:42.5750040+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838900
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:43.0027750+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838900
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:43.4064264+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838901
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:43.8223605+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838901
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:44.2227531+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838902
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:44.6464716+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838902
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:45.0488066+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838902
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:45.4680333+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838903
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:45.8759235+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838903
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:46.3067804+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838904
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:46.7119743+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838904
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=20
+nsh> [K
+2026-10-24T10:50:47.1150858+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838904
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:47.5335679+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838905
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:47.9452969+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838905
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:48.3469991+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838906
+[vela_tls] net_connect api.xiaomimimo.com:443 ret=0x1
+vgvoice: netprobe rc=-1 status=0 bytes=0 ms=10
+nsh> [K
+2026-10-24T10:50:48.7598601+08:00 FIXTURE_MODE normal
+
+2026-10-24T10:50:48.7603859+08:00 CMD echo TLSLONG_END
+echo TLSLONG_END
+TLSLONG_END
+nsh> [K

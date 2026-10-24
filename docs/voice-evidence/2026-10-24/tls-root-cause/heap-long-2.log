@@ -1,0 +1,35 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T10:47:41.2359366+08:00 CMD echo TLSLONG_BEGIN
+echo TLSLONG_BEGIN
+TLSLONG_BEGIN
+nsh> [K
+2026-10-24T10:47:41.5599728+08:00 FIXTURE_MODE critical
+
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool 
+2026-10-24T10:47:47.5911312+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+ovgvoice netprobe utput pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adc8cd500000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838869
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[trace:6adc8cd500000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=0(fused) setup=10 tls=na send=na ttfb=na body=na pool=na build=10 parse=na http=20 backoff=0 total=30 req=7871 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed (iter 0)
+[trace:6adc8cd500000000] iter=0 tool=(none) latency=30ms llm=fail backend=0
+[trace:6adc8cd500000000] END status=fail iters=1 tools=0 llm_ms=30 tool_ms=0 elapsed_ms=60 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30ca2032 board=30caca12

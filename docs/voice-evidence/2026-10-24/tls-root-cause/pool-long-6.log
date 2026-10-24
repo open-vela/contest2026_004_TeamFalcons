@@ -1,0 +1,294 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T10:43:54.6111877+08:00 CMD echo TLSLONG_BEGIN
+echo TLSLONG_BEGIN
+TLSLONG_BEGIN
+nsh> [K
+2026-10-24T10:43:54.9922002+08:00 FIXTURE_MODE critical
+
+
+2026-10-24T10:44:01.0355213+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838640
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=2790
+nsh> [K
+2026-10-24T10:44:03.8683066+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838643
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1940
+nsh> [K
+2026-10-24T10:44:05.8420099+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838645
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=4350
+nsh> [K
+2026-10-24T10:44:10.2430460+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838649
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1540
+nsh> [K
+2026-10-24T10:44:11.8124621+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838651
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1310
+nsh> [K
+2026-10-24T10:44:13.1576533+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838652
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1270
+nsh> [K
+2026-10-24T10:44:14.4450718+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838653
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1420
+nsh> [KTAIL seen=298 sc=298
+
+2026-10-24T10:44:15.8867615+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838655
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1200
+nsh> [K
+2026-10-24T10:44:17.1074080+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838656
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1220
+nsh> [K
+2026-10-24T10:44:18.3756916+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838657
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1290
+nsh> [K
+2026-10-24T10:44:19.6961425+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838659
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1280
+nsh> [K
+2026-10-24T10:44:21.2239222+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838660
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1290
+nsh> [K
+2026-10-24T10:44:22.5384398+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838661
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1540
+nsh> [K
+2026-10-24T10:44:24.1150397+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838663
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1250
+nsh> [K
+2026-10-24T10:44:25.3977665+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838664
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1230
+nsh> [K
+2026-10-24T10:44:26.6487407+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838665
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1270
+nsh> [K
+2026-10-24T10:44:27.9476606+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838667
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1420
+nsh> [K
+2026-10-24T10:44:29.3865987+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838668
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1230
+nsh> [K
+2026-10-24T10:44:30.6416393+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838669
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1180
+nsh> [K
+2026-10-24T10:44:31.8491487+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838671
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1280
+nsh> [K
+2026-10-24T10:44:33.1676263+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838672
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1400
+nsh> [K
+2026-10-24T10:44:34.6124089+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838673
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1170
+nsh> [K
+2026-10-24T10:44:35.8137335+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838675
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1260
+nsh> [K
+2026-10-24T10:44:37.1264191+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838676
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1260
+nsh> [K
+2026-10-24T10:44:38.4191283+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838677
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1370
+nsh> [K
+2026-10-24T10:44:39.8227545+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838679
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1220
+nsh> [K
+2026-10-24T10:44:41.0799013+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838680
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1210
+nsh> [K
+2026-10-24T10:44:42.3219750+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838681
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1270
+nsh> [K
+2026-10-24T10:44:43.6216652+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838682
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1600
+nsh> [K
+2026-10-24T10:44:45.2596601+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838684
+[vela_tls] TLS pool exhausted (need 288, used 32928 peak 62024)
+[vela_tls] TLS pool exhausted (need 288, used 33112 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=1 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1050
+nsh> [K
+2026-10-24T10:44:46.3356083+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838685
+[vela_tls] TLS pool exhausted (need 552, used 32384 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 32384 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 32568 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=2 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1020
+nsh> [K
+2026-10-24T10:44:47.3973981+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838686
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1270
+nsh> [K
+2026-10-24T10:44:48.6880801+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838687
+[vela_tls] TLS pool exhausted (need 552, used 32384 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31816 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31440 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=3 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1010
+nsh> [K
+2026-10-24T10:44:49.7256422+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838688
+[vela_tls] TLS pool exhausted (need 560, used 31256 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31256 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31440 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=4 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1020
+nsh> [K
+2026-10-24T10:44:50.9074040+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838690
+[vela_tls] TLS pool exhausted (need 560, used 31256 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31256 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 31440 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=5 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=780
+nsh> [K
+2026-10-24T10:44:51.7560937+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838691
+[vela_tls] TLS pool exhausted (need 552, used 29936 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 30120 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=6 ret=-0x4290 host=api.xiaomimimo.com cert=none:- in_msg=300 rx=3214 tx=273 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1400
+nsh> [K
+2026-10-24T10:44:53.3419125+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838692
+[vela_tls] TLS pool exhausted (need 552, used 30424 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 30424 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 30608 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=7 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1320
+nsh> [K
+2026-10-24T10:44:54.6901608+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838693
+[vela_tls] TLS pool exhausted (need 552, used 29904 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 29904 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 30088 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=8 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1420
+nsh> [K
+2026-10-24T10:44:56.1371251+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792838695
+[vela_tls] TLS pool exhausted (need 552, used 29904 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 29904 peak 62024)
+[vela_tls] TLS pool exhausted (need 552, used 30088 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=9 ret=-0x4290 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1290
+nsh> [K
+2026-10-24T10:44:57.4672531+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792838696
+[vela_tls] TLS pool exhausted (need 560, used 29368 peak 62024)
+[vela_tls] TLS pool exhausted (need 560, used 29552 peak 62024)
+[vela_tls] ssl_handshake ret=-0x4290: RSA - The public key operation failed : BIGNUM - Memory allocation failed
+[vela_tls] FORENSIC seq=10 ret=-0x4290 host=api.xiaomimimo.com cert=none:- in_msg=300 rx=3214 tx=273 rxAB=match canary=ok
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=1520
+nsh> [K
+2026-10-24T10:44:59.0249150+08:00 FIXTURE_MODE normal
+
+2026-10-24T10:44:59.0249150+08:00 CMD echo TLSLONG_END
+echo TLSLONG_END
+TLSLONG_END
+nsh> [K
