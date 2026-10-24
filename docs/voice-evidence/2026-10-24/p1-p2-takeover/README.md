@@ -35,6 +35,13 @@ ST [ES0392 Rev15，2.6.4](https://www.st.com/resource/en/errata_sheet/es0392-stm
 
 这些证据支持 FMC 非对齐读取是所捕获 -0x4380 的根因；没有证据继续将渲染越界、音频 DMA 或未知堆写者写成该样本的既定根因。少量通过样本不替代长期稳定性测试。
 
+独立佐证（原排查会话的两份失败转储）：`../tls-root-cause/pull-dump0.log` 与
+`pull-dump-p2b.log` 记录的 in_msg 地址 0xd027efc5 / 0xd02a11b5 均为奇地址
+（in_msg = in_buf+13 构造性为奇，位于 SDRAM FMC 区），server_random 的复制源
+恰好落在非对齐地址上，与 ES0392 机制直接吻合。这也解释了原取证链的盲点：双副本
+捕获与 in_msg 比对只能证明源完好，被污染的 randbytes 在 mbedtls 私有结构内、
+恰是无法转储的唯一一环；copy-probe 在 memcpy 返回后立即比对源/目标补上了这一环。
+
 ## 已完成的阶段验证
 
 `final-cloexec-accept.log` 对应 write-through 尚未更改、其余修复已完成的镜像：

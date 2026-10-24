@@ -65,6 +65,10 @@
 | 快速新建连接第 7/8 次握手 send 立即 ENOTCONN | NuttX TCP poll 对 SYN_SENT 误报 POLLOUT（无写缓冲时 cansend 恒真） | nuttx `5454419b235` + ai_agent `67e8b14`（双层） |
 
 400 的旧密钥推断与 TLS 的未知堆写者假设均已被证据撤回，见各证据 README 的接手复核更新。
+TLS 根因另有独立佐证：原排查会话两份失败转储（`../tls-root-cause/pull-dump0.log`、
+`pull-dump-p2b.log`）的 in_msg 地址均为奇地址（0xd027efc5 / 0xd02a11b5，
+in_buf+13 构造性为奇），复制源恰好非对齐，与 ES0392 机制吻合；当时无法转储的
+mbedtls 私有 randbytes 正是损坏所在环节，copy-probe 在 memcpy 后立即比对补齐了判决。
 
 ## 五、残留限制与未覆盖范围
 
