@@ -1,0 +1,144 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+2026-10-24T10:16:52.5029356+08:00 CMD echo TLSLONG_BEGIN
+echo TLSLONG_BEGIN
+TLSLONG_BEGIN
+nsh> [K
+2026-10-24T10:16:52.8109556+08:00 FIXTURE_MODE critical
+
+[vgadvice] asked for 1 alarms req=2
+[vgagent] round submitted: 745 bytes
+[agent] Processing message from local_client:velaguard:2
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adc859a35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7308 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837018
+[agent] Dispatching response → local_client:velaguard:2
+
+2026-10-24T10:16:58.8420788+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837018
+[vela_tls] TLS pool exhausted (need 1872, used 73224 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:16:59.2578516+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837018
+[vela_tls] TLS pool exhausted (need 16792, used 63768 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=240
+nsh> [K
+2026-10-24T10:16:59.6712340+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837019
+[vela_tls] TLS pool exhausted (need 16792, used 63912 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:17:00.0827513+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792837019
+[vela_tls] TLS pool exhausted (need 16792, used 63720 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=70
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-24T10:17:00.4970560+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837020
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:17:00.9108229+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837020
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=50
+nsh> [K
+2026-10-24T10:17:01.3260962+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837021
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:17:01.7574214+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792837021
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=60
+nsh> [K
+2026-10-24T10:17:02.1722720+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837021
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:17:02.6007814+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837022
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K
+2026-10-24T10:17:03.0162662+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837022
+[vela_tls] TLS pool exhausted (need 16792, used 61248 peak 73224)
+[vela_tls] ssl_setup ret=0x7f00
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=40
+nsh> [K[llm] Resp bytes=899 text=0 reasoning=149 toolargs=71 calls=2 finish=tool_calls tokens=2068/83/2151
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adc859a35c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=1430
+2026-10-24T10:17:03.4575404+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+ vgvoice netprobe send=70 ttfb=na body=3000 pool=na build=10 parse=0 http=4540 backoff=0 total=4560 req=7308 resp=899 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adc859a35c3b13a] iter=0 tool=read_file latency=4580ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 110 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1260 ms
+[trace:6adc859a35c3b13a] tool_iter=0 tool=read_file tool_ms=1260 out=1874 ok=1
+[trace:6adc859a35c3b13a] tool_iter=0 tool=vg_point_read tool_ms=110 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9803 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837024
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=708 text=0 reasoning=138 toolargs=2 calls=1 finish=tool_calls tokens=2736/46/2782
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adc859a35c3b13a] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=1300 send=70 ttfb=na body=1570 pool=na build=10 parse=0 http=3000 backoff=0 total=3030 req=9803 resp=708 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6adc859a35c3b13a] iter=1 tool=vg_run_report latency=3040ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 571 bytes, 100 ms
+[trace:6adc859a35c3b13a] tool_iter=1 tool=vg_run_report tool_ms=100 out=571 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10619 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792837027
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=981 text=0 reasoning=26 toolargs=369 calls=1 finish=tool_calls tokens=3055/149/3204
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adc859a35c3b13a] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=1150 send=60 ttfb=na body=3330 pool=na build=10 parse=0 http=4590 backoff=0 total=4610 req=10619 resp=981 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adc859a35c3b13a] iter=2 tool=write_file latency=4630ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30cb5a26\nreq=2\nn=1\n[1]\nid=temp\nepoch=2\nsev=crit\nunres=0\nsum=温度超临界，建议现场核查散热\nev=实测36度高于临界阈值35度，本次上电已两次越限，通信100%正常\natt=关注温度是否持续攀升及空调制冷运行状态，防止设备过热\nEND\n"}
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (289 bytes)
+[agent] Tool write_file result: 63 bytes, 1900 ms
+[trace:6adc859a35c3b13a] tool_iter=2 tool=write_file tool_ms=1900 out=63 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6adc859a35c3b13a] END status=ok iters=3 tools=3 llm_ms=12250 tool_ms=3370 elapsed_ms=15940 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 1 entries file_req=2 live_req=2
+[vgadvice] round ended, advice for this alarm set kept

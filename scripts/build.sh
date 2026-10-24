@@ -13,6 +13,8 @@
 #     bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-lvgl 发布配置
 #     bash scripts/build.sh emmc --clean  # eMMC bring-up 预设
 #     bash scripts/build.sh --clean --debug
+#     bash scripts/build.sh --tls-forensics  # 诊断镜像：TLS 握手失败取证（不进发布配置）
+#     bash scripts/build.sh --tls-pool       # 诊断镜像：mbedTLS 静态池 A/B 实验（不进发布配置）
 #
 # 产物：
 #   nuttx/nuttx.hex、nuttx/nuttx.bin
@@ -35,6 +37,8 @@ DEBUG=0
 SYNC_UPSTREAM=0
 HMI_PERF=0
 VOICE_FIXTURE=0
+TLS_FORENSICS=0
+TLS_POOL=0
 
 # shellcheck source=vg_mainline_target.sh
 . "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
@@ -55,6 +59,12 @@ for arg in "$@"; do
       ;;
     --voice-fixture)
       VOICE_FIXTURE=1
+      ;;
+    --tls-forensics)
+      TLS_FORENSICS=1
+      ;;
+    --tls-pool)
+      TLS_POOL=1
       ;;
     net|min|lvgl|velaguard|velaguard-lvgl|ai-probe|emmc)
       TARGET="$(vg_normalize_build_target "$arg")"
@@ -287,6 +297,31 @@ if [ "$VOICE_FIXTURE" = 1 ]; then
   kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_VOICE_TEST_FIXTURE
   make -C "$NUTTX_ROOT" olddefconfig
   grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config" || exit 1
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
+fi
+
+if [ "$TLS_FORENSICS" = 1 ]; then
+  echo "[build] diagnostic image: enabling TLS handshake forensics capture"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_AI_AGENT_TLS_FORENSICS
+  make -C "$NUTTX_ROOT" olddefconfig
+  grep -q '^CONFIG_AI_AGENT_TLS_FORENSICS=y$' "$NUTTX_ROOT/.config" || exit 1
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
+fi
+
+if [ "$TLS_POOL" = 1 ]; then
+  echo "[build] diagnostic image: enabling dedicated TLS allocation pool"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_AI_AGENT_TLS_POOL
+  # 16KB content buffers need ~73KB per concurrent pair and overflow the
+  # 100KB static pool during advice+probe concurrency; 8KB keeps the full
+  # MiMo chain (4.3KB) and HTTP chunked streaming intact for the A/B.
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --set-val CONFIG_MBEDTLS_SSL_IN_CONTENT_LEN 8192
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --set-val CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN 8192
+  make -C "$NUTTX_ROOT" olddefconfig
+  grep -q '^CONFIG_AI_AGENT_TLS_POOL=y$' "$NUTTX_ROOT/.config" || exit 1
+  grep -q '^CONFIG_MBEDTLS_PLATFORM_MEMORY=y$' "$NUTTX_ROOT/.config" || exit 1
+  # MBEDTLS_PLATFORM_MEMORY 改变 mbedtls 库本身的编译内容；不清旧对象会
+  # 链接不到 mbedtls_platform_set_calloc_free。
+  find "$OPENVELA_ROOT/apps/crypto/mbedtls/mbedtls/library" -name '*.o' -delete 2>/dev/null
   rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 

@@ -1,0 +1,192 @@
+[
+ {
+  "command": "echo TLSBASE_A_BEGIN",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000",
+  "wait_ms": 400,
+  "timeout_ms": 20000,
+  "wait_for": "netprobe rc="
+ },
+ {
+  "command": "echo TLSBASE_A_END",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ }
+]

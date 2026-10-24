@@ -1,0 +1,147 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-24T09:50:11.2966732+08:00 CMD echo TLSBASE_C_BEGIN
+echo TLSBASE_C_BEGIN
+TLSBASE_C_BEGIN
+nsh> [K
+2026-10-24T09:50:11.6216549+08:00 FIXTURE_MODE critical
+
+[vgadvice] asked for 1 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 745 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adc7f5800000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7308 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835416
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-24T09:50:17.6289474+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835417
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1670
+nsh> [K
+2026-10-24T09:50:19.3460458+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835419
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=580
+nsh> [K
+2026-10-24T09:50:19.9594999+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835419
+[llm] Resp bytes=1140 text=0 reasoning=116 toolargs=71 calls=2 finish=tool_calls tokens=2068/112/2180
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6adc7f5800000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=520 send=70 ttfb=na body=3180 pool=na build=0 parse=0 http=4010 backoff=0 total=4020 req=7308 resp=1140 rc=0 status=200 parse_ok=1[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6adc7f5800000000] iter=0 tool=read_file latency=4040ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_point_read
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1260
+nsh> [K[agent] Tool vg_point_reTAIL seen=928 sc=928
+
+ad result: 94 bytes, 1702026-10-24T09:50:21.2423263+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+ ms
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835420
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=250
+nsh> [K
+2026-10-24T09:50:21.6579207+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835421
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 690 ms
+[trace:6adc7f5800000000] tool_iter=0 tool=read_file tool_ms=690 out=1874 ok=1
+[trace:6adc7f5800000000] tool_iter=0 tool=vg_point_read tool_ms=170 out=94 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 9803 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835421
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=420
+nsh> [K
+2026-10-24T09:50:22.1191778+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835421
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[trace:6adc7f5800000000] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=1000 send=na ttfb=na body=na pool=na build=290 parse=na http=1040 backoff=0 total=1340 req=9803 resp=0 rc=-2 status=0 parse_ok=0
+[agent] LLM call failed (iter 1)
+[trace:6adc7f5800000000] iter=1 tool=(none) latency=1340ms llm=fail backend=0
+[trace:6adc7f5800000000] END status=fail iters=2 tools=1 llm_ms=5380 tool_ms=860 elapsed_ms=6210 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30cbfe77 board=30c9a9fc
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1370
+nsh> [K
+2026-10-24T09:50:23.5513985+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835423
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=260
+nsh> [K
+2026-10-24T09:50:23.9727094+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835423
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=240
+nsh> [K
+2026-10-24T09:50:24.3757059+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835424
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=280
+nsh> [K
+2026-10-24T09:50:24.8065227+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835424
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=390
+nsh> [K
+2026-10-24T09:50:25.2409007+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835424
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=270
+nsh> [K
+2026-10-24T09:50:25.6581119+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835425
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=430
+nsh> [K
+2026-10-24T09:50:26.1251902+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835425
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=250
+nsh> [K
+2026-10-24T09:50:26.5550551+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835426
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=240
+nsh> [K
+2026-10-24T09:50:26.9677669+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835426
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+vgvoice: netprobe rc=-2 status=0 bytes=0 ms=250
+nsh> [K
+2026-10-24T09:50:27.3814458+08:00 FIXTURE_MODE normal
+
+2026-10-24T09:50:27.3819715+08:00 CMD echo TLSBASE_C_END
+echo TLSBASE_C_END
+TLSBASE_C_END
+nsh> [K

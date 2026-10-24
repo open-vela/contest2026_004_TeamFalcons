@@ -1,0 +1,191 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+2026-10-24T09:45:12.4852479+08:00 CMD echo TLSBASE_A_BEGIN
+echo TLSBASE_A_BEGIN
+TLSBASE_A_BEGIN
+nsh> [K
+2026-10-24T09:45:12.7773889+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835112
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:13.4981712+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835113
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:14.1878324+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835113
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:14.9080393+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835114
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=650
+nsh> [K
+2026-10-24T09:45:15.5911230+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835115
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:16.2842978+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835115
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=680
+nsh> [K
+2026-10-24T09:45:16.9965561+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835116
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:17.6911145+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835117
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:18.3976150+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835117
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=710
+nsh> [K
+2026-10-24T09:45:19.1540504+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835118
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:19.8329524+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835119
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=650
+nsh> [K
+2026-10-24T09:45:20.5262860+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835120
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=690
+nsh> [K
+2026-10-24T09:45:21.2400931+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835120
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:21.9314399+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835121
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=650
+nsh> [K
+2026-10-24T09:45:22.6159964+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835122
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=710
+nsh> [K
+2026-10-24T09:45:23.3584566+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835122
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=650
+nsh> [K
+2026-10-24T09:45:24.0369079+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835123
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:24.7193626+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835124
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:25.4368369+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835124
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=640
+nsh> [K
+2026-10-24T09:45:26.1263342+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835125
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:26.8443910+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835126
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgtime: synced 2026-10-24 09:45:27
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=680
+nsh> [K
+2026-10-24T09:45:27.5549853+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835127
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:28.2481109+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835127
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=670
+nsh> [K
+2026-10-24T09:45:28.9396339+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835128
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:29.6295613+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835129
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=650
+nsh> [K
+2026-10-24T09:45:30.3256274+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835129
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=710
+nsh> [K
+2026-10-24T09:45:31.0690580+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835130
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=690
+nsh> [K
+2026-10-24T09:45:31.7959491+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835131
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=690
+nsh> [K
+2026-10-24T09:45:32.5391924+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792835132
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=660
+nsh> [K
+2026-10-24T09:45:33.2340603+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792835132
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=720
+nsh> [K
+2026-10-24T09:45:33.9804838+08:00 CMD echo TLSBASE_A_END
+echo TLSBASE_A_END
+TLSBASE_A_END
+nsh> [K

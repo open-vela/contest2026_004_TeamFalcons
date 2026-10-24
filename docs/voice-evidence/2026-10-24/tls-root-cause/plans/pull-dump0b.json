@@ -1,0 +1,12 @@
+[
+ {
+  "command": "cat /data/forensics/tls-0/bundle.b64",
+  "wait_ms": 4500,
+  "timeout_ms": 30000
+ },
+ {
+  "command": "echo PULL2_END",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ }
+]

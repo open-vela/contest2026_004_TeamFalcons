@@ -1,0 +1,13 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+2026-10-24T09:46:00.0790281+08:00 CMD echo TLSBASE_B_REBOOT
+echo TLSBASE_B_REBOOT
+TLSBASE_B_REBOOT
+nsh> [K
+2026-10-24T09:46:00.2841947+08:00 CMD reboot
+reboot
+nsh: reboot: command not found
+nsh> [K
+PRESEED seen=96 hasMarker=False
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes

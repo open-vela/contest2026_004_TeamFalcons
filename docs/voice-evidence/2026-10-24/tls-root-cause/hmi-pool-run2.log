@@ -1,0 +1,232 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 10:04:26
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.500, +2500)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.510, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.520, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.520, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.520, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.520, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.530, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.540, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.550, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.550, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.560, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.570, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.570, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.580, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.590, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.590, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.600, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.610, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.610, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.620, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:278
+[User]	(2.630, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.640, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.640, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.650, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.660, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.660, +0)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.670, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.680, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.690, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED n[uagent] AI Agent - Vela AI Agent starting (build: 2026-1m: 30-23 20:47:21)
+
+Hel[agent] [boot +l10ms] P0: timezone set
+o from openvela contest 2026 team 004!
+vghmi: live ok=14/14 a1=36.0
+[agent] [boot +640ms] P0: storage ready
+[vgadvice] asked for 1 alarms req=1
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +880ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +890ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+vgnet: MQTT broker is not configured
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 745 bytes
+[memory] Memory store initialized successfully
+[agent] [boot +1180ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +1190ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +1300ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +2020ms] P3: llm_proxy_init (rc=0)
+vghmi: live ok=14/14 a1=36.0
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +2700ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +3400ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +3410ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/a
+2026-10-24T10:15:43.1928073+08:00 CMD echo TLSBASE_C_BEGIN
+echo TLSBASE_C_BEGIN
+TLSBASE_C_BEGIN
+nsh> [K
+2026-10-24T10:15:43.5014150+08:00 FIXTURE_MODE critical
+
+vgtime: synced 2026-10-24 10:15:49
+
+2026-10-24T10:15:49.5115630+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836949
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1980
+nsh> [K
+2026-10-24T10:15:51.5277578+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836951
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1950
+nsh> [K
+2026-10-24T10:15:53.5034054+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792836953
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1970
+nsh> [K
+2026-10-24T10:15:55.5108668+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836955
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1920
+nsh> [K
+2026-10-24T10:15:57.4920966+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836957
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1910
+nsh> [K
+2026-10-24T10:15:59.4499819+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792836959
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1790
+nsh> [K
+2026-10-24T10:16:01.2639570+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836960
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1960
+nsh> [K
+2026-10-24T10:16:03.2574515+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836962
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1970
+nsh> [K
+2026-10-24T10:16:05.2888371+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792836965
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1970
+nsh> [K
+2026-10-24T10:16:07.2965715+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836967
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=2130
+nsh> [K
+2026-10-24T10:16:09.4691767+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836969
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=2080
+nsh> [K
+2026-10-24T10:16:11.5907590+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792836971
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1950
+nsh> [K
+2026-10-24T10:16:13.5862030+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836973
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1900
+nsh> [K
+2026-10-24T10:16:15.5198165+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792836975
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=2120
+nsh> [K
+2026-10-24T10:16:17.6755675+08:00 CMD vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe api.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=api.xiaomimimo.com, UNIX=1792836977
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=1960
+nsh> [K
+2026-10-24T10:16:19.6778769+08:00 FIXTURE_MODE normal
+
+2026-10-24T10:16:19.6788743+08:00 CMD echo TLSBASE_C_END
+echo TLSBASE_C_END
+TLSBASE_C_END
+nsh> [K
