@@ -1,5 +1,7 @@
 # 写者边界与代码侧排除（2026-10-24 深夜，接 02-ttss-trigger.md）
 
+接手复核更新：本页的写者模型属于历史假设。新取证在 ServerHello 的 memcpy 返回后立即捕获源/目标不一致，并在反汇编中确认编译器生成了对 SDRAM 的非对齐 LDR；与 ST ES0392 2.6.4 对应。分配布局变化足以影响是否触发，L1/L2 二分不能证明存在另一个堆写者。新证据与验证见 [接手报告](../p1-p2-takeover/README.md)。
+
 对端二分结果（contest 7824504，logs/bisect-l1/l2.log，--tls-forensics 叠加）：
 
 - level 1（环 calloc + 线程，零音频 ioctl）：3/3 握手 OK。

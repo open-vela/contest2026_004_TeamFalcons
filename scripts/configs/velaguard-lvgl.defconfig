@@ -130,6 +130,12 @@ CONFIG_NET_ICMP_SOCKET=y
 CONFIG_NET_STATISTICS=y
 CONFIG_NET_SOLINGER=y
 CONFIG_NET_TCP=y
+# MQTT, foreground HTTPS and background HTTPS share this pool. Closed
+# connections retain TIME_WAIT state; eight fixed entries starve reconnects.
+# Grow in bounded batches without changing TCP's close/wait semantics.
+CONFIG_NET_TCP_PREALLOC_CONNS=8
+CONFIG_NET_TCP_ALLOC_CONNS=4
+CONFIG_NET_TCP_MAX_CONNS=32
 CONFIG_NET_UDP=y
 CONFIG_NET_UDP_CHECKSUMS=y
 CONFIG_NSH_ARCHINIT=y

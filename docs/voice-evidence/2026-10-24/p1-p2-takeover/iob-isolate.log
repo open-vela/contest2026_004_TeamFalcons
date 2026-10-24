@@ -1,0 +1,290 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 21:19:48
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.830, +2830)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.840, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.850, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.850, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.850, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.860, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.860, +0)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.870, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:278
+[User]	(2.880, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.890, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.890, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.900, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.900, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.910, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.920, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.920, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.930, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.940, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.940, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.950, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.960, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.960, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.970, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.980, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.980, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.990, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.000, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.010, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.020, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+[vgllm] monitor started, interval=30000 ms
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792876790
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[vgllm] link down: rc=-1 status=0
+vgagent: ai_agent autostart ok (stack=32768)
+LED num: 3
+Hell[o agent] AI Agent - Vela AI Agent starting (fbuild: 2026-10-24 20:42:45)
+rom o[agent] [boot +p10ms] P0: timezone set
+envela contest 2026 team 004!
+[agent] [boot +220ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +360ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +370ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+vgnet: MQTT broker is not configured
+[memory] Memory store initialized successfully
+[agent] [boot +760ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +770ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +880ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1250ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1690ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2200ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2210ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2740ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2740ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2790ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2800ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2810ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2810ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2820ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2830ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2830ms] P5: network_watch thread started (async)
+[agent] [boot +2840ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2840ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.53
+[netmgr] Network connected: 192.168.137.53
+[netmgr] Found iface eth0 addr 192.168.137.53
+[agent] Network connected: 192.168.137.53
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-24T21:21:04.9440544+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128       128         0         0
+nsh> [K
+2026-10-24T21:21:05.1458370+08:00 CMD vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792876799
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 13:21:07 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+vgvoice: netprobe rc=0 status=401 bytes=165 ms=770
+nsh> [K
+2026-10-24T21:21:05.9588833+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128       128         0         0
+nsh> [K
+2026-10-24T21:21:06.1705739+08:00 CMD echo CASE_iob_tts1
+echo CASE_iob_tts1
+CASE_iob_tts1
+nsh> [K
+2026-10-24T21:21:06.3931227+08:00 CMD vgvoice ttss 测试完成
+vgvoice ttss 测试完成
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792876800
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+HARDFAULT: CFSR=00000100 HFSR=40000000 BFAR=00000000 MMFAR=00000000
+HARDFAULT: stacked PC=003f003e LR=003f003e
+dump_assert_info: Current Version: NuttX  0.0.0 cdfd23cdf0b-dirty Oct 24 2026 21:15:03 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: ai_agent process: ai_agent 0x9002d9a9
+up_dump_register: R0: 24004d90 R1: 00000000 R2: 900bd96a  R3: 24004778
+up_dump_register: R4: 2407fc88 R5: 00000003 R6: 900bd96a  R7: 00000000
+up_dump_register: R8: 00000001 R9: 240046f8 R10: 00000006 R11: 3001dee0
+up_dump_register: R12: 00000003 SP: 3001ddc8 LR: 90001b1f  PC: 90001b1f
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stacks: ERROR: Stack pointer is not within the stack
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x3001f2b8
+dump_stackinfo:   size: 00028648
+stack_dump:  30025a44: 24000a10 00001400 00001400 00000000 24058158 24000a10 90044ea1 24058158
+stack_dump:  30025a64: 00001400 00001e00 24058158 3002d448 00001e00 00000000 00002800 00002800
+stack_dump:  30025a84: d02a7070 00003c46 900b58b9 00001560 30025aa8 00001e00 90047123 deadbeef
+stack_dump:  30025aa4: deadbeef 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025ac4: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025ae4: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025b04: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025b24: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025b44: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025b64: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025b84: 00000000 00000000 00000000 0000ffff 00000000 00000000 00000000 00000000
+stack_dump:  30025ba4: ffff0000 0000ffff 0000ffff ffffffff ffffffff 0000ffff 00000000 00000000
+stack_dump:  30025bc4: 0000ffff 0000ffff 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025be4: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  30025c04: 00010000 00010001 00020001 00020002 00020002 00010002 00020002 00020002
+stack_dump:  30025c24: 00020002 00020002 00020002 00030002 00020002 00030002 00020002 00030003
+stack_dump:  30025c44: 00020002 00020001 00020002 00020002 00020002 00010002 00020001 00030002
+stack_dump:  30025c64: 00030003 00030004 00030003 00040003 00030004 00020003 00030003 00030003
+stack_dump:  30025c84: 00040003 00050005 00060005 00060005 00050005 00040004 00040004 00040004
+stack_dump:  30025ca4: 00050004 00050005 00050005 00050005 00040004 00040004 00050004 00050005
+stack_dump:  30025cc4: 00050005 00050006 00060006 00060007 00070007 00070007 00070006 00060007
+stack_dump:  30025ce4: 00070006 00060007 00070006 00070007 00080008 00080009 000a0009 000a0009
+stack_dump:  30025d04: 000a0009 000b000a 000b000c 000c000c 000c000d 000c000c 000e000c 000e000c
+stack_dump:  30025d24: 000c000d 000e000c 000d000c 000d000d 000e000e 000d000f 000d000e 000d000e
+stack_dump:  30025d44: 0010000f 000f000f 00110010 00110011 000f0010 0010000f 00110010 00110011
+stack_dump:  30025d64: 00130013 00110012 00110011 00120010 00110012 00100011 00110010 00110011
+stack_dump:  30025d84: 00110011 00100011 00100010 00120010 00110011 00100011 0010000f 000e000f
+stack_dump:  30025da4: 000f000e 0010000f 00100010 000f0010 000f0010 0010000f 00100010 0011000f
+stack_dump:  30025dc4: 00100010 000f000f 000f000f 000f0010 000f000f 000f0010 00100010 000f000f
+stack_dump:  30025de4: 000e000e 000e000d 000f000e 000f000f 000f0010 000f000e 000f000f 000f000e
+stack_dump:  30025e04: 000c000e 000c000d 000e000d 000c000d 000b000c 0009000a 00090009 000a000b
+stack_dump:  30025e24: 00080008 00080008 00070007 00070005 00040006 00030006 00040005 00050004
+stack_dump:  30025e44: 00040004 00040004 00050004 00030003 00040002 00040005 00040003 00060005
+stack_dump:  30025e64: 00050007 00070007 00060006 00040005 00040005 00030002 00050005 00050005
+stack_dump:  30025e84: 00060007 00070006 00070006 00070007 00050006 00060006 00030004 00000003
+stack_dump:  30025ea4: 00010000 0000ffff fffefffe fffcfffe fffdfffd fffefffe fffdfffd fffcfffd
+stack_dump:  30025ec4: fffcfffd fffcfffe fffbfffb fffefffb fffcfffe fffbfffb fffafffb fff5fff8
+stack_dump:  30025ee4: fff4fff6 fff3fff3 fff2fff2 fff2fff2 fff0fff2 ffefffef ffedfff0 ffecffed
+stack_dump:  30025f04: ffeeffec ffebffee ffeaffea ffebffea ffecffec ffecffea ffedffed ffeaffed
+stack_dump:  30025f24: ffeaffec ffebffeb ffecffea ffebffec ffecffec ffecffec ffeaffec ffeaffe7
+stack_dump:  30025f44: ffe9ffe9 ffebffea ffecffec ffecffec ffefffed ffefffee ffedffee ffeeffed
+stack_dump:  30025f64: ffecffed ffedffed ffeeffee ffedffef ffedffee ffedffee ffedffee ffecffeb
+stack_dump:  30025f84: ffedffed ffeeffee ffedffed ffedffed ffecffee ffedffec ffecffed ffeaffec
+stack_dump:  30025fa4: ffecffeb ffebffeb ffe9ffec ffe8ffe9 ffe7ffe7 ffe9ffe6 ffebffe9 ffe9ffea
+stack_dump:  30025fc4: ffe8ffea ffeaffe7 ffe7ffe8 ffe9ffe6 ffe9ffea ffeaffea ffe7ffe6 ffe9ffe8
+stack_dump:  30025fe4: ffe8ffeb ffedffeb ffedffeb ffecffed ffeeffee fff3fff1 fff5fff4 fff6fff6
+stack_dump:  30026004: fff9fff5 fffbfff7 fffafffc fffeffff 0000fffe 00010003 00040000 00020004
+stack_dump:  30026024: 00040005 000b000b 000c0009 000e000f 000e000d 0014000f 00120012 00140014
+stack_dump:  30026044: 00150013 00140013 00160014 00140018 00170019 001b0016 001b001c 001c0016
+stack_dump:  30026064: 00170018 001e001c 0016001c 00180018 001b001c 001e001b 001a0021 001e001d
+stack_dump:  30026084: 001c0019 001c001b 001a001e 001e001b 001d001f 0021001c 0021001e 001f001c
+stack_dump:  300260a4: 001f0020 00200020 001d0021 001c0022 001c0020 001e001f 0022001d 001f001f
+stack_dump:  300260c4: 001d0020 001d001d 00210020 001c001d 001c0020 001c001f 0020001f 00210020
+stack_dump:  300260e4: 00220020 00200022 00240026 00270024 00270026 00290029 0029002d 002a002a
+stack_dump:  30026104: 002e002d 00310032 00340031 00300034 002f0033 00330030 00300035 00350031
+stack_dump:  30026124: 00330034 00330036 00370034 00360033 00370036 003a003a 003b0038 003a003b
+stack_dump:  30026144: 0039003a 003d003a 003b003d 003b0039 003c003b 003f003e 0040003e 003f0040
+stack_dump:  30026164: 0042003d 00410042 00410042 003e0040 00410040 00400041 003c003d 003e003c
+stack_dump:  30026184: 003f003e 003d003d 003b003e 003b003a 003c003d 003c003d 003b003b 003a0038
+stack_dump:  300261a4: 003a0038 00360038 00390039 0037003b 00330035 00370035 00340035 00310032
+stack_dump:  300261c4: 002f002f 002f0030 002f002f 002f0031 002d002e 002f002d 002f002f 0030002e
+stack_dump:  300261e4: 002e002d 002e002e 0031002e 002e002f 00300031 00350034 00310031 002f0031
+stack_dump:  30026204: 00330031 00340031 00330035 00300033 0032002f 0031002f 002f0030 002d002d
+stack_dump:  30026224: 002f002d 0030002f 002d002e 002c0030 002a002a 0029002a 00280029 0029002b
+stack_dump:  30026244: 00260028 00260025 001f0023 00210022 0022001e 0017001e 001b001c 001d001b
+stack_dump:  30026264: 0018001d 001c001c 001c001b 00190017 0018001c 001a0018 001b0018 001c0018
+stack_dump:  30026284: 001f001d 0018001e 001c001a 001d001c 001c001e 001c001e 001a001b 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x2405ac44      1000       536    53.6%      7.5%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24007598      1976       688    34.8%      0.6%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006d98      1976       728    36.8%      0.0%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38002bf8      8168      1488    18.2%      0.0%   velaguard_app_main 0x9000cbd1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264      1128     9.1%      1.3%   velaguard_app_main 0x90010915 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x900146c1 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       696    34.3%      6.1%   ESP8266 0x9005c705 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024      1072    52.9%      0.0%   netinit 0x9005d25d 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b460      4056       664    16.3%      0.0%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x2406b660     49128       824     1.6%      3.4%   velaguard_app_main 0x900173f9 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ccf0      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x30000040     49104      8968    18.2%      8.2%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3000c030      8168      6080    74.4%      0.0%   vghmi 0x90014f05 0
+dump_task:      14    12 100 RR       pthread -   Waiting Signal     0000000000000000 0x3000e038     16360      4404    26.9%      0.0%   vghmi 0x90042269 0
+dump_task:      15    15 100 RR       Task    -   Waiting Signal     0000000000000000 0x30012070     32696      2344     7.1%      0.0%   ai_agent ai_agent --daemon
+dump_task:      16    15  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x3001b2a8     12264      1760    14.3%      0.0%   ai_agent 0x9002d9a9 0x2407f368
+dump_task:      17    15   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001e2b0      4072       976    23.9%      0.0%   ai_agent 0x90033f9d 0x2407f378
+dump_task:      18    15  50 FIFO     pthread -   Running            0000000000000000 0x3001f2b8     28648      2140     7.4%      0.0%   ai_agent 0x9002d9a9 0x2405b210

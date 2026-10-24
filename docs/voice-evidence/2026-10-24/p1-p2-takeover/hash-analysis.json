@@ -1,0 +1,25 @@
+{
+  "scheme": "rsa_pkcs1",
+  "hash_algorithm": "sha256",
+  "offline_signature_valid": true,
+  "offline_detail": "Verified OK",
+  "receive_copies_match": true,
+  "client_random_matches_wire": true,
+  "server_random_matches_wire": false,
+  "ske_hash_matches_wire": false,
+  "expected_ske_hash": "f6d67ca2959347db2d923b5ed95f2409dd5f8cefa703bdc07a709a907c5f9d4b",
+  "board_ske_hash": "d48e2f9e43eb49d62c6c4975afdd91cdb0322de008a2843f12d3f1cb866ca95c",
+  "wire_server_random": "74f92e7bd9bbc5d1c7f373b563bd2a5d5165349bd5744d7c444f574e47524401",
+  "board_server_random": "2ef92e7bc5bbc5d173f373b52abd2a5d3465349b4d744d7c574f574e44524401",
+  "server_random_differences": [
+    0,
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "hash_matches_board_randoms": true
+}

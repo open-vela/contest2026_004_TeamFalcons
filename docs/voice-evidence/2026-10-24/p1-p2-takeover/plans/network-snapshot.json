@@ -1,0 +1,7 @@
+[
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"cat /proc/net/tcp", "wait_ms":200, "timeout_ms":5000},
+  {"command":"ifconfig", "wait_ms":200, "timeout_ms":5000},
+  {"command":"netstat", "wait_ms":200, "timeout_ms":5000},
+  {"command":"ps", "wait_ms":200, "timeout_ms":5000}
+]

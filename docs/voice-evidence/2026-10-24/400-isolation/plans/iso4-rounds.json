@@ -1,0 +1,18 @@
+[
+ {"command": "", "wait_ms": 4000, "timeout_ms": 8000},
+ {"command": "vgvoice dumpreq 1", "wait_ms": 400, "timeout_ms": 10000},
+ {"command": "echo CASE_r1_anomaly", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round hold on", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round text", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "echo CASE_r2_point", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round hold on", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round text", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice round counts", "wait_ms": 200, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice dumpreq 0", "wait_ms": 400, "timeout_ms": 10000}
+]

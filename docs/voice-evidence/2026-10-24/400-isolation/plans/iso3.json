@@ -1,0 +1,11 @@
+[
+ {"command": "", "wait_ms": 6000, "timeout_ms": 10000},
+ {"command": "ifconfig", "wait_ms": 800, "timeout_ms": 10000},
+ {"command": "vgvoice dumpreq 1", "wait_ms": 400, "timeout_ms": 10000},
+ {"command": "vgvoice asr /data/velaguard/voice/q1.wav", "wait_ms": 2000, "timeout_ms": 45000},
+ {"command": "vgvoice record 4000", "wait_ms": 2000, "timeout_ms": 15000},
+ {"command": "vgvoice wait 40000", "wait_ms": 2000, "timeout_ms": 50000},
+ {"command": "vgvoice round", "wait_ms": 800, "timeout_ms": 12000},
+ {"command": "vgvoice ttss 二分之一的测试文本", "wait_ms": 2000, "timeout_ms": 60000},
+ {"command": "vgvoice dumpreq 0", "wait_ms": 400, "timeout_ms": 10000}
+]

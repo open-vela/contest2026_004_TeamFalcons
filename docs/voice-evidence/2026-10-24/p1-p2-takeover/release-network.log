@@ -1,0 +1,83 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880628
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880659
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 14:24:20 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgllm] link up: rc=0 status=401
+2026-10-24T22:24:19.5346852+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128       128         0         0
+nsh> [K
+2026-10-24T22:24:19.7342020+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 09  68   0 240    0   0      0   192.168.137.64:6767        198.18.0.19:443   
+     2: 09  68   0 240    0   0      0   192.168.137.64:6768        198.18.0.19:443   
+     3: 09  68   0 240    0   0      0   192.168.137.64:6769        198.18.0.19:443   
+     4: 09  68   0 240    0   0      0   192.168.137.64:6770        198.18.0.19:443   
+     5: 09  68   0 240    0   0      0   192.168.137.64:6771        198.18.0.19:443   
+     6: 09  68   0 240    0   0      0   192.168.137.64:6772        198.18.0.19:443   
+     7: 09  68   0 240    0   0      0   192.168.137.64:6773        198.18.0.19:443   
+nsh> [K
+2026-10-24T22:24:19.9981778+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.64 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     072f  05ce  0017  014a
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0004  0004
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         0856  06ff  0009  014e
+  Rexmit     ----  0010  ----  ----
+nsh> [K
+2026-10-24T22:24:20.2203461+08:00 CMD netstat
+netstat
+nsh: netstat: command not found
+nsh> [K
+2026-10-24T22:24:20.4410861+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  18.4% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%   2.5% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000856  43.3%   1.2% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001760  21.5%   4.3% velaguard_app_main 0x9000cc15 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264 0001128   9.1%   3.7% velaguard_app_main 0x90010951 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x900146b9 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000744  36.7%   8.5% ESP8266 0x9006ab91 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   0.0% netinit 0x9006c765 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001048  25.8%   0.0% vgvoice
+   10     3 100 RR       pthread   - Ready              0000000000000000 0049128 0029552  60.1%  10.2% velaguard_app_main 0x900173fd 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0009004  18.3%  38.4% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006288  76.9%   2.3% vghmi 0x90014f01 0
+   14    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0016360 0011264  68.8%   4.6% vghmi 0x90050569 0
+   15    15 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.5% ai_agent ai_agent --daemon
+   16    15  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002d111 0x3800aca8
+   17    15   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000976  23.9%   0.0% ai_agent 0x90033709 0x24058f50
+   18    15  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d111 0x24058f60
+   28    15  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744 0013648  41.6%   0.0% ai_agent 0x9002eda5 0x2407ca88
+   29    15 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001512  18.5%   0.0% ai_agent 0x90070255 0x300373e0
+  116    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0003528  43.1%   3.3% vghmi 0x9001569d 0
+  117    15  60 RR       pthread   - Waiting  Signal    0000000000000000 0016360 0003360  20.5%   0.0% ai_agent 0x90031289 0
+nsh> [KTAIL seen=3060 sc=3060
+

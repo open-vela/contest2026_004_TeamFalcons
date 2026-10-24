@@ -102,6 +102,7 @@ test: test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_age
 	./test_runtime_anomaly
 	./test_voice_session
 	./test_voice_pcm
+	./test_tts_player
 	./test_voice_intent
 	python3 ../../../scripts/voice_test/dns_fixture.py --run ./test_dns_control
 	./test_tls_stream_upload
@@ -116,6 +117,8 @@ test: test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_age
 	./test_context_cache
 	./test_voice_cloud
 	./test_llm_runtime_config
+	./test_llm_stream_prepare
+	./test_tls_socket_ownership
 	./test_voice_scope
 	./test_voice_facts
 	./test_voice_answer
@@ -158,6 +161,8 @@ clean:
 	rm -f test_context_cache
 	rm -f test_voice_cloud
 	rm -f test_llm_runtime_config
+	rm -f test_llm_stream_prepare
+	rm -f test_tls_socket_ownership
 	rm -f test_voice_scope
 	rm -f test_voice_facts
 	rm -f test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles
@@ -238,6 +243,14 @@ test_voice_scope: $(AI_AGENT_ROOT)/tests/test_voice_scope.c $(AI_AGENT_ROOT)/src
 
 test_llm_runtime_config: $(AI_AGENT_ROOT)/tests/test_llm_runtime_config.c $(AI_AGENT_ROOT)/src/llm/llm_proxy.c
 	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../netutils/cjson/cJSON -o $@ $^ -Wl,--gc-sections
+
+test: test_llm_stream_prepare test_tls_socket_ownership
+
+test_llm_stream_prepare: $(AI_AGENT_ROOT)/tests/test_llm_stream_prepare.c $(AI_AGENT_ROOT)/src/llm/llm_proxy.c
+	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../netutils/cjson/cJSON -o $@ $< -Wl,--gc-sections
+
+test_tls_socket_ownership: $(AI_AGENT_ROOT)/tests/test_tls_socket_ownership.c $(AI_AGENT_ROOT)/src/infra/vela_tls.c
+	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../crypto/mbedtls/mbedtls/include -o $@ $< -Wl,--gc-sections
 
 
 test_dns_control: test_dns_control.c $(OPENVELA_ROOT)/nuttx/libs/libc/netdb/lib_dnsquery.c $(OPENVELA_ROOT)/nuttx/include/nuttx/net/dns.h

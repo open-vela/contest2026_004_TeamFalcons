@@ -1,0 +1,176 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6add2fa003cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880544
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=763 text=0 reasoning=33 toolargs=56 calls=2 finish=tool_calls tokens=2362/48/2410
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6add2fa003cd357a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=890 send=100 ttfb=3610 body=0 pool=na build=10 parse=0 http=4700 backoff=0 total=4710 req=7871 resp=763 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6add2fa003cd357a] iter=0 tool=read_file latency=4730ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 564 bytes, 120 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1010 ms
+[trace:6add2fa003cd357a] tool_iter=0 tool=read_file tool_ms=1010 out=1874 ok=1
+[trace:6add2fa003cd357a] tool_iter=0 tool=vg_run_report tool_ms=120 out=564 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10838 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880550
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+
+2026-10-24T22:22:41.3446197+08:00 CMD echo CASE_hash1
+echo CASE_hash1
+CASE_hash1
+nsh> [K
+2026-10-24T22:22:41.4773977+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880562
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=1220 send=330 ttfb=660 body=2650 http=4890
+[vgvoice] tts_blocks n=4 first_line=670 first_pcm=980 blocks=980,2020,2270,3210 last=3210 bytes=61440
+vgvoice: ttss rc=ok status=200 pcm=61440 ms=4910 partial=0
+vgvoice: ttss played=81920 underruns=1 stall_ms=540 restarts=1 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22000 headroom=10696
+nsh> [K
+2026-10-24T22:22:46.8211356+08:00 CMD echo CASE_hash2
+echo CASE_hash2
+CASE_hash2
+nsh> [K
+2026-10-24T22:22:46.9494952+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880568
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=1180 send=130 ttfb=400 body=2400 http=4160
+[vgvoice] tts_blocks n=4 first_line=410 first_pcm=800 blocks=800,1110,1900,2780 last=2780 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=4170 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=1230 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22008 headroom=10688
+nsh> [K
+2026-10-24T22:22:51.9465572+08:00 CMD echo CASE_hash3
+echo CASE_hash3
+CASE_hash3
+nsh> [K
+2026-10-24T22:22:52.0626161+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880573
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[vgvoice] tts phases dns=20 tls=1140 send=130 ttfb=570 body=2490 http=4360
+[vgvoice] tts_blocks n=4 first_line=580 first_pcm=830 blocks=830,1110,2040,3050 last=3050 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=4370 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=1450 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22000 headroom=10696
+nsh> [K
+2026-10-24T22:22:57.2996945+08:00 CMD echo CASE_hash4
+echo CASE_hash4
+CASE_hash4
+nsh> [K
+2026-10-24T22:22:57.4073450+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880578
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=4696 text=0 reasoning=2166 toolargs=1824 calls=1 finish=tool_calls tokens=3220/1332/4552
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add2fa003cd357a] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=760 send=120 ttfb=8060 body=21620 pool=na build=10 parse=30 http=30750 backoff=0 total=30790 req=10838 resp=4696 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6add2fa003cd357a] iter=1 tool=write_file latency=30840ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30cb5d53\nreq=1\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=温度验收点随总线离线，先修通信\nev=总线成功0%（0/76）全部超时，同批8点同时离线1分37秒\natt=检查总线接线、从站1地址与波特率是否一致\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=湿度点无有效数据，暂不可用\nev=总线成功0%（0/76）请求全部超时，湿度已离线\natt=通�
+[tools] Executing tool: write_file
+[vgvoice] tts phases dns=20 tls=1200 send=130 ttfb=560 body=1810 http=3730
+[vgvoice] tts_blocks n=4 first_line=560 first_pcm=750 blocks=750,1160,1720,2360 last=2360 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3750 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=730 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21724 headroom=10972
+nsh> [K
+2026-10-24T22:23:01.8510731+08:00 CMD echo CASE_hash5
+echo CASE_hash5
+CASE_hash5
+nsh> [K
+2026-10-24T22:23:01.9760684+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880583
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1688 bytes)
+[agent] Tool write_file result: 64 bytes, 2670 ms
+[trace:6add2fa003cd357a] tool_iter=1 tool=write_file tool_ms=2670 out=64 ok=1
+[agent] Local tool shortcut: skip LLM r[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+ound
+[trace:6add2fa003cd357a] END status=ok iters=2 tools=2 llm_ms=35570 tool_ms=3800 elapsed_ms=39830 backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=1 live_req=1
+[vgadvice] round ended, advice for this alarm set kept
+[vgvoice] tts phases dns=20 tls=1200 send=340 ttfb=450 body=2780 http=4820
+[vgvoice] tts_blocks n=4 first_line=460 first_pcm=610 blocks=610,1120,1710,3220 last=3220 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=4840 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=1570 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21724 headroom=10972
+nsh> [K
+2026-10-24T22:23:07.5803468+08:00 CMD echo CASE_hash6
+echo CASE_hash6
+CASE_hash6
+nsh> [K
+2026-10-24T22:23:07.7028560+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880588
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=1220 send=120 ttfb=290 body=2890 http=4570
+[vgvoice] tts_blocks n=4 first_line=300 first_pcm=620 blocks=620,1290,1790,2890 last=2890 bytes=61440
+vgvoice: ttss rc=ok status=200 pcm=61440 ms=4580 partial=0
+vgvoice: ttss played=81920 underruns=2 stall_ms=1050 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21748 headroom=10948
+nsh> [K
+2026-10-24T22:23:12.6877119+08:00 CMD echo CASE_hash7
+echo CASE_hash7
+CASE_hash7
+nsh> [K
+2026-10-24T22:23:12.8008799+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880594
+[vela_tls] controlled send waiting for packet buffers
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880597
+[vela_tls] socket allocation failed errno=12
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[vgllm] link down: rc=-1 status=0
+[vgvoice] tts phases dns=20 tls=1290 send=140 ttfb=490 body=1730 http=3690
+[vgvoice] tts_blocks n=4 first_line=490 first_pcm=620 blocks=630,860,1620,2220 last=2220 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3710 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=900 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21732 headroom=10964
+nsh> [K
+2026-10-24T22:23:17.2150552+08:00 CMD echo CASE_hash8
+echo CASE_hash8
+CASE_hash8
+nsh> [K
+2026-10-24T22:23:17.3285109+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792880598
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[vgvoice] tts phases dns=0 tls=-1 send=-1 ttfb=-1 body=-1 http=20
+vgvoice: ttss rc=net status=0 pcm=0 ms=20 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+vgvoice: ttss stack size=32696 used=11588 headroom=21108
+nsh> [K
+2026-10-24T22:23:17.5608913+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128       128         0         0
+nsh> [K

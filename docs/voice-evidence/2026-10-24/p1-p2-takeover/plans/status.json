@@ -1,0 +1,7 @@
+[
+  {"command":"", "wait_ms":800, "timeout_ms":3000},
+  {"command":"echo TAKEOVER_STATUS", "wait_ms":300, "timeout_ms":5000},
+  {"command":"vgvoice dumpreq 0", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice round status", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice bisect", "wait_ms":200, "timeout_ms":5000}
+]

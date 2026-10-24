@@ -1,0 +1,18 @@
+[
+  {"command":"", "wait_ms":12000, "timeout_ms":15000},
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice netprobe token-plan-cn.xiaomimimo.com 443 /v1/chat/completions 8000", "wait_ms":200, "timeout_ms":12000},
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"echo CASE_iob_tts1", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice ttss 测试完成", "wait_ms":200, "timeout_ms":35000},
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"cat /proc/net/tcp", "wait_ms":200, "timeout_ms":5000},
+  {"command":"echo CASE_iob_tts2", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice ttss 第二次测试完成", "wait_ms":200, "timeout_ms":35000},
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"cat /proc/net/tcp", "wait_ms":200, "timeout_ms":5000},
+  {"command":"echo CASE_iob_tts3", "wait_ms":200, "timeout_ms":5000},
+  {"command":"vgvoice ttss 第三次测试完成", "wait_ms":200, "timeout_ms":35000},
+  {"command":"cat /proc/iobinfo", "wait_ms":200, "timeout_ms":5000},
+  {"command":"cat /proc/net/tcp", "wait_ms":200, "timeout_ms":5000}
+]

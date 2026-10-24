@@ -1,0 +1,61 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+2026-10-24T21:19:36.2002385+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128         1         0         0
+nsh> [K
+2026-10-24T21:19:36.4083777+08:00 CMD cat /proc/net/tcp
+cat /proc/net/tcp
+TCP sl  st flg ref tmr uack nrt   rxsz local_address           remote_address         
+     1: 07  69   1   0    0   0      0   192.168.137.64:6765        198.18.0.19:443   
+nsh> [K
+2026-10-24T21:19:36.6100181+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.64 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     01a4  010e  0016  0080
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0000  0000
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         0225  019d  0008  0080
+  Rexmit     ----  0007  ----  ----
+nsh> [K
+2026-10-24T21:19:36.8127736+08:00 CMD netstat
+netstat
+nsh: netstat: command not found
+nsh> [K
+2026-10-24T21:19:37.0424007+08:00 CMD ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    USED FILLED    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 0000536  53.6%  18.3% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 0000688  34.8%  22.7% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Ready              0000000000000000 0001976 0000816  41.2%   1.1% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136 0001856  22.8%   0.5% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168 0001760  21.5%   5.4% velaguard_app_main 0x9000cbd1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264 0001128   9.1%   0.0% velaguard_app_main 0x90010915 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072 0001552  38.1%   0.0% velaguard_app_main 0x900146c1 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024 0000696  34.3%   0.0% ESP8266 0x9005c705 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024 0001072  52.9%   1.0% netinit 0x9005d25d 0
+    9     9 110 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001064  26.2%   0.0% vgvoice
+   10     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0049128 0043532  88.6%! 10.0% velaguard_app_main 0x900173f9 0
+   11    11  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056 0001040  25.6%   0.0% vgptt
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 0008968  18.2%  33.5% vghmi vghmi
+   13    12 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0006288  76.9%   2.0% vghmi 0x90014f05 0
+   14    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0016360 0004404  26.9%   1.0% vghmi 0x90042269 0
+   15    15 100 RR       Task      - Waiting  Signal    0000000000000000 0032696 0002344   7.1%   0.0% ai_agent ai_agent --daemon
+   16    15  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264 0000912   7.4%   0.0% ai_agent 0x9002d9a9 0x3800aca8
+   17    15   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072 0000992  24.3%   0.0% ai_agent 0x90033f9d 0x2405b210
+   18    15  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648 0001232   4.3%   0.0% ai_agent 0x9002d9a9 0x2405b220
+   28    15  60 FIFO     pthread   - Ready              0000000000000000 0032744 0013488  41.1%   0.0% ai_agent 0x9002f63d 0x3002e2c8
+   29    15 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168 0001512  18.5%   0.0% ai_agent 0x9006f839 0x3003a180
+   86    12 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168 0003528  43.1%   3.0% vghmi 0x9001569d 0
+   90    15  60 RR       pthread   - Waiting  Signal    0000000000000000 0016360 0003360  20.5%   0.0% ai_agent 0x90031b25 0
+nsh> [K

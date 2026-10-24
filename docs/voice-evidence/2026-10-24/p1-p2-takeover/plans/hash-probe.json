@@ -1,0 +1,102 @@
+[
+  {
+    "timeout_ms": 15000,
+    "command": "",
+    "wait_ms": 12000
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash1",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash2",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash3",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash4",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash5",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash6",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash7",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_hash8",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 35000,
+    "command": "vgvoice ttss 语音测试",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "cat /proc/iobinfo",
+    "wait_ms": 200
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "cat /data/forensics/tls-0/meta.txt",
+    "wait_ms": 300
+  },
+  {
+    "timeout_ms": 40000,
+    "command": "cat /data/forensics/tls-0/bundle.b64",
+    "wait_ms": 6500
+  }
+]

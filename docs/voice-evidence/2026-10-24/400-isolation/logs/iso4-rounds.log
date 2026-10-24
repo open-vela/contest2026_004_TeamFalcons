@@ -1,0 +1,137 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875267
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vgllm] link down: rc=-2 status=0
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875298
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875330
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875362
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875393
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[skills] Skills summary: 1086 bytes
+
+2026-10-24T20:57:04.3198060+08:00 CMD vgvoice dumpreq 1
+vgvoice dumpreq 1
+vgvoice: req dump=1
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875425
+nsh> [K
+2026-10-24T20:57:04.7418024+08:00 CMD echo CASE_r1_anomaly
+echo CASE_r1_anomaly
+CASE_r1_anomaly
+nsh> [K
+2026-10-24T20:57:04.9634540+08:00 CMD vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice round ask /data/velaguard/voice/anomaly01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/anomaly01.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875426
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+
+2026-10-24T20:57:05.4984018+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+nsh> [K
+2026-10-24T20:57:06.1464142+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=1550
+[vgvoice] voice_preconnect rc=0 dns=20 tls=1510 ms=1550
+[vgvoice] stage=asr_begin t=930
+[vgvoice] clip_prep src=file bytes=0 ms=0
+[dump:sreq] POST /v1/chat/completions HTTP/1.1\r\nHost: token-plan-cn.xiaomimimo.com\r\nConnection: keep-al
+[dump:sreq] ive\r\nUser-Agent: agent-vela/1.0\r\nContent-Length: 111377\r\nContent-Type: application/json\r
+[dump:sreq] \nAuthorization: **********************************************************\r\nX-Model-Provider
+[dump:sreq] -Id: \xe
+[dump:sreq] \xa
+[dump:sreq] \xb
+[dump:sreq] \x0
+[dump:sreqbody] 7b226d6f64656c223a226d696d6f2d76322e352d617372222c226d6573736167
+[dump:sreqbody] 6573223a5b7b22726f6c65223a2275736572222c22636f6e74656e74223a5b7b
+[dump:sreqbody] 2274797065223a22696e7075745f617564696f222c22696e7075745f61756469
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 12:57:13 GMT
+Content-Length: 0
+Connection: keep-alive
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=-1 tls=-1 send=5040 ttfb=190 body=10 http=5240
+[vgvoice] asr: http 400
+[vgvoice] asr rc=http status=400 req=111377 resp=0 ms=5860
+[vgvoice] stage=asr_end t=7560
+[vgvoice] round_settled gen=2 state=9 failed=0 elapsed_ms=7560
+
+2026-10-24T20:57:13.4895434+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别服务返回错误，请重试
+nsh> [K
+2026-10-24T20:57:13.8105543+08:00 CMD echo CASE_r2_point
+echo CASE_r2_point
+CASE_r2_point
+nsh> [K
+2026-10-24T20:57:14.0111662+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+
+2026-10-24T20:57:14.5139833+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=0
+nsh> [K[vgvoice] stage=asr_begin t=210
+[vgvoice] clip_prep src=file bytes=0 ms=0
+
+2026-10-24T20:57:15.0326094+08:00 CMD vgvoice round hold on
+vgvoice round hold on
+vgvoice: round hold=on requested
+nsh> [K
+PRESEED seen=130 hasMarker=False
+[dump:sreq] POST /v1/chat/completions HTTP/1.1\r\nHost: token-plan-cn.xiaomimimo.com\r\nConnection: keep-al
+[dump:sreq] ive\r\nUser-Agent: agent-vela/1.0\r\nContent-Length: 115429\r\nContent-Type: application/json\r
+[dump:sreq] \nAuthorization: **********************************************************\r\nX-Model-Provider
+[dump:sreq] -Id: \xd
+[dump:sreqbody] 7b226d6f64656c223a226d696d6f2d76322e352d617372222c226d6573736167
+[dump:sreqbody] 6573223a5b7b22726f6c65223a2275736572222c22636f6e74656e74223a5b7b
+[dump:sreqbody] 2274797065223a22696e7075745f617564696f222c22696e7075745f61756469
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 12:57:23 GMT
+Content-Length: 0
+Connection: keep-alive
+Server: MiFE/3.4.34
+X-MiFE-Upstream-Status: 400
+
+
+[vgvoice] asr phases dns=-1 tls=-1 send=6770 ttfb=0 body=20 http=6800
+[vgvoice] asr: http 400
+[vgvoice] asr rc=http status=400 req=115429 resp=0 ms=7550
+[vgvoice] stage=asr_end t=8820
+[vgvoice] round_settled gen=4 state=9 failed=0 elapsed_ms=8820
+[skills] Skills summarTAIL seen=1202 sc=1137
+
+y: 1086 bytes
+2026-10-24T20:57:23.4966804+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+e=识别服务返回错误，请重试
+nsh> [K
+2026-10-24T20:57:23.8246691+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=2 tts=0
+nsh> [K
+2026-10-24T20:57:24.0417638+08:00 CMD vgvoice dumpreq 0
+vgvoice dumpreq 0
+vgvoice: req dump=0
+nsh> [K

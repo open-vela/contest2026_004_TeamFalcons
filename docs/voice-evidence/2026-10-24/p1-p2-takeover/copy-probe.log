@@ -1,0 +1,249 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+vgtime: synced 2026-10-24 21:52:24
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6add28bb00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878779
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=803 text=0 reasoning=70 toolargs=56 calls=2 finish=tool_calls tokens=2362/57/2419
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6add28bb00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=910 send=110 ttfb=2530 body=10 pool=na build=10 parse=0 http=3660 backoff=0 total=3680 req=7871 resp=803 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6add28bb00000000] iter=0 tool=read_file latency=3690ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1089 bytes, 230 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1060 ms
+[trace:6add28bb00000000] tool_iter=0 tool=read_file tool_ms=1060 out=1874 ok=1
+[trace:6add28bb00000000] tool_iter=0 tool=vg_anomaly_read tool_ms=230 out=1089 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11357 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878784
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=698 text=0 reasoning=128 toolargs=2 calls=1 finish=tool_calls tokens=3372/43/3415
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add28bb00000000] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=1780 send=100 ttfb=1940 body=0 pool=na build=10 parse=0 http=3920 backoff=0 total=3930 req=11357 resp=698 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6add28bb00000000] iter=1 tool=vg_run_report latency=3940ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 564 bytes, 60 ms
+[trace:6add28bb00000000] tool_iter=1 tool=vg_run_report tool_ms=60 out=564 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 12165 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878788
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=2972 text=135 reasoning=302 toolargs=1886 calls=1 finish=tool_calls tokens=3684/796/4480
+[llm] Response: 135 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add28bb00000000] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=830 send=150 ttfb=8020 body=8310 pool=na build=10 parse=10 http=17410 backoff=0 total=17440 req=12165 resp=2972 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=135, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6add28bb00000000] iter=2 tool=write_file latency=17460ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30cb9187\nreq=1\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=总线故障导致温度点离线\nev=总线成功0%，超时80次，同批8点同时离线，非单点故障\natt=先查主站与总线接线，勿逐点排查传感器\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=总线故障导致湿度点离线\nev=总线成功0%，超时80次，同批8点同时离线，非单点故障\natt=先查主站与
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1750 bytes)
+[agent] Tool write_file result: 64 bytes, 1550 ms
+[trace:6add28bb00000000] tool_iter=2 tool=write_file tool_ms=1550 out=64 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6add28bb00000000] END status=ok iters=3 tools=3 llm_ms=25090 tool_ms=2900 elapsed_ms=28000 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=1 live_req=1
+[vgadvice] round ended, advice for this alarm set kept
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 21:57:25
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.800, +2800)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.810, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.820, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.820, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.820, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.820, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.830, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.840, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:278
+[User]	(2.850, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.850, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.860, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.870, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.880, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.880, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.890, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.900, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.900, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.910, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.920, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.920, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.930, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.940, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.940, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.950, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.960, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.960, +0)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.970, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.980, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.990, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] AI Agent - Vela AI Agent starting (build: 2026-10-24 21:49:18)
+[agent] [boot +10ms] P0: timezone set
+[agent] [boot +160ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +380ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +390ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+vgnet: MQTT broker is not configured
+[memory] Memory store initialized successfully
+[agent] [boot +820ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +830ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +890ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1230ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1720ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2330ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2340ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2780ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2790ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2840ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2850ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2850ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2860ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2870ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2880ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2880ms] P5: network_watch thread started (async)
+[agent] [boot +2890ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2890ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.245
+[netmgr] Network connected: 192.168.137.245
+[netmgr] Found iface eth0 addr 192.168.137.245
+[agent] Network connected: 192.168.137.245
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-24T22:00:26.4260028+08:00 CMD vgvoice copyprobe
+vgvoice copyprobe
+copyprobe src=0x240574b0 dst=0xd0279198 cases=128 failures=0
+nsh> [K
+2026-10-24T22:00:26.6396775+08:00 CMD vgvoice ttss 复制验证
+vgvoice ttss 复制验证
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792879056
+[vela_tls] forensics capture buffer at SDRAM
+[tls_hash] server_random copy mismatch src=0xd02991b3 dst=0x30014e4c
+[tls_hash] random_copy_source off=0 4d3578deae23de99e8bb289f11480a3df83f45ca47eb5a82444f574e47524401
+[tls_hash] random_copy_destination off=0 783578dede23de9928bb289f0a480a3d453f45ca5aeb5a82574f574e44524401
+[tls_hash] ske_hash off=0 60ffafc0386c0e5364316f16d763c9d0395ba76d03968766a0ca0066cd24be9e
+[tls_hash] client_random off=0 6add29d0a2953a87d8caa65e19d7324d83a59a91cf374841fa9b6a2ad65ac811
+[tls_hash] server_random off=0 783578dede23de9928bb289f0a480a3d453f45ca5aeb5a82574f574e44524401
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vela_tls] FORENSIC seq=0 ret=-0x4380 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+[vgvoice] tts phases dns=50 tls=1060 send=-1 ttfb=-1 body=-1 http=1120
+vgvoice: ttss rc=net status=0 pcm=0 ms=1130 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+vgvoice: ttss stack size=32696 used=12796 headroom=19900
+nsh> [K
+2026-10-24T22:00:27.8144868+08:00 CMD vgvoice ttss 第二次验证
+vgvoice ttss 第二次验证
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792879057
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=940 send=120 ttfb=370 body=1770 http=3240
+[vgvoice] tts_blocks n=4 first_line=370 first_pcm=610 blocks=620,830,1370,2130 last=2130 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3250 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=840 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22016 headroom=10680
+nsh> [K

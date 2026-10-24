@@ -1,0 +1,12 @@
+[
+ {"command": "", "wait_ms": 20000, "timeout_ms": 24000},
+ {"command": "vgvoice dumpreq 0", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice bisect", "wait_ms": 400, "timeout_ms": 10000},
+ {"command": "vgvoice dumpreq 1", "wait_ms": 400, "timeout_ms": 10000},
+ {"command": "vgvoice asr", "wait_ms": 2000, "timeout_ms": 45000},
+ {"command": "vgvoice round", "wait_ms": 2000, "timeout_ms": 60000},
+ {"command": "vgvoice ttss 二分之一的测试文本", "wait_ms": 2000, "timeout_ms": 60000},
+ {"command": "vgvoice dumpreq 0", "wait_ms": 400, "timeout_ms": 10000},
+ {"command": "vgvoice streamtest /data/velaguard/voice/q1.wav", "wait_ms": 2000, "timeout_ms": 60000},
+ {"command": "vgvoice status", "wait_ms": 600, "timeout_ms": 10000}
+]

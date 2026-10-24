@@ -15,6 +15,10 @@
  ****************************************************************************/
 
 #include <nuttx/config.h>
+#ifdef CONFIG_STACK_COLORATION
+#include <nuttx/arch.h>
+#include <nuttx/sched.h>
+#endif
 
 #ifdef CONFIG_VG_VOICE_LOOPBACK
 
@@ -41,19 +45,19 @@
 #include "vg_tts_player.h"
 #include "vg_voice_pcm.h"
 
-/* Off the NSH stack (16 KB would not fit): the ttss feed adapter. */
+/* The diagnostic has one player, so its feed storage can be static. */
 
 static struct
 {
   struct vg_pcm_rs24_16 rs;
-  int16_t out[5472];
+  int16_t out[VG_VC_RS_CHUNK_SAMPLES];
 } g_ttss_feed;
 
 static int vgvoice_ttss_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
 {
   struct vg_pcm_rs24_16 *rs = (struct vg_pcm_rs24_16 *)ctx;
   long n = vg_pcm_rs24_16_feed(rs, pcm24k, bytes,
-                               g_ttss_feed.out, 5472);
+                               g_ttss_feed.out, VG_VC_RS_CHUNK_SAMPLES);
 
   if (n < 0)
     {
@@ -338,6 +342,71 @@ int main(int argc, FAR char *argv[])
       return EXIT_SUCCESS;
     }
 
+  if (strcmp(cmd, "dumpreq") == 0)
+    {
+      /* 诊断：把每次 HTTPS 请求的精确字节（凭据头掩码）打到串口，
+       * 用于板端失败与主机重放的逐字节对照。0=关；1=头+正文前缀
+       * 96 字节；2=头+完整正文 hex。默认关闭。 */
+
+      if (argc < 3)
+        {
+          printf("vgvoice: dumpreq 0|1|2\n");
+          return EXIT_FAILURE;
+        }
+
+      int level = atoi(argv[2]);
+      if (level < 0 || level > 2)
+        {
+          printf("vgvoice: dumpreq level out of range (0..2)\n");
+          return EXIT_FAILURE;
+        }
+
+      agent_http_set_req_dump(level);
+      printf("vgvoice: req dump=%d\n", level);
+      return EXIT_SUCCESS;
+    }
+
+#ifdef CONFIG_AI_AGENT_TLS_FORENSICS
+  if (strcmp(cmd, "copyprobe") == 0)
+    {
+      /* Only this allocation is touched. Large enough to use the external
+       * heap; source and destination are non-overlapping fixed patterns. */
+      uint8_t *block = malloc(524288);
+      static uint32_t source[32] __attribute__((aligned(8)));
+      void *(*volatile copy)(void *, const void *, size_t) = memcpy;
+      unsigned failures = 0;
+      if (block == NULL) return EXIT_FAILURE;
+      for (unsigned i = 0; i < 32; i++)
+        source[i] = (4 * i) | ((4 * i + 1) << 8) |
+                    ((4 * i + 2) << 16) | ((4 * i + 3) << 24);
+      volatile uint32_t *words = (volatile uint32_t *)block;
+      for (unsigned i = 0; i < 32; i++) words[i] = source[i];
+      for (unsigned external = 0; external < 2; external++)
+        for (unsigned sa = 0; sa < 8; sa++)
+          for (unsigned da = 0; da < 8; da++)
+            {
+              const uint8_t *src = external ? block : (const uint8_t *)source;
+              uint8_t *dst = block + 256 + da;
+              volatile uint32_t *clear = (volatile uint32_t *)(block + 256);
+              for (unsigned i = 0; i < 20; i++) clear[i] = 0xa5a5a5a5;
+              copy(dst, src + sa, 64);
+              unsigned errors = 0;
+              for (unsigned i = 0; i < 64; i++)
+                if (((volatile uint8_t *)dst)[i] != i + sa) errors++;
+              if (errors != 0)
+                {
+                  printf("copyprobe ext=%u sa=%u da=%u errors=%u\n",
+                         external, sa, da, errors);
+                  failures++;
+                }
+            }
+      printf("copyprobe src=%p dst=%p cases=128 failures=%u\n",
+             source, block, failures);
+      free(block);
+      return failures == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
+    }
+#endif
+
   if (strcmp(cmd, "prebuf") == 0)
     {
       if (argc >= 3)
@@ -424,6 +493,19 @@ int main(int argc, FAR char *argv[])
              (unsigned)st.played_bytes, (unsigned)st.underruns,
              (unsigned)st.stall_ms, (unsigned)st.restarts,
              st.complete ? 1u : 0u, st.failed ? 1u : 0u, st.err);
+
+#ifdef CONFIG_STACK_COLORATION
+      struct tcb_s *tcb = nxsched_get_tcb(gettid());
+      if (tcb != NULL)
+        {
+          size_t total = tcb->adj_stack_size;
+          size_t highwater = up_check_tcbstack(tcb, total);
+          printf("vgvoice: ttss stack size=%u used=%u headroom=%u\n",
+                 (unsigned)total, (unsigned)highwater,
+                 (unsigned)(total - highwater));
+          nxsched_put_tcb(tcb);
+        }
+#endif
 
       return (rc == VG_VC_OK && st.complete) ? EXIT_SUCCESS : EXIT_FAILURE;
     }

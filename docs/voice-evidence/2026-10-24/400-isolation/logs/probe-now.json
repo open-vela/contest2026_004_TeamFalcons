@@ -1,0 +1,76 @@
+{
+  "utc_window": [
+    "2026-10-24T12:31:43.915696+00:00",
+    "2026-10-24T12:31:57.488906+00:00"
+  ],
+  "endpoint_host": "token-plan-cn.xiaomimimo.com",
+  "asr": {
+    "service": "asr",
+    "status": 200,
+    "wav_bytes": 160044,
+    "transcript": "测试内容：UPS一号机输出电压二百二十伏，点位P零一是否告警？",
+    "dns_ms": 17.8,
+    "tcp_ms": 3.0,
+    "tls_ms": 85.8,
+    "tls_version": "TLSv1.3",
+    "tls_cipher": "TLS_AES_256_GCM_SHA384",
+    "send_ms": 1.1,
+    "ttfb_ms": 765.8,
+    "body_ms": 766.1
+  },
+  "tts": {
+    "service": "tts",
+    "status": 200,
+    "blocks": 6,
+    "first_pcm_ms": 623.4,
+    "last_block_ms": 1009.8,
+    "block_offsets_ms": [
+      623.4,
+      659.8,
+      719.6,
+      780.1,
+      841.0,
+      1009.8
+    ],
+    "pcm_bytes": 99840,
+    "dns_ms": 4.5,
+    "tcp_ms": 2.7,
+    "tls_ms": 72.6,
+    "tls_version": "TLSv1.3",
+    "tls_cipher": "TLS_AES_256_GCM_SHA384",
+    "send_ms": 0.0,
+    "ttfb_ms": 465.5,
+    "body_ms": 1010.1
+  },
+  "llm": {
+    "service": "llm",
+    "status": 200,
+    "first_data": "seen",
+    "dns_ms": 3.5,
+    "tcp_ms": 2.2,
+    "tls_ms": 184.3,
+    "tls_version": "TLSv1.3",
+    "tls_cipher": "TLS_AES_256_GCM_SHA384",
+    "send_ms": 0.0,
+    "ttfb_ms": 2757.4,
+    "body_ms": 9806.4
+  },
+  "keepalive": {
+    "service": "keepalive",
+    "round1": {
+      "status": 200,
+      "shape": "llm",
+      "send_ms": 0.0,
+      "ttfb_ms": 789.0,
+      "body_ms": 789.1
+    },
+    "round2": {
+      "status": 200,
+      "shape": "tts",
+      "send_ms": 0.0,
+      "ttfb_ms": 419.8,
+      "body_ms": 729.0
+    },
+    "reused": true
+  }
+}

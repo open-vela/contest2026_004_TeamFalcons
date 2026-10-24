@@ -806,10 +806,10 @@ static uint32_t vr_stage_agent(const char *text, uint32_t gen)
 
 /* Streaming playback adapter: the cloud sink hands over 24 kHz mono
  * pieces; the incremental resampler turns them into the 16 kHz mono the
- * ring player takes.  One decode chunk is at most VC_PCM_CHUNK bytes
- * (8192 samples in, 5463 out), so this output size never rejects one. */
+ * ring player takes. The shared bound includes the resampler's carry
+ * samples and keeps the adapter off the large-stack failure path. */
 
-#define VR_TTS_FEED_SAMPLES 5472
+#define VR_TTS_FEED_SAMPLES VG_VC_RS_CHUNK_SAMPLES
 
 struct vr_tts_feed
 {

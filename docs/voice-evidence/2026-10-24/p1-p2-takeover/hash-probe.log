@@ -1,0 +1,591 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878239
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 13:44:00 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6add26a603cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878246
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=653 text=0 reasoning=33 toolargs=54 calls=1 finish=tool_calls tokens=2362/37/2399
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add26a603cd357a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=1560 send=260 ttfb=3020 body=0 pool=na build=10 parse=0 http=4960 backoff=0 total=4980 req=7871 resp=653 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6add26a603cd357a] iter=0 tool=read_file latency=4990ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/alarm_interpretation.md"}
+[tools] Executing tool: read_file
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1020 ms
+[trace:6add26a603cd357a] tool_iter=0 tool=read_file tool_ms=1020 out=1874 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10066 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878252
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=1225 text=0 reasoning=651 toolargs=2 calls=1 finish=tool_calls tokens=2943/164/3107
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add26a603cd357a] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=550 send=320 ttfb=6970 body=0 pool=na build=10 parse=0 http=7960 backoff=0 total=7970 req=10066 resp=1225 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6add26a603cd357a] iter=1 tool=vg_run_report latency=7980ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 563 bytes, 100 ms
+[trace:6add26a603cd357a] tool_iter=1 tool=vg_run_report tool_ms=100 out=563 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10873 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878261
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=2465 text=0 reasoning=240 toolargs=1578 calls=1 finish=tool_calls tokens=3375/647/4022
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6add26a603cd357a] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=1170 send=110 ttfb=8090 body=7140 pool=na build=10 parse=0 http=16630 backoff=0 total=16640 req=10873 resp=2465 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6add26a603cd357a] iter=2 tool=write_file latency=16670ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30cb7831\nreq=1\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=先查总线通信再看温度点\nev=总线成功0%（0/84）全超时，非单点故障\natt=查从站1接线、地址与波特率\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=湿度点离线源于总线超时\nev=总线成功0%（0/84）全超时，多点同时离线\natt=通信恢复后再看湿度是否恢复\n[3]\nid=flood\nepoch=1\nsev=
+[tools] Executing tool: write_file
+[skills] Skills summary: 1086 bytes
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1442 bytes)
+[agent] Tool write_file result: 64 bytes, 3350 ms
+[trace:6add26a603cd357a] tool_iter=2 tool=write_file tool_ms=3350 out=64 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6add26a603cd357a] END status=ok iters=3 tools=3 llm_ms=29640 tool_ms=4470 elapsed_ms=34510 backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=1 live_req=1
+[vgadvice] round ended, advice for this alarm set kept
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878302
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 13:45:03 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878334
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 13:45:35 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=t
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 21:48:27
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.750, +2750)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.760, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.770, +10)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.770, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.770, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.770, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.780, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.790, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.800, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.810, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.810, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.820, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.830, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.830, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.840, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.850, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.850, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.860, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.870, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.870, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.880, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.890, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.900, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.900, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.900, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.910, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.920, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.930, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.940, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=327[agent] AI Agent - Vela AI Agent starting (build: 2026-10-24 21:49:186)
+8)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +170ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +230ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +240ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+vgnet: MQTT broker is not configured
+[memory] Memory store initialized successfully
+[agent] [boot +550ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +560ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +690ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1090ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1320ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +2200ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +2220ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +2740ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +2750ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +2780ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +2790ms] P3: heartbeat_init (rc=0)
+[agent] [boot +2800ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +2800ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +2810ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +2820ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +2820ms] P5: network_watch thread started (async)
+[agent] [boot +2830ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +2840ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.33
+[netmgr] Network connected: 192.168.137.33
+[netmgr] Found iface eth0 addr 192.168.137.33
+[agent] Network connected: 192.168.137.33
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-24T21:51:30.3025172+08:00 CMD echo CASE_hash1
+echo CASE_hash1
+CASE_hash1
+nsh> [K
+2026-10-24T21:51:30.4050539+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878518
+[vela_tls] forensics capture buffer at SDRAM
+[tls_hash] ske_hash off=0 d48e2f9e43eb49d62c6c4975afdd91cdb0322de008a2843f12d3f1cb866ca95c
+[tls_hash] client_random off=0 6add27b6a2953a87d8caa65e19d7324d83a59a91cf374841fa9b6a2ad65ac811
+[tls_hash] server_random off=0 2ef92e7bc5bbc5d173f373b52abd2a5d3465349b4d744d7c574f574e44524401
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vela_tls] FORENSIC seq=0 ret=-0x4380 host=token-plan-cn.xiaomimimo.com cert=none:- in_msg=300 rx=4373 tx=283 rxAB=match canary=ok
+[vgvoice] tts phases dns=40 tls=850 send=-1 ttfb=-1 body=-1 http=900
+vgvoice: ttss rc=net status=0 pcm=0 ms=910 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+vgvoice: ttss stack size=32696 used=12788 headroom=19908
+nsh> [K
+2026-10-24T21:51:31.3615171+08:00 CMD echo CASE_hash2
+echo CASE_hash2
+CASE_hash2
+nsh> [K
+2026-10-24T21:51:31.4669547+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878519
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=1240 send=130 ttfb=390 body=1760 http=3550
+[vgvoice] tts_blocks n=4 first_line=390 first_pcm=750 blocks=760,1180,1430,2140 last=2140 bytes=61440
+vgvoice: ttss rc=ok status=200 pcm=61440 ms=3560 partial=0
+vgvoice: ttss played=81920 underruns=1 stall_ms=240 restarts=1 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21728 headroom=10968
+nsh> [K
+2026-10-24T21:51:35.5594702+08:00 CMD echo CASE_hash3
+echo CASE_hash3
+CASE_hash3
+nsh> [K
+2026-10-24T21:51:35.6712840+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878523
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=1320 send=120 ttfb=420 body=1570 http=3480
+[vgvoice] tts_blocks n=4 first_line=430 first_pcm=670 blocks=670,860,1170,1990 last=1990 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3500 partial=0
+vghmi: live ok=0/14 a1=0.0
+vgvoice: ttss played=92160 underruns=1 stall_ms=520 restarts=1 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21732 headroom=10964
+nsh> [K
+2026-10-24T21:51:39.8646874+08:00 CMD echo CASE_hash4
+echo CASE_hash4
+CASE_hash4
+nsh> [K
+2026-10-24T21:51:39.9896568+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878528
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=1050 send=120 ttfb=380 body=1760 http=3350
+[vgvoice] tts_blocks n=4 first_line=380 first_pcm=670 blocks=670,1170,1380,2130 last=2130 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3370 partial=0
+vgvoice: ttss played=92160 underruns=1 stall_ms=290 restarts=1 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21776 headroom=10920
+nsh> [K
+2026-10-24T21:51:44.1326763+08:00 CMD echo CASE_hash5
+echo CASE_hash5
+CASE_hash5
+nsh> [K
+2026-10-24T21:51:44.2577681+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878532
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=1020 send=120 ttfb=540 body=1720 http=3440
+[vgvoice] tts_blocks n=4 first_line=550 first_pcm=640 blocks=640,1000,1490,2250 last=2250 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3460 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=800 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=21724 headroom=10972
+nsh> [K
+2026-10-24T21:51:48.4020090+08:00 CMD echo CASE_hash6
+echo CASE_hash6
+CASE_hash6
+nsh> [K
+2026-10-24T21:51:48.5256599+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878536
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=1140 send=130 ttfb=430 body=1480 http=3220
+[vgvoice] tts_blocks n=4 first_line=430 first_pcm=630 blocks=630,1110,1320,1900 last=1900 bytes=61440
+vgvoice: ttss rc=ok status=200 pcm=61440 ms=3240 partial=0
+vgvoice: ttss played=81920 underruns=1 stall_ms=160 restarts=1 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22000 headroom=10696
+nsh> [K
+2026-10-24T21:51:52.3381851+08:00 CMD echo CASE_hash7
+echo CASE_hash7
+CASE_hash7
+nsh> [K
+2026-10-24T21:51:52.4615273+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878540
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=10 tls=1070 send=130 ttfb=490 body=1960 http=3680
+[vgvoice] tts_blocks n=5 first_line=500 first_pcm=650 blocks=650,1160,1460,1960,2430 last=2430 bytes=76800
+vgvoice: ttss rc=ok status=200 pcm=76800 ms=3690 partial=0
+vgvoice: ttss played=102400 underruns=2 stall_ms=460 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22000 headroom=10696
+nsh> [K
+2026-10-24T21:51:56.6900199+08:00 CMD echo CASE_hash8
+echo CASE_hash8
+CASE_hash8
+nsh> [K
+2026-10-24T21:51:56.8000413+08:00 CMD vgvoice ttss 语音测试
+vgvoice ttss 语音测试
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792878544
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=30 tls=1080 send=130 ttfb=210 body=1980 http=3450
+[vgvoice] tts_blocks n=4 first_line=210 first_pcm=420 blocks=420,870,1370,2180 last=2180 bytes=69120
+vgvoice: ttss rc=ok status=200 pcm=69120 ms=3460 partial=0
+vgvoice: ttss played=92160 underruns=2 stall_ms=850 restarts=2 complete=1 failed=0 err=0
+vgvoice: ttss stack size=32696 used=22008 headroom=10688
+nsh> [K
+2026-10-24T21:52:00.9610741+08:00 CMD cat /proc/iobinfo
+cat /proc/iobinfo
+    ntotal     nfree     nwait nthrottle
+       128       128         0         0
+nsh> [K
+2026-10-24T21:52:01.1873919+08:00 CMD cat /data/forensics/tls-0/meta.txt
+cat /data/forensics/tls-0/meta.txt
+seq 0
+ret -0x4380
+host token-plan-cn.xiaomimimo.com
+time 1792878518
+tls TLSv1.2 (null)
+cert_len 0
+cert_sha256 -
+in_msglen 300
+in_msg_sha256 a37d5b926997f13c834abcdc32839c2103cb9f252d3e3bb24b0d7578c7fe2d20
+rx_len 4373 rx_ovf 0 rx_sha256 1d9ffa6afba2db4ad62863a66b2bd9d43fda2deb34c81024642c3e55a850d447 rx_a_eq_rx_b 1
+tx_len 283 tx_ovf 0
+randbytes recovered-offline from captured ClientHello/ServerHello
+ptr_ssl 0x24037df0 AXISRAM
+ptr_in_buf 0xd02991a0 SDRAM
+ptr_in_msg 0xd02991ad SDRAM
+ptr_out_buf 0xd029d328 SDRAM
+ptr_cert 0 -
+ptr_capture 0xd02a14b4 SDRAM
+secrets none; whitelist cert chain, failing message, randoms, handshake BIO stream
+nsh> [K
+2026-10-24T21:52:01.4946672+08:00 CMD cat /data/forensics/tls-0/bundle.b64
+cat /data/forensics/tls-0/bundle.b64
+VkdUTFMxCmZpbGUgY2VydC5kZXIgMApmaWxlIHNrZS1pbi1tc2cuYmluIDMwMApm
+aWxlIHN0cmVhbS1yeC1hLmJpbiA0MzczCmZpbGUgc3RyZWFtLXJ4LWIuYmluIDQz
+NzMKZmlsZSBzdHJlYW0tdHguYmluIDI4MwpkYXRhCgwAASgDAB0g5kJdFWW5xPJs
+DAXPcUe+ExEA/g/xkJ+U2T8jfIWwoW0EAQEAdPTMkHFrExZlwLtkW7efTepwxjep
+HQobIGh/EkGlNcMAfY7TajWg7TrXDbmEp/9tlXBRagr44yTNYDoBZ2gKLrpIQNaZ
+mB3wpukkJzvIfomEQwQaGEgFfc0e24BxyBvgeoBGXTK1doS2DpQVxo3JPjGlDbk3
+rzRD5UnLfVRm4u6SlWGq7Sm/3xOQTXLGdbEZl0vlcQAp4NJ1N8hvxhiFwNOb+oCZ
+u2HW4VHKv+b8E4D/uRaDCbznUv4Dlamk9SjMsdtXlKGURkONrBxdIE/MHooW6rAM
+FX54GdGxcI7U30SIL+O7N4YtEmHOKrfMYbWpuZDegQjH5a/jnF7ZW72adBYDAwBU
+AgAAUAMDdPkue9m7xdHH83O1Y70qXVFlNJvVdE18RE9XTkdSRAEAzKgAACj/AQAB
+AAAAAAAACwAEAwABAgAjAAAAEAALAAkIaHR0cC8xLjEAFwAAFgMDD4YLAA+CAA9/
+AAY9MIIGOTCCBSGgAwIBAgIQBbdjznVvhWM1YBWBZnnzjzANBgkqhkiG9w0BAQsF
+ADBgMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQL
+ExB3d3cuZGlnaWNlcnQuY29tMR8wHQYDVQQDExZSYXBpZFNTTCBUTFMgUlNBIENB
+IEcxMB4XDTI2MDEwNDAwMDAwMFoXDTI3MDEwMzIzNTk1OVowGzEZMBcGA1UEAwwQ
+Ki54aWFvbWltaW1vLmNvbTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEB
+AMAnVBRZdj+JPal/8k3LahscnyfkKd4V+uTLJ5sBqS+uGykaZNc7eZum+iOdxZ7U
+tVbYuCnReV9wYqCt4qKKpXTlXkQ9NpXjBSd5+4t99AH/9Od+zLekvh+9AsnQ1Vrq
+H2jllp49qq60Rk9eJ32hHVHvNI4db50+fOqadNFRGNGS69iVGy5pEUg2grnwMezl
+8sB6IGwZuZa1d1PBk0hENylcNCDQi/CO96idF7lqtCy/IKISX1zn5366i2PclU63
+Ofw9NbqZ7XXNUw27LJlImpu845whfRh509ZVPENN4D3Y+vRJsxWEL6+RgF6kzKK9
+bLrjRvmFcn5d8lZkRIRSdokCAwEAAaOCAzIwggMuMB8GA1UdIwQYMBaAFAzbbIJJ
+D0pnCrgU7nrESFKI61Y4MB0GA1UdDgQWBBSfCUDoaMjDdbhpUAaPvirrAZjxkTAr
+BgNVHREEJDAighAqLnhpYW9taW1pbW8uY29tgg54aWFvbWltaW1vLmNvbTA+BgNV
+HSAENzA1MDMGBmeBDAECATApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2lj
+ZXJ0LmNvbS9DUFMwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMB
+BggrBgEFBQcDAjA/BgNVHR8EODA2MDSgMqAwhi5odHRwOi8vY2RwLnJhcGlkc3Ns
+LmNvbS9SYXBpZFNTTFRMU1JTQUNBRzEuY3JsMHYGCCsGAQUFBwEBBGowaDAmBggr
+BgEFBQcwAYYaaHR0cDovL3N0YXR1cy5yYXBpZHNzbC5jb20wPgYIKwYBBQUHMAKG
+Mmh0dHA6Ly9jYWNlcnRzLnJhcGlkc3NsLmNvbS9SYXBpZFNTTFRMU1JTQUNBRzEu
+Y3J0MAwGA1UdEwEB/wQCMAAwggGHBgorBgEEAdZ5AgQCBIIBdwSCAXMBcQB3AExj
+3JjlnB2riPYeij3ero+rRKM3e1+blMP7oZz8wb4mAAABm4lu7j8AAAQDAEgwRgIh
+AJNlyzFDf0oeSonrUIAfejY3i3yzttmUJT2Utum7FDA0AiEAy67QLghBkisRcd6F
+jbKkb8vuVB2y2ef6JTfOvO4NqckAdgAcn2gs6frwRWlQ+BuWiofd2zIQ2EzmyLLj
+glJKxM9ZnwAAAZuJbu4DAAAEAwBHMEUCIB1of+noFOO5ISR28jf7Xdr4J7OoquDN
+t2yDng3ba9DAAiEA8Lb+wntg5gV7bMehkPrxcHW/FFEnU+rK5niXplCTRyMAfgCO
+ykcLrN5q86IGsKR6hLdG/h/Gv5U+JeabTuQCSPPG6AAAAZuJbu4yAAgAAAUAAQur
+twQDAEcwRQIhAIzcZ6w1O8PRmsExJ3yMOJtrvD7HNADVSHiYM1Vbv1UlAiBoji6U
+YLK+7QwqXnaWBzrcNcpKu93JKMTHEevULHQzSzANBgkqhkiG9w0BAQsFAAOCAQEA
+ctoLJw8fPFlLvZJiv+KSLH7paA9c8prP8MymPlni6V8CU6THbWS8PLpYTVI4kNlN
+0j1zCqbFy13cLo0Rf2yYdrWfD8x/Z/vrQ5CnC4zWzvBtejkCiY1IGqDmwasQlfAI
+t6GFqxzKjpFhQljp/sgt7Xpjh3HjVZqm5IEWHN0jZzR7XsCsS//7ZMLyw5jl7Ihn
+L3kP7/e4YHOo5eh4djMFzp9eeaoK3NaB2RzyWXqtTEOlQ+niASMpyA3XWMethHSY
+HkLwGmJWvQ5S3VFeYbSsM31PTF7pktK+ZbHb9B9Uu0MQVkNRMMAHmCaV0wgK6z3x
+dkMpfHC33r4NC4TBAVVdnAAEtzCCBLMwggOboAMCAQICEAsllCLO2YEqFaBOmVKK
+DvowDQYJKoZIhvcNAQELBQAwYTELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lD
+ZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEgMB4GA1UEAxMXRGln
+aUNlcnQgR2xvYmFsIFJvb3QgRzIwHhcNMTcxMTAyMTIyNDMzWhcNMjcxMTAyMTIy
+NDMzWjBgMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
+VQQLExB3d3cuZGlnaWNlcnQuY29tMR8wHQYDVQQDExZSYXBpZFNTTCBUTFMgUlNB
+IENBIEcxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv7lZJUQSNRbi
+XVBJBQrgy/yN2iUImmemom0R42qf2qfc8tWmDa6YXu2HGjcDKD7Gb1w0foTSTqPY
+G4DmFUz6vIF3POCO+WCjh4lQODaySUGeqdrCUMqsetB5BCI8yDftS0C3105abs50
+6DmtYckw9MsorRcjmMFETPvwiPBTRTKQYcNtoaXgEJDji5rKk+UGSWHopO6pb5/I
+Hw/l3Q55N5JLrrtHhvr7sq0hq+bl+S0YRVpb9cxUA3IfxCpndet5us/8nMf6i2vc
+8ryC3O3EKW/pO0y62vVhNe2D0p/QDYxvhAqPTw1tzfZcISkAjb8NYBqILsgkLuxx
+OwZ1vHkkhQIDAQABo4IBZjCCAWIwHQYDVR0OBBYEFAzbbIJJD0pnCrgU7nrESFKI
+61Y4MB8GA1UdIwQYMBaAFE4iVCAYlebjbuYP+vq5Eu0GF485MA4GA1UdDwEB/wQE
+AwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwEgYDVR0TAQH/BAgw
+BgEB/wIBADA0BggrBgEFBQcBAQQoMCYwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3Nw
+LmRpZ2ljZXJ0LmNvbTBCBgNVHR8EOzA5MDegNaAzhjFodHRwOi8vY3JsMy5kaWdp
+Y2VydC5jb20vRGlnaUNlcnRHbG9iYWxSb290RzIuY3JsMGMGA1UdIARcMFowNwYJ
+YIZIAYb9bAEBMCowKAYIKwYBBQUHAgEWHGh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNv
+bS9DUFMwCwYJYIZIAYb9bAECMAgGBmeBDAECATAIBgZngQwBAgIwDQYJKoZIhvcN
+AQELBQADggEBABlEpTm+Ct1rZkpW5hOdFGAR1zNEilz6hzM5Ol0FKQoXhf+KlPGj
+oWo7MkUBQ1dYof7jyIO2B0bRYgk6uBvs2+N19U++5yYEjiPaav06gsLbpGe7vVSy
+9yQKt1nctpqCi77wvLVZkc5AHtMUApESiI2wRvNDEsg1/0eLmII+mYjU/2YOhiOk
+aH4KoKQ3bLC3NFyEUBKLcSGXCsz96RifRQmzB5jCy8rgXfrglr1XBdqIGAGsLnwo
+Uvz0+tQ/a6sz0UuSNrqmt7ZiE+OCYSYFoQZxTG+wBkJLzavSjUvXXdxlnNex/3V2
+tXp6Mc1oxNIQXRY8T4VG9Ft8IvKN+P5vBccABIIwggR+MIIDZqADAgECAhAP4DKr
+hE0DMQbFDI4TyLBoMA0GCSqGSIb3DQEBCwUAMGExCzAJBgNVBAYTAlVTMRUwEwYD
+VQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xIDAe
+BgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMB4XDTI0MDExODAwMDAwMFoX
+DTMxMTEwOTIzNTk1OVowYTELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0
+IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEgMB4GA1UEAxMXRGlnaUNl
+cnQgR2xvYmFsIFJvb3QgRzIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIB
+AQC7N8003HtrybJokK1Kdf9GuiEKCI31GVTJ+4jb867yOomRPHrmqwYaa8+sLehe
+CSREumKaftajqH7gVHUgBaxQt5xjGmww3NofGbHXHt791+DLlIM3ruwfQ07deyzS
+vS6lL+SpuK061JmktiXpm2sAYJJg/08hSRj3Z5CrYQacj/K66bTpkjJrtfNX6F0b
+zYwdq5UElUnzNS2W40lt3Xfj+0lLtKxVB6mPlbO0I7tMbUXw9qmylTC0/UxVjCdK
+VxR8gp3Nc5LTFkoGDIxQ0Y8eCb4XoeYhyv2D5RC8g6UKxGco9nMUFD1GdsOHFIkh
+NE2vD0UMpkmhurucxbEzgymFAgMBAAGjggEwMIIBLDAPBgNVHRMBAf8EBTADAQH/
+MB0GA1UdDgQWBBROIlQgGJXm427mD/r6uRLtBhePOTAfBgNVHSMEGDAWgBQD3lA1
+VtFMu2bwo+IbG8OXsj3RVTAOBgNVHQ8BAf8EBAMCAYYwdAYIKwYBBQUHAQEEaDBm
+MCMGCCsGAQUFBzABhhdodHRwOi8vb2NzcC5kaWdpY2VydC5jbjA/BggrBgEFBQcw
+AoYzaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY24vRGlnaUNlcnRHbG9iYWxSb290
+Q0EuY3J0MEAGA1UdHwQ5MDcwNaAzoDGGL2h0dHA6Ly9jcmwuZGlnaWNlcnQuY24v
+RGlnaUNlcnRHbG9iYWxSb290Q0EuY3JsMBEGA1UdIAQKMAgwBgYEVR0gADANBgkq
+hkiG9w0BAQsFAAOCAQEAdEGXeM3v5ccFQrR1me6Ex2g3APWcJE5TcFMiHVM3NEjR
+tDSbn4L90JHPOWqhIAUdSU6L46IOW1aRdPOZCfpnxsfk8UHLmxilz/xw0+hLOHKp
+ym+8Rm+/8i9zRSn53OZru8EMkL1asxFRSVIVJCmR1dKamEM2RcmyABGbHNzXwg3o
+tgxGI5aVjtETYX3TSk9brQG8kcc0JfRttJGP9CVuZWrzC5+0EP74P5FLwr766Oky
+MUFE7JZ8Ff7ChAMawxrOSaC6VB2dmt2Pjvp6U4trFG+tKASiuO7WQkzszrnPZFRm
+t/NBhb/WuzyZFReKfqIS1p39G/VkjVYZiZY/IGaluhYDAwEsDAABKAMAHSDmQl0V
+ZbnE8mwMBc9xR74TEQD+D/GQn5TZPyN8hbChbQQBAQB09MyQcWsTFmXAu2Rbt59N
+6nDGN6kdChsgaH8SQaU1wwB9jtNqNaDtOtcNuYSn/22VcFFqCvjjJM1gOgFnaAou
+ukhA1pmYHfCm6SQnO8h+iYRDBBoYSAV9zR7bgHHIG+B6gEZdMrV2hLYOlBXGjck+
+MaUNuTevNEPlSct9VGbi7pKVYartKb/fE5BNcsZ1sRmXS+VxACng0nU3yG/GGIXA
+05v6gJm7YdbhUcq/5vwTgP+5FoMJvOdS/gOVqaT1KMyx21eUoZRGQ42sHF0gT8we
+ihbqsAwVfngZ0bFwjtTfRIgv47s3hi0SYc4qt8xhtam5kN6BCMflr+OcXtlbvZp0
+FgMDAFQCAABQAwN0+S572bvF0cfzc7VjvSpdUWU0m9V0TXxET1dOR1JEAQDMqAAA
+KP8BAAEAAAAAAAALAAQDAAECACMAAAAQAAsACQhodHRwLzEuMQAXAAAWAwMPhgsA
+D4IAD38ABj0wggY5MIIFIaADAgECAhAFt2POdW+FYzVgFYFmefOPMA0GCSqGSIb3
+DQEBCwUAMGAxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAX
+BgNVBAsTEHd3dy5kaWdpY2VydC5jb20xHzAdBgNVBAMTFlJhcGlkU1NMIFRMUyBS
+U0EgQ0EgRzEwHhcNMjYwMTA0MDAwMDAwWhcNMjcwMTAzMjM1OTU5WjAbMRkwFwYD
+VQQDDBAqLnhpYW9taW1pbW8uY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAwCdUFFl2P4k9qX/yTctqGxyfJ+Qp3hX65MsnmwGpL64bKRpk1zt5m6b6
+I53FntS1Vti4KdF5X3BioK3iooqldOVeRD02leMFJ3n7i330Af/0537Mt6S+H70C
+ydDVWuofaOWWnj2qrrRGT14nfaEdUe80jh1vnT586pp00VEY0ZLr2JUbLmkRSDaC
+ufAx7OXywHogbBm5lrV3U8GTSEQ3KVw0INCL8I73qJ0XuWq0LL8gohJfXOfnfrqL
+Y9yVTrc5/D01upntdc1TDbssmUiam7zjnCF9GHnT1lU8Q03gPdj69EmzFYQvr5GA
+XqTMor1suuNG+YVyfl3yVmREhFJ2iQIDAQABo4IDMjCCAy4wHwYDVR0jBBgwFoAU
+DNtsgkkPSmcKuBTuesRIUojrVjgwHQYDVR0OBBYEFJ8JQOhoyMN1uGlQBo++KusB
+mPGRMCsGA1UdEQQkMCKCECoueGlhb21pbWltby5jb22CDnhpYW9taW1pbW8uY29t
+MD4GA1UdIAQ3MDUwMwYGZ4EMAQIBMCkwJwYIKwYBBQUHAgEWG2h0dHA6Ly93d3cu
+ZGlnaWNlcnQuY29tL0NQUzAOBgNVHQ8BAf8EBAMCBaAwHQYDVR0lBBYwFAYIKwYB
+BQUHAwEGCCsGAQUFBwMCMD8GA1UdHwQ4MDYwNKAyoDCGLmh0dHA6Ly9jZHAucmFw
+aWRzc2wuY29tL1JhcGlkU1NMVExTUlNBQ0FHMS5jcmwwdgYIKwYBBQUHAQEEajBo
+MCYGCCsGAQUFBzABhhpodHRwOi8vc3RhdHVzLnJhcGlkc3NsLmNvbTA+BggrBgEF
+BQcwAoYyaHR0cDovL2NhY2VydHMucmFwaWRzc2wuY29tL1JhcGlkU1NMVExTUlNB
+Q0FHMS5jcnQwDAYDVR0TAQH/BAIwADCCAYcGCisGAQQB1nkCBAIEggF3BIIBcwFx
+AHcATGPcmOWcHauI9h6KPd6uj6tEozd7X5uUw/uhnPzBviYAAAGbiW7uPwAABAMA
+SDBGAiEAk2XLMUN/Sh5KietQgB96NjeLfLO22ZQlPZS26bsUMDQCIQDLrtAuCEGS
+KxFx3oWNsqRvy+5UHbLZ5/olN8687g2pyQB2AByfaCzp+vBFaVD4G5aKh93bMhDY
+TObIsuOCUkrEz1mfAAABm4lu7gMAAAQDAEcwRQIgHWh/6egU47khJHbyN/td2vgn
+s6iq4M23bIOeDdtr0MACIQDwtv7Ce2DmBXtsx6GQ+vFwdb8UUSdT6srmeJemUJNH
+IwB+AI7KRwus3mrzogawpHqEt0b+H8a/lT4l5ptO5AJI88boAAABm4lu7jIACAAA
+BQABC6u3BAMARzBFAiEAjNxnrDU7w9GawTEnfIw4m2u8Psc0ANVIeJgzVVu/VSUC
+IGiOLpRgsr7tDCpedpYHOtw1ykq73ckoxMcR69QsdDNLMA0GCSqGSIb3DQEBCwUA
+A4IBAQBy2gsnDx88WUu9kmK/4pIsfuloD1zyms/wzKY+WeLpXwJTpMdtZLw8ulhN
+UjiQ2U3SPXMKpsXLXdwujRF/bJh2tZ8PzH9n++tDkKcLjNbO8G16OQKJjUgaoObB
+qxCV8Ai3oYWrHMqOkWFCWOn+yC3temOHceNVmqbkgRYc3SNnNHtewKxL//tkwvLD
+mOXsiGcveQ/v97hgc6jl6Hh2MwXOn155qgrc1oHZHPJZeq1MQ6VD6eIBIynIDddY
+x62EdJgeQvAaYla9DlLdUV5htKwzfU9MXumS0r5lsdv0H1S7QxBWQ1EwwAeYJpXT
+CArrPfF2Qyl8cLfevg0LhMEBVV2cAAS3MIIEszCCA5ugAwIBAgIQCyWUIs7ZgSoV
+oE6ZUooO+jANBgkqhkiG9w0BAQsFADBhMQswCQYDVQQGEwJVUzEVMBMGA1UEChMM
+RGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQD
+ExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBHMjAeFw0xNzExMDIxMjI0MzNaFw0yNzEx
+MDIxMjI0MzNaMGAxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMx
+GTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xHzAdBgNVBAMTFlJhcGlkU1NMIFRM
+UyBSU0EgQ0EgRzEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC/uVkl
+RBI1FuJdUEkFCuDL/I3aJQiaZ6aibRHjap/ap9zy1aYNrphe7YcaNwMoPsZvXDR+
+hNJOo9gbgOYVTPq8gXc84I75YKOHiVA4NrJJQZ6p2sJQyqx60HkEIjzIN+1LQLfX
+TlpuznToOa1hyTD0yyitFyOYwURM+/CI8FNFMpBhw22hpeAQkOOLmsqT5QZJYeik
+7qlvn8gfD+XdDnk3kkuuu0eG+vuyrSGr5uX5LRhFWlv1zFQDch/EKmd163m6z/yc
+x/qLa9zyvILc7cQpb+k7TLra9WE17YPSn9ANjG+ECo9PDW3N9lwhKQCNvw1gGogu
+yCQu7HE7BnW8eSSFAgMBAAGjggFmMIIBYjAdBgNVHQ4EFgQUDNtsgkkPSmcKuBTu
+esRIUojrVjgwHwYDVR0jBBgwFoAUTiJUIBiV5uNu5g/6+rkS7QYXjzkwDgYDVR0P
+AQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjASBgNVHRMB
+Af8ECDAGAQH/AgEAMDQGCCsGAQUFBwEBBCgwJjAkBggrBgEFBQcwAYYYaHR0cDov
+L29jc3AuZGlnaWNlcnQuY29tMEIGA1UdHwQ7MDkwN6A1oDOGMWh0dHA6Ly9jcmwz
+LmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEdsb2JhbFJvb3RHMi5jcmwwYwYDVR0gBFww
+WjA3BglghkgBhv1sAQEwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNl
+cnQuY29tL0NQUzALBglghkgBhv1sAQIwCAYGZ4EMAQIBMAgGBmeBDAECAjANBgkq
+hkiG9w0BAQsFAAOCAQEAGUSlOb4K3WtmSlbmE50UYBHXM0SKXPqHMzk6XQUpCheF
+/4qU8aOhajsyRQFDV1ih/uPIg7YHRtFiCTq4G+zb43X1T77nJgSOI9pq/TqCwtuk
+Z7u9VLL3JAq3Wdy2moKLvvC8tVmRzkAe0xQCkRKIjbBG80MSyDX/R4uYgj6ZiNT/
+Zg6GI6RofgqgpDdssLc0XIRQEotxIZcKzP3pGJ9FCbMHmMLLyuBd+uCWvVcF2ogY
+AawufChS/PT61D9rqzPRS5I2uqa3tmIT44JhJgWhBnFMb7AGQkvNq9KNS9dd3GWc
+17H/dXa1enoxzWjE0hBdFjxPhUb0W3wi8o34/m8FxwAEgjCCBH4wggNmoAMCAQIC
+EA/gMquETQMxBsUMjhPIsGgwDQYJKoZIhvcNAQELBQAwYTELMAkGA1UEBhMCVVMx
+FTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNv
+bTEgMB4GA1UEAxMXRGlnaUNlcnQgR2xvYmFsIFJvb3QgQ0EwHhcNMjQwMTE4MDAw
+MDAwWhcNMzExMTA5MjM1OTU5WjBhMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGln
+aUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdE
+aWdpQ2VydCBHbG9iYWwgUm9vdCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+AQoCggEBALs3zTTce2vJsmiQrUp1/0a6IQoIjfUZVMn7iNvzrvI6iZE8euarBhpr
+z6wt6F4JJES6Ypp+1qOofuBUdSAFrFC3nGMabDDc2h8Zsdce3v3X4MuUgzeu7B9D
+Tt17LNK9LqUv5Km4rTrUmaS2JembawBgkmD/TyFJGPdnkKthBpyP8rrptOmSMmu1
+81foXRvNjB2rlQSVSfM1LZbjSW3dd+P7SUu0rFUHqY+Vs7Qju0xtRfD2qbKVMLT9
+TFWMJ0pXFHyCnc1zktMWSgYMjFDRjx4Jvheh5iHK/YPlELyDpQrEZyj2cxQUPUZ2
+w4cUiSE0Ta8PRQymSaG6u5zFsTODKYUCAwEAAaOCATAwggEsMA8GA1UdEwEB/wQF
+MAMBAf8wHQYDVR0OBBYEFE4iVCAYlebjbuYP+vq5Eu0GF485MB8GA1UdIwQYMBaA
+FAPeUDVW0Uy7ZvCj4hsbw5eyPdFVMA4GA1UdDwEB/wQEAwIBhjB0BggrBgEFBQcB
+AQRoMGYwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNuMD8GCCsG
+AQUFBzAChjNodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jbi9EaWdpQ2VydEdsb2Jh
+bFJvb3RDQS5jcnQwQAYDVR0fBDkwNzA1oDOgMYYvaHR0cDovL2NybC5kaWdpY2Vy
+dC5jbi9EaWdpQ2VydEdsb2JhbFJvb3RDQS5jcmwwEQYDVR0gBAowCDAGBgRVHSAA
+MA0GCSqGSIb3DQEBCwUAA4IBAQB0QZd4ze/lxwVCtHWZ7oTHaDcA9ZwkTlNwUyId
+Uzc0SNG0NJufgv3Qkc85aqEgBR1JTovjog5bVpF085kJ+mfGx+TxQcubGKXP/HDT
+6Es4cqnKb7xGb7/yL3NFKfnc5mu7wQyQvVqzEVFJUhUkKZHV0pqYQzZFybIAEZsc
+3NfCDei2DEYjlpWO0RNhfdNKT1utAbyRxzQl9G20kY/0JW5lavMLn7QQ/vg/kUvC
+vvro6TIxQUTslnwV/sKEAxrDGs5JoLpUHZ2a3Y+O+npTi2sUb60oBKK47tZCTOzO
+uc9kVGa380GFv9a7PJkVF4p+ohLWnf0b9WSNVhmJlj8gZqW6FgMDASwMAAEoAwAd
+IOZCXRVlucTybAwFz3FHvhMRAP4P8ZCflNk/I3yFsKFtBAEBAHT0zJBxaxMWZcC7
+ZFu3n03qcMY3qR0KGyBofxJBpTXDAH2O02o1oO061w25hKf/bZVwUWoK+OMkzWA6
+AWdoCi66SEDWmZgd8KbpJCc7yH6JhEMEGhhIBX3NHtuAccgb4HqARl0ytXaEtg6U
+FcaNyT4xpQ25N680Q+VJy31UZuLukpVhqu0pv98TkE1yxnWxGZdL5XEAKeDSdTfI
+b8YYhcDTm/qAmbth1uFRyr/m/BOA/7kWgwm851L+A5WppPUozLHbV5ShlEZDjawc
+XSBPzB6KFuqwDBV+eBnRsXCO1N9EiC/juzeGLRJhziq3zGG1qbmQ3oEIx+Wv45xe
+2Vu9mnQWAwMBDwEAAQsDA2rdJ7ailTqH2MqmXhnXMk2DpZqRzzdIQfqbairWWsgR
+AAB0zKjMqcyqwCzAMACfwCTAKABrwArAFAA5wIfAi8B9wHPAdwDEAIjAK8AvAJ7A
+I8AnAGfACcATADPAhsCKwHzAcsB2AL4ARQCdAD0ANcAywCrAD8B7AMAAhMCNwHkA
+nAA8AC/AMcApwA7AegC6AEHAjMB4AP8BAABuAAAAIQAfAAAcdG9rZW4tcGxhbi1j
+bi54aWFvbWltaW1vLmNvbQAQAAsACQhodHRwLzEuMQAKABIAEAAdABcAGAAeABkA
+GgAbABwADQAOAAwGAwYBBQMFAQQDBAEACwACAQAAFgAAABcAAAAjAAAVAwMAAgIz
+nsh> [K

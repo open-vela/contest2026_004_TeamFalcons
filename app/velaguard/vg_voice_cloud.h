@@ -34,6 +34,12 @@
 
 #define VG_VC_TEXT_MAX 512
 
+/* A decode callback runs inside the TLS reader's stack frame. Keep its
+ * scratch space small enough for the 32 KiB NSH task as well as the voice
+ * worker. A multiple of six preserves whole base64 groups and PCM samples. */
+#define VG_VC_PCM_CHUNK_BYTES 3072u
+#define VG_VC_RS_CHUNK_SAMPLES (VG_VC_PCM_CHUNK_BYTES / 3u + 2u)
+
 #ifndef CONFIG_VG_VOICE_ASR_MODEL
 #  define CONFIG_VG_VOICE_ASR_MODEL "mimo-v2.5-asr"
 #endif

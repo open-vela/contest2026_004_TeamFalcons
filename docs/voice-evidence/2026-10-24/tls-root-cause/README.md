@@ -1,5 +1,7 @@
 # TLS 握手 -0x4380/-0x3ae2 根因排查（2026-10-24）
 
+接手复核更新：本目录记录历史假设和实验。新取证已将捕获的 -0x4380 定位到 ServerHello 随机数复制时的 FMC 非对齐读取，修复和正式镜像复测见 [接手报告](../p1-p2-takeover/README.md)。历史 -0x3ae2 本轮未重现，不宣称已有单独的因果证明。新增 mbedTLS 观测仅在诊断开关启用时编入，正式镜像已关闭。
+
 任务：根治板端对 token-plan-cn.xiaomimimo.com 的 TLS 1.2 握手间歇性
 RSA 验签失败（mbedTLS -0x4380）与证书 ASN.1 解析失败（-0x3ae2）。
 计划文件：`~/.claude/plans/2026-10-24-08-58-11-543-send-ascii-34-tidy-rivest.md`（已批准）。

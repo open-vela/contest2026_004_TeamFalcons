@@ -1,5 +1,7 @@
 # P1 TTS 流式播放证据目录（2026-10-24）
 
+接手复核更新：下文为历史样本。play_start 表示驱动 START 返回成功，未测量声学首声；少量跨版本样本不足以确定固定延迟收益。接手时还发现并修复了 ttss 栈预算、IOB 耗尽和 TLS 非对齐读取问题，详见 [接手报告](../p1-p2-takeover/README.md)。原始日志不变。
+
 任务：把 TTS 从收齐全部 PCM→写 WAV→nxplayer 文件播放，改为增量解码→有界环→
 直接 ioctl 驱动 /dev/audio/pcm0p 的队列播放器；P2 一期为 ASR/TTS 加语音专用
 keep-alive 连接槽与录音期预连接。实施计划见会话 plan（goal 模式）。

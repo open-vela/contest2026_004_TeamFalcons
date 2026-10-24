@@ -123,3 +123,6 @@ docs/submission/.backup-*/
 
 # Local connection notes (MQTT and MiMo endpoints); never commit.
 connect_info
+
+# Provisioning / credential material must never enter the repo
+/secrets/

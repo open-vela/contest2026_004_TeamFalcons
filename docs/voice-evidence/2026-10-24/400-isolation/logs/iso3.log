@@ -1,0 +1,173 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875013
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 12:52:22 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6add1a2400000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875044
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 12:52:51 GMT
+Content-Type: application/json
+Content-Length: 103
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-stor
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6add1a2400000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=500 send=300 ttfb=60 body=30 pool=na build=10 parse=10 http=1000 backoff=0 total=1020 req=7871 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6add1a2400000000] iter=0 tool=(none) latency=1020ms llm=fail backend=0
+[trace:6add1a2400000000] END status=fail iters=1 tools=0 llm_ms=1020 tool_ms=0 elapsed_ms=1070 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30cb5d2b
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875046
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 12:52:52 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+vgtime: synced 2026-10-24 20:53:16
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875203
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 12:53:24 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+
+2026-10-24T20:53:41.7452962+08:00 CMD ifconfig
+ifconfig
+eth0	Link encap:Ethernet HWaddr 06:01:f5:3c:d6:7a at RUNNING mtu 1486
+	inet addr:192.168.137.135 DRaddr:192.168.137.1 Mask:255.255.255.0
+
+             IPv4   TCP   UDP  ICMP
+Received     023a  005a  0020  01c0
+Dropped      0000  0000  0000  0000
+  IPv4        VHL: 0000   Frg: 0000
+  Checksum   0000  0000  0000  0000
+  TCP         ACK: 0000   SYN: 0000
+              RST: 0000  0000
+              HDR: 0000
+  Type       0000  ----  ----  0000
+Sent         0243  0079  000a  01c0
+  Rexmit     ----  0007  ----  ----
+nsh> [K
+2026-10-24T20:53:42.5674907+08:00 CMD vgvoice dumpreq 1
+vgvoice dumpreq 1
+vgvoice: req dump=1
+nsh> [K
+2026-10-24T20:53:42.9960917+08:00 CMD vgvoice asr /data/velaguard/voice/q1.wav
+vgvoice asr /data/velaguard/voice/q1.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875224
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[dump:sreq] POST /v1/chat/completions HTTP/1.1\r\nHost: token-plan-cn.xiaomimimo.com\r\nConnection: keep-al
+[dump:sreq] ive\r\nUser-Agent: agent-vela/1.0\r\nContent-Length: 61669\r\nContent-Type: application/json\r
+[dump:sreq] \nAuthorization: **********************************************************\r\nX-Model-Provider
+[dump:sreq] -Id: \r\x0
+[dump:sreqbody] 7b226d6f64656c223a226d696d6f2d76322e352d617372222c226d6573736167
+[dump:sreqbody] 6573223a5b7b22726f6c65223a2275736572222c22636f6e74656e74223a5b7b
+[dump:sreqbody] 2274797065223a22696e7075745f617564696f222c22696e7075745f61756469
+[vela_tls] body write failed ret=-0x004e errno=107 at 0/16384
+[vela_tls] voice_conn drop rc=-3 framing=0 sink_early=0
+[vgvoice] asr phases dns=20 tls=440 send=600 ttfb=-1 body=-1 http=1080
+[vgvoice] asr: transport failed: -3 (net)
+vgvoice: asr rc=net status=0 req=61669 resp=0 ms=1200
+vgvoice: asr text=(empty)
+nsh> [K
+2026-10-24T20:53:45.0140065+08:00 CMD vgvoice record 4000
+vgvoice record 4000
+vgvoice: timed record queued ms=4000
+nsh> [K
+2026-10-24T20:53:47.0403675+08:00 CMD vgvoice wait 40000
+vgvoice wait 40000
+[skills] Skills summary: 1086 bytes
+vgvoice: idle after wait
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=2 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=4009 samples=64144 bytes=128288
+vgvoice: level peak=6050 rms=79
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=8790 temp_left=0 worker=9
+vgvoice: capture halves=62 drained=63 overwritten=0 wraps=31 elapsed_ms=4010 rate=127969 B/s
+vgvoice: tail_bytes=5252 stage_ms=510
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=3 clip=0 tick_us=10000
+nsh> [K
+2026-10-24T20:53:54.0490703+08:00 CMD vgvoice round
+vgvoice round
+vgvoice: round visible=0 state=0 gen=0 muted=0 failed=0
+vgvoice: round status=
+vgvoice: round q=
+vgvoice: round a=0 bytes
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875235
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[dump:sreq] POST /v1/chat/completions HTTP/1.1\r\nHost: token-plan-cn.xiaomimimo.com\r\nConnection: close\r
+[dump:sreq] \nUser-Agent: agent-vela/1.0\r\nContent-Length: 73\r\nContent-Type: application/json\r\nAuthori
+[dump:sreq] zation: ****************************************\r\n\r\n
+
+2026-10-24T20:53:54.8619202+08:00 CMD vgvoice ttss 二分之一的测试文本
+vgvoice ttss 二分之一的测试文本
+[dump:sreqbody] 7b226d6f64656c223a226d696d6f2d76322e362d666c617368222c226d657373
+[dump:sreqbody] 61676573223a5b7b22726f6c65223a2275736572222c22636f6e74656e74223a
+[dump:sreqbody] 2274657374227d5d7d
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792875235
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sat, 24 Oct 2026 12:53:56 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vela_tls] ssl_handshake ret=-0x4380: RSA - The PKCS#1 verification failed
+[vgvoice] tts phases dns=20 tls=270 send=-1 ttfb=-1 body=-1 http=310
+vgvoice: ttss rc=net status=0 pcm=0 ms=310 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K
+2026-10-24T20:53:56.8794128+08:00 CMD vgvoice dumpreq 0
+vgvoice dumpreq 0
+vgvoice: req dump=0
+nsh> [K

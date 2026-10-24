@@ -1,0 +1,22 @@
+[
+  {
+    "wait_ms": 12000,
+    "command": "",
+    "timeout_ms": 15000
+  },
+  {
+    "wait_ms": 200,
+    "command": "vgvoice copyprobe",
+    "timeout_ms": 10000
+  },
+  {
+    "wait_ms": 200,
+    "command": "vgvoice ttss 复制验证",
+    "timeout_ms": 35000
+  },
+  {
+    "wait_ms": 200,
+    "command": "vgvoice ttss 第二次验证",
+    "timeout_ms": 35000
+  }
+]

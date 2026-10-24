@@ -39,7 +39,7 @@
 
 #define VC_SSE_LINE_INIT 32768
 #define VC_SSE_LINE_MAX  524288
-#define VC_PCM_CHUNK    16384
+#define VC_PCM_CHUNK    VG_VC_PCM_CHUNK_BYTES
 #define VC_PCM_SAMPLES  15360   /* multiple of 3 for 24k->16k */
 
 static const char *TAG = "vgvoice";

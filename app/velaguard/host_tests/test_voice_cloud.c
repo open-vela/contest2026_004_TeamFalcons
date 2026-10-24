@@ -26,6 +26,7 @@ static int stream_aborted;   /* the consumer sees the abort path via CANCELLED *
 static int stream_push(void *ctx, const uint8_t *pcm, size_t bytes)
 {
   (void)ctx;
+  assert(bytes <= VG_VC_PCM_CHUNK_BYTES);
   assert(stream_n + bytes <= sizeof(stream_cap));
   memcpy(stream_cap + stream_n, pcm, bytes);
   stream_n += bytes;
@@ -89,6 +90,16 @@ int agent_http_post_stream_timed(const char *post, const vela_body_src_t *body,
       cJSON_Delete(root);
       snprintf(resp, cap, "{\"choices\":[{\"message\":{\"content\":\"%s\"}}]}",
                mode == 7 ? "" : "UPS负载是多少");
+      return 0;
+    }
+  if (mode == 9)
+    {
+      const char *prefix = "data: {\"choices\":[{\"delta\":{\"audio\":{\"data\":\"";
+      assert(sink->write(sink->ctx, prefix, strlen(prefix)) == 0);
+      for (int i = 0; i < 4096; i++)
+        assert(sink->write(sink->ctx, "AAABAAIAAwAEAAUA", 16) == 0);
+      const char *tail = "\"}}}]}\n\ndata: [DONE]\n\n";
+      assert(sink->write(sink->ctx, tail, strlen(tail)) > 0);
       return 0;
     }
   const char *audio = mode == 4 ? "AA==" : "AAABAAIAAwAEAAUA";
@@ -224,6 +235,17 @@ int main(void)
                                      &info) == VG_VC_OK);
     assert(stream_n == 12);
     skip_timing = 0;
+
+    /* One large server SSE line must be decoded into bounded callbacks
+     * without changing PCM bytes or order. */
+    mode = 9;
+    stream_n = 0;
+    ctl.deadline_ms = now_ms() + 5000;
+    assert(vg_voice_cloud_tts_stream("测试", stream_push, NULL, &ctl,
+                                     &info) == VG_VC_OK);
+    assert(stream_n == 12u * 4096u);
+    for (size_t i = 0; i < stream_n; i++)
+      assert(stream_cap[i] == pcm12[i % 12]);
   }
 
   puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup, timing anchors, streaming consumer, truncated/partial classification)");

@@ -1,5 +1,7 @@
 # P2 一期连接复用证据目录（2026-10-24）
 
+接手复核更新：下文保留当时记录。400 已定位到请求快照未初始化引入的 provider 路由头；旧排空及 POST 重试逻辑也已修正。TLS 错误的新证据指向 FMC 非对齐读取，不能继续归为未定位的堆写坏。当前代码、验证结果和限制以 [接手报告](../p1-p2-takeover/README.md) 为准。
+
 任务：ASR/TTS 语音专用 keep-alive 连接槽 + 录音期预连接（vela_tls stream_exchange
 重构 + vela_https_request_stream_voice + vela_https_voice_preconnect，Kconfig
 AI_AGENT_VOICE_CONN_SLOT）。对照基线与 P1 证据见 `../p1-streaming/`。
