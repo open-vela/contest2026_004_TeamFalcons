@@ -313,7 +313,7 @@ void vg_voice_overlay_create(void)
 
     s_status = lv_label_create(row);
     lv_obj_set_style_text_color(s_status, lv_color_hex(VG_COLOR_TEXT), 0);
-    lv_obj_set_style_text_font(s_status, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(s_status, vg_font_ui(), 0);
     lv_label_set_text(s_status, "");
 
     {
@@ -330,7 +330,7 @@ void vg_voice_overlay_create(void)
         lv_obj_add_event_cb(s_mute, mute_cb, LV_EVENT_CLICKED, NULL);
         {
             s_mute_label = lv_label_create(s_mute);
-            lv_obj_set_style_text_font(s_mute_label, &lv_font_montserrat_14, 0);
+            lv_obj_set_style_text_font(s_mute_label, vg_font_ui(), 0);
             lv_label_set_text(s_mute_label, "播报:开");
         }
 
@@ -340,7 +340,7 @@ void vg_voice_overlay_create(void)
         lv_obj_add_event_cb(s_retry, retry_cb, LV_EVENT_CLICKED, NULL);
         {
             lv_obj_t * lab = lv_label_create(s_retry);
-            lv_obj_set_style_text_font(lab, &lv_font_montserrat_14, 0);
+            lv_obj_set_style_text_font(lab, vg_font_ui(), 0);
             lv_label_set_text(lab, "重试播报");
         }
 
@@ -349,7 +349,7 @@ void vg_voice_overlay_create(void)
         lv_obj_add_event_cb(s_close, close_cb, LV_EVENT_CLICKED, NULL);
         {
             lv_obj_t * lab = lv_label_create(s_close);
-            lv_obj_set_style_text_font(lab, &lv_font_montserrat_14, 0);
+            lv_obj_set_style_text_font(lab, vg_font_ui(), 0);
             lv_label_set_text(lab, "×");
         }
     }
@@ -357,14 +357,14 @@ void vg_voice_overlay_create(void)
     s_question = lv_label_create(s_panel);
     lv_obj_set_width(s_question, LV_PCT(100));
     lv_obj_set_style_text_color(s_question, lv_color_hex(VG_COLOR_MUTED), 0);
-    lv_obj_set_style_text_font(s_question, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(s_question, vg_font_ui(), 0);
     lv_label_set_long_mode(s_question, LV_LABEL_LONG_DOT);
     lv_obj_add_flag(s_question, LV_OBJ_FLAG_HIDDEN);
 
     s_error = lv_label_create(s_panel);
     lv_obj_set_width(s_error, LV_PCT(100));
     lv_obj_set_style_text_color(s_error, lv_color_hex(VG_COLOR_CRIT), 0);
-    lv_obj_set_style_text_font(s_error, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(s_error, vg_font_ui(), 0);
     lv_label_set_long_mode(s_error, LV_LABEL_LONG_WRAP);
     lv_obj_add_flag(s_error, LV_OBJ_FLAG_HIDDEN);
 
@@ -386,7 +386,7 @@ void vg_voice_overlay_create(void)
         s_answer = lv_label_create(box);
         lv_obj_set_width(s_answer, LV_PCT(100));
         lv_obj_set_style_text_color(s_answer, lv_color_hex(VG_COLOR_TEXT), 0);
-        lv_obj_set_style_text_font(s_answer, &lv_font_montserrat_14, 0);
+        lv_obj_set_style_text_font(s_answer, vg_font_ui(), 0);
         lv_label_set_long_mode(s_answer, LV_LABEL_LONG_WRAP);
         lv_label_set_text(s_answer, "");
     }

@@ -41,6 +41,11 @@ for p in ui.rglob('*.c'):
 for p in (root / 'gui' / 'main' / 'ui' / 'model').glob('*.c'):
     add_text(p.read_text(encoding='utf-8'))
 
+# Voice round strings live in app/velaguard (answer text, overlay status/errors);
+# they render with the same font and must stay inside the subset.
+for p in (root / 'app' / 'velaguard').glob('*.c'):
+    add_text(p.read_text(encoding='utf-8'))
+
 json_dirs = [
     root / 'scripts',
     pathlib.Path('/mnt/f/Project/uppercomputer/examples'),
@@ -64,7 +69,7 @@ for b1 in range(0xB0, 0xD8):
             pass
 
 # Punctuation used on HMI / point names (not all in GB2312 L1)
-add_text('·–…→、「」。【】（）：？，！；℃°')
+add_text('·–…→、「」。【】（）：？，！；℃°≥≤')
 
 # Keep previous extras that the converter already shipped
 old = []
