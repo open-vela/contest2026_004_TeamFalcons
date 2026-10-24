@@ -26,6 +26,7 @@
 #include <agent_http.h>
 #include <infra/config_store.h>
 
+#include "vg_agent_round.h"
 #include "vg_llm_health.h"
 
 #define TAG "vgllm"
@@ -107,6 +108,17 @@ static void probe_once(void)
   int status = 0;
   int rc;
   bool ok;
+
+  /* The probe's TLS must never overlap a real round: the board's HTTPS
+   * calls were effectively serialized before this monitor existed, and a
+   * concurrent handshake is new stress on a transport with known
+   * instabilities.  A round finishing on its own counts as evidence
+   * anyway, so skipping while busy loses nothing. */
+
+  if (vg_agent_round_busy())
+    {
+      return;
+    }
 
   host[0] = '\0';
   path[0] = '\0';
