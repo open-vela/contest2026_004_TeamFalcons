@@ -1,0 +1,46 @@
+[
+ {"command": "", "wait_ms": 15000, "timeout_ms": 18000},
+ {"command": "vgvoice mute off", "wait_ms": 300, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t100a", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice prebuf 100", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t100b", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t200a", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice prebuf 200", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t200b", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t400a", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice prebuf 400", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_t400b", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "vgvoice prebuf 200", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "free", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true}
+]

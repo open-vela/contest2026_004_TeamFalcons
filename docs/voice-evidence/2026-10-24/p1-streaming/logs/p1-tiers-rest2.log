@@ -1,0 +1,592 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[llm] Resp bytes=1162 text=60 reasoning=478 toolargs=51 calls=1 finish=tool_calls tokens=1366/157/1523
+[llm] Response: 60 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce7a14ca7b26b] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=500 send=240 ttfb=4050 body=0 pool=na build=0 parse=0 http=4890 backoff=0 total=4900 req=4937 resp=1162 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=60, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adce7a14ca7b26b] iter=0 tool=read_file latency=4930ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/operations_report.md"}
+[tools] Executing tool: read_file
+[agent] Tool read_file result: 84 bytes, 2350 ms
+[trace:6adce7a14ca7b26b] tool_iter=0 tool=read_file tool_ms=2350 out=84 ok=1
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 5365 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862120
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=1009 text=91 reasoning=309 toolargs=40 calls=1 finish=tool_calls tokens=1555/125/1680
+[llm] Response: 91 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce7a14ca7b26b] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=720 send=110 ttfb=4580 body=0 pool=na build=0 parse=0 http=5530 backoff=0 total=5530 req=5365 resp=1009 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=91, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6adce7a14ca7b26b] iter=1 tool=run_shell latency=5540ms llm=ok backend=0
+[agent] Tool call: run_shell args={"command": "ls -l /data/agent/skills/"}
+[tools] Executing tool: run_shell
+[shell] Blocked dangerous command: ls -l /data/agent/skills/
+[agent] Tool run_shell result: 69 bytes, 120 ms
+[trace:6adce7a14ca7b26b] tool_iter=1 tool=run_shell tool_ms=120 out=69 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 5802 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862126
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Cannot open skills directory for enumeration: /data/agent/skills/
+[llm] Resp bytes=648 text=60 reasoning=0 toolargs=37 calls=1 finish=tool_calls tokens=1707/59/1766
+[llm] Response: 60 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce7a14ca7b26b] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=710 send=150 ttfb=8020 body=9230 pool=na build=0 parse=0 http=18200 backoff=0 total=18210 req=5802 resp=648 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=60, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6adce7a14ca7b26b] iter=2 tool=run_shell latency=18230ms llm=ok backend=0
+[agent] Tool call: run_shell args={"command": "ls /data/agent/skills/"}
+[tools] Executing tool: run_shell
+[shell] Blocked dangerous command: ls /data/agent/skills/
+[agent] Tool run_shell result: 66 bytes, 180 ms
+[trace:6adce7a14ca7b26b] tool_iter=2 tool=run_shell tool_ms=180 out=66 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6202 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862144
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=796 text=56 reasoning=114 toolargs=58 calls=1 finish=tool_calls tokens=1770/72/1842
+[llm] Response: 56 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce7a14ca7b26b] http iter=3 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=730 send=140 ttfb=2500 body=0 pool=na build=0 parse=0 http=3480 backoff=0 total=3480 req=6202 resp=796 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=56, tool_use=1, calls=1
+[agent] Tool iter 4: 1 calls
+[trace:6adce7a14ca7b26b] iter=3 tool=run_shell latency=3500ms llm=ok backend=0
+[agent] Tool call: run_shell args={"command": "cat /data/agent/skills/operations_report.md"}
+[tools] Executing tool: run_shell
+[shell] Blocked dangerous command: cat /data/agent/skills/operations_report.md
+[agent] Tool run_shell result: 87 bytes, 340 ms
+[trace:6adce7a14ca7b26b] tool_iter=3 tool=run_shell tool_ms=340 out=87 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6640 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862148
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=1391 text=61 reasoning=705 toolargs=51 calls=1 finish=tool_calls tokens=1871/205/2076
+[llm] Response: 61 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce7a14ca7b26b] http iter=4 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=700 send=140 ttfb=6680 body=0 pool=na build=0 parse=0 http=7630 backoff=0 total=7640 req=6640 resp=1391 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=61, tool_use=1, calls=1
+[agent] Tool iter 5: 1 calls
+[trace:6adce7a14ca7b26b] iter=4 tool=read_file latency=7660ms llm=ok backend=0
+[agent] Tool call: read_file args={"path": "/data/agent/skills/operations_report.md"}
+[tools] Executing tool: read_file
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 17:11:14
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.770, +2770)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.780, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.780, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.790, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.790, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.800, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.800, +0)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.810, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:278
+[User]	(2.820, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.820, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.830, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.840, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.840, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.850, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_
+2026-10-24T17:16:04.6959634+08:00 CMD echo CASE_t200a
+echo CASE_t200a
+CASE_t200a
+nsh> [K[agent] [boot +180ms] P0: storage ready
+vgnet: MQTT broker is not configured
+
+2026-10-24T17:16:04.9001111+08:00 CMD vgvoice prebuf 200
+vgvoice prebuf 200
+vgvoice: prebuf -> 200 ms
+nsh> [K[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +550ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +560ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+
+2026-10-24T17:16:05.2077341+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T17:16:05.7357230+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=310
+[vgvoice] clip_prep src=file bytes=0 ms=0
+
+PRESEED seen=362 hasMarker=False
+[memory] Memory store initialized successfully
+[agent] [boot +2110ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +2120ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[llm] no API key for a streaming request
+[vgvoice] asr phases dns=-1 tls=-1 send=-1 ttfb=-1 body=-1 http=-1
+[vgvoice] asr: transport failed: -1 (net)
+[vgvoice] asr rc=net status=0 req=115429 resp=0 ms=940
+[vgvoice] stage=asr_end t=2350
+[vgvoice] round_settled gen=2 state=9 failed=0 elapsed_ms=2350
+[proxy] No proxy (direct connection)
+[agent] [boot +3520ms] P2: http_proxy_init (rc=0)
+
+2026-10-24T17:16:08.1263120+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +4020ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +4260ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +5000ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +5010ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +5610ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +5610ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +5640ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/agent/HEARTBEAT.md, interval: 180s)
+[agent] [boot +5650ms] P3: heartbeat_init (rc=0)
+[agent] [boot +5660ms] P3: voice_channel_init (rc=0)
+NSH commands registered
+[agent] [boot +5660ms] P4: nsh_commands_init (rc=0)
+[agent] [boot +5670ms] P5: outbound dispatch thread started
+[heartbeat] Heartbeat started (every 3 min)
+[agent] [boot +5680ms] P5: heartbeat started, cron skipped (HMI SRAM save)
+[agent] [boot +5680ms] P5: network_watch thread started (async)
+[agent] [boot +5690ms] P6: nsh_commands skipped (daemon mode)
+[agent] [boot +5690ms] AI Agent ready. Type 'help' in NSH for commands.
+[agent] Outbound dispatch started
+[agent] Network watcher started
+[netmgr] No saved WiFi credentials. Use CLI: set_wifi <ssid> <pass>
+[netmgr] Found iface eth0 addr 192.168.137.218
+[netmgr] Network connected: 192.168.137.218
+[netmgr] Found iface eth0 addr 192.168.137.218
+[agent] Network connected: 192.168.137.218
+[agent] HMI lazy mode: agent_loop starts on first ask
+[agent] All network services started!
+
+2026-10-24T17:16:10.6384176+08:00 CMD echo CASE_t200b
+echo CASE_t200b
+CASE_t200b
+nsh> [K
+2026-10-24T17:16:10.8694712+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T17:16:11.3954320+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=100
+[vgvoice] clip_prep src=file bytes=0 ms=0
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861885
+
+PRESEED seen=522 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr phases dns=110 tls=860 send=2670 ttfb=240 body=0 http=3900
+[vgvoice] asr rc=ok status=200 req=115429 resp=469 ms=4200
+[vgvoice] stage=asr_end t=5290
+[vgvoice] stage=agent_begin t=5290
+[vgvoice] stage=agent_queued t=5300
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 66 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:voice:1
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adce6c300000000] BEGIN chat=velaguard:voice:1 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1994 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861891
+[agent] agent_loop started (lazy ask)
+[agent] Dispatching response → local_client:velaguard:voice:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vghmi: live ok=0/14 a1=0.0
+[llm] Resp bytes=568 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce6c300000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=90 tls=2730 send=400 ttfb=8040 body=8030 pool=na build=100 parse=0 http=19700 backoff=0 total=19800 req=1994 resp=568 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adce6c300000000] iter=0 tool=vg_point_read latency=19900ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 109 bytes, 310 ms
+[trace:6adce6c300000000] tool_iter=0 tool=vg_point_read tool_ms=310 out=109 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6adce6c300000000] END status=ok iters=1 tools=1 llm_ms=19900 tool_ms=310 elapsed_ms=20700 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:1
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=26710
+[vgvoice] reused agent facts for vg_point_read seq=1
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=1
+[vgvoice] stage=facts_end t=26720
+[vgvoice] stage=tts_begin t=26730
+[vgvoice] stage=play_posted t=26840
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861912
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=60 tls=1300 send=420 ttfb=440 body=-1 http=3260
+[vgvoice] tts_blocks n=1 first_line=440 first_pcm=620 blocks=620 last=620 bytes=7680
+[vgvoice] tts rc=timeout status=0 pcm=7680 resp=0 ms=3280 stream=1 partial=1
+[vgvoice] stage=tts_end t=30120
+[vgvoice] round_settled gen=5 state=8 failed=1 elapsed_ms=30270
+
+2026-10-24T17:16:41.7578820+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T17:16:44.2722014+08:00 CMD echo CASE_t400a
+echo CASE_t400a
+CASE_t400a
+nsh> [K
+2026-10-24T17:16:44.4888467+08:00 CMD vgvoice prebuf 400
+vgvoice prebuf 400
+vgvoice: prebuf -> 400 ms
+nsh> [K
+2026-10-24T17:16:44.8010890+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T17:16:45.3018247+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=110
+[vgvoice] clip_prep src=file bytes=0 ms=0
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861919
+
+PRESEED seen=522 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr phases dns=90 tls=690 send=2670 ttfb=340 body=0 http=3810
+[vgvoice] asr rc=ok status=200 req=115429 resp=468 ms=4030
+[vgvoice] stage=asr_end t=5020
+[vgvoice] stage=agent_begin t=5020
+[vgvoice] stage=agent_queued t=5030
+[vgagent] round submitted: 66 bytes
+[agent] Processing message from local_client:velaguard:voice:2
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adce6e435c3b13a] BEGIN chat=velaguard:voice:2 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1994 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861924
+[agent] Dispatching response → local_client:velaguard:voice:2
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=566 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce6e435c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=90 tls=2920 send=300 ttfb=1010 body=0 pool=na build=100 parse=0 http=4640 backoff=0 total=4740 req=1994 resp=566 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adce6e435c3b13a] iter=0 tool=vg_point_read latency=4940ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 109 bytes, 210 ms
+[trace:6adce6e435c3b13a] tool_iter=0 tool=vg_point_read tool_ms=210 out=109 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6adce6e435c3b13a] END status=ok iters=1 tools=1 llm_ms=4940 tool_ms=210 elapsed_ms=5460 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:2
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=10970
+[vgvoice] reused agent facts for vg_point_read seq=2
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=2
+[vgvoice] stage=facts_end t=10980
+[vgvoice] stage=tts_begin t=10990
+[vgvoice] stage=play_posted t=11010
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792861930
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] first_playable gen=7 elapsed_ms=15000
+[vgvoice] stage=play_start t=15000
+vgtime: synced 2026-10-24 17:17:05
+[vgvoice] tts phases dns=140 tls=1440 send=430 ttfb=310 body=6980 http=9320
+[vgvoice] tts_blocks n=6 first_line=310 first_pcm=770 blocks=770,1810,2930,3680,5170,7290 last=7290 bytes=99840
+[vgvoice] tts rc=ok status=200 pcm=99840 resp=0 ms=9490 stream=1 partial=0
+[vgvoice] stage=tts_end t=20500
+[vgvoice] tts_player played=133120 pushed=66560 underruns=4 stall_ms=4370 restarts=4 complete=1 failed=0 err=0 ms=21020
+[vgvoice] stage=play_done t=21030
+[vgvoice] round_settled gen=8 state=8 failed=0 elapsed_ms=21040
+
+2026-10-24T17:17:06.5377661+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-24T17:17:09.0389363+08:00 CMD echo CASE_t400b
+echo CASE_t400b
+CASE_t400b
+nsh> [K
+2026-10-24T17:17:09.2545544+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K
+2026-10-24T17:17:09.7825076+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+nsh> [K[vgvoice] stage=asr_begin t=200
+[vgvoice] clip_prep src=file bytes=0 ms=0
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862230
+
+PRESEED seen=522 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] asr phases dns=30 tls=860 send=2340 ttfb=250 body=0 http=3490
+[vgvoice] asr rc=ok status=200 req=115429 resp=468 ms=3710
+[vgvoice] stage=asr_end t=4770
+[vgvoice] stage=agent_begin t=4770
+[vgvoice] stage=agent_queued t=4780
+[vgagent] round submitted: 66 bytes
+[agent] Processing message from local_client:velaguard:voice:3
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6adce81b7c9701b3] BEGIN chat=velaguard:voice:3 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1994 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862235
+[agent] Dispatching response → local_client:velaguard:voice:3
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=566 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6adce81b7c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=200(fused) setup=10 tls=2720 send=200 ttfb=1310 body=0 pool=na build=10 parse=100 http=4540 backoff=0 total=4740 req=1994 resp=566 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6adce81b7c9701b3] iter=0 tool=vg_point_read latency=4840ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 109 bytes, 400 ms
+[trace:6adce81b7c9701b3] tool_iter=0 tool=vg_point_read tool_ms=400 out=109 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6adce81b7c9701b3] END status=ok iters=1 tools=1 llm_ms=4840 tool_ms=400 elapsed_ms=5730 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:3
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=10800
+[vgvoice] reused agent facts for vg_point_read seq=3
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=3
+[vgvoice] stage=facts_end t=10810
+[vgvoice] stage=tts_begin t=10810
+[vgvoice] stage=play_posted t=10840
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792862241
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+HARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=00000478 MMFAR=00000478
+HARDFAULT: stacked PC=90016bcc LR=90015fd3
+dump_assert_info: Current Version: NuttX  0.0.0 cdfd23cdf0b-dirty Oct 24 2026 17:04:30 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x90017331
+up_dump_register: R0: 24004d50 R1: 00000000 R2: 900bca7a  R3: 24004738
+up_dump_register: R4: 3800c6a0 R5: 00000003 R6: 900bca7a  R7: 00000000
+up_dump_register: R8: 00000001 R9: 240046b8 R10: 00000006 R11: 2406f718
+up_dump_register: R12: 00000009 SP: 2406f528 LR: 90001b1f  PC: 90001b1f
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x2406a4e0
+dump_stackinfo:   size: 00049128
+dump_stackinfo:     sp: 0x2406f528
+stack_dump:  2406f508: 240764c8 0000aef0 24070508 2406f528 2406a4e0 0000bfe8 240046b8 90001ccb
+stack_dump:  2406f528: 900d5f32 00000000 3800c750 38000480 90017331 0000000a 00000000 00000000
+stack_dump:  2406f548: 3800c6a0 24004d50 900bca7a 00000000 00000000 7474754e 40000058 2406f5d8
+stack_dump:  2406f568: 00000000 900082b7 30040008 00000008 00000000 00000000 900bca79 00000000
+stack_dump:  2406f588: 35666433 39303031 302e3000 af00302e 04b45998 05e16ffe 042bf578 6463ca54
+stack_dump:  2406f5a8: 33326466 30666463 69642d62 20797472 2074634f 32203432 20363230 303a3731
+stack_dump:  2406f5c8: 30333a34 900bca00 2406f610 900077a9 6d72612b 90008c00 90008c4f 00000006
+stack_dump:  2406f5e8: 90008289 0000000a 2406f6d8 2406f718 00000003 24004738 2406f718 2406fc48
+stack_dump:  2406f608: 00000000 00000002 2406f718 900014c1 00000001 00000478 3800c6a0 90000e8d
+stack_dump:  2406f628: 00000000 00000007 240705ca 00000000 240705cc 90001073 860018b5 7ddcefb0
+stack_dump:  2406f648: 00000000 30044a4b 0000000d 00000010 0000000c 90074205 0000000d 30044a4b
+stack_dump:  2406f668: 300420c5 300420c5 2406f7b4 2406f710 2406f7c0 2406f740 300420c5 2406f7c0
+stack_dump:  2406f688: 00000003 300295a0 300420c5 ffffffff 00000001 00000000 00000139 90044cf1
+stack_dump:  2406f6a8: 0000000d 300420c5 00002996 300420c5 00002996 2406f6d8 00000010 00000000
+stack_dump:  2406f6c8: 30032068 240033d8 00000001 00000000 00002986 0000000d 2406f720 30032068
+stack_dump:  2406f6e8: 9009937f 900993a3 00000001 00000000 00000000 2406f770 00000001 00000000
+stack_dump:  2406f708: 00000000 00000000 6609a7d3 bee571ff 2406f7f0 00000000 24073540 240705ca
+stack_dump:  2406f728: 00000000 240705cc 2406fc48 00000000 00000002 2406f884 00000000 ffffffe9
+stack_dump:  2406f748: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406f768: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406f788: 00000000 0000000a 7fffffff 00000000 00000000 90015fd3 90016bcc 61000000
+stack_dump:  2406f7a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406f7c8: 00000000 00000000 c1059ed8 cbbb9d5d ffffffff 7fefffff 00000000 c3e00000
+stack_dump:  2406f7e8: 20000000 90016bcd 90053e71 2406f87c 00000000 00000001 00000986 2406fc48
+stack_dump:  2406f808: 00000000 900344e1 2406f868 00000984 2406fc48 24072058 24073624 00000986
+stack_dump:  2406f828: 00000000 ffffffff 00000001 00000000 00000986 90035c55 24073624 9159015a
+stack_dump:  2406f848: 20000000 0001401e 00000000 00014906 00014a64 00000000 00014776 000000c8
+stack_dump:  2406f868: 24072048 240724d8 00001000 00000000 deadbe00 00000001 00000984 65373932
+stack_dump:  2406f888: 00000000 00000000 00000000 00000000 00000000 00000000 2406f9f8 0000001c
+stack_dump:  2406f8a8: 00000000 00000000 00000303 00000000 00000000 00000000 90034b29 900343af
+stack_dump:  2406f8c8: 00000000 2406f8a0 30029708 30029708 30029708 00000000 00000000 300295a0
+stack_dump:  2406f8e8: 300295a0 300295a0 00000000 00000000 00000000 00000000 300420b8 300420b8
+stack_dump:  2406f908: 300420c0 300420c3 300420c3 300420c5 300420c5 00000000 00000017 00000000
+stack_dump:  2406f928: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406f948: 00000000 00000000 00000000 00000000 00000000 00000000 d02a11a8 d02a11a8
+stack_dump:  2406f968: d02a11b0 d02a11b3 d02a11b3 d02a11b5 d02a11b5 00000017 000000a5 00000000
+stack_dump:  2406f988: 00000000 03000000 00000000 2407fd50 900c7690 00000000 00000000 00000001
+stack_dump:  2406f9a8: 0000000c ebb0ae7e 2d1e9332 5a116889 6e0d3830 a130cdf6 a6c001ed 00000000
+stack_dump:  2406f9c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406f9e8: 00000000 00000000 00000000 00000000 03030303 00010000 01010100 00010100
+stack_dump:  2406fa08: 00000000 24053434 00000000 00000000 9003e4bd 2406fadc 00000000 00000000
+stack_dump:  2406fa28: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 90046871
+stack_dump:  2406fa48: 90046879 00000000 00000000 00000000 00000000 00000000 900e2b18 00000000
+stack_dump:  2406fa68: 00000000 00000000 00000000 2400092c 00000000 24000960 00000000 00000000
+stack_dump:  2406fa88: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  2406faa8: 240006f0 00000000 000003e8 0000ea60 00000010 ffff0000 ffffffff 00000000
+stack_dump:  2406fac8: 00000400 00000000 00000000 00000000 00000008 a452815d 0c020aef 89cfce48
+stack_dump:  2406fae8: b5647c6a 00000007 00000000 00000030 00002710 0000000e 00000000 25579edc
+stack_dump:  2406fb08: 20ed4625 d23435e5 d47dd790 42353513 c78c73e4 5b905f28 5389a5fc 95ba39db
+stack_dump:  2406fb28: b5577ffe 67634a1b b31e9d8b 2f476b2e e8cb18ca b35b47e2 e0d2e21e e75b8c41
+stack_dump:  2406fb48: 520cf3bf 356fb9a4 8671242f 6be45d3b 832f45f1 30740213 d0a6e00d 302ba8a4
+stack_dump:  2406fb68: 62275b1b 5748e2bf d139c690 55f6e95b d6d9acaa e6adaeb9 360b4eb4 bd2e8383
+stack_dump:  2406fb88: df09d898 88413a27 5978fcb7 9e4a59f2 4893f558 ae3e5be1 98351555 416815ca
+stack_dump:  2406fba8: 9e61cd52 1620f775 4f580bc2 1a2072d7 52b3878f fc8ddc6e 64b8c93b a32b7937
+stack_dump:  2406fbc8: 3d4ab465 2b6a4310 643248d2 59032062 0bb0a7ed f73d7b83 9385b2b8 cff7ee40
+stack_dump:  2406fbe8: f2bd5a25 d9d71935 bde551e7 23daf1f6 286a561b df572d98 4cd29f20 00000000
+stack_dump:  2406fc08: 00000000 00000000 00000000 90034b71 00000000 00000000 00000000 7fffffff
+stack_dump:  2406fc28: 00000004 00000000 00000000 00000000 00000001 00000001 00000000 00000000
+stack_dump:  2406fc48: 2f5a4851 562f487a 41332f2f 6a433441 2f774877 2f2b3736 41674151 612f3361
+stack_dump:  2406fc68: 41444551 51413858 2f552b50 45423432 41554641 53413859 2f432b76 46427367
+stack_dump:  2406fc88: 416b4b67 372f6a64 2f71372f 68416778 41504567 4d417364 2f492f2f 64414132
+stack_dump:  2406fca8: 41624841 5a2b3753 41573950 33426f5a 2f4d4367 692b486b 41514651 31413476
+stack_dump:  2406fcc8: 2f2b372f 31427756 41494767 512f484f 416c382f 42425146 416a4367 43423042
+stack_dump:  2406fce8: 414c3450 78423846 41794667 65394856 414f2f2f 51436f51 2f564851 48394462
+stack_dump:  2406fd08: 41764f67 65413069 2f423066 6f446372 2f375051 77374475 4251302f 7a464954
+stack_dump:  2406fd28: 2f433166 4538504e 426a4d67 74426359 2b4a3766 322f667a 41314a41 32423837
+stack_dump:  2406fd48: 2f753276 392b6262 41574751 77437731 2b4b332f 61424177 414a4f51 632f4438
+stack_dump:  2406fd68: 2f507876 4f434578 416f4b51 6a2f4452 41633150 4b437358 2f4b4177 4f2f727a
+stack_dump:  2406fd88: 41454951 6c2f336c 2f323666 69436770 2f424951 592f2f74 41754467 48423444
+stack_dump:  2406fda8: 2f474777 342b506d 41664641 72424566 2f4d382f 4b423068 41734641 4e2b7259
+stack_dump:  2406fdc8: 4145392f 7641516f 41583450 6c425145 2f6c2f66 6b414930 41584c51 792b5843
+stack_dump:  2406fde8: 4142392f 6a424966 2f784241 302f445a 416f4a77 49425566 2f6b2f50 6d2f4c6a
+stack_dump:  2406fe08: 41554b41 2b2b446d 41713466 45434543 2f6b5341 48386264 41454351 44436776
+stack_dump:  2406fe28: 2f6d4451 2f2f6a63 416a4851 672f664c 2f4d392f 45427773 2f635477 44386239
+stack_dump:  2406fe48: 414d3376 4e445963 2f754477 69395438 41473766 75417733 41582b50 582b6a4d
+stack_dump:  2406fe68: 2f323876 50423478 2f754841 38415134 2f574477 462b4853 41434677 6a443067
+stack_dump:  2406fe88: 2f443966 46396273 416a2f66 3345386c 2f5a3850 4a38446b 42643976 3045734e
+stack_dump:  2406fea8: 2b314241 49397254 42684367 4846304c 2f723866 7a2b664d 41434351 5a435175
+stack_dump:  2406fec8: 2f444477 632b4875 41794641 4e2f7a42 41624567 44425963 2b394751 672b3379
+stack_dump:  2406fee8: 41534d51 49416339 2f48332f 7741636e 41424b51 642f6248 41554477 6f2f7650
+stack_dump:  2406ff08: 41793766 632f724d 41774e51 4538332b 2f773776 6a427775 41715151 312f2f43
+stack_dump:  2406ff28: 2f484267 48392f75 41484567 6c444d77 2f304741 48397641 41382f50 38474576
+stack_dump:  2406ff48: 2f4f3676 68386247 42303366 6244344b 2f62372f 46414177 2f333866 69423077
+stack_dump:  2406ff68: 41764851 78416f47 2f494441 38396a69 417a342f 42445562 2f505577 4a346a2f
+stack_dump:  2406ff88: 41737776 38477365 2f2f5a41 43353344 414b3066 31473477 2f5a2b2f 572b506c
+stack_dump:  2406ffa8: 41544441 6a413844 2f524151 2b433030 417a3250 6f2f5044 41583276 37416f71
+stack_dump:  2406ffc8: 41344a77 662b4c42 2f453550 2b435959 41364d51 2b397a73 2f61782f 6a417375
+stack_dump:  2406ffe8: 41315141 422b7255 4169312f 66427755 41354841 32413446 2f773566 35426f36
+stack_dump:  24070008: 41592b50 2b426f4b 2f5a4277 43385435 4163352f 74454568 414d4e67 6234544f
+stack_dump:  24070028: 425a7776 51464955 2f525251 41355476 41353966 4743346b 414f4567 392f6e4a
+stack_dump:  24070048: 2f544167 692f766b 416c4e51 7443734f 2f673576 502f7632 416f3976 56426b4b
+stack_dump:  24070068: 41444877 422b2f65 4167782f 50423871 41644e77 5939766d 41377a66 66436343
+stack_dump:  24070088: 41774967 30393746 414c2f76 73424952 41373076 702f6661 2f4e4751 53396238
+stack_dump:  240700a8: 414d4841 53434561 2f6e2f76 47414941 41414467 61434d47 41723966 302f3349
+stack_dump:  240700c8: 414f7976 2b435944 4171382f 592f6a72 2f493550 362b6278 414e382f 2b434169
+stack_dump:  240700e8: 2f394a77 46383349 41614c77 76423056 2f5a4541 4e396e4e 41754651 682f722b
+stack_dump:  24070108: 2f773350 59416f72 41512b50 432f7a70 41304241 38413847 2f6f4167 5a2f4471
+stack_dump:  24070128: 41733466 6543414e 2f374541 482b7241 41463566 51456353 41682b2f 56386e54
+stack_dump:  24070148: 41797a76 492f6644 414c4f41 73375870 2f6b3450 362f2f76 41354867 30414d49
+stack_dump:  24070168: 2f343066 522b4438 41523566 7543346e 41664667 59363754 2f6a332f 2b424936
+stack_dump:  24070188: 41425041 78396e69 2f646b50 51413468 42395667 5a2b3767 2f776f2f 622f6242
+stack_dump:  240701a8: 426a4d77 71455954 2b617966 53357a2b 42713176 37484155 2f564b77 55333357
+stack_dump:  240701c8: 41756c2f 534b3042 2f546977 49344c44 2f716566 45466b33 2f636251 33383778
+stack_dump:  240701e8: 2f587676 32416f6b 42653666 332f334d 2f41392f 77355076 417a3850 77445979
+stack_dump:  24070208: 2f724c51 59376254 2f4e762f 62465153 2f306267 3039626a 2f4e6b76 68466745
+stack_dump:  24070228: 2f424e77 392f7a39 41717450 702b5846 41683866 6a415156 415a4c77 4a382f44
+stack_dump:  24070248: 4136352f 5542776e 2f514367 682b5865 41372f50 31447353 2f583450 31346238
+stack_dump:  24070268: 41714177 6b447775 2f544577 4537334f 4169342f 56425931 2f654b77 762f7a4c
+stack_dump:  24070288: 2f514b41 69416741 41397776 52424946 2f514851 70387256 2f4e2b2f 76434576
+stack_dump:  240702a8: 2f744a67 36394c51 4144302f 4b436f78 2f784777 2f2b3752 2f4b7750 41433878
+stack_dump:  240702c8: 41313566 3743456a 2f793266 57386e4d 42583676 4345416f 2f373576 66356665
+stack_dump:  240702e8: 427a7850 76475144 2f544741 68347261 4132782f 7a426763 2f7a4a51 7a426f78
+stack_dump:  24070308: 2f757766 30396658 412f7350 56473477 2f6d4477 6e37766d 2f4f7450 35434131
+stack_dump:  24070328: 41544e77 6b38766b 2f32702f 422b4457 2f566177 5938506c 2f307966 58413073
+stack_dump:  24070348: 41304341 33393362 2f5a4351 422b446b 2f347766 6c44306b 2f564c67 41397a38
+stack_dump:  24070368: 2f383276 572b3365 414d4567 4e394436 2f353950 50397259 2f634867 6f436b54
+stack_dump:  24070388: 41577750 62436f52 2f354651 7337725a 41397a50 33426756 2b614451 57383779
+stack_dump:  240703a8: 2f514267 39446351 41772f76 362f374f 2f577850 432b5874 412f4367 422f7655
+stack_dump:  240703c8: 41624851 6f2f584d 2f626f76 59416736 41614c51 312b6251 2f792f76 35414547
+stack_dump:  240703e8: 41703966 692b3744 41344b41 382b5872 2b787a66 4d2b4877 412f4f67 74376e6c
+stack_dump:  24070408: 2f673650 51424175 2f724f77 75396e39 2f466c50 4b42456d 41584e41 512f4452
+stack_dump:  24070428: 414d3466 582b5047 2f393150 542f2f69 41714751 7041634f 2b593066 4739447a
+stack_dump:  24070448: 41643350 6a446b49 2f314577 31395052 2f743050 2f453467 2b72322f 4e2b5076
+stack_dump:  24070468: 41454667 3042674a 2f774441 652f6e4f 2f623476 6541516e 414c4551 3743634e
+stack_dump:  24070488: 2b793266 45394868 416d4e51 4c444952 2f794667 62384874 2f593350 37414d78
+stack_dump:  240704a8: 41654177 692b335a 4130342f 4b434d62 2f686e2f 4d373352 42313876 462f542b
+stack_dump:  240704c8: 2f474d67 52387a52 2f663876 732b4843 41314467 69444153 2b363766 5a375057
+stack_dump:  240704e8: 2f622b66 6c445552 41724641 63413442 2f6e7350 6a393356 2f344241 4642637a
+stack_dump:  24070508: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24059ac4      1000       536    53.6%      0.0%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24007558      1976       688    34.8%      3.2%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Ready              0000000000000000 0x24006d58      1976       760    38.4%      3.2%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168      1488    18.2%      0.0%   velaguard_app_main 0x9000cbd1 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38004cf0     12264      1128     9.1%      1.3%   velaguard_app_main 0x90010915 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x900146c1 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       696    34.3%      3.9%   ESP8266 0x900693a5 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024      1072    52.9%      0.0%   netinit 0x9006af55 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b460      4056      1048    25.8%      0.0%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Running            0000000000000000 0x2406a4e0     49128     44784    91.1%!     6.5%   velaguard_app_main 0x90017331 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800ccf0      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Ready              0000000000000000 0x30000040     49104      8968    18.2%     75.1%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3000c030      8168      6288    76.9%      0.0%   vghmi 0x90014f05 0
+dump_task:      14    14 100 RR       Task    -   Waiting Signal     0000000000000000 0x3000e068     32696      2344     7.1%      0.0%   ai_agent ai_agent --daemon
+dump_task:      79    14  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x30018688     12264       912     7.4%      0.0%   ai_agent 0x9002cfb5 0x24078968
+dump_task:      80    14   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x2407e9d0      4072       992    24.3%      0.0%   ai_agent 0x900335a5 0x3800aca8
+dump_task:      81    14  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001b690     28648      1232     4.3%      0.0%   ai_agent 0x9002cfb5 0x2405a090
+dump_task:     114     3 100 RR       pthread -   Ready              0000000000000000 0x300360c0     16360       680     4.1%      5.8%   velaguard_app_main 0x90051439 0
+dump_task:      84    14  60 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x24029600     32744     14448    44.1%      0.0%   ai_agent 0x9002ec49 0x2407dbc8
+dump_task:      85    14 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x3002c050      8168      1512    18.5%      0.6%   ai_agent 0x9006e9e9 0x3002a030
+EXPECTED_MARKER_MISSING: ; raw response retained
+
+2026-10-24T17:17:55.2949486+08:00 CMD vgvoice round end

@@ -1,0 +1,58 @@
+[
+ {"command": "", "wait_ms": 15000, "timeout_ms": 18000},
+ {"command": "vgvoice prebuf", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice mute off", "wait_ms": 300, "timeout_ms": 10000},
+
+ {"command": "echo CASE_streamtest", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice streamtest /data/velaguard/voice/anomaly01.wav", "wait_ms": 2000, "timeout_ms": 60000},
+
+ {"command": "echo CASE_ttss01", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice ttss 当前没有异常点位，设备运行正常", "wait_ms": 2000, "timeout_ms": 50000},
+
+ {"command": "echo CASE_ttss02", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice ttss UPS负载百分之四十，电压二百二十伏", "wait_ms": 2000, "timeout_ms": 50000},
+
+ {"command": "echo CASE_anomaly01", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round hold on", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round text", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice round counts", "wait_ms": 200, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice round hold off", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_point01", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round hold on", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round text", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice round hold off", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_cancelmid", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/recovery01.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 16000, "timeout_ms": 20000},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 12000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 15000, "wait_for": "cancel_settled", "optional_wait": true},
+
+ {"command": "echo CASE_prebuf100", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice prebuf 100", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/anomaly02.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "echo CASE_prebuf400", "wait_ms": 200, "timeout_ms": 10000},
+ {"command": "vgvoice prebuf 400", "wait_ms": 300, "timeout_ms": 10000},
+ {"command": "vgvoice round ask /data/velaguard/voice/point02.wav", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "vgvoice round release", "wait_ms": 500, "timeout_ms": 10000},
+ {"command": "", "wait_ms": 100, "timeout_ms": 45000, "wait_for": "[vgvoice] round_settled", "optional_wait": true},
+ {"command": "vgvoice round end", "wait_ms": 2500, "timeout_ms": 10000},
+
+ {"command": "vgvoice prebuf 200", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice status", "wait_ms": 500, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "free", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true}
+]

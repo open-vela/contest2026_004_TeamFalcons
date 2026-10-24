@@ -1,0 +1,7 @@
+[
+ {"command": "", "wait_ms": 15000, "timeout_ms": 18000},
+ {"command": "vgvoice prebuf", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "free", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "ls /data/velaguard/voice/", "wait_ms": 500, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "vgvoice mute off", "wait_ms": 300, "timeout_ms": 10000}
+]

@@ -1,0 +1,4 @@
+[
+ {"command": "", "wait_ms": 3000, "timeout_ms": 5000},
+ {"command": "vgvoice dnsprobe token-plan-cn.xiaomimimo.com 192.168.137.1 53 5000", "wait_ms": 1000, "timeout_ms": 12000, "optional_prompt": true}
+]

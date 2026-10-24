@@ -1,0 +1,51 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+
+2026-10-24T16:41:56.1680808+08:00 CMD vgvoice prebuf
+vgvoice prebuf
+vgvoice: prebuf 200 ms
+nsh> [K
+2026-10-24T16:41:56.4789409+08:00 CMD free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6807888     850680    5957208     884680    5795432   1089      7 Umem
+nsh> [K
+2026-10-24T16:41:56.7868406+08:00 CMD ls /data/velaguard/voice/
+ls /data/velaguard/voice/
+/data/velaguard/voice:
+ q1.wav
+ point01.wav
+ pref.txt
+ recovery01.wav
+ anomaly01.wav
+ anomaly02.wav
+ anomaly03.wav
+ anomaly04.wav
+ anomaly05.wav
+ anomaly06.wav
+ anomaly07.wav
+ anomaly08.wav
+ anomaly09.wav
+ anomaly10.wav
+ point02.wav
+ point03.wav
+ point04.wav
+ point05.wav
+ point06.wav
+ point07.wav
+ point08.wav
+ point09.wav
+ point10.wav
+ recovery02.wav
+ recovery03.wav
+ recovery04.wav
+ recovery05.wav
+ recovery06.wav
+ recovery07.wav
+ recovery08.wav
+ recovery09.wav
+ recovery10.wav
+nsh> [K
+2026-10-24T16:41:57.2934063+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K

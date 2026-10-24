@@ -1,0 +1,6 @@
+[
+ {"command": "", "wait_ms": 5000, "timeout_ms": 8000},
+ {"command": "ifconfig", "wait_ms": 500, "timeout_ms": 10000, "optional_prompt": true},
+ {"command": "ping -c 2 192.168.137.1", "wait_ms": 1000, "timeout_ms": 12000, "optional_prompt": true},
+ {"command": "ping -c 2 223.5.5.5", "wait_ms": 1000, "timeout_ms": 12000, "optional_prompt": true}
+]

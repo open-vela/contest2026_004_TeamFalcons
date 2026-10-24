@@ -1,0 +1,5 @@
+[
+ {"command": "", "wait_ms": 3000, "timeout_ms": 5000},
+ {"command": "vgvoice dnsprobe", "wait_ms": 1000, "timeout_ms": 20000, "optional_prompt": true},
+ {"command": "vgvoice netprobe", "wait_ms": 1000, "timeout_ms": 20000, "optional_prompt": true}
+]

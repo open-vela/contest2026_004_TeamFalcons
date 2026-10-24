@@ -1,0 +1,5 @@
+[
+ {"command": "", "wait_ms": 3000, "timeout_ms": 5000},
+ {"command": "vgvoice status", "wait_ms": 500, "timeout_ms": 12000, "optional_prompt": true},
+ {"command": "vgvoice prebuf", "wait_ms": 300, "timeout_ms": 10000, "optional_prompt": true}
+]
