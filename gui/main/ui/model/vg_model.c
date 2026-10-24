@@ -1,4 +1,5 @@
 #include "vg_model.h"
+#include "vg_voice_round.h"
 #include "vg_ui_backend.h"
 #include "vg_mthings_points.h"
 #include "lvgl/lvgl.h"
@@ -1445,12 +1446,26 @@ void vg_model_tick(void)
         }
     }
     derive_primary_alarm();
-    if(dirty) {
-        /* Live severity/online changes never rebuild the cached home filter
-         * index on their own; refresh it so the home list matches the live
-         * chip counts (e.g. a point recovering drops out of the 告警 list). */
-        rebuild_filter();
-        notify_all();
+
+    /* The fullscreen voice overlay hides every bound view, so invalidating
+     * them each second under it only burns render time against the upload's
+     * SDRAM traffic.  Data and alarm durations above still advance; one
+     * catch-up refresh fires on the tick after the overlay hides. */
+
+    {
+        struct vg_voice_ui vui;
+        static bool covered_last;
+        bool covered = vg_voice_round_ui(&vui) && vui.visible;
+
+        if((dirty || covered_last) && !covered) {
+            /* Live severity/online changes never rebuild the cached home
+             * filter index on their own; refresh it so the home list matches
+             * the live chip counts (e.g. a point recovering drops out of the
+             * 告警 list). */
+            rebuild_filter();
+            notify_all();
+        }
+        covered_last = covered;
     }
 }
 

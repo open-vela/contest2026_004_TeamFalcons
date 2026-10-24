@@ -1,0 +1,78 @@
+{
+  "time": "2026-10-24T00:45:29.558894+00:00",
+  "label": "Final: overlay UI-gate + daily-check cache, CJK overlay font, phase timing, RR100 reverted",
+  "options": {
+    "CONFIG_VG_VOICE_TLS_CACHE": "n",
+    "CONFIG_VG_VOICE_TEST_FIXTURE": "n",
+    "CONFIG_VG_VOICE_DIRECT_TOOL": "n",
+    "CONFIG_IOB_NBUFFERS": "128",
+    "CONFIG_NET_SOLINGER": "y",
+    "CONFIG_MBEDTLS_SSL_OUT_CONTENT_LEN": "16384"
+  },
+  "repositories": {
+    ".": {
+      "head": "6f527c143cde19e5bfc8aba873a7457a584bd3c2",
+      "branch": "velaguard/maintenance-stability",
+      "working_sources": {
+        "gui/main/ui/model/vg_model.c": "7ab4607361737b71556c0020c785e7fa6d915b5f643f507d23f9c9de9d06e068"
+      }
+    },
+    "../packages/ai_agent": {
+      "head": "6d6eb42ad1ce5d8e8d1dc921912973a540d492a3",
+      "branch": "velaguard/rsp01-response-timing",
+      "working_sources": {}
+    },
+    "../nuttx": {
+      "head": "cdfd23cdf0b1f621da52fed29d677df5390724c0",
+      "branch": "velaguard/ptt-user1-stm32h750b-dk",
+      "working_sources": {
+        "arch/arm/src/armv7-m/vg_diag.h": "085614a1d2ed6929812713834cdaf002d480fe8efab29223f22a8c7d8c6ec8a9"
+      }
+    },
+    "../apps": {
+      "head": "0ea954b79740756318ce1f0b13271dd94235fe2a",
+      "branch": "velaguard/netinit-esp8266",
+      "working_sources": {
+        "testing/drivers/nist-sts/sts/include/cephes.h": "c0c94808f3e4b26dfcce58891cbce756b4f332250f8644d7a87a9dc6ebd4beae",
+        "testing/drivers/nist-sts/sts/include/config.h": "f4758e9b4ef8cf05e00b24bf7f4d364de0bae6f6f819acce61a18a9b9e676a9b",
+        "testing/drivers/nist-sts/sts/include/decls.h": "ae2100c46c8a9b5dc90980efd043d9dac7ca41c8787a9a3c7514a7b0da560954",
+        "testing/drivers/nist-sts/sts/include/defs.h": "8854413538d73b86d46149392abfff02b2e164523523a0f5f57002a75fa28cb7",
+        "testing/drivers/nist-sts/sts/include/externs.h": "e97571ba2be098ed035f49841cc2b35a5014e10fa18ef121e375e4d84b3614d4",
+        "testing/drivers/nist-sts/sts/include/generators.h": "2e8cd17aab01873dfdf641e967a267e7b958f7619df612b5b0b721b4b0f5fc79",
+        "testing/drivers/nist-sts/sts/include/genutils.h": "4f64e7ac7304bd1268115e6136d7bfb4e3e707e19822171c0b0539e95df97469",
+        "testing/drivers/nist-sts/sts/include/matrix.h": "5928d67c86148a0d21b84d3c9bd81e60173a491c104acb40a79cf868221cfd2b",
+        "testing/drivers/nist-sts/sts/include/stat_fncs.h": "f40cfeb4d323d16d18b16c0257fd85d608b41800616afeac26ad3637ff6e4ec8",
+        "testing/drivers/nist-sts/sts/include/utilities.h": "13be14f121709ff2f83a92c24f6159e19c4271ead4ed88a2086edb6c76786506",
+        "testing/drivers/nist-sts/sts/src/approximateEntropy.c": "5299138b4ffb91f4802094f0da71527c23b8e27c96835c4590921a10abc3ea16",
+        "testing/drivers/nist-sts/sts/src/assess.c": "3d1eaf7c2c541b2147c143b47b117ca67a112ad0ded1d803d039f752fde6e0f3",
+        "testing/drivers/nist-sts/sts/src/blockFrequency.c": "c1ea289ab3e89a955703e6b9eace59defa2486a0ae91741e7c6144072e0b18cd",
+        "testing/drivers/nist-sts/sts/src/cephes.c": "1243b9e69682769acd4734779e1c41396fde5936aaff55b51efb8c165eaabe6a",
+        "testing/drivers/nist-sts/sts/src/cusum.c": "5c59a6c9b28fd17ace7dce070d608274f0ac9ff698bc95435dad6f28f99f4607",
+        "testing/drivers/nist-sts/sts/src/dfft.c": "89057bb4459a2cdb0b28b1aa7f92c2647e3c64479a1a65f8af5dada43b37624a",
+        "testing/drivers/nist-sts/sts/src/discreteFourierTransform.c": "8084fde049f7df5099ae56634e60c449f482af10a485c38784e2615bbc884233",
+        "testing/drivers/nist-sts/sts/src/frequency.c": "84f983342f6df442c15f15dde3f0931ff20e06f74b965d2aecfb0d3d55f5e81c",
+        "testing/drivers/nist-sts/sts/src/generators.c": "a38518e777a24da8a09961452a855ce9663237a1b20ee4bf208c99896a34c285",
+        "testing/drivers/nist-sts/sts/src/genutils.c": "483338c8a173ad83bbd2fcea22cb712cfcc9f4e4867f7acc8cd203807521aac5",
+        "testing/drivers/nist-sts/sts/src/linearComplexity.c": "766eea2e7e91dd06a0c69d78531bd4ecd856d9de20c1ee3b4c8cd5f8bb3f5eb1",
+        "testing/drivers/nist-sts/sts/src/longestRunOfOnes.c": "f86fa07eb17d34e82a826477c9179832d850be69c185991cb40fb7aa1a81fd41",
+        "testing/drivers/nist-sts/sts/src/matrix.c": "8a26f646cfae0b772798bb621336ddd772d4f536890f38d4c80cdc7db9bab050",
+        "testing/drivers/nist-sts/sts/src/nonOverlappingTemplateMatchings.c": "5be4c3e4e30a85218aa9d25391cb51c2c917eb1f370d9db13398c0e67d0f727d",
+        "testing/drivers/nist-sts/sts/src/overlappingTemplateMatchings.c": "6194c90840d622cca80509d4ab03a23752dc02dece422b5348fa8155787da2bb",
+        "testing/drivers/nist-sts/sts/src/randomExcursions.c": "127112da12e02830b0d6a69f9a1829d8b55bbb1c0e0d497a115d8ea0d377a207",
+        "testing/drivers/nist-sts/sts/src/randomExcursionsVariant.c": "c089d86370b51f87e58e24224b83b0dbb14520dec9efe8512b149582d999c92c",
+        "testing/drivers/nist-sts/sts/src/rank.c": "94e20f24b816ad774740e7fa4143467a01b809c91f4bb30a7421588216d344ce",
+        "testing/drivers/nist-sts/sts/src/runs.c": "17fe4145c287b260f7876bc83c3f61ef06600bc718934c47f8d0e8c6baeedd26",
+        "testing/drivers/nist-sts/sts/src/serial.c": "eb2450d5ae5a2e46981d798f679990d0a95bef1c69711c912326cc13af56804a",
+        "testing/drivers/nist-sts/sts/src/universal.c": "8c576108f205e7e2c32821d0381bfe99f75e8849bba36ba38b83264fc4f8bed5",
+        "testing/drivers/nist-sts/sts/src/utilities.c": "c1b7322713c02af6ef96f3b360f6c83f8dd0e3ad20bdecb0572159fa7fee4cd5"
+      }
+    }
+  },
+  "config_sha256": "feabf62db349c2dc611c4210677821bdddeade3b68c5ae75c573334962556a65",
+  "images": {
+    "nuttx.hex": "718cd2ef47a0b317b76ab54cdce7e85b33aaae9e24f0bc19a3bbc8d6c0bc92dd",
+    "nuttx.bin": "ec7dd7a4b16f3cbbba736e4fe61bf31291fe9aca77cfe7c06e1d59a2b4c1d7c8",
+    "nuttx.elf": "fa1adc4b92205b61d6ab72d404a80d8adb312f1e6be8da0f5ce0e4021658c741",
+    "qspi_bootstub.hex": "877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e"
+  }
+}
