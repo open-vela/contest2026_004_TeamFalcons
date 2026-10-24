@@ -302,6 +302,103 @@ int vg_pcm_resample_24k_16k(const int16_t *in, size_t in_n,
   return (int)out_n;
 }
 
+/* ── streaming 3:2 resampler ─────────────────────────────────────── */
+
+void vg_pcm_rs24_16_init(struct vg_pcm_rs24_16 *rs)
+{
+  rs->carry = 0;
+  rs->carry_valid = false;
+  rs->pend_n = 0;
+}
+
+int vg_pcm_rs24_16_feed(struct vg_pcm_rs24_16 *rs, const uint8_t *in,
+                        size_t in_bytes, int16_t *out, size_t out_cap)
+{
+  size_t in_samples;
+  size_t need;
+  size_t out_n = 0;
+  size_t i = 0;
+
+  if (rs == NULL || (in == NULL && in_bytes > 0) || out == NULL)
+    {
+      return -1;
+    }
+
+  /* All-or-nothing: the caller must hand us room for the whole chunk so the
+   * state never advances past a partially written output. */
+
+  in_samples = in_bytes / 2;
+  need = ((rs->pend_n + in_samples) / 3u) * 2u;
+
+  if (need > out_cap)
+    {
+      return -1;
+    }
+
+  while (i < in_bytes)
+    {
+      int16_t s;
+
+      if (rs->carry_valid)
+        {
+          s = (int16_t)((uint16_t)rs->carry | ((uint16_t)in[i] << 8));
+          i++;
+          rs->carry_valid = false;
+        }
+      else if (i + 1 < in_bytes)
+        {
+          s = (int16_t)((uint16_t)in[i] | ((uint16_t)in[i + 1] << 8));
+          i += 2;
+        }
+      else
+        {
+          /* Low byte of a sample whose high byte is still on the wire. */
+
+          rs->carry = in[i];
+          rs->carry_valid = true;
+          break;
+        }
+
+      /* A group completes on its third sample; it is consumed directly so
+       * pend[] only ever holds the 0..2 samples of an open group. */
+
+      if (rs->pend_n == 2)
+        {
+          out[out_n++] = rs->pend[0];
+          out[out_n++] = (int16_t)(((int32_t)rs->pend[1] +
+                                    (int32_t)s) / 2);
+          rs->pend_n = 0;
+        }
+      else
+        {
+          rs->pend[rs->pend_n++] = s;
+        }
+    }
+
+  return (int)out_n;
+}
+
+int vg_pcm_rs24_16_flush(struct vg_pcm_rs24_16 *rs, bool *odd_total)
+{
+  if (rs == NULL)
+    {
+      return -1;
+    }
+
+  if (odd_total != NULL)
+    {
+      *odd_total = rs->carry_valid;
+    }
+
+  /* The incomplete group is dropped: the batch path floors to whole
+   * groups, so keeping it here would diverge from the WAV it writes. */
+
+  rs->carry = 0;
+  rs->carry_valid = false;
+  rs->pend_n = 0;
+  return 0;
+}
+
 int vg_pcm_writer_open(struct vg_pcm_writer *w, const char *path,
                        size_t samples)
 {

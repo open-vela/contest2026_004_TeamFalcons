@@ -154,6 +154,110 @@ static void test_resample(void)
   CHECK(vg_pcm_resample_24k_16k(in, 6, out, 2) == 2);
 }
 
+/* The streaming resampler must be bit-identical to the batch one for any
+ * chunking of the same byte stream — the round feeds it whatever the SSE
+ * decoder produced, in arbitrary sizes. */
+
+static void test_rs_stream_equivalence(void)
+{
+  int16_t in[600];
+  int16_t batch[400];
+  int16_t stream_out[400];
+  uint8_t bytes[sizeof(in)];
+  size_t batch_n;
+  size_t pos;
+  size_t chunk;
+  size_t got;
+  unsigned seed;
+  int i;
+
+  /* Deterministic pseudo-random signal spanning negative/positive and
+   * odd values, so truncation in the average is exercised too. */
+
+  seed = 12345;
+  for (i = 0; i < 600; i++)
+    {
+      seed = seed * 1103515245u + 12345u;
+      in[i] = (int16_t)((seed >> 16) & 0x7fff);
+    }
+
+  for (i = 0; i < 5; i++)
+    {
+      in[i * 7] = (int16_t)(-(int)(in[i * 7] & 0x3ff) - 1);
+    }
+
+  memcpy(bytes, in, sizeof(bytes));
+
+  /* Every length class: 0, 1 and 2 samples left over (mod 3), plus odd
+   * byte counts that split a sample across feeds. */
+
+  for (i = 0; i < 7; i++)
+    {
+      size_t in_bytes = (size_t)(200 + i * 29);  /* 200..374, mixed parity */
+      struct vg_pcm_rs24_16 rs;
+      bool odd_total = false;
+
+      batch_n = (size_t)vg_pcm_resample_24k_16k(in, in_bytes / 2,
+                                                batch, 400);
+
+      vg_pcm_rs24_16_init(&rs);
+      pos = 0;
+      got = 0;
+
+      /* Random chunk boundaries, including single bytes. */
+
+      seed = (unsigned)(i + 1);
+      while (pos < in_bytes)
+        {
+          seed = seed * 1103515245u + 12345u;
+          chunk = 1 + ((seed >> 16) % 97);
+          if (chunk > in_bytes - pos)
+            {
+              chunk = in_bytes - pos;
+            }
+
+          int n = vg_pcm_rs24_16_feed(&rs, bytes + pos, chunk,
+                                      stream_out + got, 400 - got);
+          CHECK(n >= 0);
+          got += (size_t)n;
+          pos += chunk;
+        }
+
+      CHECK(vg_pcm_rs24_16_flush(&rs, &odd_total) == 0);
+      CHECK(odd_total == (in_bytes % 2 != 0));
+      CHECK(got == batch_n);
+      CHECK(got == 0 || memcmp(stream_out, batch, got * 2) == 0);
+    }
+
+  /* A chunk that cannot hold its output is refused whole, state intact:
+   * the next call with room must produce the identical samples. */
+
+  {
+    struct vg_pcm_rs24_16 rs;
+    int16_t small[1];
+
+    vg_pcm_rs24_16_init(&rs);
+    CHECK(vg_pcm_rs24_16_feed(&rs, bytes, 12, small, 1) == -1);
+    CHECK(vg_pcm_rs24_16_feed(&rs, bytes, 12, stream_out, 400) == 4);
+    batch_n = (size_t)vg_pcm_resample_24k_16k(in, 6, batch, 400);
+    CHECK(batch_n == 4);
+    CHECK(memcmp(stream_out, batch, 8) == 0);
+  }
+
+  /* flush resets: feeding the same signal again reproduces it. */
+
+  {
+    struct vg_pcm_rs24_16 rs;
+    bool odd_total = true;
+
+    vg_pcm_rs24_16_init(&rs);
+    CHECK(vg_pcm_rs24_16_feed(&rs, bytes, 12, stream_out, 400) == 4);
+    CHECK(vg_pcm_rs24_16_flush(&rs, &odd_total) == 0 && !odd_total);
+    CHECK(vg_pcm_rs24_16_feed(&rs, bytes, 12, stream_out, 400) == 4);
+    CHECK(vg_pcm_rs24_16_feed(&rs, NULL, 0, stream_out, 400) == 0);
+  }
+}
+
 static void test_wav_write(void)
 {
   struct vg_pcm_wav info;
@@ -238,6 +342,7 @@ int main(void)
 {
   test_probe_and_downmix();
   test_resample();
+  test_rs_stream_equivalence();
   test_wav_write();
   test_base64();
   test_sse();

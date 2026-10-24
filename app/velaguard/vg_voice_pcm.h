@@ -47,6 +47,27 @@ int vg_pcm_wav_downmix_mono(const char *src, const char *dst);
 int vg_pcm_resample_24k_16k(const int16_t *in, size_t in_n,
                             int16_t *out, size_t out_cap);
 
+/* Streaming form of the same conversion.  Fed the same samples in any
+ * chunking it produces bit-identical output to vg_pcm_resample_24k_16k:
+ * each complete group of 3 input samples yields a passthrough sample and
+ * a pairwise average, and an incomplete trailing group is dropped at
+ * flush — exactly the batch function's (in_n / 3) * 2 truncation.  A
+ * sample byte split across feeds is reassembled; flush reports a dangling
+ * byte through *odd_total.  feed writes nothing and returns -1 when out
+ * cannot hold the whole chunk's output (size out for in_bytes/3*2+2). */
+struct vg_pcm_rs24_16
+{
+  uint8_t carry;     /* dangling low byte when carry_valid */
+  bool carry_valid;  /* 0xff is a legal byte value, so no magic sentinel */
+  int16_t pend[2];
+  uint8_t pend_n;    /* 0..2 samples of an incomplete group */
+};
+
+void vg_pcm_rs24_16_init(struct vg_pcm_rs24_16 *rs);
+int vg_pcm_rs24_16_feed(struct vg_pcm_rs24_16 *rs, const uint8_t *in,
+                        size_t in_bytes, int16_t *out, size_t out_cap);
+int vg_pcm_rs24_16_flush(struct vg_pcm_rs24_16 *rs, bool *odd_total);
+
 /* Write mono samples as a 16 kHz stereo 16-bit WAV.  Returns 0 or -errno. */
 int vg_pcm_wav_write_16k_stereo(const char *path, const int16_t *mono,
                                 size_t samples);
