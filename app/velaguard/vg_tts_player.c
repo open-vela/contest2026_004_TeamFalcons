@@ -91,6 +91,7 @@ struct vg_tts_state
   int fd;
   mqd_t mq;
   struct ap_buffer_s *apb[VG_TTS_APB_MAX];
+  bool apb_home[VG_TTS_APB_MAX];  /* buffer is ours, driver must not hold it */
   unsigned napb;
   unsigned apb_bytes;
 
@@ -100,6 +101,13 @@ struct vg_tts_state
   uint32_t prebuf_ms;
   uint32_t prebuf_bytes;
   bool header_pending;   /* pcm0p wants a WAV header before the PCM */
+
+  /* Diagnostic bisection of the startup, for the SDRAM heap-writer hunt:
+   * 0 = full playback (product behaviour); 1 = ring + thread only, the
+   * audio device is never touched; 2 = device session (open/RESERVE/
+   * CONFIGURE/ALLOCBUFFER/mq) but no ENQUEUE/START, so no DMA runs.
+   * Set from NSH (vgvoice bisect), read once per start(). */
+  uint8_t bisect_level;
 
   pthread_t thread;
   bool thread_valid;
@@ -176,6 +184,24 @@ static size_t ring_take(uint8_t *dst, size_t max_bytes)
   }
 
   return take;
+}
+
+/* Track which buffers the driver currently holds.  apb_mark_home(apb,
+ * true) on every DEQUEUE (the message carries the buffer pointer), false
+ * on every ENQUEUE; teardown frees only the ones back home. */
+
+static void apb_mark_home(const struct ap_buffer_s *apb, bool home)
+{
+  unsigned i;
+
+  for (i = 0; i < g_pl.napb; i++)
+    {
+      if (g_pl.apb[i] == apb)
+        {
+          g_pl.apb_home[i] = home;
+          return;
+        }
+    }
 }
 
 /* Fill one driver buffer from the ring and enqueue it.  The very first
@@ -261,6 +287,11 @@ static int fill_and_enqueue(struct ap_buffer_s *apb)
       return -1;
     }
 
+  /* The driver owns the buffer from here until its DEQUEUE comes back;
+   * teardown must not free it in between (see dev_teardown). */
+
+  apb_mark_home(apb, false);
+
   pthread_mutex_lock(&g_pl.lock);
   g_pl.stats.played_bytes += (uint32_t)(samples * 4u);
   pthread_mutex_unlock(&g_pl.lock);
@@ -273,20 +304,40 @@ static void dev_teardown(void)
 {
   struct audio_buf_desc_s desc;
   unsigned i;
+  unsigned leaked = 0;
 
   if (g_pl.fd >= 0)
     {
       memset(&desc, 0, sizeof(desc));
 
+      /* FREEBUFFER only buffers the driver has handed back: freeing one
+       * it still holds (or whose SAI DMA is still running) turns the
+       * subsequent transfer into a write-after-free into the SDRAM heap.
+       * A wedged driver means a few 8 KB buffers stay allocated — the
+       * corruption risk is strictly worse than the leak, so those are
+       * counted and abandoned, not freed. */
+
       for (i = 0; i < g_pl.napb; i++)
         {
-          if (g_pl.apb[i] != NULL)
+          if (g_pl.apb[i] == NULL)
+            {
+              continue;
+            }
+
+          if (g_pl.apb_home[i])
             {
               desc.u.buffer = g_pl.apb[i];
               ioctl(g_pl.fd, AUDIOIOC_FREEBUFFER, (unsigned long)&desc);
-              g_pl.apb[i] = NULL;
             }
+          else
+            {
+              leaked++;
+            }
+
+          g_pl.apb[i] = NULL;
         }
+
+      g_pl.stats.leaked_buffers = (uint8_t)leaked;
 
       if (g_pl.mq != (mqd_t)-1)
         {
@@ -391,6 +442,8 @@ static int dev_setup(void)
         {
           goto fail;
         }
+
+      g_pl.apb_home[i] = true;
     }
 
   mq_unlink(VG_TTS_MQ_NAME);
@@ -521,6 +574,7 @@ static int escalate_restart(unsigned outstanding)
                       recovered++;
                     }
 
+                  apb_mark_home(g_pl.apb[i], true);
                   break;
                 }
             }
@@ -614,6 +668,18 @@ static void *vg_tts_thread(void *arg)
 
       ts = slice_from_now(VG_TTS_MQ_SLICE_MS);
       sem_timedwait(&g_pl.activity, &ts);
+    }
+
+  if (running && g_pl.bisect_level >= 1)
+    {
+      /* Bisection: no playback at level 1 and 2.  Level 1 never opened
+       * the device; level 2 holds a configured session with allocated
+       * buffers.  Both wait through the prebuffer window exactly like
+       * the real path so the caller's timing is unchanged, then finish
+       * without ever handing a buffer to the driver. */
+
+      complete = true;
+      running = false;
     }
 
   if (running)
@@ -719,6 +785,7 @@ static void *vg_tts_thread(void *arg)
 
               resume_ms = 0;
               outstanding--;
+              apb_mark_home(apb, true);
 
               pthread_mutex_lock(&g_pl.lock);
               used = g_pl.wr - g_pl.rd;
@@ -808,9 +875,8 @@ static void *vg_tts_thread(void *arg)
     {
       ioctl(g_pl.fd, AUDIOIOC_STOP, 0);
 
-      /* Let the in-flight buffers come home; bounded, then teardown
-       * proceeds regardless (FREEBUFFER is best effort, like nxplayer's
-       * abort path). */
+      /* Let the in-flight buffers come home; bounded, then teardown frees
+       * only what returned — the rest is abandoned (see dev_teardown). */
 
       t0 = now_ms();
       while (outstanding > 0 && now_ms() - t0 < VG_TTS_RECOVER_MS)
@@ -826,6 +892,7 @@ static void *vg_tts_thread(void *arg)
           if (msg.msg_id == AUDIO_MSG_DEQUEUE)
             {
               outstanding--;
+              apb_mark_home((const struct ap_buffer_s *)msg.u.ptr, true);
             }
           else if (msg.msg_id == AUDIO_MSG_COMPLETE ||
                    msg.msg_id == AUDIO_MSG_STOP)
@@ -914,11 +981,19 @@ int vg_tts_player_start(uint32_t prebuf_ms, const volatile int *cancel,
         }
     }
 
-  r = dev_setup();
-  if (r < 0)
+  /* Bisection level 1 skips the whole device session: ring + thread
+   * only, the exact allocation footprint without any audio ioctl.
+   * Level 2 keeps the session (open/RESERVE/CONFIGURE/ALLOCBUFFER/mq)
+   * and only the playback is suppressed, inside the thread. */
+
+  if (g_pl.bisect_level != 1)
     {
-      g_pl.active = false;
-      return r;
+      r = dev_setup();
+      if (r < 0)
+        {
+          g_pl.active = false;
+          return r;
+        }
     }
 
   pthread_attr_init(&attr);
@@ -1159,4 +1234,27 @@ int vg_tts_player_set_prebuf_ms(uint32_t ms)
   g_pl.prebuf_ms = v;
   pthread_mutex_unlock(&g_pl.lock);
   return (int)v;
+}
+
+uint8_t vg_tts_player_bisect_level(void)
+{
+  uint8_t v;
+
+  pthread_mutex_lock(&g_pl.lock);
+  v = g_pl.bisect_level;
+  pthread_mutex_unlock(&g_pl.lock);
+  return v;
+}
+
+int vg_tts_player_set_bisect_level(int level)
+{
+  if (level < 0 || level > 2)
+    {
+      return -1;
+    }
+
+  pthread_mutex_lock(&g_pl.lock);
+  g_pl.bisect_level = (uint8_t)level;
+  pthread_mutex_unlock(&g_pl.lock);
+  return level;
 }

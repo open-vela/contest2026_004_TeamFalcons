@@ -941,12 +941,14 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
         syslog(LOG_INFO,
                "[vgvoice] tts_player played=%u pushed=%u underruns=%u "
-               "stall_ms=%u restarts=%u complete=%u failed=%u err=%d ms=%u\n",
+               "stall_ms=%u restarts=%u complete=%u failed=%u err=%d "
+               "leaked=%u ms=%u\n",
                (unsigned)pstats.played_bytes,
                (unsigned)pstats.pushed_bytes,
                (unsigned)pstats.underruns, (unsigned)pstats.stall_ms,
                (unsigned)pstats.restarts, pstats.complete ? 1u : 0u,
                pstats.failed ? 1u : 0u, pstats.err,
+               (unsigned)pstats.leaked_buffers,
                (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
 
         if (g_vr.cancel)

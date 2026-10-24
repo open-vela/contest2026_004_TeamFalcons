@@ -32,7 +32,8 @@ TTS_BLOCKS_RE = re.compile(
 CLIP_PREP_RE = re.compile(r"\[vgvoice\] clip_prep src=(\w+) bytes=(\d+) ms=(\d+)")
 TTS_PLAYER_RE = re.compile(
     r"\[vgvoice\] tts_player played=(\d+) pushed=(\d+) underruns=(\d+) "
-    r"stall_ms=(\d+) restarts=(\d+) complete=(\d+) ms=(\d+)")
+    r"stall_ms=(\d+) restarts=(\d+) complete=(\d+)"
+    r"(?: failed=\d+ err=-?\d+)?(?: leaked=(\d+))? ms=(\d+)")
 FIRST_PLAYABLE_RE = re.compile(r"first_playable gen=\d+ elapsed_ms=(\d+)")
 SETTLED_RE = re.compile(
     r"round_settled gen=\d+ state=\d+ failed=\d+ elapsed_ms=(\d+)")
@@ -95,6 +96,7 @@ def analyse_block(block):
         "tts_player_complete": None,
         "tts_played_bytes": None,
         "tts_pushed_bytes": None,
+        "tts_leaked_buffers": None,
         "llm_iterations": None,
         "llm_send_ms": None,
         "llm_ttfb_ms": None,
@@ -149,6 +151,8 @@ def analyse_block(block):
         row["tts_player_complete"] = int(player.group(6))
         row["tts_played_bytes"] = int(player.group(1))
         row["tts_pushed_bytes"] = int(player.group(2))
+        row["tts_leaked_buffers"] = (int(player.group(7))
+                                     if player.group(7) is not None else None)
 
     ready = FIRST_PLAYABLE_RE.search(block)
     fp = int(ready.group(1)) if ready else None

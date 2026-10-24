@@ -49,6 +49,7 @@ static volatile int g_hold;          /* 1: keep DEQUEUEs back */
 static volatile int g_start_count;
 static volatile int g_started_flag;
 static volatile int g_enqueued;
+static volatile int g_free_calls;
 static volatile int g_header_seen;   /* pcm_decode: header once per session */
 static mqd_t g_drv_mq = (mqd_t)-1;
 static struct ap_buffer_s *g_apbs[8];
@@ -173,6 +174,8 @@ int __wrap_ioctl(int fd, unsigned long req, ...)
           struct audio_buf_desc_s *d = arg;
           struct ap_buffer_s *apb = d->u.buffer;
           int i;
+
+          g_free_calls++;
 
           for (i = 0; i < g_napb; i++)
             {
@@ -512,6 +515,75 @@ static void test_backpressure_and_starvation(void)
   CHECK(memcmp(g_played, g_pattern, 140000 + 2048) == 0);
 }
 
+/* Bisection levels: 1 = ring + thread only (no audio ioctl at all),
+ * 2 = device session but no buffer ever enqueued (no DMA).  The leak
+ * rule: a buffer still owned by the driver at teardown is abandoned,
+ * never FREEBUFFERed. */
+static void test_bisect_and_leak(void)
+{
+  struct vg_tts_player_stats st;
+  int cancel = 0;
+
+  /* level 1: no device session whatsoever */
+
+  CHECK(vg_tts_player_set_bisect_level(1) == 1);
+  reset_capture();
+  g_start_count = 0;
+  g_enqueued = 0;
+  CHECK(vg_tts_player_start(50, &cancel, NULL, NULL) == 0);
+  CHECK(vg_tts_player_push(g_pattern, 8192) == 0);
+  CHECK(vg_tts_player_eof() == 0);
+  CHECK(vg_tts_player_wait(3000, &st) == 0);
+  CHECK(st.complete);
+  CHECK(st.played_bytes == 0);
+  CHECK(g_enqueued == 0);          /* nothing ever reached the driver */
+  CHECK(g_start_count == 0);
+
+  /* level 2: allocations happened (checked while the session lives,
+   * before teardown frees them), still no enqueue */
+
+  CHECK(vg_tts_player_set_bisect_level(2) == 2);
+  reset_capture();
+  g_start_count = 0;
+  g_enqueued = 0;
+  CHECK(vg_tts_player_start(50, &cancel, NULL, NULL) == 0);
+  CHECK(g_napb == 4);              /* ALLOCBUFFER ran, session alive */
+  CHECK(vg_tts_player_push(g_pattern, 8192) == 0);
+  CHECK(vg_tts_player_eof() == 0);
+  CHECK(vg_tts_player_wait(3000, &st) == 0);
+  CHECK(st.complete && st.played_bytes == 0);
+  CHECK(g_enqueued == 0 && g_start_count == 0);
+  CHECK(st.leaked_buffers == 0);   /* clean teardown frees everything */
+
+  /* level 0 with every buffer held by the driver at abort time: the
+   * drain window closes without a single DEQUEUE, so teardown must
+   * abandon all four — a FREEBUFFER on a driver-held buffer would be
+   * the write-after-free this rule exists to prevent. */
+
+  CHECK(vg_tts_player_set_bisect_level(0) == 0);
+  reset_capture();
+  g_hold = 1;
+  g_start_count = 0;
+  g_enqueued = 0;
+  g_free_calls = 0;
+  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
+  CHECK(vg_tts_player_push(g_pattern, 16384) == 0);
+  wait_flag_value(&g_enqueued, 4, 4000);
+  CHECK(g_enqueued == 4);          /* all four with the driver now */
+
+  vg_tts_player_abort();
+  CHECK(vg_tts_player_wait(10000, &st) == 0);
+  CHECK(!st.complete);
+
+  CHECK(g_free_calls == 0);        /* nothing was freed out from
+                                      under the driver */
+  CHECK(st.leaked_buffers == 4);
+  CHECK(g_nheld == 4);             /* the stub still holds all of them */
+
+  g_hold = 0;
+  CHECK(vg_tts_player_set_bisect_level(0) == 0);
+}
+
 int main(void)
 {
   setvbuf(stdout, NULL, _IONBF, 0);
@@ -527,6 +599,8 @@ int main(void)
   printf("test_tts_player: abort/cancel OK\n");
   test_backpressure_and_starvation();
   printf("test_tts_player: backpressure OK\n");
+  test_bisect_and_leak();
+  printf("test_tts_player: bisect/leak OK\n");
 
   if (g_fail == 0)
     {

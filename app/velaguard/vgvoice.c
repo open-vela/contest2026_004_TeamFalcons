@@ -310,6 +310,34 @@ int main(int argc, FAR char *argv[])
     }
 
 #ifdef CONFIG_VG_VOICE_TTS_STREAM
+  if (strcmp(cmd, "bisect") == 0)
+    {
+      /* 诊断：播放器启动二分（SDRAM 堆写者排查，取证会话配合）。
+       * 0=完整播放（产品行为）；1=仅环+线程不碰音频设备；
+       * 2=设备会话但不入队不启动（无 DMA）。下轮 ttss/语音生效。 */
+
+      if (argc >= 3)
+        {
+          long lv = strtol(argv[2], NULL, 0);
+
+          if (lv < 0 || lv > 2)
+            {
+              printf("vgvoice: bisect level out of range (0..2)\n");
+              return EXIT_FAILURE;
+            }
+
+          printf("vgvoice: bisect -> %d\n",
+                 vg_tts_player_set_bisect_level((int)lv));
+        }
+      else
+        {
+          printf("vgvoice: bisect %u\n",
+                 (unsigned)vg_tts_player_bisect_level());
+        }
+
+      return EXIT_SUCCESS;
+    }
+
   if (strcmp(cmd, "prebuf") == 0)
     {
       if (argc >= 3)
@@ -838,6 +866,7 @@ int main(int argc, FAR char *argv[])
   printf("       vgvoice asr [wav] | tts <text> | play <wav>\n");
 #ifdef CONFIG_VG_VOICE_TTS_STREAM
   printf("       vgvoice prebuf [ms] | ttss <text> | streamtest <wav>\n");
+  printf("       vgvoice bisect [0..2]   (diagnostic: player startup bisection)\n");
 #endif
 #endif
   return EXIT_FAILURE;

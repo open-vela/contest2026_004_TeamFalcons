@@ -27,6 +27,9 @@ struct vg_tts_player_stats
   uint32_t underruns;     /* driver starved while the stream was open */
   uint32_t stall_ms;      /* time spent waiting for data while starved */
   uint8_t  restarts;      /* resumes after starvation (re-START) */
+  uint8_t  leaked_buffers; /* abandoned at teardown: driver never returned
+                              them; freeing would risk a DMA write-after-
+                              free, so they stay allocated */
   bool     complete;      /* every enqueued byte finished playing */
   bool     failed;        /* device or enqueue error */
   int      err;
@@ -62,5 +65,13 @@ uint32_t vg_tts_player_prebuf_ms(void);
 /* Clamp to 50..1000 ms; takes effect on the next start().  Returns the
  * value actually applied. */
 int vg_tts_player_set_prebuf_ms(uint32_t ms);
+
+/* Startup bisection for the SDRAM heap-writer hunt (diagnostic only,
+ * default 0 = full product behaviour): 1 = ring + thread only, the
+ * audio device is never touched; 2 = full device session (open/RESERVE/
+ * CONFIGURE/ALLOCBUFFER/mq) but no buffer is ever enqueued, so no DMA
+ * runs.  Takes effect on the next start(). */
+uint8_t vg_tts_player_bisect_level(void);
+int vg_tts_player_set_bisect_level(int level);
 
 #endif /* __APP_VELAGUARD_VG_TTS_PLAYER_H */
