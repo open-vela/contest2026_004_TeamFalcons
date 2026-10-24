@@ -1,0 +1,33 @@
+[
+ {
+  "command": "",
+  "wait_ms": 18000,
+  "timeout_ms": 22000
+ },
+ {
+  "command": "vgvoice bisect",
+  "wait_ms": 400,
+  "timeout_ms": 10000,
+  "optional_prompt": true
+ },
+ {
+  "command": "vgvoice mute off",
+  "wait_ms": 300,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice bisect 2",
+  "wait_ms": 400,
+  "timeout_ms": 10000
+ },
+ {
+  "command": "vgvoice ttss 二点一",
+  "wait_ms": 2000,
+  "timeout_ms": 45000
+ },
+ {
+  "command": "vgvoice ttss 二点二次",
+  "wait_ms": 2000,
+  "timeout_ms": 45000
+ }
+]

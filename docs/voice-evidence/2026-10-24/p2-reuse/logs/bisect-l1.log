@@ -1,0 +1,193 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgadvice] asked for 8 alarms req=1
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 1301 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6add07d200000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792870354
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 11:32:36 GMT
+Content-Type: application/json
+Content-Length: 103
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-stor
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.6-flash"
+    }
+}
+
+[trace:6add07d200000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=1930 send=90 ttfb=60 body=30 pool=na build=10 parse=20 http=2220 backoff=0 total=2250 req=7871 resp=103 rc=0 status=400 parse_ok=0 first_data=na stream=1
+[agent] LLM call failed (iter 0)
+[trace:6add07d200000000] iter=0 tool=(none) latency=2250ms llm=fail backend=0
+[trace:6add07d200000000] END status=fail iters=1 tools=0 llm_ms=2250 tool_ms=0 elapsed_ms=2300 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: agent error
+[vgadvice] advice from another boot: file=30caa255 board=30cbba96
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+[skills] Skills summary: 1086 bytes
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-24 19:33:58
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.920, +2920)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.930, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.930, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.930, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.930, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.940, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+vgptt: watching /dev/buttons (led=2)
+[User]	(2.950, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(2.960, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.970, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.970, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.980, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.990, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.990, +0)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.000, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.000, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.010, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.020, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.020, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.030, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.040, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(3.040, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(3.050, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(3.060, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(3.060, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(3.070, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(3.080, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(3.090, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(3.100, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(3.110, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+[vgllm] monitor started, interval=30000 ms
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792870441
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x1
+[vgllm] link down: rc=-1 status=0
+vgagent: ai_agent autostart ok (stack=32768)
+[agent] AI Agent - Vela AI Agent starting (build: 2026-10-24 19:L35:20)
+ED n[agent] [boot +u10ms] P0: timezone set
+m: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +200ms] P0: storage ready
+vgnet: MQTT broker is not configured
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +590ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +600ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +950ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +960ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +1070ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1550ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.6-flash, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1770ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product
+vgtime: synced 2026-10-24 19:52:57
+
+2026-10-24T19:52:56.8924831+08:00 CMD vgvoice bisect
+vgvoice bisect
+vgvoice: bisect 0
+nsh> [K
+2026-10-24T19:52:57.2996144+08:00 CMD vgvoice mute off
+vgvoice mute off
+vgvoice: muted=0
+nsh> [K
+2026-10-24T19:52:58.0497308+08:00 CMD vgvoice bisect 1
+vgvoice bisect 1
+vgvoice: bisect -> 1
+nsh> [K
+2026-10-24T19:52:58.4533603+08:00 CMD vgvoice ttss 二分之一
+vgvoice ttss 二分之一
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792871579
+[vela_tls] forensics capture buffer at SDRAM
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 11:53:00 GMT
+Content-Type: text/html
+Content-Length: 154
+Connection: close
+Server: MiFE/3.4.34
+
+<html>
+<head><title>400 Bad Request</title></head>
+<body>
+<center><h1>400 Bad Request</h1></center>
+<
+[vgvoice] tts phases dns=40 tls=690 send=110 ttfb=0 body=30 http=890
+vgvoice: ttss rc=http status=400 pcm=0 ms=890 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K
+2026-10-24T19:53:00.4589454+08:00 CMD vgvoice ttss 二分之二次
+vgvoice ttss 二分之二次
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792871581
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=400 head: HTTP/1.1 400 Bad Request
+Date: Sat, 24 Oct 2026 11:53:02 GMT
+Content-Type: text/html
+Content-Length: 154
+Connection: close
+Server: MiFE/3.4.34
+
+<html>
+<head><title>400 Bad Request</title></head>
+<body>
+<center><h1>400 Bad Request</h1></center>
+<
+[vgvoice] tts phases dns=30 tls=540 send=120 ttfb=0 body=20 http=740
+vgvoice: ttss rc=http status=400 pcm=0 ms=740 partial=0
+vgvoice: ttss played=0 underruns=0 stall_ms=0 restarts=0 complete=0 failed=0 err=0
+nsh> [K

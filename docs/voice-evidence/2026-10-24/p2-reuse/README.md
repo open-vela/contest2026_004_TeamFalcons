@@ -54,6 +54,28 @@ AI_AGENT_VOICE_CONN_SLOT）。对照基线与 P1 证据见 `../p1-streaming/`。
 apps 树 mbedtls_config.h:1607 被注释（无 Kconfig 开关），启用需公共树改动
 +全库重编——固件侧 TLS 1.3 留作后续任务，入口条件已写入计划。
 
+## 播放器启动二分（配合 SDRAM 写者排查，commit 1cab570）
+
+写者触发边界已切出（logs/bisect-l1.log、bisect-l2.log，--tls-forensics 叠加构建，
+每级 SWD 复位后干净堆起测，ttss 触发 ×2/级）：
+
+| 级别 | 足迹 | 结果 |
+|---|---|---|
+| 1 | 环 calloc + 播放线程，**零音频 ioctl** | 握手全 OK（3/3，无 -0x4380） |
+| 2 | +设备会话（open/RESERVE/GETCAPS/CONFIGURE/ALLOCBUFFER×4/REGISTERMQ），**无 ENQUEUE/无 START/无 DMA** | 首次 ttss 即 -0x4380（1/2），第二次握手 OK |
+| 0 | ttss 在当前 400 环境下与 2 等价（请求失败，数据永不入队） | 同 2（历史 3/3） |
+
+取证行（bisect-l2.log）：`FORENSIC seq=0 ret=-0x4380 ... rx=4373 rxAB=match
+canary=ok`——接收字节与影子副本一致、TLS 原始缓冲金丝雀完好，被改的是堆上
+解析后对象（公钥/bignum/签名缓冲），与取证会话 02-ttss-trigger.md 结论一致。
+
+**结论：写者在设备会话建立路径（open→REGISTERMQ 之间），与 DMA 传输无关、
+与纯堆分配无关。** 嫌疑排序：wm8994_configure（I2C 编解码器写 + SAI 设置，
+若 CONFIGURE 武装了 DMA 通道即具备向堆写的能力）、wm8994_reserve（worker
+mq 创建路径）、ALLOCBUFFER 的对齐分配器路径。非确定性（2 级 1/2）符合
+"受害对象由布局决定"模型。晨间 critical 告警入口（无音频）可能是第二写者
+或同源（待取证会话用哨兵定位）。
+
 ## 目录
 
 - plans/：p2-pilot（复用实证）、forensic/forensic2（400 响应头取证+密钥实验）、
