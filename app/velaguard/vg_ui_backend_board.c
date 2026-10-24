@@ -747,10 +747,27 @@ static void daily_maybe_request(void)
    * line, missing marker — silence the flow for the rest of the day while
    * the page quietly shows the firmware fallback. */
 
-  snprintf(path, sizeof(path), "%s/%s", CONFIG_VG_HMI_REPORT_DIR, want);
-  if(stat(path, &st) == 0 && agent_daily_load(NULL, 0, NULL, 0) == 0) {
+  /* Checking "already have it" touches eMMC (stat + validate).  This loop
+   * runs every 100 ms, so an uncached check would read the report file ten
+   * times a second for a freshness answer that changes once a day; the
+   * recheck window only delays noticing an externally deleted file. */
+
+  static uint32_t have_check_ms;
+  static bool have_cached;
+
+  if(have_cached && now - have_check_ms < 30000u) {
     return;
   }
+
+  snprintf(path, sizeof(path), "%s/%s", CONFIG_VG_HMI_REPORT_DIR, want);
+  if(stat(path, &st) == 0 && agent_daily_load(NULL, 0, NULL, 0) == 0) {
+    have_cached = true;
+    have_check_ms = now;
+    return;
+  }
+
+  have_cached = false;
+  have_check_ms = now;
 
   if(vg_agent_round_busy()) {
     return;                    /* an advice round owns the channel */
