@@ -1417,12 +1417,21 @@ bool vg_ui_backend_poll_net(vg_ui_net_live_t *out)
     /* net_mgr caches its latest samples; this read does no AT UART IO */
 
     if(vg_net_mgr_status(&st) == 0) {
+      bool llm_ok = false;
+
       out->rj45_has_ip = st.rj45_has_ip;
       out->wifi_assoc = st.wifi_assoc;
       out->wifi_has_ip = st.wifi_has_ip;
       out->mqtt_online = st.mqtt_online;
       out->egress = (int)st.egress;
       snprintf(out->ip, sizeof(out->ip), "%s", st.ip);
+
+      /* Status bar MiMo chip: the last finished ask/advice round, not the
+       * MQTT session.  While no round has finished this boot the model
+       * falls back to mqtt_online, the only signal it has then. */
+
+      out->llm_seen = vg_agent_round_link_status(&llm_ok);
+      out->llm_ok = llm_ok;
       return true;
     }
   }

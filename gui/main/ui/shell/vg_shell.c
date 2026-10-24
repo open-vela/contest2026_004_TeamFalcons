@@ -290,7 +290,9 @@ void vg_shell_set_status(const vg_net_status_t * net)
         set_chip(s_chip_mimo, "OTA", VG_SEV_INFO);
     }
     else {
-        set_chip(s_chip_mimo, net->mimo_ok ? "MiMo" : "MiMo!", net->mimo_ok ? VG_SEV_INFO : VG_SEV_WARN);
+        /* MiMo chip: LLM link health (last ask/advice round), not the MQTT
+         * session; the model falls back to MQTT before the first round. */
+        set_chip(s_chip_mimo, net->llm_ok ? "MiMo" : "MiMo!", net->llm_ok ? VG_SEV_INFO : VG_SEV_WARN);
     }
     set_chip(s_chip_acq, net->acq_ok ? "ACQ" : "ACQ!", net->acq_ok ? VG_SEV_OK : VG_SEV_CRIT);
     set_chip(s_chip_aud, net->aud_ok ? "AUD" : "AUD!", net->aud_ok ? VG_SEV_OK : VG_SEV_WARN);

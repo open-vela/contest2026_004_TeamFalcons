@@ -1119,6 +1119,7 @@ static void apply_scenario(vg_scenario_t s)
     s_net.net_ok = false;
     s_net.wifi_ok = false;
     s_net.mimo_ok = false;
+    s_net.llm_ok = false;
     s_net.acq_ok = (s_sensor_n > 0);
     s_net.aud_ok = true;
     s_net.ota_active = false;
@@ -1128,6 +1129,7 @@ static void apply_scenario(vg_scenario_t s)
     s_net.net_ok = true;
     s_net.wifi_ok = true;
     s_net.mimo_ok = true;
+    s_net.llm_ok = true;
     s_net.acq_ok = true;
     s_net.aud_ok = true;
     s_net.ota_active = false;
@@ -1214,6 +1216,7 @@ static void apply_scenario(vg_scenario_t s)
 
         case VG_SCENARIO_AI_DOWN:
             s_net.mimo_ok = false;
+            s_net.llm_ok = false;
             s_net.latency_ms = 999;
             vg_model_append_log(VG_LOG_SYS, VG_SEV_WARN, "MiMo 服务不可用");
             break;
@@ -1383,6 +1386,15 @@ static bool vg_model_board_poll_net(void)
 
     if(s_net.mimo_ok != live.mqtt_online) {
         s_net.mimo_ok = live.mqtt_online;
+        dirty = true;
+    }
+
+    /* MiMo chip follows the LLM link: the outcome of the last finished
+     * ask/advice round.  Before the first round of this boot there is no
+     * round to speak of, so the MQTT session is the fallback signal. */
+    b = live.llm_seen ? live.llm_ok : live.mqtt_online;
+    if(s_net.llm_ok != b) {
+        s_net.llm_ok = b;
         dirty = true;
     }
 

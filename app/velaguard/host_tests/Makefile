@@ -194,7 +194,7 @@ test_mqtt_session: test_mqtt_session.c ../vg_mqtt_session.c ../vg_mqtt_payload.c
 
 
 test_agent_round: test_agent_round.c ../vg_agent_round.c ../vg_agent_round.h
-	$(CC) $(CFLAGS) -Istubs -I$(AI_AGENT_INC) -o $@ test_agent_round.c ../vg_agent_round.c -Wl,--wrap=clock_gettime
+	$(CC) $(CFLAGS) -Istubs -I$(AI_AGENT_INC) -I$(AI_AGENT_ROOT)/src -o $@ test_agent_round.c ../vg_agent_round.c -Wl,--wrap=clock_gettime
 
 
 test_shell_output: $(AI_AGENT_ROOT)/tests/test_shell_output.c $(AI_AGENT_ROOT)/src/tools/tool_shell.c $(AI_AGENT_ROOT)/src/tools/tool_shell_runner.c $(CJSON_SRC)

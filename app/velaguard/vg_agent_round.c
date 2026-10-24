@@ -35,6 +35,15 @@ static bool                        g_submitting;
 static enum vg_agent_round_owner   g_owner;
 static uint32_t                    g_finished_ms;
 
+/* Last finished round, for the status bar LLM link health.  Any round that
+ * reaches a terminal state says whether the ask/advice path still works.
+ * abandon() and clear() do not touch this record: giving a round up locally
+ * says nothing about the link, and a late reply still lands in round_reply. */
+
+static bool                        g_link_seen;
+static bool                        g_link_ok;
+static uint32_t                    g_link_ms;
+
 static char g_req[VG_ROUND_REQ_MAX];
 static char g_reply[VG_ROUND_REPLY_MAX];
 static bool g_suspended;
@@ -71,6 +80,13 @@ uint32_t vg_agent_round_now_ms(void)
   (void)clock_gettime(CLOCK_MONOTONIC, &ts);
   return (uint32_t)((uint64_t)ts.tv_sec * 1000u
                     + (uint64_t)ts.tv_nsec / 1000000u);
+}
+
+static void link_note_locked(bool ok)
+{
+  g_link_seen = true;
+  g_link_ok = ok;
+  g_link_ms = vg_agent_round_now_ms();
 }
 
 /* Runs on the agent's outbound dispatch thread, so it only records the
@@ -348,6 +364,7 @@ static void round_submit(void)
     {
       g_state = VG_AGENT_ROUND_ERROR;
       g_finished_ms = vg_agent_round_now_ms();
+      link_note_locked(false);
       syslog(LOG_WARNING, "[%s] round submit failed: %d\n", TAG, rc);
     }
 
@@ -371,6 +388,7 @@ void vg_agent_round_tick(void)
         {
           g_state = VG_AGENT_ROUND_ERROR;
           g_finished_ms = vg_agent_round_now_ms();
+          link_note_locked(false);
           syslog(LOG_WARNING, "[%s] round never reached the agent\n", TAG);
         }
       pthread_mutex_unlock(&g_lock);
@@ -387,6 +405,7 @@ void vg_agent_round_tick(void)
       g_state = ok ? VG_AGENT_ROUND_DONE : VG_AGENT_ROUND_ERROR;
       if (ok) g_generation++;
       g_finished_ms = now;
+      link_note_locked(ok);
       pthread_mutex_unlock(&g_lock);
       syslog(LOG_INFO, "[%s] round finished: %s\n", TAG, ok ? "reply" : "agent error");
       return;
@@ -396,6 +415,7 @@ void vg_agent_round_tick(void)
     {
       g_state = VG_AGENT_ROUND_ERROR;
       g_finished_ms = now;
+      link_note_locked(false);
       velaclaw_client_abandon(g_client);
       pthread_mutex_unlock(&g_lock);
       syslog(LOG_WARNING, "[%s] round timed out\n", TAG);
@@ -439,6 +459,20 @@ enum vg_agent_round_owner vg_agent_round_owner(void)
   owner = g_owner;
   pthread_mutex_unlock(&g_lock);
   return owner;
+}
+
+bool vg_agent_round_link_status(bool *ok)
+{
+  bool seen;
+
+  pthread_mutex_lock(&g_lock);
+  seen = g_link_seen;
+  if (seen && ok != NULL)
+    {
+      *ok = g_link_ok;
+    }
+  pthread_mutex_unlock(&g_lock);
+  return seen;
 }
 
 bool vg_agent_round_reclaim(enum vg_agent_round_owner mine, uint32_t grace_ms)
