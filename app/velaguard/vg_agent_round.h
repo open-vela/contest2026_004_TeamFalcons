@@ -96,12 +96,6 @@ int vg_agent_round_voice_reserve(void);
 enum vg_agent_round_state vg_agent_round_state(void);
 bool                    vg_agent_round_busy(void);
 
-/* LLM 链路健康:最近一次终结的轮次(ask/advice/日报/语音共用这一条通道)的
- * 成败。返回 false 表示本次开机还没有任何轮终结过,*ok 不被写入,调用方
- * 应退回自己的信号(状态栏用 MQTT 会话在线)。 */
-
-bool vg_agent_round_link_status(bool *ok);
-
 /* Bumped every time a round finishes with a reply, so a consumer can tell a
  * fresh result from one it already handled. */
 

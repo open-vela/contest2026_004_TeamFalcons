@@ -480,6 +480,29 @@ config VG_HMI_AUTOSTART
 		Spawn vghmi after /dev/fb0 appears so the demo firmware
 		does not require typing "vghmi &" on NSH.
 
+config VG_LLM_HEALTH
+	bool "LLM link health monitor for the status bar MiMo chip"
+	default y
+	---help---
+		Resident thread probes the configured LLM endpoint every
+		VG_LLM_HEALTH_INTERVAL_MS with a fixed invalid test credential
+		(agent_http_probe); the real API key is never read or sent.
+		The verdict drives the status bar MiMo chip; a finished
+		ask/advice round also proves the link and marks it healthy,
+		a failed round only triggers an out-of-cycle probe.
+
+if VG_LLM_HEALTH
+
+config VG_LLM_HEALTH_INTERVAL_MS
+	int "LLM health probe interval (ms)"
+	default 30000
+
+config VG_LLM_HEALTH_STACKSIZE
+	int "LLM health monitor thread stack size"
+	default 8192
+
+endif
+
 config VG_HMI_INPUT_DEVPATH
 	string "Touchscreen device path"
 	default "/dev/input0"

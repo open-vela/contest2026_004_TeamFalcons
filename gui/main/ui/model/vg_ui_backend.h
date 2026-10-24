@@ -27,8 +27,8 @@ typedef struct {
     bool wifi_assoc;
     bool wifi_has_ip;
     bool mqtt_online;   /* MiMo bridge: MQTT CONNACK received */
-    bool llm_seen;      /* a board ask/advice round finished since boot */
-    bool llm_ok;        /* outcome of the last finished round; read llm_seen first */
+    bool llm_seen;      /* a board LLM health probe finished since boot */
+    bool llm_ok;        /* verdict of the last probe or finished round; read llm_seen first */
     bool aud_ok;        /* /dev/pwm0 (alarm buzzer) accessible */
     int  egress;        /* vg_egress_t: 0 none, 1 rj45, 2 wifi */
     char ip[16];        /* active egress IP, empty when none */

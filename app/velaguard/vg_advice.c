@@ -35,6 +35,7 @@
 
 #include "vg_advice.h"
 #include "vg_advice_policy.h"
+#include "vg_llm_health.h"
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 #  include "vg_agent_round.h"
@@ -460,6 +461,19 @@ void vg_advice_tick(void)
 
       (void)advice_load();
 
+      /* The round itself is evidence for the LLM link monitor: a reply that
+       * arrived proves the chain with real credentials, a failed round only
+       * asks the monitor to re-probe at once; the probe verdict decides. */
+
+      if (rnd == VG_AGENT_ROUND_DONE)
+        {
+          vg_llm_health_note_round_ok();
+        }
+      else
+        {
+          vg_llm_health_kick();
+        }
+
       /* The set this round was about.  Still g_sig: it is only replaced when
        * a later request is built. */
 
@@ -591,6 +605,12 @@ void vg_advice_tick(void)
 
       syslog(LOG_WARNING, "[%s] ask not delivered: %d req=%u\n",
              TAG, rc, (unsigned)req_no);
+
+      /* The agent bus did not drain the request; have the LLM health
+       * monitor re-probe at once so the status bar does not wait out the
+       * full interval to learn whether the chain still works. */
+
+      vg_llm_health_kick();
 
       pthread_mutex_lock(&g_lock);
       g_next_ask_ms = now + VG_ADV_RETRY_MS;

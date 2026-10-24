@@ -25,6 +25,7 @@
 #endif
 #include "vg_advice.h"
 #include "vg_agent_alarm.h"
+#include "vg_llm_health.h"
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
 #include "vg_agent_round.h"
 #endif
@@ -1426,11 +1427,12 @@ bool vg_ui_backend_poll_net(vg_ui_net_live_t *out)
       out->egress = (int)st.egress;
       snprintf(out->ip, sizeof(out->ip), "%s", st.ip);
 
-      /* Status bar MiMo chip: the last finished ask/advice round, not the
-       * MQTT session.  While no round has finished this boot the model
-       * falls back to mqtt_online, the only signal it has then. */
+      /* Status bar MiMo chip: the LLM health monitor's 30 s probe verdict
+       * (plus real finished rounds).  Before the first probe this boot the
+       * model falls back to mqtt_online, the only signal it has then. */
 
-      out->llm_seen = vg_agent_round_link_status(&llm_ok);
+      vg_llm_health_start();
+      out->llm_seen = vg_llm_health_status(&llm_ok);
       out->llm_ok = llm_ok;
       return true;
     }

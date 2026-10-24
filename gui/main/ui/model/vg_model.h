@@ -54,7 +54,7 @@ typedef struct {
     bool net_ok;
     bool wifi_ok;      /* ESP STA assoc + IP (board); mirrors net on sim */
     bool mimo_ok;      /* AI bridge: MQTT session online */
-    bool llm_ok;       /* status bar MiMo chip: last ask/advice round outcome */
+    bool llm_ok;       /* status bar MiMo chip: board LLM health monitor verdict */
     bool acq_ok;
     bool aud_ok;
     bool ota_active;

@@ -154,6 +154,10 @@ endif
 CSRCS    += $(notdir $(VG_UI_CSRCS))
 CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c \
             vg_advice_policy.c vg_ai_contract.c
+ifeq ($(CONFIG_VG_LLM_HEALTH),y)
+CSRCS    += vg_llm_health.c
+CFLAGS   += -DCONFIG_VG_LLM_HEALTH=1
+endif
 VPATH    += $(foreach _d,$(VG_UI_SUBDIRS),:$(VG_UI_DIR)/$(_d))
 DEPPATH  += $(foreach _d,$(VG_UI_SUBDIRS),--dep-path $(VG_UI_DIR)/$(_d))
 

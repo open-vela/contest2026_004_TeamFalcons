@@ -1389,9 +1389,10 @@ static bool vg_model_board_poll_net(void)
         dirty = true;
     }
 
-    /* MiMo chip follows the LLM link: the outcome of the last finished
-     * ask/advice round.  Before the first round of this boot there is no
-     * round to speak of, so the MQTT session is the fallback signal. */
+    /* MiMo chip follows the LLM link: the board health monitor's probe
+     * verdict (real finished rounds count too).  Before the first probe
+     * of this boot there is no verdict yet, so the MQTT session is the
+     * fallback signal. */
     b = live.llm_seen ? live.llm_ok : live.mqtt_online;
     if(s_net.llm_ok != b) {
         s_net.llm_ok = b;
