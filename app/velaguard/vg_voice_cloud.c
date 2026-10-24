@@ -404,6 +404,7 @@ static void vc_timing_init(agent_llm_timing_t *t)
   t->ttfb_ms = AGENT_T_NA;
   t->body_ms = AGENT_T_NA;
   t->http_total_ms = AGENT_T_NA;
+  t->first_data_ms = AGENT_T_NA;
 }
 
 static void vc_timing_log(const char *what, const agent_llm_timing_t *t)
@@ -702,6 +703,13 @@ enum vg_vc_result vg_voice_cloud_asr_buffer(const int16_t *mono,
  * and no intermediate file is written to the eMMC. */
 #define VC_PCM_MAX_BYTES (512u * 1024u)
 
+/* Block-level observation: the first N audio-bearing SSE data lines get
+ * their arrival offset recorded so the report can show the service's
+ * chunking rhythm, which the streaming-playback prebuffer choice in the
+ * next task is measured against.  One audio line is one block; all state
+ * is fixed-size inside the sink, nothing is allocated. */
+#define VC_TTS_OBS_MAX 16
+
 struct vc_tts_sink
 {
   uint8_t *pcm;
@@ -714,7 +722,44 @@ struct vc_tts_sink
   size_t pcm_bytes;
   bool   done;
   int    error;
+  const agent_llm_timing_t *timing; /* send-done anchor once posting starts */
+  uint32_t t0;                      /* fallback anchor: pre-post instant */
+  bool   first_line_seen;
+  uint32_t first_line_ms;
+  bool   first_pcm_seen;
+  uint32_t first_pcm_ms;
+  uint32_t block_ms[VC_TTS_OBS_MAX];
+  uint8_t block_count;
+  uint32_t last_block_ms;
 };
+
+/* All block offsets are measured from the moment the request body finished
+ * writing, which the transport records in send_done_mono; before that is
+ * known (or on a request that never completed its send) the pre-post
+ * instant stands in, which keeps the numbers an upper bound rather than
+ * garbage. */
+static uint32_t vc_tts_anchor(const struct vc_tts_sink *s)
+{
+  if (s->timing != NULL && s->timing->send_done_mono != 0)
+    {
+      return s->timing->send_done_mono;
+    }
+
+  return s->t0;
+}
+
+/* A timestamp that never happened prints na rather than 0, the same rule
+ * the transport phases follow. */
+static const char *vc_ms_or_na(char *buf, size_t cap, bool seen, uint32_t ms)
+{
+  if (!seen)
+    {
+      return "na";
+    }
+
+  snprintf(buf, cap, "%u", (unsigned)ms);
+  return buf;
+}
 
 static int vc_tts_pcm_reserve(struct vc_tts_sink *s, size_t extra)
 {
@@ -786,6 +831,8 @@ static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 
       if (n > 0)
         {
+          bool was_empty = (s->pcm_len == 0);
+
           if (vc_tts_pcm_reserve(s, (size_t)n) != 0)
             {
               return -1;
@@ -793,6 +840,13 @@ static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 
           memcpy(s->pcm + s->pcm_len, pcm, (size_t)n);
           s->pcm_len += (size_t)n;
+
+          if (was_empty && !s->first_pcm_seen)
+            {
+              s->first_pcm_seen = true;
+              s->first_pcm_ms =
+                  agent_elapsed_ms(vc_tts_anchor(s), agent_mono_ms());
+            }
         }
 
       s->pcm_bytes += (size_t)n;
@@ -857,6 +911,13 @@ static int vc_tts_line(struct vc_tts_sink *s)
       return (rc == -2) ? -1 : 0;
     }
 
+  if (!s->first_line_seen)
+    {
+      s->first_line_seen = true;
+      s->first_line_ms =
+          agent_elapsed_ms(vc_tts_anchor(s), agent_mono_ms());
+    }
+
   {
     cJSON *root = cJSON_Parse(s->payload);
     cJSON *choices;
@@ -881,8 +942,27 @@ static int vc_tts_line(struct vc_tts_sink *s)
 
     if (cJSON_IsString(data) && data->valuestring != NULL)
       {
+        size_t before = s->pcm_bytes;
+
         rc = vc_tts_emit_pcm(s, data->valuestring,
                              strlen(data->valuestring));
+        if (rc == 0 && s->pcm_bytes > before)
+          {
+            /* One audio-bearing data line is one block; the array keeps
+             * the first VC_TTS_OBS_MAX arrivals, while the count and the
+             * last offset cover the whole reply. */
+            uint32_t now = agent_mono_ms();
+
+            if (s->block_count < VC_TTS_OBS_MAX)
+              {
+                s->block_ms[s->block_count] =
+                    agent_elapsed_ms(vc_tts_anchor(s), now);
+              }
+
+            s->block_count++;
+            s->last_block_ms = agent_elapsed_ms(vc_tts_anchor(s), now);
+          }
+
         cJSON_Delete(root);
         return rc;
       }
@@ -1004,10 +1084,54 @@ enum vg_vc_result vg_voice_cloud_tts(const char *text, const char *wav_out,
     rs.ctx = &sink;
 
     vc_timing_init(&t);
+    sink.timing = &t;
+    sink.t0 = agent_mono_ms();
     ret = vc_post(false, body, NULL, &rs, resp, sizeof(resp),
                                &body_out, &status, ctl, &t);
     vc_timing_log("tts", &t);
   }
+
+  /* One line per round: the service's chunking rhythm as this endpoint
+   * actually delivered it.  first_pcm and the block offsets are what the
+   * streaming-playback prebuffer choice will be decided against, so they
+   * are logged on failure paths too whenever any block arrived. */
+  if (sink.block_count > 0)
+    {
+      char blocks[VC_TTS_OBS_MAX * 8];
+      char first_line[16];
+      char first_pcm[16];
+      char last_block[16];
+      size_t off = 0;
+      int i;
+      int shown = sink.block_count < VC_TTS_OBS_MAX
+                      ? sink.block_count : VC_TTS_OBS_MAX;
+
+      for (i = 0; i < shown; i++)
+        {
+          int w = snprintf(blocks + off, sizeof(blocks) - off,
+                           i ? ",%u" : "%u",
+                           (unsigned)sink.block_ms[i]);
+          if (w < 0 || (size_t)w >= sizeof(blocks) - off)
+            {
+              break;
+            }
+
+          off += (size_t)w;
+        }
+
+      snprintf(last_block, sizeof(last_block), "%u",
+               (unsigned)sink.last_block_ms);
+
+      syslog(LOG_INFO,
+             "[%s] tts_blocks n=%u first_line=%s first_pcm=%s blocks=%s "
+             "last=%s bytes=%u\n",
+             TAG, (unsigned)sink.block_count,
+             vc_ms_or_na(first_line, sizeof(first_line),
+                         sink.first_line_seen, sink.first_line_ms),
+             vc_ms_or_na(first_pcm, sizeof(first_pcm),
+                         sink.first_pcm_seen, sink.first_pcm_ms),
+             blocks, last_block, (unsigned)sink.pcm_bytes);
+    }
 
   info->status = status;
   info->resp_bytes = (uint32_t)body_out;

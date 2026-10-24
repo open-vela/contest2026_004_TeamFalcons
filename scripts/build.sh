@@ -13,6 +13,7 @@
 #     bash scripts/build.sh --clean       # Rebuild 复位到 velaguard-lvgl 发布配置
 #     bash scripts/build.sh emmc --clean  # eMMC bring-up 预设
 #     bash scripts/build.sh --clean --debug
+#     bash scripts/build.sh --no-llm-health  # P0 计时矩阵：关 30s 健康探测（不进发布配置）
 #     bash scripts/build.sh --tls-forensics  # 诊断镜像：TLS 握手失败取证（不进发布配置）
 #     bash scripts/build.sh --tls-pool       # 诊断镜像：mbedTLS 静态池 A/B 实验（不进发布配置）
 #
@@ -39,6 +40,7 @@ HMI_PERF=0
 VOICE_FIXTURE=0
 TLS_FORENSICS=0
 TLS_POOL=0
+NO_LLM_HEALTH=0
 
 # shellcheck source=vg_mainline_target.sh
 . "$(cd "$(dirname "$0")" && pwd)/vg_mainline_target.sh"
@@ -62,6 +64,9 @@ for arg in "$@"; do
       ;;
     --tls-forensics)
       TLS_FORENSICS=1
+      ;;
+    --no-llm-health)
+      NO_LLM_HEALTH=1
       ;;
     --tls-pool)
       TLS_POOL=1
@@ -297,6 +302,17 @@ if [ "$VOICE_FIXTURE" = 1 ]; then
   kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_VOICE_TEST_FIXTURE
   make -C "$NUTTX_ROOT" olddefconfig
   grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config" || exit 1
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
+fi
+
+if [ "$NO_LLM_HEALTH" = 1 ]; then
+  # P0 计时矩阵固件：30s 健康探测只与 agent 轮互斥，不覆盖语音轮的
+  # 录音/ASR/TTS/播放阶段，探测可能在被测阶段并发握手。测量期关闭，
+  # 保持与 2026-10-23 基线可比；发布配置不受影响。
+  echo "[build] timing-matrix image: disabling CONFIG_VG_LLM_HEALTH"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --disable CONFIG_VG_LLM_HEALTH
+  make -C "$NUTTX_ROOT" olddefconfig
+  grep -q '^# CONFIG_VG_LLM_HEALTH is not set$' "$NUTTX_ROOT/.config" || exit 1
   rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 

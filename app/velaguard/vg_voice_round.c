@@ -256,21 +256,39 @@ static bool vr_stage_asr(char *text, size_t cap)
     int16_t *pcm = NULL;
     if (g_vr.asr_src[0] != '\0')
       {
+        uint32_t prep_t0 = vr_now_ms();
+
         (void)vg_voice_finish_owned(g_vr.clip_generation, true);
+        syslog(LOG_INFO, "[vgvoice] clip_prep src=file bytes=0 ms=%u\n",
+               (unsigned)(vr_now_ms() - prep_t0));
         rc = vg_voice_cloud_asr(g_vr.asr_src, &ctl, text, cap, &info);
-      }
-    else if (vg_voice_clip_take_owned(g_vr.clip_generation, &pcm, &bytes) == 0)
-      {
-        rc = vg_voice_cloud_asr_buffer(pcm, bytes, &ctl, text, cap, &info);
-        /* Volatile stores keep raw-audio cleanup before free observable. */
-        volatile unsigned char *wipe = (volatile unsigned char *)pcm;
-        for (size_t i = 0; i < bytes; i++) wipe[i] = 0;
-        free(pcm);
       }
     else
       {
-        memset(&info, 0, sizeof(info));
-        rc = VG_VC_IO;
+        uint32_t prep_t0 = vr_now_ms();
+        int take_rc = vg_voice_clip_take_owned(g_vr.clip_generation,
+                                               &pcm, &bytes);
+
+        /* The take is the handoff the round waits on: recorder drain plus
+         * the copy of up to 15.5 s of RAM audio.  bytes stays 0 when the
+         * take failed, which the line then records as such. */
+        syslog(LOG_INFO, "[vgvoice] clip_prep src=ram bytes=%u ms=%u\n",
+               (unsigned)bytes, (unsigned)(vr_now_ms() - prep_t0));
+        if (take_rc == 0)
+          {
+            rc = vg_voice_cloud_asr_buffer(pcm, bytes, &ctl, text, cap,
+                                           &info);
+            /* Volatile stores keep raw-audio cleanup before free
+             * observable. */
+            volatile unsigned char *wipe = (volatile unsigned char *)pcm;
+            for (size_t i = 0; i < bytes; i++) wipe[i] = 0;
+            free(pcm);
+          }
+        else
+          {
+            memset(&info, 0, sizeof(info));
+            rc = VG_VC_IO;
+          }
       }
   }
 
@@ -874,7 +892,13 @@ static uint32_t vr_stage_tts(uint32_t gen)
     if (!completed || !idle || played.last_result != VG_VOICE_OK)
       actions |= vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
     else
-      actions |= vg_vs_play_done(&g_vr.s, gen, vr_now_ms());
+      {
+        /* The explicit playback-end marker the round metrics are read
+         * from; the settle below it is a fallback with coarser
+         * quantisation. */
+        vr_log_stage("play_done");
+        actions |= vg_vs_play_done(&g_vr.s, gen, vr_now_ms());
+      }
     return actions;
   }
 }

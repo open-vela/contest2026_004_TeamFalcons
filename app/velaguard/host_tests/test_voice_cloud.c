@@ -18,6 +18,7 @@ static uint32_t now_ms(void)
 }
 
 /* Test the real adapter without credentials, DNS changes or cloud quotas. */
+static int skip_timing;
 int agent_http_post_stream(const char *post, const vela_body_src_t *body,
     const vela_resp_sink_t *sink, char *resp, size_t cap, size_t *out,
     int *status, const vela_req_ctl_t *ctl)
@@ -30,9 +31,21 @@ int agent_http_post_stream_timed(const char *post, const vela_body_src_t *body,
     const vela_resp_sink_t *sink, char *resp, size_t cap, size_t *out,
     int *status, agent_llm_timing_t *timing, const vela_req_ctl_t *ctl)
 {
-  (void)timing;
   (void)post;
   (void)ctl;
+  if (timing != NULL && !skip_timing)
+    {
+      /* Mirror what the transport records now, so the sink's send-done
+       * anchor runs against a populated struct; skip_timing leaves it
+       * as vc_timing_init prepared it and exercises the fallback
+       * anchor instead. */
+      timing->send_ms = 1;
+      timing->send_done_mono = now_ms();
+      timing->ttfb_ms = 2;
+      timing->body_ms = 3;
+      timing->http_total_ms = 7;
+      timing->streamed = true;
+    }
   *out = 0;
   *status = 200;
   if (mode == 5) return AGENT_HTTP_ERR_TIMEOUT;
@@ -113,6 +126,15 @@ int main(void)
           if (mode == 8) assert(r == VG_VC_CANCELLED);
         }
     }
-  puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup)");
+  /* Anchor fallback: when the transport never produced a send-done
+   * instant, the block observation must still run off its pre-post
+   * anchor and the round must complete. */
+  mode = 0;
+  skip_timing = 1;
+  cancelled = 0;
+  ctl.deadline_ms = now_ms() + 5000;
+  assert(vg_voice_cloud_tts("测试", path, &ctl, &info) == VG_VC_OK);
+  unlink(path);
+  puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup, timing anchors)");
   return 0;
 }

@@ -94,7 +94,7 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_tls_stream_upload test_tls_voice_session test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_tls_stream_upload test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_intent test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -105,6 +105,7 @@ test: test_tls_stream_upload test_tls_voice_session test_live_memory test_tool_a
 	python3 ../../../scripts/voice_test/dns_fixture.py --run ./test_dns_control
 	./test_tls_stream_upload
 	./test_tls_voice_session
+	./test_agent_timing
 	./test_live_memory
 	./test_tool_audit
 	./test_runtime_concurrent
@@ -149,7 +150,7 @@ test: test_tls_stream_upload test_tls_voice_session test_live_memory test_tool_a
 
 clean:
 	rm -f test_dns_control
-	rm -f test_tls_stream_upload test_tls_voice_session test_live_memory test_tool_audit
+	rm -f test_tls_stream_upload test_tls_voice_session test_agent_timing test_live_memory test_tool_audit
 	rm -f test_runtime_concurrent
 	rm -f test_tls_send_pressure test_tls_pool
 	rm -f test_context_cache
@@ -256,8 +257,11 @@ test_tls_voice_session: $(AI_AGENT_ROOT)/tests/test_tls_voice_session.c $(AI_AGE
 	$(CC) $(CFLAGS) -DCONFIG_VG_HMI -DCONFIG_VG_VOICE_TLS_CACHE -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../crypto/mbedtls/mbedtls/include -o $@ $< -Wl,--gc-sections
 
 
-test_tls_stream_upload: $(AI_AGENT_ROOT)/tests/test_tls_stream_upload.c $(AI_AGENT_ROOT)/src/infra/vela_tls.c
+test_tls_stream_upload: $(AI_AGENT_ROOT)/tests/test_tls_stream_upload.c $(AI_AGENT_ROOT)/src/infra/vela_tls.c $(AI_AGENT_ROOT)/src/infra/agent_timing.c
 	$(CC) $(CFLAGS) -ffunction-sections -fdata-sections -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../crypto/mbedtls/mbedtls/include -o $@ $< -Wl,--gc-sections
+
+test_agent_timing: $(AI_AGENT_ROOT)/tests/test_agent_timing.c $(AI_AGENT_ROOT)/src/infra/agent_timing.c
+	$(CC) $(CFLAGS) -include $(AI_AGENT_ROOT)/tests/stub/host_compat.h -I$(AI_AGENT_ROOT)/tests/stub -I$(AI_AGENT_ROOT)/src -I$(AI_AGENT_ROOT)/include -I$(APPS_INC)/../crypto/mbedtls/mbedtls/include -o $@ $< $(AI_AGENT_ROOT)/src/infra/agent_timing.c
 
 
 
