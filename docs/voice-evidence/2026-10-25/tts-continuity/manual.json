@@ -1,0 +1,17 @@
+[
+  {
+    "wait_ms": 50000,
+    "command": "",
+    "timeout_ms": 55000
+  },
+  {
+    "wait_ms": 100,
+    "command": "vgvoice round text",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 100,
+    "command": "vgvoice status",
+    "timeout_ms": 5000
+  }
+]

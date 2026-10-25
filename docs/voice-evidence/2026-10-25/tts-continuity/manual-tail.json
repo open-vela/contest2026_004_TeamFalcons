@@ -1,0 +1,18 @@
+[
+  {
+    "timeout_ms": 60000,
+    "command": "",
+    "wait_for": "[vgvoice] round_settled",
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice round text",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice status",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  }
+]

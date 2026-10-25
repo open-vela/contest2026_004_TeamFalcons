@@ -11,10 +11,9 @@
  *         the 16 kHz stereo the player already accepts, and written to a
  *         WAV the caller can hand to NxPlayer.
  *
- * Both calls take the same vela_req_ctl_t as the rest of the voice round, so
- * recognition and synthesis spend the remaining 30 s budget instead of each
- * starting a new one.  Neither call retries: a retry inside a fixed budget
- * only makes the failure later.
+ * Both calls take the caller's bounded vela_req_ctl_t. Recognition shares
+ * the query deadline; after a valid text answer, synthesis gets its own
+ * bounded window. Neither call retries automatically.
  *
  * The raw recording is deleted as soon as recognition ends, whatever the
  * result.  TTS intermediate PCM is deleted after conversion.  Neither file

@@ -272,21 +272,45 @@ static void test_budget(void)
   expect(vg_vs_state(&s) == VG_VS_ERROR, "state error on expiry");
   (void)gen;
 
-  /* The same deadline applies after the answer text exists: keep the text,
-   * fail only the speech. */
+  /* A late answer must still get enough time to synthesise the whole reply.
+   * TTS expiry keeps the answer but stops synthesis. */
 
   vg_vs_init(&s, t);
   to_asr(&s, &t);
   gen = vg_vs_generation(&s);
   (void)vg_vs_asr_result(&s, gen, true, "UPS负载", t);
-  (void)vg_vs_agent_result(&s, gen, true, "负载 40%", t);
+  (void)vg_vs_agent_result(&s, gen, true, "负载 40%", t + 29000);
   expect(vg_vs_state(&s) == VG_VS_TTS, "waiting for tts");
+  expect(s.submit_ms == t, "TTS preserves whole-round timing anchor");
+  expect(s.deadline_ms == t + 29000 + VG_VS_TTS_BUDGET_MS,
+         "late answer gets an independent bounded synthesis window");
+  expect(vg_vs_tick(&s, t + 30000) == 0,
+         "old query deadline does not interrupt speech synthesis");
+  expect(vg_vs_remaining_ms(&s, t + 30000) == VG_VS_TTS_BUDGET_MS - 1000,
+         "remaining time matches the TTS transport deadline");
 
-  a = vg_vs_tick(&s, t + 30000);
+  a = vg_vs_tick(&s, t + 29000 + VG_VS_TTS_BUDGET_MS);
   expect((a & VG_VS_ACT_STOP_TTS) != 0, "expired tts is stopped");
   expect((a & VG_VS_ACT_SHOW_RESULT) != 0, "text survives tts expiry");
   expect(vg_vs_state(&s) == VG_VS_RESULT, "state result after tts expiry");
   expect(s.speech_failed == true, "speech failure recorded");
+
+  /* Once the complete file is ready, playback is bounded by its duration,
+   * not by either request deadline. */
+
+  vg_vs_init(&s, t);
+  to_asr(&s, &t);
+  gen = vg_vs_generation(&s);
+  (void)vg_vs_asr_result(&s, gen, true, "UPS负载", t);
+  (void)vg_vs_agent_result(&s, gen, true, "负载 40%", t + 29000);
+  expect(vg_vs_tts_result(&s, gen, true, t + 50000) == 0,
+         "complete synthesis after query deadline can play");
+  expect(vg_vs_state(&s) == VG_VS_PLAYING, "playing the complete reply");
+  expect(vg_vs_tick(&s, t + 60000) == 0,
+         "synthesis deadline cannot cut off ready audio");
+  a = vg_vs_play_done(&s, gen, t + 61000);
+  expect((a & VG_VS_ACT_SHOW_RESULT) != 0 && !s.speech_failed,
+         "whole playback finishes successfully");
 }
 
 /* A retry after the first deadline must get its own bounded budget.  Reusing

@@ -324,6 +324,11 @@ uint32_t vg_vs_agent_result(struct vg_voice_session *s, uint32_t generation,
 
   s->state = VG_VS_TTS;
   s->speech_failed = false;
+  /* 查询已给出有效文字，合成完整音频另给有限窗口。保留 submit_ms
+   * 作为整轮计时锚点，避免慢查询挤占合成时间并截断已开始的播报。 */
+
+  s->budget_ms = elapsed(now_ms, s->submit_ms) + VG_VS_TTS_BUDGET_MS;
+  s->deadline_ms = now_ms + VG_VS_TTS_BUDGET_MS;
   return VG_VS_ACT_START_TTS;
 }
 
@@ -416,7 +421,7 @@ uint32_t vg_vs_tick(struct vg_voice_session *s, uint32_t now_ms)
 
   if (in_flight(s->state) && reached(now_ms, s->submit_ms, s->budget_ms))
     {
-      /* The budget is one deadline for the whole chain, not per stage. */
+      /* ASR/query share one deadline; TTS has a bounded window after text. */
 
       actions |= cancel_actions(s->state);
 

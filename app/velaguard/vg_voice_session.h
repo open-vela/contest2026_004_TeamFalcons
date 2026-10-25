@@ -30,7 +30,8 @@
 
 #define VG_VS_RECORD_MAX_MS      15000u  /* hard cap from the interaction contract */
 #define VG_VS_RECORD_MIN_MS        300u  /* below this, nothing was said */
-#define VG_VS_BUDGET_MS          30000u  /* submit -> first playable audio / text */
+#define VG_VS_BUDGET_MS          30000u  /* submit -> answer text */
+#define VG_VS_TTS_BUDGET_MS      30000u  /* answer text -> complete speech file */
 #define VG_VS_RETRY_BUDGET_MS    15000u  /* speech-only retry after the first deadline */
 #define VG_VS_RESULT_HOLD_MS     15000u  /* answer stays after speech ends */
 #define VG_VS_IDLE_MS           120000u  /* context expires after this */
@@ -79,8 +80,8 @@ struct vg_voice_session
   uint32_t now_ms;
 
   uint32_t submit_ms;       /* when the question was submitted */
-  uint32_t deadline_ms;     /* submit_ms + budget_ms */
-  uint32_t budget_ms;       /* 30 s for a question, 15 s for a speech retry */
+  uint32_t deadline_ms;     /* current bounded request deadline */
+  uint32_t budget_ms;       /* deadline offset from submit_ms; TTS adds its own span */
   uint32_t record_ms;       /* when capture started */
   uint32_t result_ms;       /* when the answer became visible */
   uint32_t error_ms;
@@ -150,9 +151,9 @@ void vg_vs_set_context_point(struct vg_voice_session *s, const char *point_id,
 void vg_vs_set_config_version(struct vg_voice_session *s, uint32_t version);
 const char *vg_vs_context_point(const struct vg_voice_session *s);
 
-/* Milliseconds left in the 30 s budget; 0 once it has expired or when no
- * request is in flight.  Stages pass this to their own transport timeout so
- * no stage starts a fresh 30 s. */
+/* Milliseconds left before the current deadline; 0 on expiry or when no
+ * request is in flight. ASR and query share 30 s; a valid answer gets a
+ * separate bounded TTS window. */
 uint32_t vg_vs_remaining_ms(const struct vg_voice_session *s, uint32_t now_ms);
 
 /* Seconds the answer has left on screen; 0 when it is not showing. */

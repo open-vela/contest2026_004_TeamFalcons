@@ -1,0 +1,84 @@
+[
+  {
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "command": ""
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "echo CASE_buffered_point1"
+  },
+  {
+    "wait_ms": 500,
+    "timeout_ms": 5000,
+    "command": "vgvoice round ask /data/velaguard/voice/point01.wav"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice round release"
+  },
+  {
+    "wait_for": "[vgvoice] round_settled",
+    "wait_ms": 100,
+    "timeout_ms": 60000,
+    "command": ""
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice round text"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice status"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "ls /data/velaguard/voice"
+  },
+  {
+    "wait_ms": 1000,
+    "timeout_ms": 5000,
+    "command": "vgvoice round end"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "echo CASE_buffered_point2"
+  },
+  {
+    "wait_ms": 500,
+    "timeout_ms": 5000,
+    "command": "vgvoice round ask /data/velaguard/voice/point02.wav"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice round release"
+  },
+  {
+    "wait_for": "[vgvoice] round_settled",
+    "wait_ms": 100,
+    "timeout_ms": 60000,
+    "command": ""
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice round text"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice status"
+  },
+  {
+    "wait_ms": 1000,
+    "timeout_ms": 5000,
+    "command": "vgvoice round end"
+  }
+]

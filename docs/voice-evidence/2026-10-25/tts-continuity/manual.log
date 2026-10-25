@@ -1,0 +1,190 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addccdb3e0b8753] BEGIN chat=velaguard:5 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920795
+[agent] Dispatching response → local_client:velaguard:5
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=923 text=0 reasoning=190 toolargs=56 calls=2 finish=tool_calls tokens=2362/85/2447
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6addccdb3e0b8753] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=540 send=280 ttfb=3520 body=0 pool=na build=10 parse=0 http=4450 backoff=0 total=4460 req=7871 resp=923 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6addccdb3e0b8753] iter=0 tool=read_file latency=4480ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1101 bytes, 390 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 1430 ms
+[trace:6addccdb3e0b8753] tool_iter=0 tool=read_file tool_ms=1430 out=1874 ok=1
+[trace:6addccdb3e0b8753] tool_iter=0 tool=vg_anomaly_read tool_ms=390 out=1101 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 11369 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920801
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=5436 text=0 reasoning=2919 toolargs=1725 calls=2 finish=tool_calls tokens=3410/1376/4786
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6addccdb3e0b8753] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=580 send=300 ttfb=8050 body=14350 pool=na build=10 parse=0 http=23380 backoff=0 total=23400 req=11369 resp=5436 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6addccdb3e0b8753] iter=1 tool=vg_run_report latency=23420ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 568 bytes, 70 ms
+[trace:6addccdb3e0b8753] tool_iter=1 tool=vg_run_report tool_ms=70 out=568 ok=1
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1587 bytes)
+[agent] Tool write_file result: 64 bytes, 1630 ms
+[trace:6addccdb3e0b8753] tool_iter=1 tool=write_file tool_ms=1630 out=64 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 14226 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920826
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+[vgvoice] stage=asr_wait_recorder t=20
+[vgagent] paused background owner=1 before ASR
+[vgvoice] stage=asr_begin t=30
+[trace:6addccdb3e0b8753] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=1380 send=120 ttfb=8150 body=na pool=na build=0 parse=na http=12620 backoff=0 total=12630 req=14226 resp=0 rc=-7 status=200 parse_ok=0 first_data=na stream=1[vgvoice] clip_prep src=ram bytes=79266 ms=280
+
+[agent] controlled request stopped before tools
+[trace:6addccdb3e0b8753] END status=timeout iters=2 tools=2 llm_ms=27900 tool_ms=3520 elapsed_ms=43910 backend=0
+[agent] Dispatching response → local_client:velaguard:5
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr phases dns=-1 tls=-1 send=1280 ttfb=520 body=0 http=1800
+[vgvoice] asr rc=ok status=200 req=105917 resp=470 ms=1810
+[vgvoice] stage=asr_end t=2130
+[vgvoice] stage=agent_begin t=2140
+[vgagent] resumed background owner=1
+[vgvoice] round_settled gen=10 state=9 failed=0 elapsed_ms=2140
+[vgadvice] channel busy, retry next tick
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:6
+[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=10
+[vgvoice] stage=asr_wait_recorder t=20
+[vgagent] paused background owner=1 before ASR
+[vgvoice] stage=asr_begin t=20
+[vgvoice] clip_prep src=ram bytes=93552 ms=190
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addcd126c4b424c] BEGIN chat=velaguard:6 chan=local_client
+[trace:6addcd126c4b424c] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_m[vgadvice] channel busy, retry next tick
+s=10 backend=0
+[agent] Dispatching response → local_client:velaguard:6
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr phases dns=-1 tls=-1 send=1700 ttfb=410 body=0 http=2110
+[vgvoice] asr rc=ok status=200 req=124965 resp=474 ms=2120
+[vgvoice] stage=asr_end t=2340
+[vgvoice] stage=agent_begin t=2340
+[vgagent] resumed background owner=1
+[vgvoice] round_settled gen=12 state=9 failed=0 elapsed_ms=2350
+[vgadvice] channel busy, retry next tick
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:7
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addcd140830f44a] BEGIN chat=velaguard:7 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920852
+[agent] Dispatching response → local_client:velaguard:7
+[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] stage=asr_wait_recorder t=10
+[vgagent] paused background owner=1 before ASR
+[vgvoice] stage=asr_begin t=20
+[trace:6addcd140830f44a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=240(fused) setup=10 tls=3110 send=820 ttfb=na body=na pool=na build=110 parse=na http=4620 backoff=0 total=4950 req=7871 resp=0 rc=-7 status=0 parse_ok=0 first_data=na stream=1[vgvoice] clip_prep src=ram bytes=56750 ms=210
+
+[agent] controlled request stopped before tools
+[trace:6addcd140830f44a] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=5250 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr phases dns=-1 tls=-1 send=1040 ttfb=320 body=0 http=1360
+[vgvoice] asr rc=ok status=200 req=75897 resp=465 ms=1370
+[vgvoice] stage=asr_end t=1710
+[vgvoice] stage=agent_begin t=1720
+[vgagent] resumed background owner=1
+[vgvoice] round_settled gen=14 state=9 failed=0 elapsed_ms=1720
+[vgadvice] channel busy, retry next tick
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:8
+[context] System prompt built: 3163 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addcd1b73b6c3ea] BEGIN chat=velaguard:8 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7871 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920859
+[agent] Dispatching response → local_client:velaguard:8
+[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] stage=asr_wait_recorder t=20
+[vgagent] paused background owner=1 before ASR
+[vgvoice] stage=asr_begin t=30
+[trace:6addcd1b73b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=240(fused) setup=110 tls=3840 send=670 ttfb=na body=na pool=na build=110 parse=na http=7010 backoff=0 total=7120 req=7871 resp=0 rc=-7 status=0 parse_ok=0 first_data=na stream=1
+[agent] controlled request stopped before tools
+[trace:6addcd1b73b6c3ea] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=7220 backend=0
+[agent] Dispatching response → local_client:velaguard:8
+[vgvoice] clip_prep src=ram bytes=91396 ms=520
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr phases dns=-1 tls=-1 send=1590 ttfb=420 body=0 http=2010
+[vgvoice] asr rc=ok status=200 req=122089 resp=469 ms=2020
+[vgvoice] stage=asr_end t=2580
+[vgvoice] stage=agent_begin t=2580
+[vgvoice] stage=agent_queued t=2590
+[vgagent] round submitted: 64 bytes
+[agent] Processing message from local_client:velaguard:voice:9
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addcd2576c64bb0] BEGIN chat=velaguard:voice:9 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1992 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792920869
+[agent] Dispatching response → local_client:velaguard:voice:9
+[vgadvice] channel busy, retry next tick
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=564 text=0 reasoning=0 toolargs=19 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addcd2576c64bb0] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=0 tls=1910 send=210 ttfb=1090 body=0 pool=na build=10 parse=0 http=3610 backoff=0 total=3630 req=1992 resp=564 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6addcd2576c64bb0] iter=0 tool=vg_point_read latency=3650ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "volt_a"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 110 bytes, 310 ms
+[trace:6addcd2576c64bb0] tool_iter=0 tool=vg_point_read tool_ms=310 out=110 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6addcd2576c64bb0] END status=ok iters=1 tools=1 llm_ms=3650 tool_ms=310 elapsed_ms=4280 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:9
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=7150
+[vgvoice] reused agent facts for vg_point_read seq=5
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=5
+[vgvoice] stage=facts_end t=7170
+[vgvoice] stage=tts_begin t=7170
+
+2026-10-25T09:34:37.1867663+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下A相电压。
+a=volt_a A相电压：离线，没有当前读数
+采样 18 秒前，已超过新鲜度上限
+阈值：警告 ≤ 200 V，严重 ≤ 180 V
+数据来自已确认点表，配置版本 1
+nsh> [K
+2026-10-25T09:34:37.3537733+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=7 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2860 samples=45698 bytes=91396
+vgvoice: level peak=7189 rms=120
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=44 drained=45 overwritten=0 wraps=22 elapsed_ms=2860 rate=127827 B/s
+vgvoice: tail_bytes=5138 stage_ms=0
+vgvoice: generation=7 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=68 clip=0 tick_us=10000
+nsh> [K

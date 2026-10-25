@@ -1,0 +1,56 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+PRESEED seen=0 hasMarker=False
+[vgvoice] tts phases dns=-1 tls=-1 send=420 ttfb=390 body=4310 http=5120
+[vgvoice] tts_blocks n=5 first_line=400 first_pcm=710 blocks=710,1680,2110,3690,4690 last=4690 bytes=84480
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts rc=ok status=200 pcm=84480 resp=0 ms=17930
+[vgvoice] stage=tts_end t=25630
+[vgvoice] first_playable gen=15 elapsed_ms=25640
+[vgvoice] stage=play_posted t=25640
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] stage=play_done t=31710
+[vgagent] resumed background owner=1
+[vgvoice] round_settled gen=16 state=8 failed=0 elapsed_ms=31710
+
+2026-10-25T09:34:58.6695659+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下A相电压。
+a=volt_a A相电压：离线，没有当前读数
+采样 18 秒前，已超过新鲜度上限
+阈值：警告 ≤ 200 V，严重 ≤ 180 V
+数据来自已确认点表，配置版本 1
+nsh> [K
+2026-10-25T09:34:58.8344408+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=7 played=3 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1760 samples=45698 bytes=91396
+vgvoice: level peak=7189 rms=120
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=33820 temp_left=0 worker=9
+vgvoice: capture halves=44 drained=45 overwritten=0 wraps=22 elapsed_ms=2860 rate=127827 B/s
+vgvoice: tail_bytes=5138 stage_ms=0
+vgvoice: generation=7 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=68 clip=0 tick_us=10000
+nsh> [[skills] Skills summary: K1086 bytes
+

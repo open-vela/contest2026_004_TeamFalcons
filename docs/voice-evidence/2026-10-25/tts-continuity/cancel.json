@@ -1,0 +1,38 @@
+[
+  {
+    "wait_ms": 100,
+    "command": "echo CASE_buffered_cancel",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 500,
+    "command": "vgvoice round ask /data/velaguard/voice/point01.wav",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 100,
+    "command": "vgvoice round release",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 100,
+    "wait_for": "first_playable",
+    "command": "",
+    "timeout_ms": 60000
+  },
+  {
+    "wait_ms": 1500,
+    "command": "vgvoice round end",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 100,
+    "command": "vgvoice status",
+    "timeout_ms": 5000
+  },
+  {
+    "wait_ms": 100,
+    "command": "ls /data/velaguard/voice",
+    "timeout_ms": 5000
+  }
+]

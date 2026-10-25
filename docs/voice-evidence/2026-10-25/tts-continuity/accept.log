@@ -1,0 +1,620 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+_C+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IPC+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
++:TAg.0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+[skills] Cannot open skills directory for enumeration: /data/agent/skills/
+C"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+?+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+C_C0.
++A_+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
++TA+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+Up:+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PS0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA_+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA+CIPSTA_CUR:gateway:"0.C:"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?p:+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ST+CIPSTA_CUR:gateway:"0
+OK
+R.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ip+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STR:+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STR.0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IP+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+A_+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?_0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+?CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PS+CIPSTA_CUR:gateway:"0.0.0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_C:i+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+CU+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+I:""+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+CUR+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STA:i+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+?0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+UR+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+"0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+A_+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+:i+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PST"0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+T"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PS0"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TAUR0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
++p.P_C
+OK
+PSUR0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_C+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+UR0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STAp:+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STA
+++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PSR?U"0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IPT+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+A_C+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ST+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ST0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_CU+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+PS:+CIPSTA_CUR:gateway:"0.+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_CR:.0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STA"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
+++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+p:0"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA.0+CIPSTA_CUR:gateway:"
++.0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
+OK
+CU+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IP+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+[skills] Cannot open skills directory for enumeration: /data/agent/skills/
+S.
++ga+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
+:"
+OK
+
++C0.+CIR0"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+_C:i+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA__C+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+U0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IP.
++A_te+CIPIPSU0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ST0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA_0.+CIPSTA_CUR:gateway:"0.0.UR.0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+
+A_"0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
++CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+.+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+T0+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+:"+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+TA+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+CU+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+A_C0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+STA:"+CIPSTA_CUR:gateway:"0.0.UR
+a.0+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+IP:0.+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+C+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+ST
+ay+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+R?+CIPSTA_CUR:gateway:"0.0.0.0"
++CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+A_+CIPSTA_CUR:netmask:"0.0.0.0"
+
+OK
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-25 09:17:37
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.970, +2970)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.980, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.980, +0)	 
+vghmi: live ok=0/14 a1=0.0
+
+2026-10-25T09:31:16.9797268+08:00 CMD echo CASE_buffered_point1
+echo CASE_buffered_point1
+CASE_buffered_point1
+nsh> [K
+2026-10-25T09:31:17.0860954+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792919883
+
+2026-10-25T09:31:17.6089214+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+[vgvoice] clip_prep src=file bytes=0 ms=10
+nsh> [K
+PRESEED seen=362 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=1140
+[vgvoice] voice_preconnect rc=0 dns=200 tls=920 ms=1140
+[vgvoice] asr phases dns=-1 tls=-1 send=2380 ttfb=410 body=0 http=2790
+[vgvoice] asr rc=ok status=200 req=115429 resp=468 ms=3400
+[vgvoice] stage=asr_end t=4270
+[vgvoice] stage=agent_begin t=4270
+[vgvoice] stage=agent_queued t=4280
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 66 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 2545 bytes
+[agent] Processing message from local_client:velaguard:voice:1
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addc95100000000] BEGIN chat=velaguard:voice:1 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1994 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792919889
+[agent] agent_loop started (lazy ask)
+[agent] Dispatching response → local_client:velaguard:voice:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=549 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addc95100000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=0 tls=1820 send=220 ttfb=1280 body=0 pool=na build=10 parse=10 http=3620 backoff=0 total=3740 req=1994 resp=549 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6addc95100000000] iter=0 tool=vg_point_read latency=3840ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 109 bytes, 210 ms
+[trace:6addc95100000000] tool_iter=0 tool=vg_point_read tool_ms=210 out=109 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6addc95100000000] END status=ok iters=1 tools=1 llm_ms=3840 tool_ms=210 elapsed_ms=4280 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:1
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=8970
+[vgvoice] reused agent facts for vg_point_read seq=1
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=1
+[vgvoice] stage=facts_end t=8980
+[vgvoice] stage=tts_begin t=8980
+[vgvoice] tts phases dns=-1 tls=-1 send=410 ttfb=700 body=7270 http=8380
+[vgvoice] tts_blocks n=7 first_line=700 first_pcm=1130 blocks=1130,2500,3190,4300,5810,6240,7450 last=7450 bytes=107520
+[vgvoice] tts rc=ok status=200 pcm=107520 resp=0 ms=12360
+[vgvoice] stage=tts_end t=21900
+[vgvoice] first_playable gen=1 elapsed_ms=21900
+[vgvoice] stage=play_posted t=21900
+[vgvoice] stage=play_done t=26580
+[vgvoice] round_settled gen=2 state=8 failed=0 elapsed_ms=26580
+
+2026-10-25T09:31:44.5467807+08:00 CMD vgvoice round text
+vgvoice round text
+q=UPS负载是多少？
+a=ups_load UPS负载：离线，没有当前读数
+采样 17 秒前，已超过新鲜度上限
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K
+2026-10-25T09:31:44.7451393+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=1 played=1 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=2240 samples=10521 bytes=21042
+vgvoice: level peak=7207 rms=126
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=26170 temp_left=0 worker=9
+vgvoice: capture halves=10 drained=11 overwritten=0 wraps=5 elapsed_ms=650 rate=129490 B/s
+vgvoice: tail_bytes=2249 stage_ms=0
+vgvoice: generation=1 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=17 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T09:31:44.9612320+08:00 CMD ls /data/velaguard/voice
+ls /data/velaguard/voice
+/data/velaguard/voice:
+ q1.wav
+ point01.wav
+ pref.txt
+ recovery01.wav
+ anomaly01.wav
+ anomaly02.wav
+ anomaly03.wav
+ anomaly04.wav
+ anomaly05.wav
+ anomaly06.wav
+ anomaly07.wav
+ anomaly08.wav
+ anomaly09.wav
+ anomaly10.wav
+ point02.wav
+ point03.wav
+ point04.wav
+ point05.wav
+ point06.wav
+ point07.wav
+ point08.wav
+ point09.wav
+ point10.wav
+ recovery02.wav
+ recovery03.wav
+ recovery04.wav
+ recovery05.wav
+ recovery06.wav
+ recovery07.wav
+ recovery08.wav
+ recovery09.wav
+ recovery10.wav
+ takeover-20261024-check.txt
+nsh> [K
+2026-10-25T09:31:45.8950721+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-25T09:31:46.9010894+08:00 CMD echo CASE_buffered_point2
+echo CASE_buffered_point2
+CASE_buffered_point2
+nsh> [K
+2026-10-25T09:31:47.0232165+08:00 CMD vgvoice round ask /data/velaguard/voice/point02.wav
+vgvoice round ask /data/velaguard/voice/point02.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point02.wav
+nsh> [K[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+
+2026-10-25T09:31:47.5462438+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] stage=asr_wait_recorder t=10
+[vgvoice] stage=asr_begin t=10
+[vgvoice] clip_prep src=file bytes=0 ms=0
+nsh> [K
+PRESEED seen=360 hasMarker=False
+[vgvoice] asr phases dns=-1 tls=-1 send=2610 ttfb=320 body=0 http=2930
+[vgvoice] asr rc=ok status=200 req=137829 resp=474 ms=3330
+[vgvoice] stage=asr_end t=4280
+[vgvoice] stage=agent_begin t=4280
+[vgvoice] stage=agent_queued t=4290
+[vgagent] round submitted: 66 bytes
+[agent] Processing message from local_client:velaguard:voice:2
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addc96e35c3b13a] BEGIN chat=velaguard:voice:2 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 1994 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792919919
+[agent] Dispatching response → local_client:velaguard:voice:2
+vgtime: synced 2026-10-25 09:31:54
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=566 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=506/20/526
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addc96e35c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=0 tls=2130 send=210 ttfb=670 body=0 pool=na build=0 parse=10 http=3250 backoff=0 total=3340 req=1994 resp=566 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6addc96e35c3b13a] iter=0 tool=vg_point_read latency=3350ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 108 bytes, 540 ms
+[trace:6addc96e35c3b13a] tool_iter=0 tool=vg_point_read tool_ms=540 out=108 ok=1
+[agent] Snapshot shortcut: skip LLM round (vg_point_read)
+[trace:6addc96e35c3b13a] END status=ok iters=1 tools=1 llm_ms=3350 tool_ms=540 elapsed_ms=4310 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:2
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=8980
+[vgvoice] reused agent facts for vg_point_read seq=2
+[vgvoice] intent read vg_point_read rc=0 captured=1 seq=2
+[vgvoice] stage=facts_end t=9000
+[vgvoice] stage=tts_begin t=9000
+[vgvoice] tts phases dns=-1 tls=-1 send=420 ttfb=400 body=4830 http=5650
+[vgvoice] tts_blocks n=6 first_line=400 first_pcm=820 blocks=820,1230,1530,2760,3440,5220 last=5220 bytes=92160
+[vgvoice] tts rc=ok status=200 pcm=92160 resp=0 ms=9930
+[vgvoice] stage=tts_end t=19480
+[vgvoice] first_playable gen=4 elapsed_ms=19480
+[vgvoice] stage=play_posted t=19490
+[vgvoice] stage=play_done t=23160
+[vgvoice] round_settled gen=5 state=8 failed=0 elapsed_ms=23160
+
+2026-10-25T09:32:10.8235616+08:00 CMD vgvoice round text
+vgvoice round text
+q=请问UPS负载是多少？
+a=ups_load UPS负载：离线，没有当前读数
+采样 3 秒前
+阈值：警告 ≥ 70 %，严重 ≥ 90 %
+数据来自已确认点表，配置版本 1
+nsh> [K
+2026-10-25T09:32:10.9781030+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=2 played=2 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=1920 samples=8823 bytes=17646
+vgvoice: level peak=7189 rms=136
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=23020 temp_left=0 worker=9
+vgvoice: capture halves=8 drained=9 overwritten=0 wraps=4 elapsed_ms=550 rate=128341 B/s
+vgvoice: tail_bytes=5052 stage_ms=0
+vgvoice: generation=2 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=15 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T09:32:11.2569745+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
