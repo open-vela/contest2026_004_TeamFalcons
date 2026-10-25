@@ -19,7 +19,7 @@ static uint32_t now_ms(void)
 
 /* Test the real adapter without credentials, DNS changes or cloud quotas. */
 static int skip_timing;
-static uint8_t stream_cap[65536];
+static uint8_t stream_cap[512 * 1024];
 static size_t stream_n;
 static int stream_aborted;   /* the consumer sees the abort path via CANCELLED */
 
@@ -101,6 +101,14 @@ int agent_http_post_stream_timed(const char *post, const vela_body_src_t *body,
       const char *tail = "\"}}}]}\n\ndata: [DONE]\n\n";
       assert(sink->write(sink->ctx, tail, strlen(tail)) > 0);
       return 0;
+    }
+  if (mode == 10)
+    {
+      const char *line = "data: {\"choices\":[{\"delta\":{\"audio\":{\"data\":\"AAABAAIAAwAEAAUA\"}}}]}\n\n";
+      for (unsigned i = 0; i < 44000; i++)
+        if (sink->write(sink->ctx, line, strlen(line)) < 0)
+          return AGENT_HTTP_ERR_SINK;
+      assert(!"oversized audio must be rejected");
     }
   const char *audio = mode == 4 ? "AA==" : "AAABAAIAAwAEAAUA";
   char line[256];
@@ -246,6 +254,18 @@ int main(void)
     assert(stream_n == 12u * 4096u);
     for (size_t i = 0; i < stream_n; i++)
       assert(stream_cap[i] == pcm12[i % 12]);
+
+    /* 512 KiB 上限在回调之前检查，不能把越界数据交给播放器。 */
+    mode = 10;
+    stream_n = 0;
+    ctl.deadline_ms = now_ms() + 10000;
+    assert(vg_voice_cloud_tts_stream("测试", stream_push, NULL, &ctl,
+                                     &info) == VG_VC_FORMAT);
+    assert(stream_n == (512u * 1024u / 12u) * 12u);
+    assert(info.audio_bytes == stream_n && info.partial == 1);
+    ctl.deadline_ms = now_ms() + 10000;
+    assert(vg_voice_cloud_tts("测试", path, &ctl, &info) == VG_VC_FORMAT);
+    assert(access(path, F_OK) != 0);
   }
 
   puts("test_voice_cloud: OK (streamed WAV body, empty ASR, split SSE, completion, malformed/truncated PCM, 429, timeout, cancellation cleanup, timing anchors, streaming consumer, truncated/partial classification)");

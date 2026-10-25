@@ -1,0 +1,62 @@
+[
+  {
+    "wait_ms": 12000,
+    "timeout_ms": 15000,
+    "command": ""
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice prebuf"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "echo CASE_fixed_long_1"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice status"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "echo CASE_fixed_long_2"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice status"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "echo CASE_fixed_long_3"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 5000,
+    "command": "vgvoice status"
+  },
+  {
+    "wait_ms": 100,
+    "timeout_ms": 30000,
+    "command": "wget -o /data/velaguard/voice/slow01.wav http://192.168.137.1:8086/slow01.wav"
+  }
+]

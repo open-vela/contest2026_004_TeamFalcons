@@ -1,0 +1,61 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "case": "stream_short_1",
+      "audio_ms": 2080,
+      "ready_delay_ms": 140,
+      "underruns": 0
+    },
+    {
+      "case": "stream_short_2",
+      "audio_ms": 2080,
+      "ready_delay_ms": 20,
+      "underruns": 0
+    },
+    {
+      "case": "stream_short_3",
+      "audio_ms": 2080,
+      "ready_delay_ms": 10,
+      "underruns": 0
+    },
+    {
+      "case": "final_long_1",
+      "start_before_tts_end_ms": 2100,
+      "audio_ms": 5440,
+      "ready_delay_ms": 20,
+      "underruns": 0
+    },
+    {
+      "case": "final_long_2",
+      "start_before_tts_end_ms": 2730,
+      "audio_ms": 5120,
+      "ready_delay_ms": 20,
+      "underruns": 0
+    },
+    {
+      "case": "final_long_3",
+      "start_before_tts_end_ms": 3020,
+      "audio_ms": 5120,
+      "ready_delay_ms": 20,
+      "underruns": 0
+    },
+    {
+      "case": "slow_complete",
+      "underruns": 1,
+      "stall_ms": 4380
+    },
+    {
+      "case": "cancel_before",
+      "cancel_ms": 1050
+    },
+    {
+      "case": "cancel_playing",
+      "cancel_ms": 730
+    },
+    {
+      "case": "cancel_rebuffer"
+    }
+  ],
+  "errors": []
+}

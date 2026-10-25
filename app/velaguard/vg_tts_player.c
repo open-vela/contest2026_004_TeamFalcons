@@ -8,16 +8,9 @@
  * mqueue loop where AUDIO_MSG_DEQUEUE hands buffers back for refills
  * and the FINAL flag on the last data buffer earns AUDIO_MSG_COMPLETE.
  *
- * ENQUEUEBUFFER never blocks and a starved stream produces no message,
- * so underruns are detected here (every buffer returned, ring empty,
- * stream not at EOF): the buffer is held, the thread waits for data in
- * cancel-aware slices, then re-enqueues.  A re-START after that is a
- * documented no-op while the device is RUNNING (nuttx/audio/audio.c
- * audio_start) — the wm8994 worker wakes on the new ENQUEUE and re-arms
- * the SAI DMA itself.  If even that stalls, an escalation stops the
- * device, recovers the buffers and restarts.  AUDIOIOC_RESETSTATUS is
- * never used: its handler dereferences the internal-ring buffer array
- * this driver path does not populate.
+ * 初始预缓冲和欠载后重新缓冲均有明确门槛。环空时仍处理在途缓冲，
+ * 只有音频全部耗尽才等待恢复。驱动停滞后明确失败，不重灌不确定已播进度。
+ * 取消时只释放驱动已归还的缓冲，避免 DMA 访问已释放内存。
  ****************************************************************************/
 
 #include <errno.h>
@@ -30,6 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <syslog.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -43,7 +37,7 @@
 #endif
 
 #ifndef CONFIG_VG_VOICE_TTS_PREBUF_MS
-#define CONFIG_VG_VOICE_TTS_PREBUF_MS 200
+#define CONFIG_VG_VOICE_TTS_PREBUF_MS 2500
 #endif
 
 #if (CONFIG_VG_VOICE_TTS_RING_BYTES & (CONFIG_VG_VOICE_TTS_RING_BYTES - 1)) != 0
@@ -70,8 +64,8 @@
 #define VG_TTS_BYTES_PER_MS 32u
 
 #define VG_TTS_PUSH_SLICE_MS    20u
-#define VG_TTS_MQ_SLICE_MS      100u
-#define VG_TTS_LIVENESS_MS      400u
+#define VG_TTS_MQ_SLICE_MS      20u
+#define VG_TTS_LIVENESS_MS      1000u
 #define VG_TTS_RECOVER_MS       1000u
 
 struct vg_tts_state
@@ -92,6 +86,7 @@ struct vg_tts_state
   mqd_t mq;
   struct ap_buffer_s *apb[VG_TTS_APB_MAX];
   bool apb_home[VG_TTS_APB_MAX];  /* buffer is ours, driver must not hold it */
+  uint32_t apb_payload[VG_TTS_APB_MAX];
   unsigned napb;
   unsigned apb_bytes;
 
@@ -100,6 +95,7 @@ struct vg_tts_state
   void *on_started_arg;
   uint32_t prebuf_ms;
   uint32_t prebuf_bytes;
+  uint32_t deadline_ms;
   bool header_pending;   /* pcm0p wants a WAV header before the PCM */
 
   /* Diagnostic bisection of the startup, for the SDRAM heap-writer hunt:
@@ -136,7 +132,8 @@ static struct timespec slice_from_now(uint32_t ms)
 {
   struct timespec t;
 
-  clock_gettime(CLOCK_MONOTONIC, &t);
+  /* POSIX sem_timedwait/mq_timedreceive 使用实时时钟；预算仍使用单调时钟。 */
+  clock_gettime(CLOCK_REALTIME, &t);
   t.tv_sec += ms / 1000u;
   t.tv_nsec += (long)(ms % 1000u) * 1000000L;
   if (t.tv_nsec >= 1000000000L)
@@ -148,9 +145,29 @@ static struct timespec slice_from_now(uint32_t ms)
   return t;
 }
 
+/* 调用者持锁。合成截止时间只约束接收阶段，EOF 后按播放时长排空。 */
+static int stop_reason_locked(void)
+{
+  if (g_pl.cancel != NULL && *g_pl.cancel) return -ECANCELED;
+  if (g_pl.stats.failed) return g_pl.stats.err;
+  if (g_pl.abort_req) return -EPIPE;
+  if (!g_pl.eof && g_pl.deadline_ms != 0 &&
+      (int32_t)(now_ms() - g_pl.deadline_ms) >= 0)
+    {
+      g_pl.stats.failed = true;
+      g_pl.stats.err = -ETIMEDOUT;
+      return -ETIMEDOUT;
+    }
+  return 0;
+}
+
 static bool cancelled(void)
 {
-  return (g_pl.cancel != NULL && *g_pl.cancel) || g_pl.abort_req;
+  int reason;
+  pthread_mutex_lock(&g_pl.lock);
+  reason = stop_reason_locked();
+  pthread_mutex_unlock(&g_pl.lock);
+  return reason != 0;
 }
 
 /* ── ring (all under g_pl.lock) ──────────────────────────────────── */
@@ -291,6 +308,8 @@ static int fill_and_enqueue(struct ap_buffer_s *apb)
    * teardown must not free it in between (see dev_teardown). */
 
   apb_mark_home(apb, false);
+  for (i = 0; i < g_pl.napb; i++)
+    if (g_pl.apb[i] == apb) g_pl.apb_payload[i] = (uint32_t)(samples * 4u);
 
   pthread_mutex_lock(&g_pl.lock);
   g_pl.stats.played_bytes += (uint32_t)(samples * 4u);
@@ -487,217 +506,128 @@ fail:
 
 /* ── player thread ───────────────────────────────────────────────── */
 
-/* Wait (cancel-aware) until the ring has data or the stream ended.
- * Adds the wait to stall_ms.  Returns false when cancelled/aborted. */
+/* 只有播放线程操作缓冲所有权；生产者只接触加锁的环与统计。 */
+static void player_fail(int error, const char *reason)
+{
+  pthread_mutex_lock(&g_pl.lock);
+  if (!g_pl.stats.failed)
+    {
+      g_pl.stats.failed = true;
+      g_pl.stats.err = error;
+    }
+  pthread_mutex_unlock(&g_pl.lock);
+  syslog(LOG_ERR, "[vgvoice] tts_play event=failed reason=%s err=%d\n",
+         reason, error);
+  sem_post(&g_pl.activity);
+}
 
-static bool wait_for_data(void)
+static bool return_buffer(const struct ap_buffer_s *apb, bool played,
+                           unsigned *outstanding)
+{
+  unsigned i;
+  for (i = 0; i < g_pl.napb; i++)
+    {
+      if (g_pl.apb[i] == apb && !g_pl.apb_home[i] && *outstanding > 0)
+        {
+          g_pl.apb_home[i] = true;
+          (*outstanding)--;
+          if (played)
+            {
+              pthread_mutex_lock(&g_pl.lock);
+              g_pl.stats.returned_bytes += g_pl.apb_payload[i];
+              pthread_mutex_unlock(&g_pl.lock);
+            }
+          return true;
+        }
+    }
+  return false;
+}
+
+static uint32_t inflight_ms(void)
+{
+  unsigned i;
+  uint32_t bytes = 0;
+  for (i = 0; i < g_pl.napb; i++)
+    if (!g_pl.apb_home[i]) bytes += g_pl.apb_payload[i];
+  return (bytes + 63u) / 64u;
+}
+
+static bool fill_home_buffers(unsigned *outstanding)
+{
+  unsigned i;
+  for (i = 0; i < g_pl.napb; i++)
+    {
+      int r;
+      if (!g_pl.apb_home[i]) continue;
+      r = fill_and_enqueue(g_pl.apb[i]);
+      if (r < 0) return false;
+      if (r > 0) (*outstanding)++;
+    }
+  return true;
+}
+
+static uint32_t capacity_ms(uint32_t requested)
+{
+  uint32_t maximum = VG_TTS_RING_BYTES / VG_TTS_BYTES_PER_MS;
+  if (maximum > 4000u) maximum = 4000u;
+  return requested < maximum ? requested : maximum;
+}
+
+/* 初始缓冲和真正欠载后的重新缓冲共用门槛；完整结束时直接排空尾段。 */
+static bool wait_buffer(uint32_t threshold_ms, bool initial)
 {
   uint32_t t0 = now_ms();
-
   for (;;)
     {
       uint32_t used;
       bool eof_l;
       struct timespec ts;
-
-      if (cancelled())
-        {
-          pthread_mutex_lock(&g_pl.lock);
-          g_pl.stats.stall_ms += now_ms() - t0;
-          pthread_mutex_unlock(&g_pl.lock);
-          return false;
-        }
-
+      if (cancelled()) return false;
       pthread_mutex_lock(&g_pl.lock);
       used = g_pl.wr - g_pl.rd;
       eof_l = g_pl.eof;
       pthread_mutex_unlock(&g_pl.lock);
-
-      if (used > 0 || eof_l)
+      if (used >= threshold_ms * VG_TTS_BYTES_PER_MS || eof_l)
         {
+          uint32_t ready = now_ms();
           pthread_mutex_lock(&g_pl.lock);
-          g_pl.stats.stall_ms += now_ms() - t0;
+          if (initial) g_pl.stats.ready_ms = ready;
+          else g_pl.stats.stall_ms += ready - t0;
           pthread_mutex_unlock(&g_pl.lock);
+          syslog(LOG_INFO, "[vgvoice] tts_play event=buffer_ready mono_ms=%u "
+                 "buffered_ms=%u target_ms=%u eof=%u initial=%u\n",
+                 (unsigned)ready, (unsigned)(used / VG_TTS_BYTES_PER_MS),
+                 (unsigned)threshold_ms, eof_l, initial);
           return true;
         }
-
       ts = slice_from_now(VG_TTS_PUSH_SLICE_MS);
       sem_timedwait(&g_pl.activity, &ts);
     }
 }
 
-/* Stop the device, recover the buffers still in flight through the
- * message queue, refill everything and restart.  Returns the new
- * outstanding count, or -1 when the driver did not give the buffers
- * back in time (caller gives up on the stream). */
-
-static int escalate_restart(unsigned outstanding)
-{
-  struct audio_msg_s msg;
-  unsigned prio;
-  bool back[VG_TTS_APB_MAX];
-  unsigned recovered = 0;
-  unsigned i;
-  uint32_t t0 = now_ms();
-
-  ioctl(g_pl.fd, AUDIOIOC_STOP, 0);
-
-  for (i = 0; i < g_pl.napb; i++)
-    {
-      back[i] = false;
-    }
-
-  while (recovered < outstanding)
-    {
-      struct timespec ts = slice_from_now(50);
-
-      if (mq_timedreceive(g_pl.mq, (char *)&msg, sizeof(msg), &prio,
-                          &ts) < 0)
-        {
-          if (now_ms() - t0 >= VG_TTS_RECOVER_MS)
-            {
-              return -1;
-            }
-
-          continue;
-        }
-
-      if (msg.msg_id == AUDIO_MSG_DEQUEUE || msg.msg_id == AUDIO_MSG_COMPLETE)
-        {
-          for (i = 0; i < g_pl.napb; i++)
-            {
-              if (g_pl.apb[i] != NULL && g_pl.apb[i] == msg.u.ptr)
-                {
-                  if (!back[i])
-                    {
-                      back[i] = true;
-                      recovered++;
-                    }
-
-                  apb_mark_home(g_pl.apb[i], true);
-                  break;
-                }
-            }
-
-          if (msg.msg_id == AUDIO_MSG_COMPLETE)
-            {
-              /* The driver played a FINAL buffer to the end; nothing
-               * more will be consumed, but the caller refills anyway
-               * and the next completion closes the stream. */
-
-              recovered = outstanding;
-              break;
-            }
-        }
-    }
-
-  /* Buffers that never came back still belong to the driver; only the
-   * recovered ones may be refilled. */
-
-  if (!wait_for_data())
-    {
-      return -1;
-    }
-
-  if (ioctl(g_pl.fd, AUDIOIOC_START, 0) < 0)
-    {
-      return -1;
-    }
-
-  outstanding = 0;
-  for (i = 0; i < g_pl.napb; i++)
-    {
-      if (back[i] && fill_and_enqueue(g_pl.apb[i]) > 0)
-        {
-          outstanding++;
-        }
-    }
-
-  pthread_mutex_lock(&g_pl.lock);
-  g_pl.stats.restarts++;
-  pthread_mutex_unlock(&g_pl.lock);
-  return (int)outstanding;
-}
-
 static void *vg_tts_thread(void *arg)
 {
   struct audio_msg_s msg;
+  struct vg_tts_player_stats final_stats;
   unsigned prio;
   unsigned outstanding = 0;
   bool complete = false;
-  uint32_t resume_ms = 0;
+  bool running;
+  uint32_t last_progress = 0;
+  uint32_t recover_ms = 3000u;
   uint32_t t0;
-  uint32_t used;
-  bool eof_l;
-  bool running = true;
-  unsigned i;
-  struct timespec ts;
-
   (void)arg;
 
-  /* Phase A: wait for the prebuffer threshold (or the stream's end). */
-
-  for (;;)
-    {
-      pthread_mutex_lock(&g_pl.lock);
-      used = g_pl.wr - g_pl.rd;
-      eof_l = g_pl.eof;
-      pthread_mutex_unlock(&g_pl.lock);
-
-      if (cancelled())
-        {
-          running = false;
-          break;
-        }
-
-      if (used >= g_pl.prebuf_bytes || (eof_l && used > 0))
-        {
-          break;
-        }
-
-      if (eof_l && used == 0)
-        {
-          /* Nothing arrived at all; not an error worth failing the
-           * round over — the transport's own classification handles
-           * empty streams before we ever get here. */
-
-          complete = true;
-          running = false;
-          break;
-        }
-
-      ts = slice_from_now(VG_TTS_MQ_SLICE_MS);
-      sem_timedwait(&g_pl.activity, &ts);
-    }
-
+  running = wait_buffer(g_pl.prebuf_ms, true);
   if (running && g_pl.bisect_level >= 1)
     {
-      /* Bisection: no playback at level 1 and 2.  Level 1 never opened
-       * the device; level 2 holds a configured session with allocated
-       * buffers.  Both wait through the prebuffer window exactly like
-       * the real path so the caller's timing is unchanged, then finish
-       * without ever handing a buffer to the driver. */
-
       complete = true;
       running = false;
     }
 
   if (running)
     {
-      for (i = 0; i < g_pl.napb; i++)
-        {
-          if (fill_and_enqueue(g_pl.apb[i]) > 0)
-            {
-              outstanding++;
-            }
-        }
-
-      if (g_pl.stats.failed)
-        {
-          /* The enqueue failed; do not dress that up as completion. */
-
-          running = false;
-        }
+      if (!fill_home_buffers(&outstanding)) running = false;
       else if (outstanding == 0)
         {
           complete = true;
@@ -705,168 +635,124 @@ static void *vg_tts_thread(void *arg)
         }
       else if (ioctl(g_pl.fd, AUDIOIOC_START, 0) < 0)
         {
-          pthread_mutex_lock(&g_pl.lock);
-          g_pl.stats.failed = true;
-          g_pl.stats.err = errno != 0 ? -errno : -EIO;
-          pthread_mutex_unlock(&g_pl.lock);
+          player_fail(errno ? -errno : -EIO, "start");
           running = false;
         }
-      else if (g_pl.on_started != NULL)
+      else
         {
-          g_pl.on_started(g_pl.on_started_arg);
+          last_progress = now_ms();
+          pthread_mutex_lock(&g_pl.lock);
+          g_pl.stats.started = true;
+          g_pl.stats.started_ms = last_progress;
+          g_pl.stats.start_delay_ms = last_progress - g_pl.stats.ready_ms;
+          pthread_mutex_unlock(&g_pl.lock);
+          syslog(LOG_INFO, "[vgvoice] tts_play event=started mono_ms=%u "
+                 "ready_delay_ms=%u\n", (unsigned)last_progress,
+                 (unsigned)g_pl.stats.start_delay_ms);
+          if (g_pl.on_started != NULL) g_pl.on_started(g_pl.on_started_arg);
         }
     }
 
-  /* Phase B: streaming. */
-
   while (running)
     {
-      if (cancelled())
+      uint32_t used;
+      bool eof_l;
+      struct timespec ts;
+      if (cancelled()) break;
+      pthread_mutex_lock(&g_pl.lock);
+      used = g_pl.wr - g_pl.rd;
+      eof_l = g_pl.eof;
+      pthread_mutex_unlock(&g_pl.lock);
+
+      if (outstanding == 0 && used == 0 && eof_l)
         {
+          pthread_mutex_lock(&g_pl.lock);
+          complete = !g_pl.stats.failed &&
+                     g_pl.stats.returned_bytes == g_pl.stats.played_bytes &&
+                     g_pl.stats.played_bytes == g_pl.stats.pushed_bytes * 2u;
+          pthread_mutex_unlock(&g_pl.lock);
+          break;
+        }
+
+      if (outstanding == 0 && used == 0 && !eof_l)
+        {
+          uint32_t target = capacity_ms(recover_ms);
+          pthread_mutex_lock(&g_pl.lock);
+          g_pl.stats.underruns++;
+          g_pl.stats.rebuffer_ms = target;
+          pthread_mutex_unlock(&g_pl.lock);
+          syslog(LOG_INFO, "[vgvoice] tts_play event=underrun mono_ms=%u "
+                 "target_ms=%u\n", (unsigned)now_ms(), (unsigned)target);
+          if (!wait_buffer(target, false)) break;
+          if (recover_ms < 4000u) recover_ms += 500u;
+          if (cancelled()) break;
+          if (!fill_home_buffers(&outstanding)) break;
+          if (outstanding > 0)
+            {
+              if (ioctl(g_pl.fd, AUDIOIOC_START, 0) < 0)
+                {
+                  player_fail(errno ? -errno : -EIO, "resume");
+                  break;
+                }
+              last_progress = now_ms();
+              pthread_mutex_lock(&g_pl.lock);
+              g_pl.stats.restarts++;
+              pthread_mutex_unlock(&g_pl.lock);
+              syslog(LOG_INFO, "[vgvoice] tts_play event=resumed mono_ms=%u\n",
+                     (unsigned)last_progress);
+            }
+          continue;
+        }
+
+      /* 环空但驱动仍有音频时，不等待新数据，继续接收归还消息。 */
+      if (used > 0)
+        {
+          bool was_empty = outstanding == 0;
+          if (!fill_home_buffers(&outstanding)) break;
+          if (was_empty && outstanding > 0) last_progress = now_ms();
+        }
+
+      if (outstanding > 0 &&
+          now_ms() - last_progress >= inflight_ms() + VG_TTS_LIVENESS_MS)
+        {
+          player_fail(-ETIMEDOUT, "driver_stalled");
           break;
         }
 
       ts = slice_from_now(VG_TTS_MQ_SLICE_MS);
-      if (mq_timedreceive(g_pl.mq, (char *)&msg, sizeof(msg), &prio,
-                          &ts) < 0)
+      if (mq_timedreceive(g_pl.mq, (char *)&msg, sizeof(msg), &prio, &ts) < 0)
         {
-          /* Timeout: if a resume after starvation enqueued audio but
-           * nothing came back, the driver is not consuming — escalate. */
-
-          if (resume_ms != 0 && outstanding > 0 &&
-              now_ms() - resume_ms >= VG_TTS_LIVENESS_MS)
+          if (errno != ETIMEDOUT && errno != EINTR)
             {
-              int r = escalate_restart(outstanding);
-
-              if (r < 0)
-                {
-                  pthread_mutex_lock(&g_pl.lock);
-                  g_pl.stats.failed = true;
-                  if (g_pl.stats.err == 0)
-                    {
-                      g_pl.stats.err = -EIO;
-                    }
-                  pthread_mutex_unlock(&g_pl.lock);
-                  running = false;
-                }
-              else if (r == 0)
-                {
-                  /* Restart recovered the buffers but there was
-                   * nothing left to play. */
-
-                  pthread_mutex_lock(&g_pl.lock);
-                  used = g_pl.wr - g_pl.rd;
-                  eof_l = g_pl.eof;
-                  pthread_mutex_unlock(&g_pl.lock);
-
-                  if (eof_l && used == 0)
-                    {
-                      complete = true;
-                      running = false;
-                    }
-
-                  resume_ms = 0;
-                }
-              else
-                {
-                  outstanding = (unsigned)r;
-                  resume_ms = now_ms();
-                }
-            }
-
-          continue;
-        }
-
-      switch (msg.msg_id)
-        {
-          case AUDIO_MSG_DEQUEUE:
-            {
-              struct ap_buffer_s *apb = (struct ap_buffer_s *)msg.u.ptr;
-
-              resume_ms = 0;
-              outstanding--;
-              apb_mark_home(apb, true);
-
-              pthread_mutex_lock(&g_pl.lock);
-              used = g_pl.wr - g_pl.rd;
-              eof_l = g_pl.eof;
-              pthread_mutex_unlock(&g_pl.lock);
-
-              if (used > 0)
-                {
-                  if (fill_and_enqueue(apb) > 0)
-                    {
-                      outstanding++;
-                    }
-
-                  break;
-                }
-
-              if (eof_l)
-                {
-                  /* Hold the buffer: when every outstanding buffer has
-                   * come back, everything enqueued has been played. */
-
-                  if (outstanding == 0 && !g_pl.stats.failed)
-                    {
-                      complete = true;
-                    }
-
-                  break;
-                }
-
-              /* Underrun: wait for data (or the end) in cancel-aware
-               * slices, then resume with a re-enqueue + re-START. */
-
-              pthread_mutex_lock(&g_pl.lock);
-              g_pl.stats.underruns++;
-              pthread_mutex_unlock(&g_pl.lock);
-
-              if (!wait_for_data())
-                {
-                  running = false;
-                  break;
-                }
-
-              if (fill_and_enqueue(apb) > 0)
-                {
-                  outstanding++;
-
-                  /* Harmless while RUNNING (audio_start falls through
-                   * to OK); re-arms the stream if the upper half had
-                   * marked it XRUN. */
-
-                  ioctl(g_pl.fd, AUDIOIOC_START, 0);
-
-                  pthread_mutex_lock(&g_pl.lock);
-                  g_pl.stats.restarts++;
-                  pthread_mutex_unlock(&g_pl.lock);
-                  resume_ms = now_ms();
-                }
-              else if (g_pl.eof && outstanding == 0)
-                {
-                  complete = true;
-                }
+              player_fail(-errno, "receive");
               break;
             }
-
-          case AUDIO_MSG_COMPLETE:
-            complete = true;
-            running = false;
-            break;
-
-          case AUDIO_MSG_STOP:
-            /* The driver ended the stream (our STOP or its own). */
-
-            running = false;
-            break;
-
-          default:
-            break;
+          continue;
         }
-
-      if (complete && outstanding == 0)
+      if (msg.msg_id == AUDIO_MSG_DEQUEUE)
         {
+          if (!return_buffer(msg.u.ptr, true, &outstanding))
+            {
+              player_fail(-EIO, "buffer_ownership");
+              break;
+            }
+          last_progress = now_ms();
+        }
+      else if (msg.msg_id == AUDIO_MSG_COMPLETE)
+        {
+          pthread_mutex_lock(&g_pl.lock);
+          eof_l = g_pl.eof;
+          pthread_mutex_unlock(&g_pl.lock);
+          if (!eof_l)
+            {
+              player_fail(-EIO, "premature_complete");
+              break;
+            }
+          /* COMPLETE 不能代替各缓冲的归还；下一轮循环确认全部消费。 */
+        }
+      else if (msg.msg_id == AUDIO_MSG_STOP)
+        {
+          if (!cancelled()) player_fail(-EIO, "unexpected_stop");
           break;
         }
     }
@@ -874,41 +760,29 @@ static void *vg_tts_thread(void *arg)
   if (g_pl.fd >= 0)
     {
       ioctl(g_pl.fd, AUDIOIOC_STOP, 0);
-
-      /* Let the in-flight buffers come home; bounded, then teardown frees
-       * only what returned — the rest is abandoned (see dev_teardown). */
-
       t0 = now_ms();
       while (outstanding > 0 && now_ms() - t0 < VG_TTS_RECOVER_MS)
         {
-          struct timespec ts2 = slice_from_now(50);
-
-          if (mq_timedreceive(g_pl.mq, (char *)&msg, sizeof(msg), &prio,
-                              &ts2) < 0)
-            {
-              continue;
-            }
-
+          struct timespec ts = slice_from_now(20);
+          if (mq_timedreceive(g_pl.mq, (char *)&msg, sizeof(msg), &prio, &ts) < 0)
+            continue;
           if (msg.msg_id == AUDIO_MSG_DEQUEUE)
-            {
-              outstanding--;
-              apb_mark_home((const struct ap_buffer_s *)msg.u.ptr, true);
-            }
-          else if (msg.msg_id == AUDIO_MSG_COMPLETE ||
-                   msg.msg_id == AUDIO_MSG_STOP)
-            {
-              break;
-            }
+            (void)return_buffer(msg.u.ptr, false, &outstanding);
         }
     }
-
   dev_teardown();
-
   pthread_mutex_lock(&g_pl.lock);
   g_pl.stats.complete = complete;
   g_pl.stats.played_ms = g_pl.stats.played_bytes / 64u;
+  final_stats = g_pl.stats;
   g_pl.thread_done = true;
   pthread_mutex_unlock(&g_pl.lock);
+  syslog(LOG_INFO, "[vgvoice] tts_play event=done complete=%u failed=%u err=%d "
+         "enqueued=%u returned=%u underruns=%u stall_ms=%u leaked=%u\n",
+         final_stats.complete, final_stats.failed, final_stats.err,
+         (unsigned)final_stats.played_bytes, (unsigned)final_stats.returned_bytes,
+         (unsigned)final_stats.underruns, (unsigned)final_stats.stall_ms,
+         final_stats.leaked_buffers);
   sem_post(&g_pl.activity);
   return NULL;
 }
@@ -922,15 +796,13 @@ static uint32_t clamp_prebuf(uint32_t ms)
       ms = 50u;
     }
 
-  if (ms > 1000u)
-    {
-      ms = 1000u;
-    }
+  ms = capacity_ms(ms);
 
   return ms;
 }
 
-int vg_tts_player_start(uint32_t prebuf_ms, const volatile int *cancel,
+int vg_tts_player_start(uint32_t prebuf_ms, uint32_t deadline_ms,
+                        const volatile int *cancel,
                         void (*on_started)(void *arg), void *arg)
 {
   pthread_attr_t attr;
@@ -953,6 +825,7 @@ int vg_tts_player_start(uint32_t prebuf_ms, const volatile int *cancel,
   g_pl.thread_valid = false;
   memset(&g_pl.stats, 0, sizeof(g_pl.stats));
   g_pl.cancel = cancel;
+  g_pl.deadline_ms = deadline_ms;
   g_pl.on_started = on_started;
   g_pl.on_started_arg = arg;
   g_pl.prebuf_ms = clamp_prebuf(prebuf_ms);
@@ -1042,10 +915,11 @@ int vg_tts_player_push(const uint8_t *mono16k, size_t bytes)
 
       pthread_mutex_lock(&g_pl.lock);
 
-      if (g_pl.abort_req)
+      int reason = stop_reason_locked();
+      if (reason != 0 || g_pl.thread_done || g_pl.eof)
         {
           pthread_mutex_unlock(&g_pl.lock);
-          return -EPIPE;
+          return reason != 0 ? reason : -EPIPE;
         }
 
       used = g_pl.wr - g_pl.rd;

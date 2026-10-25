@@ -265,12 +265,12 @@ config VG_VOICE_TTS_STREAM
 
 config VG_VOICE_TTS_PREBUF_MS
 	int "TTS streaming prebuffer (ms)"
-	range 50 1000
-	default 200
+	range 50 4000
+	default 2500
 	depends on VG_VOICE_TTS_STREAM
 	---help---
 		起播前缓存的音频量；运行时可用 vgvoice prebuf <ms> 调整
-		（下轮生效），用于 100/200/400 档位对照实验。
+		（下轮生效），并受环形缓冲容量限制。默认缓存 2.5 秒音频。
 
 config VG_VOICE_TTS_RING_BYTES
 	int "TTS streaming ring size (bytes, power of two)"

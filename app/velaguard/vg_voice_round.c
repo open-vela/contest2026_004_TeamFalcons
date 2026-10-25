@@ -128,8 +128,8 @@ static uint32_t vr_elapsed_ms(void)
 
 static void vr_log_stage(const char *stage)
 {
-  syslog(LOG_INFO, "[vgvoice] stage=%s t=%u\n", stage,
-         (unsigned)vr_elapsed_ms());
+  syslog(LOG_INFO, "[vgvoice] stage=%s t=%u mono_ms=%u\n", stage,
+         (unsigned)vr_elapsed_ms(), (unsigned)vr_now_ms());
 }
 
 /* ── UI snapshot ────────────────────────────────────────────────── */
@@ -815,6 +815,7 @@ struct vr_tts_feed
 {
   struct vg_pcm_rs24_16 rs;
   int16_t out[VR_TTS_FEED_SAMPLES];
+  uint32_t mono_bytes;
 };
 
 static int vr_tts_feed_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
@@ -834,17 +835,19 @@ static int vr_tts_feed_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
       return -1;
     }
 
+  if (n > 0) f->mono_bytes += (uint32_t)n * 2u;
+
   return 0;
 }
 
-/* Runs on the player thread the moment the driver starts consuming.  The
- * two log lines are the real first-sound markers; the UI status was set
- * before the request, so nothing here touches shared round state beyond
- * the submit anchor, which is stable for the whole TTS stage. */
+/* 播放线程在 START 成功后记录启动时间，并通过加锁的 UI 字段更新状态。
+ * 这表示驱动接受启动，不等同于外部声学测量；不修改轮次状态机。 */
 
 static void vr_tts_started(void *arg)
 {
   uint32_t gen = *(const uint32_t *)arg;
+
+  vr_ui_set_status("播报中");
 
   syslog(LOG_INFO, "[vgvoice] first_playable gen=%u elapsed_ms=%u\n",
          (unsigned)gen, (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
@@ -879,8 +882,10 @@ static uint32_t vr_stage_tts(uint32_t gen)
   {
     uint32_t started_gen = gen;
 
-    if (vg_tts_player_start(vg_tts_player_prebuf_ms(), &g_vr.cancel,
-                            vr_tts_started, &started_gen) == 0)
+    int player_rc = vg_tts_player_start(vg_tts_player_prebuf_ms(),
+                                       ctl.deadline_ms, &g_vr.cancel,
+                                       vr_tts_started, &started_gen);
+    if (player_rc == 0)
       {
         struct vr_tts_feed feed;
         struct vg_tts_player_stats pstats;
@@ -892,17 +897,18 @@ static uint32_t vr_stage_tts(uint32_t gen)
          * marker is the play_start stage the player thread logs. */
 
         vr_log_stage("play_posted");
-        vr_ui_set_status("播报中");
+        vr_ui_set_status("缓冲语音");
         vr_ui_publish();
 
         __atomic_fetch_add(&g_vr.tts_requests, 1, __ATOMIC_RELAXED);
         vg_pcm_rs24_16_init(&feed.rs);
+        feed.mono_bytes = 0;
         rc = vg_voice_cloud_tts_stream(g_vr.s.answer, vr_tts_feed_push,
                                        &feed, &ctl, &info);
 
         syslog(LOG_INFO,
                "[vgvoice] tts rc=%s status=%d pcm=%u resp=%u ms=%u "
-               "stream=1 partial=%u\n",
+               "stream=1 delivered_partial=%u\n",
                vg_vc_result_name(rc), info.status,
                (unsigned)info.audio_bytes, (unsigned)info.resp_bytes,
                (unsigned)info.elapsed_ms, (unsigned)info.partial);
@@ -916,6 +922,10 @@ static uint32_t vr_stage_tts(uint32_t gen)
 
             vg_tts_player_abort();
             (void)vg_tts_player_wait(3000, &pstats);
+            syslog(LOG_INFO, "[vgvoice] tts_playback_failure started=%u "
+                   "partial=%u failed=%u err=%d leaked=%u\n",
+                   pstats.started, pstats.started, pstats.failed,
+                   pstats.err, pstats.leaked_buffers);
 
             if (g_vr.cancel)
               {
@@ -932,7 +942,7 @@ static uint32_t vr_stage_tts(uint32_t gen)
          * audio duration itself (32 mono bytes per ms) plus the same
          * slack the WAV wait uses; completion comes from the driver. */
 
-        limit = info.audio_bytes / 32u + VR_PLAY_EXTRA_MS;
+        limit = (feed.mono_bytes + 31u) / 32u + VR_PLAY_EXTRA_MS;
         wr = vg_tts_player_wait(limit, &pstats);
 
         info.played_bytes = pstats.played_bytes;
@@ -942,14 +952,16 @@ static uint32_t vr_stage_tts(uint32_t gen)
         syslog(LOG_INFO,
                "[vgvoice] tts_player played=%u pushed=%u underruns=%u "
                "stall_ms=%u restarts=%u complete=%u failed=%u err=%d "
-               "leaked=%u ms=%u\n",
+               "leaked=%u ms=%u returned=%u ready_delay_ms=%u\n",
                (unsigned)pstats.played_bytes,
                (unsigned)pstats.pushed_bytes,
                (unsigned)pstats.underruns, (unsigned)pstats.stall_ms,
                (unsigned)pstats.restarts, pstats.complete ? 1u : 0u,
                pstats.failed ? 1u : 0u, pstats.err,
                (unsigned)pstats.leaked_buffers,
-               (unsigned)(vr_now_ms() - g_vr.s.submit_ms));
+               (unsigned)(vr_now_ms() - g_vr.s.submit_ms),
+               (unsigned)pstats.returned_bytes,
+               (unsigned)pstats.start_delay_ms);
 
         if (g_vr.cancel)
           {
@@ -967,6 +979,11 @@ static uint32_t vr_stage_tts(uint32_t gen)
           }
 
         return actions;
+      }
+    if (player_rc == -EBUSY)
+      {
+        /* 未回收的播放会话仍持有设备，不能让 WAV 回退抢占同一设备。 */
+        return vg_vs_tts_result(&g_vr.s, gen, false, vr_now_ms());
       }
   }
 

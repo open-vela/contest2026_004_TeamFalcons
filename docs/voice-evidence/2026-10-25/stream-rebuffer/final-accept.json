@@ -1,0 +1,178 @@
+[
+  {
+    "timeout_ms": 15000,
+    "command": "",
+    "wait_ms": 12000
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice prebuf",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_final_long_1",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_final_long_2",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_final_long_3",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 45000,
+    "command": "vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "ls -l /data/velaguard/voice/slow01.wav",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_slow_complete",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 30000,
+    "command": "vgvoice streamtest /data/velaguard/voice/slow01.wav",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_cancel_before",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav",
+    "wait_ms": 500
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round release",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 60000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "stage=tts_begin"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round end",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 10000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "cancel_settled"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_cancel_playing",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round ask /data/velaguard/voice/anomaly01.wav",
+    "wait_ms": 500
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round release",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 60000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "first_playable"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round end",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 10000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "cancel_settled"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "echo CASE_cancel_rebuffer",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice streamtest /data/velaguard/voice/slow01.wav &",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 25000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "tts_play event=underrun"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice cancel",
+    "wait_ms": 100
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "vgvoice: streamtest pushed="
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  }
+]

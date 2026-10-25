@@ -1,0 +1,201 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=763 text=0 reasoning=33 toolargs=56 calls=2 finish=tool_calls tokens=2370/48/2418
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6addd2d076c64bb0] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=760 send=100 ttfb=1420 body=0 pool=na build=0 parse=0 http=2540 backoff=0 total=2550 req=7880 resp=763 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6addd2d076c64bb0] iter=0 tool=read_file latency=2570ms llm=ok backend=0
+[tools] Executing tool: read_file
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 568 bytes, 160 ms
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes, 660 ms
+[trace:6addd2d076c64bb0] tool_iter=0 tool=read_file tool_ms=660 out=1874 ok=1
+[trace:6addd2d076c64bb0] tool_iter=0 tool=vg_run_report tool_ms=160 out=568 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 10851 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922323
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=2816 text=0 reasoning=338 toolargs=1829 calls=1 finish=tool_calls tokens=3232/788/4020
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addd2d076c64bb0] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=20 tls=710 send=130 ttfb=8050 body=120 pool=na build=10 parse=0 http=9310 backoff=0 total=9320 req=10851 resp=2816 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6addd2d076c64bb0] iter=1 tool=write_file latency=9340ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30cbb3ad\nreq=66\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=总线中断致温度点离线\nev=本次上电总线成功0%（0/136），全部超时，从站1无响应\natt=检查总线接线、终端电阻及从站1供电\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=总线中断致湿度点离线\nev=本次上电总线成功0%（0/136），全部超时，从站1无响应\natt=检查总线接线、终�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1693 bytes)
+[agent] Tool write_file result: 64 bytes, 1010 ms
+[trace:6addd2d076c64bb0] tool_iter=1 tool=write_file tool_ms=1010 out=64 ok=1
+[agent] Local tool shortcut: skip LLM round
+[trace:6addd2d076c64bb0] END status=ok iters=2 tools=2 llm_ms=11910 tool_ms=1830 elapsed_ms=13750 backend=0
+[agent] Dispatching response → local_client:velaguard:9
+[vgagent] round finished: reply
+[vgadvice] advice file answers req=66, live round is req=107: coverage decides
+[vgadvice] advice loaded: 8 entries file_req=66 live_req=107
+[vgllm] link up: real round finished
+[vgadvice] round ended, advice for this alarm set kept
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922364
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 01:59:25 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[skills] Skills summary: 1086 bytes
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-25 09:58:12
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(2.290, +2290)	 check_stack_size: tid: 12, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(2.300, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(2.300, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(2.300, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(2.310, +10)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(2.310, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(2.320, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(2.330, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.340, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.340, +0)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.350, +
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922325
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 02:00:50 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgllm] link up: rc=0 status=401
+
+2026-10-25T10:00:51.3686883+08:00 CMD vgvoice prebuf
+vgvoice prebuf
+vgvoice: prebuf 2500 ms
+nsh> [K
+2026-10-25T10:00:51.4740832+08:00 CMD echo CASE_fixed_long_1
+echo CASE_fixed_long_1
+CASE_fixed_long_1
+nsh> [K
+2026-10-25T10:00:51.5993843+08:00 CMD vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922327
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts_play event=buffer_ready mono_ms=39950 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=39970 ready_delay_ms=20
+[vgvoice] tts phases dns=20 tls=790 send=130 ttfb=360 body=4080 http=5400
+[vgvoice] tts_blocks n=16 first_line=360 first_pcm=550 blocks=560,1150,1600,1670,1750,1950,2380,2460,2600,3060,3130,3260,3710,3790,3880,4420 last=4420 bytes=245760
+vgvoice: ttss rc=ok status=200 pcm=245760 ms=5420 partial=0
+[vgvoice] tts_play event=done complete=1 failed=0 err=0 enqueued=327680 returned=327680 underruns=0 stall_ms=0 leaked=0
+vgvoice: ttss played=327680 underruns=0 stall_ms=0 restarts=0 complete=1 failed=0 err=0 returned=327680 leaked=0 ready_delay_ms=20
+vgvoice: ttss stack size=32632 used=22008 headroom=10624
+nsh> [KTAIL seen=989 sc=989
+
+2026-10-25T10:01:00.3729060+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T10:01:00.4779952+08:00 CMD echo CASE_fixed_long_2
+echo CASE_fixed_long_2
+CASE_fixed_long_2
+nsh> [K
+2026-10-25T10:01:00.6026276+08:00 CMD vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922336
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts_play event=buffer_ready mono_ms=50000 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=50020 ready_delay_ms=20
+[vgvoice] tts phases dns=20 tls=970 send=130 ttfb=820 body=5060 http=7030
+[vgvoice] tts_blocks n=16 first_line=830 first_pcm=910 blocks=920,1390,1600,2140,2290,2460,2670,3290,3450,3650,3850,4110,4620,4810,5090,5860 last=5860 bytes=253440
+vgvoice: ttss rc=ok status=200 pcm=253440 ms=7050 partial=0
+[vgvoice] tts_play event=done complete=1 failed=0 err=0 enqueued=337920 returned=337920 underruns=0 stall_ms=0 leaked=0
+vgvoice: ttss played=337920 underruns=0 stall_ms=0 restarts=0 complete=1 failed=0 err=0 returned=337920 leaked=0 ready_delay_ms=20
+vgvoice: ttss stack size=32632 used=22008 headroom=10624
+nsh> [K
+2026-10-25T10:01:10.5956674+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T10:01:10.7197270+08:00 CMD echo CASE_fixed_long_3
+echo CASE_fixed_long_3
+CASE_fixed_long_3
+nsh> [K
+2026-10-25T10:01:10.8457192+08:00 CMD vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+vgvoice ttss 这是流式播报测试，请确认这一段语音能够连续播放到结束。
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922346
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts_play event=buffer_ready mono_ms=60120 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=60130 ready_delay_ms=10
+[vgvoice] tts phases dns=20 tls=990 send=140 ttfb=370 body=5410 http=6950
+[vgvoice] tts_blocks n=16 first_line=380 first_pcm=630 blocks=630,870,1380,1630,2160,2340,2580,3110,3300,3510,3770,4290,4480,4960,5430,5770 last=5770 bytes=245760
+vgvoice: ttss rc=ok status=200 pcm=245760 ms=6970 partial=0
+vgtime: synced 2026-10-25 10:01:20
+[vgvoice] tts_play event=done complete=1 failed=0 err=0 enqueued=327680 returned=327680 underruns=0 stall_ms=0 leaked=0
+vgvoice: ttss played=327680 underruns=0 stall_ms=0 restarts=0 complete=1 failed=0 err=0 returned=327680 leaked=0 ready_delay_ms=10
+vgvoice: ttss stack size=32632 used=22064 headroom=10568
+nsh> [K
+2026-10-25T10:01:20.5432629+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T10:01:20.6668541+08:00 CMD wget -o /data/velaguard/voice/slow01.wav http://192.168.137.1:8086/slow01.wav
+wget -o /data/velaguard/voice/slow01.wav http://192.168.137.1:8086/slow01.wav
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922482
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] controlled send waiting for packet buffers
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 02:01:23 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+nsh> [K

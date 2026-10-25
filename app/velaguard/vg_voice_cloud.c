@@ -734,7 +734,7 @@ struct vc_tts_sink
   bool   first_pcm_seen;
   uint32_t first_pcm_ms;
   uint32_t block_ms[VC_TTS_OBS_MAX];
-  uint8_t block_count;
+  uint32_t block_count;
   uint32_t last_block_ms;
   /* Streaming mode: a non-NULL push receives decoded 24 kHz mono as it
    * arrives instead of accumulating it in pcm.  Every observation field
@@ -841,6 +841,13 @@ static int vc_tts_emit_pcm(struct vc_tts_sink *s, const char *b64, size_t len)
 
       if (n > 0)
         {
+          /* 流式与完整缓存共用上限，先检查再向播放器投递。 */
+          if (s->pcm_bytes > VC_PCM_MAX_BYTES ||
+              (size_t)n > VC_PCM_MAX_BYTES - s->pcm_bytes)
+            {
+              syslog(LOG_ERR, "[%s] tts: audio limit exceeded\n", TAG);
+              return -1;
+            }
           if (s->push != NULL)
             {
               /* Streaming: hand the piece over now; a full consumer

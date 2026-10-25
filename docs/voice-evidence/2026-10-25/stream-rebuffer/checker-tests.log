@@ -1,0 +1,6 @@
+PASS: authentic board evidence
+PASS: rejects slow start
+PASS: rejects lost bytes
+PASS: rejects missing cancellation
+PASS: rejects no streaming benefit
+PASS: rejects duplicate case

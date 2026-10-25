@@ -1,17 +1,6 @@
-/****************************************************************************
- * app/velaguard/host_tests/test_tts_player.c
- *
- * P1: the ring player's state machine against a simulated audio driver.
- * The module is included directly; open/ioctl/close are link-wrapped so
- * the test implements GETBUFFERINFO (4 x 8192), ALLOCBUFFER and an
- * instant-return ENQUEUE feeder that posts AUDIO_MSG_DEQUEUE back
- * through the module's own (real) POSIX mqueue, exactly like wm8994's
- * worker does.  Covered: prebuffer gating, stereo expansion and stream
- * content, full-ring backpressure, deterministic starvation (underrun,
- * stall, resume), abort and cancellation without deadlocks, device
- * failure fallback, prebuffer clamping.
- ****************************************************************************/
-
+/* SPDX-License-Identifier: Apache-2.0 */
+/* 使用真实播放时钟的模拟驱动；只在播放完成后归还缓冲并核对采样顺序。 */
+#define _GNU_SOURCE
 #include <errno.h>
 #include <fcntl.h>
 #include <mqueue.h>
@@ -26,590 +15,320 @@
 #include <unistd.h>
 
 #include "vg_tts_player.h"
-
 #include "../vg_tts_player.c"
 
 static int g_fail;
+#define CHECK(c) do { if (!(c)) { fprintf(stderr,"FAIL %d: %s\n",__LINE__,#c); __atomic_add_fetch(&g_fail,1,__ATOMIC_RELAXED); } } while (0)
 
-#define CHECK(cond) \
-  do \
-    { \
-      if (!(cond)) \
-        { \
-          printf("FAIL %s:%d: %s\n", __FILE__, __LINE__, #cond); \
-          g_fail++; \
-        } \
-    } \
-  while (0)
+static pthread_mutex_t d_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t d_wake = PTHREAD_COND_INITIALIZER;
+static pthread_t d_thread;
+static bool d_thread_valid, d_quit, d_stop, d_running;
+static bool d_hold, d_lose, d_open_fail;
+static struct ap_buffer_s *d_queue[8], *d_alloc[8];
+static unsigned d_qcount, d_alloc_count;
+static mqd_t d_mq;
+static unsigned d_header;
+static uint32_t d_starts, d_enqueues, d_frees;
+static size_t d_skip[8];
+static int16_t d_played[250000];
+static size_t d_played_n;
+static uint8_t pattern[400000];
+static volatile int started_flag;
+static struct audio_caps_s d_caps;
 
-/* ── simulated driver ────────────────────────────────────────────── */
-
-static volatile int g_open_fail;
-static volatile int g_hold;          /* 1: keep DEQUEUEs back */
-static volatile int g_start_count;
-static volatile int g_started_flag;
-static volatile int g_enqueued;
-static volatile int g_free_calls;
-static volatile int g_header_seen;   /* pcm_decode: header once per session */
-static mqd_t g_drv_mq = (mqd_t)-1;
-static struct ap_buffer_s *g_apbs[8];
-static int g_napb;
-static struct ap_buffer_s *g_held[8];
-static int g_nheld;
-
-static int16_t g_played[200000];     /* mono samples in enqueue order */
-static size_t g_played_n;
-static int g_final_flags;
-static int g_configure_count;
-static struct audio_caps_s g_last_caps;
-
-static void post_msg(uint16_t id, void *ptr)
+static uint32_t wall_ms(void) { return now_ms(); }
+static void post_msg(int id, void *ptr)
 {
-  struct audio_msg_s msg;
-
-  memset(&msg, 0, sizeof(msg));
-  msg.msg_id = id;
-  msg.u.ptr = ptr;
-
-  if (g_drv_mq != (mqd_t)-1 &&
-      mq_send(g_drv_mq, (const char *)&msg, sizeof(msg), 0) != 0)
+  struct audio_msg_s msg = {0};
+  msg.msg_id = id; msg.u.ptr = ptr;
+  CHECK(mq_send(d_mq,(char *)&msg,sizeof(msg),0)==0);
+}
+static int alloc_index(struct ap_buffer_s *p)
+{
+  for (unsigned i=0;i<d_alloc_count;i++) if(d_alloc[i]==p) return (int)i;
+  CHECK(false); return 0;
+}
+static void *driver_worker(void *unused)
+{
+  (void)unused;
+  pthread_mutex_lock(&d_lock);
+  while (!d_quit)
     {
-      printf("FAIL driver mq_send: %s\n", strerror(errno));
-      g_fail++;
+      while (!d_quit && !d_stop && (!d_running || !d_qcount || d_hold))
+        pthread_cond_wait(&d_wake,&d_lock);
+      if(d_quit) break;
+      if(d_stop)
+        {
+          if(!d_lose) for(unsigned i=0;i<d_qcount;i++) post_msg(AUDIO_MSG_DEQUEUE,d_queue[i]);
+          d_qcount=0; d_stop=false; d_running=false; continue;
+        }
+      struct ap_buffer_s *p=d_queue[0];
+      int slot=alloc_index(p);
+      size_t skip=d_skip[slot];
+      size_t samples=(p->nbytes-skip)/4u;
+      uint32_t finish=wall_ms()+(uint32_t)((samples+15u)/16u);
+      while (!d_stop && !d_quit && (int32_t)(wall_ms()-finish)<0)
+        {
+          struct timespec t;
+          clock_gettime(CLOCK_REALTIME,&t);
+          t.tv_nsec+=1000000;
+          if(t.tv_nsec>=1000000000){t.tv_sec++;t.tv_nsec-=1000000000;}
+          pthread_cond_timedwait(&d_wake,&d_lock,&t);
+        }
+      if(d_stop || d_quit) continue;
+      const int16_t *src=(const int16_t *)(p->samp+skip);
+      for(size_t i=0;i<samples;i++)
+        {
+          CHECK(src[2*i]==src[2*i+1]);
+          CHECK(d_played_n<sizeof(d_played)/sizeof(d_played[0]));
+          if(d_played_n<sizeof(d_played)/sizeof(d_played[0])) d_played[d_played_n++]=src[2*i];
+        }
+      bool final=(p->flags&AUDIO_APB_FINAL)!=0;
+      for(unsigned i=1;i<d_qcount;i++) d_queue[i-1]=d_queue[i];
+      d_qcount--;
+      post_msg(AUDIO_MSG_DEQUEUE,p);
+      if(final) post_msg(AUDIO_MSG_COMPLETE,NULL);
     }
-}
-
-int __wrap_open(const char *path, int flags, ...)
-{
-  (void)flags;
-
-  if (g_open_fail || strcmp(path, "/dev/audio/pcm0p") != 0)
-    {
-      errno = ENOENT;
-      return -1;
-    }
-
-  return 42;
-}
-
-int __wrap_close(int fd)
-{
-  CHECK(fd == 42);
-  return 0;
-}
-
-int __wrap_ioctl(int fd, unsigned long req, ...)
-{
-  void *arg;
-  va_list ap;
-
-  (void)fd;
-  va_start(ap, req);
-  arg = va_arg(ap, void *);
-  va_end(ap);
-
-  switch ((int)req)
-    {
-      case AUDIOIOC_GETCAPS:
-        {
-          struct audio_caps_s *caps = arg;
-          caps->ac_type = AUDIO_TYPE_OUTPUT;
-          return caps->ac_len;
-        }
-
-      case AUDIOIOC_RESERVE:
-        g_header_seen = 0;
-        return 0;
-
-      case AUDIOIOC_RELEASE:
-      case AUDIOIOC_UNREGISTERMQ:
-      case AUDIOIOC_STOP:
-        return 0;
-
-      case AUDIOIOC_CONFIGURE:
-        {
-          struct audio_caps_desc_s *d = arg;
-          g_configure_count++;
-          g_last_caps = d->caps;
-          return 0;
-        }
-
-      case AUDIOIOC_START:
-        g_start_count++;
-        return 0;
-
-      case AUDIOIOC_REGISTERMQ:
-        g_drv_mq = (mqd_t)(intptr_t)arg;
-        return 0;
-
-      case AUDIOIOC_GETBUFFERINFO:
-        {
-          struct ap_buffer_info_s *info = arg;
-          info->nbuffers = 4;
-          info->buffer_size = 8192;
-          return 0;
-        }
-
-      case AUDIOIOC_ALLOCBUFFER:
-        {
-          struct audio_buf_desc_s *d = arg;
-          struct ap_buffer_s *apb = calloc(1, sizeof(*apb));
-
-          CHECK(apb != NULL);
-          if (apb == NULL)
-            {
-              return -1;
-            }
-
-          apb->nmaxbytes = d->numbytes;
-          apb->samp = calloc(1, d->numbytes);
-          CHECK(apb->samp != NULL);
-          *d->u.pbuffer = apb;
-          g_apbs[g_napb++] = apb;
-          return sizeof(*d);
-        }
-
-      case AUDIOIOC_FREEBUFFER:
-        {
-          struct audio_buf_desc_s *d = arg;
-          struct ap_buffer_s *apb = d->u.buffer;
-          int i;
-
-          g_free_calls++;
-
-          for (i = 0; i < g_napb; i++)
-            {
-              if (g_apbs[i] == apb)
-                {
-                  g_apbs[i] = g_apbs[g_napb - 1];
-                  g_napb--;
-                  break;
-                }
-            }
-
-          free(apb->samp);
-          free(apb);
-          return 0;
-        }
-
-      case AUDIOIOC_ENQUEUEBUFFER:
-        {
-          struct audio_buf_desc_s *d = arg;
-          struct ap_buffer_s *apb = d->u.buffer;
-          size_t off = 0;
-          const uint8_t *h = apb->samp;
-          const int16_t *s;
-          size_t samples;
-          size_t i;
-
-          g_enqueued++;
-
-          if (!g_header_seen)
-            {
-              /* /dev/audio/pcm0p is the pcm_decode wrapper: the first
-               * buffer of a session must carry a WAV header, which it
-               * parses and skips before playing what follows. */
-
-              CHECK(apb->nbytes >= 44);
-              CHECK(memcmp(h, "RIFF", 4) == 0);
-              CHECK(memcmp(h + 8, "WAVE", 4) == 0);
-              CHECK(memcmp(h + 36, "data", 4) == 0);
-              CHECK(h[20] == 1 && h[21] == 0);        /* PCM */
-              CHECK(h[22] == 2 && h[23] == 0);        /* stereo */
-              CHECK(h[24] == 0x80 && h[25] == 0x3e);  /* 16000 Hz LE */
-              CHECK(h[34] == 16 && h[35] == 0);       /* 16-bit */
-              off = 44;
-              g_header_seen = 1;
-            }
-
-          s = (const int16_t *)(const void *)(apb->samp + off);
-          samples = (apb->nbytes - off) / 4u;
-
-          for (i = 0; i < samples; i++)
-            {
-              /* the expansion duplicates every mono sample */
-
-              CHECK(s[2 * i] == s[2 * i + 1]);
-              CHECK(g_played_n < sizeof(g_played) / sizeof(g_played[0]));
-              if (g_played_n < sizeof(g_played) / sizeof(g_played[0]))
-                {
-                  g_played[g_played_n++] = s[2 * i];
-                }
-            }
-
-          if ((apb->flags & AUDIO_APB_FINAL) != 0)
-            {
-              g_final_flags++;
-            }
-
-          if (g_hold)
-            {
-              g_held[g_nheld++] = apb;
-            }
-          else
-            {
-              post_msg(AUDIO_MSG_DEQUEUE, apb);
-              if ((apb->flags & AUDIO_APB_FINAL) != 0)
-                {
-                  post_msg(AUDIO_MSG_COMPLETE, NULL);
-                }
-            }
-
-          return 0;
-        }
-
-      case AUDIOIOC_RESETSTATUS:
-        CHECK(!"RESETSTATUS must never be used (internal-ring only)");
-        return -1;
-
-      default:
-        printf("FAIL unexpected ioctl %lu\n", req);
-        g_fail++;
-        return -1;
-    }
-}
-
-/* ── helpers ─────────────────────────────────────────────────────── */
-
-static uint8_t g_pattern[300000];
-
-static void pattern_fill(void)
-{
-  size_t i;
-
-  for (i = 0; i < sizeof(g_pattern); i++)
-    {
-      g_pattern[i] = (uint8_t)(i * 7u + 3u);
-    }
-}
-
-static void reset_capture(void)
-{
-  g_played_n = 0;
-  g_final_flags = 0;
-  g_start_count = 0;
-  g_started_flag = 0;
-  g_enqueued = 0;
-  g_nheld = 0;
-  g_napb = 0;
-  g_hold = 0;
-}
-
-/* Bounded polls.  Wall clock, not clock(): a mostly-sleeping process
- * accumulates almost no CPU time, so clock()-based timeouts never fire. */
-
-static uint32_t wall_ms(void)
-{
-  struct timespec t;
-
-  clock_gettime(CLOCK_MONOTONIC, &t);
-  return (uint32_t)((uint64_t)t.tv_sec * 1000u + (uint64_t)t.tv_nsec / 1000000u);
-}
-
-static void wait_flag(volatile int *flag, int timeout_ms)
-{
-  uint32_t t0 = wall_ms();
-
-  while (!*flag)
-    {
-      usleep(10000);
-      if (wall_ms() - t0 > (uint32_t)timeout_ms)
-        {
-          break;
-        }
-    }
-}
-
-/* Bounded poll until *flag >= value. */
-
-static void wait_flag_value(volatile int *flag, int value, int timeout_ms)
-{
-  uint32_t t0 = wall_ms();
-
-  while (*flag < value)
-    {
-      usleep(10000);
-      if (wall_ms() - t0 > (uint32_t)timeout_ms)
-        {
-          break;
-        }
-    }
-}
-
-static void on_started_cb(void *arg)
-{
-  (void)arg;
-  g_started_flag = 1;
-}
-
-static volatile int g_helper_done;
-
-static void *push_helper(void *arg)
-{
-  size_t bytes = (size_t)(intptr_t)arg;
-
-  CHECK(vg_tts_player_push(g_pattern, bytes) == 0);
-  g_helper_done = 1;
+  pthread_mutex_unlock(&d_lock);
   return NULL;
 }
 
-/* ── tests ───────────────────────────────────────────────────────── */
-
-static void test_device_failure(void)
+int __wrap_open(const char *path,int flags,...)
 {
-  struct vg_tts_player_stats st;
-  uint8_t two[2] = { 0, 0 };
-
-  g_open_fail = 1;
-  memset(&st, 0, sizeof(st));
-  CHECK(vg_tts_player_start(200, NULL, NULL, NULL) < 0);
-  CHECK(vg_tts_player_push(two, sizeof(two)) == -EPIPE);
-  CHECK(vg_tts_player_wait(100, &st) == -EPIPE);
-  g_open_fail = 0;
+  (void)flags;
+  if(d_open_fail || strcmp(path,"/dev/audio/pcm0p")){errno=ENOENT;return -1;}
+  return 42;
 }
-
-static void test_prebuf_clamp(void)
+int __wrap_close(int fd) { CHECK(fd==42);return 0; }
+int __wrap_ioctl(int fd,unsigned long req,...)
 {
-  CHECK(vg_tts_player_set_prebuf_ms(10) == 50);
-  CHECK(vg_tts_player_set_prebuf_ms(5000) == 1000);
-  CHECK(vg_tts_player_prebuf_ms() == 1000);
-  CHECK(vg_tts_player_set_prebuf_ms(200) == 200);
-}
-
-static void test_basic_play(void)
-{
-  struct vg_tts_player_stats st;
-  int cancel = 0;
-
-  reset_capture();
-  CHECK(vg_tts_player_set_prebuf_ms(50) == 50);  /* 1600 mono bytes */
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-
-  /* configure shape: 16 kHz stereo 16-bit PCM */
-
-  CHECK(g_configure_count == 1);
-  CHECK(g_last_caps.ac_channels == 2);
-  CHECK(g_last_caps.ac_subtype == AUDIO_FMT_PCM);
-  CHECK(g_last_caps.ac_controls.hw[0] == 16000);
-  CHECK(g_last_caps.ac_controls.b[2] == 16);
-
-  /* below the threshold nothing starts */
-
-  CHECK(vg_tts_player_push(g_pattern, 800) == 0);
-  usleep(150000);
-  CHECK(g_started_flag == 0);
-  CHECK(g_start_count == 0);
-
-  /* crossing it starts the stream */
-
-  CHECK(vg_tts_player_push(g_pattern + 800, 800) == 0);
-  wait_flag(&g_started_flag, 2000);
-  CHECK(g_started_flag == 1);
-  CHECK(g_start_count >= 1);
-
-  CHECK(vg_tts_player_push(g_pattern + 1600, 3200) == 0);
-  CHECK(vg_tts_player_eof() == 0);
-  CHECK(vg_tts_player_wait(3000, &st) == 0);
-
-  CHECK(st.complete);
-  CHECK(!st.failed);
-  CHECK(st.pushed_bytes == 4800);
-  CHECK(st.played_bytes == 9600);
-  CHECK(st.played_ms == 150);
-  CHECK(g_played_n == 2400);
-  CHECK(g_final_flags >= 1);
-  CHECK(memcmp(g_played, g_pattern, 4800) == 0);
-
-  /* the player is free for the next round */
-
-  CHECK(vg_tts_player_push(g_pattern, 2) == -EPIPE);
-}
-
-static void test_abort_and_cancel(void)
-{
-  struct vg_tts_player_stats st;
-  int cancel = 0;
-
-  /* abort mid-stream: buffered audio is discarded, no completion */
-
-  reset_capture();
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-  CHECK(vg_tts_player_push(g_pattern, 1600) == 0);
-  wait_flag(&g_started_flag, 2000);
-  CHECK(g_started_flag == 1);
-  usleep(100000);                     /* parked in the underrun wait */
-  vg_tts_player_abort();
-  CHECK(vg_tts_player_wait(2000, &st) == 0);
-  CHECK(!st.complete);
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-  vg_tts_player_abort();
-  CHECK(vg_tts_player_wait(2000, &st) == 0);
-
-  /* cancellation from the round: the transport's ctl.cancel flag */
-
-  reset_capture();
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-  CHECK(vg_tts_player_push(g_pattern, 1600) == 0);
-  wait_flag(&g_started_flag, 2000);
-  usleep(100000);
-  cancel = 1;
-  CHECK(vg_tts_player_wait(2000, &st) == 0);
-  CHECK(!st.complete);
-  cancel = 0;
-}
-
-static void test_backpressure_and_starvation(void)
-{
-  struct vg_tts_player_stats st;
-  pthread_t helper;
-  int cancel = 0;
-  int i;
-
-  reset_capture();
-  g_hold = 1;
-  g_helper_done = 0;
-  CHECK(vg_tts_player_set_prebuf_ms(50) == 50);
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-
-  /* 140000 bytes into a 131072-byte ring: the producer must block on
-   * the full ring while the driver holds every buffer. */
-
-  CHECK(pthread_create(&helper, NULL, push_helper,
-                       (void *)(intptr_t)140000) == 0);
-  wait_flag_value(&g_enqueued, 4, 4000);
-  CHECK(g_enqueued >= 4);
-
-  usleep(200000);
-  CHECK(g_helper_done == 0);
-  CHECK(g_nheld == 4);
-
-  /* release the held buffers: the drain resumes, the producer unblocks
-   * and finishes once the ring empties into the driver. */
-
-  g_hold = 0;
-  for (i = 0; i < g_nheld; i++)
+  va_list ap; void *arg; (void)fd;
+  va_start(ap,req);arg=va_arg(ap,void *);va_end(ap);
+  switch(req)
     {
-      post_msg(AUDIO_MSG_DEQUEUE, g_held[i]);
+      case AUDIOIOC_GETCAPS: {struct audio_caps_s *c=arg;c->ac_type=AUDIO_TYPE_OUTPUT;return c->ac_len;}
+      case AUDIOIOC_RESERVE: d_header=0;return 0;
+      case AUDIOIOC_CONFIGURE: d_caps=((struct audio_caps_desc_s *)arg)->caps;return 0;
+      case AUDIOIOC_GETBUFFERINFO: {struct ap_buffer_info_s *i=arg;i->nbuffers=4;i->buffer_size=8192;return 0;}
+      case AUDIOIOC_ALLOCBUFFER:
+        {
+          struct audio_buf_desc_s *d=arg;
+          struct ap_buffer_s *p=calloc(1,sizeof(*p)); CHECK(p!=NULL);
+          p->samp=calloc(1,d->numbytes);p->nmaxbytes=d->numbytes;CHECK(p->samp!=NULL);
+          d_alloc[d_alloc_count++]=p;*d->u.pbuffer=p;return sizeof(*d);
+        }
+      case AUDIOIOC_FREEBUFFER:
+        {
+          struct ap_buffer_s *p=((struct audio_buf_desc_s *)arg)->u.buffer;
+          int slot=alloc_index(p);d_alloc[slot]=NULL;
+          free(p->samp);free(p);d_frees++;return 0;
+        }
+      case AUDIOIOC_REGISTERMQ:
+        d_mq=(mqd_t)(intptr_t)arg;d_quit=false;d_stop=false;d_running=false;
+        CHECK(pthread_create(&d_thread,NULL,driver_worker,NULL)==0);d_thread_valid=true;return 0;
+      case AUDIOIOC_START:
+        pthread_mutex_lock(&d_lock);d_running=true;__atomic_add_fetch(&d_starts,1,__ATOMIC_RELAXED);
+        pthread_cond_signal(&d_wake);pthread_mutex_unlock(&d_lock);return 0;
+      case AUDIOIOC_ENQUEUEBUFFER:
+        {
+          struct ap_buffer_s *p=((struct audio_buf_desc_s *)arg)->u.buffer;
+          pthread_mutex_lock(&d_lock);
+          size_t skip=0;
+          if(!d_header)
+            {
+              CHECK(p->nbytes>=44 && !memcmp(p->samp,"RIFF",4));
+              CHECK(!memcmp(p->samp+8,"WAVE",4));
+              CHECK(p->samp[22]==2 && p->samp[24]==0x80 && p->samp[25]==0x3e && p->samp[34]==16);
+              skip=44;d_header=1;
+            }
+          CHECK(d_qcount<8);for(unsigned i=0;i<d_qcount;i++)CHECK(d_queue[i]!=p);
+          d_skip[alloc_index(p)]=skip;d_queue[d_qcount++]=p;
+          __atomic_add_fetch(&d_enqueues,1,__ATOMIC_RELAXED);
+          pthread_cond_signal(&d_wake);pthread_mutex_unlock(&d_lock);return 0;
+        }
+      case AUDIOIOC_STOP:
+        pthread_mutex_lock(&d_lock);d_stop=true;pthread_cond_signal(&d_wake);pthread_mutex_unlock(&d_lock);return 0;
+      case AUDIOIOC_UNREGISTERMQ:
+        pthread_mutex_lock(&d_lock);d_quit=true;pthread_cond_signal(&d_wake);pthread_mutex_unlock(&d_lock);
+        if(d_thread_valid){pthread_join(d_thread,NULL);d_thread_valid=false;}return 0;
+      case AUDIOIOC_RELEASE: return 0;
+      default: CHECK(false);return -1;
     }
-
-  wait_flag(&g_helper_done, 4000);
-  CHECK(g_helper_done == 1);
-  CHECK(pthread_join(helper, NULL) == 0);
-
-  /* every buffer has come home and the ring is empty: a deterministic
-   * starvation window while the producer has nothing more. */
-
-  usleep(300000);
-  CHECK(vg_tts_player_push(g_pattern + 140000, 2048) == 0);
-  usleep(100000);
-  CHECK(vg_tts_player_eof() == 0);
-  CHECK(vg_tts_player_wait(4000, &st) == 0);
-
-  CHECK(st.complete);
-  CHECK(st.pushed_bytes == 140000 + 2048);
-  CHECK(st.played_bytes == 2u * (140000 + 2048));
-  CHECK(st.underruns >= 1);
-  CHECK(st.stall_ms >= 250);
-  CHECK(st.restarts >= 1);
-  CHECK(g_played_n == (140000 + 2048) / 2);
-  CHECK(memcmp(g_played, g_pattern, 140000 + 2048) == 0);
 }
 
-/* Bisection levels: 1 = ring + thread only (no audio ioctl at all),
- * 2 = device session but no buffer ever enqueued (no DMA).  The leak
- * rule: a buffer still owned by the driver at teardown is abandoned,
- * never FREEBUFFERed. */
-static void test_bisect_and_leak(void)
+static void reset_driver(void)
 {
-  struct vg_tts_player_stats st;
-  int cancel = 0;
-
-  /* level 1: no device session whatsoever */
-
-  CHECK(vg_tts_player_set_bisect_level(1) == 1);
-  reset_capture();
-  g_start_count = 0;
-  g_enqueued = 0;
-  CHECK(vg_tts_player_start(50, &cancel, NULL, NULL) == 0);
-  CHECK(vg_tts_player_push(g_pattern, 8192) == 0);
-  CHECK(vg_tts_player_eof() == 0);
-  CHECK(vg_tts_player_wait(3000, &st) == 0);
-  CHECK(st.complete);
-  CHECK(st.played_bytes == 0);
-  CHECK(g_enqueued == 0);          /* nothing ever reached the driver */
-  CHECK(g_start_count == 0);
-
-  /* level 2: allocations happened (checked while the session lives,
-   * before teardown frees them), still no enqueue */
-
-  CHECK(vg_tts_player_set_bisect_level(2) == 2);
-  reset_capture();
-  g_start_count = 0;
-  g_enqueued = 0;
-  CHECK(vg_tts_player_start(50, &cancel, NULL, NULL) == 0);
-  CHECK(g_napb == 4);              /* ALLOCBUFFER ran, session alive */
-  CHECK(vg_tts_player_push(g_pattern, 8192) == 0);
-  CHECK(vg_tts_player_eof() == 0);
-  CHECK(vg_tts_player_wait(3000, &st) == 0);
-  CHECK(st.complete && st.played_bytes == 0);
-  CHECK(g_enqueued == 0 && g_start_count == 0);
-  CHECK(st.leaked_buffers == 0);   /* clean teardown frees everything */
-
-  /* level 0 with every buffer held by the driver at abort time: the
-   * drain window closes without a single DEQUEUE, so teardown must
-   * abandon all four — a FREEBUFFER on a driver-held buffer would be
-   * the write-after-free this rule exists to prevent. */
-
-  CHECK(vg_tts_player_set_bisect_level(0) == 0);
-  reset_capture();
-  g_hold = 1;
-  g_start_count = 0;
-  g_enqueued = 0;
-  g_free_calls = 0;
-  CHECK(vg_tts_player_start(50, &cancel, on_started_cb, NULL) == 0);
-  CHECK(vg_tts_player_push(g_pattern, 16384) == 0);
-  wait_flag_value(&g_enqueued, 4, 4000);
-  CHECK(g_enqueued == 4);          /* all four with the driver now */
-
-  vg_tts_player_abort();
-  CHECK(vg_tts_player_wait(10000, &st) == 0);
-  CHECK(!st.complete);
-
-  CHECK(g_free_calls == 0);        /* nothing was freed out from
-                                      under the driver */
-  CHECK(st.leaked_buffers == 4);
-  CHECK(g_nheld == 4);             /* the stub still holds all of them */
-
-  g_hold = 0;
-  CHECK(vg_tts_player_set_bisect_level(0) == 0);
+  CHECK(!d_thread_valid);
+  for(unsigned i=0;i<d_alloc_count;i++) CHECK(d_alloc[i]==NULL);
+  d_alloc_count=d_qcount=0;d_starts=d_enqueues=d_frees=0;
+  d_played_n=0;d_hold=d_lose=false;started_flag=0;
 }
-
+static uint32_t underruns(void)
+{
+  pthread_mutex_lock(&g_pl.lock);uint32_t n=g_pl.stats.underruns;pthread_mutex_unlock(&g_pl.lock);return n;
+}
+static void wait_counter(uint32_t *value,unsigned target,unsigned timeout)
+{
+  uint32_t t=wall_ms();while(__atomic_load_n(value,__ATOMIC_RELAXED)<target && wall_ms()-t<timeout)usleep(1000);
+  CHECK(__atomic_load_n(value,__ATOMIC_RELAXED)>=target);
+}
+static void wait_underruns(unsigned target,unsigned timeout)
+{
+  uint32_t t=wall_ms();while(underruns()<target && wall_ms()-t<timeout)usleep(1000);
+  CHECK(underruns()==target);
+}
+static void started(void *unused) {(void)unused;__atomic_store_n(&started_flag,1,__ATOMIC_RELEASE);}
+static int start_player(unsigned ms,unsigned budget,volatile int *cancel)
+{
+  return vg_tts_player_start(ms,wall_ms()+budget,cancel,started,NULL);
+}
+static void finish_and_check(size_t bytes,unsigned limit)
+{
+  struct vg_tts_player_stats s;
+  CHECK(vg_tts_player_eof()==0);CHECK(vg_tts_player_wait(limit,&s)==0);
+  CHECK(s.complete && !s.failed && s.leaked_buffers==0);
+  CHECK(s.pushed_bytes==bytes && s.played_bytes==bytes*2 && s.returned_bytes==s.played_bytes);
+  CHECK(d_played_n==bytes/2 && !memcmp(d_played,pattern,bytes));
+}
+static void test_threshold_and_short(void)
+{
+  reset_driver();CHECK(vg_tts_player_prebuf_ms()==2500);
+  CHECK(start_player(2500,10000,NULL)==0);
+  CHECK(start_player(50,1000,NULL)==-EBUSY);
+  CHECK(d_caps.ac_channels==2 && d_caps.ac_controls.hw[0]==16000 && d_caps.ac_controls.b[2]==16);
+  CHECK(vg_tts_player_push(pattern,79998)==0);usleep(100000);CHECK(d_starts==0);
+  uint32_t t=wall_ms();CHECK(vg_tts_player_push(pattern+79998,2)==0);wait_counter(&d_starts,1,200);
+  CHECK(wall_ms()-t<=200);CHECK(vg_tts_player_push(pattern+80000,16000)==0);
+  finish_and_check(96000,5000);CHECK(underruns()==0);
+  reset_driver();CHECK(start_player(2500,5000,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,16000)==0);usleep(100000);CHECK(d_starts==0);
+  finish_and_check(16000,2000);CHECK(d_starts==1);
+  CHECK(vg_tts_player_set_prebuf_ms(1)==50);
+  CHECK(vg_tts_player_set_prebuf_ms(5000)==4000);
+  CHECK(vg_tts_player_set_prebuf_ms(2500)==2500);
+}
+static void test_inflight_and_jitter(void)
+{
+  reset_driver();CHECK(start_player(50,5000,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,8000)==0);wait_counter(&d_starts,1,500);
+  usleep(100000);CHECK(underruns()==0);
+  CHECK(vg_tts_player_push(pattern+8000,8000)==0);
+  finish_and_check(16000,2000);CHECK(underruns()==0);
+}
+static void test_rebuffer_steps(void)
+{
+  reset_driver();CHECK(start_player(50,20000,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,1600)==0);wait_counter(&d_starts,1,500);
+  size_t off=1600;
+  for(unsigned n=1;n<=3;n++)
+    {
+      wait_underruns(n,5000);
+      size_t bytes=(2500+n*500)*32;
+      CHECK(vg_tts_player_push(pattern+off,bytes-2)==0);usleep(100000);
+      CHECK(d_starts==n);
+      CHECK(vg_tts_player_push(pattern+off+bytes-2,2)==0);
+      wait_counter(&d_starts,n+1,200);off+=bytes;
+    }
+  finish_and_check(off,6000);CHECK(underruns()==3);
+  CHECK(g_pl.stats.rebuffer_ms==4000 && g_pl.stats.restarts==3);
+}
+static volatile int helper_result,helper_done;
+static void *push_big(void *unused)
+{
+  (void)unused;helper_result=vg_tts_player_push(pattern,160000);
+  __atomic_store_n(&helper_done,1,__ATOMIC_RELEASE);return NULL;
+}
+static void test_full_queue_stop(bool cancel_it)
+{
+  struct vg_tts_player_stats s;pthread_t t;volatile int cancel=0;
+  reset_driver();d_hold=true;helper_done=0;
+  CHECK(start_player(50,cancel_it?5000:250,&cancel)==0);
+  CHECK(pthread_create(&t,NULL,push_big,NULL)==0);wait_counter(&d_enqueues,4,200);
+  usleep(50000);CHECK(!helper_done);
+  if(cancel_it) cancel=1;
+  struct timespec join_until;
+  clock_gettime(CLOCK_REALTIME,&join_until);join_until.tv_sec+=2;
+  uint32_t begin=wall_ms();
+  int joined=pthread_timedjoin_np(t,NULL,&join_until);
+  CHECK(joined==0);
+  if(joined!=0)exit(EXIT_FAILURE);
+  CHECK(wall_ms()-begin<1000);
+  CHECK(helper_result==(cancel_it?-ECANCELED:-ETIMEDOUT));
+  CHECK(vg_tts_player_wait(2000,&s)==0 && !s.complete && s.leaked_buffers==0);
+}
+static void test_stalled_driver(void)
+{
+  struct vg_tts_player_stats s;
+  reset_driver();d_hold=true;CHECK(start_player(50,5000,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,20000)==0);wait_counter(&d_starts,1,500);
+  usleep(1500000);
+  CHECK(vg_tts_player_push(pattern,2)==-ETIMEDOUT);
+  CHECK(vg_tts_player_wait(2000,&s)==0 && s.failed && !s.complete);
+  CHECK(s.err==-ETIMEDOUT && s.leaked_buffers==0 && s.restarts==0);
+}
+static void test_abort_phases(void)
+{
+  struct vg_tts_player_stats s;volatile int cancel=0;
+  for(unsigned phase=0;phase<3;phase++)
+    {
+      reset_driver();cancel=0;CHECK(start_player(phase?50:2500,5000,&cancel)==0);
+      CHECK(vg_tts_player_push(pattern,phase==1?32000:1600)==0);
+      if(phase==1)wait_counter(&d_starts,1,500);
+      if(phase==2)wait_underruns(1,1000);
+      cancel=1;CHECK(vg_tts_player_wait(2000,&s)==0);
+      CHECK(!s.complete && !s.failed && s.leaked_buffers==0);
+    }
+  reset_driver();CHECK(start_player(2500,5000,NULL)==0);vg_tts_player_abort();
+  CHECK(vg_tts_player_wait(2000,&s)==0 && !s.complete);
+}
+static void test_eof_past_deadline(void)
+{
+  struct vg_tts_player_stats s;
+  reset_driver();CHECK(start_player(2500,150,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,16000)==0);
+  finish_and_check(16000,2000);CHECK(d_played_n==8000);
+  reset_driver();CHECK(start_player(2500,80,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,16000)==0);usleep(120000);
+  CHECK(vg_tts_player_wait(2000,&s)==0 && s.failed && !s.started && !s.complete);
+}
+static void test_setup_bisect_and_ownership(void)
+{
+  struct vg_tts_player_stats s;
+  reset_driver();d_open_fail=true;CHECK(start_player(50,5000,NULL)<0);d_open_fail=false;
+  CHECK(vg_tts_player_push(pattern,2)==-EPIPE);
+  for(int level=1;level<=2;level++)
+    {
+      reset_driver();CHECK(vg_tts_player_set_bisect_level(level)==level);
+      CHECK(start_player(2500,5000,NULL)==0);CHECK(vg_tts_player_push(pattern,1600)==0);
+      CHECK(vg_tts_player_eof()==0);CHECK(vg_tts_player_wait(2000,&s)==0);
+      CHECK(s.complete && s.played_bytes==0 && s.leaked_buffers==0);
+    }
+  CHECK(vg_tts_player_set_bisect_level(0)==0);
+  reset_driver();d_hold=d_lose=true;CHECK(start_player(50,5000,NULL)==0);
+  CHECK(vg_tts_player_push(pattern,16000)==0);wait_counter(&d_starts,1,500);
+  vg_tts_player_abort();CHECK(vg_tts_player_wait(2000,&s)==0);
+  CHECK(s.leaked_buffers==4 && d_frees==0 && !s.complete);
+  /* 模拟设备已关闭，测试释放其遗留内存；产品不能推断此条件。 */
+  for(unsigned i=0;i<d_alloc_count;i++)if(d_alloc[i]){free(d_alloc[i]->samp);free(d_alloc[i]);d_alloc[i]=NULL;}
+}
 int main(void)
 {
-  setvbuf(stdout, NULL, _IONBF, 0);
-  pattern_fill();
-
-  test_device_failure();
-  printf("test_tts_player: device failure OK\n");
-  test_prebuf_clamp();
-  printf("test_tts_player: prebuf clamp OK\n");
-  test_basic_play();
-  printf("test_tts_player: basic play OK\n");
-  test_abort_and_cancel();
-  printf("test_tts_player: abort/cancel OK\n");
-  test_backpressure_and_starvation();
-  printf("test_tts_player: backpressure OK\n");
-  test_bisect_and_leak();
-  printf("test_tts_player: bisect/leak OK\n");
-
-  if (g_fail == 0)
+  setvbuf(stdout,NULL,_IONBF,0);
+  /* 避免短周期图案使整块重复或交换也通过逐采样比较。 */
+  uint32_t seed=0x12345678u;
+  for(size_t i=0;i<sizeof(pattern);i+=2)
     {
-      printf("test_tts_player: OK (prebuffer gating, expansion, "
-             "backpressure, starvation/underrun, abort, cancel, "
-             "device failure)\n");
-      return 0;
+      seed^=seed<<13;seed^=seed>>17;seed^=seed<<5;
+      pattern[i]=(uint8_t)seed;pattern[i+1]=(uint8_t)(seed>>8);
     }
-
-  printf("test_tts_player: %d failure(s)\n", g_fail);
-  return 1;
+  test_threshold_and_short();puts("threshold/short OK");
+  test_inflight_and_jitter();puts("inflight/jitter OK");
+  test_rebuffer_steps();puts("rebuffer 3000/3500/4000 and sample order OK");
+  test_full_queue_stop(false);test_full_queue_stop(true);puts("full queue timeout/cancel OK");
+  test_stalled_driver();puts("driver liveness failure OK");
+  test_abort_phases();test_eof_past_deadline();puts("cancel phases and EOF deadline OK");
+  test_setup_bisect_and_ownership();puts("setup/bisect/ownership OK");
+  printf("test_tts_player: %s (%d failures)\n",g_fail?"FAIL":"OK",g_fail);
+  return g_fail?1:0;
 }

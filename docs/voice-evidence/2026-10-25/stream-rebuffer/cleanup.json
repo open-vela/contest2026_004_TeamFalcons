@@ -1,0 +1,17 @@
+[
+  {
+    "timeout_ms": 5000,
+    "wait_ms": 100,
+    "command": "rm /data/velaguard/voice/slow01.wav"
+  },
+  {
+    "timeout_ms": 5000,
+    "wait_ms": 100,
+    "command": "vgvoice prebuf"
+  },
+  {
+    "timeout_ms": 5000,
+    "wait_ms": 100,
+    "command": "vgvoice status"
+  }
+]

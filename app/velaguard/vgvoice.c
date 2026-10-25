@@ -51,6 +51,7 @@ static struct
 {
   struct vg_pcm_rs24_16 rs;
   int16_t out[VG_VC_RS_CHUNK_SAMPLES];
+  uint32_t mono_bytes;
 } g_ttss_feed;
 
 static int vgvoice_ttss_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
@@ -69,6 +70,8 @@ static int vgvoice_ttss_push(void *ctx, const uint8_t *pcm24k, size_t bytes)
     {
       return -1;
     }
+
+  if (n > 0) g_ttss_feed.mono_bytes += (uint32_t)n * 2u;
 
   return 0;
 }
@@ -229,6 +232,10 @@ int main(int argc, FAR char *argv[])
 
   if (strcmp(cmd, "cancel") == 0)
     {
+#ifdef CONFIG_VG_VOICE_TTS_STREAM
+      /* 也结束后台运行的本地流式诊断，统一清理音频播放。 */
+      vg_tts_player_abort();
+#endif
       (void)vg_voice_cancel();
       printf("vgvoice: cancel requested\n");
       return EXIT_SUCCESS;
@@ -434,8 +441,7 @@ int main(int argc, FAR char *argv[])
   if (strcmp(cmd, "ttss") == 0 && argc >= 3)
     {
       /* 诊断命令：不经轮次的流式合成+播放，用于预缓冲档位实验。
-       * 不持有语音前台保留，可能与后台轮竞争网络——实验请在空闲
-       * 时执行。 */
+       * 不持有产品轮次的前台保留；实验需在空闲时单独执行。 */
 
       struct vg_vc_info info;
       vela_req_ctl_t ctl;
@@ -463,7 +469,8 @@ int main(int argc, FAR char *argv[])
       ctl.deadline_ms = vgvoice_now_ms() + 30000u;
       ctl.cancel = NULL;
 
-      if (vg_tts_player_start(vg_tts_player_prebuf_ms(), NULL, NULL,
+      if (vg_tts_player_start(vg_tts_player_prebuf_ms(), ctl.deadline_ms,
+                              NULL, NULL,
                               NULL) != 0)
         {
           printf("vgvoice: player start failed\n");
@@ -471,12 +478,13 @@ int main(int argc, FAR char *argv[])
         }
 
       vg_pcm_rs24_16_init(&g_ttss_feed.rs);
+      g_ttss_feed.mono_bytes = 0;
       rc = vg_voice_cloud_tts_stream(text, vgvoice_ttss_push, &g_ttss_feed,
                                      &ctl, &info);
-      printf("vgvoice: ttss rc=%s status=%d pcm=%u ms=%u partial=%u\n",
+      printf("vgvoice: ttss rc=%s status=%d pcm=%u ms=%u partial=%u mono_ms=%u\n",
              vg_vc_result_name(rc), info.status,
              (unsigned)info.audio_bytes, (unsigned)info.elapsed_ms,
-             (unsigned)info.partial);
+             (unsigned)info.partial, (unsigned)vgvoice_now_ms());
 
       if (rc == VG_VC_OK)
         {
@@ -487,12 +495,15 @@ int main(int argc, FAR char *argv[])
           vg_tts_player_abort();
         }
 
-      (void)vg_tts_player_wait(info.audio_bytes / 32u + 10000u, &st);
+      (void)vg_tts_player_wait(g_ttss_feed.mono_bytes / 32u + 5000u, &st);
       printf("vgvoice: ttss played=%u underruns=%u stall_ms=%u "
-             "restarts=%u complete=%u failed=%u err=%d\n",
+             "restarts=%u complete=%u failed=%u err=%d returned=%u "
+             "leaked=%u ready_delay_ms=%u\n",
              (unsigned)st.played_bytes, (unsigned)st.underruns,
              (unsigned)st.stall_ms, (unsigned)st.restarts,
-             st.complete ? 1u : 0u, st.failed ? 1u : 0u, st.err);
+             st.complete ? 1u : 0u, st.failed ? 1u : 0u, st.err,
+             (unsigned)st.returned_bytes, st.leaked_buffers,
+             (unsigned)st.start_delay_ms);
 
 #ifdef CONFIG_STACK_COLORATION
       struct tcb_s *tcb = nxsched_get_tcb(gettid());
@@ -507,14 +518,15 @@ int main(int argc, FAR char *argv[])
         }
 #endif
 
-      return (rc == VG_VC_OK && st.complete) ? EXIT_SUCCESS : EXIT_FAILURE;
+      return (rc == VG_VC_OK && st.complete && !st.failed &&
+              st.leaked_buffers == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
     }
 
   if (strcmp(cmd, "streamtest") == 0 && argc >= 3)
     {
       /* 确定性欠载发生器：把 16 kHz 单声道 WAV 按 1/4 实时速率喂给
-       * 播放器，不依赖网络。播放器应在每个块间进入欠载等待并自
-       * 行恢复；underruns/restarts 计数即恢复机制的板端证据。 */
+       * 播放器，不依赖网络。音频全部耗尽后重新缓冲并恢复。
+       * underruns/restarts 记录真实的欠载与恢复次数。 */
 
       struct vg_pcm_wav w;
       struct vg_tts_player_stats st;
@@ -530,7 +542,8 @@ int main(int argc, FAR char *argv[])
           return EXIT_FAILURE;
         }
 
-      if (vg_tts_player_start(vg_tts_player_prebuf_ms(), NULL, NULL,
+      if (vg_tts_player_start(vg_tts_player_prebuf_ms(),
+                              vgvoice_now_ms() + 30000u, NULL, NULL,
                               NULL) != 0)
         {
           printf("vgvoice: player start failed\n");
@@ -551,9 +564,12 @@ int main(int argc, FAR char *argv[])
       /* 2048 bytes 是 64 ms 音频；每块间隔 256 ms，即 1/4 实时。
        * 上限 4 秒音频，保证命令有界。 */
 
-      while (pushed < 128000u &&
-             (n = fread(buf, 1, sizeof(buf), f)) > 0)
+      while (pushed < 128000u)
         {
+          size_t request = 128000u - pushed;
+          if (request > sizeof(buf)) request = sizeof(buf);
+          n = fread(buf, 1, request, f);
+          if (n <= 0) break;
           if (vg_tts_player_push(buf, (size_t)n) != 0)
             {
               printf("vgvoice: streamtest push failed\n");
@@ -561,19 +577,21 @@ int main(int argc, FAR char *argv[])
             }
 
           pushed += (uint32_t)n;
-          usleep(192000);
+          usleep(256000);
         }
 
       fclose(f);
       vg_tts_player_eof();
-      (void)vg_tts_player_wait(pushed / 32u + 10000u, &st);
+      (void)vg_tts_player_wait(pushed / 32u + 5000u, &st);
 
       printf("vgvoice: streamtest pushed=%u played=%u underruns=%u "
-             "stall_ms=%u restarts=%u complete=%u failed=%u err=%d\n",
+             "stall_ms=%u restarts=%u complete=%u failed=%u err=%d "
+             "returned=%u leaked=%u\n",
              (unsigned)pushed, (unsigned)st.played_bytes,
              (unsigned)st.underruns, (unsigned)st.stall_ms,
              (unsigned)st.restarts, st.complete ? 1u : 0u,
-             st.failed ? 1u : 0u, st.err);
+             st.failed ? 1u : 0u, st.err, (unsigned)st.returned_bytes,
+             st.leaked_buffers);
 
       return st.complete ? EXIT_SUCCESS : EXIT_FAILURE;
     }

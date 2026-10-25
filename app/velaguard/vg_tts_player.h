@@ -23,9 +23,15 @@ struct vg_tts_player_stats
 {
   uint32_t pushed_bytes;  /* 16 kHz mono bytes accepted into the ring */
   uint32_t played_bytes;  /* stereo bytes handed to the driver */
-  uint32_t played_ms;     /* played_bytes at 64 stereo bytes per ms */
+  uint32_t returned_bytes; /* stereo bytes normally returned by the driver */
+  uint32_t played_ms;     /* queued duration; not a wall-clock measurement */
   uint32_t underruns;     /* driver starved while the stream was open */
   uint32_t stall_ms;      /* time spent waiting for data while starved */
+  uint32_t ready_ms;      /* monotonic instant the initial buffer was ready */
+  uint32_t started_ms;    /* monotonic instant AUDIOIOC_START succeeded */
+  uint32_t start_delay_ms;
+  uint32_t rebuffer_ms;   /* last recovery threshold */
+  bool     started;
   uint8_t  restarts;      /* resumes after starvation (re-START) */
   uint8_t  leaked_buffers; /* abandoned at teardown: driver never returned
                               them; freeing would risk a DMA write-after-
@@ -39,14 +45,17 @@ struct vg_tts_player_stats
  * start the consumer thread.  The thread waits for prebuf_ms of audio
  * before it starts the stream; on_started runs on the player thread
  * right after AUDIOIOC_START succeeds (the round logs its play markers
- * there).  Returns 0 or -errno; the caller falls back to the WAV path. */
-int vg_tts_player_start(uint32_t prebuf_ms, const volatile int *cancel,
+ * there). deadline_ms is an absolute monotonic synthesis deadline (0 disables
+ * it); EOF drain uses wait()'s separate bound. Returns 0 or -errno. */
+int vg_tts_player_start(uint32_t prebuf_ms, uint32_t deadline_ms,
+                        const volatile int *cancel,
                         void (*on_started)(void *arg), void *arg);
 
 /* Producer side.  Push 16 kHz mono PCM, whole samples only.  Blocks
  * while the ring is full, in slices that watch the cancel flag, so the
  * transport's TCP backpressure takes care of the rest.  -ECANCELED when
- * the round was cancelled, -EPIPE after abort or without a start. */
+ * the round was cancelled, -ETIMEDOUT on expiry, or the consumer error.
+ * -EPIPE after abort, EOF, completion or without a start. */
 int vg_tts_player_push(const uint8_t *mono16k, size_t bytes);
 
 /* The producer saw [DONE]: play what is buffered, then finish cleanly. */
@@ -62,7 +71,7 @@ int vg_tts_player_wait(uint32_t limit_ms, struct vg_tts_player_stats *out);
 
 uint32_t vg_tts_player_prebuf_ms(void);
 
-/* Clamp to 50..1000 ms; takes effect on the next start().  Returns the
+/* Clamp to 50..4000 ms and ring capacity; takes effect on the next start(). Returns the
  * value actually applied. */
 int vg_tts_player_set_prebuf_ms(uint32_t ms);
 

@@ -1,0 +1,46 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+ed atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addd2cd142c97da] BEGIN chat=velaguard:7 chan=local_client
+[trace:6addd2cd142c97da] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=10 backend=0
+[agent] Processing message from local_client:velaguard:voice:8
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addd2cd73b6c3ea] BEGIN chat=velaguard:voice:8 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=256
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 2020 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922318
+[agent] Dispatching response → local_client:velaguard:7
+[agent] Dispatching response → local_client:velaguard:voice:8
+2026-10-25T09:58:40.5919768+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgagent] resumed background owner=1
+nsh> [K[vgagent] round submitted: 1310 bytes
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[trace:6addd2cd73b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=90 tls=2190 send=0 ttfb=na body=na pool=na build=110 parse=na http=2400 backoff=0 total=2510 req=2020 resp=0 rc=-7 status=0 parse_ok=0 first_data=na stream=1
+[agent] controlled request stopped before tools
+[trace:6addd2cd73b6c3ea] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=2630 backend=0
+[agent] Processing message from local_client:velaguard:9
+[context] System prompt built: 3163 bytes
+[vgvoice] cancel_settled elapsed_ms=360 retained_pcm=0 controlled_active=0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addd2d076c64bb0] BEGIN chat=velaguard:9 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 7880 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792922320
+[agent] Dispatching response → local_client:velaguard:voice:8
+[agent] Dispatching response → local_client:velaguard:9
+
+PRESEED seen=2478 hasMarker=True
+
+2026-10-25T09:58:41.2104246+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=6 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=540 samples=8725 bytes=17450
+vgvoice: level peak=7189 rms=152
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=8 drained=9 overwritten=0 wraps=4 elapsed_ms=540 rate=129272 B/s
+vgvoice: tail_bytes=4271 stage_ms=0
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=10000
+vgvoice: content zcr=3 clip=0 tick_us=10000
+nsh> [K

@@ -1,0 +1,18 @@
+[
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice round end",
+    "wait_ms": 500
+  },
+  {
+    "timeout_ms": 10000,
+    "command": "",
+    "wait_ms": 100,
+    "wait_for": "cancel_settled"
+  },
+  {
+    "timeout_ms": 5000,
+    "command": "vgvoice status",
+    "wait_ms": 100
+  }
+]
