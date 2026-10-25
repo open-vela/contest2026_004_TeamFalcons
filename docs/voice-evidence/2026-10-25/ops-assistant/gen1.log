@@ -1,0 +1,36 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931952
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 04:43:21 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[vgllm] link up: rc=0 status=401
+2026-10-25T12:43:48.4510587+08:00 CMD vgagent status
+vgagent status
+round: state=idle gen=0 owner=none
+llm: credentials=ready provision_file=present
+nsh> [K
+2026-10-25T12:43:48.5830957+08:00 CMD vgvoice tts 查一下A相电压
+vgvoice tts 查一下A相电压
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931981
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=530 send=120 ttfb=830 body=1290 http=2810
+[vgvoice] tts_blocks n=6 first_line=830 first_pcm=880 blocks=880,1270,1400,1850,1910,2110 last=2110 bytes=99840
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931984
+vgvoice: tts rc=ok status=200 pcm=99840 resp=0 ms=3420
+vgvoice: tts wav=133164 bytes
+nsh> [K
+2026-10-25T12:43:52.1948168+08:00 CMD ls -l /data/velaguard/voice/tts-16k.wav
+ls -l /data/velaguard/voice/tts-16k.wav
+ -rw-rw-rw-   0      133164 /data/velaguard/voice/tts-16k.wav
+nsh> [K
+2026-10-25T12:43:52.3193186+08:00 CMD cp /data/velaguard/voice/tts-16k.wav /data/velaguard/voice/ask_va.wav
+cp /data/velaguard/voice/tts-16k.wav /data/velaguard/voice/ask_va.wav
+vgtime: sync failed (servers unreachable)
+nsh> [K

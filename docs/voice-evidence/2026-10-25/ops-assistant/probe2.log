@@ -1,0 +1,38 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931684
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 04:34:44 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+2026-10-25T12:35:05.2549700+08:00 CMD vgpoint get
+vgpoint get
+vgpoint: VALUE id=temp value=- ok=0 unit=C age_ms=6250
+vgpoint: VALUE id=humid value=- ok=0 unit=%RH age_ms=6250
+vgpoint: VALUE id=flood value=- ok=0 unit=- age_ms=6250
+vgpoint: VALUE id=smoke value=- ok=0 unit=% age_ms=6250
+vgpoint: VALUE id=acu_ret value=- ok=0 unit=C age_ms=6250
+vgpoint: VALUE id=acu_set value=- ok=0 unit=C age_ms=6250
+vgpoint: VALUE id=acu_run value=- ok=0 unit=- age_ms=6250
+vgpoint: VALUE id=ups_load value=- ok=0 unit=% age_ms=6250
+vgpoint: VALUE id=ups_soc value=- ok=0 unit=% age_ms=6250
+vgpoint: VALUE id=ups_bypass value=- ok=0 unit=- age_ms=6250
+vgpoint: VALUE id=volt_a value=- ok=0 unit=V age_ms=6250
+vgpoint: VALUE id=pwr_kw value=- ok=0 unit=kW age_ms=6250
+vgpoint: VALUE id=energy_kwh value=- ok=0 unit=kWh age_ms=6250
+vgpoint: VALUE id=door value=- ok=0 unit=- age_ms=6250
+vgpoint: OK cmd=get table=committed n=14
+nsh> [K
+2026-10-25T12:35:05.7557089+08:00 CMD vgvoice counts
+vgvoice counts
+usage: vgvoice status|record <ms>|start|stop|cancel|wait <ms>
+       vgvoice asr [wav] | tts <text> | play <wav>
+       vgvoice prebuf [ms] | ttss <text> | streamtest <wav>
+       vgvoice bisect [0..2]   (diagnostic: player startup bisection)
+nsh> [K[skills] Skills summary: 1086 bytes

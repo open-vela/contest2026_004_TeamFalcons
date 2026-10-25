@@ -1,0 +1,47 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgvoice] tts_play event=underrun mono_ms=98900 target_ms=3000
+[vgvoice] tts_play event=buffer_ready mono_ms=106100 buffered_ms=3200 target_ms=3000 eof=0 initial=0
+[vgvoice] tts_play event=resumed mono_ms=106120
+[vgvoice] tts_play event=underrun mono_ms=110930 target_ms=3500
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts phases dns=-1 tls=-1 send=590 ttfb=310 body=27340 http=28240
+[vgvoice] tts_blocks n=31 first_line=320 first_pcm=650 blocks=650,1770,3170,3940,5330,5980,6320,7250,8060,8560,10220,10740,11550,12860,13360,13470 last=27640 bytes=476160
+[vgvoice] tts rc=ok status=200 pcm=476160 resp=0 ms=28260 stream=1 delivered_partial=0
+[vgvoice] stage=tts_end t=59080 mono_ms=114340
+[vgvoice] tts_play event=buffer_ready mono_ms=114350 buffered_ms=1120 target_ms=3500 eof=1 initial=0
+[vgvoice] tts_play event=resumed mono_ms=114360
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=done complete=1 failed=0 err=0 enqueued=634880 returned=634880 underruns=2 stall_ms=10610 leaked=0
+[vgvoice] tts_player played=634880 pushed=317440 underruns=2 stall_ms=10610 restarts=2 complete=1 failed=0 err=0 leaked=0 ms=60430 returned=634880 ready_delay_ms=20
+[vgvoice] stage=play_done t=60590 mono_ms=115850
+[vgvoice] round_settled gen=2 state=8 failed=0 elapsed_ms=60590
+[vgadvice] channel busy, retry next tick
+[vgadvice] asked for 8 alarms req=12
+[vgagent] round submitted: 1302 bytes
+[agent] Processing message from local_client:velaguard:2
+2026-10-25T13:16:58.4017579+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下UPS。
+a=AI 回答
+**结论：查不到 UPS 实时数据。** 本机共有 3 个 UPS 点位，但全部处于离线状态，读取失败，无法给出数值。
+
+**数据依据：**
+- `ups_load`（UPS负载，单位 %，告警阈值 ≥70 警告 / ≥90 严重）：读取失败，离线约 56 秒
+- `ups_soc`（UPS电池，单位 %，阈值 ≤40 警告 / ≤20 严重）：读取失败，离线约 56 秒
+- `ups_bypass`（UPS旁路，阈值 =1 严重）：读取失败，离线约 56 秒
+
+**背景情况：**
+- 系统自上电仅运行 1 分 14 秒，总线通信成功率 **0%（0/53），全部超时**，从站 1 成功率为 0%
+- 当前异常点位共 14 个，几乎全部为离线，包括 3 个 UPS 点位
+- 系统概况接口本次不可用（被配置禁用），通信质量明细来自运行报告
+
+建议先排查总线通信（从站 1 超时），通信恢复后再复查 UPS 数据。
+nsh> [K

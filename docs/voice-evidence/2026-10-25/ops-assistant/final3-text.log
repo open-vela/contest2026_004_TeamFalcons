@@ -1,0 +1,35 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgvoice] tts_play event=buffer_ready mono_ms=324260 buffered_ms=3200 target_ms=3000 eof=0 initial=0
+[vgvoice] tts_play event=resumed mono_ms=324270
+[vgvoice] tts_play event=underrun mono_ms=328450 target_ms=3500
+[vela_tls] voice_conn drop rc=-6 framing=0 sink_early=0
+[vgvoice] tts phases dns=-1 tls=-1 send=550 ttfb=310 body=-1 http=30000
+[vgvoice] tts_blocks n=29 first_line=320 first_pcm=810 blocks=810,2400,3820,4180,5410,6670,7160,7950,9690,10250,10750,12360,13610,14080,15330,16770 last=29150 bytes=437760
+[vgvoice] tts rc=timeout status=200 pcm=437760 resp=0 ms=30030 stream=1 delivered_partial=1
+[vgvoice] stage=tts_end t=54430 mono_ms=332010
+[vgvoice] tts_play event=done complete=0 failed=1 err=-110 enqueued=501760 returned=501760 underruns=2 stall_ms=8150 leaked=0
+2026-10-25T13:10:40.8211346+08:00 CMD vgvoice round text
+[vgvoice] tts_playback_failure started=1 partial=1 failed=1 err=-110 leaked=0
+[vgvoice] round_settled gen=7 state=8 failed=1 elapsed_ms=54610
+vgvoice round text
+q=查一下UPS。
+a=AI 回答
+**结论：UPS 两路市电输入正常、旁路未启用、电池在浮充；但输出电压 143.4V 和旁路状态 1 仍处于告警中，未恢复。**
+
+**具体点位（共 10 个）**
+
+| 类别 | 点位 | 读数 | 状态 |
+|---|---|---|---|
+| 市电输入 | ups_input_voltage_r / s / t | 225.4 / 224.9 / 225.3 V | 正常 |
+| 旁路输入 | ups_bypass_input_voltage_r / s | 224.8 / 224.9 V | 正常 |
+| 电池 | ups_battery_voltage | 54.3 V | 正常（浮充） |
+| 电池 | ups_battery_current | 0.0 A | 正常（未放电） |
+| 输出 | ups_output_voltage | 143.4 V | **告警（阈值 ±10%）** |
+| 旁路 | ups_bypass | 1 | **告警（阈值 =0）** |
+| 负载 | ups_load | 无读数 | **离线（已 7 天+）** |
+
+**补充说明**
+- 电池电压 54.3V 低于本次上电记录的 63.9V 高点，但属于正常浮充范围；电池电流 0A 表示没有放电。
+- 输出电压 143.4V 与旁路状态 1 的告警为“未知恢复状态”——本次上电无恢复事件记录，不能证明曾恢复。
+- 建议重点排查 UPS 逆变输出回路，这是输出电压偏低的可能来源。
+nsh> [K

@@ -43,6 +43,19 @@ int vg_va_render_recovery(const struct vg_voice_facts *f,
 bool vg_va_text_facts_consistent(const struct vg_voice_facts *f,
                                  const char *text);
 
+/* True when the text contains at least one ASCII digit.  Used together with
+ * the vg tool execution counter: a reply that quotes numbers while no vg
+ * tool ran for the round has no data basis, so it is refused. */
+bool vg_va_numeric_present(const char *text);
+
+/* Split an operations-assistant reply into the display text and the spoken
+ * summary.  The model is asked to end with a 播报：<summary> line; when it
+ * does not, the leading sentences of the display become the summary.  Both
+ * outputs are bounded, trimmed and never split a UTF-8 character.  Returns
+ * false when the reply is empty or nothing can be shown. */
+bool vg_va_split_reply(const char *reply, char *display, size_t dcap,
+                       char *speech, size_t scap);
+
 /* 严重 / 警告 / 离线 / 过期, by anomaly rank. */
 const char *vg_va_rank_label(unsigned rank);
 

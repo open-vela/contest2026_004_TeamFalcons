@@ -1,0 +1,145 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=underrun mono_ms=114150 target_ms=3500
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vela_tls] voice_conn drop rc=-6 framing=0 sink_early=0
+[vgvoice] tts phases dns=-1 tls=-1 send=330 ttfb=600 body=-1 http=30040
+[vgvoice] tts_blocks n=31 first_line=600 first_pcm=800 blocks=800,2510,3450,5160,5500,6150,7560,7910,8400,9750,10390,11570,12080,13170,14470,14950 last=29550 bytes=468480
+[vgvoice] tts rc=timeout status=200 pcm=468480 resp=0 ms=30060 stream=1 delivered_partial=1
+[vgvoice] stage=tts_end t=67240 mono_ms=118090
+[vgvoice] tts_play event=done complete=0 failed=1 err=-110 enqueued=522240 returned=522240 underruns=2 stall_ms=9000 leaked=0
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_playback_failure started=1 partial=1 failed=1 err=-110 leaked=0
+[vgvoice] round_settled gen=2 state=8 failed=1 elapsed_ms=67580
+[vgadvice] asked for 8 alarms req=19
+[vgagent] round submitted: 1302 bytes
+[agent] Processing message from local_client:velaguard:2
+2026-10-25T13:07:16.7368235+08:00 CMD vgvoice round ask /data/velaguard/voice/ask_followup.wav
+vgvoice round ask /data/velaguard/voice/ask_followup.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/ask_followup.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933636
+
+PRESEED seen=438 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=970
+[vgvoice] voice_preconnect rc=0 dns=120 tls=830 ms=980
+[skills] Skills summary: 1011 bytes
+[context] System prompt b[vgvoice] stage=asr_wait_recorder t=60 mono_ms=143230
+[vgagent] paused background owner=1 before ASR
+[vgvoice] stage=asr_begin t=160 mono_ms=143330
+[vgvoice] clip_prep src=file bytes=0 ms=0
+uilt: 3104 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addff1435c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[trace:6addff1435c3b13a] END status=timeout iters=1 tools=0 llm_ms=0 tool_ms=0 elapsed_ms=100 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr phases dns=-1 tls=-1 send=4080 ttfb=290 body=10 http=4380
+[vgadvice] channel busy, retry next tick
+[vgvoice] asr rc=ok status=200 req=75321 resp=468 ms=5070
+[vgvoice] stage=asr_end t=6370 mono_ms=149540
+[vgvoice] stage=agent_begin t=6370 mono_ms=149540
+[vgvoice] stage=agent_queued t=6380 mono_ms=149550
+[vgagent] round submitted: 473 bytes
+[vgadvice] channel busy, retry next tick
+[agent] Processing message from local_client:velaguard:voice:3
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addff1a514cbea4] BEGIN chat=velaguard:voice:3 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 3639 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933658
+[agent] Dispatching response → local_client:velaguard:voice:3
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=656 text=0 reasoning=0 toolargs=4 calls=2 finish=tool_calls tokens=972/24/996
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6addff1a514cbea4] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=90(fused) setup=10 tls=2390 send=410 ttfb=1170 body=0 pool=na build=100 parse=20 http=4360 backoff=0 total=4480 req=3639 resp=656 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 1: 2 calls
+[trace:6addff1a514cbea4] iter=0 tool=vg_status_read latency=4580ms llm=ok backend=0
+[guard] Tool 'vg_status_read' is disabled
+[tools] Tool 'vg_status_read' blocked: tool disabled by config
+[agent] Tool vg_status_read result: 64 bytes, 100 ms
+[trace:6addff1a514cbea4] tool_iter=0 tool=vg_status_read tool_ms=100 out=64 ok=1
+[tools] Executed vg tool: vg_anomaly_read
+[agent] Tool vg_anomaly_read result: 1101 bytes, 1750 ms
+[trace:6addff1a514cbea4] tool_iter=0 tool=vg_anomaly_read tool_ms=1750 out=1101 ok=1
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 5229 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933665
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=545 text=0 reasoning=0 toolargs=2 calls=1 finish=tool_calls tokens=1440/12/1452
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addff1a514cbea4] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=120(fused) setup=10 tls=2900 send=420 ttfb=1020 body=0 pool=na build=100 parse=0 http=4600 backoff=0 total=4780 req=5229 resp=545 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6addff1a514cbea4] iter=1 tool=vg_run_report latency=4880ms llm=ok backend=0
+[agent] Tool call: vg_run_report args={}
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 568 bytes, 410 ms
+[trace:6addff1a514cbea4] tool_iter=1 tool=vg_run_report tool_ms=410 out=568 ok=1
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 6041 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933670
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=1595 text=1137 reasoning=0 toolargs=0 calls=0 finish=end_turn tokens=1727/368/2095
+[llm] Response: 1137 bytes text, 0 tool calls, finish=end_turn
+[trace:6addff1a514cbea4] http iter=2 attempt=1 reused=0 proxy=0 dns_tcp=120(fused) setup=10 tls=2110 send=310 ttfb=5450 body=0 pool=na build=100 parse=0 http=8190 backoff=0 total=8380 req=6041 resp=1595 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=1137, tool_use=0, calls=0
+[trace:6addff1a514cbea4] iter=2 tool=(none) latency=8480ms llm=ok backend=0
+[trace:6addff1a514cbea4] END status=ok iters=3 tools=2 llm_ms=17940 tool_ms=2260 elapsed_ms=20910 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:3
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=27630 mono_ms=170800
+[vgvoice] agent reply bytes=1137 display=996 speech=130 split=1
+[vgvoice] stage=tts_begin t=27640 mono_ms=170810
+[vgvoice] stage=play_posted t=27760 mono_ms=170930
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=buffer_ready mono_ms=180670 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=180780 ready_delay_ms=110
+[vgvoice] first_playable gen=3 elapsed_ms=37610
+[vgvoice] stage=play_start t=37610 mono_ms=180780
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=underrun mono_ms=184470 target_ms=3000
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+NSH prompt timeout: 
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\docs\voice-evidence\2026-10-25\ops-assis
+tant\handoff-tools\nsh_plan.ps1:83 字符: 5
++     throw ('NSH prompt timeout: '+$step.command)
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (NSH prompt timeout: :String) [], RuntimeException
+    + FullyQualifiedErrorId : NSH prompt timeout: 
+ 

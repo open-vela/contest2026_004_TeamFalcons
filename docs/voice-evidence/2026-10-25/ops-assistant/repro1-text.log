@@ -1,0 +1,21 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgvoice] tts phases dns=-1 tls=-1 send=400 ttfb=580 body=18600 http=19580
+[vgvoice] tts_blocks n=19 first_line=590 first_pcm=910 blocks=910,1960,2990,4500,4830,6890,7360,8250,9620,10270,10770,11260,13340,13830,14440,15060 last=18580 bytes=299520
+[vgvoice] tts rc=ok status=200 pcm=299520 resp=0 ms=19600 stream=1 delivered_partial=0
+[vgvoice] stage=tts_end t=47350 mono_ms=88020
+[vgvoice] tts_play event=buffer_ready mono_ms=88150 buffered_ms=2240 target_ms=3000 eof=1 initial=0
+[vgvoice] tts_play event=resumed mono_ms=88160
+[vgvoice] tts_play event=done complete=1 failed=0 err=0 enqueued=399360 returned=399360 underruns=1 stall_ms=5530 leaked=0
+[vgvoice] tts_player played=399360 pushed=199680 underruns=1 stall_ms=5530 restarts=1 complete=1 failed=0 err=0 leaked=0 ms=50000 returned=399360 ready_delay_ms=90
+[vgvoice] stage=play_done t=50010 mono_ms=90680
+[vgvoice] round_settled gen=3 state=8 failed=0 elapsed_ms=50010
+2026-10-25T12:52:06.3699893+08:00 CMD vgvoice round text
+vgvoice round text
+q=查一下A相电压。
+a=AI 回答
+结论：A相电压当前**读取失败**，没有拿到数值。
+
+数据依据：点位 id=volt_a（A相电压），单位 V，实时值返回为 `-`，原因 read_failed，最近一次采样已过去约 14.9 秒，数据已过期。阈值参考：预警 ≤200V，严重 ≤180V。
+
+建议稍后重试；如持续读不到，可能是采样或通信异常，可结合系统运行报告一并排查。
+nsh> [K

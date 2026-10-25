@@ -1,0 +1,57 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-25T12:34:32.2368858+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=0 played=0 cancelled=0 too_short=0 failures=0 timeouts=0
+vgvoice: last result=ok ms=0 samples=0 bytes=0
+vgvoice: level peak=0 rms=0
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=0 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=0 stage_ms=0
+vgvoice: generation=0 queue_highwater=0 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=0 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T12:34:32.3438691+08:00 CMD ls /data/velaguard/voice/
+ls /data/velaguard/voice/
+/data/velaguard/voice:
+ q1.wav
+ point01.wav
+ pref.txt
+ recovery01.wav
+ anomaly01.wav
+ anomaly02.wav
+ anomaly03.wav
+ anomaly04.wav
+ anomaly05.wav
+ anomaly06.wav
+ anomaly07.wav
+ anomaly08.wav
+ anomaly09.wav
+ anomaly10.wav
+ point02.wav
+ point03.wav
+ point04.wav
+ point05.wav
+ point06.wav
+ point07.wav
+ point08.wav
+ point09.wav
+ point10.wav
+ recovery02.wav
+ recovery03.wav
+ recovery04.wav
+ recovery05.wav
+ recovery06.wav
+ recovery07.wav
+ recovery08.wav
+ recovery09.wav
+ recovery10.wav
+ takeover-20261024-check.txt
+nsh> [K
+2026-10-25T12:34:32.5077069+08:00 CMD vgagent status
+vgagent status
+round: state=idle gen=1 owner=none
+llm: credentials=ready provision_file=present
+reply: OK: wrote 1758 bytes to /data/velaguard/reports/alarm_advice.txt
+nsh> [K

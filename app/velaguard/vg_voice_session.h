@@ -30,11 +30,12 @@
 
 #define VG_VS_RECORD_MAX_MS      15000u  /* hard cap from the interaction contract */
 #define VG_VS_RECORD_MIN_MS        300u  /* below this, nothing was said */
-#define VG_VS_BUDGET_MS          30000u  /* submit -> answer text */
+#define VG_VS_BUDGET_MS          30000u  /* submit -> recognition done */
+#define VG_VS_AGENT_BUDGET_MS    60000u  /* recognition done -> answer text (ops assistant, 2026-10-25) */
 #define VG_VS_TTS_BUDGET_MS      30000u  /* answer text -> complete speech file */
 #define VG_VS_RETRY_BUDGET_MS    15000u  /* speech-only retry after the first deadline */
 #define VG_VS_RESULT_HOLD_MS     15000u  /* answer stays after speech ends */
-#define VG_VS_IDLE_MS           120000u  /* context expires after this */
+#define VG_VS_IDLE_MS           300000u  /* follow-up context expires after this */
 #define VG_VS_CANCEL_GRACE_MS     2000u  /* target for physical reclaim, BVO-07 */
 
 #define VG_VS_TEXT_MAX            512

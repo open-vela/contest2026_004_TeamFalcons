@@ -357,8 +357,14 @@ int vg_agent_query_format_candidates(char *out, size_t cap,
   out[0] = '\0';
   off = appendf(out, cap, 0, "vgquery: ambiguous n=%d\n", res->cand_n);
 
+  /* One full point line per candidate, value included.  The voice assistant
+   * presents every matching reading side by side instead of asking the user
+   * to restate an id, so the tool must hand the model the readings, not just
+   * the names. */
+
   for (i = 0; i < res->cand_n; i++)
     {
+      char line[192];
       int idx = res->cand_idx[i];
 
       if (idx < 0 || idx >= n)
@@ -366,9 +372,13 @@ int vg_agent_query_format_candidates(char *out, size_t cap,
           continue;
         }
 
-      off = appendf(out, cap, off, "vgquery: candidate id=%s name=%s\n",
-                    points[idx].id[0] ? points[idx].id : "-",
-                    points[idx].name[0] ? points[idx].name : "-");
+      if (vg_agent_query_format_point(line, sizeof(line), &points[idx],
+                                      vg_agent_query_is_stale(&points[idx])) < 0)
+        {
+          continue;
+        }
+
+      off = appendf(out, cap, off, "%s", line);
     }
 
   return off;

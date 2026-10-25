@@ -93,7 +93,7 @@ ifeq ($(CONFIG_VG_VOICE_LOOPBACK),y)
 PROGNAME += vgvoice
 MAINSRC  += vgvoice.c
 CSRCS    += vg_voice.c vg_voice_ptt.c vg_voice_session.c vg_pdm_filter.c \
-            vg_voice_intent.c vg_voice_answer.c vg_voice_pcm.c
+            vg_voice_answer.c vg_voice_pcm.c
 # The cloud adapter needs the agent transport for its HTTPS call; the pure
 # audio helpers above do not.
 ifeq ($(CONFIG_EXAMPLES_AI_AGENT_VELA),y)

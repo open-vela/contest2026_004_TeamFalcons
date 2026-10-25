@@ -28,6 +28,14 @@ void vg_agent_tools_register(void);
 struct vg_agent_point;
 int vg_agent_tools_collect(struct vg_agent_point *out, int max, int *n_out);
 
+/* Monotonic count of vg tool executions since boot (rate-limit rejections
+ * excluded: no data was served).  The voice round snapshots it before
+ * submitting a question and rejects a reply that quotes numbers without any
+ * vg tool having run for it - a model answer with invented readings never
+ * reaches the screen. */
+
+uint32_t vg_agent_tools_exec_count(void);
+
 #ifdef VG_AGENT_TOOLS_HOST_TEST
 /* Test build only: clear the read-only call window between cases. */
 void vg_agent_tools_reset_rate(void);

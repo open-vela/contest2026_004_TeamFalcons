@@ -19,7 +19,7 @@
 #define VG_AGENT_QUERY_STR_MAX   48   /* matches VG_POINT_NAME_MAX */
 #define VG_AGENT_QUERY_UNIT_MAX  8
 #define VG_AGENT_QUERY_MAX        32  /* VG_DISCOVER_MAX_POINTS */
-#define VG_AGENT_QUERY_CAND_MAX    3  /* candidates listed on ambiguity */
+#define VG_AGENT_QUERY_CAND_MAX    6  /* candidates read side-by-side on ambiguity */
 #define VG_AGENT_QUERY_LIST_MAX   12  /* entries listed when query is empty */
 
 /* Snapshot freshness.  The whole-file snapshot carries one tick_ms, so this

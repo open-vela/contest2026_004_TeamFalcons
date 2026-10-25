@@ -129,20 +129,21 @@ static void test_substring_ambiguous(void)
 
 static void test_ambiguous_candidates_are_capped(void)
 {
-  struct vg_agent_point pts[5];
+  struct vg_agent_point pts[VG_AGENT_QUERY_CAND_MAX + 2];
   struct vg_agent_query_result res;
   enum vg_agent_query_rc rc;
   int i;
+  int n = (int)(sizeof(pts) / sizeof(pts[0]));
 
-  for (i = 0; i < 5; i++)
+  for (i = 0; i < n; i++)
     {
       memset(&pts[i], 0, sizeof(pts[i]));
       snprintf(pts[i].id, sizeof(pts[i].id), "pt%d", i);
       snprintf(pts[i].name, sizeof(pts[i].name), "共享名字%d", i);
     }
 
-  rc = vg_agent_query_match(pts, 5, "共享", &res);
-  expect(rc == VG_AGENT_QUERY_AMBIG, "five hits are ambiguous");
+  rc = vg_agent_query_match(pts, n, "共享", &res);
+  expect(rc == VG_AGENT_QUERY_AMBIG, "more hits than the cap are ambiguous");
   expect(res.cand_n == VG_AGENT_QUERY_CAND_MAX,
          "candidate list is capped at VG_AGENT_QUERY_CAND_MAX");
 }
@@ -264,6 +265,11 @@ static void test_format_candidates_and_list(void)
   expect(strstr(buf, "ambiguous n=3") != NULL, "candidate count present");
   expect(strstr(buf, "id=ups_load") != NULL, "candidate id listed");
   expect(strstr(buf, "UPS电池") != NULL, "candidate chinese name listed");
+
+  /* 2026-10-25: every candidate line carries its own reading, so the
+   * operations assistant can present the matches side by side. */
+  expect(strstr(buf, "value=72.5") != NULL, "candidate reading included");
+  expect(strstr(buf, "value=88") != NULL, "second candidate reading included");
 
   vg_agent_query_format_list(buf, sizeof(buf), g_pts, N_PTS);
   expect(strstr(buf, "table n=6") != NULL, "list reports entry count");

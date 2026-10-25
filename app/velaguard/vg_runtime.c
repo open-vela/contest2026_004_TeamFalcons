@@ -1478,6 +1478,36 @@ uint32_t vg_runtime_events_dropped(void)
   return dropped;
 }
 
+int vg_runtime_point_stats(int *total_out, int *online_out)
+{
+  int total = 0;
+  int online = 0;
+  int i;
+
+  if (total_out == NULL || online_out == NULL)
+    {
+      return -1;
+    }
+
+  pthread_mutex_lock(&g_snapshot_lock);
+  for (i = 0; i < VG_RUNTIME_MAX_POINTS; i++)
+    {
+      if (g_pts[i].used)
+        {
+          total++;
+          if (g_pts[i].online)
+            {
+              online++;
+            }
+        }
+    }
+  pthread_mutex_unlock(&g_snapshot_lock);
+
+  *total_out = total;
+  *online_out = online;
+  return 0;
+}
+
 int vg_runtime_points_seen(void)
 {
   int seen = 0;

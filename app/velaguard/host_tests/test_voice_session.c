@@ -316,6 +316,47 @@ static void test_budget(void)
 /* A retry after the first deadline must get its own bounded budget.  Reusing
  * the spent deadline made the button fail instantly on the board. */
 
+
+/* 2026-10-25: recognition success opens the operations-assistant query
+ * window.  The 60 s span starts at the recognition result, so time the
+ * model spent waiting on ASR does not eat into the tool-combining budget. */
+static void test_agent_budget_after_asr(void)
+{
+  struct vg_voice_session s;
+  uint32_t t = 1000;
+  uint32_t gen;
+  uint32_t a;
+
+  vg_vs_init(&s, t);
+  to_asr(&s, &t);
+  gen = vg_vs_generation(&s);
+
+  a = vg_vs_asr_result(&s, gen, true, "查一下A相电压的状态", t + 5000);
+  expect(a == VG_VS_ACT_QUEUE_AGENT, "asr success queues the agent");
+  expect(s.deadline_ms == t + 5000 + VG_VS_AGENT_BUDGET_MS,
+         "query deadline restarts at the recognition result");
+  expect(vg_vs_remaining_ms(&s, t + 5000) == VG_VS_AGENT_BUDGET_MS,
+         "query budget is the full sixty seconds");
+  expect(vg_vs_remaining_ms(&s, t + 5000 + 10000) ==
+             VG_VS_AGENT_BUDGET_MS - 10000,
+         "query budget counts down from the recognition result");
+
+  expect(vg_vs_tick(&s, t + 5000 + VG_VS_AGENT_BUDGET_MS - 1) == 0,
+         "query still inside the budget one tick before expiry");
+  a = vg_vs_tick(&s, t + 5000 + VG_VS_AGENT_BUDGET_MS);
+  expect((a & VG_VS_ACT_CANCEL_AGENT) != 0, "expired query is cancelled");
+  expect((a & VG_VS_ACT_SHOW_ERROR) != 0, "expired query reports an error");
+
+  /* A failing recognition keeps the original 30 s window: no query follows
+   * it, so there is nothing to extend. */
+
+  vg_vs_init(&s, t);
+  to_asr(&s, &t);
+  gen = vg_vs_generation(&s);
+  (void)vg_vs_asr_result(&s, gen, false, NULL, t + 5000);
+  expect(vg_vs_state(&s) == VG_VS_ERROR, "failed asr is an error");
+}
+
 static void test_retry_budget(void)
 {
   struct vg_voice_session s;
@@ -487,6 +528,7 @@ int main(void)
   test_tts_failure_retries_speech_only();
   test_play_failure_retains_answer();
   test_budget();
+  test_agent_budget_after_asr();
   test_retry_budget();
   test_record_cap_and_short();
   test_idle_and_page();

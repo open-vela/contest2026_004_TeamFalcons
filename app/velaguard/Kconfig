@@ -289,21 +289,6 @@ config VG_VOICE_TEST_FIXTURE
 		ASR/TTS 只连接固定本地主机，并使用无效测试凭据。
 		不修改 provision，不注册为设备端 Agent 工具。发布预设关闭此项。
 
-config VG_VOICE_DIRECT_TOOL
-	bool "Run the resolved voice query without a model round (diagnostic only)"
-	default n
-	depends on VG_VOICE_LOOPBACK
-	---help---
-		The C layer resolves the three voice intents and the exact point
-		before anything is sent, and the answer is rendered from the
-		facts the read-only tool publishes.  A model round would only
-		repeat that choice while spending 5 to 9 s of the 30 s budget on
-		the request, so with this option the voice round executes the
-		read-only tool through the agent tool registry directly.
-
-		Turning it off restores the model round, which selects the same
-		tool and then reads the same facts again.
-
 config VG_VOICE_ASR_MODEL
 	string "ASR model name"
 	default "mimo-v2.5-asr"

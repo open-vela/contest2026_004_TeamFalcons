@@ -393,9 +393,173 @@ static void test_speech_truncation(void)
   }
 }
 
+
+/* ── operations-assistant reply splitting (2026-10-25) ──────────── */
+
+static void test_split_marker_line(void)
+{
+  char display[2560];
+  char speech[512];
+  const char *reply =
+      "当前共 2 个异常，最严重的是温度A超上限。\n"
+      "- 温度A 24.5C（warn 40）\n- UPS负载 72.5%（warn 70）\n"
+      "播报：有两个异常，温度A和UPS负载都超过了警告阈值。";
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK_STR_CONTAINS(display, "温度A超上限");
+  CHECK_STR_CONTAINS(display, "72.5");
+  CHECK(strstr(display, "播报") == NULL);
+  CHECK(strcmp(speech, "有两个异常，温度A和UPS负载都超过了警告阈值。") == 0);
+}
+
+static void test_split_half_width_marker_and_last_wins(void)
+{
+  char display[2560];
+  char speech[512];
+  const char *reply =
+      "播报：第一条不该生效\n"
+      "A相电压 220.1V，B相电压 219.8V，均在正常范围。\n"
+      "播报:A/B相电压正常";
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK(strcmp(speech, "A/B相电压正常") == 0);
+  CHECK_STR_CONTAINS(display, "220.1");
+  CHECK_STR_CONTAINS(display, "播报：第一条不该生效");
+}
+
+static void test_split_missing_marker_falls_back(void)
+{
+  char display[2560];
+  char speech[512];
+  const char *reply = "系统正常，没有活动告警。所有点位在线。";
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK(strcmp(display, reply) == 0);
+  CHECK_STR_CONTAINS(speech, "系统正常");
+  CHECK(strcmp(speech, "系统正常，没有活动告警。所有点位在线。") == 0);
+}
+
+static void test_split_fallback_two_sentences(void)
+{
+  char display[2560];
+  char speech[512];
+  const char *reply =
+      "A相电压 220.1V。B相电压 219.8V。C相电压 218.7V。";
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK(strcmp(speech, "A相电压 220.1V。B相电压 219.8V。") == 0);
+}
+
+static void test_split_rejects_empty(void)
+{
+  char display[64];
+  char speech[64];
+
+  CHECK(!vg_va_split_reply(NULL, display, sizeof(display),
+                           speech, sizeof(speech)));
+  CHECK(!vg_va_split_reply("", display, sizeof(display),
+                           speech, sizeof(speech)));
+  CHECK(!vg_va_split_reply("回答", NULL, 0, speech, sizeof(speech)));
+  display[0] = 'x';
+  CHECK(!vg_va_split_reply("", display, sizeof(display),
+                           speech, sizeof(speech)));
+}
+
+static void test_split_marker_only_line_keeps_display(void)
+{
+  char display[2560];
+  char speech[512];
+  const char *reply = "播报：一切正常";
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK(strcmp(display, "播报：一切正常") == 0);
+  CHECK(strcmp(speech, "一切正常") == 0);
+}
+
+/* A completed multi-byte character legitimately ends on a continuation
+ * byte, so the real check is that the final character is whole: walk back
+ * to its lead byte and compare the byte count with the length the lead
+ * byte declares. */
+
+static int utf8_tail_whole(const char *s)
+{
+  size_t n = strlen(s);
+  size_t lead = n;
+  size_t len;
+
+  while (lead > 0 && ((unsigned char)s[lead - 1] & 0xC0) == 0x80)
+    {
+      lead--;
+    }
+
+  if (lead == 0)
+    {
+      return 0;   /* nothing but continuation bytes */
+    }
+
+  lead--;   /* index of the lead byte itself */
+
+  if ((unsigned char)s[lead] >= 0xF0)
+    {
+      len = 4;
+    }
+  else if ((unsigned char)s[lead] >= 0xE0)
+    {
+      len = 3;
+    }
+  else if ((unsigned char)s[lead] >= 0xC2)
+    {
+      len = 2;
+    }
+  else if ((unsigned char)s[lead] < 0x80)
+    {
+      return 1;   /* ASCII tail */
+    }
+  else
+    {
+      return 0;   /* stray lead byte */
+    }
+
+  return (n - lead) == len;
+}
+
+static void test_split_utf8_not_broken(void)
+{
+  char display[40];
+  char speech[16];
+  const char *reply =
+      "电压220.1伏，电流3.2安，功率704瓦，频率50赫兹，温度24.5度。播报：全部正常";
+
+  /* Tiny caps force truncation inside multi-byte sequences; the outputs
+   * must still end on a whole character. */
+
+  CHECK(vg_va_split_reply(reply, display, sizeof(display),
+                          speech, sizeof(speech)));
+  CHECK(display[0] != '\0');
+  CHECK(utf8_tail_whole(display));
+  CHECK(speech[0] != '\0');
+  CHECK(utf8_tail_whole(speech));
+}
+
+static void test_numeric_present(void)
+{
+  CHECK(vg_va_numeric_present("A相电压 220.1V"));
+  CHECK(vg_va_numeric_present("共14个点位离线"));
+  CHECK(vg_va_numeric_present("成功率0%"));
+  CHECK(!vg_va_numeric_present("系统正常，没有活动告警。"));
+  CHECK(!vg_va_numeric_present(""));
+  CHECK(!vg_va_numeric_present(NULL));
+}
+
 int main(void)
 {
   test_point();
+  test_numeric_present();
   test_anomalies_empty();
   test_anomalies_pending();
   test_anomalies_many();
@@ -403,6 +567,13 @@ int main(void)
   test_recovery();
   test_consistency();
   test_speech_truncation();
+  test_split_marker_line();
+  test_split_half_width_marker_and_last_wins();
+  test_split_missing_marker_falls_back();
+  test_split_fallback_two_sentences();
+  test_split_rejects_empty();
+  test_split_marker_only_line_keeps_display();
+  test_split_utf8_not_broken();
 
   if (g_fail == 0)
     {

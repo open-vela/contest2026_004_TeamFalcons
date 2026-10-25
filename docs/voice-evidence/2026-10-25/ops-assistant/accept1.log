@@ -1,0 +1,140 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[skills] Skills summary: 1086 bytes
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792932330
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 04:45:31 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+2026-10-25T12:45:31.4342932+08:00 CMD vgvoice tts 查一下UPS
+vgvoice tts 查一下UPS
+[vela_tls] voice_conn stale, reconnecting
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792932331
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vgvoice] tts phases dns=20 tls=1160 send=140 ttfb=390 body=2840 http=4570
+[vgvoice] tts_blocks n=6 first_line=390 first_pcm=680 blocks=680,1120,1760,1980,2620,3220 last=3220 bytes=99840
+vgvoice: tts rc=ok status=200 pcm=99840 resp=0 ms=5110
+vgvoice: tts wav=133164 bytes
+nsh> [K
+2026-10-25T12:45:36.8058630+08:00 CMD cp /data/velaguard/voice/tts-16k.wav /data/velaguard/voice/ask_ups.wav
+cp /data/velaguard/voice/tts-16k.wav /data/velaguard/voice/ask_ups.wav
+nsh> [K
+2026-10-25T12:45:38.8860384+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=0 retained_pcm=0 controlled_active=0
+nsh> [K
+2026-10-25T12:45:38.9123397+08:00 CMD vgvoice round ask /data/velaguard/voice/ask_va.wav
+vgvoice round ask /data/velaguard/voice/ask_va.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/ask_va.wav
+nsh> [KHARDFAULT: CFSR=00000100 HFSR=40000000 BFAR=00000000 MMFAR=00000000
+HARDFAULT: stacked PC=00000000 LR=9009155f
+dump_assert_info: Current Version: NuttTAIL seen=279 sc=279
+
+PRESEED seen=558 hasMarker=False
+X  0.0.0 5454419b235-dirty Oct 25 2026 12:30:19 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x90016835
+up_dump_register: R0: 24004dd0 R1: 00000000 R2: 900be0f6  R3: 240047b8
+up_dump_register: R4: 30018c10 R5: 00000003 R6: 900be0f6  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004738 R10: 00000006 R11: d0280df0
+up_dump_register: R12: 00000009 SP: d0280c00 LR: 90001b43  PC: 90001b43
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0xd027b3e8
+dump_stackinfo:   size: 00024552
+dump_stackinfo:     sp: 0xd0280c00
+stack_dump:  d0280be0: d02813d0 000008f8 d02813d0 d0280c00 d027b3e8 00005fe8 24004738 90001cef
+stack_dump:  d0280c00: 900d741f 00000000 30018cc0 38000480 90016835 0000000a 00000000 00000000
+stack_dump:  d0280c20: 30018c10 24004dd0 900be0f6 00000000 00000000 7474754e 40000058 d0280cb0
+stack_dump:  d0280c40: 00000000 900082f3 dead00ef 00000008 deadbeef deadbeef 900be0f5 deadbeef
+stack_dump:  d0280c60: 31353566 39303039 302e3000 de00302e deadbeef deadbeef deadbeef 3435e0d0
+stack_dump:  d0280c80: 31343435 33326239 69642d35 20797472 2074634f 32203532 20363230 333a3231
+stack_dump:  d0280ca0: 39313a30 900be000 d0280ce8 900077dd 6d72612b 90008c00 90008c8b deadbeef
+stack_dump:  d0280cc0: 900082c5 0000000a deadbeef d0280df0 00000003 240047b8 d0280df0 24003454
+stack_dump:  d0280ce0: 00000001 00000000 d0280df0 900014c5 00000001 00000000 30018c10 90000e8d
+stack_dump:  d0280d00: 00000000 00000007 00000000 00000000 3800ac80 90001073 deadbeef deadbeef
+stack_dump:  d0280d20: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280d40: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280d60: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280d80: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280da0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280dc0: deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef deadbeef
+stack_dump:  d0280de0: deadbeef deadbeef deadbeef deadbeef d0280ec8 00000000 d0280edc 00000000
+stack_dump:  d0280e00: 00000000 3800ac80 24003454 00000001 00000000 00000000 00000000 ffffffe9
+stack_dump:  d0280e20: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0280e40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0280e60: 3800fb48 d0280edc 00000000 00000000 00000000 9009155f 00000000 60000000
+stack_dump:  d0280e80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0280ea0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0280ec0: 00000000 d0280f08 d0280f08 3800ac80 9009a84f 9009a873 deadbeef 00000000
+stack_dump:  d0280ee0: 00000000 d0280f58 00000001 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0280f00: d0280f58 9009847d d0280f58 00000001 00000005 00000000 00000000 d0280f58
+stack_dump:  d0280f20: 00000001 00000000 d0281350 d0281348 00000000 900984f3 00000004 3800ac80
+stack_dump:  d0280f40: 24039098 00000005 00000005 90098507 24039098 90098529 30036fc0 00000005
+stack_dump:  d0280f60: 00000005 90040f73 24038e60 900469e7 00000000 24038e60 00000040 d0281038
+stack_dump:  d0280f80: 24038e60 900471d9 d0280fc4 900c91aa d0280fc4 00000001 d0280fc4 0000003a
+stack_dump:  d0280fa0: 90008251 90008225 deadbeef 900082c5 d02810ac d028112c 00000000 00000000
+stack_dump:  d0280fc0: 00000000 900b6e6d 00000008 2e32762d d028100c d028100c 0000000a 90096f4f
+stack_dump:  d0280fe0: 00000000 00000000 00000001 24038e60 00000040 d0281038 24038e60 d0281350
+stack_dump:  d0281000: d0281348 00000000 00000000 900478a3 00000400 24038e60 d02810ac d028112c
+stack_dump:  d0281020: 00000000 900349fd 00000008 37773239 00000000 00002710 00773533 00000000
+stack_dump:  d0281040: 00000000 00000000 00000000 00000000 00000000 00000000 24038e60 24038e60
+stack_dump:  d0281060: d028112c d02810ac 24038e60 900348c1 d0281348 d02810ac 24038e60 90036937
+stack_dump:  d0281080: d02810ac d028112c d0281348 d0281348 d0281350 00000000 00000000 00000000
+stack_dump:  d02810a0: 00000000 9003868b deadbeef 656b6f74 6c702d6e 632d6e61 69782e6e 696d6f61
+stack_dump:  d02810c0: 6f6d696d 6d6f632e 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d02810e0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281100: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281120: 00000000 00000000 00000000 00333434 00000000 2f31762f 74616863 6d6f632f
+stack_dump:  d0281140: 74656c70 736e6f69 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281160: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281180: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d02811a0: 00000000 00000000 00000000 00000000 00000000 72616542 74207265 6a632d70
+stack_dump:  d02811c0: 6d313364 766c6777 3266686d 64776373 69376131 6b777864 63766e31 39767375
+stack_dump:  d02811e0: 67377732 6e636d30 33336a77 00007735 00000000 00000000 00000000 00000000
+stack_dump:  d0281200: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281220: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281240: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281260: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281280: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d02812a0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d02812c0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d02812e0: 00000000 00000000 00000000 00000000 00000000 900c900e 900c901b 900c91b4
+stack_dump:  d0281300: d02811b4 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  d0281320: 00000000 00000000 00000000 00000000 000000ae 900a8f59 0002a7e2 9001685b
+stack_dump:  d0281340: 00000000 00000000 0002c722 240292ac ffffffff ffffffff ffffffff ffffffff
+stack_dump:  d0281360: ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff 00000000
+stack_dump:  d0281380: ffffffff 00000000 00000000 00000000 00000000 00000000 01000001 00000000
+stack_dump:  d02813a0: 00000000 900a8f59 90016835 00000000 00000000 900a8f61 00000064 900bd9cb
+stack_dump:  d02813c0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      USED   FILLED       CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x2405948c      1000       536    53.6%     10.9%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240075d8      1976       688    34.8%     25.2%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006dd8      1976       768    38.8%      0.0%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136      1856    22.8%      0.0%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x38002bf8      8168      1960    23.9%      6.0%   velaguard_app_main 0x9000cc15 0
+dump_task:       5     3 100 RR       pthread -   Ready              0000000000000000 0x38004cf0     12264      1128     9.1%      5.4%   velaguard_app_main 0x90010ebd 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072      1552    38.1%      0.0%   velaguard_app_main 0x90014c29 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024       736    36.3%      4.9%   ESP8266 0x9006a119 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024      1072    52.9%      0.0%   netinit 0x9006bced 0
+dump_task:       9     9 110 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b230      4056      1048    25.8%      0.0%   vgvoice
+dump_task:      10     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x24069ea8     49128      5296    10.7%      7.1%   velaguard_app_main 0x90017611 0
+dump_task:      11    11  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800cac0      4056      1040    25.6%      0.0%   vgptt
+dump_task:      12    12 100 RR       Task    -   Ready              0000000000000000 0x30000040     49104      8968    18.2%     31.8%   vghmi vghmi
+dump_task:      13    12 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x2407dae8      8168      6304    77.1%      2.7%   vghmi 0x90015471 0
+dump_task:      14    12 100 RR       pthread -   Waiting Signal     0000000000000000 0x3000c030     16360     11272    68.8%      1.0%   vghmi 0x9000eaa9 0
+dump_task:      15    15 100 RR       Task    -   Waiting Signal     0000000000000000 0x300103c0     32696      3368    10.3%      1.0%   ai_agent ai_agent --daemon
+dump_task:      16    15  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x30019ee0     12264       912     7.4%      0.0%   ai_agent 0x9002d359 0x2407fe38
+dump_task:      17    15   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001cee8      4072       992    24.3%      0.0%   ai_agent 0x90033941 0x24059a58
+dump_task:      18    15  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x3001def0     28648      1232     4.3%      0.0%   ai_agent 0x9002d359 0x24059a68
+dump_task:      55     3 100 RR       pthread -   Running            0000000000000000 0xd027b3e8     24552      2536    10.3%      0.0%   velaguard_app_main 0x90016835 0
+dump_task:      24    12 100 RR       pthread -   Waiting Signal     0000000000000000 0x30024ef8      8168      3528    43.1%      3.2%   vghmi 0x90015c0d 0
+dump_task:      25    15  60 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x2402a6e8     32744     13648    41.6%      0.0%   ai_agent 0x9002efed 0x24059a90
+dump_task:      26    15  60 RR       pthread -   Waiting Signal     0000000000000000 0x3002ea98     16360      3360    20.5%      0.0%   ai_agent 0x900314c1 0
+dump_task:      30    15 100 RR       pthread -   Waiting Semaphore  0000000000000000 0xd02793e0      8168      1512    18.5%      0.0%   ai_agent 0x9006f7d5 0x30034fb0

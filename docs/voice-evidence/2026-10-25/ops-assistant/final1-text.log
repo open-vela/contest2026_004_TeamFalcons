@@ -1,0 +1,36 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgvoice] tts_play event=buffer_ready mono_ms=96760 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=96860 ready_delay_ms=100
+[vgvoice] first_playable gen=1 elapsed_ms=46020
+[vgvoice] stage=play_start t=46020 mono_ms=96870
+[vgvoice] tts_play event=underrun mono_ms=100920 target_ms=3000
+[vgvoice] tts_play event=buffer_ready mono_ms=109930 buffered_ms=3200 target_ms=3000 eof=0 initial=0
+[vgvoice] tts_play event=resumed mono_ms=109940
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+2026-10-25T13:07:01.1991562+08:00 CMD vgvoice round text
+vgvoice round text
+q=告诉我当前系统状态。
+a=AI 回答
+**结论：系统当前状态很差 —— 所有点位离线，总线通信全部超时，14 个点位异常。**
+
+数据依据（本次上电运行报告，已运行 1 分 8 秒）：
+
+**通信质量**
+- 总线成功率 **0%（0/49）**，超时 49 次，CRC 错误 0
+- 近窗成功率同样是 0%（0/49）
+- 最差从站 1：成功 0%（0/8）
+
+**点位在线**
+- 至少 14 个点位离线约 50 秒，包括：temp（温度）、humid（湿度）、flood（水浸）、smoke（烟感）、acu_ret / acu_set / acu_run（空调）、ups_load（UPS 负载）、door（门）、energy_kwh（电量）、pwr_kw（功率）、ups_bypass（UPS 旁路）等
+- 无点位有实时读数
+
+**当前异常**
+- 异常点位总数 **14 个**，全部为**离线**类型，没有阈值越限告警
+- 阈值告警类：0 条
+
+**说明**：`vg_status_read`（系�[��vgadvice] channel busy, retry next� tick
+��况，含网络 / MQTT / AI 连接）被配置禁用，暂时无法提供网络和 MQTT 连接状态，这部分数据缺失。从总线 0% 成功率看，通信链路本身很可能有问题，建议排查总线或从站供电。
+nsh> [K

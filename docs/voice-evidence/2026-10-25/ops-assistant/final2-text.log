@@ -1,0 +1,55 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=buffer_ready mono_ms=192970 buffered_ms=3200 target_ms=3000 eof=0 initial=0
+[vgvoice] tts_play event=resumed mono_ms=192980
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgadvice] channel busy, retry next tick
+[vgvoice] tts_play event=underrun mono_ms=197500 target_ms=3500
+[vgadvice] channel busy, retry next tick
+[vela_tls] voice_conn drop rc=-6 framing=0 sink_early=0
+[vgvoice] tts phases dns=-1 tls=-1 send=370 ttfb=480 body=-1 http=29970
+[vgvoice] tts_blocks n=29 first_line=480 first_pcm=650 blocks=660,1930,3380,4300,6150,6640,7280,8850,9360,9880,11060,12540,13350,14920,15390,16360 last=28850 bytes=437760
+[vgvoice] tts rc=timeout status=200 pcm=437760 resp=0 ms=30000 stream=1 delivered_partial=1
+[vgvoice] stage=tts_end t=57770 mono_ms=200940
+[vgvoice] tts_play event=done complete=0 failed=0 err=0 enqueued=522240 returned=522240 underruns=2 stall_ms=8490 leaked=0
+[vgvoice] tts_playback_failure started=1 partial=1 failed=0 err=0 leaked=0
+[vgagent] resumed background owner=1
+[vgvoice] round_settled gen=4 state=8 failed=1 elapsed_ms=57940
+[vgadvice] channel busy, retry next tick
+[vgagent] round submitted: 1302 bytes
+[agent] Processing message from local_client:velaguard:4
+2026-10-25T13:08:34.4879414+08:00 CMD vgvoice round text
+vgvoice round text
+q=他现在正常吗？
+a=AI 回答
+**结论：不正常。** 系统仍处于故障状态，情况和刚才一样，且没有任何恢复迹象。
+
+**数据依据：**
+
+**异常点位（当前 14 个，全部为离线）**
+- 温湿度与环境：temp、humid、flood、smoke
+- 空调：acu_ret、acu_set、acu_run
+- UPS：ups_load、ups_bypass
+- 其他：door、energy_kwh、pwr_kw 等（共 14 个）
+
+**通信质量（已运行 2 分 38 秒）**
+- 总线成功率 **0%（0/102）**，超时 102 次，CRC 错误 0
+- 近窗成功率 **0%（0/102）**
+- 最差从站 1：成功 0%（0/16）
+
+**离线时长**
+- 全部离线点位已离线 **2 分 20 秒**，从上电起就没成功通信过一次
+
+**补充说明**
+- 全部离线、总线持续超时、无 CRC 错误，这种特征通常指向链路或从站侧问题（如总线断线、从站未上电、地址/波特率不匹配），而不是数据干扰
+- 异常时间线暂无记录，无法判断是否曾短暂恢复
+
+需要现场检查总线物理链路和从站供电。
+nsh> [K

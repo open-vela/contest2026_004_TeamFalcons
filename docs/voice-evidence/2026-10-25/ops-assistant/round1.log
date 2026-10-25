@@ -1,0 +1,72 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931715
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] stream: status=401 head: HTTP/1.1 401 Unauthorized
+Date: Sun, 25 Oct 2026 04:35:16 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: close
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Cache-Control: no-cache, no-sto
+[skills] Skills summary: 1086 bytes
+2026-10-25T12:35:41.8627616+08:00 CMD vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice round ask /data/velaguard/voice/point01.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/point01.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931742
+
+PRESEED seen=418 hasMarker=False
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=1060
+[vgvoice] voice_preconnect rc=0 dns=110 tls=930 ms=1070
+[vgvoice] stage=asr_wait_recorder t=60 mono_ms=204230
+[vgvoice] stage=asr_begin t=60 mono_ms=204230
+[vgvoice] clip_prep src=file bytes=0 ms=10
+[vgvoice] asr phases dns=-1 tls=-1 send=2320 ttfb=310 body=0 http=2630
+[vgvoice] asr rc=ok status=200 req=115429 resp=468 ms=3010
+[vgvoice] stage=asr_end t=3750 mono_ms=207920
+[vgvoice] stage=agent_begin t=3760 mono_ms=207930
+[vgvoice] stage=agent_queued t=3760 mono_ms=207930
+[vgagent] round submitted: 40 bytes
+[agent] Processing message from local_client:velaguard:voice:2
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addf7b135c3b13a] BEGIN chat=velaguard:voice:2 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 3194 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931761
+[agent] Dispatching response → local_client:velaguard:voice:2
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=549 text=0 reasoning=0 toolargs=21 calls=1 finish=tool_calls tokens=824/20/844
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6addf7b135c3b13a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=110(fused) setup=90 tls=7000 send=420 ttfb=710 body=90 pool=na build=100 parse=10 http=8630 backoff=0 total=8740 req=3194 resp=549 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6addf7b135c3b13a] iter=0 tool=vg_point_read latency=8830ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 109 bytes, 300 ms
+[trace:6addf7b135c3b13a] tool_iter=0 tool=vg_point_read tool_ms=300 out=109 ok=1
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 3549 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792931770
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=975 text=539 reasoning=0 toolargs=0 calls=0 finish=end_turn tokens=891/149/1040
+[llm] Response: 539 bytes text, 0 tool calls, finish=end_turn
+[trace:6addf7b135c3b13a] http iter=1 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=10 tls=8150 send=400 ttfb=3640 body=0 pool=na build=90 parse=0 http=12600 backoff=0 total=12700 req=3549 resp=975 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=539, tool_use=0, calls=0
+[trace:6addf7b135c3b13a] iter=1 tool=(none) latency=12800ms llm=ok backend=0
+[trace:6addf7b135c3b13a] END status=ok iters=2 tools=1 llm_ms=21630 tool_ms=300 elapsed_ms=22290 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:2
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=26370 mono_ms=230540
+[vgvoice] agent reply bytes=0 display=391 speech=137 split=1
+[vgvoice] stage=tts_begin t=26380 mono_ms=230550
+[vgvoice] stage=play_posted t=26390 mono_ms=230560
+[skills] Skills summary: 1009 bytes
+[vgvoice] tts_play event=buffer_ready mono_ms=240660 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=240720 ready_delay_ms=60
+[vgvoice] first_playable gen=1 elapsed_ms=36560
+[vgvoice] stage=play_start t=36560 mono_ms=240730
+[vgvoice] tts_play event=underrun mono_ms=244860 target_ms=3000

@@ -1,0 +1,53 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-25T13:09:31.2313572+08:00 CMD vgvoice round ask /data/velaguard/voice/ask_ups.wav
+vgvoice round ask /data/velaguard/voice/ask_ups.wav
+vgvoice: round ask synthetic src=/data/velaguard/voice/ask_ups.wav
+nsh> [K[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933771
+
+PRESEED seen=418 hasMarker=False
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[vela_tls] voice_preconnect token-plan-cn.xiaomimimo.com:443 ms=1060
+[vgvoice] voice_preconnect rc=0 dns=140 tls=910 ms=1070
+[vgvoice] stage=asr_wait_recorder t=50 mono_ms=277630
+[vgvoice] stage=asr_begin t=140 mono_ms=277720
+[vgvoice] clip_prep src=file bytes=0 ms=10
+[vgvoice] asr phases dns=-1 tls=-1 send=4190 ttfb=310 body=0 http=4500
+[vgvoice] asr rc=ok status=200 req=88977 resp=462 ms=5130
+[vgvoice] stage=asr_end t=6140 mono_ms=283720
+[vgvoice] stage=agent_begin t=6140 mono_ms=283720
+[vgvoice] stage=agent_queued t=6150 mono_ms=283730
+[vgagent] round submitted: 458 bytes
+[agent] Processing message from local_client:velaguard:voice:5
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.6-flash)
+[trace:6addffa03e0b8753] BEGIN chat=velaguard:voice:5 chan=local_client
+[llm] scoped voice model: thinking disabled, max_tokens=1024
+[llm] OpenAI API with tools (model: mimo-v2.6-flash, 3624 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792933792
+[agent] Dispatching response → local_client:velaguard:voice:5
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[skills] Skills summary: 1086 bytes
+[llm] Resp bytes=1690 text=1238 reasoning=0 toolargs=0 calls=0 finish=end_turn tokens=959/436/1395
+[llm] Response: 1238 bytes text, 0 tool calls, finish=end_turn
+[trace:6addffa03e0b8753] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=100(fused) setup=10 tls=7440 send=320 ttfb=8010 body=1240 pool=na build=20 parse=0 http=17500 backoff=0 total=17520 req=3624 resp=1690 rc=0 status=200 parse_ok=1 first_data=na stream=1
+[agent] LLM resp: text=1238, tool_use=0, calls=0
+[trace:6addffa03e0b8753] iter=0 tool=(none) latency=17620ms llm=ok backend=0
+[trace:6addffa03e0b8753] END status=ok iters=1 tools=0 llm_ms=17620 tool_ms=0 elapsed_ms=17930 backend=0
+[agent] Dispatching response → local_client:velaguard:voice:5
+[vgagent] round finished: reply
+[vgvoice] stage=agent_reply t=24290 mono_ms=301870
+[vgvoice] agent reply bytes=1238 display=1106 speech=121 split=1
+[vgvoice] stage=tts_begin t=24300 mono_ms=301880
+[vgvoice] stage=play_posted t=24390 mono_ms=301970
+[vgvoice] tts_play event=buffer_ready mono_ms=312260 buffered_ms=2720 target_ms=2500 eof=0 initial=1
+[vgvoice] tts_play event=started mono_ms=312370 ready_delay_ms=110
+[vgvoice] first_playable gen=6 elapsed_ms=34800
+[vgvoice] stage=play_start t=34800 mono_ms=312380
+[vgvoice] tts_play event=underrun mono_ms=316100 target_ms=3000
+NSH prompt timeout: 
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\docs\voice-evidence\2026-10-25\ops-assis
+tant\handoff-tools\nsh_plan.ps1:83 字符: 5
++     throw ('NSH prompt timeout: '+$step.command)
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (NSH prompt timeout: :String) [], RuntimeException
+    + FullyQualifiedErrorId : NSH prompt timeout: 
+ 

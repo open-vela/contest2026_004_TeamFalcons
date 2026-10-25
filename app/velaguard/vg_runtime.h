@@ -178,4 +178,11 @@ uint32_t vg_runtime_events_dropped(void);
 
 int vg_runtime_points_seen(void);
 
+/* In-memory point counts exactly as the acquisition loop last reported them:
+ * total distinct points (online or not) and how many were online at their
+ * most recent sample.  Pure RAM, so a caller like the agent status tool adds
+ * no eMMC traffic on top of the report writers. */
+
+int vg_runtime_point_stats(int *total_out, int *online_out);
+
 #endif /* __APP_VELAGUARD_VG_RUNTIME_H */

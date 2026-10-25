@@ -266,6 +266,15 @@ uint32_t vg_vs_asr_result(struct vg_voice_session *s, uint32_t generation,
 
   copy_str(s->text, sizeof(s->text), text);
   s->state = VG_VS_WAIT_AGENT;
+
+  /* The question is decided; the query phase gets its own 60 s window from
+   * this moment (2026-10-25 product decision: the model may combine several
+   * read-only tools for one answer).  submit_ms stays the round anchor and
+   * budget_ms grows by the time recognition already spent, the same pattern
+   * the TTS stage uses, so wall-clock expiry is exactly now + 60 s. */
+
+  s->budget_ms = elapsed(now_ms, s->submit_ms) + VG_VS_AGENT_BUDGET_MS;
+  s->deadline_ms = now_ms + VG_VS_AGENT_BUDGET_MS;
   return VG_VS_ACT_QUEUE_AGENT;
 }
 

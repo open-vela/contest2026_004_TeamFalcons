@@ -1,13 +1,19 @@
 /****************************************************************************
  * app/velaguard/vg_agent_tools.c
  *
- * Two read-only tools for the on-board agent, registered through the
+ * Read-only data tools the on-board agent may call, registered through the
  * ai_agent provider hook (packages/ai_agent include/tools/tool_provider.h):
  *
- *   vg_point_read {query?}  live value from the confirmed point table
+ *   vg_point_read {query?}  live value from the confirmed point table;
+ *                          several matching points are returned side by side
  *   vg_run_report {}        since-boot report, same text as the report page
+ *   vg_anomaly_read {}      current anomalies by rule rank
+ *   vg_alarm_recovery {point_id, kind?}
+ *                           whether a raised alarm has cleared
+ *   vg_status_read {}       business + connectivity overview for the voice
+ *                          operations assistant (2026-10-25 scope)
  *
- * Neither opens RS485.  vg_point_read reads the HMI poll snapshot and the
+ * None of them opens RS485.  They read the HMI poll snapshot and the
  * committed table, exactly what NSH `vgpoint get` does and what
  * docs/velaguard-host-nsh-protocol.md requires of it: taking the bus lock
  * here would stall the poller behind an LLM round that can last minutes.
@@ -33,7 +39,14 @@
 #  define VG_AGENT_TOOLS_HAVE_POINTS 1
 #endif
 
+/* vg_status_read reads the in-memory runtime layer only (plus the net and
+ * llm-health snapshots), so it needs the same source as the report tools. */
+#ifdef VG_AGENT_TOOLS_HAVE_REPORT
+#  define VG_AGENT_TOOLS_HAVE_STATUS 1
+#endif
+
 #include <errno.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -46,8 +59,12 @@
 
 #include "vg_agent_query.h"
 #include "vg_agent_tools.h"
+#include "vg_llm_health.h"
 #include "vg_runtime.h"
 #include "vg_voice_facts.h"
+#ifdef CONFIG_VG_NET_FAILOVER
+#  include "vg_net_mgr.h"
+#endif
 
 #if defined(VG_AGENT_TOOLS_HAVE_POINTS) || defined(VG_AGENT_TOOLS_HAVE_REPORT)
 
@@ -536,6 +553,137 @@ static int tool_alarm_recovery(const char *input_json, char *out, size_t cap)
 
 #endif /* VG_AGENT_TOOLS_HAVE_REPORT */
 
+#ifdef VG_AGENT_TOOLS_HAVE_STATUS
+
+/* ── system overview tool ───────────────────────────────────────────
+ *
+ * The operations-assistant voice path (2026-10-25) answers "系统状态" style
+ * questions from real board data.  Default content follows the confirmed
+ * scope: business (points and alarms) and connectivity (network, MQTT, AI
+ * reachability).  CPU and memory stay out until a tool exists for them, so
+ * the model cannot invent them.
+ */
+
+static size_t status_append(char *out, size_t cap, size_t off,
+                            const char *fmt, ...)
+{
+  va_list ap;
+  int n;
+
+  if (out == NULL || cap == 0 || off >= cap - 1)
+    {
+      return off;
+    }
+
+  va_start(ap, fmt);
+  n = vsnprintf(out + off, cap - off, fmt, ap);
+  va_end(ap);
+
+  if (n < 0)
+    {
+      return off;
+    }
+
+  off += (size_t)n;
+  return (off < cap) ? off : cap - 1;
+}
+
+static int tool_status_read(char *out, size_t cap)
+{
+  struct vg_runtime_anomaly items[VG_RUNTIME_MAX_POINTS];
+  int total = 0;
+  int online = 0;
+  int offline = 0;
+  int crit = 0;
+  int warn = 0;
+  int off_rank = 0;
+  int stale = 0;
+  int anom_n;
+  int anom_total;
+  int i;
+  size_t off = 0;
+  bool llm_ok = false;
+  bool llm_seen;
+
+  /* The runtime layer already holds every point's online state in RAM, so
+   * the overview adds no eMMC reads.  Report writers (advice, daily) hammer
+   * the same filesystem; joining the point-table files here pushed that
+   * stack into open timeouts during 2026-10-25 board acceptance. */
+
+  if (vg_runtime_point_stats(&total, &online) != 0)
+    {
+      total = 0;
+      online = 0;
+    }
+
+  offline = (total > online) ? total - online : 0;
+
+  anom_n = vg_runtime_anomalies(items, VG_RUNTIME_MAX_POINTS, &anom_total,
+                                VG_AGENT_QUERY_STALE_MS);
+  for (i = 0; i < anom_n; i++)
+    {
+      switch (items[i].rank)
+        {
+          case 0:  crit++;     break;
+          case 1:  warn++;     break;
+          case 2:  off_rank++; break;
+          default: stale++;    break;
+        }
+    }
+
+  off = status_append(out, cap, off, "vgstatus: boot=%08x uptime_s=%u\n",
+                      (unsigned)vg_runtime_boot_id(),
+                      (unsigned)vg_runtime_uptime_s());
+  off = status_append(out, cap, off,
+                      "vgstatus: points=total:%d online:%d offline:%d seen:%d\n",
+                      total, online, offline,
+                      vg_runtime_points_seen());
+  off = status_append(out, cap, off,
+                      "vgstatus: alarms=active:%d crit:%d warn:%d "
+                      "offline:%d stale:%d\n",
+                      anom_n < 0 ? 0 : anom_n, crit, warn, off_rank, stale);
+
+#ifdef CONFIG_VG_NET_FAILOVER
+  {
+    struct vg_net_live_status net;
+
+    memset(&net, 0, sizeof(net));
+    if (vg_net_mgr_status(&net) == 0)
+      {
+        off = status_append(out, cap, off,
+                            "vgstatus: net=rj45_link:%d rj45_ip:%d "
+                            "wifi_assoc:%d wifi_ip:%d mqtt:%d\n",
+                            net.rj45_link ? 1 : 0, net.rj45_has_ip ? 1 : 0,
+                            net.wifi_assoc ? 1 : 0, net.wifi_has_ip ? 1 : 0,
+                            net.mqtt_online ? 1 : 0);
+      }
+    else
+      {
+        off = status_append(out, cap, off, "vgstatus: net=unknown\n");
+      }
+  }
+#else
+  off = status_append(out, cap, off, "vgstatus: net=not_built\n");
+#endif
+
+  /* The probe is the only source that can call the LLM chain reachable; a
+   * plain false is reported as unknown rather than down, because the stub
+   * build has no probe at all. */
+
+  llm_seen = vg_llm_health_status(&llm_ok);
+  off = status_append(out, cap, off, "vgstatus: ai=llm_probe:%s\n",
+                      llm_seen ? (llm_ok ? "ok" : "fail") : "unknown");
+
+  if (vg_runtime_points_seen() == 0)
+    {
+      off = status_append(out, cap, off, "note=first_cycle_pending\n");
+    }
+
+  return OK;
+}
+
+#endif /* VG_AGENT_TOOLS_HAVE_STATUS */
+
 #if defined(VG_AGENT_TOOLS_HAVE_POINTS) || defined(VG_AGENT_TOOLS_HAVE_REPORT)
 
 /* ── tool definitions ────────────────────────────────────────────── */
@@ -588,6 +736,15 @@ static const char *VG_TOOL_RECOVERY_JSON =
     "}"
   "}";
 
+static const char *VG_TOOL_STATUS_JSON =
+  "{"
+    "\"name\":\"vg_status_read\","
+    "\"description\":\"读取系统当前概况：点位在线情况、当前告警统计、网络与 MQTT 连接、"
+      "AI 服务连通性、运行时长。用于回答 系统状态/整体运行怎么样 一类问题；"
+      "通信质量明细和自上电统计用 vg_run_report。只读，无参数。\","
+    "\"input_schema\":{\"type\":\"object\",\"properties\":{},\"required\":[]}"
+  "}";
+
 /* Assemble only the tools whose data source this build actually has. */
 
 static size_t app_str(char *buf, size_t cap, size_t off, const char *s)
@@ -612,37 +769,47 @@ static size_t app_str(char *buf, size_t cap, size_t off, const char *s)
 
 static char *vg_tools_get_json(void)
 {
-  char buf[2048];
+  char buf[3072];
   size_t off = 0;
+  bool first = true;
+  size_t item_len;
 
   buf[0] = '\0';
   off = app_str(buf, sizeof(buf), off, "[");
 
-  /* The comma is chosen at compile time because the set of tools is fixed
-   * then; a runtime "is this the first entry" flag would be dead code in
-   * every single-tool build. */
+  /* The tool set is fixed at compile time; the runtime flag only chooses the
+   * separator, so every branch below can append ",x" or "x" without a second
+   * pass. */
+
+#define VG_APPEND_TOOL(json)                          \
+  do                                                  \
+    {                                                 \
+      item_len = strlen(json);                        \
+      if (off + item_len + 2 < sizeof(buf) - 1)       \
+        {                                             \
+          if (!first)                                 \
+            {                                         \
+              off = app_str(buf, sizeof(buf), off, ","); \
+            }                                         \
+          off = app_str(buf, sizeof(buf), off, json); \
+          first = false;                              \
+        }                                             \
+    }                                                 \
+  while (0)
 
 #ifdef VG_AGENT_TOOLS_HAVE_POINTS
-  off = app_str(buf, sizeof(buf), off, VG_TOOL_POINT_JSON);
+  VG_APPEND_TOOL(VG_TOOL_POINT_JSON);
 #endif
-
 #ifdef VG_AGENT_TOOLS_HAVE_REPORT
-#  ifdef VG_AGENT_TOOLS_HAVE_POINTS
-  off = app_str(buf, sizeof(buf), off, ",");
-#  endif
-
-  off = app_str(buf, sizeof(buf), off, VG_TOOL_REPORT_JSON);
+  VG_APPEND_TOOL(VG_TOOL_REPORT_JSON);
+  VG_APPEND_TOOL(VG_TOOL_ANOMALY_JSON);
+  VG_APPEND_TOOL(VG_TOOL_RECOVERY_JSON);
+#endif
+#ifdef VG_AGENT_TOOLS_HAVE_STATUS
+  VG_APPEND_TOOL(VG_TOOL_STATUS_JSON);
 #endif
 
-#ifdef VG_AGENT_TOOLS_HAVE_REPORT
-#  ifdef VG_AGENT_TOOLS_HAVE_POINTS
-  off = app_str(buf, sizeof(buf), off, ",");
-#  endif
-
-  off = app_str(buf, sizeof(buf), off, VG_TOOL_ANOMALY_JSON);
-  off = app_str(buf, sizeof(buf), off, ",");
-  off = app_str(buf, sizeof(buf), off, VG_TOOL_RECOVERY_JSON);
-#endif
+#undef VG_APPEND_TOOL
 
   (void)app_str(buf, sizeof(buf), off, "]");
 
@@ -721,6 +888,20 @@ static int parse_query(const char *input_json, char *buf, size_t cap,
 
 static struct vg_agent_rate g_rate;
 
+/* Counted after a tool actually ran and produced output; see the header. */
+
+static uint32_t g_exec_count;
+
+uint32_t vg_agent_tools_exec_count(void)
+{
+  return __atomic_load_n(&g_exec_count, __ATOMIC_RELAXED);
+}
+
+static void note_exec(void)
+{
+  __atomic_fetch_add(&g_exec_count, 1, __ATOMIC_RELAXED);
+}
+
 static uint32_t rate_now_ms(void)
 {
   struct timespec ts;
@@ -738,6 +919,7 @@ static int vg_tools_execute(const char *name, const char *input_json,
                             char *output, size_t output_size)
 {
   size_t cap;
+  int rc;
 
   /* input_json is read by vg_point_read and vg_alarm_recovery. */
 
@@ -774,6 +956,13 @@ static int vg_tools_execute(const char *name, const char *input_json,
       }
 #endif
 
+#ifdef VG_AGENT_TOOLS_HAVE_STATUS
+    if (strcmp(name, "vg_status_read") == 0)
+      {
+        owned = true;
+      }
+#endif
+
     if (!owned)
       {
         return ERROR;
@@ -797,7 +986,6 @@ static int vg_tools_execute(const char *name, const char *input_json,
     {
       char query[VG_AGENT_TOOL_QUERY_MAX];
       const char *q = NULL;
-      int rc;
 
       rc = parse_query(input_json, query, sizeof(query), &q);
 
@@ -816,24 +1004,41 @@ static int vg_tools_execute(const char *name, const char *input_json,
           return OK;
         }
 
-      return tool_point_read(q, output, cap);
+      rc = tool_point_read(q, output, cap);
+      if (rc == OK) note_exec();
+      return rc;
     }
 #endif
 
 #ifdef VG_AGENT_TOOLS_HAVE_REPORT
   if (strcmp(name, "vg_run_report") == 0)
     {
-      return tool_run_report(output, cap);
+      rc = tool_run_report(output, cap);
+      if (rc == OK) note_exec();
+      return rc;
     }
 
   if (strcmp(name, "vg_anomaly_read") == 0)
     {
-      return tool_anomaly_read(output, cap);
+      rc = tool_anomaly_read(output, cap);
+      if (rc == OK) note_exec();
+      return rc;
     }
 
   if (strcmp(name, "vg_alarm_recovery") == 0)
     {
-      return tool_alarm_recovery(input_json, output, cap);
+      rc = tool_alarm_recovery(input_json, output, cap);
+      if (rc == OK) note_exec();
+      return rc;
+    }
+#endif
+
+#ifdef VG_AGENT_TOOLS_HAVE_STATUS
+  if (strcmp(name, "vg_status_read") == 0)
+    {
+      rc = tool_status_read(output, cap);
+      if (rc == OK) note_exec();
+      return rc;
     }
 #endif
 

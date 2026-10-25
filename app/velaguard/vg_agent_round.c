@@ -19,7 +19,10 @@
 #define TAG "vgagent"
 
 #define VG_ROUND_REQ_MAX   1536
-#define VG_ROUND_REPLY_MAX 192
+/* The voice operations assistant composes the whole display answer plus the
+ * spoken-summary line; 192 bytes (the old diagnostic truncation) could not
+ * carry it.  Static storage, so the larger bound costs BSS only. */
+#define VG_ROUND_REPLY_MAX 2048
 
 static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
 

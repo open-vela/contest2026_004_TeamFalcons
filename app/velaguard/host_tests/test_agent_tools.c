@@ -181,11 +181,29 @@ int vg_runtime_recovery(const char *id, enum vg_runtime_kind kind,
 
 uint32_t vg_runtime_boot_id(void) { return 0x1234u; }
 
+static uint32_t g_uptime_s = 3600;
+
+uint32_t vg_runtime_uptime_s(void) { return g_uptime_s; }
+
 static int g_points_seen = 14;
+static int g_pts_total = 6;
+static int g_pts_online = 4;
 
 int vg_runtime_points_seen(void)
 {
   return g_points_seen;
+}
+
+int vg_runtime_point_stats(int *total_out, int *online_out)
+{
+  if (total_out == NULL || online_out == NULL)
+    {
+      return -1;
+    }
+
+  *total_out = g_pts_total;
+  *online_out = g_pts_online;
+  return 0;
 }
 
 void vg_voice_facts_publish_anomalies(const struct vg_runtime_anomaly *items,
@@ -313,6 +331,7 @@ static void test_tools_json_is_valid_and_complete(void)
   int has_report = 0;
   int has_anomaly = 0;
   int has_recovery = 0;
+  int has_status = 0;
 
   expect(json != NULL, "provider returns tools JSON");
   if (json == NULL)
@@ -372,14 +391,20 @@ static void test_tools_json_is_valid_and_complete(void)
               expect(cJSON_GetObjectItem(schema, "required") != NULL,
                      "vg_alarm_recovery declares required fields");
             }
+
+          if (strcmp(name->valuestring, "vg_status_read") == 0)
+            {
+              has_status = 1;
+            }
         }
     }
 
-  expect(names_seen == 4, "exactly the four read-only tools are advertised");
+  expect(names_seen == 5, "exactly the five read-only tools are advertised");
   expect(has_point, "vg_point_read advertised");
   expect(has_report, "vg_run_report advertised");
   expect(has_anomaly, "vg_anomaly_read advertised");
   expect(has_recovery, "vg_alarm_recovery advertised");
+  expect(has_status, "vg_status_read advertised");
 
   cJSON_Delete(arr);
   free(json);
@@ -434,8 +459,15 @@ static void test_point_read_ambiguous_lists_candidates(void)
 
   rc = run_tool("vg_point_read", "{\"query\":\"UPS\"}", out, sizeof(out));
   expect(strstr(out, "ambiguous") != NULL, "ambiguous query says so");
-  expect(strstr(out, "value=") == NULL,
-         "an ambiguous query reports no value");
+
+  /* 2026-10-25: every candidate now carries its own reading, so the
+   * operations assistant can answer with all of them side by side instead
+   * of asking the user for an id. */
+
+  expect(strstr(out, "id=ups_load") != NULL, "first candidate listed");
+  expect(strstr(out, "id=ups_soc") != NULL, "second candidate listed");
+  expect(strstr(out, "value=72.5") != NULL, "first candidate value listed");
+  expect(strstr(out, "value=88") != NULL, "second candidate value listed");
   expect(strstr(out, "ups_load") != NULL && strstr(out, "ups_soc") != NULL,
          "both candidates are listed");
   (void)rc;
@@ -803,6 +835,57 @@ static void test_recovery_tool(void)
   expect(strstr(out, "reason=bad_arg") != NULL, "rejects an unknown kind");
 }
 
+/* ── system overview tool (2026-10-25) ─────────────────────────── */
+
+static void test_exec_count_tracks_runs(void)
+{
+  vg_agent_tools_reset_rate();
+
+  char out[2048];
+  uint32_t before;
+  uint32_t after;
+
+  seed_table();
+  seed_snapshot_scaled();
+
+  before = vg_agent_tools_exec_count();
+  expect(run_tool("vg_status_read", "{}", out, sizeof(out)) == 0,
+         "status tool runs");
+  after = vg_agent_tools_exec_count();
+  expect(after == before + 1, "one successful run bumps the exec count");
+}
+
+static void test_status_read_overview(void)
+{
+  vg_agent_tools_reset_rate();
+
+  char out[2048];
+  int rc;
+
+  seed_table();
+  seed_snapshot_scaled();
+  g_anomaly_n = 0;
+  g_anomaly_total = 0;
+  g_points_seen = 14;
+
+  rc = run_tool("vg_status_read", "{}", out, sizeof(out));
+  expect(rc == 0, "vg_status_read succeeds");
+  expect(strstr(out, "vgstatus: points=total:6 online:4 offline:2") != NULL,
+         "point summary comes from the in-memory runtime stats");
+  expect(strstr(out, "vgstatus: alarms=active:") != NULL,
+         "alarm summary present");
+  expect(strstr(out, "vgstatus: ai=llm_probe:") != NULL,
+         "ai connectivity line present");
+  expect(strstr(out, "net=not_built") != NULL || strstr(out, "vgstatus: net=") != NULL,
+         "network line present");
+
+  /* The summary must not invent a live value: counts only, no point
+   * readings. */
+
+  expect(strstr(out, "value=72.5") == NULL,
+         "status overview does not repeat point readings");
+}
+
 int main(void)
 {
   vg_agent_tools_register();
@@ -817,6 +900,8 @@ int main(void)
     }
 
   test_tools_json_is_valid_and_complete();
+  test_status_read_overview();
+  test_exec_count_tracks_runs();
   test_anomaly_tool();
   test_recovery_tool();
   test_point_read_returns_scaled_value();

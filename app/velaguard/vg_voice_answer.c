@@ -695,3 +695,382 @@ bool vg_va_text_facts_consistent(const struct vg_voice_facts *f,
 
   return true;
 }
+/* ── operations-assistant reply splitting (2026-10-25) ─────────────
+ *
+ * The voice path no longer renders from a captured snapshot: the model
+ * composes both texts from the tool data it read.  The contract it is asked
+ * to keep is a final line of the form 播报：<short spoken summary>.  This
+ * splitter is the board-side schema check on that contract: it separates the
+ * display text from the spoken summary, bounds both, and derives a spoken
+ * fallback from the display when the model left the marker out.
+ */
+
+bool vg_va_numeric_present(const char *text)
+{
+  if (text == NULL)
+    {
+      return false;
+    }
+
+  while (*text != '\0')
+    {
+      if (*text >= '0' && *text <= '9')
+        {
+          return true;
+        }
+
+      text++;
+    }
+
+  return false;
+}
+
+#define VA_SPLIT_MARKER_FULL "播报："
+#define VA_SPLIT_MARKER_HALF "播报:"
+#define VA_SPEECH_FALLBACK_MAX 160u
+#define VA_SPLIT_BODY_MAX     2048u  /* matches the agent reply buffer */
+#define VA_SPLIT_TEXT_MAX      512u  /* matches the session text field */
+
+static bool va_utf8_lead(unsigned char c)
+{
+  return (c & 0xC0) != 0x80;
+}
+
+/* Copy at most cap-1 bytes without splitting a multi-byte character. */
+
+static size_t va_copy_utf8(char *dst, size_t cap, const char *src, size_t n)
+{
+  size_t take = n;
+
+  if (dst == NULL || cap == 0 || src == NULL)
+    {
+      return 0;
+    }
+
+  if (take >= cap)
+    {
+      take = cap - 1;
+    }
+
+  while (take > 0 && !va_utf8_lead((unsigned char)src[take]))
+    {
+      take--;
+    }
+
+  memcpy(dst, src, take);
+  dst[take] = '\0';
+  return take;
+}
+
+static bool va_isspace(char c)
+{
+  return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+}
+
+static size_t va_line_end(const char *s, size_t i)
+{
+  while (s[i] != '\0' && s[i] != '\n')
+    {
+      i++;
+    }
+
+  return i;
+}
+
+/* Marker length when the line at [start,end) begins with one, else 0. */
+
+static size_t va_marker_len(const char *s, size_t start, size_t end)
+{
+  size_t p = start;
+  size_t full = strlen(VA_SPLIT_MARKER_FULL);
+  size_t half = strlen(VA_SPLIT_MARKER_HALF);
+
+  while (p < end && va_isspace(s[p]))
+    {
+      p++;
+    }
+
+  if (p + full <= end && strncmp(s + p, VA_SPLIT_MARKER_FULL, full) == 0)
+    {
+      return p - start + full;
+    }
+
+  if (p + half <= end && strncmp(s + p, VA_SPLIT_MARKER_HALF, half) == 0)
+    {
+      return p - start + half;
+    }
+
+  return 0;
+}
+
+static void va_trim_copy(char *dst, size_t cap, const char *src, size_t n)
+{
+  size_t start = 0;
+  size_t end;
+
+  if (dst == NULL || cap == 0)
+    {
+      return;
+    }
+
+  dst[0] = '\0';
+  if (src == NULL)
+    {
+      return;
+    }
+
+  while (start < n && va_isspace(src[start]))
+    {
+      start++;
+    }
+
+  end = n;
+  while (end > start && va_isspace(src[end - 1]))
+    {
+      end--;
+    }
+
+  (void)va_copy_utf8(dst, cap, src + start, end - start);
+}
+
+/* Spoken fallback: leading sentences of the display, newlines folded to
+ * spaces, bounded so synthesis gets one breath group. */
+
+/* Sentence enders are UTF-8 sequences, so the test is a prefix compare,
+ * never a character constant (a multi-byte constant has an
+ * implementation-defined value). */
+
+static const char *const va_sentence_enders[] =
+  { "\u3002", "\uff01", "\uff1f", "\uff1b", "!", "?", ";", NULL };
+
+static size_t va_ender_len(const char *s)
+{
+  int k;
+
+  for (k = 0; va_sentence_enders[k] != NULL; k++)
+    {
+      size_t len = strlen(va_sentence_enders[k]);
+
+      if (strncmp(s, va_sentence_enders[k], len) == 0)
+        {
+          return len;
+        }
+    }
+
+  return 0;
+}
+
+static void va_speech_fallback(char *speech, size_t scap,
+                               const char *display)
+{
+  char tmp[VA_SPEECH_FALLBACK_MAX + 1];
+  size_t i = 0;
+  size_t out = 0;
+  unsigned sentences = 0;
+  size_t limit = VA_SPEECH_FALLBACK_MAX;
+
+  if (speech == NULL || scap == 0 || display == NULL)
+    {
+      return;
+    }
+
+  speech[0] = '\0';
+  if (limit >= sizeof(tmp))
+    {
+      limit = sizeof(tmp) - 1;
+    }
+
+  while (display[i] != '\0' && out < limit && sentences < 2)
+    {
+      size_t elen = va_ender_len(display + i);
+
+      if (elen > 0)
+        {
+          if (out + elen > limit)
+            {
+              break;
+            }
+
+          memcpy(tmp + out, display + i, elen);
+          out += elen;
+          i += elen;
+          sentences++;
+          continue;
+        }
+
+      {
+        char c = display[i];
+
+        if (c == '\n' || c == '\r')
+          {
+            c = ' ';
+          }
+
+        tmp[out++] = c;
+        i++;
+      }
+    }
+
+  /* Terminate before handing tmp to the aligner: va_copy_utf8 reads
+   * src[take] to detect a cut inside a character, and an unterminated
+   * buffer would let stale stack bytes decide where the cut lands. */
+
+  tmp[out] = '\0';
+  out = va_copy_utf8(speech, scap, tmp, out);
+
+  while (out > 0 && speech[out - 1] == ' ')
+    {
+      speech[--out] = '\0';
+    }
+}
+
+bool vg_va_split_reply(const char *reply, char *display, size_t dcap,
+                       char *speech, size_t scap)
+{
+  char body[VA_SPLIT_BODY_MAX];
+  char spoken[VA_SPLIT_TEXT_MAX];
+  size_t marker_line = (size_t)-1;
+  size_t marker_len = 0;
+  size_t i = 0;
+  size_t out = 0;
+  size_t n;
+
+  if (display != NULL && dcap > 0)
+    {
+      display[0] = '\0';
+    }
+
+  if (speech != NULL && scap > 0)
+    {
+      speech[0] = '\0';
+    }
+
+  if (reply == NULL || reply[0] == '\0' || display == NULL || dcap == 0 ||
+      speech == NULL || scap == 0)
+    {
+      return false;
+    }
+
+  /* Locate the last line that carries the spoken-summary marker. */
+
+  n = strlen(reply);
+  if (n > VA_SPLIT_BODY_MAX)
+    {
+      n = VA_SPLIT_BODY_MAX;
+    }
+
+  while (i < n)
+    {
+      size_t start = i;
+      size_t end = va_line_end(reply, i);
+      size_t len;
+
+      if (end > n)
+        {
+          end = n;
+        }
+
+      len = va_marker_len(reply, start, end);
+      if (len > 0)
+        {
+          marker_line = start;
+          marker_len = len;
+        }
+
+      i = (reply[end] == '\n') ? end + 1 : end;
+    }
+
+  spoken[0] = '\0';
+  if (marker_line != (size_t)-1)
+    {
+      size_t end = va_line_end(reply, marker_line);
+
+      if (end > n)
+        {
+          end = n;
+        }
+
+      if (marker_line + marker_len <= end)
+        {
+          va_trim_copy(spoken, sizeof(spoken), reply + marker_line + marker_len,
+                       end - marker_line - marker_len);
+        }
+    }
+
+  /* Display: the reply without the marker line. */
+
+  body[0] = '\0';
+  i = 0;
+  while (i < n)
+    {
+      size_t start = i;
+      size_t end = va_line_end(reply, i);
+      size_t len;
+
+      if (end > n)
+        {
+          end = n;
+        }
+
+      if (start != marker_line)
+        {
+          len = end - start;
+          if (out + len >= sizeof(body))
+            {
+              len = sizeof(body) - 1 - out;
+            }
+
+          memcpy(body + out, reply + start, len);
+          out += len;
+        }
+
+      if (reply[end] == '\n')
+        {
+          if (out < sizeof(body) - 1)
+            {
+              body[out++] = '\n';
+            }
+
+          i = end + 1;
+        }
+      else
+        {
+          i = end;
+        }
+    }
+
+  body[out] = '\0';
+  va_trim_copy(display, dcap, body, strlen(body));
+
+  if (display[0] == '\0')
+    {
+      /* Only the marker line was sent: keep it visible rather than showing
+       * an empty panel. */
+
+      va_trim_copy(display, dcap, reply, strlen(reply));
+    }
+
+  if (spoken[0] == '\0')
+    {
+      va_speech_fallback(spoken, sizeof(spoken), display);
+    }
+
+  if (spoken[0] == '\0' && display[0] != '\0')
+    {
+      /* Display has no sentence-shaped start (a bare number, say): speak the
+       * whole bounded display text rather than nothing. */
+
+      va_trim_copy(spoken, sizeof(spoken), display, strlen(display));
+    }
+
+  if (spoken[0] == '\0')
+    {
+      return false;
+    }
+
+  /* spoken was built at the internal 512-byte bound; hand it out through
+   * the caller's cap. */
+
+  (void)va_copy_utf8(speech, scap, spoken, strlen(spoken));
+  return display[0] != '\0' && speech[0] != '\0';
+}
