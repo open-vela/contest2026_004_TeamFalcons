@@ -1160,9 +1160,10 @@ static void vr_run_actions(uint32_t actions)
               (void)vg_voice_finish_owned_silent(g_vr.record_generation);
               g_vr.record_generation = 0;
             }
-          /* END_SILENT 会在采集槽里留下原始 PCM 等待上传取用；取消路径
-           * 没有后续取用，必须显式清零释放，否则残留音频留在内存。 */
-          if (g_vr.clip_generation != 0)
+          /* 正常松手和到达录音上限会同时请求 START_ASR，必须保留 PCM
+           * 和句柄供识别取用。取消或录音过短没有后续取用，才清理。 */
+          if ((actions & VG_VS_ACT_START_ASR) == 0 &&
+              g_vr.clip_generation != 0)
             {
               (void)vg_voice_finish_owned(g_vr.clip_generation, true);
               g_vr.clip_generation = 0;

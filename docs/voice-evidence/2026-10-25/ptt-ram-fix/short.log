@@ -1,0 +1,46 @@
+HARNESS v2026-10-24c stepdbg+livemerge
+2026-10-25T09:22:15.7129500+08:00 CMD echo CASE_ptt_short
+echo CASE_ptt_short
+CASE_ptt_short
+nsh> [K
+2026-10-25T09:22:15.8448252+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=4 tts=0
+nsh> [K
+2026-10-25T09:22:15.9710638+08:00 CMD vgvoice round press
+vgvoice round press
+vgvoice: round press synthetic
+nsh> [K[vgvoice] voice_preconnect rc=0 dns=-1 tls=-1 ms=0
+
+2026-10-25T09:22:15.9983877+08:00 CMD vgvoice round release
+vgvoice round release
+vgvoice: round release synthetic
+[vgvoice] round_settled gen=17 state=9 failed=0 elapsed_ms=28400
+nsh> [K
+2026-10-25T09:22:16.5190874+08:00 CMD vgvoice round text
+vgvoice round text
+q=
+a=
+nsh> [K
+2026-10-25T09:22:16.6305135+08:00 CMD vgvoice status
+vgvoice status
+vgvoice: state=idle retained_pcm=0
+vgvoice: rounds=6 played=0 cancelled=0 too_short=1 failures=0 timeouts=0
+vgvoice: last result=too_short ms=0 samples=4 bytes=8
+vgvoice: level peak=124 rms=66
+vgvoice: dma dropped=0 overruns=0 clockerrors=0 errors=0
+vgvoice: round_ms=0 temp_left=0 worker=9
+vgvoice: capture halves=0 drained=1 overwritten=0 wraps=0 elapsed_ms=0 rate=0 B/s
+vgvoice: tail_bytes=38 stage_ms=0
+vgvoice: generation=6 queue_highwater=1 copy_max_us=0 filter_max_us=0
+vgvoice: content zcr=250 clip=0 tick_us=10000
+nsh> [K
+2026-10-25T09:22:16.8131477+08:00 CMD vgvoice round counts
+vgvoice round counts
+vgvoice: requests asr=4 tts=0
+nsh> [K
+2026-10-25T09:22:16.9365268+08:00 CMD vgvoice round end
+vgvoice round end
+vgvoice: round end requested
+[vgvoice] cancel_settled elapsed_ms=10 retained_pcm=0 controlled_active=0
+nsh> [K

@@ -1,0 +1,228 @@
+[
+  {
+    "command": "echo CASE_ptt_normal",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round press",
+    "wait_ms": 3000,
+    "timeout_ms": 20000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "",
+    "optional_wait": true,
+    "wait_ms": 100,
+    "wait_for": "[vgvoice] round_settled",
+    "timeout_ms": 45000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "echo CASE_ptt_repeat",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round press",
+    "wait_ms": 3000,
+    "timeout_ms": 20000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "",
+    "optional_wait": true,
+    "wait_ms": 100,
+    "wait_for": "[vgvoice] round_settled",
+    "timeout_ms": 45000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "echo CASE_ptt_cap",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round press",
+    "wait_ms": 16000,
+    "timeout_ms": 20000
+  },
+  {
+    "command": "vgvoice round release",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "",
+    "optional_wait": true,
+    "wait_ms": 100,
+    "wait_for": "[vgvoice] round_settled",
+    "timeout_ms": 45000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "echo CASE_ptt_cancel",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round press",
+    "wait_ms": 3000,
+    "timeout_ms": 20000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 500,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round text",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice status",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round counts",
+    "wait_ms": 100,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "vgvoice round end",
+    "wait_ms": 300,
+    "timeout_ms": 5000
+  },
+  {
+    "command": "echo CASE_ptt_short",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice round counts",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice round press",
+    "timeout_ms": 5000,
+    "wait_ms": 0
+  },
+  {
+    "command": "vgvoice round release",
+    "timeout_ms": 5000,
+    "wait_ms": 500
+  },
+  {
+    "command": "vgvoice round text",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice status",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice round counts",
+    "timeout_ms": 5000,
+    "wait_ms": 100
+  },
+  {
+    "command": "vgvoice round end",
+    "timeout_ms": 5000,
+    "wait_ms": 300
+  }
+]
