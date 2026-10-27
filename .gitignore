@@ -55,6 +55,7 @@ app/velaguard/host_tests/test_runtime_render
 # Accidental apt downloads (do not submit)
 *.deb
 .grok/
+.scratch/
 # .clangd is committed (portable include flags for all machines)
 
 # Editor settings: keep the shared VS Code project configuration.
@@ -115,8 +116,9 @@ logs/**/errors/
 /docs/submission/TeamFalcons-*-PREVIEW.zip
 /docs/submission/REQUIREMENTS.md
 
-# Headless/HMI framebuffer captures dropped at the repo root during accept runs
+# Headless/HMI framebuffer captures and scratch logs dropped at the repo root during accept runs
 /*.ppm
+/*.log
 
 # Submission material backups (kept out of git; canonical copies live elsewhere)
 docs/submission/.backup-*/
