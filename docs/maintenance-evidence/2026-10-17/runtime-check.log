@@ -1,0 +1,56 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:3
+
+nsh> [K
+ELAPSED_MS=10
+
+COMMAND 2026-10-17T13:10:53.3332496+08:00 vgagent status
+vgagent status
+round: state=running gen=2 owner=daily
+llm: credentials=ready provision_file=present
+nsh> [K
+ELAPSED_MS=128
+
+COMMAND 2026-10-17T13:10:53.4643677+08:00 cat /proc/meminfo
+cat /proc/meminfo
+      total       used       free    maxused    maxfree  nused  nfree name
+    7014016     273848    6740168     366880    6291440    954      6 Umem
+nsh> [K
+ELAPSED_MS=59
+
+COMMAND 2026-10-17T13:10:53.5260878+08:00 vgpoint get temp
+vgpoint get temp
+vgpoint: VALUE id=temp value=- ok=0 unit=C age_ms=12880
+vgpoint: OK cmd=get table=committed n=1
+nsh> [K
+ELAPSED_MS=501
+
+COMMAND 2026-10-17T13:10:54.0294370+08:00 vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=373 wall=2026-10-17T13:10:59
+vgruntime: slave=1 boot_total=42 boot_ok=0 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=42 win_ok=0 win_crc=0 win_timeout=42 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=21 boot_ok=0 boot_crc=0 boot_timeout=20 boot_echo=0 boot_other=1 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=21 win_ok=0 win_crc=0 win_timeout=20 win_echo=0 win_other=1
+vgruntime: slave=3 boot_total=21 boot_ok=0 boot_crc=0 boot_timeout=21 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=21 win_ok=0 win_crc=0 win_timeout=21 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=63 boot_ok=0 boot_crc=0 boot_timeout=63 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=63 win_ok=0 win_crc=0 win_timeout=63 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=62 boot_ok=0 boot_crc=0 boot_timeout=62 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=62 win_ok=0 win_crc=0 win_timeout=62 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=60 boot_ok=0 boot_crc=0 boot_timeout=60 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=60 win_ok=0 win_crc=0 win_timeout=60 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=20 boot_ok=0 boot_crc=0 boot_timeout=20 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=20 win_ok=0 win_crc=0 win_timeout=20 win_echo=0 win_other=0
+vgruntime: bus boot_total=289 boot_ok=0 boot_crc=0 boot_timeout=288 boot_echo=0 boot_other=1
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=373 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+ELAPSED_MS=314

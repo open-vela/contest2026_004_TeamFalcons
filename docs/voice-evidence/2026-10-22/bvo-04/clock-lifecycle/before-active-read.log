@@ -1,0 +1,66 @@
+
+HOST 2026-10-22T08:50:46.9520232+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T08:50:47.1717296+08:00 SEND !vgaudio id
+!vgaudio id
+vgaudio: codec id=0x8994 expect=0x8994 OK
+nxplayer> [K
+HOST 2026-10-22T08:50:47.3794113+08:00 SEND !vgaudio reg 0x300
+!vgaudio reg 0x300
+vgaudio: R768 (0x300) = 0x4010
+nxplayer> [K
+HOST 2026-10-22T08:50:47.6084901+08:00 SEND !vgaudio reg 0x39
+!vgaudio reg 0x39
+vgaudio: R57 (0x39) = 0x006c
+nxplayer> [K
+HOST 2026-10-22T08:50:47.8155522+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T08:50:47.9348855+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+[heartbeat] skip LLM (play /mnt/emmc/bvo04/tone.wav
+HMI, no ReAct from heartbeat/poke)
+nxplayer> [K
+HOST 2026-10-22T08:50:48.0591895+08:00 SEND !vgaudio id
+!vgaudio id
+vgaudio: codec id=0x8994 expect=0x8994 OK
+nxplayer> [K
+HOST 2026-10-22T08:50:48.2407623+08:00 SEND !vgaudio reg 0x39
+!vgaudio reg 0x39
+vgaudio: R57 (0x39) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:50:48.3932195+08:00 SEND !vgaudio reg 0x1c
+!vgaudio reg 0x1c
+vgaudio: R28 (0x1c) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:50:48.5460032+08:00 SEND !vgaudio reg 0x300
+!vgaudio reg 0x300
+vgaudio: R768 (0x300) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:50:48.7126927+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: MCLK = 49142857 / 12 = 4095238 Hz (target 4096000)
+vgaudio: last dma=31 sr=30008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30008560
+vgaudio: dma_done=46 errors=0 timeouts=0 txbytes=369108
+vgaudio: sai_underruns=22 clockerrors=0
+nxplayer> [K
+HOST 2026-10-22T08:50:50.1571951+08:00 SEND !vgaudio reg 0x300
+!vgaudio reg 0x300
+vgaudio: R768 (0x300) = 0x4010
+nxplayer> [K
+HOST 2026-10-22T08:50:50.3103114+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T08:50:50.5322027+08:00 SEND vgaudio reg 0x1c
+vgaudio reg 0x1c
+vgaudio: R28 (0x1c) = 0x006d
+nsh> [K
+HOST 2026-10-22T08:50:50.6850403+08:00 SEND vgaudio reg 0x300
+vgaudio reg 0x300
+vgaudio: R768 (0x300) = 0x4010
+nsh> [K

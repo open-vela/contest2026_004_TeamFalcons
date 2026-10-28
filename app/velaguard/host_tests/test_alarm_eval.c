@@ -61,8 +61,8 @@ int main(void)
   k = vg_alarm_eval(&temp, 0, 2, 0.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_NONE, "fail streak 2");
 
-  k = vg_alarm_eval(&temp, 0, 3, 0.0f, &thr);
-  fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "fail streak 3");
+  k = vg_alarm_eval(&temp, 0, 5, 0.0f, &thr);
+  fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "five failed samples");
 
   /* Recovery sequences mirroring vg_model_set_live: the HMI clears the
    * active alarm only when the owning point evaluates NONE again. */
@@ -71,7 +71,7 @@ int main(void)
   k = vg_alarm_eval(&flood, 1, 0, 0.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_NONE, "flood recovered to none");
 
-  k = vg_alarm_eval(&temp, 0, 3, 0.0f, &thr);
+  k = vg_alarm_eval(&temp, 0, 5, 0.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "temp offline");
   k = vg_alarm_eval(&temp, 1, 0, 25.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_NONE, "temp recovered after offline");
@@ -82,10 +82,37 @@ int main(void)
   k = vg_alarm_eval(&temp, 0, 1, 0.0f, &thr);
   fails += expect_true(k == VG_ALARM_KIND_NONE, "brief failure no recovery");
 
-  fails += expect_true(vg_alarm_fail_n(&empty) == 3, "default fail_n");
+  fails += expect_true(vg_alarm_fail_n(&empty) == 5, "minimum failed samples");
   fails += expect_true(vg_alarm_kind_rank(VG_ALARM_KIND_CRIT) >
                        vg_alarm_kind_rank(VG_ALARM_KIND_OFFLINE),
                        "crit ranks above offline");
+
+  temp.fail_n = 3;
+  fails += expect_true(vg_alarm_eval(&temp, 0, 3, 0, &thr) == VG_ALARM_KIND_NONE,
+                       "window needs at least five failed samples");
+  temp.fail_n = 20;
+  fails += expect_true(vg_alarm_eval(&temp, 0, 8, 0, &thr) == VG_ALARM_KIND_OFFLINE,
+                       "window clamps fail_n to eight");
+
+  {
+    struct vg_alarm_window window = {0};
+    temp.fail_n = 3;
+    for (int i = 0; i < 4; i++)
+      fails += expect_true(vg_alarm_sample(&temp, &window, 0, 0, &thr) ==
+                           VG_ALARM_KIND_NONE, "first four failures stay pending");
+    fails += expect_true(vg_alarm_sample(&temp, &window, 0, 0, &thr) ==
+                         VG_ALARM_KIND_OFFLINE, "fifth failure trips");
+    fails += expect_true(vg_alarm_sample(&temp, &window, 1, 20, &thr) ==
+                         VG_ALARM_KIND_NONE, "success recovers immediately");
+    memset(&window, 0, sizeof(window));
+    for (int i = 0; i < 32; i++)
+      fails += expect_true(vg_alarm_sample(&temp, &window, i % 2, 20, &thr) ==
+                           VG_ALARM_KIND_NONE, "scattered four failures never trip");
+    memset(&window, 0, sizeof(window));
+    int seq[] = {0, 0, 1, 0, 1, 0, 1, 0};
+    for (int i = 0; i < 8; i++) k = vg_alarm_sample(&temp, &window, seq[i], 20, &thr);
+    fails += expect_true(k == VG_ALARM_KIND_OFFLINE, "five nonconsecutive failures trip");
+  }
 
   if (fails)
     {

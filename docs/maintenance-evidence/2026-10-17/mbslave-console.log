@@ -1,0 +1,65 @@
+=== Modbus Slave: VelaGuard 32 slaves, COM4 @ 9600 8N1 ===
+True
+addr= 1 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\01_温湿度-导轨V1.5.mbs
+True
+addr= 2 qty=17 first_reg=2 -> C:\Users\19y\Documents\mthings\02_水浸-V1.1.mbs
+True
+addr= 3 qty= 4 first_reg=0 -> C:\Users\19y\Documents\mthings\03_PT100-FTX458.mbs
+True
+addr= 4 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\04_烟雾-SD100.mbs
+True
+addr= 5 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\05_CO2-MH410.mbs
+True
+addr= 6 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\06_PM2.5-AQ100.mbs
+True
+addr= 7 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\07_光照-LS200.mbs
+True
+addr= 8 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\08_噪声-NS300.mbs
+True
+addr= 9 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\09_气压-BP100.mbs
+True
+addr=10 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\10_风速-WS500.mbs
+True
+addr=11 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\11_液位-LT400.mbs
+True
+addr=12 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\12_流量-FM200.mbs
+True
+addr=13 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\13_压力-PT300.mbs
+True
+addr=14 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\14_电表-DTS666.mbs
+True
+addr=15 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\15_UPS-UP500.mbs
+True
+addr=16 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\16_门禁-AC100.mbs
+True
+addr=17 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\17_人体-PIR200.mbs
+True
+addr=18 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\18_振动-VS100.mbs
+True
+addr=19 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\19_SF6-SF600.mbs
+True
+addr=20 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\20_臭氧-O3M100.mbs
+True
+addr=21 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\21_甲醛-HCHO50.mbs
+True
+addr=22 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\22_TVOC-VOC300.mbs
+True
+addr=23 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\23_继电器-RLY8.mbs
+True
+addr=24 qty= 1 first_reg=0 -> C:\Users\19y\Documents\mthings\24_DI采集-IO16.mbs
+True
+addr=25 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\25_AI采集-AI8.mbs
+True
+addr=26 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\26_变频器-VFD750.mbs
+True
+addr=27 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\27_软启动-SS100.mbs
+True
+addr=28 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\28_空调-ACU200.mbs
+True
+addr=29 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\29_柴发-DG500.mbs
+True
+addr=30 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\30_BMS-BMS48.mbs
+True
+addr=31 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\31_逆变器-PV1000.mbs
+True
+addr=32 qty= 2 first_reg=0 -> C:\Users\19y\Documents\mthings\32_变压器-TT200.mbs

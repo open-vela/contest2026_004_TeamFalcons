@@ -1,0 +1,10 @@
+{
+  "apps_archive_sha256": "e7a31004591e9facdbfe98c34ec1f874cab1208a7c899825cf2b3b0c2b6878ba",
+  "staging_identical": true,
+  "duplicate_members": {
+    "lv_draw_sw_vector.c.home.hello19y.openvela.apps.graphics.lvgl_5.o": [
+      "2d9a701fc52dadefca8bcd9919cd1e7c19d203e2fb4391a868990c83f2a5854b",
+      "2d9a701fc52dadefca8bcd9919cd1e7c19d203e2fb4391a868990c83f2a5854b"
+    ]
+  }
+}

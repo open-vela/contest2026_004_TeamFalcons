@@ -1,0 +1,30 @@
+使用“6”个参数调用“Run”时发生异常:“对端口“COM4”的访问被拒绝。”
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\scripts\maintenance_rtu_slave.ps1:82 字符:
+ 1
++ [VelaMaintenanceSlave]::Run($ComPort,$ControlPath,$LogPath,$Hours,$En ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnauthorizedAccessException
+ 
+使用“6”个参数调用“Run”时发生异常:“对端口“COM4”的访问被拒绝。”
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\scripts\maintenance_rtu_slave.ps1:82 字符:
+ 1
++ [VelaMaintenanceSlave]::Run($ComPort,$ControlPath,$LogPath,$Hours,$En ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : UnauthorizedAccessException
+ 
+Add-Type : c:\Users\19y\AppData\Local\Temp\lyrs1xgs.0.cs(52) : 应输入 )
+c:\Users\19y\AppData\Local\Temp\lyrs1xgs.0.cs(51) :      crc=Crc(response,response.Length-2);response[response.Length-2
+]=(byte)crc;response[response.Length-1]=(byte)(crc>>8);
+c:\Users\19y\AppData\Local\Temp\lyrs1xgs.0.cs(52) : >>>      if(replyDelayMs -gt 0){Start-Sleep -Milliseconds replyDela
+yMs}
+c:\Users\19y\AppData\Local\Temp\lyrs1xgs.0.cs(53) :      p.Write(response,0,response.Length);replies++;
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\scripts\maintenance_rtu_slave.ps1:25 字符:
+ 1
++ Add-Type -TypeDefinition @'
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidData: (Microsoft.Power...peCompilerError:AddTypeCompilerError) [Add-Type]，Excepti 
+   on
+    + FullyQualifiedErrorId : SOURCE_CODE_ERROR,Microsoft.PowerShell.Commands.AddTypeCommand
+ 

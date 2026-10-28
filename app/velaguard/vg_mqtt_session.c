@@ -38,9 +38,9 @@
 #  define CONFIG_VG_DISCOVER_POINTS_PATH "/data/velaguard/config/points.json"
 #endif
 
-#define VG_MQTT_TX_SZ     10240
+#define VG_MQTT_TX_SZ     (VG_POINT_TABLE_JSON_MAX + 2048)
 #define VG_MQTT_RX_SZ     512
-#define VG_MQTT_PT_MAX    8192
+#define VG_MQTT_PT_MAX    VG_POINT_TABLE_JSON_MAX
 #define VG_MQTT_ALARM_N   8
 #define VG_MQTT_ALARM_B   384
 #define VG_MQTT_TEL_B     2048
@@ -233,7 +233,9 @@ static int load_point_table(void)
     }
 
   n = fread(g_pt_buf, 1, sizeof(g_pt_buf) - 1, fp);
-  fclose(fp);
+  int bad = ferror(fp) || n == sizeof(g_pt_buf) - 1;
+  if (fclose(fp) != 0) bad = 1;
+  if (bad) { printf("vgnet: point table unreadable or too large\n"); return -1; }
   g_pt_buf[n] = '\0';
   if (!vg_mqtt_point_table_has_points(g_pt_buf, n))
     {
@@ -247,15 +249,18 @@ static void publish_point_table(void)
 {
   int n;
 
+  /* A previous version's success must not suppress periodic retries for
+   * an updated table whose read or publish fails. Only the network thread
+   * owns this flag; notifications keep their separate dirty bit. */
+  g_pt_sent = 0;
   n = load_point_table();
   if (n <= 0)
     {
       return;
     }
 
-  (void)publish_raw("point_table", g_pt_buf, (size_t)n,
-                    MQTT_PUBLISH_QOS_1 | MQTT_PUBLISH_RETAIN);
-  g_pt_sent = 1;
+  if (publish_raw("point_table", g_pt_buf, (size_t)n,
+                  MQTT_PUBLISH_QOS_1 | MQTT_PUBLISH_RETAIN) == 0) g_pt_sent = 1;
 }
 
 static void build_telemetry(void)

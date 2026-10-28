@@ -1,0 +1,83 @@
+# 2026-10-18 构建产物
+# 构建时间: 2026-10-18 14:40:33 CST
+# 命令: bash scripts/build.sh   (TARGET=velaguard-lvgl, 发布增量构建)
+# 固件内嵌构建时间: Oct 18 2026 14:37:55
+
+afd8f1e30d42aa3ae33fb58eaa8039ee17bcadf62ddc9ea7e3fb06c6697cf493  .debug/nuttx.hex
+68b2f32f37d85d78013c62151fe531a6a87a5daba51900d785b38d23a1afe13a  .debug/nuttx.bin
+877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e  .debug/qspi_bootstub.hex
+
+# 大小
+1262640 .debug/nuttx.bin
+1646104 .debug/nuttx.elf
+3551562 .debug/nuttx.hex
+2076 .debug/qspi_bootstub.hex
+
+# 静态内存占用 (LD 输出)
+Memory region         Used Size  Region Size  %age Used
+            itcm:           0 B        64 KB      0.00%
+           flash:     1262640 B       128 MB      0.94%
+           dtcm1:           0 B        64 KB      0.00%
+           dtcm2:           0 B        64 KB      0.00%
+            sram:      292252 B       512 KB     55.74%
+           sram1:           0 B       128 KB      0.00%
+           sram2:           0 B       128 KB      0.00%
+           sram3:           0 B        32 KB      0.00%
+           sram4:           0 B        64 KB      0.00%
+           bbram:           0 B         4 KB      0.00%
+           sdram:           0 B         8 MB      0.00%
+CP: nuttx.hex
+CP: nuttx.bin
+staged: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/nuttx.hex（发布构建，TARGET=velaguard-lvgl）
+
+# 依赖仓库提交
+nuttx    75cbc8eb7a5 fix(stm32h750b-dk): preserve SDRAM pins and retain child status
+ai_agent 131642d fix(agent): bound shell execution and correlate final replies
+MQTT-C   4dbb7f3 mqtt_pal: add weak hooks for tagged LESP send/recv
+apps     0ea954b79 netutils: carrier poll DHCP renew and ESP8266 LESP compat
+
+# --- 第二次构建：D-01 修复后（2026-10-18 16:09:56）---
+# 变更：vg_file_store.{c,h} 缩短备份临时后缀并加派生名预算校验；
+#       host_tests/test_file_store.c 增加名字预算回归。
+# 命令：bash scripts/build.sh   (TARGET=velaguard-lvgl)
+# 固件内嵌构建时间: Oct 18 2026 16:09:56
+90350897cae9cbf954b65049f864d231f156ea0065cbf363c51efb88404a4d8d  .debug/nuttx.hex
+f38a5356ab61147b83eabd581345d3ecc9266ed9c83637f182bfdfa173bfd1bd  .debug/nuttx.bin
+877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e  .debug/qspi_bootstub.hex
+# 静态内存：flash 1,262,744 B / sram 292,252 B（与修复前一致）
+# 构建日志：build-d01-fix.log；烧录日志：flash-d01-fix.log（两段均 verified）
+
+# --- 第三次构建：回退未成立的栈改动后，重新构建已提交代码（2026-10-18 16:58:34）---
+# 变更：仅包含已提交的 D-01 修复；--clean 重新生成 .config，移除试验用
+#       CONFIG_VG_NSH_STACKSIZE。
+# 命令：bash scripts/build.sh --clean   (TARGET=velaguard-lvgl)
+# 固件内嵌构建时间: Oct 18 2026 16:58:34
+# 静态内存：flash 1,262,756 B / sram 292,252 B
+# 告警：6 处，全部为既有第三方/其他模块告警（agent_loop.c、stm32h7 sdmmc、
+#       skill_loader.c、vg_page_diagnosis.c），本次改动文件无告警。
+# 构建日志：build-final.log；烧录日志：flash-final.log（两段均 verified）
+a2fbb03784f310d5ccdae6d898ab0642a7e7094dc8c0b70a8f9a148e3b534894  .debug/nuttx.hex
+9f8f62a172f78b65de03fbe013004712f2da64328d8f9ce7622bb50ab210451f  .debug/nuttx.bin
+
+# --- 第四次构建：FS-01/D-02 根因修复后（2026-10-18 17:43:24）---
+# 变更：NSH 控制台线程改用显式栈（新增 CONFIG_VG_NSH_STACKSIZE，默认 8192），
+#       velaguard.c 用 pthread_attr_setstacksize 指定；Kconfig 与 defconfig 同步。
+# 命令：bash scripts/build.sh --clean   (TARGET=velaguard-lvgl)
+# 固件内嵌构建时间: Oct 18 2026 17:43:24
+# 静态内存：flash 1,262,876 B / sram 292,252 B（栈是运行时堆分配，不影响静态占用）
+# 告警：6 处，与 16:58:34 构建完全相同，改动文件无新增告警
+# 构建日志：build-d02-fix.log；烧录日志：flash-d02-fix.log（两段均 verified）
+b4c708943a1fa71644127f41e60e18c6f9e47e8aaea1091f890cf50c51672f2f  .debug/nuttx.hex
+006eef2a8c233effb89203f7fd6b16137ff576207503d9f96d410698a3d9c5fe  .debug/nuttx.bin
+877aa3cf6072d66582b33eac555ded7cd5603bacd5dc794915fbcba425f6119e  .debug/qspi_bootstub.hex
+
+# --- 第五次构建：D-04 修复后（2026-10-18 18:41:50）---
+# 变更：公共树 nuttx 把 RS485 DIR 释放从 up_txempty() 挪到 TX 完成中断，
+#       去掉那里 400 us 的忙等（见 defects.md 的 D-04）。
+# 命令：bash scripts/build.sh   (TARGET=velaguard-lvgl，增量)
+# 固件内嵌构建时间: Oct 18 2026 18:41:50
+# 静态内存：flash 1,262,892 B / sram 292,252 B
+# 告警：0 处（增量构建只重编了改动文件及其依赖）
+# 构建日志：build-d04-fix.log；烧录日志：flash-d04-fix.log（两段均 verified）
+2964f76ed3a3d9da6788a4f477a699e123b8cec45c9a647f1bf4aabc77c47dde  .debug/nuttx.hex
+afdfd57679379771ddaa4de43157e758a8f555041f334c51a253134b82676551  .debug/nuttx.bin

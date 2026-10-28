@@ -1,0 +1,120 @@
+2026-10-18 17:33:52
+0x900017ee in nx_start ()
+=== CONNECTED ===
+pc             0x900017ee          0x900017ee <nx_start+322>
+sp             0x2404796c          0x2404796c
+Hardware assisted breakpoint 1 at 0x900014a0
+=== hardware breakpoint installed at arm_hardfault entry ===
+Num     Type           Disp Enb Address    What
+1       hw breakpoint  keep y   0x900014a0 <arm_hardfault>
+=== running, waiting for the board to fault ===
+
+Breakpoint 1, 0x900014a0 in arm_hardfault ()
+
+
+############ HARD FAULT CAUGHT ############
+
+--- cpu regs at handler entry ---
+r0             0x3                 3
+r1             0x38003020          939536416
+r2             0x0                 0
+r3             0x900014a1          -1879042911
+r4             0x38002af0          939535088
+r5             0x3                 3
+r6             0x24003d38          603995448
+r7             0x38003020          939536416
+r8             0x3800918c          939561356
+r9             0x3                 3
+r10            0x0                 0
+r11            0x38003020          939536416
+r12            0x0                 0
+sp             0x38002f30          0x38002f30
+lr             0x90000ee9          -1879044375
+pc             0x900014a0          0x900014a0 <arm_hardfault>
+xpsr           0x81000003          -2130706429
+fpscr          0x0                 0
+msp            0x38002f30          0x38002f30
+psp            0x2404799c          0x2404799c
+primask        0x0                 0
+basepri        0x0                 0
+faultmask      0x0                 0
+control        0x0                 0
+
+--- SCB fault status ---
+CFSR  @0xE000ED28: 0xe000ed28:	0x00008200
+HFSR  @0xE000ED2C: 0xe000ed2c:	0x40000000
+MMFAR @0xE000ED34: 0xe000ed34:	0x0000003b
+BFAR  @0xE000ED38: 0xe000ed38:	0x0000003b
+
+--- NuttX context frame (r1 = context) ---
+$1 = 0x38003020
+0x38003020:	0x380030f8	0x00000000	0x38008ed0	0x00000000
+0x38003030:	0x00000003	0x380031c8	0x3800918c	0x00000003
+0x38003040:	0x00000000	0x00000000	0x00000000	0xffffffe9
+0x38003050:	0x00000000	0x00000000	0x00000000	0x00000000
+
+--- g_readytorun @0x24000264 ---
+0x24000264 <g_readytorun>:	0x38002af0	0x24003d3c	0x7fffffff	0x00000005
+running tcb = $2 = 0x38002af0
+list tail   = $3 = 0x24003d3c
+
+--- running TCB, 0x80 bytes ---
+0x38002af0:	0x2000df60	0x00000000	0x380004b4	0x380003dc
+0x38002b00:	0x00000000	0x00000000	0x00000000	0x00000000
+0x38002b10:	0x00000000	0x00000000	0x00000000	0x00000000
+0x38002b20:	0x00000000	0x00000004	0x00000064	0x00000064
+0x38002b30:	0x900a3add	0x9000caad	0x00000003	0x00002209
+0x38002b40:	0x00000000	0x0000000e	0x00000000	0x00000000
+0x38002b50:	0x38002af0	0x00000000	0x00000022	0x000007e8
+0x38002b60:	0x38002be0	0x38002bf8	0x00000000	0x00000000
+
+--- running TCB +0x60..0x90 (stack bookkeeping) ---
+0x38002b50:	0x38002af0	0x00000000	0x00000022	0x000007e8
+0x38002b60:	0x38002be0	0x38002bf8	0x00000000	0x00000000
+0x38002b70:	0x00000000	0x00000000	0x00000000	0x00000000
+
+--- stack_alloc_ptr = *(tcb+0x70) ---
+$4 = 0x38002be0
+--- first 8 words at stack_alloc_ptr (tls_info_s) ---
+0x38002be0:	0x0000000b	0x38002ce0	0x00000000	0x90000ee9
+0x38002bf0:	0x00000080	0x00000007	0x24003538	0x00000080
+
+--- idle TCB first 32 words (reference) ---
+0x24003d3c <g_idletcb>:	0x00000000	0x2000df60	0x24007328	0x3800020c
+0x24003d4c <g_idletcb+16>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x24003d5c <g_idletcb+32>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x24003d6c <g_idletcb+48>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x24003d7c <g_idletcb+64>:	0x900016ad	0x900016ad	0x00000002	0x00000002
+0x24003d8c <g_idletcb+80>:	0x00000000	0x00000000	0x00000000	0x00000000
+0x24003d9c <g_idletcb+96>:	0x00000000	0x00000000	0x00000000	0x000003e8
+0x24003dac <g_idletcb+112>:	0x2404759c	0x240475b4	0x00000000	0x00000000
+
+--- backtrace ---
+#0  0x900014a0 in arm_hardfault ()
+#1  0x90000ee8 in arm_doirq ()
+#2  0x900010ce in exception_common ()
+#3  0x90096060 in getpid ()
+#4  0x9007c02c in nsh_command ()
+#5  0x90060df6 in nsh_execute ()
+#6  0x90061b9a in nsh_parse_command.constprop ()
+#7  0x9002a094 in nsh_session ()
+#8  0x90029f4a in nsh_consolemain ()
+#9  0x9000caba in nsh_thread ()
+#10 0x90095b18 in pthread_startup ()
+#11 0x900a3afa in pthread_start ()
+#12 0x00000000 in ?? ()
+
+--- 32 words of handler stack at sp ---
+0x38002f30:	0x00000000	0x00000007	0x00000000	0x00000003
+0x38002f40:	0x380031c8	0x900010cf	0x6461625f	0x38008200
+0x38002f50:	0x202020d0	0x20202020	0x20202020	0x9008f600
+0x38002f60:	0x7e325220	0x20202031	0x54585420	0x00004400
+0x38002f70:	0x00000020	0x000044f4	0x00000088	0x000044f4
+0x38002f80:	0x00000088	0x000044f3	0x00000088	0x00000088
+0x38002f90:	0x000044f4	0x00000011	0x240479a0	0x90009e55
+0x38002fa0:	0x24008a28	0x00000000	0x38008560	0x24079a48
+
+############ CAPTURE DONE ############
+[Inferior 1 (Remote target) detached]
+
+[exited with code 0]

@@ -1,3 +1,0 @@
-{"file": ".trellis/tasks/08-30-stage1-lvgl-hmi/design.md", "reason": "Phase B technical design"}
-{"file": ".trellis/tasks/08-30-stage1-lvgl-hmi/implement.md", "reason": "B1-B4 execution order"}
-{"file": "gui/main/ui/model/vg_ui_backend.h", "reason": "backend interface shared PC/board"}

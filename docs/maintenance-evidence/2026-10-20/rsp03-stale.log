@@ -1,0 +1,159 @@
+﻿vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgdiscover scan -a 1-32 &
+vgdiscover [81:100]
+nsh> [Kvgdiscover: scan /dev/rs485 @9600 addr 1..32
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+ai_agent --daemon &
+ai_agent [82:100]
+nsh> [Kai_agent
+[agent] Attaching CLI to daemon agent
+[cli] NSH CLI started. Type 'help' for commands.
+vela> point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN stale on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.28
+Ask queued[agent] ask: 告诉我UPS负载的值
+; agent_loop starting i[agent]n  Processing messagbackgroune from cli:console
+d...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7d957124a6e44] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 马上好...[agent] [Agent]: 马上好...
+
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792530775
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=653 text=0 reasoning=67 toolargs=21 calls=1 finish=tool_calls tokens=1560/38/1598
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7d957124a6e44] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=10 tls=550 send=150 ttfb=5390 body=0 pool=0 build=0 parse=0 http=6220 backoff=0 total=6230 req=5677 resp=653 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7d957124a6e44] iter=0 tool=vg_point_read latency=6250ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 104 bytes, 250 ms
+[trace:6ad7d957124a6e44] tool_iter=0 tool=vg_point_read tool_ms=250 out=104 ok=1
+[agent] Point shortcut: stale
+[llm] OpenAI API with tools (model: mimo-v2.5, 6027 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=626 text=123 reasoning=50 toolargs=0 calls=0 finish=end_turn tokens=1648/63/1711
+[llm] Response: 123 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7d957124a6e44] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=6880 body=0 pool=0 build=10 parse=0 http=7140 backoff=0 total=7150 req=6027 resp=626 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=123, tool_use=0, calls=0
+[trace:6ad7d957124a6e44] iter=1 tool=(none) latency=7170ms llm=ok backend=0
+[trace:6ad7d957124a6e44] END status=ok iters=2 tools=1 llm_ms=13420 tool_ms=250 elapsed_ms=13770 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **UP[agent] [Agent]: **UPS负载：40%**（正常，告警阈值 ≥70%）
+
+⚠️ 数据采样于约 25 秒前，略有过期，仅供参考。
+S负载：40%**（正常，告警阈值 ≥70%）
+
+⚠️ 数据采样于约 25 秒前，略有过期，仅供参考。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END stale on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> quit
+Exiting agent...
+[cli] CLI thread exiting
+nsh> [Kvgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgpoint get
+vgpoint: VALUE id=temp value=24 ok=1 unit=C age_ms=46070
+vgpoint: VALUE id=humid value=50 ok=1 unit=%RH age_ms=46070
+vgpoint: VALUE id=flood value=0 ok=1 unit=- age_ms=46070
+vgpoint: VALUE id=smoke value=1 ok=1 unit=% age_ms=46070
+vgpoint: VALUE id=acu_ret value=25 ok=1 unit=C age_ms=46070
+vgpoint: VALUE id=acu_set value=24 ok=1 unit=C age_ms=46070
+vgpoint: VALUE id=acu_run value=1 ok=1 unit=- age_ms=46070
+vgpoint: VALUE id=ups_load value=40 ok=1 unit=% age_ms=46070
+vgpoint: VALUE id=ups_soc value=80 ok=1 unit=% age_ms=46070
+vgpoint: VALUE id=ups_bypass value=0 ok=1 unit=- age_ms=46070
+vgpoint: VALUE id=volt_a value=230 ok=1 unit=V age_ms=46070
+vgpoint: VALUE id=pwr_kw value=3 ok=1 unit=kW age_ms=46070
+vgpoint: VALUE id=energy_kwh value=123.4 ok=1 unit=kWh age_ms=46070
+vgpoint: VALUE id=door value=0 ok=1 unit=- age_ms=46070
+vgpoint: OK cmd=get table=committed n=14
+nsh> [Kvgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+

@@ -1,0 +1,4 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -I../../../../apps/netutils/mqttc/MQTT-C/include -ffunction-sections -fdata-sections -o test_mqtt_session test_mqtt_session.c ../vg_mqtt_payload.c -Wl,--gc-sections -lm
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+test_mqtt_session: test_mqtt_session.c:49: main: Assertion `point_publishes == 3 && g_pt_sent' failed.

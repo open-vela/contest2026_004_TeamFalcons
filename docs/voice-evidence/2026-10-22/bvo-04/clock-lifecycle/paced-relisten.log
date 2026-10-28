@@ -1,0 +1,32 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+HOST 2026-10-22T09:07:46.1228841+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T09:07:46.7467482+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T09:07:47.2045189+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T09:07:47.5608364+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:07:50.0390293+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:07:52.5715333+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T09:07:53.1739216+08:00 SEND vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=50000 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006040
+vgaudio: dma_done=72 errors=0 timeouts=0 txbytes=576000
+vgaudio: sai_underruns=9 clockerrors=0
+nsh> [K

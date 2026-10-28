@@ -1,0 +1,11 @@
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=4330
+nsh> [Kfree
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880872     312288    6568584     391712    6291440   1028     14 Umem
+nsh> [Kvgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: MCLK = 49142857 / 4 = 12285714 Hz (target 4096000)
+vgaudio: last dma=31 sr=20000 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077c40
+vgaudio: dma_done=8 errors=0 timeouts=0 txbytes=64000
+nsh> [K

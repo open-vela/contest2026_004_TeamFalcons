@@ -4,6 +4,7 @@
 
 #include "vg_provision.h"
 #include "vg_device_id.h"
+#include "vg_file_store.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -376,7 +377,6 @@ int vg_provision_seal(const struct vg_llm_credentials *cred)
   char plain[640];
   uint8_t blob[768];
   size_t blob_len;
-  int fd;
   int ret;
 
   if (cred == NULL || cred->api_key[0] == '\0' || cred->host[0] == '\0')
@@ -418,20 +418,7 @@ int vg_provision_seal(const struct vg_llm_credentials *cred)
       return ret;
     }
 
-  fd = open(VG_PROVISION_FILE, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-  if (fd < 0)
-    {
-      return -errno;
-    }
-
-  if (write(fd, blob, blob_len) != (ssize_t)blob_len)
-    {
-      close(fd);
-      return -EIO;
-    }
-
-  close(fd);
-  return 0;
+  return vg_file_replace(VG_PROVISION_FILE, blob, blob_len, 0600);
 }
 
 int vg_provision_load(struct vg_llm_credentials *out)
@@ -485,7 +472,6 @@ int vg_provision_apply_llm_config(void)
   char key_esc[VG_PROVISION_API_KEY_MAX * 2];
   static char backend[768];
   static char body[1536];
-  int fd;
   int ret;
 
   if (!vg_provision_is_present())
@@ -543,21 +529,8 @@ int vg_provision_apply_llm_config(void)
            "}",
            cred.host, cred.path, cred.port, cred.model, key_esc, backend);
 
-  fd = open("/data/agent/config/config.json",
-            O_WRONLY | O_CREAT | O_TRUNC, 0600);
-  if (fd < 0)
-    {
-      return -errno;
-    }
-
-  if (write(fd, body, strlen(body)) != (ssize_t)strlen(body))
-    {
-      close(fd);
-      return -EIO;
-    }
-
-  close(fd);
-  return 0;
+  return vg_file_replace("/data/agent/config/config.json", body,
+                         strlen(body), 0600);
 }
 
 void vg_provision_boot_apply_if_needed(void)

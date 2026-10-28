@@ -1,0 +1,45 @@
+########## boot settle len=0 ##########
+
+
+########## cat /data/velaguard/reports/daily-2026-10-18.md ########## len=370
+cat /data/velaguard/reports/daily-2026-10-18.md
+AI-DAILY v1
+date=2026-10-18
+source=agent
+---
+Í¨ÐÅÖÊÁ¿
+×ÜÏß³É¹¦ 0%£¨0/79£©£¬³¬Ê± 79 ´Î£¬CRC ´í 0¡£
+½ü´°³É¹¦ 0%£¨0/79£©£¬³¬Ê± 79 ´Î¡£
+×î²î´ÓÕ¾ 1£º³É¹¦ 0%£¨0/12£©¡£
+±¾´ÎÉÏµç½öÔËÐÐ 1·Ö25Ãë¡£
+
+µãÎ»ÔÚÏß
+temp¡¢humid¡¢flood¡¢smoke ¾ùÀëÏß 1·Ö25Ãë£¬µ±Ç°Öµ 0¡£
+acu_ret¡¢acu_set¡¢acu_run¡¢ups_load ¾ùÀëÏß 1·Ö25Ãë£¬µ±Ç°Öµ 0¡£
+ÁíÓÐ 6 ¸öµãÎ»Î´ÁÐ³ö£¬Í¬Ñù²»ÔÚÏß¡£
+
+Òì³£Ê±¼äÏß
+±¾´ÎÉÏµçÒÔÀ´ÔÝÎÞÒì³£¼ÇÂ¼¡£
+Í¨ÐÅÈ«²¿³¬Ê±£¬½¨ÒéÅÅ²é×ÜÏßÓë´ÓÕ¾¹©µç¡£
+nsh> [K
+
+########## cat /data/velaguard/pending_alarm.txt ########## len=146
+cat /data/velaguard/pending_alarm.txt
+type=offline
+tag=temp
+slave=1
+reg=0
+value=0
+threshold=0
+hint=use alarm_interpretation skill
+nsh> [K
+
+########## cat /data/velaguard/clock.txt ########## len=51
+cat /data/velaguard/clock.txt
+1792336003
+nsh> [K
+
+########## cat /data/velaguard/hmi_fleet.txt ########## len=49
+cat /data/velaguard/hmi_fleet.txt
+n=14
+nsh> [K

@@ -126,6 +126,8 @@ expect_dev_config()
     velaguard-lvgl)
       grep -q '^CONFIG_GRAPHICS_LVGL=y' "$NUTTX_ROOT/.config" &&
         grep -q 'CONFIG_INIT_ENTRYPOINT="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_INIT_STACKSIZE=8192$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_SCHED_CHILD_STATUS=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_HMI_AUTOSTART=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H750B_DK_QSPI_BOOT=y' "$NUTTX_ROOT/.config" &&
@@ -135,6 +137,14 @@ expect_dev_config()
         grep -q '^CONFIG_EXAMPLES_AI_AGENT_VELA=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H7_LTDC=y' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_INPUT_FT5X06=y' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_STM32H750B_DK_BUTTONS=y' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_INPUT_BUTTONS_LOWER=y' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_VG_PTT=y' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_AUDIO_DRIVER_SPECIFIC_BUFFERS=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_AUDIO_WM8994=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_WM8994_INITVOLUME=10$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_STM32H7_SAI2_A=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_VG_AUDIO_PROBE=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config"
       ;;

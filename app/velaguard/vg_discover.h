@@ -15,11 +15,14 @@
 #  define FAR
 #endif
 
+#define VG_POINT_TABLE_JSON_MAX 16384
 #define VG_DISCOVER_MAX_SLAVES   32
 #define VG_DISCOVER_MAX_BLOCKS   16
 #define VG_DISCOVER_MAX_POINTS   32
 #define VG_DISCOVER_BLOCK_STEP   16
 #define VG_DISCOVER_PROBE_QTY    16
+#define VG_DISCOVER_TRUNCATED 1u
+#define VG_DISCOVER_PARTIAL 2u
 #define VG_POINT_ID_MAX          24
 #define VG_POINT_NAME_MAX        48
 
@@ -65,6 +68,7 @@ struct vg_discover_summary
   int      scan_addr;     /* address being probed (0 when idle) */
   int      scan_addr_min;
   int      scan_addr_max;
+  uint32_t flags;
   int      n_hits;
   struct vg_scan_hit hits[VG_DISCOVER_MAX_SLAVES];
   int      n_blocks;
@@ -103,6 +107,9 @@ int vg_point_table_infer(FAR struct vg_discover_summary *sum);
 int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
                                    FAR const char *path);
 
+int vg_point_table_create_candidate(const struct vg_discover_summary *sum,
+                                    const char *path);
+
 int vg_point_table_read(FAR struct vg_discover_summary *sum,
                         FAR const char *path);
 
@@ -113,6 +120,11 @@ int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,
                                     FAR const char *cand_path,
                                     FAR const char *committed_path);
 
+/* Persist and publish one validated table, including an explicitly empty
+ * edited table. Callers enforce their existing human-confirmation gate. */
+int vg_point_table_commit(FAR const struct vg_discover_summary *sum,
+                          FAR const char *points_path);
+
 int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *points_path,
                          FAR const char *config_basedir,
@@ -122,6 +134,7 @@ FAR const char *vg_point_table_err_token(int ret);
 int vg_point_store_root_ok(FAR const char *root);
 
 int vg_bus_try_lock(void);
+int vg_bus_lock_timeout(uint32_t timeout_ms);
 void vg_bus_unlock(void);
 int vg_bus_is_locked(void);
 

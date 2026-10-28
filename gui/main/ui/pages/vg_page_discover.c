@@ -110,27 +110,17 @@ static void apply_poll_cb(lv_timer_t * t)
     }
 
     if(st == 2) {
-        const vg_ui_backend_t * be2 = vg_ui_backend_get();
-        vg_ui_slave_t slaves[32];
-        int n = 0;
-
-        vg_shell_toast("已确认写入点表");
+        bool partial = vg_ui_backend_apply_last_result() > 0;
+        vg_shell_toast(partial ? "候选仅含部分结果，请核对" : "候选点表已生成");
         if(s_disc.hint_lab) {
             lv_label_set_text(s_disc.hint_lab,
-                              "已写入 points.json · vgcfg dump 可读");
-        }
-        /* Persist succeeded — now update home fleet. */
-        if(be2 != NULL && be2->get_slaves != NULL) {
-            n = be2->get_slaves(slaves, 32);
-            if(n > 0) {
-                vg_model_import_discover_slaves(slaves, n);
-            }
+                "NSH: vgpoint test · 核对后单独 apply --confirm");
         }
     }
     else {
         char errbuf[40];
         int rc = vg_ui_backend_apply_last_result();
-        lv_snprintf(errbuf, sizeof(errbuf), "写入失败 (%d)", rc);
+        lv_snprintf(errbuf, sizeof(errbuf), "候选生成失败 (%d)", rc);
         vg_shell_toast(errbuf);
     }
 }
@@ -170,11 +160,11 @@ static void scan_poll_cb(lv_timer_t * t)
         refresh_scan_hint(0);
         if(n > 0) {
             char done[48];
-            lv_snprintf(done, sizeof(done), "扫描完成 %d/32 · 请确认写入", n);
+            lv_snprintf(done, sizeof(done), "扫描完成 %d/32 · 可生成候选", n);
             vg_shell_toast(done);
             if(s_disc.hint_lab) {
                 lv_label_set_text(s_disc.hint_lab,
-                                  "仅预览 · 点「确认写入点表」并再次确认后落盘");
+                                  "仅预览 · 生成候选后通过 NSH 试读、人工确认");
             }
         }
         else {
@@ -264,7 +254,7 @@ static void on_scan(lv_event_t * e)
     }
 
     if(be->discover_apply_status != NULL && be->discover_apply_status() == 1) {
-        vg_shell_toast("写入进行中…");
+        vg_shell_toast("候选生成中…");
         return;
     }
 
@@ -300,14 +290,14 @@ static void on_confirm_ok(void * user)
     rc = be->discover_apply_start();
     if(rc != 0) {
         char errbuf[40];
-        lv_snprintf(errbuf, sizeof(errbuf), "无法写入 (%d)", rc);
+        lv_snprintf(errbuf, sizeof(errbuf), "无法生成候选 (%d)", rc);
         vg_shell_toast(errbuf);
         return;
     }
 
-    vg_shell_toast("探测并写入中…");
+    vg_shell_toast("探测并生成候选中…");
     if(s_disc.hint_lab) {
-        lv_label_set_text(s_disc.hint_lab, "确认写入中 · probe + points.json");
+        lv_label_set_text(s_disc.hint_lab, "探测中 · 完成后请在 NSH 试读候选");
     }
     if(s_disc.poll_tmr == NULL) {
         s_disc.poll_tmr = lv_timer_create(apply_poll_cb, 200, NULL);
@@ -316,7 +306,7 @@ static void on_confirm_ok(void * user)
 
 static void on_confirm(lv_event_t * e)
 {
-    char body[96];
+    char body[160];
 
     LV_UNUSED(e);
     if(s_disc.last_hit_n <= 0) {
@@ -325,10 +315,10 @@ static void on_confirm(lv_event_t * e)
     }
 
     lv_snprintf(body, sizeof(body),
-                "将探测 %d 个从站并写入 points.json / vgcfg。\n"
-                "需点两次确认。不写寄存器。",
+                "将探测 %d 个从站并生成候选点表。\n"
+                "随后在 NSH 试读并人工确认生效。",
                 s_disc.last_hit_n);
-    vg_confirm_dialog_create("确认点表", body, "high", "确认写入",
+    vg_confirm_dialog_create("生成候选点表", body, "high", "生成候选",
                              on_confirm_ok, NULL);
 }
 
@@ -393,7 +383,7 @@ void vg_page_discover_create(lv_obj_t * parent, const void * args)
     vg_style_apply_btn(s_disc.confirm_btn, false);
     lv_obj_add_flag(s_disc.confirm_btn, LV_OBJ_FLAG_HIDDEN);
     lv_obj_t * conf_lab = lv_label_create(s_disc.confirm_btn);
-    lv_label_set_text(conf_lab, "确认写入点表");
+    lv_label_set_text(conf_lab, "探测并生成候选");
     lv_obj_set_style_text_font(conf_lab, vg_font_ui(), 0);
     lv_obj_center(conf_lab);
     lv_obj_add_event_cb(s_disc.confirm_btn, on_confirm, LV_EVENT_CLICKED, NULL);

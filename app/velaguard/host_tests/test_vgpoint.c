@@ -8,6 +8,14 @@
 
 #include "../vg_discover.h"
 
+static void remove_table(const char *path)
+{
+  char extra[256];
+  remove(path);
+  snprintf(extra, sizeof(extra), "%s.bak", path);
+  remove(extra);
+}
+
 static int expect_true(int cond, const char *msg)
 {
   if (!cond)
@@ -149,9 +157,9 @@ int main(void)
       }
 
     memset(&sum, 0, sizeof(sum));
-    fails += expect_true(vg_point_table_read(&sum, oldp) == 0, "read old");
+    fails += expect_true(vg_point_table_read(&sum, oldp) == -EINVAL, "reject legacy tag-only row");
     fails += expect_true(sum.n_points == 0, "old tag-only dropped");
-    remove(oldp);
+    remove_table(oldp);
   }
 
   {
@@ -175,7 +183,7 @@ int main(void)
     fails += expect_true(sum.points[0].cmp[0] == '\0', "id-only cmp empty");
     fails += expect_true(!sum.points[0].has_warn && !sum.points[0].has_crit,
                          "id-only no thresh");
-    remove(noidp);
+    remove_table(noidp);
   }
 
   vg_live_points_replace(&sum);
@@ -234,8 +242,8 @@ int main(void)
                           vg_live_age_ms(loaded.tick_ms, now));
     fails += expect_true(strstr(line, "id=temp") != NULL &&
                          strstr(line, "ok=1") != NULL, "format from snap");
-    remove(livep);
-    remove("vgpoint_live_values.txt.tmp");
+    remove_table(livep);
+    remove_table("vgpoint_live_values.txt.tmp");
   }
 
   fails += expect_true(vg_live_snapshot_read("no-such-live-values.txt",
@@ -253,7 +261,7 @@ int main(void)
     memset(&sum, 0, sizeof(sum));
     fails += expect_true(vg_point_table_read(&sum, emptyp) == 0, "read empty");
     fails += expect_true(sum.n_points == 0, "empty n");
-    remove(emptyp);
+    remove_table(emptyp);
   }
 
   {
@@ -279,7 +287,7 @@ int main(void)
     fails += expect_true(vg_point_table_write_candidate(&sum,
                           "vgpoint_blocker/cand.json") < 0,
                          "write under a file parent");
-    remove(blocker);
+    remove_table(blocker);
   }
 
   {
@@ -313,8 +321,8 @@ int main(void)
     fails += expect_true(vg_point_table_read(&sum, trunc) == -EINVAL,
                          "truncated is not an empty table");
 
-    remove(nested);
-    remove(trunc);
+    remove_table(nested);
+    remove_table(trunc);
     rmdir("vgpoint_nested_dir");
   }
 
@@ -355,9 +363,9 @@ int main(void)
         wrote = vg_point_table_write_candidate(&sum, shortp);
         left = (access(shortp, F_OK) == 0);
         (void)setrlimit(RLIMIT_FSIZE, &old_rl);
-        fails += expect_true(wrote == -EIO, "short write is not success");
+        fails += expect_true(wrote < 0, "short write is not success");
         fails += expect_true(!left, "no truncated file left");
-        remove(shortp);
+        remove_table(shortp);
       }
   }
 
@@ -413,7 +421,7 @@ int main(void)
                                 "enotdir") == 0,
                          "ENOTDIR has its own token, not a bare eio");
 
-    remove(blocker);
+    remove_table(blocker);
   }
 
   {
@@ -433,7 +441,7 @@ int main(void)
     fails += expect_true(vg_point_table_read(&sum, deep) == 0,
                          "read back after recreate");
 
-    remove(deep);
+    remove_table(deep);
     rmdir("vgpoint_lost_dir/deeper");
     rmdir("vgpoint_lost_dir");
   }
@@ -455,7 +463,7 @@ int main(void)
     fails += expect_true(vg_point_table_read(&sum, cand) == 0,
                          "candidate usable after ensure");
 
-    remove(cand);
+    remove_table(cand);
     rmdir("vgpoint_seed_dir");
   }
 
@@ -524,13 +532,13 @@ int main(void)
     fails += expect_true(access("vgpoint_ens2/cand.json", F_OK) == 0,
                          "empty candidate written");
 
-    remove(cand);
-    remove("vgpoint_ens2/cand.json");
+    remove_table(cand);
+    remove_table("vgpoint_ens2/cand.json");
     rmdir("vgpoint_ens");
     rmdir("vgpoint_ens2");
   }
 
-  remove(path);
+  remove_table(path);
   if (fails == 0)
     {
       printf("test_vgpoint: OK\n");

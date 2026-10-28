@@ -24,6 +24,27 @@ config VG_BRINGUP_TOOLS
 		velaguard-min preset can enable them independently of LVGL/LVX
 		demo symbols.
 
+config VG_NSH_STACKSIZE
+	int "VelaGuard console (NSH) thread stack size"
+	default 8192
+	depends on VG_BRINGUP_TOOLS
+	---help---
+		Stack for the NSH console thread that velaguard_app_main spawns.
+		That thread runs the whole shell, so every filesystem command
+		executes on this stack: vgpoint, vgstoretest, cp/mv, and the vfat
+		plus SDMMC read path underneath them.
+
+		The pthread default (CONFIG_PTHREAD_STACK_DEFAULT, 2 KiB in this
+		configuration) is not enough.  On the board the stack was measured
+		reaching the very bottom of its allocation while a vfat rename ran
+		through fat_rename -> fat_dirnamewrite -> fat_putlfname ->
+		fat_findsfnentry -> fat_fscacheread -> fat_hwread -> mmcsd_read ->
+		mmcsd_eventwait -> nxsem_wait.  NuttX places struct tls_info_s at
+		the bottom of the stack allocation, so the overflow overwrote
+		tls_info_s->tl_task; the next getpid() dereferenced the wrecked
+		pointer, took a precise bus fault and the board stopped responding
+		until an SWD reset.
+
 config VG_CONFIG_STORE
 	bool "VelaGuard dual-slot config store (eMMC FAT)"
 	default n
@@ -137,6 +158,81 @@ config VG_AGENT_OPS
 		HEARTBEAT.md; run a background alarm detector writing
 		/data/velaguard/pending_alarm.txt for Agent pickup.
 
+config VG_PTT
+	bool "VelaGuard USER1 push-to-talk event thread (vgptt)"
+	default n
+	depends on VG_BRINGUP_TOOLS && INPUT_BUTTONS && ARCH_IRQBUTTONS
+	---help---
+		Watch the board USER1 button through /dev/buttons and turn
+		press/release into record start and submit events: debounce,
+		the 15 second cap, and the release gate before accepting the
+		next press.  Exposes the NSH command vgptt for start/stop/
+		status/reset.
+
+		This task is the event layer only.  It records no audio and
+		makes no network request; the default handler prints one line
+		per event until BVO-03/05 supply a recording backend.
+
+		Requires the board button support (STM32H750B_DK_BUTTONS plus
+		ARCH_BUTTONS, ARCH_IRQBUTTONS, INPUT_BUTTONS and
+		INPUT_BUTTONS_LOWER).
+
+if VG_PTT
+
+config VG_PTT_DEVPATH
+	string "Button device path"
+	default "/dev/buttons"
+
+config VG_PTT_PRIORITY
+	int "vgptt thread priority"
+	default 90
+	---help---
+		Above the HMI (100 in the default preset) so a button edge is
+		handled promptly, below the high-priority work queue (224).
+
+config VG_PTT_STACKSIZE
+	int "vgptt thread stack size"
+	default 4096
+	---help---
+		The thread only runs poll(), one read() per wake-up and the
+		event callback.  The callback is responsible for its own stack
+		use when it is replaced by the recording layer.
+
+config VG_PTT_AUTOSTART
+	bool "Auto-start vgptt from velaguard_app_main"
+	default y
+	depends on VG_PTT
+	---help---
+		Spawn the button thread at boot so the USER1 button works
+		without typing "vgptt start" on NSH.
+
+endif # VG_PTT
+
+config VG_PDM_DUMP
+	bool "Raw PDM capture probe (vgpdmdump)"
+	default n
+	depends on VG_BRINGUP_TOOLS && AUDIO && I2S && STM32H7_SAI1_A
+	---help---
+		Bring-up instrument for the on-board PDM microphone. Captures a
+		fixed-length raw PDM bitstream from SAI1 block A, prints duty
+		cycle, entropy and a nibble histogram, and optionally writes the
+		bytes to a file for off-board analysis.
+
+		This does no PDM-to-PCM decimation and is not part of the product
+		audio path. It is meant to answer one question: is the microphone
+		producing a real bitstream, or is the data line stuck. Requires the
+		board bring-up to have registered the SAI1 capture device.
+
+config VG_AUDIO_PROBE
+	bool "Audio output bring-up probe (vgaudio)"
+	default n
+	depends on VG_BRINGUP_TOOLS && AUDIO_WM8994
+	---help---
+		Reports WM8994 ID/registers on I2C4 and SAI2 TX state. Installs
+		bounded, known stereo WAV fixtures under /mnt/emmc/bvo04 and checks
+		synchronous rejection of invalid TX requests. Playback uses NxPlayer;
+		this probe never writes codec control registers directly.
+
 config VG_HEAP_WATCH
 	bool "DEBUG: watch SDRAM heap region first node (corruption hunt)"
 	default n
@@ -203,6 +299,7 @@ config VG_AGENT_ALARM_OFFLINE_PCT
 endif
 
 config VG_BUS_DISCOVER
+	select NETUTILS_CJSON
 	bool "Modbus bus discover (vgdiscover @9600)"
 	default n
 	depends on VG_BRINGUP_TOOLS && VG_CONFIG_STORE
@@ -297,6 +394,7 @@ config VG_HMI_INPUT_DEVPATH
 	default "/dev/input0"
 
 config VG_HMI_DISCOVER
+	select NETUTILS_CJSON
 	bool "HMI Modbus bus discover (9600 scan via work queue)"
 	default y
 	---help---

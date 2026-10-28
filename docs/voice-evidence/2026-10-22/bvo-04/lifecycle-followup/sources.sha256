@@ -1,0 +1,4 @@
+3992d0b8c01636ae9f17b9eb6609f0a1b5dfeee968e0e8939eee4ce52209e061  nuttx/drivers/audio/wm8994.c
+24ee132c38726a71acba9ad2db178b9ebdbb4ff65ca6909fdfdc70bd1a0f5f58  nuttx/arch/arm/src/stm32h7/stm32_sai.c
+6b38a1c2d0af42613dc6a10f9876ed86b86712d64d19be8201ee7ca2b1a81c63  contest/app/velaguard/vgaudio.c
+5239ecc8be41ca349f10deb8939b509eb20345bae5373461632f685d7ccd9c6e  contest/scripts/audio_accept.ps1

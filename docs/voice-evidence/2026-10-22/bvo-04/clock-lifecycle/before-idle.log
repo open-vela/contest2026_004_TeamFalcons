@@ -1,0 +1,74 @@
+vghmi: daily report requested
+[vgagent] round submitted: 124 bytes
+[agent] Processing message from local_client:velaguard:7
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9ceb673b6c3ea] BEGIN chat=velaguard:7 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:7
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792659126
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9ceb673b6c3ea] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=190 tls=530 send=140 ttfb=60 body=0 pool=0 build=10 parse=10 http=1050 backoff=0 total=1070 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 7 (backoff 60)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9ceb673b6c3ea] iter=0 tool=(none) latency=1070ms llm=fail backend=0
+[trace:6ad9ceb673b6c3ea] END status=fail iters=1 tools=0 llm_ms=1070 tool_ms=0 elapsed_ms=1300 backend=0
+[agent] Dispatching response → local_client:velaguard:7
+[vgagent] round finished: reply
+
+HOST 2026-10-22T08:53:10.2260511+08:00 SEND vgaudio reg 0x200
+vgaudio reg 0x200
+vgaudio: R512 (0x200) = 0x0001
+nsh> [K
+HOST 2026-10-22T08:53:10.4156925+08:00 SEND vgaudio reg 0x208
+vgaudio reg 0x208
+vgaudio: R520 (0x208) = 0x000a
+nsh> [K
+HOST 2026-10-22T08:53:10.5860225+08:00 SEND vgaudio reg 0x1
+vgaudio reg 0x1
+vgaudio: R1 (0x01) = 0x0003
+nsh> [K
+HOST 2026-10-22T08:53:10.7580325+08:00 SEND vgaudio reg 0x3
+vgaudio reg 0x3
+vgaudio: R3 (0x03) = 0x0000
+nsh> [K
+HOST 2026-10-22T08:53:10.9409934+08:00 SEND vgaudio reg 0x5
+vgaudio reg 0x5
+vgaudio: R5 (0x05) = 0x0303
+nsh> [K
+HOST 2026-10-22T08:53:11.1278545+08:00 SEND vgaudio reg 0x1c
+vgaudio reg 0x1c
+vgaudio: R28 (0x1c) = 0x006d
+nsh> [K
+HOST 2026-10-22T08:53:11.3096518+08:00 SEND vgaudio reg 0x2d
+vgaudio reg 0x2d
+vgaudio: R45 (0x2d) = 0x0000
+nsh> [K
+HOST 2026-10-22T08:53:11.4763605+08:00 SEND vgaudio reg 0x4c
+vgaudio reg 0x4c
+vgaudio: R76 (0x4c) = 0x1f25
+nsh> [K
+HOST 2026-10-22T08:53:11.6416147+08:00 SEND vgaudio reg 0x60
+vgaudio reg 0x60
+vgaudio: R96 (0x60) = 0x0000
+nsh> [K
+HOST 2026-10-22T08:53:11.8371869+08:00 SEND vgaudio reg 0x601
+vgaudio reg 0x601
+vgaudio: R1537 (0x601) = 0x0001
+nsh> [K
+HOST 2026-10-22T08:53:12.0096847+08:00 SEND vgaudio reg 0x610
+vgaudio reg 0x610
+vgaudio: R1552 (0x610) = 0x02c0
+nsh> [K

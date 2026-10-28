@@ -1,2 +1,0 @@
-{"file": "docs/velaguard-bringup-known-issues.md", "reason": "RS485 tcdrain/DIR known issue §4"}
-{"file": ".trellis/tasks/08-29-stage0-rs485-timing/research/rs485-tc-dir-notes.md", "reason": "TC/DIR fix notes"}

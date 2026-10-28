@@ -15,6 +15,12 @@ param(
 )
 $ErrorActionPreference = "Stop"
 
+# The board prints UTF-8. PowerShell decodes it correctly, but writes the result
+# back out using the console code page (CP936 on this machine), so a redirected
+# log ends up GBK and the Chinese comes out garbled. Pin stdout to UTF-8 so
+# captured evidence matches what the board actually sent.
+try { [Console]::OutputEncoding = [System.Text.Encoding]::UTF8 } catch { }
+
 if ($Commands.Trim() -eq "") { throw "需要至少一条 -Commands" }
 
 $cmdList = $Commands.Split(";") | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" }

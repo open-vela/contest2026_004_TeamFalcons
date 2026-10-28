@@ -1,0 +1,13 @@
+{
+  "path": "/mnt/emmc/bvo04/tone-stop.wav",
+  "origin": "five consecutive copies of tone.wav PCM with updated RIFF/data lengths",
+  "sample_rate": 16000,
+  "bits": 16,
+  "channels": 2,
+  "layout": "L=R signed little-endian",
+  "frames": 80000,
+  "duration_s": 5,
+  "bytes": 320044,
+  "host_reference_sha256": "7427082925602aedc972268afe01290f71b4bff7ed84b0d54b8dbb255fdd7522",
+  "board_file_digest_readback": false
+}

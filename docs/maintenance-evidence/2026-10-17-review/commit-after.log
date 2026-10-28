@@ -1,0 +1,6 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_point_commit test_point_commit.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -Wl,--wrap=vg_file_replace -lm
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+vgdiscover: applied 1 points → commit-test.json
+vgdiscover: applied 1 points → commit-test.json
+test_point_commit: OK (concurrent commits, failed write, explicit empty table)

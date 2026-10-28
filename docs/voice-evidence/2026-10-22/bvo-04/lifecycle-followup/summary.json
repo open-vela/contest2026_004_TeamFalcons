@@ -1,0 +1,13 @@
+{
+  "normal_completed": 20,
+  "stops_demonstrated": 10,
+  "restarts_completed": 10,
+  "script_exit_code": 2,
+  "lifecycle_checks": "PASS",
+  "sai_quality": "FAIL",
+  "underruns_before": 26,
+  "underruns_after": 156,
+  "human_speech": "yes intelligible; minor noise acceptable for deferral",
+  "human_stop_restart": "confirmed",
+  "human_touch_final": "normal; no obvious stall"
+}

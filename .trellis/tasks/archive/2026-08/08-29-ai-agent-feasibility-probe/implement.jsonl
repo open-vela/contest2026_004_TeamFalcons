@@ -1,3 +1,0 @@
-{"file": "VelaGuard_推进方案.md", "reason": "§4 探针配置、风险表、AC 与 20h 出口"}
-{"file": "docs/agents/BOUNDARY.md", "reason": "C2 公共仓边界；C9 探针与赛道证据关系"}
-{"file": "docs/velaguard-bringup-known-issues.md", "reason": "H750 网络/RS485 已知问题，避免探针与 net 基线冲突"}

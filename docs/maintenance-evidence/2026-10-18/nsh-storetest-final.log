@@ -1,0 +1,22 @@
+########## boot settle len=0 ##########
+
+
+########## vgstoretest 10 ########## len=1226
+vgstoretest 10
+vgstoretest: OK rounds=10 bytes=5120 elapsed_ms=16580
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6ad4fbeb00000000] iter=2 tool=write_file latency=92670ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30c25d4a\nreq=1\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=1\nsum=总线无响应致温度离线\nev=总线成功0%（0/92）超时92，从站1全部超时\natt=检查从站1接线、供电与地址，确认总线端接\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=1\nsum=总线无响应致湿度离线\nev=总线成功0%（0/92）超时92，从站1全部超时\natt=检查从站1接线、供电与地址，确认总�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1651 bytes)
+[agent] Tool write_file result: 64 bytes
+[agent] Local tool shortcut: skip LLM round
+[trace:6ad4fbeb00000000] END status=ok iters=3 tools=3 llm_ms=102600 elapsed=118s backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=1 live_req=1
+[vgadvice] round ended, advice for this alarm set kept
+

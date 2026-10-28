@@ -1,0 +1,4 @@
+[upstream] nuttx: VelaGuard changes present (velaguard/eth-mii-stm32h750b-dk)
+[upstream] apps: VelaGuard changes present (velaguard/netinit-esp8266)
+[upstream] MQTT-C: VelaGuard changes present (velaguard/mqtt-pal-hook)
+[upstream] ai_agent: maintenance dependencies present (velaguard/llm-tls-send-retry)

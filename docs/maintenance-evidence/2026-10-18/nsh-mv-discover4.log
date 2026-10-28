@@ -1,0 +1,196 @@
+########## boot settle len=5364 ##########
+vgnet: manager started
+vgtime: sync started
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-18 16:31:03
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.650, +1650)	 check_stack_size: tid: 9, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.660, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.660, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.660, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.660, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.670, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.680, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(1.680, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.690, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.700, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.700, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.710, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.720, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.720, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.730, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.740, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.740, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.750, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.760, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.760, +0)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.770, +10)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.780, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.780, +0)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.790, +10)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.800, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.800, +0)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(1.810, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(1.820, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(1.830, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=[agent] AI Agent - Vela AI Agent starting (build: 2026-10-17 13:03:08)
+32768)[agent] [boot +10ms] P0: timezone set
+
+LED num: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +110ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +310ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +320ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +610ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +620ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +730ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1020ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1280ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Registered tool: web_search
+[tools] Registered tool: news_search
+[tools] Registered tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Registered tool: edit_file
+[tools] Registered tool: list_dir
+[tools] Registered tool: cron_add
+[tools] Registered tool: cron_list
+[tools] Registered tool: cron_remove
+[tools] Registered tool: fetch_url
+[tools] Registered tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Registered tool: get_battery
+[tools] Registered tool: get_wear_state
+[tools] Registered tool: get_screen_state
+[tools] Registered tool: get_heartrate
+[tools] Registered tool: get_steps
+[tools] Registered tool: vibrate
+[tools] Registered tool: feishu_doc_create
+[tools] Registered tool: feishu_doc_write
+[tools] Registered tool: feishu_doc_read
+[tools] Registered tool: feishu_doc_list
+[tools] Registered tool: feishu_chat_members
+[tools] Registered tool: feishu_send_mention
+[tools] Registered tool: music_search
+[tools] Registered tool: music_play
+[tools] Registered tool: music_pause
+[tools] Registered tool: music_resume
+[tools] Registered tool: music_stop
+[tools] Registered tool: music_seek
+[tools] Registered tool: music_set_volume
+[tools] Registered tool: music_status
+[
+
+
+########## echo AAA > /data/velaguard/discover/z1.txt ########## len=88
+echo AAA > /data/velaguard/discover/z1.txt
+nsh> [Kvgtime: synced 2026-10-18 16:32:35
+
+
+########## echo BBB > /data/velaguard/discover/z2.txt ########## len=52
+echo BBB > /data/velaguard/discover/z2.txt
+nsh> [K
+
+########## mv /data/velaguard/discover/z1.txt /data/velaguard/discover/z2.txt ########## len=7721
+mv /data/velaguard/discover/z1.txt /data/velaguard/discover/z2.txt
+HARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=0000003b MMFAR=0000003b
+HARDFAULT: stacked PC=90096060 LR=9007c02d
+dump_assert_info: Current Version: NuttX  0.0.0 75cbc8eb7a5 Oct 18 2026 16:09:56 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: velaguard_app_main process: velaguard_app_main 0x9000caad
+up_dump_register: R0: 24004350 R1: 00000000 R2: 900a83fe  R3: 24003d38
+up_dump_register: R4: 38002af0 R5: 00000003 R6: 900a83fe  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24003cb8 R10: 00000006 R11: 38003020
+up_dump_register: R12: 00000009 SP: 38002e30 LR: 90001aef  PC: 90001aef
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x38002bf8
+dump_stackinfo:   size: 00002024
+dump_stackinfo:     sp: 0x38002e30
+stack_dump:  38002e10: 38002e30 380033e0 38002e30 38002bf8 000007e8 380003d0 24003cb8 90001c8f
+stack_dump:  38002e30: 900c033c 00000000 38002ba0 38000480 9000caad 0000000a 00000000 00000000
+stack_dump:  38002e50: 38002af0 24004350 900a83fe 00000000 00000000 7474754e 40000058 38002ee0
+stack_dump:  38002e70: 00000000 9000827b 900a00d9 00000008 000044f3 00000001 900a83fd 900a4a1d
+stack_dump:  38002e90: 63303264 39303037 302e3000 3800302e 000044f3 00000001 900a5969 353783d8
+stack_dump:  38002eb0: 38636263 61376265 634f2035 38312074 32303220 36312036 3a39303a 90003635
+stack_dump:  38002ed0: 38002f18 900a83d8 38002f18 9000776d 6d72612b 90008c00 90008c13 00000088
+stack_dump:  38002ef0: 9000824d 0000000a 00000060 38003020 00000003 24003d38 38003020 3800918c
+stack_dump:  38002f10: 00000003 00000000 38003020 900014ed 00000001 0000003b 38002af0 90000ee9
+stack_dump:  38002f30: 00000000 00000007 00000000 00000003 380031c8 900010cf 900a0000 380082c8
+stack_dump:  38002f50: 202020d0 20202020 20202020 9008f600 7e325aa0 20202031 54585420 00004400
+stack_dump:  38002f70: 008000a0 000044f3 00000088 000044f3 00000088 000044f3 00000088 00000088
+stack_dump:  38002f90: 000044f3 00000005 000081b6 38008560 2400330c 38008560 00000000 2400320c
+stack_dump:  38002fb0: 00000001 00000000 2000e156 38008560 00000000 38008530 2400320c 00000000
+stack_dump:  38002fd0: 38003001 2000e17e 38008560 00000000 38008530 2400330c 2400330c 90008101
+stack_dump:  38002ff0: 00000000 00000000 000081b6 00000000 00000000 00000000 00000000 00000004
+stack_dump:  38003010: 00000000 00000000 00000000 00000000 380030f8 00000000 38008ed0 00000000
+stack_dump:  38003030: 00000003 380031c8 3800918c 00000003 00000000 00000000 00000000 ffffffe9
+stack_dump:  38003050: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003070: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003090: 0000000b 00000004 7fffffff 38002af0 2000e1c8 9007c02d 90096060 61000000
+stack_dump:  380030b0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380030d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380030f0: 00000000 9007c027 38008ed0 38003194 00000000 380031c8 00000001 90060e9b
+stack_dump:  38003110: 380091cf 9006107d 3800325c 00000000 00000001 2000e150 00000020 38008ed0
+stack_dump:  38003130: 3800918c 00000003 00000000 380031c8 00000002 00000000 00000000 90061c3f
+stack_dump:  38003150: 38003170 00000000 00000000 ffffffb3 00000001 90006427 240000cc 380091cf
+stack_dump:  38003170: 00000000 ffffffff ffffffff 00000000 00000000 00000000 00000080 00000004
+stack_dump:  38003190: 00000004 ffffffff ffffffff ffffffff 00000000 00000000 00000000 00000000
+stack_dump:  380031b0: 00000000 00000000 00000000 00000000 00000000 00000000 3800918c 3800918f
+stack_dump:  380031d0: 380091af 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380031f0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003210: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003230: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003250: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003270: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003290: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380032b0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380032d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  380032f0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003310: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003330: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  38003350: 00000000 00000000 00000000 00000000 00000000 00000000 38008ed0 38008ed0
+stack_dump:  38003370: 240004e0 3800918c 00000001 00000000 00000000 00000000 00000000 9002a9c5
+stack_dump:  38003390: 38008ed0 00000001 00000000 38008ed0 00000000 00000000 00000000 9002a87b
+stack_dump:  380033b0: 90095b11 9000caad 00000000 9000cabb 9000caad 90095b19 00000064 900a3afb
+stack_dump:  380033d0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x240475b4      1000    42.8%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006b58      1976    11.7%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006358      1976     0.8%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136     0.8%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Running            0000000000000000 0x38002bf8      2024     0.0%   velaguard_app_main 0x9000caad 0
+dump_task:       5     3 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x380034f0     12264     4.2%   velaguard_app_main 0x900102f5 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x380065e8      4072     0.0%   velaguard_app_main 0x90013901 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x38007968      2024     1.6%   ESP8266 0x9005e0f1 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x380086e0      2024     0.0%   netinit 0x9005ff15 0
+dump_task:       9     9 100 RR       Task    -   Waiting Signal     0000000000000000 0x20000040     49104    33.6%   vghmi vghmi
+dump_task:      10     9 100 RR       pthread -   Waiting Semaphore  0000000000000000 0x2000e2d8      8168     3.3%   vghmi 0x90014141 0
+dump_task:      11    11 100 RR       Task    -   Waiting Signal     0000000000000000 0x20010848     32696     0.8%   ai_agent ai_agent --daemon
+dump_task:      12    11  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x20018a90     12264     0.0%   ai_agent 0x9002aa21 0x24047f50
+dump_task:      13    11   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x24048168      4072     0.0%   ai_agent 0x900301c9 0x24048050
+dump_task:      14    11  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x2404d8a8     28648     0.0%   ai_agent 0x9002aa21 0x24049158
+
+
+########## cat /data/velaguard/discover/z2.txt ########## len=0
+

@@ -1,0 +1,25 @@
+########## boot settle len=58 ##########
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## ps ########## len=2031
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 14.9% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 28.6% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.7% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0002024  2.5% velaguard_app_main 0x9000caad 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  1.6% velaguard_app_main 0x900102f5 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013901 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  2.5% ESP8266 0x9005e0f1 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024  0.0% netinit 0x9005ff15 0
+    9     9 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 42.9% vghmi vghmi
+   10     9 100 RR       pthread   - Ready              0000000000000000 0008168  1.6% vghmi 0x90014141 0
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   12    11  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9002aa21 0x24047f50
+   13    11   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x900301c9 0x24048050
+   14    11  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9002aa21 0x24049158
+   15     9 100 RR       pthread   - Ready              0000000000000000 0008168  2.3% vghmi 0x900148a5 0
+   16    11  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x9002c655 0x24048050
+nsh> [K

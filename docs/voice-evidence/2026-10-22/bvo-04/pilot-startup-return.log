@@ -1,0 +1,12 @@
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=3760
+nsh> [Kfree
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880872     229080    6651792     248024    6291440    965      9 Umem
+nsh> [Kvgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: MCLK = 49142857 / 4 = 12285714 Hz (target 4096000)
+vgaudio: last dma=0 sr=0 cr1=0 frcr=0 slots=0 count=0 addr=0
+vgaudio: dma_done=0 errors=0 timeouts=0 txbytes=0
+nsh> [Kvgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0

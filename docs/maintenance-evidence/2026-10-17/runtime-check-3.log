@@ -1,0 +1,86 @@
+vgnet: join 19y failed
+vgnet: esp reset
+
+nsh> [K
+ELAPSED_MS=10
+
+COMMAND 2026-10-17T14:55:50.7861993+08:00 vgagent status
+vgagent status
+round: state=idle gen=6 owner=none
+llm: credentials=ready provision_file=present
+reply: Sorry, I encountered an error.
+nsh> [K
+ELAPSED_MS=122
+
+COMMAND 2026-10-17T14:55:50.9127105+08:00 vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=1672 wall=2026-10-17T14:55:56
+vgruntime: slave=1 boot_total=229 boot_ok=38 boot_crc=0 boot_timeout=143 boot_echo=0 boot_other=48 boot_lat_min=30 boot_lat_max=1100 boot_lat_avg=508 win_total=64 win_ok=0 win_crc=0 win_timeout=60 win_echo=0 win_other=4
+vgruntime: slave=2 boot_total=114 boot_ok=21 boot_crc=0 boot_timeout=77 boot_echo=0 boot_other=16 boot_lat_min=40 boot_lat_max=800 boot_lat_avg=305 win_total=64 win_ok=9 win_crc=0 win_timeout=47 win_echo=0 win_other=8
+vgruntime: slave=3 boot_total=114 boot_ok=10 boot_crc=0 boot_timeout=81 boot_echo=0 boot_other=23 boot_lat_min=40 boot_lat_max=770 boot_lat_avg=294 win_total=64 win_ok=4 win_crc=0 win_timeout=51 win_echo=0 win_other=9
+vgruntime: slave=4 boot_total=342 boot_ok=53 boot_crc=0 boot_timeout=240 boot_echo=0 boot_other=49 boot_lat_min=40 boot_lat_max=870 boot_lat_avg=324 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=342 boot_ok=56 boot_crc=0 boot_timeout=219 boot_echo=0 boot_other=67 boot_lat_min=30 boot_lat_max=870 boot_lat_avg=360 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=342 boot_ok=63 boot_crc=0 boot_timeout=228 boot_echo=0 boot_other=51 boot_lat_min=40 boot_lat_max=870 boot_lat_avg=325 win_total=64 win_ok=0 win_crc=0 win_timeout=64 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=114 boot_ok=12 boot_crc=0 boot_timeout=81 boot_echo=0 boot_other=21 boot_lat_min=40 boot_lat_max=720 boot_lat_avg=305 win_total=64 win_ok=3 win_crc=0 win_timeout=52 win_echo=0 win_other=9
+vgruntime: bus boot_total=1597 boot_ok=253 boot_crc=0 boot_timeout=1069 boot_echo=0 boot_other=275
+vgruntime: point id=temp slave=1 online=0 online_ms=260200 offline_s=616 last_ok_ago_s=631 value=24 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=358670 offline_s=590 last_ok_ago_s=602 value=50 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=372730 offline_s=506 last_ok_ago_s=522 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=146480 offline_s=576 last_ok_ago_s=590 value=1 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=328870 offline_s=522 last_ok_ago_s=535 value=25 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=291580 offline_s=506 last_ok_ago_s=522 value=24 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=262190 offline_s=486 last_ok_ago_s=506 value=1 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=400370 offline_s=506 last_ok_ago_s=522 value=40 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=250350 offline_s=506 last_ok_ago_s=522 value=80 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=274030 offline_s=548 last_ok_ago_s=560 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=379430 offline_s=560 last_ok_ago_s=576 value=230 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=346110 offline_s=576 last_ok_ago_s=590 value=3 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=332870 offline_s=522 last_ok_ago_s=535 value=123.4 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=190550 offline_s=716 last_ok_ago_s=731 value=0 kind=offline
+vgruntime: event t_boot_s=1081 wall=2026-10-17T14:26:30 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=1081 wall=2026-10-17T14:26:30 id=energy_kwh action=raise kind=offline value=123.4 thr=0 cmp=- reason=modbus_fail_offline
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=smoke action=raise kind=offline value=1 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=acu_run action=raise kind=offline value=1 thr=0 cmp=- reason=modbus_fail_offline
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=ups_bypass action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=volt_a action=clear kind=offline value=230 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=1096 wall=2026-10-17T14:26:45 id=pwr_kw action=raise kind=offline value=3 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1112 wall=2026-10-17T14:27:00 id=acu_ret action=raise kind=offline value=25 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1112 wall=2026-10-17T14:27:00 id=acu_set action=raise kind=offline value=24 thr=0 cmp=- reason=modbus_fail_offline
+vgruntime: event t_boot_s=1112 wall=2026-10-17T14:27:00 id=ups_load action=raise kind=offline value=40 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1112 wall=2026-10-17T14:27:00 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=1112 wall=2026-10-17T14:27:00 id=volt_a action=raise kind=offline value=230 thr=0 cmp=le reason=modbus_fail_offline
+vgruntime: event t_boot_s=1124 wall=2026-10-17T14:27:12 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=1124 wall=2026-10-17T14:27:12 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=1124 wall=2026-10-17T14:27:12 id=ups_bypass action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=1124 wall=2026-10-17T14:27:12 id=energy_kwh action=clear kind=offline value=123.4 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=1137 wall=2026-10-17T14:27:25 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=1137 wall=2026-10-17T14:27:25 id=ups_load action=raise kind=offline value=40 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1150 wall=2026-10-17T14:27:38 id=acu_ret action=raise kind=offline value=25 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1150 wall=2026-10-17T14:27:38 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=1150 wall=2026-10-17T14:27:38 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=1150 wall=2026-10-17T14:27:38 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=1150 wall=2026-10-17T14:27:38 id=energy_kwh action=raise kind=offline value=123.4 thr=0 cmp=- reason=modbus_fail_offline
+vgruntime: event t_boot_s=1166 wall=2026-10-17T14:47:30 id=flood action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=1166 wall=2026-10-17T14:47:30 id=acu_set action=raise kind=offline value=24 thr=0 cmp=- reason=modbus_fail_offline
+vgruntime: event t_boot_s=1166 wall=2026-10-17T14:47:30 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=1166 wall=2026-10-17T14:47:30 id=ups_load action=raise kind=offline value=40 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=1166 wall=2026-10-17T14:47:30 id=ups_soc action=raise kind=offline value=80 thr=0 cmp=le reason=modbus_fail_offline
+vgruntime: event t_boot_s=1186 wall=2026-10-17T14:47:50 id=acu_run action=raise kind=offline value=1 thr=0 cmp=- reason=modbus_fail_offline
+nsh> [K
+ELAPSED_MS=871
+
+COMMAND 2026-10-17T14:55:51.7873214+08:00 nslookup token-plan-cn.xiaomimimo.com
+nslookup token-plan-cn.xiaomimimo.com
+nsh: nslookup: getaddrinfo failed: 1
+nsh> [K
+ELAPSED_MS=59
+
+COMMAND 2026-10-17T14:55:51.8485685+08:00 cat /proc/meminfo
+cat /proc/meminfo
+      total       used       free    maxused    maxfree  nused  nfree name
+    7014016     273392    6740624     423024    6291440    943     11 Umem
+nsh> [K
+ELAPSED_MS=59

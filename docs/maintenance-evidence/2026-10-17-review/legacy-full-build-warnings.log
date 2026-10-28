@@ -1,0 +1,7 @@
+Warning-only excerpt from .debug/maintenance-board/rebuild-child-status.log; progress/ANSI controls omitted.
+chip/stm32_sdmmc.c:133:4: warning: #warning "Large Non-DMA transfer may result in RX overrun failures" [-Wcpp]
+esp8266.c:351:13: warning: too many arguments for format [-Wformat-extra-args]
+esp8266.c:2371:13: warning: 'proto_str' may be used uninitialized [-Wmaybe-uninitialized]
+src/core/agent_loop.c:695:52: warning: '%s' directive output may be truncated writing up to 511 bytes into a region of size between 473 and 483 [-Wformat-truncation=]
+src/tools/skill_loader.c:482:54: warning: format '%x' expects argument of type 'unsigned int', but argument 4 has type 'uint32_t' {aka 'long unsigned int'} [-Wformat=]
+/home/hello19y/openvela/contest2026_004_TeamFalcons/gui/main/ui/pages/vg_page_diagnosis.c:285:24: warning: declaration of 'lab' shadows a previous local [-Wshadow]

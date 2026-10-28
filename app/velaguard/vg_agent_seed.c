@@ -14,20 +14,21 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include "vg_file_store.h"
 
 static const char g_modbus_query_skill[] =
 "# Modbus 实时查数（VelaGuard）\n"
 "\n"
 "## 何时使用\n"
 "\n"
-"用户问从站寄存器、温湿度、水浸、通信质量时，用 **run_shell** 调 NSH 只读工具。\n"
+"用户问温湿度、水浸和通信质量时，用 **vg_point_read** 与 **vg_run_report** 读取快照。\n"
 "用户问已导入点位的值（例如 UPS负载、空调运行）时，用 **vg_point_read**，\n"
 "不要用 vgmodbus 去猜寄存器。\n"
 "\n"
 "## 命令\n"
 "\n"
 "- 点位值（推荐）：`vg_point_read`，query 填点位 id 或中文点名；留空列出全部点位\n"
-"- 读保持寄存器：`vgmodbus -a <addr> -r <reg> -c <count> -n 1 -i 0`\n"
+"- 不直接读取总线寄存器；未配置点位时说明需要人工配置。\n"
 "- 帧统计：`vgstats dump <addr>`\n"
 "- 运行累计：`vgruntime dump`\n"
 "- 配置摘要：`vgcfg dump`\n"
@@ -41,7 +42,7 @@ static const char g_modbus_query_skill[] =
 "\n"
 "从站 1 温湿度 reg0..1：\n"
 "```\n"
-"vgmodbus -a 1 -r 0 -c 2 -n 1 -i 0\n"
+"vg_point_read query=温度\n"
 "```\n"
 "\n"
 "vg_point_read 的输出里，value 已经是按 scale 换算过的工程值，unit 是单位，\n"
@@ -63,9 +64,7 @@ static const char g_alarm_interpretation_skill[] =
 "## 步骤（两步）\n"
 "\n"
 "1. 在**同一条消息**里一次发出取证命令，它们互不依赖：\n"
-"   run_shell vgstats dump（不加参数，全部从站）\n"
-"   run_shell vgmodbus -a <从站号> -r 0 -c 4 -n 1 -i 0\n"
-"   run_shell vgcfg dump\n"
+"   vg_run_report（本次上电的统计与事件）\n"
 "2. write_file /data/velaguard/reports/alarm_advice.txt\n"
 "\n"
 "每条消息里的工具调用会被一次执行完。一条消息只发一个调用就要多等一整轮，\n"
@@ -74,7 +73,7 @@ static const char g_alarm_interpretation_skill[] =
 "告警的点位、数值、阈值和持续时间都已经写在请求里，直接把请求当数据源，\n"
 "不要为了取告警去 read_file /data/velaguard/pending_alarm.txt。\n"
 "单独一次 read_file 会被板端当成取文件内容作答复并提前结束本轮，后面的\n"
-"write_file 就不会执行。确实需要读文件时，把 read_file 和至少一个 run_shell\n"
+"write_file 就不会执行。确实需要读文件时，把 read_file 和 vg_run_report\n"
 "写在同一条消息里一起调用。\n"
 "\n"
 "## 输出格式（逐行，顺序不可变，行尾不要空格）\n"
@@ -125,14 +124,13 @@ static const char g_operations_report_skill[] =
 "\n"
 "必做步骤（两步，工具调用不超过 4 次）\n"
 "\n"
-"1. 在**同一条消息**里一次发出这三个调用，它们互不依赖：\n"
+"1. 在**同一条消息**里一次发出这两个调用，它们互不依赖：\n"
 "   get_current_time\n"
-"   run_shell vgruntime dump\n"
-"   run_shell vgstats dump（不加参数，全部从站）\n"
+"   vg_run_report\n"
 "2. write_file，路径用请求里给出的那一个\n"
 "\n"
 "每条消息里的工具调用会被一次执行完，一条消息发一个调用就要多等一整轮，\n"
-"而单次模型调用有 120 秒上限。把第 1 步的三条并在一条消息里是本 Skill 的硬要求。\n"
+"而单次模型调用有 120 秒上限。把第 1 步的两条并在一条消息里是本 Skill 的硬要求。\n"
 "\n"
 "## 文件格式（纯文本，禁止 Markdown 标记）\n"
 "\n"
@@ -162,7 +160,7 @@ static const char g_heartbeat_md[] =
 "收到带 boot= 与 req= 的请求时按 alarm_interpretation 处理，不要主动去读\n"
 "/data/velaguard/pending_alarm.txt 找活干。\n"
 "\n"
-"工具仅限：vg_point_read、vg_run_report、vgstats dump、vgmodbus、vgruntime dump、\n"
+"工具仅限：vg_point_read、vg_run_report、vgstats dump、vgruntime dump、\n"
 "vgcfg dump、vgnet status、get_current_time、read_file、write_file。\n"
 "禁止 vgpoint、vgdiscover apply、vgcfg commit。\n";
 
@@ -211,20 +209,7 @@ static int write_seed_file(const char *path, const char *body)
         }
     }
 
-  fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-  if (fd < 0)
-    {
-      return -errno;
-    }
-
-  if (write(fd, body, len) != (ssize_t)len)
-    {
-      close(fd);
-      return -EIO;
-    }
-
-  close(fd);
-  return 0;
+  return vg_file_replace(path, body, len, 0644);
 }
 
 static void wait_for_data_mount(void)

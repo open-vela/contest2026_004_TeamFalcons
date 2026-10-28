@@ -22,15 +22,15 @@
 | C12 | [唯一专属仓与 manifest 映射](../../AGENTS.md#c12) |
 | C13 | [组队与服务端责任](../../AGENTS.md#c13) |
 | V1 | [独立网关与调试通道](../../AGENTS.md#v1) |
-| V2 | [离线本地流程与无音频边界](../../AGENTS.md#v2) |
+| V2 | [离线本地流程与手机语音分工](../../AGENTS.md#v2) |
 | V3 | [设备端 Agent 定位](../../AGENTS.md#v3) |
 | V4 | [HTTPS LLM、密钥与 MQTT 分工](../../AGENTS.md#v4) |
 | V5 | [只读权限与人工确认](../../AGENTS.md#v5) |
-| V6 | [确定性发现与扫描开关](../../AGENTS.md#v6) |
-| V7 | [MQTT-only OTA 与 QSPI](../../AGENTS.md#v7) |
-| V8 | [Trellis 当前任务与依赖](../../AGENTS.md#v8) |
+| V6 | [手册辅助接入与维护扫描](../../AGENTS.md#v6) |
+| V7 | [MQTTS控制、HTTPS下载与QSPI](../../AGENTS.md#v7) |
+| V8 | [任务范围与用户选择](../../AGENTS.md#v8) |
 | V9 | [产品名称与文档职责](../../AGENTS.md#v9) |
-| V10 | [延期范围](../../AGENTS.md#v10) |
+| V10 | [已授权目标与延期范围](../../AGENTS.md#v10) |
 | V11 | [硬件资料要求](../../AGENTS.md#v11) |
 
 原开发检查、日志操作、提交证据和评分说明均已归入 `AGENTS.md`。核查日期、依据和后续维护要求见[来源与维护](../../AGENTS.md#rule-sources)。详细产品设计、协议和历史任务继续留在原专项文档。

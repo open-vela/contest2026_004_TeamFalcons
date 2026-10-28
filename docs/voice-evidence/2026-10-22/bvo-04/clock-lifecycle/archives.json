@@ -1,0 +1,7 @@
+{
+  "before_build_sha256": "e7a31004591e9facdbfe98c34ec1f874cab1208a7c899825cf2b3b0c2b6878ba",
+  "after_build_sha256": "716c5f1b0cd58dfe4cd5b86b3649e4718e3ca5e09ab152ee6d0d7a5ac62ed833",
+  "staging_identical": true,
+  "vgaudio_member_count": 1,
+  "cleanup": "No archive deletion needed: vgaudio member is unique, both archive copies agree."
+}

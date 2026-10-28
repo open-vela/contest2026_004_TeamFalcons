@@ -10,7 +10,7 @@
  *   - 返回实际字节数；< 0 为传输错误；[0, count-1] 视为超时。
  *
  * DE/RE 由 NuttX UART7 RS485 驱动在 TC 后切换。tcdrain 在 RS485 下等到
- * TC；其后短延时仅为 Modbus RTU 帧间隔（3.5 字符），不是 DIR 补偿。
+ * TC。收到的回复必须保留；旧帧只在发送下一请求前通过 flush 清理。
  ****************************************************************************/
 
 #include <nuttx/config.h>
@@ -37,13 +37,6 @@ static int32_t vg_modbus_now_ms(void)
   clock_gettime(CLOCK_MONOTONIC, &ts);
   return (int32_t)(ts.tv_sec * 1000L + ts.tv_nsec / 1000000L);
 }
-
-/* After TC the transceiver DIR falls; a short settle then drop RX junk
- * (0xFF/FE glitches) before waiting for the slave.  Do not sit  several
- * ms with DIR=RX without flushing: those bytes prepend onto the next PDU
- * and look like a CRC error in Modbus Slave. */
-
-#define VG_MODBUS_DIR_SETTLE_US 500
 
 static int32_t vg_modbus_port_read(uint8_t *buf, uint16_t count,
                                    int32_t byte_timeout_ms, void *arg)
@@ -229,8 +222,8 @@ static int32_t vg_modbus_port_write(const uint8_t *buf, uint16_t count,
       return -1;
     }
 
-  usleep(VG_MODBUS_DIR_SETTLE_US);
-  tcflush(port->fd, TCIFLUSH);
+  /* A slave may already be replying when tcdrain returns. Do not flush
+   * here: nanoMODBUS clears stale input before sending each request. */
   return sent;
 }
 

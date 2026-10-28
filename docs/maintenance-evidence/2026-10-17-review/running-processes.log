@@ -1,0 +1,11 @@
+
+
+ProcessId    : 34276
+CreationDate : 2026/10/17 16:39:27
+CommandLine  : powershell.exe -NoProfile -ExecutionPolicy Bypass -File \\wsl.localhost\Debian\home\hello19y\openvela\co
+               ntest2026_004_TeamFalcons\scripts\maintenance_rtu_slave.ps1 -ReplyDelayMs 150 -Hours 30
+
+ProcessId    : 5952
+CreationDate : 2026/10/17 16:40:29
+CommandLine  : powershell.exe -NoProfile -ExecutionPolicy Bypass -File \\wsl.localhost\Debian\home\hello19y\openvela\co
+               ntest2026_004_TeamFalcons\scripts\maintenance_soak.ps1 -Hours 24 -MinimumOnline 14 -IntervalSec 120

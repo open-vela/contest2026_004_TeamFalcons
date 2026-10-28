@@ -1,0 +1,22 @@
+########## boot settle len=58 ##########
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## cp /data/velaguard/discover/point_table_candidate.json /data/velaguard/discover/copy1.json ########## len=100
+cp /data/velaguard/discover/point_table_candidate.json /data/velaguard/discover/copy1.json
+nsh> [K
+
+########## echo X > /data/velaguard/discover/point_table_candidate.json.bak ########## len=74
+echo X > /data/velaguard/discover/point_table_candidate.json.bak
+nsh> [K
+
+########## ls -l /data/velaguard/discover ########## len=346
+ls -l /data/velaguard/discover
+/data/velaguard/discover:
+ -rw-rw-rw-   0        2078 point_table_candidate.json
+ -rw-rw-rw-   0           6 dtest.txt
+ -rw-rw-rw-   0        4552 discover_state.bin
+ -rw-rw-rw-   0        2078 copy1.json
+ -rw-rw-rw-   0           5 r2.txt
+ -rw-rw-rw-   0           2 point_table_candidate.json.bak
+nsh> [K

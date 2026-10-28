@@ -1,0 +1,21 @@
+########## boot settle len=1085 ##########
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6ad4e1557c9701b3] iter=2 tool=write_file latency=109530ms llm=ok backend=0
+[agent] Tool call: write_file args={"path": "/data/velaguard/reports/alarm_advice.txt", "content": "VGADV1\nboot=30c274de\nreq=3\nn=8\n[1]\nid=temp\nepoch=1\nsev=offline\nunres=0\nsum=总线全超时，先查通信再看温度\nev=总线成功率0%，770次全部超时，无CRC错，该点自上电离线16分49秒\natt=检查主站串口参数、从站1地址与接线供电\n[2]\nid=humid\nepoch=1\nsev=offline\nunres=0\nsum=湿度与温度同时离线，疑通信故障\nev=总线近窗成功率0%，421次全超时，该点自上�
+[tools] Executing tool: write_file
+[tool_files] write_file: /data/velaguard/reports/alarm_advice.txt (1786 bytes)
+[agent] Tool write_file result: 64 bytes
+[agent] Local tool shortcut: skip LLM round
+[trace:6ad4e1557c9701b3] END status=ok iters=3 tools=3 llm_ms=197770 elapsed=213s backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+[vgadvice] advice loaded: 8 entries file_req=3 live_req=3
+[vgadvice] round ended, advice for this alarm set kept
+
+
+########## cat /data/velaguard/config/points.json ########## len=2049
+cat /data/velaguard/config/points.json
+{"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":35,"fail_n":3},{"id":"humid","name":"湿度","addr":1,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%RH","cmp":"ge","warn":70,"crit":85,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"smoke","name":"烟雾","addr":3,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":5,"crit":10,"fail_n":3},{"id":"acu_ret","name":"回风温度","addr":4,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","cmp":"ge","warn":28,"crit":32,"fail_n":3},{"id":"acu_set","name":"设定温度","addr":4,"fc":3,"reg":1,"qty":1,"dtype":"int16","scale":0.100,"unit":"C","fail_n":3},{"id":"acu_run","name":"空调运行","addr":4,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","fail_n":3},{"id":"ups_load","name":"UPS负载","addr":5,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"%","cmp":"ge","warn":70,"crit":90,"fail_n":3},{"id":"ups_soc","name":"UPS电池","addr":5,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":1.000,"unit":"%","cmp":"le","warn":40,"crit":20,"fail_n":3},{"id":"ups_bypass","name":"UPS旁路","addr":5,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3},{"id":"volt_a","name":"A相电压","addr":6,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":0.100,"unit":"V","cmp":"le","warn":200,"crit":180,"fail_n":3},{"id":"pwr_kw","name":"有功功率","addr":6,"fc":3,"reg":1,"qty":1,"dtype":"uint16","scale":0.010,"unit":"kW","cmp":"ge","warn":8,"crit":10,"fail_n":3},{"id":"energy_kwh","name":"正向电能","addr":6,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":0.100,"unit":"kWh","fail_n":3},{"id":"door","name":"门磁","addr":7,"fc":3,"reg":0,"qty":1,"dtype":"uint16","scale":1.000,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}
+nsh> [K

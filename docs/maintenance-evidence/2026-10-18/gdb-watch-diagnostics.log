@@ -1,0 +1,10 @@
+0x9000bc0c in up_idle ()
+=== current state ===
+0x38002be0:	0x38000580	0x00180000	0x00000002	0x00000000
+Hardware watchpoint 1: *(unsigned int *)0x38002be0
+=== watchpoint armed at stack bottom 0x38002be0 ===
+Num     Type           Disp Enb Address    What
+1       hw watchpoint  keep y              *(unsigned int *)0x38002be0
+=== running, waiting ===
+
+[killed]

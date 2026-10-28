@@ -76,9 +76,25 @@ CSRCS += vg_heapwatch.c
 CFLAGS += -DCONFIG_VG_HEAP_WATCH=1
 endif
 
+ifeq ($(CONFIG_VG_PTT),y)
+PROGNAME += vgptt
+MAINSRC  += vgptt.c
+CSRCS    += vg_ptt.c vg_ptt_board.c
+endif
+
+ifeq ($(CONFIG_VG_PDM_DUMP),y)
+PROGNAME += vgpdmdump
+MAINSRC  += vgpdmdump.c
+endif
+
+ifeq ($(CONFIG_VG_AUDIO_PROBE),y)
+PROGNAME += vgaudio
+MAINSRC  += vgaudio.c
+endif
+
 ifeq ($(CONFIG_VG_BUS_DISCOVER),y)
-PROGNAME += vgdiscover vgpoint
-MAINSRC  += vgdiscover.c vgpoint.c
+PROGNAME += vgdiscover vgpoint vgstoretest
+MAINSRC  += vgdiscover.c vgpoint.c vgstoretest.c
 CSRCS    += vg_discover_modbus.c vg_point_table.c
 CFLAGS   += -DCONFIG_VG_BUS_DISCOVER=1
 endif
@@ -144,7 +160,9 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 # heap-allocated. 16K leaves room for fopen + nanomodbus on test.
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
-  $(if $(filter vgdiscover vgscan vgpoint vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT)))))
+  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT)))))
+# vgptt is a thin NSH front end; the button thread gets its own stack from
+# CONFIG_VG_PTT_STACKSIZE, so the command keeps the default.
 PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_PRIO),SCHED_PRIORITY_DEFAULT)))
 
@@ -154,6 +172,10 @@ PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
 VG_OBJDIR := $(abspath $(CURDIR)/../../build/velaguard)
 $(shell mkdir -p "$(VG_OBJDIR)")
 PREFIX := $(VG_OBJDIR)$(DELIM)
+
+ifneq ($(filter y,$(CONFIG_VG_BRINGUP_TOOLS) $(CONFIG_VG_HMI)),)
+CSRCS += vg_file_store.c
+endif
 
 include $(APPDIR)/Application.mk
 

@@ -13,6 +13,10 @@
 #include <sys/stat.h>
 #include <sys/statfs.h>
 #include <time.h>
+#include <math.h>
+#include <pthread.h>
+#include <netutils/cJSON.h>
+#include "vg_file_store.h"
 #include <unistd.h>
 
 #ifdef __NuttX__
@@ -33,6 +37,12 @@ void vg_mqtt_notify_point_table(void) __attribute__((weak));
 #include "vg_config_store.h"
 #endif
 
+#ifndef TMPFS_MAGIC
+#  define TMPFS_MAGIC 0x01021994
+#endif
+
+#define VG_POINTS_JSON_MAX VG_POINT_TABLE_JSON_MAX
+
 #define VG_DISC_STATE_MAGIC  0x56474453u
 #define VG_DISC_STATE_PATH   "/data/velaguard/discover/discover_state.bin"
 
@@ -47,11 +57,13 @@ void vg_mqtt_notify_point_table(void) __attribute__((weak));
 struct vg_disc_state_file
 {
   uint32_t magic;
+  uint32_t version;
   struct vg_discover_summary sum;
 };
 
 static struct vg_discover_summary g_sum;
-static struct vg_disc_state_file g_sf;
+static pthread_mutex_t g_commit_mtx = PTHREAD_MUTEX_INITIALIZER;
+
 
 struct vg_discover_summary *vg_discover_state(void)
 {
@@ -72,35 +84,26 @@ float vg_discover_decode_int16_scaled(int16_t raw, float scale)
 }
 
 bool vg_discover_parse_addr_range(FAR const char *spec,
-                                    int *min_out, int *max_out)
+                                  int *min_out, int *max_out)
 {
-  int a;
-  int b;
-
-  if (spec == NULL || min_out == NULL || max_out == NULL)
+  char *end;
+  long a;
+  long b;
+  if (spec == NULL || min_out == NULL || max_out == NULL || *spec == '\0')
+    return false;
+  errno = 0;
+  a = strtol(spec, &end, 0);
+  if (end == spec || errno != 0) return false;
+  b = a;
+  if (*end == '-')
     {
-      return false;
+      const char *next = end + 1;
+      b = strtol(next, &end, 0);
+      if (end == next || errno != 0) return false;
     }
-
-  if (strchr(spec, '-') != NULL)
-    {
-      if (sscanf(spec, "%d-%d", &a, &b) != 2)
-        {
-          return false;
-        }
-    }
-  else
-    {
-      a = b = (int)strtol(spec, NULL, 0);
-    }
-
-  if (a < 1 || b > 247 || a > b)
-    {
-      return false;
-    }
-
-  *min_out = a;
-  *max_out = b;
+  if (*end != '\0' || a < 1 || b > 247 || a > b) return false;
+  *min_out = (int)a;
+  *max_out = (int)b;
   return true;
 }
 
@@ -116,7 +119,8 @@ static int mkdir_p(FAR const char *path)
       return -EINVAL;
     }
 
-  snprintf(tmp, sizeof(tmp), "%s", path);
+  if (strlen(path) >= sizeof(tmp)) return -ENAMETOOLONG;
+  memcpy(tmp, path, strlen(path) + 1);
   len = strlen(tmp);
   if (len == 0)
     {
@@ -170,7 +174,8 @@ static int mkdir_parent(FAR const char *filepath)
       return -EINVAL;
     }
 
-  snprintf(tmp, sizeof(tmp), "%s", filepath);
+  if (strlen(filepath) >= sizeof(tmp)) return -ENAMETOOLONG;
+  memcpy(tmp, filepath, strlen(filepath) + 1);
   slash = strrchr(tmp, '/');
   if (slash == NULL || slash == tmp)
     {
@@ -184,62 +189,46 @@ static int mkdir_parent(FAR const char *filepath)
 int vg_discover_state_save(FAR const struct vg_discover_summary *sum,
                            FAR const char *path)
 {
-  int fd;
-  ssize_t n;
-  FAR const char *out = (path != NULL && path[0] != '\0') ?
-                        path : VG_DISC_STATE_PATH;
-
-  if (sum == NULL)
-    {
-      return -EINVAL;
-    }
-
-  mkdir_p("/data/velaguard/discover");
-
-  g_sf.magic = VG_DISC_STATE_MAGIC;
-  memcpy(&g_sf.sum, sum, sizeof(g_sf.sum));
-
-  fd = open(out, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-  if (fd < 0)
-    {
-      return -errno;
-    }
-
-  n = write(fd, &g_sf, sizeof(g_sf));
-  close(fd);
-
-  return (n == (ssize_t)sizeof(g_sf)) ? 0 : -EIO;
+  const char *out = path && *path ? path : VG_DISC_STATE_PATH;
+  struct vg_disc_state_file *file;
+  int rc;
+  if (sum == NULL) return -EINVAL;
+  rc = mkdir_parent(out);
+  if (rc) return rc;
+  file = malloc(sizeof(*file));
+  if (!file) return -ENOMEM;
+  file->magic = VG_DISC_STATE_MAGIC;
+  file->version = 2;
+  file->sum = *sum;
+  rc = vg_file_replace(out, file, sizeof(*file), 0644);
+  free(file);
+  return rc;
 }
 
 int vg_discover_state_load(FAR struct vg_discover_summary *sum,
                            FAR const char *path)
 {
-  int fd;
-  ssize_t n;
-  FAR const char *in = (path != NULL && path[0] != '\0') ?
-                       path : VG_DISC_STATE_PATH;
-
-  if (sum == NULL)
-    {
-      return -EINVAL;
-    }
-
-  fd = open(in, O_RDONLY);
-  if (fd < 0)
-    {
-      return -errno;
-    }
-
-  n = read(fd, &g_sf, sizeof(g_sf));
-  close(fd);
-
-  if (n != (ssize_t)sizeof(g_sf) || g_sf.magic != VG_DISC_STATE_MAGIC)
-    {
-      return -EINVAL;
-    }
-
-  memcpy(sum, &g_sf.sum, sizeof(*sum));
-  return 0;
+  const char *in = path && *path ? path : VG_DISC_STATE_PATH;
+  struct vg_disc_state_file *file;
+  FILE *fp;
+  int rc = -EINVAL;
+  if (!sum) return -EINVAL;
+  file = malloc(sizeof(*file));
+  if (!file) return -ENOMEM;
+  fp = fopen(in, "r");
+  if (!fp) { rc = -errno; goto done; }
+  size_t n = fread(file, 1, sizeof(*file), fp);
+  if (ferror(fp)) rc = -EIO;
+  else if (n == sizeof(*file) && fgetc(fp) == EOF &&
+           file->magic == VG_DISC_STATE_MAGIC && file->version == 2 &&
+           file->sum.n_hits >= 0 && file->sum.n_hits <= VG_DISCOVER_MAX_SLAVES &&
+           file->sum.n_blocks >= 0 && file->sum.n_blocks <= VG_DISCOVER_MAX_BLOCKS &&
+           file->sum.n_points >= 0 && file->sum.n_points <= VG_DISCOVER_MAX_POINTS)
+    { *sum = file->sum; rc = 0; }
+  fclose(fp);
+ done:
+  free(file);
+  return rc;
 }
 
 static void add_point(FAR struct vg_discover_summary *sum,
@@ -251,6 +240,7 @@ static void add_point(FAR struct vg_discover_summary *sum,
 
   if (sum->n_points >= VG_DISCOVER_MAX_POINTS)
     {
+      sum->flags |= VG_DISCOVER_TRUNCATED;
       return;
     }
 
@@ -296,9 +286,10 @@ int vg_point_table_infer(FAR struct vg_discover_summary *sum)
 
           scaled = vg_discover_decode_int16_scaled((int16_t)b->sample[tag_idx],
                                                    0.1f);
-          snprintf(id, sizeof(id), "s%u_r%u_%d",
+          snprintf(id, sizeof(id), "s%u_r%u_%u",
                    (unsigned)b->addr,
-                   (unsigned)(b->start + (uint16_t)tag_idx), tag_idx);
+                   (unsigned)(uint16_t)(b->start + (uint16_t)tag_idx),
+                   (unsigned)(uint8_t)tag_idx);
 
           if (scaled >= -50.0f && scaled <= 120.0f)
             {
@@ -318,101 +309,128 @@ int vg_point_table_infer(FAR struct vg_discover_summary *sum)
   return sum->n_points;
 }
 
-int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
-                                     FAR const char *path)
+static int valid_point(const struct vg_point_entry *p)
 {
-  FILE *fp;
+  if (!memchr(p->unit, 0, sizeof(p->unit))) return 0;
+  for (const unsigned char *u = (const unsigned char *)p->unit; *u; u++)
+    if (*u <= 0x20 || *u == 0x7f) return 0;
+  if (p->has_warn && p->has_crit && memchr(p->cmp, 0, sizeof(p->cmp)))
+    {
+      if (!strcmp(p->cmp, "ge") && p->warn > p->crit) return 0;
+      if (!strcmp(p->cmp, "le") && p->warn < p->crit) return 0;
+    }
+  return memchr(p->id, 0, sizeof(p->id)) && vg_point_validate_id(p->id) &&
+    memchr(p->name, 0, sizeof(p->name)) &&
+    (p->name[0] == 0 || vg_point_validate_name(p->name)) &&
+    memchr(p->unit, 0, sizeof(p->unit)) &&
+    memchr(p->dtype, 0, sizeof(p->dtype)) &&
+    (!strcmp(p->dtype, "int16") || !strcmp(p->dtype, "uint16")) &&
+    memchr(p->cmp, 0, sizeof(p->cmp)) &&
+    (!p->cmp[0] || !strcmp(p->cmp, "ge") || !strcmp(p->cmp, "le") ||
+     !strcmp(p->cmp, "eq")) &&
+    p->addr >= 1 && p->addr <= 247 && (p->fc == 3 || p->fc == 4) &&
+    p->qty >= 1 && p->qty <= 4 && isfinite(p->scale) &&
+    (!p->has_warn || isfinite(p->warn)) &&
+    (!p->has_crit || isfinite(p->crit)) && p->fail_n <= 20;
+}
+
+static int write_point_table(FAR const struct vg_discover_summary *sum,
+                              FAR const char *path, int create_only)
+{
+  cJSON *doc = NULL;
+  cJSON *bus;
+  cJSON *points;
+  cJSON *hits;
+  char *body = NULL;
+  int rc = -ENOMEM;
   int i;
-  int ret;
-  FAR const char *out = path;
-
-  if (sum == NULL || out == NULL)
-    {
-      return -EINVAL;
-    }
-
-  /* Create the parent of the path we were actually handed.  The candidate
-   * and the committed table live in different directories, so a hard-wired
-   * path here silently made one of them depend on board bring-up.
-   */
-
-  ret = mkdir_parent(out);
-  if (ret != 0)
-    {
-      return ret;
-    }
-
-  fp = fopen(out, "w");
-  if (fp == NULL)
-    {
-      return -errno;
-    }
-
-  fprintf(fp,
-          "{\"schema_version\":1,\"bus\":{\"device\":\"%s\",\"baud\":%d},"
-          "\"hits\":[",
-          sum->devpath, sum->baud);
-
-  for (i = 0; i < sum->n_hits; i++)
-    {
-      fprintf(fp, "%s%u", (i > 0) ? "," : "",
-              (unsigned)sum->hits[i].addr);
-    }
-
-  fprintf(fp, "],\"points\":[");
-
+  int j;
+  if (sum == NULL || path == NULL || sum->n_points < 0 ||
+      sum->n_points > VG_DISCOVER_MAX_POINTS || sum->n_hits < 0 ||
+      sum->n_hits > VG_DISCOVER_MAX_SLAVES ||
+      !memchr(sum->devpath, 0, sizeof(sum->devpath))) return -EINVAL;
   for (i = 0; i < sum->n_points; i++)
     {
-      FAR const struct vg_point_entry *p = &sum->points[i];
-
-      fprintf(fp,
-              "%s{\"id\":\"%s\",\"name\":\"%s\",\"addr\":%u,\"fc\":%u,\"reg\":%u,"
-              "\"qty\":%u,\"dtype\":\"%s\",\"scale\":%.3f,\"unit\":\"%s\"",
-              (i > 0) ? "," : "",
-              p->id, p->name[0] ? p->name : p->id,
-              (unsigned)p->addr, (unsigned)p->fc,
-              (unsigned)p->reg, (unsigned)p->qty,
-              p->dtype, (double)p->scale, p->unit);
-      if (p->cmp[0] != '\0')
-        {
-          fprintf(fp, ",\"cmp\":\"%s\"", p->cmp);
-        }
-
-      if (p->has_warn)
-        {
-          fprintf(fp, ",\"warn\":%.6g", (double)p->warn);
-        }
-
-      if (p->has_crit)
-        {
-          fprintf(fp, ",\"crit\":%.6g", (double)p->crit);
-        }
-
-      fprintf(fp, ",\"fail_n\":%u}",
-              (unsigned)((p->fail_n >= 1) ? p->fail_n : 3));
+      if (!valid_point(&sum->points[i])) return -EINVAL;
+      for (j = 0; j < i; j++)
+        if (!strcmp(sum->points[j].id, sum->points[i].id)) return -EINVAL;
     }
-
-  fprintf(fp, "]}\n");
-
-  /* A full or dying medium used to report success, leaving a truncated
-   * table that later read back as zero points.  Drop the half-written file
-   * instead of publishing it.
-   */
-
-  if (ferror(fp) != 0)
+  rc = mkdir_parent(path);
+  if (rc != 0) return rc;
+  rc = -ENOMEM;
+  doc = cJSON_CreateObject();
+  if (doc == NULL) goto done;
+#define ADD(x) do { if (!(x)) goto done; } while (0)
+  ADD(cJSON_AddNumberToObject(doc, "schema_version", 1));
+  ADD(bus = cJSON_AddObjectToObject(doc, "bus"));
+  ADD(cJSON_AddStringToObject(bus, "device", sum->devpath[0] ? sum->devpath : "/dev/rs485"));
+  ADD(cJSON_AddNumberToObject(bus, "baud", sum->baud ? sum->baud : 9600));
+  ADD(hits = cJSON_AddArrayToObject(doc, "hits"));
+  for (i = 0; i < sum->n_hits; i++)
     {
-      fclose(fp);
-      unlink(out);
-      return -EIO;
+      cJSON *hit = cJSON_CreateNumber(sum->hits[i].addr);
+      if (hit == NULL) goto done;
+      if (!cJSON_AddItemToArray(hits, hit)) { cJSON_Delete(hit); goto done; }
     }
-
-  if (fclose(fp) != 0)
+  ADD(points = cJSON_AddArrayToObject(doc, "points"));
+  for (i = 0; i < sum->n_points; i++)
     {
-      unlink(out);
-      return -EIO;
+      const struct vg_point_entry *p = &sum->points[i];
+      cJSON *obj = cJSON_CreateObject();
+      if (obj == NULL) goto done;
+      if (!cJSON_AddItemToArray(points, obj)) { cJSON_Delete(obj); goto done; }
+      ADD(cJSON_AddStringToObject(obj, "id", p->id));
+      ADD(cJSON_AddStringToObject(obj, "name", p->name[0] ? p->name : p->id));
+      ADD(cJSON_AddNumberToObject(obj, "addr", p->addr));
+      ADD(cJSON_AddNumberToObject(obj, "fc", p->fc));
+      ADD(cJSON_AddNumberToObject(obj, "reg", p->reg));
+      ADD(cJSON_AddNumberToObject(obj, "qty", p->qty));
+      ADD(cJSON_AddStringToObject(obj, "dtype", p->dtype));
+      ADD(cJSON_AddNumberToObject(obj, "scale", p->scale));
+      ADD(cJSON_AddStringToObject(obj, "unit", p->unit));
+      if (p->cmp[0]) ADD(cJSON_AddStringToObject(obj, "cmp", p->cmp));
+      if (p->has_warn) ADD(cJSON_AddNumberToObject(obj, "warn", p->warn));
+      if (p->has_crit) ADD(cJSON_AddNumberToObject(obj, "crit", p->crit));
+      ADD(cJSON_AddNumberToObject(obj, "fail_n", p->fail_n ? p->fail_n : 3));
     }
+  ADD(body = cJSON_PrintUnformatted(doc));
+  rc = strlen(body) < VG_POINTS_JSON_MAX - 1 ?
+       (create_only ? vg_file_create(path, body, strlen(body), 0644) :
+                      vg_file_replace(path, body, strlen(body), 0644)) : -EFBIG;
+#undef ADD
+ done:
+  cJSON_free(body);
+  cJSON_Delete(doc);
+  return rc;
+}
 
-  return 0;
+int vg_point_table_write_candidate(const struct vg_discover_summary *sum,
+                                   const char *path)
+{
+  return write_point_table(sum, path, 0);
+}
+
+int vg_point_table_create_candidate(const struct vg_discover_summary *sum,
+                                    const char *path)
+{
+  return write_point_table(sum, path, 1);
+}
+
+int vg_point_table_commit(FAR const struct vg_discover_summary *sum,
+                          FAR const char *points_path)
+{
+  int rc;
+  /* Keep disk replacement, RAM generation and notification in the same
+   * order for every submitter. The file-store mutex alone ends too early. */
+  pthread_mutex_lock(&g_commit_mtx);
+  rc = vg_point_table_write_candidate(sum, points_path);
+  if (rc == 0)
+    {
+      (void)vg_live_points_replace(sum);
+      if (vg_mqtt_notify_point_table != NULL) vg_mqtt_notify_point_table();
+    }
+  pthread_mutex_unlock(&g_commit_mtx);
+  return rc;
 }
 
 int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
@@ -420,7 +438,7 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *config_basedir,
                          bool confirm)
 {
-  if (sum == NULL || points_path == NULL)
+  if (sum == NULL || points_path == NULL || sum->n_points <= 0)
     {
       return -EINVAL;
     }
@@ -432,38 +450,14 @@ int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
       return 0;
     }
 
-  if (vg_point_table_write_candidate(sum, points_path) != 0)
+  if (vg_point_table_commit(sum, points_path) != 0)
     {
       return -EIO;
     }
 
-#ifdef CONFIG_VG_CONFIG_STORE
-  if (config_basedir != NULL)
-    {
-      struct vg_config cfg;
-      int ret;
-
-      vg_config_set_basedir(config_basedir);
-      vg_config_factory_default(&cfg);
-      snprintf(cfg.device_name, sizeof(cfg.device_name), "discovered");
-      ret = vg_config_commit(&cfg);
-      if (ret != 0)
-        {
-          printf("vgdiscover: vg_config_commit failed %d (%s)\n",
-                 ret, vg_config_last_error());
-          return ret;
-        }
-    }
-#else
   (void)config_basedir;
-#endif
 
   printf("vgdiscover: applied %d points → %s\n", sum->n_points, points_path);
-  (void)vg_live_points_replace(sum);
-  if (vg_mqtt_notify_point_table != NULL)
-    {
-      vg_mqtt_notify_point_table();
-    }
   return 0;
 }
 
@@ -488,234 +482,110 @@ static int append_unique_addr(uint8_t *addrs, int *n, int max, unsigned v)
   return 1;
 }
 
-static int parse_hits_array(FAR const char *json, uint8_t *addrs, int max)
-{
-  FAR const char *hits;
-  FAR const char *p;
-  char *end;
-  int n = 0;
-
-  hits = strstr(json, "\"hits\":");
-  if (hits == NULL)
-    {
-      return 0;
-    }
-
-  p = strchr(hits, '[');
-  if (p == NULL)
-    {
-      return 0;
-    }
-
-  p++;
-  while (*p != '\0' && *p != ']' && n < max)
-    {
-      while (*p == ' ' || *p == '\t' || *p == ',' || *p == '\n' || *p == '\r')
-        {
-          p++;
-        }
-
-      if (*p == ']' || *p == '\0')
-        {
-          break;
-        }
-
-      if (*p >= '0' && *p <= '9')
-        {
-          unsigned v = (unsigned)strtoul(p, &end, 10);
-          if (end == p)
-            {
-              break;
-            }
-
-          append_unique_addr(addrs, &n, max, v);
-          p = end;
-        }
-      else
-        {
-          p++;
-        }
-    }
-
-  return n;
-}
-
-static int parse_point_addrs(FAR const char *json, uint8_t *addrs, int max)
-{
-  FAR const char *p = json;
-  int n = 0;
-
-  while ((p = strstr(p, "\"addr\":")) != NULL && n < max)
-    {
-      char *end;
-      unsigned v;
-
-      p += 7;
-      v = (unsigned)strtoul(p, &end, 10);
-      if (end == p)
-        {
-          p++;
-          continue;
-        }
-
-      append_unique_addr(addrs, &n, max, v);
-      p = end;
-    }
-
-  return n;
-}
-
 int vg_point_table_read_slaves(FAR const char *path, uint8_t *addrs, int max)
 {
-  FILE *fp;
-  char buf[4096];
-  size_t nread;
-  int n;
-
-  if (path == NULL || path[0] == '\0' || addrs == NULL || max <= 0)
+  struct vg_discover_summary *table;
+  int rc;
+  int n = 0;
+  if (!path || !addrs || max <= 0) return -EINVAL;
+  table = malloc(sizeof(*table));
+  if (!table) return -ENOMEM;
+  rc = vg_point_table_read(table, path);
+  if (rc == 0)
     {
-      return -EINVAL;
+      for (int i = 0; i < table->n_hits; i++)
+        append_unique_addr(addrs, &n, max, table->hits[i].addr);
+      for (int i = 0; i < table->n_points; i++)
+        append_unique_addr(addrs, &n, max, table->points[i].addr);
     }
-
-  fp = fopen(path, "r");
-  if (fp == NULL)
-    {
-      return -errno;
-    }
-
-  nread = fread(buf, 1, sizeof(buf) - 1, fp);
-  fclose(fp);
-  buf[nread] = '\0';
-
-  n = parse_hits_array(buf, addrs, max);
-  if (n <= 0)
-    {
-      n = parse_point_addrs(buf, addrs, max);
-    }
-
-  return n;
+  free(table);
+  return rc == 0 ? n : rc;
 }
 
-#define VG_POINTS_JSON_MAX 8192
-
-#ifdef __NuttX__
 static pthread_mutex_t g_bus_mtx = PTHREAD_MUTEX_INITIALIZER;
-#else
-static int g_bus_lock;
-#endif
-
+static pthread_mutex_t g_live_mtx = PTHREAD_MUTEX_INITIALIZER;
 static struct vg_discover_summary g_live;
 static uint32_t g_live_gen;
 
 int vg_bus_try_lock(void)
 {
-#ifdef __NuttX__
-  if (pthread_mutex_trylock(&g_bus_mtx) != 0)
-    {
-      return -EBUSY;
-    }
+  return pthread_mutex_trylock(&g_bus_mtx) == 0 ? 0 : -EBUSY;
+}
 
-  return 0;
-#else
-  if (g_bus_lock)
+int vg_bus_lock_timeout(uint32_t timeout_ms)
+{
+  uint32_t start = vg_live_now_ms();
+  do
     {
-      return -EBUSY;
+      if (vg_bus_try_lock() == 0) return 0;
+      if (vg_live_now_ms() - start >= timeout_ms) break;
+      usleep(1000);
     }
-
-  g_bus_lock = 1;
-  return 0;
-#endif
+  while (1);
+  return -EBUSY;
 }
 
 void vg_bus_unlock(void)
 {
-#ifdef __NuttX__
   pthread_mutex_unlock(&g_bus_mtx);
-#else
-  g_bus_lock = 0;
-#endif
 }
 
 int vg_bus_is_locked(void)
 {
-#ifdef __NuttX__
-  if (pthread_mutex_trylock(&g_bus_mtx) != 0)
-    {
-      return 1;
-    }
-
-  pthread_mutex_unlock(&g_bus_mtx);
+  if (vg_bus_try_lock() != 0) return 1;
+  vg_bus_unlock();
   return 0;
-#else
-  return g_bus_lock != 0;
-#endif
 }
 
 int vg_live_points_replace(FAR const struct vg_discover_summary *sum)
 {
-  if (sum == NULL)
-    {
-      memset(&g_live, 0, sizeof(g_live));
-      g_live_gen++;
-      return 0;
-    }
-
-  memcpy(&g_live, sum, sizeof(g_live));
+  pthread_mutex_lock(&g_live_mtx);
+  if (sum == NULL) memset(&g_live, 0, sizeof(g_live));
+  else memcpy(&g_live, sum, sizeof(g_live));
   g_live_gen++;
+  pthread_mutex_unlock(&g_live_mtx);
   return 0;
 }
 
 int vg_live_points_load(FAR const char *path)
 {
-  int ret;
-
-  if (path == NULL || path[0] == '\0')
-    {
-      memset(&g_live, 0, sizeof(g_live));
-      g_live_gen++;
-      return -EINVAL;
-    }
-
-  ret = vg_point_table_read(&g_live, path);
-  if (ret != 0)
-    {
-      memset(&g_live, 0, sizeof(g_live));
-    }
-
-  g_live_gen++;
-  return ret;
+  struct vg_discover_summary *next = malloc(sizeof(*next));
+  int rc;
+  if (next == NULL) return -ENOMEM;
+  pthread_mutex_lock(&g_commit_mtx);
+  rc = vg_point_table_read(next, path);
+  /* Failed storage reads must not erase an already running configuration. */
+  if (rc == 0) vg_live_points_replace(next);
+  pthread_mutex_unlock(&g_commit_mtx);
+  free(next);
+  return rc;
 }
 
 uint32_t vg_live_points_gen(void)
 {
-  return g_live_gen;
+  uint32_t gen;
+  pthread_mutex_lock(&g_live_mtx);
+  gen = g_live_gen;
+  pthread_mutex_unlock(&g_live_mtx);
+  return gen;
 }
 
 int vg_live_points_copy(FAR struct vg_discover_summary *out)
 {
-  if (out == NULL)
-    {
-      return -EINVAL;
-    }
-
-  memcpy(out, &g_live, sizeof(*out));
-  return g_live.n_points;
+  return vg_live_points_copy_versioned(out, NULL);
 }
 
 int vg_live_points_copy_versioned(FAR struct vg_discover_summary *out,
                                  FAR uint32_t *generation)
 {
-  if (out == NULL)
-    {
-      return -EINVAL;
-    }
-
+  int n;
+  if (out == NULL) return -EINVAL;
+  pthread_mutex_lock(&g_live_mtx);
   memcpy(out, &g_live, sizeof(*out));
-  if (generation != NULL)
-    {
-      *generation = g_live_gen;
-    }
-  return g_live.n_points;
+  if (generation != NULL) *generation = g_live_gen;
+  n = g_live.n_points;
+  pthread_mutex_unlock(&g_live_mtx);
+  return n;
 }
 
 int vg_point_validate_id(FAR const char *id)
@@ -852,7 +722,7 @@ int vg_point_store_root_ok(FAR const char *root)
    * answers every write until the next reboot discards it.
    */
 
-  return (st.f_type == PROC_SUPER_MAGIC) ? -ENODEV : 0;
+  return (st.f_type == PROC_SUPER_MAGIC || st.f_type == TMPFS_MAGIC) ? -ENODEV : 0;
 }
 
 FAR const char *vg_point_table_err_token(int ret)
@@ -1065,7 +935,7 @@ int vg_live_snapshot_write(FAR const char *path,
       return -EIO;
     }
 
-  fclose(fp);
+  if (fclose(fp) != 0) { unlink(tmp); return -EIO; }
   if (rename(tmp, path) != 0)
     {
       int err = errno;
@@ -1083,87 +953,62 @@ int vg_live_snapshot_read(FAR const char *path,
   FILE *fp;
   char line[128];
   int declared_n = -1;
-
-  if (path == NULL || path[0] == '\0' || snap == NULL)
-    {
-      return -EINVAL;
-    }
-
+  int have_tick = 0;
+  int have_count = 0;
+  int rc = -EINVAL;
+  if (!path || !*path || !snap) return -EINVAL;
   memset(snap, 0, sizeof(*snap));
   fp = fopen(path, "r");
-  if (fp == NULL)
+  if (!fp) return -errno;
+  while (fgets(line, sizeof(line), fp))
     {
-      return (errno == ENOENT) ? -ENOENT : -errno;
-    }
-
-  while (fgets(line, sizeof(line), fp) != NULL)
-    {
-      size_t len = strlen(line);
+      int end = 0;
       unsigned tick;
       unsigned ok;
       char id[VG_POINT_ID_MAX];
-      char valstr[32];
+      char value[32];
       char unit[8];
-      struct vg_live_sample *s;
-
-      while (len > 0 && (line[len - 1] == '\n' || line[len - 1] == '\r'))
+      size_t len = strlen(line);
+      if (len == sizeof(line) - 1 && line[len - 1] != '\n') goto done;
+      while (len && (line[len - 1] == '\n' || line[len - 1] == '\r')) line[--len] = 0;
+      if (!len || line[0] == '#') continue;
+      if (sscanf(line, "tick_ms=%u%n", &tick, &end) == 1 && line[end] == 0)
         {
-          line[--len] = '\0';
+          if (have_tick || declared_n >= 0) goto done;
+          snap->tick_ms = tick; have_tick = 1; continue;
         }
-
-      if (len == 0 || line[0] == '#')
+      end = 0;
+      if (sscanf(line, "n=%d%n", &declared_n, &end) == 1 && line[end] == 0)
         {
+          if (!have_tick || have_count || snap->n || declared_n < 0 || declared_n > VG_DISCOVER_MAX_POINTS) goto done;
+          have_count = 1;
           continue;
         }
-
-      if (sscanf(line, "tick_ms=%u", &tick) == 1)
+      end = 0;
+      if (!have_tick || declared_n < 0 || snap->n >= declared_n ||
+          sscanf(line, "id=%23s value=%31s ok=%u unit=%7s%n", id, value, &ok, unit, &end) != 4 ||
+          line[end] != 0 || !vg_point_validate_id(id) || ok > 1 ||
+          vg_live_snapshot_find_id(snap, id) >= 0) goto done;
+      struct vg_live_sample *sample = &snap->samples[snap->n];
+      strcpy(sample->id, id);
+      if (strcmp(unit, "-")) strcpy(sample->unit, unit);
+      if (ok)
         {
-          snap->tick_ms = tick;
-          continue;
+          char *tail;
+          errno = 0;
+          sample->value = strtof(value, &tail);
+          if (tail == value || *tail || errno || !isfinite(sample->value)) goto done;
+          sample->ok = 1;
         }
-
-      if (sscanf(line, "n=%d", &declared_n) == 1)
-        {
-          continue;
-        }
-
-      if (sscanf(line, "id=%23s value=%31s ok=%u unit=%7s",
-                 id, valstr, &ok, unit) != 4)
-        {
-          continue;
-        }
-
-      if (!vg_point_validate_id(id) || snap->n >= VG_DISCOVER_MAX_POINTS)
-        {
-          continue;
-        }
-
-      s = &snap->samples[snap->n];
-      memset(s, 0, sizeof(*s));
-      snprintf(s->id, sizeof(s->id), "%s", id);
-      if (unit[0] != '\0' && strcmp(unit, "-") != 0)
-        {
-          snprintf(s->unit, sizeof(s->unit), "%s", unit);
-        }
-
-      if (ok != 0 && strcmp(valstr, "-") != 0)
-        {
-          char *end = NULL;
-          float v = strtof(valstr, &end);
-
-          if (end != valstr && end != NULL && *end == '\0' && v == v)
-            {
-              s->ok = 1;
-              s->value = v;
-            }
-        }
-
+      else if (strcmp(value, "-")) goto done;
       snap->n++;
     }
-
-  fclose(fp);
-  (void)declared_n;
-  return 0;
+  if (have_tick && declared_n == snap->n) rc = 0;
+ done:
+  if (ferror(fp)) rc = -EIO;
+  if (fclose(fp) && rc == 0) rc = -EIO;
+  if (rc) memset(snap, 0, sizeof(*snap));
+  return rc;
 }
 
 int vg_live_snapshot_find_id(FAR const struct vg_live_snapshot *snap,
@@ -1208,240 +1053,58 @@ int vg_point_table_find_id(FAR const struct vg_discover_summary *sum,
   return -1;
 }
 
-static int json_copy_object(FAR const char *start, FAR char *out, size_t outsz)
+static int json_string(const cJSON *obj, const char *key, char *out,
+                       size_t cap, int required)
 {
-  int depth = 0;
-  size_t n = 0;
-  FAR const char *p = start;
-
-  if (start == NULL || *start != '{' || out == NULL || outsz < 2)
-    {
-      return -EINVAL;
-    }
-
-  do
-    {
-      if (n + 1 >= outsz)
-        {
-          return -ENOSPC;
-        }
-
-      if (*p == '{')
-        {
-          depth++;
-        }
-      else if (*p == '}')
-        {
-          depth--;
-        }
-
-      out[n++] = *p++;
-    }
-  while (depth > 0 && *p != '\0');
-
-  if (depth != 0)
-    {
-      return -EINVAL;
-    }
-
-  out[n] = '\0';
+  const cJSON *v = cJSON_GetObjectItemCaseSensitive(obj, key);
+  if (v == NULL) return required ? -EINVAL : 0;
+  if (!cJSON_IsString(v) || strlen(v->valuestring) >= cap) return -EINVAL;
+  memcpy(out, v->valuestring, strlen(v->valuestring) + 1);
   return 0;
 }
 
-static FAR const char *json_key(FAR const char *obj, FAR const char *key)
+static int json_number(const cJSON *obj, const char *key, double *out,
+                       double min, double max, int integer, int required)
 {
-  char pat[40];
-  FAR const char *p;
-
-  if (obj == NULL || key == NULL)
-    {
-      return NULL;
-    }
-
-  snprintf(pat, sizeof(pat), "\"%s\"", key);
-  p = strstr(obj, pat);
-  if (p == NULL)
-    {
-      return NULL;
-    }
-
-  p += strlen(pat);
-  while (*p == ' ' || *p == '\t')
-    {
-      p++;
-    }
-
-  if (*p != ':')
-    {
-      return NULL;
-    }
-
-  p++;
-  while (*p == ' ' || *p == '\t')
-    {
-      p++;
-    }
-
-  return p;
+  const cJSON *v = cJSON_GetObjectItemCaseSensitive(obj, key);
+  if (v == NULL) return required ? -EINVAL : 0;
+  if (!cJSON_IsNumber(v) || !isfinite(v->valuedouble) ||
+      v->valuedouble < min || v->valuedouble > max ||
+      (integer && v->valuedouble != (double)(long)v->valuedouble)) return -EINVAL;
+  *out = v->valuedouble;
+  return 0;
 }
 
-static int json_str(FAR const char *obj, FAR const char *key,
-                    FAR char *out, size_t outsz)
+static int parse_one_point(const cJSON *obj, struct vg_point_entry *p)
 {
-  FAR const char *p = json_key(obj, key);
-  size_t n = 0;
-
-  if (p == NULL || *p != '"' || out == NULL || outsz == 0)
-    {
-      return 0;
-    }
-
-  p++;
-  while (*p != '\0' && *p != '"' && n + 1 < outsz)
-    {
-      out[n++] = *p++;
-    }
-
-  out[n] = '\0';
-  return 1;
-}
-
-static int json_long(FAR const char *obj, FAR const char *key, long *out)
-{
-  FAR const char *p = json_key(obj, key);
-  char *end;
-
-  if (p == NULL || out == NULL)
-    {
-      return 0;
-    }
-
-  *out = strtol(p, &end, 10);
-  return (end != p);
-}
-
-static int json_float(FAR const char *obj, FAR const char *key, float *out)
-{
-  FAR const char *p = json_key(obj, key);
-  char *end;
-
-  if (p == NULL || out == NULL)
-    {
-      return 0;
-    }
-
-  *out = strtof(p, &end);
-  return (end != p);
-}
-
-static int vg_finite_f(float f)
-{
-  return (f == f) && (f <= 1.0e30f) && (f >= -1.0e30f);
-}
-
-static void point_defaults(FAR struct vg_point_entry *p)
-{
+  double v;
+  const cJSON *field;
   memset(p, 0, sizeof(*p));
-  p->fc = 3;
-  p->qty = 1;
-  snprintf(p->dtype, sizeof(p->dtype), "int16");
-  p->scale = 1.0f;
-  p->fail_n = 3;
-}
-
-static int parse_one_point(FAR const char *obj, FAR struct vg_point_entry *p)
-{
-  long v;
-  float f;
-  char tmp[24];
-
-  if (obj == NULL || p == NULL)
-    {
-      return -EINVAL;
-    }
-
-  point_defaults(p);
-  if (!json_str(obj, "id", p->id, sizeof(p->id)) ||
-      !vg_point_validate_id(p->id))
-    {
-      return -EINVAL;
-    }
-
-  if (json_str(obj, "name", p->name, sizeof(p->name)))
-    {
-      if (!vg_point_validate_name(p->name))
-        {
-          return -EINVAL;
-        }
-    }
-  else
-    {
-      memcpy(p->name, p->id, strlen(p->id) + 1);
-    }
-
-  if (!json_long(obj, "addr", &v) || v < 1 || v > 247)
-    {
-      return -EINVAL;
-    }
-
-  p->addr = (uint8_t)v;
-  if (json_long(obj, "fc", &v) && (v == 3 || v == 4))
-    {
-      p->fc = (uint8_t)v;
-    }
-
-  if (!json_long(obj, "reg", &v) || v < 0 || v > 65535)
-    {
-      return -EINVAL;
-    }
-
-  p->reg = (uint16_t)v;
-  if (json_long(obj, "qty", &v) && v >= 1 && v <= 4)
-    {
-      p->qty = (uint16_t)v;
-    }
-
-  if (json_str(obj, "dtype", tmp, sizeof(tmp)))
-    {
-      if (strcmp(tmp, "int16") == 0 || strcmp(tmp, "uint16") == 0)
-        {
-          memcpy(p->dtype, tmp, strlen(tmp) + 1);
-        }
-    }
-
-  if (json_float(obj, "scale", &f) && vg_finite_f(f))
-    {
-      p->scale = f;
-    }
-
-  (void)json_str(obj, "unit", p->unit, sizeof(p->unit));
-  if (json_str(obj, "cmp", tmp, sizeof(tmp)))
-    {
-      if (strcmp(tmp, "ge") == 0 || strcmp(tmp, "le") == 0 ||
-          strcmp(tmp, "eq") == 0)
-        {
-          memcpy(p->cmp, tmp, strlen(tmp) + 1);
-        }
-    }
-
-  if (json_float(obj, "warn", &f) && vg_finite_f(f))
-    {
-      p->has_warn = 1;
-      p->warn = f;
-    }
-
-  if (json_float(obj, "crit", &f) && vg_finite_f(f))
-    {
-      p->has_crit = 1;
-      p->crit = f;
-    }
-
-  if (json_long(obj, "fail_n", &v) && v >= 1 && v <= 20)
-    {
-      p->fail_n = (uint8_t)v;
-    }
-
-  return 0;
+  p->fc = 3; p->qty = 1; p->scale = 1; p->fail_n = 3;
+  strcpy(p->dtype, "int16");
+  if (!cJSON_IsObject(obj) ||
+      json_string(obj, "id", p->id, sizeof(p->id), 1) ||
+      json_string(obj, "name", p->name, sizeof(p->name), 0) ||
+      json_string(obj, "unit", p->unit, sizeof(p->unit), 0) ||
+      json_string(obj, "dtype", p->dtype, sizeof(p->dtype), 0) ||
+      json_string(obj, "cmp", p->cmp, sizeof(p->cmp), 0)) return -EINVAL;
+  if (p->name[0] == 0) strcpy(p->name, p->id);
+#define NUM(key, dest, low, high, integral, required) do { \
+  v = (dest); \
+  if (json_number(obj, key, &v, low, high, integral, required)) return -EINVAL; \
+  (dest) = v; } while (0)
+  NUM("addr", p->addr, 1, 247, 1, 1);
+  NUM("reg", p->reg, 0, 65535, 1, 1);
+  NUM("fc", p->fc, 3, 4, 1, 0);
+  NUM("qty", p->qty, 1, 4, 1, 0);
+  NUM("scale", p->scale, -3.402823466e38, 3.402823466e38, 0, 0);
+  NUM("fail_n", p->fail_n, 1, 20, 1, 0);
+  field = cJSON_GetObjectItemCaseSensitive(obj, "warn");
+  if (field != NULL) { NUM("warn", p->warn, -3.402823466e38, 3.402823466e38, 0, 1); p->has_warn = 1; }
+  field = cJSON_GetObjectItemCaseSensitive(obj, "crit");
+  if (field != NULL) { NUM("crit", p->crit, -3.402823466e38, 3.402823466e38, 0, 1); p->has_crit = 1; }
+#undef NUM
+  return valid_point(p) ? 0 : -EINVAL;
 }
 
 int vg_point_table_read(FAR struct vg_discover_summary *sum,
@@ -1449,154 +1112,67 @@ int vg_point_table_read(FAR struct vg_discover_summary *sum,
 {
   FILE *fp;
   char *buf;
-  char obj[512];
-  size_t nread;
-  FAR const char *p;
-  FAR const char *arr;
-  long baud;
-  int ret = 0;
-
-  if (sum == NULL || path == NULL || path[0] == '\0')
-    {
-      return -EINVAL;
-    }
-
+  cJSON *doc = NULL;
+  const cJSON *points;
+  const cJSON *item;
+  const cJSON *bus;
+  const cJSON *hits;
+  size_t n;
+  int rc = -EINVAL;
+  int i;
+  double baud = 9600;
+  if (sum == NULL || path == NULL || path[0] == 0) return -EINVAL;
   memset(sum, 0, sizeof(*sum));
-  sum->baud = 9600;
-  snprintf(sum->devpath, sizeof(sum->devpath), "/dev/rs485");
-
-  /* Heap: NSH vgpoint/vgdiscover stacks are 16K; a local 8K JSON buffer plus
-   * vg_discover_summary overflows and panics in IDLE. */
-  buf = (char *)malloc(VG_POINTS_JSON_MAX);
-  if (buf == NULL)
-    {
-      return -ENOMEM;
-    }
-
+  buf = malloc(VG_POINTS_JSON_MAX);
+  if (buf == NULL) return -ENOMEM;
   fp = fopen(path, "r");
-  if (fp == NULL)
+  if (fp == NULL) { rc = errno == ENOTDIR ? -ENOENT : -errno; goto done; }
+  n = fread(buf, 1, VG_POINTS_JSON_MAX - 1, fp);
+  rc = ferror(fp) ? -EIO : 0;
+  if (fclose(fp) != 0 && rc == 0) rc = -EIO;
+  if (rc != 0) goto done;
+  if (n == VG_POINTS_JSON_MAX - 1) { rc = -EFBIG; goto done; }
+  buf[n] = 0;
+  rc = -EINVAL;
+  doc = cJSON_ParseWithOpts(buf, NULL, 1);
+  if (!cJSON_IsObject(doc)) goto done;
+  points = cJSON_GetObjectItemCaseSensitive(doc, "points");
+  if (!cJSON_IsArray(points)) goto done;
+  if (cJSON_GetArraySize(points) > VG_DISCOVER_MAX_POINTS) { rc = -E2BIG; goto done; }
+  strcpy(sum->devpath, "/dev/rs485");
+  bus = cJSON_GetObjectItemCaseSensitive(doc, "bus");
+  if (bus != NULL)
     {
-      /* NuttX answers ENOTDIR, not ENOENT, when a component of the path is
-       * missing: with no /data/velaguard/discover directory yet, opening
-       * .../discover/point_table_candidate.json fails that way.  Callers
-       * read "no file" as "no table yet" and go on to create the tree, so
-       * both errnos have to mean the same thing here.  Letting ENOTDIR
-       * through made list -c report eio and made ensure_candidate bail out
-       * before it could create the missing directory, which turned one
-       * absent directory into a dead point table with no cause in the error.
-       */
-
-      ret = (errno == ENOTDIR) ? -ENOENT :
-            ((errno != 0) ? -errno : -EIO);
-      goto out;
+      if (!cJSON_IsObject(bus) ||
+          json_string(bus, "device", sum->devpath, sizeof(sum->devpath), 0) ||
+          json_number(bus, "baud", &baud, 9600, 9600, 1, 0)) goto done;
     }
-
-  nread = fread(buf, 1, VG_POINTS_JSON_MAX - 1, fp);
-
-  /* A medium that fails mid-read gives a short count, not a short file.
-   * Without this the buffer just ends early and parses as a damaged table,
-   * which hides the I/O error behind a content complaint.
-   */
-
-  if (ferror(fp) != 0)
+  sum->baud = (int)baud;
+  hits = cJSON_GetObjectItemCaseSensitive(doc, "hits");
+  if (hits != NULL)
     {
-      fclose(fp);
-      ret = -EIO;
-      goto out;
-    }
-
-  fclose(fp);
-  buf[nread] = '\0';
-  if (nread == VG_POINTS_JSON_MAX - 1)
-    {
-      ret = -EFBIG;
-      goto out;
-    }
-
-  if (json_str(buf, "device", sum->devpath, sizeof(sum->devpath)) == 0)
-    {
-      snprintf(sum->devpath, sizeof(sum->devpath), "/dev/rs485");
-    }
-
-  if (json_long(buf, "baud", &baud) && baud > 0)
-    {
-      sum->baud = (int)baud;
-    }
-
-  /* The file opened but carries no points array: it is truncated or not a
-   * point table at all.  Reporting that as a successful empty table let a
-   * damaged store masquerade as "no points", and let apply overwrite the
-   * committed table with zero points.
-   */
-
-  arr = strstr(buf, "\"points\"");
-  if (arr == NULL)
-    {
-      ret = -EINVAL;
-      goto out;
-    }
-
-  arr = strchr(arr, '[');
-  if (arr == NULL)
-    {
-      ret = -EINVAL;
-      goto out;
-    }
-
-  p = arr + 1;
-  while (*p != '\0' && *p != ']' && sum->n_points < VG_DISCOVER_MAX_POINTS)
-    {
-      while (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\r' || *p == ',')
+      if (!cJSON_IsArray(hits) || cJSON_GetArraySize(hits) > VG_DISCOVER_MAX_SLAVES) goto done;
+      cJSON_ArrayForEach(item, hits)
         {
-          p++;
+          double addr = item->valuedouble;
+          if (!cJSON_IsNumber(item) || addr < 1 || addr > 247 || addr != (int)addr) goto done;
+          sum->hits[sum->n_hits].addr = (uint8_t)addr;
+          sum->hits[sum->n_hits++].alive = true;
         }
-
-      if (*p == ']' || *p == '\0')
-        {
-          break;
-        }
-
-      if (*p != '{')
-        {
-          p++;
-          continue;
-        }
-
-      ret = json_copy_object(p, obj, sizeof(obj));
-      if (ret != 0)
-        {
-          goto out;
-        }
-
-      if (parse_one_point(obj, &sum->points[sum->n_points]) == 0 &&
-          vg_point_table_find_id(sum, sum->points[sum->n_points].id) < 0)
-        {
-          sum->n_points++;
-        }
-
-      p++;
-      {
-        int depth = 1;
-
-        while (*p != '\0' && depth > 0)
-          {
-            if (*p == '{')
-              {
-                depth++;
-              }
-            else if (*p == '}')
-              {
-                depth--;
-              }
-
-            p++;
-          }
-      }
     }
-
-out:
+  cJSON_ArrayForEach(item, points)
+    {
+      if (parse_one_point(item, &sum->points[sum->n_points])) goto done;
+      for (i = 0; i < sum->n_points; i++)
+        if (!strcmp(sum->points[i].id, sum->points[sum->n_points].id)) goto done;
+      sum->n_points++;
+    }
+  rc = 0;
+ done:
+  cJSON_Delete(doc);
   free(buf);
-  return ret;
+  if (rc != 0) memset(sum, 0, sizeof(*sum));
+  return rc;
 }
 
 int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,

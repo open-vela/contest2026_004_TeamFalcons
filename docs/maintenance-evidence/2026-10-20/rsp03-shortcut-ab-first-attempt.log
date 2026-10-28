@@ -1,0 +1,1335 @@
+﻿vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+ai_agent --daemon &
+ai_agent [80:100]
+nsh> [Kai_agent
+[agent] Attaching CLI to daemon agent
+[cli] NSH CLI started. Type 'help' for commands.
+vela> point_shortcut
+point shortcut: off
+vela> point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p1 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop starting in background...[agent] Processing message from cli:console
+
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: join 19y failed
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bc767c9701b3] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 正�[agent] [Agent]: 正在分析...
+�分析...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523382
+vgnet: no CONNACK via posix
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=663 text=0 reasoning=76 toolargs=21 calls=1 finish=tool_calls tokens=1560/41/1601
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bc767c9701b3] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=10 tls=520 send=160 ttfb=8370 body=170 pool=0 build=0 parse=0 http=9350 backoff=0 total=9360 req=5677 resp=663 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bc767c9701b3] iter=0 tool=vg_point_read latency=9380ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 580 ms
+[trace:6ad7bc767c9701b3] tool_iter=0 tool=vg_point_read tool_ms=580 out=95 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6018 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=1 first_read=8070ms total=669 bytes
+[vela_tls] body gap 1: idle=1120ms at=9190ms bytes=664
+[llm] Resp bytes=652 text=169 reasoning=30 toolargs=0 calls=0 finish=end_turn tokens=1647/64/1711
+[llm] Response: 169 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7bc767c9701b3] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=8070 body=1130 pool=0 build=10 parse=0 http=9470 backoff=0 total=9480 req=6018 resp=652 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=169, tool_use=0, calls=0
+[trace:6ad7bc767c9701b3] iter=1 tool=(none) latency=9500ms llm=ok backend=0
+[trace:6ad7bc767c9701b3] END status=ok iters=2 tools=1 llm_ms=18880 tool_ms=580 elapsed_ms=19540 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS负载当�[agent] [Agent]: UPS负载当前为 **40%**，状态正常（数据新鲜，2秒前采样���）。
+
+告警阈值：≥70% 预警，≥90% 严重。目前距离预警线还有较大余量。
+�� **40%**，状态正常（数据新鲜，2秒前采样）。
+
+告警阈值：≥70% 预警，≥90% 严重。目前距离预警线还有较大余量。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p1 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: no CONNACK via posix
+/// RSP03 BEGIN p1 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; a[agent] ask: 告诉我UPS负载的值
+gent_loop starting in background...[agent] Processing message from cli:console
+
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bc8f03cd357a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍[ag等，处理中...ent] [Agent]: 稍等，处理中...
+
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=640 text=0 reasoning=54 toolargs=21 calls=1 finish=tool_calls tokens=1560/35/1595
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bc8f03cd357a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2270 body=0 pool=0 build=0 parse=0 http=2530 backoff=0 total=2540 req=5677 resp=640 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bc8f03cd357a] iter=0 tool=vg_point_read latency=2560ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+vgnet: no CONNACK via posix
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 220 ms
+[trace:6ad7bc8f03cd357a] tool_iter=0 tool=vg_point_read tool_ms=220 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7bc8f03cd357a] END status=ok iters=1 tools=1 llm_ms=2560 tool_ms=220 elapsed_ms=2850 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS�[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒前采样）
+�载当前读数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p1 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> vgnet: no CONNACK via posix
+cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p2 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; a[agent] ask: 告诉我UPS负载的值
+gent_loop s[atarting in bagent] Processing message from cli:console
+ckground...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bce22746feb7] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 正在思考�[agent] [Agent]: 正在思考中...
+��...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523490
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=635 text=0 reasoning=49 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bce22746feb7] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=570 send=160 ttfb=4410 body=0 pool=0 build=10 parse=0 http=5260 backoff=0 total=5270 req=5677 resp=635 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bce22746feb7] iter=0 tool=vg_point_read latency=5290ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 320 ms
+[trace:6ad7bce22746feb7] tool_iter=0 tool=vg_point_read tool_ms=320 out=95 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7bce22746feb7] END status=ok iters=1 tools=1 llm_ms=5290 tool_ms=320 elapsed_ms=5660 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS�[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒前采样）
+��载当前读数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: esp reset
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p2 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> vgnet: no CONNACK via posix
+cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p2 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop starting [agent] Processing message from cli:console
+in background...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bd360830f44a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 正在分�[agent] [Agent]: 正在分析...
+�...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523574
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=632 text=0 reasoning=46 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bd360830f44a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=520 send=150 ttfb=2150 body=0 pool=0 build=0 parse=0 http=2940 backoff=0 total=2950 req=5677 resp=632 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bd360830f44a] iter=0 tool=vg_point_read latency=2970ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 460 ms
+[trace:6ad7bd360830f44a] tool_iter=0 tool=vg_point_read tool_ms=460 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=1 first_read=8070ms total=620 bytes
+[vela_tls] body gap 1: idle=4710ms at=12780ms bytes=615
+[llm] Resp bytes=603 text=132 reasoning=18 toolargs=0 calls=0 finish=end_turn tokens=1639/55/1694
+[llm] Response: 132 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7bd360830f44a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=8070 body=4720 pool=0 build=10 parse=0 http=13050 backoff=0 total=13060 req=6017 resp=603 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=132, tool_use=0, calls=0
+[trace:6ad7bd360830f44a] iter=1 tool=(none) latency=13080ms llm=ok backend=0
+[trace:6ad7bd360830f44a] END status=ok iters=2 tools=1 llm_ms=16050 tool_ms=460 elapsed_ms=16600 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **UPS[agent] [Agent]: **UPS负载**：40 %�负载**：40 %（�数据新鲜，420ms 前采样）
+
+告警阈值：≥70数据新% 预警，≥90% 严重。当前处于正常区间。
+鲜，420ms 前采样）
+
+告警阈值：≥70% 预警，≥90% 严重。当前处于正常区间。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p2 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p3 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop starting [agent] Processing message from cli:console
+in background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bd4d73b6c3ea] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 让[agent] [A我查一下gent]: 让我查一下...
+...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=1 first_read=8080ms total=718 bytes
+[vela_tls] body gap 1: idle=3440ms at=11520ms bytes=713
+[llm] Resp bytes=701 text=0 reasoning=110 toolargs=21 calls=1 finish=tool_calls tokens=1560/51/1611
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bd4d73b6c3ea] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=8080 body=3450 pool=0 build=0 parse=0 http=11790 backoff=0 total=11800 req=5677 resp=701 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bd4d73b6c3ea] iter=0 tool=vg_point_read latency=11820ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+vgnet: no CONNACK via posix
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 220 ms
+[trace:6ad7bd4d73b6c3ea] tool_iter=0 tool=vg_point_read tool_ms=220 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=680 text=208 reasoning=17 toolargs=0 calls=0 finish=end_turn tokens=1656/77/1733
+[llm] Response: 208 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7bd4d73b6c3ea] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=6630 body=0 pool=0 build=0 parse=0 http=6890 backoff=0 total=6890 req=6017 resp=680 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=208, tool_use=0, calls=0
+[trace:6ad7bd4d73b6c3ea] iter=1 tool=(none) latency=6910ms llm=ok backend=0
+[trace:6ad7bd4d73b6c3ea] END status=ok iters=2 tools=1 llm_ms=18730 tool_ms=220 elapsed_ms=19040 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **UP[S负载�agent] [Agent]: **UPS负载：40%**（单位 %）
+
+- 状态：正常（告警阈值：≥70% 预警，≚40%**（单位 %�90% 严）重）
+- ���据新鲜�
+��：约 0.8 秒前采样，通信�
+- 状�常
+
+当前负载处于健康范围，无需处理。
+��：正常（告警阈值：≥70% 预警，≥90% 严重）
+- 数据新鲜度：约 0.8 秒前采样，通信正常
+
+当前负载处于健康范围，无需处理。
+vela> /// RSP03 END p3 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p3 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop [agent] Processing starting in backgrmeossage from ucli:console
+nd...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bd6676c64bb0] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍等，处[agent] [Agent]: 稍等，处理中...
+理中...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+[llm] Resp bytes=634 text=0 reasoning=48 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bd6676c64bb0] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=1930 body=0 pool=0 build=0 parse=0 http=2190 backoff=0 total=2200 req=5677 resp=634 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bd6676c64bb0] iter=0 tool=vg_point_read latency=2230ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 480 ms
+[trace:6ad7bd6676c64bb0] tool_iter=0 tool=vg_point_read tool_ms=480 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7bd6676c64bb0] END status=ok iters=1 tools=1 llm_ms=2230 tool_ms=480 elapsed_ms=2760 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒�负载当前�采样）
+��数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p3 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p4 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; [agent] asagk: 告诉我UPS负载的值
+ent_loop starting [in background...agent] Processing
+Sent to agent: 告诉我UPS负载的值
+vela>  message from cli:console
+vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bdb961ce8483] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 让�[agent] [Agent]: 让我查䈸�下...
+�查一下...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523705
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=635 text=0 reasoning=49 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bdb961ce8483] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=640 send=140 ttfb=2260 body=0 pool=0 build=0 parse=0 http=3160 backoff=0 total=3170 req=5677 resp=635 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bdb961ce8483] iter=0 tool=vg_point_read latency=3180ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 530 ms
+[trace:6ad7bdb961ce8483] tool_iter=0 tool=vg_point_read tool_ms=530 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7bdb961ce8483] END status=ok iters=1 tools=1 llm_ms=3180 tool_ms=530 elapsed_ms=3780 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS�[agent] [Agent]: UPS负载当前读数 40 %（在线，0 秴�载当前读数�前采样）
+ 40 %（在线，0 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p4 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p4 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; [agent] asagk: 告诉我UPS负载的值
+ent_loop starting in background...
+Sent to agent: 告诉我UPS负�[�agent] Processi�的值
+vela> ng message from cli:console
+vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7be0c16b6aaad] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Agent]: 稍等，处理中.��，�..
+�理中...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523788
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=632 text=0 reasoning=46 toolargs=21 calls=1 finish=tool_calls tokens=1560/33/1593
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7be0c16b6aaad] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=500 send=150 ttfb=4740 body=0 pool=0 build=0 parse=0 http=5510 backoff=0 total=5520 req=5677 resp=632 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7be0c16b6aaad] iter=0 tool=vg_point_read latency=5540ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 320 ms
+[trace:6ad7be0c16b6aaad] tool_iter=0 tool=vg_point_read tool_ms=320 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=587 text=122 reasoning=13 toolargs=0 calls=0 finish=end_turn tokens=1638/52/1690
+[llm] Response: 122 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7be0c16b6aaad] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=2380 body=0 pool=0 build=0 parse=0 http=2650 backoff=0 total=2660 req=6017 resp=587 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=122, tool_use=0, calls=0
+[trace:6ad7be0c16b6aaad] iter=1 tool=(none) latency=2680ms llm=ok backend=0
+[trace:6ad7be0c16b6aaad] END status=ok iters=2 tools=1 llm_ms=8220 tool_ms=320 elapsed_ms=8640 backend=0
+vgnet: no CONNACK via posix
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS�[agent] [Agent]: UPS负载当前为 **40%**，状怟载当前为 **40�正常（数据新鲜度 0.4 秒）。
+
+阈值提醒：≥70% 预警，≥90% 告警。%
+**，状态正常（数据新鲜度 0.4 秒）。
+
+阈值提醒：≥70% 预警，≥90% 告警。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p4 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p5 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loo[agent] Processing message from cp starting in balickg:console
+round...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7be1b3cf284bd] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马�[agent] [Agent]: 马上好...
+��好...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=655 text=0 reasoning=69 toolargs=21 calls=1 finish=tool_calls tokens=1560/36/1596
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7be1b3cf284bd] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=3300 body=0 pool=0 build=10 parse=0 http=3560 backoff=0 total=3570 req=5677 resp=655 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7be1b3cf284bd] iter=0 tool=vg_point_read latency=3590ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 380 ms
+[trace:6ad7be1b3cf284bd] tool_iter=0 tool=vg_point_read tool_ms=380 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=607 text=124 reasoning=30 toolargs=0 calls=0 finish=end_turn tokens=1641/60/1701
+[llm] Response: 124 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7be1b3cf284bd] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=2160 body=0 pool=0 build=0 parse=0 http=2410 backoff=0 total=2420 req=6017 resp=607 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=124, tool_use=0, calls=0
+[trace:6ad7be1b3cf284bd] iter=1 tool=(none) latency=2440ms llm=ok backend=0
+[trace:6ad7be1b3cf284bd] END status=ok iters=2 tools=1 llm_ms=6030 tool_ms=380 elapsed_ms=6500 backend=0
+vgnet: no CONNACK via posix
+[agent] Dispatching response → cli:console
+
+[Agent]: **UPS负载�[a�40%gent] [Agent]: **UPS负载：40%**（正常）
+
+- 阈值：≥70% 预警，≥90**（正% 严重
+- 数据新鲜度：380ms 前采集，状态正常
+常）
+
+- 阈值：≥70% 预警，≥90% 严重
+- 数据新鲜度：380ms 前采集，状态正常
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p5 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p5 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我 agent_loop stUPS负载的值
+arting in background...
+Se[nagent] Processing message from cli:console
+t to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7be2734a9cc0d] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍[agent] [Agent]: 稍等，�等，处琤�理中...
+�中...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=634 text=0 reasoning=48 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7be2734a9cc0d] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=3120 body=0 pool=0 build=0 parse=0 http=3390 backoff=0 total=3400 req=5677 resp=634 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7be2734a9cc0d] iter=0 tool=vg_point_read latency=3420ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 270 ms
+[trace:6ad7be2734a9cc0d] tool_iter=0 tool=vg_point_read tool_ms=270 out=95 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7be2734a9cc0d] END status=ok iters=1 tools=1 llm_ms=3420 tool_ms=270 elapsed_ms=3750 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS负载当[agent] [Agent]: UPS负载当前读数 40 %（在线�前读数 40 %（在�线�1 秒前采样）�
+�1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: join 19y failed
+vgnet: esp reset
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p5 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> vgnet: no CONNACK via posix
+session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p6 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop[agent] Processing message from cli:console
+ starting in background...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7be7a403f40e4] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 马[agent] [Agent]: 马上好...
+上好...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523898
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=643 text=0 reasoning=57 toolargs=21 calls=1 finish=tool_calls tokens=1560/35/1595
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7be7a403f40e4] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=550 send=160 ttfb=2370 body=0 pool=0 build=0 parse=0 http=3200 backoff=0 total=3210 req=5677 resp=643 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7be7a403f40e4] iter=0 tool=vg_point_read latency=3230ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 280 ms
+[trace:6ad7be7a403f40e4] tool_iter=0 tool=vg_point_read tool_ms=280 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7be7a403f40e4] END status=ok iters=1 tools=1 llm_ms=3230 tool_ms=280 elapsed_ms=3570 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: U[agent] [Agent]: UPS负载当前读数 40 %（在线�PS负载当�1 秒前采样）�
+��读数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p6 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p6 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop starting in backgr[agent] Processing message from cli:console
+ound...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7becd4f6a172b] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 让我查一�[agent] [Agent]: 让我�...
+vela> 查一下...
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792523981
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm] Resp bytes=667 text=0 reasoning=81 toolargs=21 calls=1 finish=tool_calls tokens=1560/39/1599
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7becd4f6a172b] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=520 send=140 ttfb=7320 body=0 pool=0 build=10 parse=0 http=8120 backoff=0 total=8130 req=5677 resp=667 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7becd4f6a172b] iter=0 tool=vg_point_read latency=8140ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 460 ms
+[trace:6ad7becd4f6a172b] tool_iter=0 tool=vg_point_read tool_ms=460 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm] Resp bytes=664 text=123 reasoning=88 toolargs=0 calls=0 finish=end_turn tokens=1644/72/1716
+[llm] Response: 123 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7becd4f6a172b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=7120 bvgnet: tcp connect 8.148dy=0 pool=0 build=10 parse=0 http=7380 backoff=0 total=7390 req=6017 resp=664 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=123, tool_use=0, calls=0
+[trace:6ad7becd4f6a172b] iter=1 tool=(none) latency=7410ms llm=ok backend=0
+[trace:6ad7becd4f6a172b] END status=ok iters=2 tools=1 llm_ms=15550 tool_ms=460 elapsed_ms=16100 backend=0
+[agent] Dispatching response → cli:console
+.67.174:1883 via posix[agent] failed
+
+[Agent]: **UPS负载**：40%（数据新鲜，410ms 前采样）
+
+正常 [Agent]: �**UPS负载**：40%（��围内——告数据新鲜，410ms 前采样）
+
+正常范围内——告警阈值 ≥70% 预警、≥9警阈值 ≥70% 0% 严重。�
+��警、≥90% 严重。
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p6 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p7 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; ag[agent] ask: 告诉我UPS负载的值
+ent_loop sta[agent] Processing message from cli:console
+rting in background...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bee3124a6e44] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马�[agent] [�好...
+velAgea> nt]: 马上好...
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=685 text=0 reasoning=95 toolargs=21 calls=1 finish=tool_calls tokens=1560/46/1606
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bee3124a6e44] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=4340 body=0 pool=0 build=0 parse=0 http=4600 backoff=0 total=4610 req=5677 resp=685 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bee3124a6e44] iter=0 tool=vg_point_read latency=4630ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 250 ms
+[trace:6ad7bee3124a6e44] tool_iter=0 tool=vg_point_read tool_ms=250 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=697 text=187 reasoning=54 toolargs=0 calls=0 finish=end_turn tokens=1651/87/1738
+[llm] Response: 187 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7bee3124a6e44] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=3510 body=0 pool=0 build=0 parse=0 http=3770 backoff=0 total=3770 req=6017 resp=697 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=187, tool_use=0, calls=0
+[trace:6ad7bee3124a6e44] iter=1 tool=(none) latency=3790ms llm=ok backend=0
+[trace:6ad7bee3124a6e44] END status=ok iters=2 tools=1 llm_ms=8420 tool_ms=250 elapsed_ms=8760 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **UPS负载�[a�40gent] [Ag%ent]: **UPS*负载：*（单位 40%%�**（单佼�� %）
+
+- 状态：正常（阈值：≥70% 预警，≥90% 告警）
+- 数据新鲜度：约 0.8 秒前采样，通信正常
+
+当前负载处于安全区间。
+
+
+- 状态：正常（阈值：≥70% 预警，≥90% 告警）
+- 数据新鲜度：约 0.8 秒前采样，通信正常
+
+当前负载处于安全区间。
+vela> vgnet: join 19y failed
+/// RSP03 END p7 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p7 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop starting [agent] Processing message from cli:console
+in background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bef327065926] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 正[agent] [Agent在分析...]: 正在分析...
+
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm] Resp bytes=645 text=0 reasoning=59 toolargs=21 calls=1 finish=tool_calls tokens=1560/35/1595
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7bef327065926] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=1870 body=0 pool=0 build=0 parse=0 http=2130 backoff=0 total=2140 req=5677 resp=645 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7bef327065926] iter=0 tool=vg_point_read latency=2160ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 300 ms
+[trace:6ad7bef327065926] tool_iter=0 tool=vg_point_read tool_ms=300 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7bef327065926] END status=ok iters=1 tools=1 llm_ms=2160 tool_ms=300 elapsed_ms=2500 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒前采样）
+负载当前读数 40 %（在线，1 秒前采样）
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p7 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p8 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; agent[agent] ask: 告诉我UPS负载的值
+_loop starting in b[aagent] Processing message from cckground...
+Senlit t:console
+o agent: 告诉我UPS负载的值
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bf463f41631c] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 让�[agent] [Agent]: 让我查一下...
+�查一下...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524102
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7bf463f41631c] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=100 backoff=0 total=110 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad7bf463f41631c] iter=0 tool=(none) latency=110ms llm=fail backend=0
+[trace:6ad7bf463f41631c] END status=fail iters=1 tools=0 llm_ms=110 tool_ms=0 elapsed_ms=150 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: [agentSorry, I e] [Agent]: Sorry, I encountered an error.
+ncountered an error.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: esp reset
+/// RSP03 END p8 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+Session not found.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p8 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; agen[agent] ask: 告诉我UPS负载的值
+t_loop starting in b[agent] Processing message from cli:coansole
+ckground...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bf974eb10062] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524183
+[agent] Dispatching response → cli:console
+
+[Agent]: 马上好.[agent] [Agent]: �..
+vela> �上好...
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7bf974eb10062] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=0 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=30 backoff=0 total=40 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad7bf974eb10062] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ad7bf974eb10062] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=100 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: Sorry, I encountered an err[agent] [Agent]: Sorry, I encountered an error.
+or.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p8 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+session_clear console
+Session not found.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p9 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop starting in background.[agent]. Processing message fr.om cli:console
+
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7bfea0e2b9805] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524266
+[agent] Dispatching response → cli:console
+
+[Agent]: 让我[agent] [Agent]: 让我查一查一下...
+vel下...a
+> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7bfea0e2b9805] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=40 backoff=0 total=50 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad7bfea0e2b9805] iter=0 tool=(none) latency=50ms llm=fail backend=0
+[trace:6ad7bfea0e2b9805] END status=fail iters=1 tools=0 llm_ms=50 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: Sorry, I[agent] [Agent]: Sorry, I encountered an error.
+ encountered an error.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p9 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+Session not found.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 BEGIN p9 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; ag[agent] ask: 告诉我UPS负载的值
+ent_loop starting in[agent] P backgrounroced...
+Sent to agssing message froment: 告诉我UPS负载的值
+vela>  cli:console
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7c03d3bedee8b] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524349
+[agent] Dispatching response → cli:console
+
+[Agent]: 马上好...
+vela> [agent] [Agent]: 马上好...
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7c03d3bedee8b] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=40 backoff=0 total=50 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 4 (backoff 8)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad7c03d3bedee8b] iter=0 tool=(none) latency=50ms llm=fail backend=0
+[trace:6ad7c03d3bedee8b] END status=fail iters=1 tools=0 llm_ms=50 tool_ms=0 elapsed_ms=100 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: So[agent] [Agent]: Sorry, I encountered an error.
+rry, I encountered an error.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p9 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+Session not found.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p10 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; a[agent] ask: 告诉我UPS负载的值
+gent_loop starting i[agent] Processing message from cli:console
+n background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7c09027548055] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524432
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Agen�，处理中...
+vela> t]: 稍等，处理中...
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7c09027548055] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=30 backoff=0 total=40 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 5 (backoff 16)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad7c09027548055] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ad7c09027548055] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: Sor[agent] [Agent]: Sorry, I encountered an error.
+ry, I encountered an error.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: join 19y failed
+vgnet: esp reset
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p10 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+session_clear console
+Session not found.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p10 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.210
+Ask queued; a[agent] ask: 告诉我UPS负载的值
+gent_loop starting [agent] Processing mesin background..sage from. cli:console
+
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7c0e27c5fff76] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792524514
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent�，处理中...
+] [Agent]: v稍等，处理中...
+ela> [vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7c0e27c5fff76] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=10 parse=na http=30 backoff=0 total=40 req=5677 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 6 (backoff 32)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad7c0e27c5fff76] iter=0 tool=(none) latency=40ms llm=fail backend=0
+[trace:6ad7c0e27c5fff76] END status=fail iters=1 tools=0 llm_ms=40 tool_ms=0 elapsed_ms=90 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: So[agent] [Agent]: Sorry, I encountered an error.
+rry, I encountered an error.
+vela> vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: join 19y failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+/// RSP03 END p10 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> quit
+Exiting agent...
+[cli] CLI thread exiting
+nsh> [Kvgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+vgnet: tcp connect 8.148.67.174:1883 via posix failed
+

@@ -67,7 +67,7 @@ RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发�
 
 每个点两个身份字段：`id`（主键）和 `name`（显示名）。`id` 大小写敏感，同一张表里不得重复。`name` 可重复，可含中文。`addr`+`reg` 允许重复，不推荐。
 
-查找、去重、`set` / `del` / `test` / `get`、告警关联一律按 `id`。不得按 `name` 索引。旧字段 `tag` 不是身份字段：对象里只有 `tag`、没有合法 `id` 的点丢弃，不升成 `id`。
+查找、去重、`set` / `del` / `test` / `get`、告警关联一律按 `id`。不得按 `name` 索引。旧字段 `tag` 不是身份字段：对象里只有 `tag`、没有合法 `id` 时整表报错，不升成 `id`，也不静默丢弃。
 
 | 字段 | 类型 | 约束 | 缺省 |
 |------|------|------|------|
@@ -79,20 +79,20 @@ RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发�
 | `qty` | 整数 | 1..4 | 1 |
 | `dtype` | 字符串 | `int16` 或 `uint16` | `int16` |
 | `scale` | 浮点 | 有限值，建议大于 0 | `1` |
-| `unit` | 字符串 | 最多 7 个 ASCII 字符 | 空 |
+| `unit` | 字符串 | 最多 7 字节；禁止空白和控制字符 | 空 |
 | `cmp` | 字符串 | `ge` / `le` / `eq`，或空 | 空：不做模拟量告警 |
 | `warn` | 浮点或空 | 有限值 | 空 |
 | `crit` | 浮点或空 | 有限值 | 空 |
-| `fail_n` | 整数 | 1..20 | `3`（连续读失败则离线） |
+| `fail_n` | 整数 | 1..20 | `3`（滑窗有效阈值最低为 5） |
 
 告警规则（实现阶段执行，规范先定口径）：
 
 - `cmp` 为空，或 `ge`/`le` 时 `warn` 与 `crit` 都空：该点不做模拟量告警，仍采集。
 - `eq`：用 `crit` 作为等于判定（例如水浸等于 1）。`warn` 可空。
 - `ge` / `le`：有 `warn` 则预警，有 `crit` 则严重。两者都有时，`ge` 要求 `warn <= crit`，`le` 要求 `warn >= crit`。
-- 离线：该点连续读失败达到 `fail_n` 次。
+- 离线：最近 8 次真实采样中失败数达到 `min(max(fail_n,5),8)`；成功采样立即恢复在线，再按实际值比较阈值。
 
-JSON 里空阈值**省略该键**，不要写 `null`（板端解析按数字 `sscanf`）。例：
+JSON 里空阈值**省略该键**，不要写 `null`。板端完整解析 JSON，非法字段、重复 id、截断或超限整表报错；浮点数保存时保留往返精度。例：
 
 ```json
 {"schema_version":1,"bus":{"device":"/dev/rs485","baud":9600},"hits":[1],"points":[{"id":"temp","name":"温度","addr":1,"fc":3,"reg":0,"qty":1,"dtype":"int16","scale":0.1,"unit":"C","cmp":"ge","warn":40,"crit":55,"fail_n":3},{"id":"flood","name":"水浸","addr":2,"fc":3,"reg":2,"qty":1,"dtype":"uint16","scale":1,"unit":"","cmp":"eq","crit":1,"fail_n":3}]}
@@ -190,7 +190,7 @@ vgpoint get <id>
 vgpoint apply --confirm
 ```
 
-把候选覆盖到已确认路径，并按现有双槽规则调用 `vg_config_commit`（设备名可沿用或写成 `vgpoint`）。刷新屏幕使用的点表。
+候选点表完整写入临时文件、同步并回读校验，保留已确认文件的 `.bak` 后替换；失败不更新内存点表，不发送 MQTT 点表变更通知。点表提交不修改设备名等配置元数据，也不调用 `vg_config_commit`。临时文件与备份不能保证 FAT 掉电原子性，完整点记录双槽留在维护 TODO。
 
 没有 `--confirm`：**必须** `ERR code=need_confirm`，退出码 1。不要做成 dry-run 却返回成功，以免脚本误判。
 
@@ -210,6 +210,8 @@ vgpoint abort
 确认在板端执行这条 `apply --confirm`。上位机脚本在 `test` 打出 `READ` 行之后**必须停下来等人**（PC 上回车，或人在 NSH 手打 `vgpoint apply --confirm`），再单独发 apply。
 
 固件不得在 `test` 成功后自动 apply。本期不做屏幕长按确认。
+
+实现边界：当前 `cmd_apply` 强制检查 `--confirm` 参数，但没有强制检查此前是否试读、试读是否对应当前候选；人工等待由操作者和上位机流程保证。按用户2026-10-18更正，新增 [MQTT候选接入设计](velaguard-candidate-mqtt-protocol.md) 不试读，配置校验后经板端二次确认直接添加，要求候选版本绑定与配置入口互斥，尚未实现。本文NSH的先试读、等人确认步骤及命令返回格式保持，不能借用NSH apply绕过新入口的本地确认。
 
 ---
 
@@ -327,7 +329,7 @@ token，由板端 errno 映射而来。errno 数值随平台变化，token 才�
 
 ## 8. Agent 禁令
 
-Agent 的 `run_shell` 白名单保持只读：`vgmodbus`、`vgstats`、`vgcfg dump`。
+带屏产品中 Agent 的 `run_shell` 只允许只读元数据命令及 `vgstats dump`、`vgruntime dump`、`vgcfg dump`、`vgnet status`，10 秒执行超时。`vgmodbus` 不向 Agent 开放；板端人工 NSH 命令继续保留。运营 Skill 用 `vg_point_read` / `vg_run_report` 读取快照。
 
 禁止通过 Agent 调用：
 
@@ -451,3 +453,11 @@ JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}`
 - 新增 PowerShell 批量脚本
 
 实现前以本文为准；若命令或字段有变，先改本文再改代码。
+
+## 维护诊断
+
+`vgstoretest [rounds]` 只写 `/data/velaguard/diagnostics/store-probe.bin` 及备份，默认 50 轮，范围 1..10000。每轮同步、回读比较完整数据，并比较上一轮备份。返回 `vgstoretest: OK` 或 `ERR rc=...`；不格式化，不修改点表或凭证，也不向设备端 Agent 开放。
+
+在 Windows 执行 `scripts/maintenance_soak.ps1` 可进行 24 小时串口观察，遇到故障即停止，不自动复位。该脚本要求已配置 LLM 凭证；物理阈值/拔线注入、人工点表确认和实际 AI 产物仍须单独验收。
+
+扫描页的生成候选操作不提交已确认表；已有候选时拒绝覆盖。需要先在 NSH 用 `vgpoint test` 核对实际结果，再由人单独发送 `vgpoint apply --confirm`。本轮仍未增加候选版本绑定校验。

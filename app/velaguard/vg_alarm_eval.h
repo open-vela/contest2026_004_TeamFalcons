@@ -2,7 +2,7 @@
  * Runtime point-table alarm compare (no I/O).
  *
  * Empty cmp, or ge/le with both thresholds missing, means no analog alarm.
- * Offline uses consecutive read failures against fail_n (default 3).
+ * Offline counts failures in the last 8 distinct samples (minimum 5).
  ****************************************************************************/
 
 #ifndef __APP_VELAGUARD_VG_ALARM_EVAL_H
@@ -28,9 +28,22 @@ struct vg_alarm_rule
   uint8_t fail_n;
 };
 
+struct vg_alarm_window
+{
+  uint8_t bits;
+  uint8_t pos;
+  uint8_t failures;
+};
+
+/* Exactly one call per new acquisition sample. Successful reads always
+ * recover offline state; threshold evaluation still uses the real value. */
+enum vg_alarm_kind vg_alarm_sample(const struct vg_alarm_rule *rule,
+                                   struct vg_alarm_window *window,
+                                   int online, float value, float *thr_out);
+
 /* 0 = none. *thr_out is the threshold that fired (0 for offline). */
 enum vg_alarm_kind vg_alarm_eval(const struct vg_alarm_rule *rule,
-                                 int last_ok, uint8_t fail_streak,
+                                 int last_ok, uint8_t failed_samples,
                                  float value, float *thr_out);
 
 uint8_t vg_alarm_fail_n(const struct vg_alarm_rule *rule);

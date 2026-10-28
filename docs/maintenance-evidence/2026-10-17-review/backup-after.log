@@ -1,0 +1,4 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_file_store test_file_store.c ../vg_file_store.c -Wl,--wrap=write,--wrap=read,--wrap=fsync,--wrap=rename
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+test_file_store: OK (ENOSPC, short write, primary/backup verification, sync, rename, concurrent)

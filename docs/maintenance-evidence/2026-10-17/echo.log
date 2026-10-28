@@ -1,0 +1,11 @@
+ECHO round 1 sent
+ECHO round 2 sent
+ECHO round 3 sent
+使用“3”个参数调用“Read”时发生异常:“操作已超时。”
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\.debug\maintenance-board\rs485_echo.
+ps1:9 字符: 23
++   while($got -lt 26){ $n=$p.Read($buf,$got,26-$got); if($n -le 0){bre ...
++                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : TimeoutException
+ 

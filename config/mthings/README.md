@@ -76,7 +76,7 @@ PC (MThings COM6) ── USB-RS485 ── A/B/GND ── H750B-DK RS485 (/dev/rs
 
 ## Stage0 验收对照
 
-完整步骤见 [`.trellis/tasks/08-29-stage0-foundation/stage0-acceptance.md`](../../.trellis/tasks/08-29-stage0-foundation/stage0-acceptance.md)。
+完整步骤见 git 历史中的 `.trellis/tasks/08-29-stage0-foundation/stage0-acceptance.md`（2026-10-17 随 Trellis 卸载删除，可用 `git log --all -- '*.md'` 或按该路径 `git show` 找回）。
 
 | 子能力 | 本工程作用 |
 |--------|------------|

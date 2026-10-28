@@ -1,0 +1,228 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: manager started
+vgtime: sync started
+PDM capture device ready on SAI1 block A
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-21 23:45:53
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.890, +1890)	 check_stack_size: tid: 10, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.900, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.900, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.910, +10)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.920, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuvgptt: watching /dev/buttons (led=2)
+ttx_fbdev.c:116
+[User]	(1.930, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.930, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.940, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.950, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.950, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.960, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.970, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.970, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.980, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.990, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.990, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.000, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.010, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(2.010, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(2.020, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(2.030, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(2.030, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(2.040, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(2.050, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(2.060, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(2.070, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(2.080, +10)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)
+L[Eagent] AI Agent - Vela AI Agent starting (build: 2026-10-21 23:41:11)
+D num[agent] [boot +10ms] P0: timezone set
+: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +170ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +390ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +400ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +790ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +800ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +910ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +1170ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1470ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Product policy hides tool: web_search
+[tools] Product policy hides tool: news_search
+[tools] Product policy hides tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Product policy hides tool: edit_file
+[tools] Product policy hides tool: list_dir
+[tools] Product policy hides tool: cron_add
+[tools] Product policy hides tool: cron_list
+[tools] Product policy hides tool: cron_remove
+[tools] Product policy hides tool: fetch_url
+[tools] Product policy hides tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Product policy hides tool: get_battery
+[tools] Product policy hides tool: get_wear_state
+[tools] Product policy hides tool: get_screen_state
+[tools] Product policy hides tool: get_heartrate
+[tools] Product policy hides tool: get_steps
+[tools] Product policy hides tool: vibrate
+[tools] Product policy hides tool: feishu_doc_create
+[tools] Product policy hides tool: feishu_doc_write
+[tools] Product policy hides tool: feishu_doc_read
+[tools] Product policy hides tool: feishu_doc_list
+[tools] Product policy hides tool: feishu_chat_members
+[tools] Product policy hides tool: feishu_send_mention
+[tools] Product policy hides tool: music_search
+[tools] Product policy hides tool: music_play
+[tools] Product policy hides tool: music_pause
+[tools] Product policy hides tool: music_resume
+[tools] Product policy hides tool: music_stop
+[tools] Product policy hides tool: music_seek
+[tools] Product policy hides tool: music_set_volume
+[tools] Product policy hides tool: music_status
+[tools] Product policy hides tool: launch_quickapp
+[tools] Product policy hides tool: exit_quickapp
+[tools] Tools JSON built (4 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent]
+vghmi: live ok=0/14 a1=0.0
+
+HOST 2026-10-21T23:49:01.3626424+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-21T23:49:01.8060821+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-21T23:49:01.9335651+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-21T23:49:02.0558435+08:00 SEND !ps
+!ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 34.1% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  8.4% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.8% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.6% velaguard_app_main
+    4     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  0.0% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264  3.5% velaguard_app_main 0x90010385 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013e91 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  1.7% ESP8266 0x9005fccd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9005fa39 0
+    9     9  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   10    10 100 RR       Task      - Ready              0000000000000000 0049104 40.4% vghmi vghmi
+   11    10 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  2.8% vghmi 0x900146d1 0
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  1.1% ai_agent ai_agent --daemon
+   13    12  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9002a77d 0x2405ba10
+   14    12   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x900308d5 0x2405bb10
+   15    12  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.5% ai_agent 0x9002a77d 0x2405bc10
+   16    16 100 RR       Task      - Waiting  Signal    0000000000000000 0002000  0.5% nxplayer
+   17    16 246 RR       pthread   - Waitin
+HOST 2026-10-21T23:49:02.2702616+08:00 SEND !vgaudio sai
+g  MQ empty  0000000000000000 0002024  0.5% playthread 0x900a162d 0x24064cb8
+   18    16 252 RR       pthread   - Waiting  MQ empty  0000000000000000 0000744  0.0% wm8994 0x900a917d 0x38008f50
+   19    19 100 RR       Task      - Running            0000000000000000 0001992  7.1% system -c ps
+nxplayer> [K!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c32080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=1
+vgaudio: MCLK = 49142857 / 12 = 4095238 Hz (target 4096000)
+vgaudio: last dma=31 sr=10008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=24073b00
+nxplayer> [K
+HOST 2026-10-21T23:49:02.3945572+08:00 SEND !vgaudio reg 0x210
+!vgaudio reg 0x210
+vgaudio: R528 (0x210) = 0x0000
+nxplayer> [KHARDFAULT: CFSR=00008200 HFSR=40000000 BFAR=00000020 MMFAR=00000020
+HARDFAULT: stacked PC=900a7d36 LR=900a7e69
+dump_assert_info: Current Version: NuttX  0.0.0 1c286b659a8-dirty Oct 21 2026 23:47:41 arm
+dump_assert_info: Assertion failed panic: at file: :0 task: playthread process: nxplayer 0x900a162d
+up_dump_register: R0: 24004ab0 R1: 00000000 R2: 900afeba  R3: 24004498
+up_dump_register: R4: 240710b8 R5: 00000003 R6: 900afeba  R7: 00000000
+up_dump_register: R8: 00000001 R9: 24004418 R10: 00000006 R11: 24071778
+up_dump_register: R12: 00000009 SP: 24071588 LR: 90001ab3  PC: 90001ab3
+up_dump_register: xPSR: 20000003 BASEPRI: 00000080 CONTROL: 00000000
+up_dump_register: EXC_RETURN: 00000000
+dump_stackinfo: User Stack:
+dump_stackinfo:   base: 0x240711c0
+dump_stackinfo:   size: 00002024
+dump_stackinfo:     sp: 0x24071588
+stack_dump:  24071568: 24071588 240719a8 24071588 240711c0 000007e8 24064610 24004418 90001c53
+stack_dump:  24071588: 900c704c 00000000 24071168 240646c0 900a162d 0000000a 00000000 00000000
+stack_dump:  240715a8: 240710b8 24004ab0 900afeba 00000000 00000000 7474754e 40000058 24071638
+stack_dump:  240715c8: 00000000 9000823f 24000064 00000008 00010001 00010001 900afeb9 00010001
+stack_dump:  240715e8: 37653639 39303061 302e3000 0000302e 00010001 00010001 00010001 6331fe94
+stack_dump:  24071608: 62363832 61393536 69642d38 20797472 2074634f 32203132 20363230 343a3332
+stack_dump:  24071628: 31343a37 900afe00 24071670 90007731 6d72612b 90008c00 90008bd7 24071740
+stack_dump:  24071648: 90008211 0000000a 0000000b 24071778 00000003 24004498 24071778 00000001
+stack_dump:  24071668: 00000000 380099ac 24071778 900014b1 00000001 00000020 240710b8 90000e7d
+stack_dump:  24071688: 00000000 00000007 38008f78 38009948 00000008 90001063 00000000 38009948
+stack_dump:  240716a8: 24065050 90001063 24071788 00000080 240710b8 240034d0 00000080 24000264
+stack_dump:  240716c8: 00000a41 7fffffff 380099ac 00001004 00000000 ffffffe9 00000000 00000000
+stack_dump:  240716e8: 00000000 00000000 0000000b 240717f0 00000000 90000e7d 00000080 00000007
+stack_dump:  24071708: ffffffff 00000000 240710b8 90001063 00000004 900063eb 240000cc 00000001
+stack_dump:  24071728: 00000000 00000000 00000001 240000cc 00000000 00000007 24071960 00000008
+stack_dump:  24071748: 2407195c 90001063 24071828 00000080 00000000 00000007 24071960 00000008
+stack_dump:  24071768: 2407195c 90001063 24071960 00000008 24071850 00000000 00000000 38008f78
+stack_dump:  24071788: 38009948 00000008 00000001 00000000 380099ac 00000008 00000000 ffffffe9
+stack_dump:  240717a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240717c8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  240717e8: 38008f78 24071898 00000008 00000000 ffffffff 900a7e69 900a7d36 21000000
+stack_dump:  24071808: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24071828: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+stack_dump:  24071848: 00000000 00000000 38008f78 24071898 00000008 00000000 00000000 38009948
+stack_dump:  24071868: 00000000 00000005 24065050 380099ac 00001007 900a7e69 00000000 ffffffff
+stack_dump:  24071888: 38008f50 900a8af1 00000000 00000000 00000003 00000000 00000000 380098e0
+stack_dump:  240718a8: 38009948 900af51d 24065038 00001007 00000000 00001007 00000000 24065038
+stack_dump:  240718c8: 38009a28 00000000 00000001 24064d60 00000000 9008ba4b 24065078 00000000
+stack_dump:  240718e8: 24065078 00000000 2407195c 24071960 00000001 900a80f3 24064fc8 24004fcc
+stack_dump:  24071908: 24071930 00001007 24071950 00000000 00001007 24071950 00000000 9008bc3f
+stack_dump:  24071928: 24071960 24071950 24065038 24064780 00000008 24064cb8 240650e8 00000004
+stack_dump:  24071948: 900a17bb 00001007 00000000 00000008 20000004 00000001 38000008 00000000
+stack_dump:  24071968: 00002000 240650f4 900971e9 900a162d 24064cb8 00000000 00000000 00000000
+stack_dump:  24071988: 00000000 900971f1 000000f6 900a83db 00000000 00000000 00000000 00000000
+stack_dump:  240719a8: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+dump_tasks:    PID GROUP PRI POLICY   TYPE    NPX STATE   EVENT      SIGMASK          STACKBASE  STACKSIZE      CPU   COMMAND
+dump_task:       0     0   0 FIFO     Kthread -   Ready              0000000000000000 0x24047d90      1000    37.5%   CPU0 IDLE
+dump_task:       1     0 224 RR       Kthread -   Waiting Semaphore  0000000000000000 0x240072b8      1976     6.3%   hpwork 0x24000300 0x24000348
+dump_task:       2     0 100 RR       Kthread -   Waiting Semaphore  0000000000000000 0x24006ab8      1976     2.1%   lpwork 0x24000280 0x240002c8
+dump_task:       3     3 100 RR       Task    -   Waiting Signal     0000000000000000 0x38000940      8136     0.7%   velaguard_app_main
+dump_task:       4     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38002bf8      8168     0.0%   velaguard_app_main 0x9000cae1 0
+dump_task:       5     3 100 RR       pthread -   Ready              0000000000000000 0x38004cf0     12264     4.9%   velaguard_app_main 0x90010385 0
+dump_task:       6     3 100 RR       pthread -   Waiting Signal     0000000000000000 0x38007de8      4072     0.0%   velaguard_app_main 0x90013e91 0
+dump_task:       7     3 200 RR       pthread -   Waiting Semaphore  0000000000000000 0x380090f0      2024     1.4%   ESP8266 0x9005fccd 0
+dump_task:       8     3  80 RR       pthread -   Waiting Signal     0000000000000000 0x3800a150      2024     0.0%   netinit 0x9005fa39 0
+dump_task:       9     9  90 RR       Task    -   Waiting Semaphore  0000000000000000 0x3800b208      4056     0.0%   vgptt
+dump_task:      10    10 100 RR       Task    -   Ready              0000000000000000 0x24048758     49104    41.8%   vghmi vghmi
+dump_task:      11    10 100 RR       pthread -   Ready              0000000000000000 0x24059a08      8168     2.8%   vghmi 0x900146d1 0
+dump_task:      12    12 100 RR       Task    -   Waiting Signal     0000000000000000 0x2405c1e8     32696     1.4%   ai_agent ai_agent --daemon
+dump_task:      13    12  50 FIFO     pthread -   Waiting Semaphore  0000000000000000 0x24065810     12264     0.0%   ai_agent 0x9002a77d 0x2405ba10
+dump_task:      14    12   3 FIFO     pthread -   Waiting Signal     0000000000000000 0x24068818      4072     0.0%   ai_agent 0x900308d5 0x2405bb10
+dump_task:      15    12  50 FIFO     pthread -   Waiting Signal     0000000000000000 0x24069820     28648     0.0%   ai_agent 0x9002a77d 0x2405bc10
+dump_task:      16    16 100 RR       Task    -   Waiting Semaphore  0000000000000000 0x24070840      2000     0.7%   nxplayer
+dump_task:      17    16 246 RR       pthread -   Running            0000000000000000 0x240711c0      2024     0.0%   playthread 0x900a162d 0x24064cb8
+
+HOST 2026-10-21T23:49:03.9088124+08:00 SEND stop
+
+HOST 2026-10-21T23:49:04.4382179+08:00 SEND quit

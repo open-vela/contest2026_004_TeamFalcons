@@ -48,10 +48,8 @@ static int vg_disc_nmbs_open(FAR struct vg_disc_nmbs *s, FAR const char *dev)
   memset(s, 0, sizeof(*s));
   s->port.fd = -1;
 
-  if (vg_modbus_port_open(&s->port, dev) < 0)
-    {
-      return -errno;
-    }
+  int rc = vg_modbus_port_open(&s->port, dev);
+  if (rc < 0) return errno ? -errno : -EIO;
 
   vg_modbus_port_bind(&s->port, &pc);
   err = nmbs_client_create(&s->nmbs, &pc);
@@ -239,15 +237,14 @@ int vg_discover_test_read(FAR const char *devpath, int baud,
 
   (void)baud;
 
-  if (devpath == NULL || out == NULL || addr == 0)
+  if (devpath == NULL || out == NULL || addr == 0 || addr > 247 ||
+      qty == 0 || qty > VG_DISC_MAX_REGS || (uint32_t)reg + qty > 65536)
     {
       return -EINVAL;
     }
 
-  if (vg_disc_nmbs_open(&s, devpath) != 0)
-    {
-      return -errno;
-    }
+  int rc = vg_disc_nmbs_open(&s, devpath);
+  if (rc != 0) return rc;
 
   memset(out, 0, sizeof(uint16_t) * qty);
   err = vg_disc_read_holding(&s, addr, reg, qty, out);
@@ -272,10 +269,8 @@ int vg_discover_poll_holding(FAR const char *devpath, int baud,
       return -EINVAL;
     }
 
-  if (vg_disc_nmbs_open(&s, devpath) != 0)
-    {
-      return -errno;
-    }
+  int rc = vg_disc_nmbs_open(&s, devpath);
+  if (rc != 0) return rc;
 
   for (i = 0; i < n; i++)
     {
@@ -320,10 +315,8 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
       return -EINVAL;
     }
 
-  if (vg_disc_nmbs_open(&s, devpath) != 0)
-    {
-      return -errno;
-    }
+  int rc = vg_disc_nmbs_open(&s, devpath);
+  if (rc != 0) return rc;
 
   for (i = 0; i < n; i++)
     {
@@ -339,15 +332,10 @@ int vg_discover_poll_points(FAR const char *devpath, int baud,
           continue;
         }
 
-      if (qty < 1)
-        {
-          qty = 1;
-        }
-
-      if (qty > VG_DISC_MAX_REGS)
-        {
-          qty = VG_DISC_MAX_REGS;
-        }
+      /* Supported scalar types consume one register. A UI/request count
+       * must not make a valid scalar fail because its neighbour is absent. */
+      if (!strcmp(pts[i].dtype, "int16") || !strcmp(pts[i].dtype, "uint16")) qty = 1;
+      if (qty < 1 || qty > VG_DISC_MAX_REGS) continue;
 
       /* One immediate retry: a single missed frame must not count as an
        * offline sample in the HMI's sliding-window detection. */
@@ -464,6 +452,7 @@ static int vg_bus_scan_pass(FAR struct vg_disc_nmbs *s,
 
       if(sum->n_hits >= VG_DISCOVER_MAX_SLAVES)
         {
+          sum->flags |= VG_DISCOVER_TRUNCATED;
           break;
         }
 
@@ -506,10 +495,8 @@ int vg_bus_scan(FAR struct vg_discover_summary *sum,
       return -EINVAL;
     }
 
-  if (vg_disc_nmbs_open(&s, devpath) != 0)
-    {
-      return -errno;
-    }
+  int rc = vg_disc_nmbs_open(&s, devpath);
+  if (rc != 0) return rc;
 
   sum->baud = baud;
   snprintf(sum->devpath, sizeof(sum->devpath), "%s", devpath);
@@ -554,10 +541,8 @@ int vg_reg_probe_slave(FAR struct vg_discover_summary *sum,
       reg_max = 120;
     }
 
-  if (vg_disc_nmbs_open(&s, devpath) != 0)
-    {
-      return -errno;
-    }
+  int rc = vg_disc_nmbs_open(&s, devpath);
+  if (rc != 0) return rc;
 
   sum->baud = baud;
   snprintf(sum->devpath, sizeof(sum->devpath), "%s", devpath);
@@ -572,6 +557,7 @@ int vg_reg_probe_slave(FAR struct vg_discover_summary *sum,
 
       if (sum->n_blocks >= VG_DISCOVER_MAX_BLOCKS)
         {
+          sum->flags |= VG_DISCOVER_TRUNCATED;
           break;
         }
 
@@ -616,6 +602,7 @@ int vg_reg_probe_slave(FAR struct vg_discover_summary *sum,
             }
         }
 
+      sum->flags |= VG_DISCOVER_PARTIAL;
       fail_streak++;
       start += VG_DISCOVER_BLOCK_STEP;
     }

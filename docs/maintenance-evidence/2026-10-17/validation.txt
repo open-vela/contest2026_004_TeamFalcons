@@ -1,0 +1,17 @@
+Historical host-only snapshot, captured before board integration.
+For the current review and firmware status see ../2026-10-17-review/review.md.
+The following original phase record is retained; its no-board and zero-warning lines do not describe later board/full-build results.
+
+Validation date: 2026-10-17 (Asia/Shanghai)
+Current working trees contain uncommitted source changes.
+No board flash or 24-hour run was executed. Windows enumerated COM1 only.
+Host tests: 25 passed; HMI: 5 passed; ASan/UBSan maintenance test passed.
+Firmware build: velaguard-lvgl, 0 warning/error messages.
+contest base HEAD: 3d7be8bf13dc886ab405d19d7e5ca0b219f190b1
+ai_agent base HEAD: fdbe2e502a29cdc1ac1966d0173566a9c7363233
+nuttx base HEAD: 581e576b65ab1c702f9a2b329cfa1cf42f2d9ba5
+2592c868c6252c0d237aa3aea5dc7bd0e04864f6e4590d7d9c046196b5e8c166  .debug/nuttx.hex
+8ce3e47ab431860089669da52c7a70b859c5259c2f8bd401328f9e0f20e3c5af  .debug/nuttx.bin
+Static SRAM: 291680 / 524288 bytes (55.63%); not a runtime heap measurement.
+Commands: make -C app/velaguard/host_tests test; cmake --build .debug/hmi-headless -j 4; ctest --test-dir .debug/hmi-headless --output-on-failure; bash scripts/build.sh
+Sanitizer: cc -Wall -Wextra -Werror -g -O1 -fsanitize=address,undefined -fno-omit-frame-pointer -pthread -I../apps/include -o /tmp/vg-maintenance-asan app/velaguard/host_tests/test_maintenance.c app/velaguard/vg_point_table.c app/velaguard/vg_file_store.c ../apps/netutils/cjson/cJSON/cJSON.c -lm; /tmp/vg-maintenance-asan

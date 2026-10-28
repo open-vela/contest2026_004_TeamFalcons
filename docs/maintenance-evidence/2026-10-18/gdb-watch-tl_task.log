@@ -1,0 +1,103 @@
+2026-10-18 17:37:10
+0x900017ee in nx_start ()
+=== current state ===
+g_readytorun: 0x24000264 <g_readytorun>:	0x24003d3c	0x24003d3c
+
+--- candidate console TCB @0x38002af0 ---
+0x38002af0:	0x00000000	0x00000000	0x380004b4	0x380003dc
+  pid field (+0x34): 0x38002af4:	0x00000000
+  entry field (+0x44): 0x38002b34:	0x9000caad
+  stack_alloc_ptr (+0x70): 0x38002b60:	0x38002be0
+  adj_stack_size (+0x6c): 0x38002b5c:	0x000007e8
+
+--- tl_task word @0x38002be0 before arming ---
+0x38002be0:	0x38000580	0x00180000	0x00000002	0x00000000
+Hardware watchpoint 1: *(unsigned int *)0x38002be0
+
+=== watchpoint armed ===
+Num     Type           Disp Enb Address    What
+1       hw watchpoint  keep y              *(unsigned int *)0x38002be0
+
+=== running, waiting for the writer ===
+
+Hardware watchpoint 1: *(unsigned int *)0x38002be0
+
+Old value = 939525504
+New value = 11
+0x90001684 in arm_svcall ()
+
+
+############ WATCHPOINT HIT ############
+r0             0x38002ce0          939535584
+r1             0x38002ce0          939535584
+r2             0x0                 0
+r3             0x2                 2
+r4             0x38002af0          939535088
+r5             0xb                 11
+r6             0x24003d38          603995448
+r7             0x38002ce0          939535584
+r8             0x38008174          939557236
+r9             0x0                 0
+r10            0x38008158          939557208
+r11            0x38002ce0          939535584
+r12            0x0                 0
+sp             0x38002be0          0x38002be0
+lr             0x90000ee9          -1879044375
+pc             0x90001684          0x90001684 <arm_svcall+8>
+xpsr           0x8100000b          -2130706421
+fpscr          0x0                 0
+msp            0x38002be0          0x38002be0
+psp            0x2404799c          0x2404799c
+primask        0x0                 0
+basepri        0x80                -128
+faultmask      0x0                 0
+control        0x0                 0
+
+--- value now ---
+0x38002be0:	0x0000000b	0x38002ce0	0x00000000	0x90000ee9
+
+--- backtrace ---
+#0  0x90001684 in arm_svcall ()
+#1  0x90000ee8 in arm_doirq ()
+#2  0x900010ce in exception_common ()
+#3  0x900022a6 in nxsched_switch ()
+#4  0x900024d0 in nxsem_wait_slow ()
+#5  0x900a74f6 in stm32_eventwait ()
+#6  0x900a4a1c in mmcsd_eventwait.constprop ()
+#7  0x900a4c50 in mmcsd_read ()
+#8  0x9008f6d0 in fat_hwread ()
+#9  0x9008f79c in fat_fscacheread ()
+#10 0x9008e92c in fat_findsfnentry ()
+#11 0x9008eb8e in fat_putlfname ()
+#12 0x9008f3f2 in fat_dirnamewrite ()
+#13 0x9008d1bc in fat_rename ()
+#14 0x9008ad62 in rename ()
+#15 0x9007df98 in cmd_mv ()
+#16 0x9007c026 in nsh_command ()
+#17 0x90060df6 in nsh_execute ()
+#18 0x90061b9a in nsh_parse_command.constprop ()
+#19 0x9002a094 in nsh_session ()
+#20 0x90029f4a in nsh_consolemain ()
+#21 0x9000caba in nsh_thread ()
+#22 0x90095b18 in pthread_startup ()
+#23 0x900a3afa in pthread_start ()
+#24 0x00000000 in ?? ()
+
+--- 48 words of stack at sp ---
+0x38002be0:	0x0000000b	0x38002ce0	0x00000000	0x90000ee9
+0x38002bf0:	0x00000080	0x00000007	0x24003538	0x00000080
+0x38002c00:	0x24000264	0x900010cf	0x00000000	0x90000ee9
+0x38002c10:	0x00000080	0x00000007	0x24003538	0x00000080
+0x38002c20:	0x24000264	0x900010cf	0x0000000b	0x38002d28
+0x38002c30:	0x00000000	0x90000ee9	0x00000080	0x00000007
+0x38002c40:	0x0000000b	0x38002d40	0x00000000	0x90000ee9
+0x38002c50:	0x00000080	0x90000675	0x0000000a	0x90000bc9
+0x38002c60:	0x0000000a	0x0000000a	0x0000000b	0x38002d68
+0x38002c70:	0x00000000	0x90000ee9	0x00000080	0x00000007
+0x38002c80:	0x24003538	0x00000080	0x0000000b	0x38002d88
+0x38002c90:	0x00000000	0x90000ee9	0x00000080	0x00000007
+
+############ DONE ############
+[Inferior 1 (Remote target) detached]
+
+[exited with code 0]

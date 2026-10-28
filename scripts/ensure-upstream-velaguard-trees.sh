@@ -19,6 +19,7 @@ SYNC="${VG_SYNC_UPSTREAM:-0}"
 NUTTX_ROOT="$OPENVELA_ROOT/nuttx"
 APPS_ROOT="$OPENVELA_ROOT/apps"
 MQTTC_ROOT="$OPENVELA_ROOT/apps/netutils/mqttc/MQTT-C"
+AI_AGENT_ROOT="$OPENVELA_ROOT/packages/ai_agent"
 BOARD="$NUTTX_ROOT/boards/arm/stm32h7/stm32h750b-dk"
 
 NUTTX_BRANCH="velaguard/integration"
@@ -168,7 +169,20 @@ nuttx_pwm_tim15_ready() {
 nuttx_display_ready() {
   grep -Fq 'BOARD_SDRAM2_HEAP_OFFSET' "$BOARD/include/board.h" &&
     grep -Fq 'static volatile bool g_flip_pending' \
-      "$NUTTX_ROOT/arch/arm/src/stm32h7/stm32_ltdc.c"
+      "$NUTTX_ROOT/arch/arm/src/stm32h7/stm32_ltdc.c" &&
+    python3 - "$BOARD/src/stm32h750b-dk.h" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+# MB1381 B-01 sheet 3: PG0/PG1 are SDRAM A10/A11, not LCD signals.
+text = Path(sys.argv[1]).read_text().replace('\\\n', '')
+for net, pin in [('GPIO_LCD_G0', 7), ('GPIO_LCD_G1', 8)]:
+    match = re.search(r'^#define\s+' + net + r'\s+([^\n]+)', text, re.MULTILINE)
+    if not match or 'GPIO_PORTJ' not in match[1] or not re.search(r'GPIO_PIN' + str(pin) + r'\b', match[1]):
+        print(f'error: {net} must use PJ{pin}; refusing unsafe LCD/SDRAM pin configuration', file=sys.stderr)
+        sys.exit(1)
+PY
 }
 
 nuttx_touch_ready() {
@@ -291,6 +305,26 @@ verify_mqttc() {
   echo "[upstream] MQTT-C: VelaGuard changes present ($(git -C "$MQTTC_ROOT" branch --show-current))"
 }
 
+verify_ai_agent() {
+  # The contest tests and firmware depend on real public-tree sources.
+  # Fail before building if only the contest PR has been checked out.
+  local missing=()
+  local file
+  for file in src/tools/tool_shell_runner.c src/tools/tool_shell_runner.h \
+              tests/test_shell_runner.c tests/test_local_client.c \
+              tests/test_file_policy.c tests/test_shell_output.c; do
+    test -f "$AI_AGENT_ROOT/$file" || missing+=("ai_agent/$file")
+  done
+  grep -Fq 'tool_shell_runner.c' "$AI_AGENT_ROOT/Makefile" || missing+=("ai_agent/Makefile runner")
+  grep -Fq 'tool_shell_run(' "$AI_AGENT_ROOT/src/tools/tool_shell.c" || missing+=("ai_agent/bounded shell call")
+  grep -Fq 'msg->is_progress' "$AI_AGENT_ROOT/src/sdk/velaclaw_client_local.c" || missing+=("ai_agent/progress reply filter")
+  grep -Fq 'c->pending_id' "$AI_AGENT_ROOT/src/sdk/velaclaw_client_local.c" || missing+=("ai_agent/request correlation")
+  if ((${#missing[@]})); then
+    fail "missing maintenance dependencies: ${missing[*]}; integrate the ai_agent feature changes first"
+  fi
+  echo "[upstream] ai_agent: maintenance dependencies present ($(git -C "$AI_AGENT_ROOT" branch --show-current))"
+}
+
 if [[ ! -d "$NUTTX_ROOT/.git" && ! -f "$NUTTX_ROOT/.git" ]]; then
   fail "NuttX git checkout not found: $NUTTX_ROOT"
 fi
@@ -299,4 +333,7 @@ verify_nuttx
 if [[ "$TARGET" == "velaguard-lvgl" || "$TARGET" == "ai-probe" || "$TARGET" == "emmc" ]]; then
   verify_apps_net
   verify_mqttc
+  if [[ "$TARGET" != "emmc" ]]; then
+    verify_ai_agent
+  fi
 fi

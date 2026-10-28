@@ -1,0 +1,4 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_file_store test_file_store.c ../vg_file_store.c -Wl,--wrap=write,--wrap=read,--wrap=fsync,--wrap=rename
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+test_file_store: test_file_store.c:78: main: Assertion `vg_file_replace("store-test", next, strlen(next), 0600) < 0' failed.

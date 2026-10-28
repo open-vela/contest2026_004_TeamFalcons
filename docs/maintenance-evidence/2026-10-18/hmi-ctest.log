@@ -1,0 +1,16 @@
+Internal ctest changing into directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/hmi-headless
+Test project /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/hmi-headless
+    Start 1: alarm_check
+1/5 Test #1: alarm_check ......................   Passed    0.15 sec
+    Start 2: trend_check
+2/5 Test #2: trend_check ......................   Passed    0.09 sec
+    Start 3: fixture_check
+3/5 Test #3: fixture_check ....................   Passed    0.16 sec
+    Start 4: lifecycle_render_check
+4/5 Test #4: lifecycle_render_check ...........   Passed    3.88 sec
+    Start 5: interaction_check
+5/5 Test #5: interaction_check ................   Passed    0.20 sec
+
+100% tests passed, 0 tests failed out of 5
+
+Total Test time (real) =   4.48 sec

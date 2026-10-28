@@ -1,0 +1,8 @@
+########## boot settle len=0 ##########
+
+
+########## vgstoretest 50 ########## len=138
+vgstoretest 50
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgstoretest: OK rounds=50 bytes=25600 elapsed_ms=96990
+nsh> [K

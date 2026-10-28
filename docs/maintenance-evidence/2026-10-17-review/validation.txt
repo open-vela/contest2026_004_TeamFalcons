@@ -1,0 +1,20 @@
+Audit snapshot: 2026-10-17T17:35:43+08:00
+Contest reviewed HEAD: 5ea01434ee30c707e6715a43f02639aca4529a88
+NuttX local dependency commit: 75cbc8eb7a5f218e19539328b573d7f5362ebd07
+ai_agent local dependency commit: 131642da1de1beadaf0dd9e73e4f8efa5b0d97d5
+Host regression: 28 C executables + 2 Python contracts passed after clean rebuild.
+HMI: rebuilt, 5/5 CTest passed.
+ASan/UBSan: test_file_store passed using /usr/bin/gcc.
+Firmware: default velaguard-lvgl incremental build passed; 0 warning/error lines in this incremental build.
+Earlier full build still has 6 pre-existing warnings; no claim of a warning-free full build.
+Static SRAM: 292252 / 524288 bytes; no new runtime measurement.
+New audit firmware was NOT flashed: COM3 remains exclusively owned by the existing soak.
+Existing soak firmware: Oct 17 13:03:04 build, prior to the audit fixes.
+Existing soak START: 2026-10-17 16:40:30 +08:00; slave reply delay is explicitly 150 ms.
+Last fully recorded cycle: CYCLE 16 elapsed_s=3,137 uptime_s=4079 online=14
+This is incomplete storage-runtime evidence; neither a 24-hour pass nor a fast-slave acceptance.
+soak-excerpt.log is an unmodified START row plus the last complete command cycle from .debug/maintenance-soak.log.
+slave-excerpt.log contains the final 3 complete rows at snapshot time.
+No hardware reset, port takeover, candidate edit, vgpoint test or apply was performed during this audit.
+b9d6f623fd6ce433d6843efe1a569eb678a349b52436be1682d126f979db83b6  .debug/nuttx.hex
+59c8db144c6c4673c2906255c78c64f22e49a35b817b907d44020045848834a9  .debug/nuttx.bin

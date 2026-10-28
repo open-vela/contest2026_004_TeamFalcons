@@ -1,0 +1,177 @@
+########## boot settle len=7037 ##########
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: manager started
+vgtime: sync started
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+
+NuttShell (NSH)
+nsh> [Kvgtime: restore 2026-10-18 18:12:18
+vgcfg: OK seq=6 name=vgpoint
+[tools] Registered tool provider: vg
+vghmi: autostart ok
+[User]	(1.350, +1350)	 check_stack_size: tid: 9, Stack size : 49104 lv_nuttx_entry.c:283
+[User]	(1.360, +10)	 lv_nuttx_fbdev_set_file: The framebuffer device was opened successfully lv_nuttx_fbdev.c:104
+[User]	(1.360, +0)	 lv_nuttx_fbdev_set_file: VideoInfo: lv_nuttx_fbdev.c:112
+[User]	(1.370, +10)	 lv_nuttx_fbdev_set_file:       fmt: 11 lv_nuttx_fbdev.c:113
+[User]	(1.370, +0)	 lv_nuttx_fbdev_set_file:      xres: 480 lv_nuttx_fbdev.c:114
+[User]	(1.370, +0)	 lv_nuttx_fbdev_set_file:      yres: 272 lv_nuttx_fbdev.c:115
+[User]	(1.380, +10)	 lv_nuttx_fbdev_set_file:   nplanes: 1 lv_nuttx_fbdev.c:116
+[User]	(1.390, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.390, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.400, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.410, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.410, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.420, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.430, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.430, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.440, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.450, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.450, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.460, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.470, +10)	 fbdev_get_pinfo: PlaneInfo (plane 0): lv_nuttx_fbdev.c:278
+[User]	(1.470, +0)	 fbdev_get_pinfo:     mem: 0xd0000000 lv_nuttx_fbdev.c:279
+[User]	(1.480, +10)	 fbdev_get_pinfo:     fblen: 522240 lv_nuttx_fbdev.c:280
+[User]	(1.490, +10)	 fbdev_get_pinfo:    stride: 960 lv_nuttx_fbdev.c:281
+[User]	(1.490, +0)	 fbdev_get_pinfo:   display: 0 lv_nuttx_fbdev.c:282
+[User]	(1.500, +10)	 fbdev_get_pinfo:       bpp: 16 lv_nuttx_fbdev.c:283
+[User]	(1.510, +10)	 fbdev_init_mem2: Use of consecutive mem2 = 0xd003fc00, yoffset = 272 lv_nuttx_fbdev.c:347
+[User]	(1.520, +10)	 lv_nuttx_fbdev_set_file: Resolution is set to 480x272 at 130dpi lv_nuttx_fbdev.c:162
+[User]	(1.520, +0)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 opening lv_nuttx_touchscreen.c:79
+[User]	(1.540, +20)	 lv_nuttx_touchscreen_create: touchscreen /dev/input0 open success, maxpoint 1 lv_nuttx_touchscreen.c:98
+vghmi: pointer indev read=10ms n=1
+vghmi: home fleet n=14
+vghmi: acq start ok points=14
+vgagent: ai_agent autostart ok (stack=32768)[
+agent] AI Agent - Vela AI Agent starting (build: 2026-10-18 17:43:24)
+LED n[agent] [boot +um10ms] P0: timezone set
+: 3
+Hello from openvela contest 2026 team 004!
+[agent] [boot +130ms] P0: storage ready
+[cfgstore] Config store ready at /data/agent/config/config.json
+[agent] [boot +250ms] P1: config_store_init (rc=0)
+[bus] Message bus initialized (depth 16)
+[agent] [boot +260ms] P1: message_bus_init (rc=0)
+[memory] Initializing memory store at /data/agent
+[memory] Memory store initialized successfully
+[agent] [boot +590ms] P1: memory_store_init (rc=0)
+[session] Session manager initialized at /data/agent/sessions
+[agent] [boot +600ms] P1: session_mgr_init (rc=0)
+[proxy] Loading proxy config...
+[proxy] No proxy (direct connection)
+[agent] [boot +670ms] P2: http_proxy_init (rc=0)
+[llm] LLM proxy initialized (model: mimo-v2.5, host: token-plan-cn.xiaomimimo.com)
+[agent] [boot +980ms] P3: llm_proxy_init (rc=0)
+[llm_router] Loaded backend 0: token-plan-cn.xiaomimimo.com (model: mimo-v2.5, tier: 1)
+[llm_router] Router initialized: 1 backends, profile=0
+[agent] [boot +1220ms] P3: llm_router_init (rc=0)
+[web_search] No search key. Use: set_tavily_key / set_search_key
+[tools] Registered tool: web_search
+[tools] Registered tool: news_search
+[tools] Registered tool: get_weather
+[tools] Registered tool: get_current_time
+[tools] Registered tool: read_file
+[tools] Registered tool: write_file
+[tools] Registered tool: edit_file
+[tools] Registered tool: list_dir
+[tools] Registered tool: cron_add
+[tools] Registered tool: cron_list
+[tools] Registered tool: cron_remove
+[tools] Registered tool: fetch_url
+[tools] Registered tool: analyze_image
+[tools] Registered tool: run_shell
+[tools] Registered tool: get_battery
+[tools] Registered tool: get_wear_state
+[tools] Registered tool: get_screen_state
+[tools] Registered tool: get_heartrate
+[tools] Registered tool: get_steps
+[tools] Registered tool: vibrate
+[tools] Registered tool: feishu_doc_create
+[tools] Registered tool: feishu_doc_write
+[tools] Registered tool: feishu_doc_read
+[tools] Registered tool: feishu_doc_list
+[tools] Registered tool: feishu_chat_members
+[tools] Registered tool: feishu_send_mention
+[tools] Registered tool: music_search
+[tools] Registered tool: music_play
+[tools] Registered tool: music_pause
+[tools] Registered tool: music_resume
+[tools] Registered tool: music_stop
+[tools] Registered tool: music_seek
+[tools] Registered tool: music_set_volume
+[tools] Registered tool: music_status
+[tools] Registered tool: launch_quickapp
+[tools] Registered tool: exit_quickapp
+[tools] Tools JSON built (36 builtin + 1 providers)
+[tools] Tool registry initialized
+[agent] [boot +1490ms] P3: tool_registry_init (rc=0)
+[guard] Tool guard initialized (max_input=32768, rate_window=60s, rate_max=10)
+[agent] [boot +1500ms] P3: tool_guard_init (rc=0)
+[skills] Initializing skills system
+[skills] Skill exists: /data/agent/skills/weather.md
+[skills] Skill exists: /data/agent/skills/daily-briefing.md
+[skills] Skill exists: /data/agent/skills/skill-creator.md
+[skills] Skill exists: /data/agent/skills/system-health.md
+[skills] Skill exists: /data/agent/skills/reminder.md
+[skills] Skill exists: /data/agent/skills/note-taker.md
+[skills] Skill exists: /data/agent/skills/translate.md
+[skills] Skill exists: /data/agent/skills/news-digest.md
+[skills] Skill exists: /data/agent/skills/feishu-test.md
+[skills] Skill exists: /data/agent/skills/task-manager.md
+[skills] Skills system ready (10 built-in)
+[agent] [boot +1890ms] P3: skill_loader_init (rc=0)
+[agent] Agent loop initialized
+[agent] [boot +1900ms] P3: agent_loop_init (rc=0)
+[cron] No cron file, starting fresh
+[agent] [boot +1950ms] P3: cron_service_init (rc=0)
+[heartbeat] Heartbeat service initialized (file: /data/
+[tool_files] read_file: /data/agent/skills/alarm_interpretation.md (1874 bytes)
+[agent] Tool read_file result: 1874 bytes
+[agent] Instruction file read — no shortcut, LLM will process
+[llm] OpenAI API with tools (model: mimo-v2.5, 18921 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+
+
+########## vgruntime dump ########## len=4702
+vgruntime dump
+vgruntime: uptime_s=64 wall=2026-10-18T18:13:47
+vgruntime: slave=1 boot_total=20 boot_ok=10 boot_crc=0 boot_timeout=6 boot_echo=0 boot_other=4 boot_lat_min=20 boot_lat_max=710 boot_lat_avg=258 win_total=20 win_ok=10 win_crc=0 win_timeout=6 win_echo=0 win_other=4
+vgruntime: slave=2 boot_total=10 boot_ok=7 boot_crc=0 boot_timeout=3 boot_echo=0 boot_other=0 boot_lat_min=30 boot_lat_max=660 boot_lat_avg=247 win_total=10 win_ok=7 win_crc=0 win_timeout=3 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=10 boot_ok=5 boot_crc=0 boot_timeout=4 boot_echo=0 boot_other=1 boot_lat_min=30 boot_lat_max=220 boot_lat_avg=136 win_total=10 win_ok=5 win_crc=0 win_timeout=4 win_echo=0 win_other=1
+vgruntime: slave=4 boot_total=28 boot_ok=23 boot_crc=0 boot_timeout=4 boot_echo=0 boot_other=1 boot_lat_min=20 boot_lat_max=680 boot_lat_avg=334 win_total=28 win_ok=23 win_crc=0 win_timeout=4 win_echo=0 win_other=1
+vgruntime: slave=5 boot_total=27 boot_ok=18 boot_crc=0 boot_timeout=6 boot_echo=0 boot_other=3 boot_lat_min=20 boot_lat_max=690 boot_lat_avg=355 win_total=27 win_ok=18 win_crc=0 win_timeout=6 win_echo=0 win_other=3
+vgruntime: slave=6 boot_total=27 boot_ok=17 boot_crc=0 boot_timeout=5 boot_echo=0 boot_other=5 boot_lat_min=30 boot_lat_max=670 boot_lat_avg=292 win_total=27 win_ok=17 win_crc=0 win_timeout=5 win_echo=0 win_other=5
+vgruntime: slave=7 boot_total=9 boot_ok=8 boot_crc=0 boot_timeout=1 boot_echo=0 boot_other=0 boot_lat_min=30 boot_lat_max=670 boot_lat_avg=332 win_total=9 win_ok=8 win_crc=0 win_timeout=1 win_echo=0 win_other=0
+vgruntime: bus boot_total=131 boot_ok=88 boot_crc=0 boot_timeout=29 boot_echo=0 boot_other=14
+vgruntime: point id=temp slave=1 online=0 online_ms=27730 offline_s=11 last_ok_ago_s=18 value=24 kind=offline
+vgruntime: point id=humid slave=1 online=1 online_ms=65060 offline_s=0 last_ok_ago_s=4 value=50 kind=none
+vgruntime: point id=flood slave=2 online=1 online_ms=65070 offline_s=0 last_ok_ago_s=4 value=0 kind=none
+vgruntime: point id=smoke slave=3 online=1 online_ms=55830 offline_s=0 last_ok_ago_s=4 value=1 kind=none
+vgruntime: point id=acu_ret slave=4 online=1 online_ms=55840 offline_s=0 last_ok_ago_s=4 value=25 kind=none
+vgruntime: point id=acu_set slave=4 online=1 online_ms=65090 offline_s=0 last_ok_ago_s=4 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=65100 offline_s=0 last_ok_ago_s=4 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=1 online_ms=65110 offline_s=0 last_ok_ago_s=4 value=40 kind=none
+vgruntime: point id=ups_soc slave=5 online=1 online_ms=65120 offline_s=0 last_ok_ago_s=4 value=80 kind=none
+vgruntime: point id=ups_bypass slave=5 online=1 online_ms=58340 offline_s=0 last_ok_ago_s=4 value=0 kind=none
+vgruntime: point id=volt_a slave=6 online=0 online_ms=60520 offline_s=4 last_ok_ago_s=12 value=230 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=1 online_ms=65190 offline_s=0 last_ok_ago_s=4 value=3 kind=none
+vgruntime: point id=energy_kwh slave=6 online=1 online_ms=65320 offline_s=0 last_ok_ago_s=4 value=123.4 kind=none
+vgruntime: point id=door slave=7 online=1 online_ms=65320 offline_s=0 last_ok_ago_s=4 value=0 kind=none
+vgruntime: event t_boot_s=9 wall=2026-10-18T18:12:36 id=smoke action=clear kind=offline value=1 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=9 wall=2026-10-18T18:12:36 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=25 wall=2026-10-18T18:12:52 id=temp action=clear kind=offline value=24 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=46 wall=2026-10-18T18:13:13 id=ups_bypass action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=53 wall=2026-10-18T18:13:19 id=temp action=raise kind=offline value=24 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=53 wall=2026-10-18T18:13:19 id=ups_bypass action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=60 wall=2026-10-18T18:13:42 id=volt_a action=raise kind=offline value=230 thr=0 cmp=le reason=modbus_fail_offline
+nsh> [K[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6ad50c5300000000] iter=1 tool=vg_run_report latency=7140ms llm=ok backend=0
+[tools] Executed vg tool: vg_run_report
+[agent] Tool vg_run_report result: 739 bytes
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 85 bytes
+[llm] OpenAI API with tools (model: mimo-v2.5, 20208 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+

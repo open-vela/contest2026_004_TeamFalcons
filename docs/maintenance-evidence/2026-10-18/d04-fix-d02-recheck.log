@@ -1,0 +1,64 @@
+########## boot settle len=0 ##########
+
+
+########## uname -a ########## len=89
+uname -a
+NuttX  0.0.0 43702275f28-dirty Oct 18 2026 18:41:50 arm stm32h750b-dk
+nsh> [K
+
+########## echo AAA > /data/velaguard/discover_bad/r1.txt ########## len=56
+echo AAA > /data/velaguard/discover_bad/r1.txt
+nsh> [K
+
+########## echo BBB > /data/velaguard/discover_bad/r2.txt ########## len=114
+echo BBB > /data/velaguard/discover_bad/r2.txt
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## mv /data/velaguard/discover_bad/r1.txt /data/velaguard/discover_bad/r2.txt ########## len=84
+mv /data/velaguard/discover_bad/r1.txt /data/velaguard/discover_bad/r2.txt
+nsh> [K
+
+########## cat /data/velaguard/discover_bad/r2.txt ########## len=54
+cat /data/velaguard/discover_bad/r2.txt
+AAA
+nsh> [K
+
+########## ps ########## len=1805
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 41.7% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.9% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.9% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.9% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.8% velaguard_app_main 0x9000cabd 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  4.6% velaguard_app_main 0x90010349 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013951 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  5.5% ESP8266 0x9005e239 0
+    8     3  80 RR       pthread   - Ready              0000000000000000 0002024  0.0% netinit 0x9006005d 0
+    9     9 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 38.1% vghmi vghmi
+   10     9 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  4.5% vghmi 0x90014191 0
+   11    11 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   12    11  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9002a23d 0x2000f758
+   13    11   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x9002f9e5 0x2000f858
+   14    11  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9002a23d 0x2000f958
+nsh> [K
+
+########## vgpoint list ########## len=1751
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K

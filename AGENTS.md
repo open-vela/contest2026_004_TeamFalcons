@@ -4,8 +4,9 @@
 
 - **官方竞赛要求优先于本地项目文档和工作流**。本文件区分官方要求与团队约束，不是合规证明；有冲突时核对官方来源并说明差异，不自行放宽限制。
 - **开发助手**指协助修改代码和文档的工具；**设备端 Agent**指板载 `ai_agent`。设备端 Agent 的权限限制不能通过开发助手代执行、自动确认或修改提示词绕过。
-- 产品细节查项目手册及相关 ADR，术语查 `CONTEXT.md`，执行流程查 Trellis。旧文档、历史任务和术语定义不能恢复已经废止的架构或授权。
-- 核查日期：**2026-09-13**。已对照官方 `dev-ai-contest-2026` 文档；本地官方竞赛目录与远端最后修改提交 `cb0389919ea4fc86774702fb36c08ee9b1366e6c` 一致。来源见文末。
+- 产品细节查项目手册及相关 ADR，术语查 `CONTEXT.md`。旧文档、历史任务和术语定义不能恢复已经废止的架构或授权。
+- 产品规则更新日期：**2026-10-18**，依据用户确认的手册辅助接入、手机语音巡检、MQTTS控制+HTTPS下载OTA，以及MQTT候选传输；按用户更正，手机接入不试读，板端完成确定性校验后仅弹出人工二次确认，确认后直接添加，不显示远程配置状态；新增能力均待实现和验收。
+- 官方资料上次核查日期：**2026-09-13**。当时已对照官方 `dev-ai-contest-2026` 文档，本地官方竞赛目录与远端最后修改提交 `cb0389919ea4fc86774702fb36c08ee9b1366e6c` 一致。本次产品规则更新不代表重新核验官方公告。来源见文末。
 
 ## 竞赛与仓库约束
 
@@ -20,36 +21,38 @@
 | <a id="c7"></a>C7 | 官方要求 | 作品必须原创，遵循 Apache 2.0，不能存在版权、专利等法律纠纷。首次提交 PR 按官方要求签署 CLA；`cla/signature` 未通过时先处理签署，再在原 PR 评论 `/check-cla` 复检。 |
 | <a id="c8"></a>C8 | 官方要求 + 团队选题 | VelaGuard 主选题为 AI 硬件产品创新，必须在 openvela 设备上运行，不能只交纯云端应用或无主动能力、无工具调用的聊天机器人。官方三个方向是选题指引，可组合，不是互斥的独立赛道。 |
 | <a id="c9"></a>C9 | 官方 AI 硬件要求 | 设备端固件实际运行，LLM 后端和基础对话可用；接入**至少 1 个交互渠道**，提供**至少 1 个自定义 Skill 及使用演示**、**至少 1 个主动 + 执行场景**，并交付用户故事、功能清单、技术实现说明。主机单测或编译通过不能代替设备运行证据。 |
-| <a id="c10"></a>C10 | 官方要求 | 赛事 MiMo Token 仅用于本次大赛。若作品使用语音唤醒，指定唤醒词为 `你好，openvela` / `Hello，openvela`；VelaGuard 当前仍按 V2 不做语音。 |
+| <a id="c10"></a>C10 | 官方要求 + 团队落地 | 赛事 MiMo Token 仅用于本次大赛。若作品使用语音唤醒，指定唤醒词为 `你好，openvela` / `Hello，openvela`。本版新增手机主动录音与播放，不引入持续唤醒监听；语音范围见 V2、V10。 |
 | <a id="c11"></a>C11 | 官方要求 | 必须使用 openvela 开源项目提供的系统能力，**仅使用 NuttX 内核不满足判定**，且至少落地图形、AI、多媒体三项核心能力之一。 |
 | <a id="c12"></a>C12 | 官方要求 + 团队落地 | 每队只有一个专属仓。本队为 `contest2026_004_TeamFalcons`，不同作品形态放在子目录，通过 `contest2026_004_TeamFalcons.xml` 的 `<linkfile>` 映射到 openvela 工程，不另建参赛专属仓。 |
 | <a id="c13"></a>C13 | 官方要求 | 每队 1-5 人，每人仅加入一队。项目需要的服务端由团队自行搭建，赛事期间须稳定运行并可正常演示。 |
 
 ## 产品与安全边界
 
-以下是团队已确认的产品约束，不是官方对所有参赛作品的要求。基于项目手册 v3.1，并结合当前构建入口和 NSH 点表协议更新。
+以下是团队已确认的产品约束，不是官方对所有参赛作品的要求。基于项目手册v3.6和2026-10-18用户确认的范围更新；协议细节仍为待验证草案，现有构建、NSH协议和已运行固件的能力须与新增目标分别说明。
 
 | 编号 | 必须遵守的要求 |
 |---|---|
 | <a id="v1"></a>V1 | VelaGuard 是 STM32H750B-DK 上的独立网关，不依赖长期连接电脑。USB CDC/UART 用于开发调试、配置和救援，不作为正式运行依赖。 |
-| <a id="v2"></a>V2 | 本地确定性流程必须离线运行：Modbus 采集、帧统计、规则告警、LED 与屏幕显示、配置和事件日志、数字量输出安全默认态。网络、MQTT、MiMo、设备端 Agent、OTA 或电脑不可用时，这些功能仍继续。联网 AI 失败时展示本地规则和真实数据，不伪造 AI 解释或报告。不做 ASR/TTS、语音或本地音频告警。 |
+| <a id="v2"></a>V2 | 本地确定性流程必须离线运行：Modbus采集、帧统计、规则告警、LED与屏幕显示、配置和事件日志、数字量输出安全默认态。网络、MQTT、MiMo、设备端Agent、OTA、电脑或手机不可用时，这些功能仍继续。联网AI失败时展示本地规则和真实数据，不伪造解释或报告。已授权的手机语音巡检由手机录音/播放、云侧ASR/TTS及板载Agent只读查询组成，待实现；不扩展板端音频驱动、本地音频告警或离线ASR/TTS。 |
 | <a id="v3"></a>V3 | 板载 openvela `ai_agent` 使用 ReAct、自定义只读 C 工具及 `/data/agent/skills/` 下的 Markdown Skills，定位为告警解释、日报/周报和自然语言查数的运营助手；不做总线排障、寄存器写入或探测实验。 |
-| <a id="v4"></a>V4 | LLM 链路为板端经 `ai_agent` / `llm_proxy`、OpenAI 兼容 HTTPS 直连 MiMo。密钥通过 `vgprovision` 加密存于 eMMC，不得写进固件镜像。MQTT 仅承载遥测、告警和 OTA，不承载 AI 请求/响应。旧 MQTT AI Bridge 和探针期编译密钥方案不适用于当前产品。 |
-| <a id="v5"></a>V5 | 设备端 Agent 不得写寄存器、应用配置、清除告警、控制数字量输出或覆盖本地安全规则。点表/配置变更必须经过确定性校验、试读和人工本地确认。AI 输出必须经板端 schema 校验，解释明确标注 `AI 推测`，与规则判定区分。具体确认步骤见下文。 |
-| <a id="v6"></a>V6 | 总线发现由确定性代码完成，阶段 1 使用 NSH `vgdiscover`，固定 9600 波特率。LVGL `Scan Bus` / 启用总线扫描开关默认关闭，用户显式开启后才扫描；设备端 Agent 不参与扫描。 |
-| <a id="v7"></a>V7 | OTA 采用 MQTT-only 分片拉取到 eMMC，再由片内 boot stub 烧写 QSPI；不做板端 HTTPS 固件下载器。QSPI XIP 运行期间不能擦写正在执行的 QSPI。 |
-| <a id="v8"></a>V8 | 每次实现聚焦一个获准的任务目标，遵守依赖及 `Blocked by`。当前任务和阶段以 Trellis 为准；`.scratch/.../issues/` 只作历史参考，不再作为必须存在的活动任务入口。是否新建任务遵守 Trellis 流程及用户明确选择。 |
+| <a id="v4"></a>V4 | 运营LLM链路为板端经 `ai_agent` / `llm_proxy`、OpenAI兼容HTTPS直连MiMo。密钥通过 `vgprovision` 加密存于eMMC，不得写进固件镜像。现有MQTT上报遥测、告警、状态和已确认点表；目标OTA经MQTTS传递通知与状态，固件走HTTPS。用户已选择新增MQTT候选配置通道，按ADR 0007及专用协议设计，远程部署需TLS/设备鉴权/ACL，待实现；MQTT仍不承载AI请求响应或语音分片，旧MQTT AI Bridge和探针期编译密钥方案不恢复。 |
+| <a id="v5"></a>V5 | 设备端Agent不得写寄存器、应用配置、清除告警、控制数字量输出或覆盖本地安全规则。点表/配置变更必须经过确定性校验和人工本地确认；新增手机MQTT接入按用户更正不试读，确认后直接添加，现行NSH仍按下文先试读再人工确认。AI输出必须经板端schema校验，解释明确标注 `AI 推测`，与规则判定区分。 |
+| <a id="v6"></a>V6 | 主接入目标为手机同次上传PDF手册和从机地址，云侧AI只生成带原文依据的候选点表，经专用MQTT通道交给板端确定性校验，不试读，人工二次确认后直接添加。远程配置进度、等待和结果只在手机显示；板端仅在手机下发且配置校验通过后弹出二次确认，未确认不生效。新增能力待实现，既有NSH流程继续有效。添加成功仅表示配置生效，实际读数和在线状态由生效后的正常采集确定。总线探查退为维护工具，`vgdiscover`固定9600，LVGL扫描默认关闭，显式开启后才扫描；设备端Agent不参与扫描，不增加波特率矩阵。 |
+| <a id="v7"></a>V7 | 已确认的OTA目标为MQTTS传递升级通知、接受状态、进度和结果，板端通过HTTPS流式下载固件到eMMC，校验摘要、签名、型号/版本后，由片内boot stub在重启阶段烧写QSPI，验证新固件并支持失败恢复。QSPI XIP运行期间不能擦写正在执行的QSPI。MQTT固件分片传输方案已被替代，见 [ADR 0006](docs/adr/0006-mqtts-control-https-download-ota.md)；当前MQTTS、HTTPS下载器和完整升级/回滚仍待实现，不得把现有明文MQTT或启动stub当作已完成OTA。 |
+| <a id="v8"></a>V8 | 每次实现聚焦一个获准的任务目标。是否开始新任务由用户明确选择。`.scratch/.../issues/` 只作历史参考，不作为活动任务入口。 |
 | <a id="v9"></a>V9 | 产品统一名为 **VelaGuard**。产品细节及验收查 `VelaGuard_项目手册.md`，术语查 `CONTEXT.md`，架构变更核对相关 ADR；历史描述与现行边界冲突时须说明并核实，不能据此恢复旧方案。 |
-| <a id="v10"></a>V10 | 不擅自引入延期范围：生产级 OTA、阶段 2 故障归因规则、生产级 Bridge、ASR/TTS、手册上传解析、屏幕配置编辑。只有明确获准的任务才可调整这些范围；废止的功能不能仅因旧文档提到而恢复。 |
+| <a id="v10"></a>V10 | 用户已授权纳入规划的新增范围为手机PDF手册与从机地址同次上传、云侧解析、受控候选接入和手机只读语音巡检；OTA架构已调整为MQTTS控制+HTTPS下载。授权目标不等于能力已实现，也不自动启动所有后续开发任务。不擅自扩展生产级OTA、阶段2故障归因、板端音频、屏幕任意编辑协议配置等范围；旧MQTT AI Bridge不恢复。语音不改配置、不代确认、不写寄存器、不清告警或控制输出。 |
 | <a id="v11"></a>V11 | 涉及真实开发板电路的驱动、pinmux、外设 bring-up、扩展板接线或任何 MCU 引脚/网络判断，必须先按下方硬件资料要求核对。纯应用逻辑、MQTT、提示词或文档整理不要求打开硬件资料包。 |
 
 ### 人工确认与设备端工具
 
 - 上位机通过 **ST-LINK 虚拟串口 -> 板端 NSH** 修改候选点表；`add` / `set` / `del` 和 `test` 不得改变已确认表。周期采集、首页和告警只使用已确认表。
 - `vgpoint test` 后必须展示结果并**停下来等人确认**，再单独发送 `vgpoint apply --confirm`。当前允许人在 PC 提示处回车或亲自在 NSH 输入确认命令，由板端执行生效；本期不要求屏幕长按确认。不得自动代答确认，也不得把编辑、试读和 apply 合成一条命令；固件不得在试读成功后自动 apply。
+- 上述试读步骤适用于现行NSH。新增手机入口按用户更正采用候选下发、确定性校验、板端人工二次确认、直接添加，不做试读；新接口交付前仍按现有NSH协议验收。云侧解析完成、手机上传、ASR文本或设备端Agent调用不能替代人工确认。
+- MQTT候选通道的设计见 [ADR 0007](docs/adr/0007-mqtt-candidate-import-with-local-confirmation.md) 与 [协议草案](docs/velaguard-candidate-mqtt-protocol.md)。远程候选不得被原NSH apply读取；实施时同步增加配置入口互斥、候选版本与本地确认绑定，不提供MQTT test/apply/confirm。当前固件尚未实现这些检查，不能只放开订阅就宣称完成接入。
 - 设备端 Agent 禁止调用 `vgpoint` 的全部子命令，包括 `get`，以及 `vgdiscover apply`、`vgcfg commit`。开发助手进行获准的调试也必须遵守上面的人工确认步骤。
 - 只读权限、参数上限、限流、会话门控和工具调用审计必须落实在工具注册与 C 实现中，不能只依赖提示词。`tool_guard.c` 不提供 JSON Schema 参数运行时校验，自定义工具必须检查越界参数。
-- RS485 只由板端作为 Modbus 主站使用，同一总线不得同时存在第二个主站。不经 RS485、MQTT 或第二路 UART 下发点表配置；主机模拟从站时关闭其主站采集会话。
+- RS485只由板端作为Modbus主站使用，同一总线不得同时存在第二个主站。不经RS485或第二路UART下发点表配置；MQTT仅允许上述专用候选通道，不能远程使配置生效；主机模拟从站时关闭其主站采集会话。
 - 完整 API key、MQTT token、产品密钥和 OTA 私钥不得出现在 UI、日志、串口输出或 MQTT payload 中。命令和数据格式继续以 [NSH 协议](docs/velaguard-host-nsh-protocol.md) 为准，不在各任务重复维护命令表。
 
 ### 硬件资料要求
@@ -61,9 +64,9 @@
 
 ## 开发与日志操作
 
-以下是团队操作约定。Trellis 只管理开发流程，不能修改竞赛或产品安全要求。
+以下是团队操作约定，只约束开发流程，不修改竞赛或产品安全要求。
 
-1. 先确认当前 git 状态、任务目标和改动所属仓库，保留用户及其他任务的未提交改动。按当前任务读取相关手册、ADR 和 `.trellis/spec/`，不要求每次读取全部专项文档。
+1. 先确认当前 git 状态、任务目标和改动所属仓库，保留用户及其他任务的未提交改动。按当前任务读取相关手册和 ADR，不要求每次读取全部专项文档。
 2. 日常固件入口是在**本仓根目录**运行 `bash scripts/build.sh`，默认 `velaguard-lvgl`；不把父目录通用 `./build.sh` 当作日常入口。该脚本使用父级完整 openvela 工作区。
 3. 构建脚本只验证公共树已具备所需 VelaGuard 改动，不应用竞赛仓补丁。将 `scripts/configs/*.defconfig` 安装到 NuttX 板级配置属于允许的配置复制。
 4. 产品协议或点表逻辑改动按范围执行 `make -C app/velaguard/host_tests test`，板端改动按相应 skill 验收。文档修改不要求编译烧录；不得将未执行的测试、推测或历史验收写成当前成功证据。
@@ -113,7 +116,7 @@
 
 本地官方文件位于父工作区 `docs/zh-cn/contest_2026/`。产品资料为 [项目手册](VelaGuard_项目手册.md)、[推进方案](VelaGuard_推进方案.md)、[术语](CONTEXT.md)、[ADR](docs/adr/) 和 [README](README.md)；它们不替代官方竞赛文件，也不免除实际验收。
 
-只在本文件维护 agent 必守规则正文，修改时复核来源并更新核查日期。`CLAUDE.md` 导入本文件；Trellis 任务上下文直接引用本文件；[旧边界文档](docs/agents/BOUNDARY.md) 只保留来源与编号索引。历史归档不批量重写。Trellis 托管块之外的内容由团队维护；不要随意修改指向工作区 `../.claude` 的官方 skills。
+只在本文件维护 agent 必守规则正文，修改时复核来源并更新核查日期。`CLAUDE.md` 导入本文件；[旧边界文档](docs/agents/BOUNDARY.md) 只保留来源与编号索引。历史归档不批量重写。不要随意修改指向工作区 `../.claude` 的官方 skills。
 
 ## 输出风格
 
@@ -125,31 +128,5 @@
 - 不生造词，不将英文概念生硬糅合成中文术语。
 - 无明确对比、纠错或用户要求时，不使用 `不是 A，而是 B` 句式；直接陈述事实。
 
-<!-- TRELLIS:START -->
-# Trellis Instructions
-
-These instructions are for AI assistants working in this project.
-
-This project is managed by Trellis. The working knowledge you need lives under `.trellis/`:
-
-- `.trellis/workflow.md` — development phases, when to create tasks, skill routing
-- `.trellis/spec/` — package- and layer-scoped coding guidelines (read before writing code in a given layer)
-- `.trellis/workspace/` — per-developer journals and session traces
-- `.trellis/tasks/` — active and archived tasks (PRDs, research, jsonl context)
-
-If a Trellis command is available on your platform (e.g. `/trellis:finish-work`, `/trellis:continue`), prefer it over manual steps. Not every platform exposes every command.
-
-If you're using Codex or another agent-capable tool, additional project-scoped helpers may live in:
-- `.agents/skills/` — reusable Trellis skills
-- `.codex/agents/` — optional custom subagents
-
-Project-local skills (also mirrored under `.cursor/skills/` for Cursor):
-- `mthings-automation-config-skill` — generate or modify MThings `.mthings` from Modbus/S7/DL/T645/CJ/T188/DL/T698.45 point tables; trigger when importing registers, building SCADA pages/widgets, or validating `.mthings` XML.
-- `velaguard-board-inner-loop` — compile velaguard-lvgl, QSPI flash, COM3 NSH self-accept.
-- `velaguard-candidate-confirm` — vgpoint candidate table, test-read, human `apply --confirm`.
-- `velaguard-alarm-to-screen` — local threshold/offline alarm on the HMI and `pending_alarm.txt`.
-- `velaguard-board-hw` — H750B-DK schematic-first pinmux/driver work.
-
-Managed by Trellis. Edits outside this block are preserved; edits inside may be overwritten by a future `trellis update`.
-
-<!-- TRELLIS:END -->
+## 提交时期
+每次任务完成，都把本次任务的更改提交

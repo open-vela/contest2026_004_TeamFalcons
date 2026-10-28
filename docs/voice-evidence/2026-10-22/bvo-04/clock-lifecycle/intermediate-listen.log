@@ -1,0 +1,31 @@
+vgnet: join 19y failed
+vgnet: mqtt online network=rj45 backend=posix device=vg-09001a800451383430303835
+vghmi: live ok=0/14 a1=0.0
+
+HOST 2026-10-22T08:57:41.0809779+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T08:57:41.5981355+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T08:57:41.8093314+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T08:57:43.8360552+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T08:57:45.8744873+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T08:57:46.3809875+08:00 SEND vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: MCLK = 49142857 / 4 = 12285714 Hz (target 4096000)
+vgaudio: last dma=31 sr=50000 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077cc0
+vgaudio: dma_done=16 errors=0 timeouts=0 txbytes=128000
+vgaudio: sai_underruns=7 clockerrors=0
+nsh> [K

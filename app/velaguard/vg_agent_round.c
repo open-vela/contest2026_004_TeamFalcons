@@ -27,6 +27,7 @@ static velaclaw_client_t          *g_client;
 static enum vg_agent_round_state   g_state = VG_AGENT_ROUND_IDLE;
 static uint32_t                    g_started_ms;
 static uint32_t                    g_generation;
+static uint32_t                    g_request_serial;
 static bool                        g_reply_seen;
 static bool                        g_reply_ok;
 static bool                        g_submitting;
@@ -50,9 +51,10 @@ uint32_t vg_agent_round_now_ms(void)
 
 static void round_reply(int status, const char *text, void *cookie)
 {
-  (void)cookie;
-
   pthread_mutex_lock(&g_lock);
+  if ((uint32_t)(uintptr_t)cookie != g_request_serial ||
+      (g_state != VG_AGENT_ROUND_QUEUED && g_state != VG_AGENT_ROUND_RUNNING))
+    { pthread_mutex_unlock(&g_lock); return; }
   g_reply_seen = true;
   g_reply_ok = (status == 0);
 
@@ -135,6 +137,7 @@ int vg_agent_round_queue_owned(const char *text,
       return -EBUSY;
     }
 
+  if (++g_request_serial == 0) ++g_request_serial;
   memcpy(g_req, text, len + 1);
   g_owner = owner;
   g_state = VG_AGENT_ROUND_QUEUED;
@@ -157,6 +160,7 @@ static void round_submit(void)
   velaclaw_client_t *client;
   velaclaw_ask_req_t ask;
   int rc;
+  uint32_t serial;
 
   pthread_mutex_lock(&g_lock);
   if (g_client == NULL)
@@ -173,12 +177,13 @@ static void round_submit(void)
 
   client = g_client;
   memcpy(req, g_req, sizeof(req));
+  serial = g_request_serial;
   pthread_mutex_unlock(&g_lock);
 
   ask.text = req;
   ask.timeout_ms = (int)VG_AGENT_ROUND_TIMEOUT_MS;
 
-  rc = velaclaw_ask_async(client, &ask, round_reply, NULL);
+  rc = velaclaw_ask_async(client, &ask, round_reply, (void *)(uintptr_t)serial);
 
   pthread_mutex_lock(&g_lock);
   if (rc == 0)
@@ -200,41 +205,18 @@ static void round_submit(void)
 
 void vg_agent_round_tick(void)
 {
-  enum vg_agent_round_state st;
-  uint32_t started;
-  uint32_t now = vg_agent_round_now_ms();
-  bool seen;
-  bool ok;
-
   pthread_mutex_lock(&g_lock);
-  st = g_state;
-  started = g_started_ms;
-  pthread_mutex_unlock(&g_lock);
-
-  if (st == VG_AGENT_ROUND_QUEUED)
+  if (g_state == VG_AGENT_ROUND_QUEUED)
     {
-      /* Two tickers are possible (the HMI file worker and the vgagent NSH
-       * probe), and only one of them may push a given request. */
-
-      pthread_mutex_lock(&g_lock);
-      if (g_submitting || g_state != VG_AGENT_ROUND_QUEUED)
-        {
-          pthread_mutex_unlock(&g_lock);
-          return;
-        }
-
+      if (g_submitting) { pthread_mutex_unlock(&g_lock); return; }
       g_submitting = true;
       pthread_mutex_unlock(&g_lock);
-
       round_submit();
-
-      /* A queued request that never got delivered (agent bus absent) must
-       * not hold the slot forever. */
-
       pthread_mutex_lock(&g_lock);
       g_submitting = false;
       if (g_state == VG_AGENT_ROUND_QUEUED &&
-          now - started >= VG_AGENT_ROUND_QUEUE_TIMEOUT_MS)
+          (int32_t)(vg_agent_round_now_ms() - g_started_ms) >=
+          (int32_t)VG_AGENT_ROUND_QUEUE_TIMEOUT_MS)
         {
           g_state = VG_AGENT_ROUND_ERROR;
           g_finished_ms = vg_agent_round_now_ms();
@@ -243,48 +225,30 @@ void vg_agent_round_tick(void)
       pthread_mutex_unlock(&g_lock);
       return;
     }
+  if (g_state != VG_AGENT_ROUND_RUNNING)
+    { pthread_mutex_unlock(&g_lock); return; }
 
-  if (st != VG_AGENT_ROUND_RUNNING)
+  uint32_t now = vg_agent_round_now_ms();
+  if (g_reply_seen)
     {
-      return;
-    }
-
-  pthread_mutex_lock(&g_lock);
-  seen = g_reply_seen;
-  ok = g_reply_ok;
-  g_reply_seen = false;
-  pthread_mutex_unlock(&g_lock);
-
-  if (seen)
-    {
-      pthread_mutex_lock(&g_lock);
-      if (ok)
-        {
-          g_state = VG_AGENT_ROUND_DONE;
-          g_generation++;
-        }
-      else
-        {
-          g_state = VG_AGENT_ROUND_ERROR;
-        }
-
-      g_finished_ms = vg_agent_round_now_ms();
+      bool ok = g_reply_ok;
+      g_reply_seen = false;
+      g_state = ok ? VG_AGENT_ROUND_DONE : VG_AGENT_ROUND_ERROR;
+      if (ok) g_generation++;
+      g_finished_ms = now;
       pthread_mutex_unlock(&g_lock);
-
-      syslog(LOG_INFO, "[%s] round finished: %s\n",
-             TAG, ok ? "reply" : "agent error");
+      syslog(LOG_INFO, "[%s] round finished: %s\n", TAG, ok ? "reply" : "agent error");
       return;
     }
-
-  if (now - started >= VG_AGENT_ROUND_TIMEOUT_MS)
+  if ((int32_t)(now - g_started_ms) >= (int32_t)VG_AGENT_ROUND_TIMEOUT_MS)
     {
-      pthread_mutex_lock(&g_lock);
       g_state = VG_AGENT_ROUND_ERROR;
-      g_finished_ms = vg_agent_round_now_ms();
+      g_finished_ms = now;
       pthread_mutex_unlock(&g_lock);
-      syslog(LOG_WARNING, "[%s] round timed out after %u ms\n",
-             TAG, (unsigned)(now - started));
+      syslog(LOG_WARNING, "[%s] round timed out\n", TAG);
+      return;
     }
+  pthread_mutex_unlock(&g_lock);
 }
 
 enum vg_agent_round_state vg_agent_round_state(void)

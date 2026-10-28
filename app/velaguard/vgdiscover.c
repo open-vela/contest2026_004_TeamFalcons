@@ -67,13 +67,16 @@ static int parse_opt_u8(int argc, char *argv[], int start,
 {
   int i;
 
-  for (i = start; i < argc - 1; i++)
+  for (i = start; i < argc; i++)
     {
       if (strcmp(argv[i], flag) == 0)
         {
-          long v = strtol(argv[i + 1], NULL, 0);
+          if (i + 1 >= argc) return -EINVAL;
+          char *end;
+          errno = 0;
+          long v = strtol(argv[i + 1], &end, 0);
 
-          if (v >= 1 && v <= 247)
+          if (end != argv[i + 1] && *end == 0 && errno == 0 && v >= 1 && v <= 247)
             {
               *out = (uint8_t)v;
               return 0;
@@ -91,13 +94,16 @@ static int parse_opt_u16(int argc, char *argv[], int start,
 {
   int i;
 
-  for (i = start; i < argc - 1; i++)
+  for (i = start; i < argc; i++)
     {
       if (strcmp(argv[i], flag) == 0)
         {
-          long v = strtol(argv[i + 1], NULL, 0);
+          if (i + 1 >= argc) return -EINVAL;
+          char *end;
+          errno = 0;
+          long v = strtol(argv[i + 1], &end, 0);
 
-          if (v >= 0 && v <= 65535)
+          if (end != argv[i + 1] && *end == 0 && errno == 0 && v >= 0 && v <= 65535)
             {
               *out = (uint16_t)v;
               return 0;
@@ -112,7 +118,8 @@ static int parse_opt_u16(int argc, char *argv[], int start,
 
 int main(int argc, char *argv[])
 {
-  FAR struct vg_discover_summary *sum = vg_discover_state();
+  struct vg_discover_summary local;
+  FAR struct vg_discover_summary *sum = &local;
   FAR const char *dev = CONFIG_VG_DISCOVER_DEVPATH;
   int ret;
   int i;
@@ -142,8 +149,10 @@ int main(int argc, char *argv[])
       printf("vgdiscover: scan %s @%d addr %d..%d\n",
              dev, CONFIG_VG_DISCOVER_BAUD, amin, amax);
 
+      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
       ret = vg_bus_scan(sum, dev, CONFIG_VG_DISCOVER_BAUD,
                         amin, amax, CONFIG_VG_DISCOVER_INTER_MS);
+      vg_bus_unlock();
       if (ret < 0)
         {
           fprintf(stderr, "vgdiscover: scan failed %d\n", ret);
@@ -204,8 +213,10 @@ int main(int argc, char *argv[])
       (void)vg_discover_state_load(sum, NULL);
       sum->n_blocks = 0;
 
+      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
       ret = vg_reg_probe_slave(sum, dev, CONFIG_VG_DISCOVER_BAUD,
                                addr, fc, CONFIG_VG_DISCOVER_REG_MAX);
+      vg_bus_unlock();
       if (ret < 0)
         {
           fprintf(stderr, "vgdiscover: probe failed %d\n", ret);
@@ -242,8 +253,11 @@ int main(int argc, char *argv[])
           return 1;
         }
 
+      if (access(out, F_OK) == 0) { fprintf(stderr, "vgdiscover: candidate exists; inspect or abort it first\n"); return 1; }
       vg_point_table_infer(sum);
-      ret = vg_point_table_write_candidate(sum, out);
+      if (sum->n_points == 0) { fprintf(stderr, "vgdiscover: no inferred points\n"); return 1; }
+      if (sum->flags) fprintf(stderr, "vgdiscover: partial/capacity-limited results flags=%u\n", (unsigned)sum->flags);
+      ret = vg_point_table_create_candidate(sum, out);
       if (ret != 0)
         {
           fprintf(stderr, "vgdiscover: dump failed %d\n", ret);
@@ -269,19 +283,16 @@ int main(int argc, char *argv[])
           return 1;
         }
 
-      (void)parse_opt_u16(argc, argv, 2, "-r", &reg);
-      if (parse_opt_u16(argc, argv, 2, "-c", &qty) != 0)
-        {
-          qty = 2;
-        }
+      if (parse_opt_u16(argc, argv, 2, "-r", &reg) != 0) { fprintf(stderr, "vgdiscover: invalid -r\n"); return 1; }
+      ret = parse_opt_u16(argc, argv, 2, "-c", &qty);
+      if (ret != 0 && ret != -ENOENT) { fprintf(stderr, "vgdiscover: invalid -c\n"); return 1; }
 
-      if (qty > 16)
-        {
-          qty = 16;
-        }
+      if (qty == 0 || qty > 16 || (uint32_t)reg + qty > 65536) { fprintf(stderr, "vgdiscover: invalid quantity\n"); return 1; }
 
+      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
       ret = vg_discover_test_read(dev, CONFIG_VG_DISCOVER_BAUD,
                                   addr, reg, qty, vals);
+      vg_bus_unlock();
       if (ret != 0)
         {
           fprintf(stderr, "vgdiscover: test-read failed %d\n", ret);
@@ -313,16 +324,8 @@ int main(int argc, char *argv[])
             }
         }
 
-      if (vg_discover_state_load(sum, NULL) != 0)
-        {
-          fprintf(stderr, "vgdiscover: no saved state — run dump first\n");
-          return 1;
-        }
-
-      if (sum->n_points == 0)
-        {
-          vg_point_table_infer(sum);
-        }
+      if (vg_point_table_read(sum, CONFIG_VG_DISCOVER_CANDIDATE_PATH) != 0)
+        { fprintf(stderr, "vgdiscover: no valid candidate; run dump first\n"); return 1; }
 
       ret = vg_point_table_apply(sum, CONFIG_VG_DISCOVER_POINTS_PATH,
                                  CONFIG_VG_CONFIG_BASEDIR, confirm);

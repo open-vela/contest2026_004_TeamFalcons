@@ -1,0 +1,15 @@
+[  1%] Building C object CMakeFiles/vg_ui.dir/home/hello19y/openvela/contest2026_004_TeamFalcons/gui/main/ui/pages/vg_page_discover.c.o
+[ 85%] Built target lvgl
+[ 92%] Built target lvgl_thorvg
+[ 94%] Linking C static library libvg_ui.a
+[ 96%] Built target vg_ui
+[ 96%] Linking C executable trend_check
+[ 96%] Linking C executable lifecycle_render_check
+[ 96%] Linking C executable fixture_check
+[ 96%] Linking C executable alarm_check
+[ 96%] Built target fixture_check
+[ 98%] Built target trend_check
+[ 98%] Built target alarm_check
+[ 98%] Built target lifecycle_render_check
+[ 98%] Linking C executable interaction_check
+[100%] Built target interaction_check

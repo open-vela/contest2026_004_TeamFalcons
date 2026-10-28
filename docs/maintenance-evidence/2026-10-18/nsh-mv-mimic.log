@@ -1,0 +1,31 @@
+########## boot settle len=0 ##########
+
+
+########## mkdir /data/velaguard/scratchmvd2 ########## len=43
+mkdir /data/velaguard/scratchmvd2
+nsh> [K
+
+########## echo X > /data/velaguard/scratchmvd2/point_table_candidate.json ########## len=73
+echo X > /data/velaguard/scratchmvd2/point_table_candidate.json
+nsh> [K
+
+########## echo Y > /data/velaguard/scratchmvd2/discover_state.bin ########## len=65
+echo Y > /data/velaguard/scratchmvd2/discover_state.bin
+nsh> [K
+
+########## echo AAA > /data/velaguard/scratchmvd2/r1.txt ########## len=55
+echo AAA > /data/velaguard/scratchmvd2/r1.txt
+nsh> [K
+
+########## echo BBB > /data/velaguard/scratchmvd2/r2.txt ########## len=55
+echo BBB > /data/velaguard/scratchmvd2/r2.txt
+nsh> [K
+
+########## mv /data/velaguard/scratchmvd2/r1.txt /data/velaguard/scratchmvd2/r2.txt ########## len=82
+mv /data/velaguard/scratchmvd2/r1.txt /data/velaguard/scratchmvd2/r2.txt
+nsh> [K
+
+########## cat /data/velaguard/scratchmvd2/r2.txt ########## len=53
+cat /data/velaguard/scratchmvd2/r2.txt
+AAA
+nsh> [K

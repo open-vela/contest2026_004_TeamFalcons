@@ -1,0 +1,116 @@
+vghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad950c900000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792626889
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad950c900000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=470 send=330 ttfb=40 body=0 pool=0 build=10 parse=10 http=900 backoff=0 total=920 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad950c900000000] iter=0 tool=(none) latency=920ms llm=fail backend=0
+[trace:6ad950c900000000] END status=fail iters=1 tools=0 llm_ms=920 tool_ms=0 elapsed_ms=960 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad950d035c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6995 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad950d035c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=10 body=0 pool=0 build=10 parse=10 http=310 backoff=0 total=330 req=6995 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad950d035c3b13a] iter=0 tool=(none) latency=330ms llm=fail backend=0
+[trace:6ad950d035c3b13a] END status=fail iters=1 tools=0 llm_ms=330 tool_ms=0 elapsed_ms=370 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cf127c
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+HOST 2026-10-21T23:57:07.2030588+08:00 SEND vgaudio txcheck
+vgaudio txcheck
+vgaudio: txcheck invalid-init=0 zero=-22 odd=-22 overcapacity=-22 offset=-22 rounds=20 result=0
+nsh> [K
+HOST 2026-10-21T23:57:08.0252641+08:00 SEND vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=219 wall=2026-10-21T23:57:10
+vgruntime: slave=1 boot_total=26 boot_ok=0 boot_crc=0 boot_timeout=26 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=26 win_ok=0 win_crc=0 win_timeout=26 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=13 boot_ok=0 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=13 win_ok=0 win_crc=0 win_timeout=13 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=13 boot_ok=0 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=13 win_ok=0 win_crc=0 win_timeout=13 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=39 boot_ok=0 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=39 win_ok=0 win_crc=0 win_timeout=39 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=39 boot_ok=0 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=39 win_ok=0 win_crc=0 win_timeout=39 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=39 boot_ok=0 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=39 win_ok=0 win_crc=0 win_timeout=39 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=13 boot_ok=0 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=13 win_ok=0 win_crc=0 win_timeout=13 win_echo=0 win_other=0
+vgruntime: bus boot_total=182 boot_ok=0 boot_crc=0 boot_timeout=182 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=219 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+HOST 2026-10-21T23:57:08.8334609+08:00 SEND vgstats dump 1
+vgstats dump 1
+vgstats: slave=1 window=64 total=27 ok=0 crc=0 timeout=27 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+HOST 2026-10-21T23:57:09.5473950+08:00 SEND vgnet status
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.218 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+HOST 2026-10-21T23:57:10.2559300+08:00 SEND vgstoretest 1
+vgstoretest 1
+
+HOST 2026-10-21T23:57:11.2602838+08:00 SEND free
+
+HOST 2026-10-21T23:57:11.9813628+08:00 SEND vgaudio sai
+missing TX counters
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\scripts\audio_accept.ps1:25 字符: 80
++ ... rs=(\d+) timeouts=(\d+) txbytes=(\d+)') {throw 'missing TX counters'}
++                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (missing TX counters:String) [], RuntimeException
+    + FullyQualifiedErrorId : missing TX counters
+ 

@@ -1,2 +1,0 @@
-{"file": "app/velaguard/modbus_collector.c", "reason": "Modbus poll hook for frame stats"}
-{"file": ".trellis/tasks/08-29-stage0-frame-stats/research/frame-stats-notes.md", "reason": "MVP B scope"}

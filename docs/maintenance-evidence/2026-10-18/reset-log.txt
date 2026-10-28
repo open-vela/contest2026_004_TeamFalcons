@@ -1,0 +1,30 @@
+CAPTURE_START 2026-10-18 14:54:32 CST reason=post-flash boot baseline
+CAPTURE_END 2026-10-18 14:55:15 CST
+RESET 2026-10-18 15:34:05 reason=board unresponsive after mv-onto-existing HardFault; recovery SWD reset
+
+# --- 2026-10-18 傍晚：D-02 根因定位与修复（全部为调试器/烧录引起的复位）---
+# 本时段没有观察到非预期复位；下面每次都有明确的人工原因。
+RESET 2026-10-18 17:27 reason=STM32_Programmer_CLI -c port=SWD mode=UR 探测连通性，复位下连接（硬件复位）
+RESET 2026-10-18 17:28 reason=OpenOCD 首次启动，-c "init" -c "reset run"，用于验证 dapdirect 复位下连接
+HALT  2026-10-18 17:29 reason=OpenOCD 连接自检 -c "reset halt" -c "shutdown"，只停不跑，随后 shutdown
+RESET 2026-10-18 17:31 reason=GDB 探测会话 attach（配置带 connect_assert_srst，attach 即复位）
+RESET 2026-10-18 17:33 reason=D-02 抓取第 1 次：attach 复位 + 脚本结束 monitor reset run
+RESET 2026-10-18 17:35 reason=D-02 抓取第 2 次（完整现场 dump）
+RESET 2026-10-18 17:37 reason=D-02 监视点抓写入者
+RESET 2026-10-18 17:40 reason=对照实验：diagnostics/ 目录同操作下监视点（未触发），脚本结束 monitor reset run
+RESET 2026-10-18 17:45 reason=scripts/flash.ps1 烧录 D-02 修复固件（17:43:24 构建，两段 Download verified）
+RESET 2026-10-18 17:47 reason=OpenOCD 重启，-c "reset run"
+RESET 2026-10-18 17:48 reason=栈填充会话 attach（connect_assert_srst 复位）
+RESET 2026-10-18 17:50 reason=高水位回读会话 attach + 结束 monitor reset run
+RESET 2026-10-18 17:53 reason=栈高水位测量会话 attach + 结束 monitor reset run
+NOTE  2026-10-18 17:50 复位后 uptime 显示 "up 0:00"，与上面这次人工复位一致，未发现额外复位。
+
+# --- 2026-10-18 傍晚：D-04 定位、修复与延迟工况复验 ---
+RESET 2026-10-18 18:44 reason=scripts/flash.ps1 烧录 D-04 修复固件（18:41:50 构建，两段 Download verified）
+RESET 2026-10-18 18:46 reason=OpenOCD telnet "reset run"，0 ms 工况清零计数
+RESET 2026-10-18 18:48 reason=OpenOCD telnet "reset run"，5 ms 工况
+RESET 2026-10-18 18:50 reason=OpenOCD telnet "reset run"，20 ms 工况
+RESET 2026-10-18 18:52 reason=OpenOCD telnet "reset run"，150 ms 工况
+RESET 2026-10-18 18:41 reason=OpenOCD 启动 -c "init" -c "reset run"，时序测量前的复位
+NOTE  2026-10-18 傍晚 各工况 60-300 秒窗口内 bus boot_timeout=0、boot_crc=0、boot_other=0，
+      未发现非预期复位。

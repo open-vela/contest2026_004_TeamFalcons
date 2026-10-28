@@ -1,0 +1,44 @@
+# 各仓库 HEAD 与工作区状态
+# 采集时间: 2026-10-18 14:38:52 CST
+
+## 参赛仓  (/home/hello19y/openvela/contest2026_004_TeamFalcons)
+branch: velaguard/maintenance-stability
+  31f1cdd fix(maintenance): close review gaps in storage, bus and point commits
+  5ea0143 docs(readme): 对齐扫描确认流程与 Agent 工具的现行行为
+  8bc1bf0 chore(logs): capture the 09-20 cursor session growth and 10-17 sessions
+status:
+   M logs/Foleaf/2026-10-17/claude-code__6f6d9792-5ca1-48d5-b775-c649416f99cb.jsonl
+   M logs/Foleaf/manifest.json
+  ?? docs/maintenance-evidence/2026-10-18/
+
+## nuttx  (/home/hello19y/openvela/nuttx)
+branch: velaguard/eth-mii-stm32h750b-dk
+  75cbc8eb7a5 fix(stm32h750b-dk): preserve SDRAM pins and retain child status
+  581e576b65a config(velaguard): 同步 MQTT 默认 broker 到板级 defconfig
+  29c221670d3 config(velaguard): ai_agent 栈扩到 32K
+status:
+
+## apps  (/home/hello19y/openvela/apps)
+branch: velaguard/netinit-esp8266
+  0ea954b79 netutils: carrier poll DHCP renew and ESP8266 LESP compat
+  dcc6a95c3 graphics/lvgl: exclude platform-specific draw backends from GLOB
+  4a914a221 chore: add openvela-reviewer team to CODEOWNERS
+status:
+  ?? testing/drivers/nist-sts/.gitee/
+  ?? testing/drivers/nist-sts/.github/
+  ?? testing/drivers/nist-sts/sts/
+
+## ai_agent  (/home/hello19y/openvela/packages/ai_agent)
+branch: velaguard/llm-tls-send-retry
+  131642d fix(agent): bound shell execution and correlate final replies
+  fdbe2e5 fix(agent): /data 缺失退化为 tmpfs 时升 ERR 告警
+  2d4a9da fix(tls): 响应体填满调用方缓冲时打截断日志
+status:
+
+## MQTT-C  (/home/hello19y/openvela/apps/netutils/mqttc/MQTT-C)
+branch: velaguard/mqtt-pal-hook
+  4dbb7f3 mqtt_pal: add weak hooks for tagged LESP send/recv
+  1f877df chore: add openvela-reviewer team to CODEOWNERS
+  0dfb7de chore: override .github and .gitee from dev-backup-20260509
+status:
+

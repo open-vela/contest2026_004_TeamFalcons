@@ -1,0 +1,5 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -I../../../../apps/netutils/mqttc/MQTT-C/include -ffunction-sections -fdata-sections -o test_mqtt_session test_mqtt_session.c ../vg_mqtt_payload.c -Wl,--gc-sections -lm
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+vgnet: mqtt pub point_table failed injected
+test_mqtt_session: OK (failed updated table retried after earlier success)

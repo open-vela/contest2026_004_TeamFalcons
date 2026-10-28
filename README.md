@@ -58,13 +58,13 @@
 
 三个用户故事，对应三条主线：
 
-1. **接入陌生总线**。集成工程师带着网关到现场柜子，不知道总线上有几个从站、什么地址、寄存器怎么解读。打开屏上「启用总线扫描」（默认关），`Scan Bus` 扫地址 1–32，探测寄存器块，生成候选点表；或用 Windows 上位机按手册导入候选点。`测试读取` 通过后现场确认，曲线开始跑。配置完成后不要求电脑长期连接。
-2. **夜里温度越限**。规则引擎在板上判定阈值 / 离线告警，屏幕立刻报警，不等网络。联网时板端自己发起一轮，Agent 按 `alarm_interpretation` Skill 调 `vgstats` / `vgmodbus` / `vgcfg` 只读命令，把带证据的解释写进 `reports/alarm_advice.txt`，告警页行内显示一行短建议、详情区显示完整解释并标注「AI 推测」。工程师早上看到的是解释，不是一串原始数值。
+1. **接入陌生总线**。集成工程师带着网关到现场柜子，不知道总线上有几个从站、什么地址、寄存器怎么解读。打开屏上「启用总线扫描」（默认关），`Scan Bus` 扫地址 1–32，探测寄存器块，生成候选点表；或用 Windows 上位机按手册导入候选点。扫描页只生成候选；在 NSH 用 `vgpoint test` 查看实读结果，再由人单独执行 `vgpoint apply --confirm`，随后采集生效。配置完成后不要求电脑长期连接。
+2. **夜里温度越限**。规则引擎在板上判定阈值 / 离线告警，屏幕立刻报警，不等网络。联网时板端自己发起一轮，Agent 按 `alarm_interpretation` Skill 调 `vg_run_report` 读取本地统计快照，把带证据的解释写进 `reports/alarm_advice.txt`，告警页行内显示一行短建议、详情区显示完整解释并标注「AI 推测」。工程师早上看到的是解释，不是一串原始数值。
 3. **本次上电以来的运行概况**。板端发现当天还没有日报时自己发起一轮，Agent 按 `operations_report` Skill 调 `get_current_time` / `vgruntime dump` / `vgstats dump` 取真实数字，写出 `reports/daily-<当天日期>.md`，LVGL 报告页标题显示「AI 日报 · OPENVELACLAW」；随时可以在 `vela>` 用自然语言查当前读数（优先 `vg_point_read`）。断网或校验不过时报告页回退固件的 `reports/runtime-report.md` 并标注本地来源。云看板只读订阅 MQTT 四类主题，留存历史供检索。
 
 | 能力 | 常见做法 | VelaGuard | 状态 |
 |------|----------|-----------|------|
-| 发现从站 | 手工试地址 × 波特率 | `vgdiscover` / HMI 扫描 @9600，地址 1–32 | 已落地（波特率矩阵为阶段 2） |
+| 发现从站 | 手工试地址 × 波特率 | `vgdiscover` / HMI 扫描 @9600，地址 1–32 | 已落地（固定 9600，不做波特率矩阵） |
 | 识别数据格式 | 试四种字序看哪个像 | int16 × 0.1 物理合理性筛选生成候选点表 | 基础版已落地；字序 / 倍率联合约束求解为阶段 2 |
 | 理解告警 | 看原始数值自己猜 | Agent 自动解释，带 evidence，标「AI 推测」，逐点显示在告警页 | 已落地 |
 | 运行概况 | 翻日志 / 手工统计 | Agent 主动生成当日日报，页面标明来源 | 已落地（仅日报，周报可后补） |
@@ -104,7 +104,7 @@
 规则引擎判定阈值 / 离线告警（vg_alarm_eval.c，本地，不依赖网络）
 → 告警集合变化，HMI 文件工作线程发起一轮（请求里带全量告警数据与 boot/req）
 → 板端本地 IPC 把请求交给 ai_agent 的 ReAct 循环
-→ 按 alarm_interpretation Skill：vgstats dump / vgmodbus 读实时值 / vgcfg dump 取证据
+→ 按 alarm_interpretation Skill：vg_run_report 取统计证据；告警点值和阈值随请求传入
 → 写 /data/velaguard/reports/alarm_advice.txt（VGADV1 行式格式，逐点一条）
 → 板端解析校验通过后放进 RAM 缓存，告警页行内显示 AI · <短建议>
 → 不清告警、不改配置；信息不足时 unres=1，不编造点位
@@ -142,7 +142,7 @@
 | `alarm_interpretation.md` | 板端告警集合变化 / 用户问告警含义 | `run_shell`（只读命令）、`write_file` | `reports/alarm_advice.txt`（VGADV1） |
 | `operations_report.md` | 板端发现当天无日报 / 用户要日报 | `get_current_time`、`run_shell`（含 `vgruntime dump`）、`write_file` | `reports/daily-<日期>.md`（AI-DAILY v1） |
 | `modbus_query.md` | 用户问点位值 / 寄存器 / 通信质量 | 优先 `vg_point_read`；无映射再用 `vgstats dump`、`vgruntime dump`、`vgcfg dump` | 自然语言回答 + 工程值 |
-| `HEARTBEAT.md` | 守护进程周期读取（HMI 构建下不再直接发起 LLM 轮次） | 仅 `vgmodbus`、`vgstats`、`vgruntime`、`vgcfg dump`、`vgnet`、`read_file`、`write_file` | 现场说明，实际触发由板端文件工作线程负责 |
+| `HEARTBEAT.md` | 守护进程周期读取（HMI 构建下不再直接发起 LLM 轮次） | `vg_point_read`、`vg_run_report`、时间与受限文件工具 | 现场说明，实际触发由板端文件工作线程负责 |
 
 写 Skill 时注意一条框架行为：某一轮迭代如果只调用了单个 `read_file`/`write_file`，框架会直接把文件内容当回复并结束本轮。Skill 里不要把已经写在请求里的数据再用 `read_file` 取一遍。
 
@@ -209,6 +209,8 @@ nsh> cat /data/velaguard/logs/agent_tools.log          # 工具调用审计
 
 ---
 
+维护修复进度、待板验项目与未实现功能见 [维护 TODO](docs/maintenance-todo.md)。本轮主机测试和编译通过的项目，仍需各自完成真机验收。
+
 ## 功能清单与当前状态
 
 | 领域 | 功能 | 状态 | 位置 |
@@ -216,7 +218,7 @@ nsh> cat /data/velaguard/logs/agent_tools.log          # 工具调用审计
 | 总线接入 | `vgdiscover` @9600 扫描 1–32、寄存器块探测、候选点表、`test-read`、`apply --confirm` | 已落地 | `app/velaguard/vgdiscover.c`、`vg_point_table.c` |
 | 总线接入 | LVGL 总线探查页，扫描开关默认关 | 已落地 | `gui/main/ui/pages/vg_page_discover.c` |
 | 总线接入 | `vgpoint` 主机侧增改点表、测试读取、`apply --confirm`、`get` 读实时快照 | 已落地 | `app/velaguard/vgpoint.c` |
-| 总线接入 | 字序 / 倍率联合约束求解、波特率矩阵 | 阶段 2 | 手册 §4.3、§5.1 |
+| 总线接入 | 字序 / 倍率联合约束求解 | 阶段 2 | 手册 §4.3、§5.1 |
 | 采集与统计 | nanoMODBUS RTU 主站 `vgmodbus`；HMI 周期轮询并写实时快照 | 已落地 | `vg_modbus_read.c`、`vg_ui_backend_board.c` |
 | 采集与统计 | 帧级质量统计：CRC / 超时 / 回显 / 延迟，按从站滑窗，`vgstats` | 已落地 | `vg_frame_stats.c` |
 | 告警 | 阈值（warn / crit）与离线（滑窗失败率）判定，HMI 告警页 | 已落地 | `vg_alarm_eval.c`、`vg_page_alarm.c` |
@@ -228,18 +230,18 @@ nsh> cat /data/velaguard/logs/agent_tools.log          # 工具调用审计
 | Agent | C 工具层命令允许表 + 子命令门槛 + 文件路径沙箱 + 工具调用审计 | 已落地 | `packages/ai_agent/src/tools/` |
 | Agent | 自定义只读工具 `vg_point_read` / `vg_run_report`（不开总线，限流 60 s / 20 次） | 已落地 | `vg_agent_query.c`、`vg_agent_tools.c` |
 | Agent | LLM 密钥加密存 eMMC（`vgprovision`），不进固件、不进 git；凭证缺失时降级到规则摘要 | 已落地 | `vg_provision*.c`、`scripts/provision-llm-from-secrets.*` |
-| Agent | 周报、云端 Bridge | 规划 | 手册 §5.6、§11 |
+| Agent | 周报 | 后续；旧 MQTT AI Bridge 已移除 | 手册 §5.6、§11 |
 | HMI | LVGL 触控 HMI：首页 / 从站详情 / 告警 / 报告 / 总线探查 / 趋势；PC 模拟器与板端同源 | 已落地 | `gui/` |
 | HMI | 诊断 / 日志 / 系统页 | 阶段 2（占位 toast） | `gui/main/ui/shell/vg_shell.c` |
 | 网络 | RJ45 主 + ESP-01S 备：ping 判健康、热备切换、指数退避、稳定窗口回切 | 已落地 | `vg_net_mgr.c`、`vg_net_policy.c` |
 | 网络 | MQTT 四主题上报看板（status / telemetry / alarm / point_table，明文 1883 + 测试凭据） | 已落地 | `vg_mqtt_session.c`、`docs/velaguard-mqtt-contract.md` |
 | 网络 | MQTTS、每设备 HMAC token、OTA 主题 | 规划 | 手册 §16.1、ADR 0005 |
-| 存储与启动 | eMMC（SDMMC1 + FAT）；双槽 + CRC32 + 单调序号配置存储 | 已落地 | `vg_config_store.c`、nuttx 板级 `stm32_sdmmc.c`（`velaguard/integration` 分支） |
+| 存储与启动 | eMMC（SDMMC1 + FAT）；配置元数据双槽 + CRC32 + 序号；实际点表使用校验替换与备份 | 已落地 | `vg_config_store.c`、nuttx 板级 `stm32_sdmmc.c` |
 | 存储与启动 | QSPI XIP 启动 + 片内 boot stub | 已落地 | nuttx PR #350、`scripts/qspi_boot_stub/` |
 | 存储与启动 | MQTT-only OTA（下载到 eMMC → boot stub 烧写 QSPI） | 阶段 3 | `docs/adr/0005-mqtt-only-pull-based-ota.md` |
 | 配套 | Windows 点表上位机：导入 / 编辑 / 试读 / 人工确认落盘 | 已落地 | [FoLeaf/velaguard_host](https://github.com/FoLeaf/velaguard_host) |
 | 配套 | 只读云看板：订阅四主题，SQLite 留档，中文网页查询 | 已落地 | [FoLeaf/velaguard_mimo2mqtt](https://github.com/FoLeaf/velaguard_mimo2mqtt) · [velaguard.19y.cc](https://velaguard.19y.cc/) |
-| 工程 | 主机单测 17 个用例（含建议策略、凭证、查数解析与只读工具） | 已落地 | `app/velaguard/host_tests/` |
+| 工程 | 主机测试 25 个目标（含存储故障、工具超时、回调和文件权限回归） | 已落地 | `app/velaguard/host_tests/` |
 
 ---
 
@@ -315,7 +317,7 @@ cmake -S gui -B gui/build -DCMAKE_BUILD_TYPE=Debug && cmake --build gui/build -j
 ./gui/bin/main
 ```
 
-**主机单测**（17 个用例，含建议策略、凭证、查数解析与只读工具）：
+**主机单测**（25 个目标，含本轮维护回归）：
 
 ```bash
 make -C app/velaguard/host_tests test

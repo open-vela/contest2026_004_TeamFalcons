@@ -1,0 +1,154 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+[vgadvice] asked for 8 alarms req=3
+[vgagent] round submitted: 1317 bytes
+[agent] Processing message from local_client:velaguard:6
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9cdde0830f44a] BEGIN chat=velaguard:6 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 7011 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → local_client:velaguard:6
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792658910
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9cdde0830f44a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=650 send=190 ttfb=20 body=0 pool=0 build=0 parse=10 http=980 backoff=0 total=1000 req=7011 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 6 (backoff 32)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9cdde0830f44a] iter=0 tool=(none) latency=1000ms llm=fail backend=0
+[trace:6ad9cdde0830f44a] END status=fail iters=1 tools=0 llm_ms=1000 tool_ms=0 elapsed_ms=1070 backend=0
+[agent] Dispatching response → local_client:velaguard:6
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cc70a5
+
+HOST 2026-10-22T08:48:38.5513364+08:00 SEND vgaudio id
+vgaudio id
+vgaudio: codec id=0x8994 expect=0x8994 OK
+nsh> [K
+HOST 2026-10-22T08:48:38.7078892+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T08:48:38.9182852+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T08:48:39.0235954+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T08:48:39.4327804+08:00 SEND !vgaudio reg 0x1
+!vgaudio reg 0x1
+vgaudio: R1 (0x01) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.5079895+08:00 SEND !vgaudio reg 0x3
+!vgaudio reg 0x3
+vgaudio: R3 (0x03) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.5690301+08:00 SEND !vgaudio reg 0x5
+!vgaudio reg 0x5
+vgaudio: R5 (0x05) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.6524292+08:00 SEND !vgaudio reg 0x1c
+!vgaudio reg 0x1c
+vgaudio: R28 (0x1c) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.7148697+08:00 SEND !vgaudio reg 0x1d
+!vgaudio reg 0x1d
+vgaudio: R29 (0x1d) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.7968027+08:00 SEND !vgaudio reg 0x2d
+!vgaudio reg 0x2d
+vgaudio: R45 (0x2d) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:39.8607165+08:00 SEND !vgaudio reg 0x2e
+!vgaudio reg 0x2e
+vgaudio: R46 (0x2e) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:40.9384871+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T08:48:41.3607716+08:00 SEND !vgaudio reg 0x4c
+!vgaudio reg 0x4c
+vgaudio: R76 (0x4c) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.4265954+08:00 SEND !vgaudio reg 0x54
+!vgaudio reg 0x54
+vgaudio: R84 (0x54) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.5205537+08:00 SEND !vgaudio reg 0x60
+!vgaudio reg 0x60
+vgaudio: R96 (0x60) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.6107849+08:00 SEND !vgaudio reg 0x200
+!vgaudio reg 0x200
+vgaudio: R512 (0x200) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.6756018+08:00 SEND !vgaudio reg 0x208
+!vgaudio reg 0x208
+vgaudio: R520 (0x208) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.7360901+08:00 SEND !vgaudio reg 0x210
+!vgaudio reg 0x210
+vgaudio: R528 (0x210) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.8060415+08:00 SEND !vgaudio reg 0x300
+!vgaudio reg 0x300
+vgaudio: R768 (0x300) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:41.8817101+08:00 SEND !vgaudio reg 0x302
+!vgaudio reg 0x302
+vgaudio: R770 (0x302) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:42.9533024+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T08:48:43.3608476+08:00 SEND !vgaudio reg 0x402
+!vgaudio reg 0x402
+vgaudio: R1026 (0x402) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:43.4375489+08:00 SEND !vgaudio reg 0x403
+
+HOST 2026-10-22T08:48:43.5137133+08:00 SEND !vgaudio reg 0x420
+
+HOST 2026-10-22T08:48:43.5761241+08:00 SEND !vgaudio reg 0x601
+!vgaudio reg 0x403
+
+HOST 2026-10-22T08:48:43.6495848+08:00 SEND !vgaudio reg 0x602
+vgaudio: R1027 (0x403) = 0x0000
+nxplayer> [K!vgaudio reg 0x420
+vgaudio: R1056 (0x420) = 0x0000
+nxplayer> [K!vgaudio reg 0x601
+vgaudio: R1537 (0x601) = 0x0000
+nxplayer> [K!vgaudio reg 0x602
+vgaudio: R1538 (0x602) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:43.7428106+08:00 SEND !vgaudio reg 0x610
+!vgaudio reg 0x610
+vgaudio: R1552 (0x610) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:43.8053103+08:00 SEND !vgaudio reg 0x611
+!vgaudio reg 0x611
+vgaudio: R1553 (0x611) = 0x0000
+nxplayer> [K
+HOST 2026-10-22T08:48:44.9233960+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: MCLK = 49142857 / 4 = 12285714 Hz (target 4096000)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=3000c5a0
+vgaudio: dma_done=40 errors=0 timeouts=0 txbytes=320000
+vgaudio: sai_underruns=22 clockerrors=0
+nxplayer> [K
+HOST 2026-10-22T08:48:45.1387662+08:00 SEND quit
+quit
+nsh> [K

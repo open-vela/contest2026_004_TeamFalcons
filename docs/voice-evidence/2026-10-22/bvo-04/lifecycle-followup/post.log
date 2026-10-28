@@ -1,0 +1,69 @@
+
+HOST 2026-10-22T09:29:32.5868186+08:00 SEND vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x0009
+vgaudio: codec[0x001d]=0x0009
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0033
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+HOST 2026-10-22T09:29:33.3363861+08:00 SEND vgpdmdump -r 3 -n 16384
+vgpdmdump -r 3 -n 16384
+vgpdmdump: RX bitrate 256000
+vgpdmdump: 3 rounds, 16384 bytes each
+  round  level_rms  peak   ones
+      0  0.0110     0.0330 0.480
+      1  0.0091     0.0163 0.486
+      2  0.0084     0.0144 0.487
+nsh> [K
+HOST 2026-10-22T09:29:35.2151686+08:00 SEND vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=333 errors=0 timeouts=0 txbytes=2669128
+vgaudio: sai_underruns=156 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nsh> [K
+HOST 2026-10-22T09:29:35.9153146+08:00 SEND free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     312264    6568576     396216    6291440   1028     17 Umem
+nsh> [K
+HOST 2026-10-22T09:29:36.5105273+08:00 SEND ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 22.0% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.9% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.8% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  3.3% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264  3.3% velaguard_app_main 0x90010385 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013e91 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  0.8% ESP8266 0x9005fccd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9005fa39 0
+    9     9  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   10    10 100 RR       Task      - Ready              0000000000000000 0049104 43.6% vghmi vghmi
+   11    10 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  1.5% vghmi 0x900146d1 0
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.7% ai_agent ai_agent --daemon
+   13    12  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9002a77d 0x2405bae0
+   14    12   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.7% ai_agent 0x900308d5 0x2405bbe0
+   15    12  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9002a77d 0x2405bce0
+   26    10 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  4.5% vghmi 0x90014e35 0
+   28    12  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x9002c411 0x24055128
+nsh> [K

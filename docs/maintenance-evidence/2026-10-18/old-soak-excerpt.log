@@ -1,0 +1,77 @@
+# 旧固件长测原始摘录（只读复制，未改写正文）
+# 源文件: .debug/maintenance-soak.log  大小 593679 字节  mtime 2026-10-17 19:53
+# 本文件保留 START、全部 CYCLE、全部 FAIL/STOP 行，其余正文见源文件。
+
+1:START 2026-10-17T16:40:30.1738361+08:00 port=COM3 hours=24 online_min=14 scope=storage-runtime
+129:CYCLE 1 elapsed_s=81 uptime_s=1023 online=14
+229:CYCLE 2 elapsed_s=283 uptime_s=1225 online=14
+329:CYCLE 3 elapsed_s=486 uptime_s=1428 online=14
+429:CYCLE 4 elapsed_s=686 uptime_s=1628 online=14
+529:CYCLE 5 elapsed_s=889 uptime_s=1830 online=14
+630:CYCLE 6 elapsed_s=1,093 uptime_s=2034 online=14
+731:CYCLE 7 elapsed_s=1,295 uptime_s=2236 online=14
+831:CYCLE 8 elapsed_s=1,499 uptime_s=2441 online=14
+931:CYCLE 9 elapsed_s=1,702 uptime_s=2644 online=14
+1031:CYCLE 10 elapsed_s=1,909 uptime_s=2851 online=14
+1131:CYCLE 11 elapsed_s=2,113 uptime_s=3055 online=14
+1231:CYCLE 12 elapsed_s=2,319 uptime_s=3260 online=14
+1331:CYCLE 13 elapsed_s=2,524 uptime_s=3465 online=14
+1431:CYCLE 14 elapsed_s=2,730 uptime_s=3672 online=14
+1532:CYCLE 15 elapsed_s=2,934 uptime_s=3875 online=14
+1632:CYCLE 16 elapsed_s=3,137 uptime_s=4079 online=14
+1733:CYCLE 17 elapsed_s=3,339 uptime_s=4281 online=14
+1833:CYCLE 18 elapsed_s=3,543 uptime_s=4484 online=14
+1933:CYCLE 19 elapsed_s=3,747 uptime_s=4689 online=14
+2033:CYCLE 20 elapsed_s=3,951 uptime_s=4892 online=14
+2133:CYCLE 21 elapsed_s=4,158 uptime_s=5099 online=14
+2233:CYCLE 22 elapsed_s=4,363 uptime_s=5304 online=14
+2334:CYCLE 23 elapsed_s=4,567 uptime_s=5509 online=14
+2434:CYCLE 24 elapsed_s=4,769 uptime_s=5711 online=14
+2534:CYCLE 25 elapsed_s=4,972 uptime_s=5914 online=14
+2634:CYCLE 26 elapsed_s=5,174 uptime_s=6116 online=14
+2734:CYCLE 27 elapsed_s=5,378 uptime_s=6319 online=14
+2835:CYCLE 28 elapsed_s=5,582 uptime_s=6524 online=14
+2935:CYCLE 29 elapsed_s=5,785 uptime_s=6727 online=14
+3035:CYCLE 30 elapsed_s=5,989 uptime_s=6931 online=14
+3135:CYCLE 31 elapsed_s=6,195 uptime_s=7136 online=14
+3236:CYCLE 32 elapsed_s=6,400 uptime_s=7341 online=14
+3336:CYCLE 33 elapsed_s=6,603 uptime_s=7545 online=14
+3436:CYCLE 34 elapsed_s=6,807 uptime_s=7748 online=14
+3536:CYCLE 35 elapsed_s=7,008 uptime_s=7949 online=14
+3636:CYCLE 36 elapsed_s=7,210 uptime_s=8152 online=14
+3736:CYCLE 37 elapsed_s=7,413 uptime_s=8354 online=14
+3836:CYCLE 38 elapsed_s=7,618 uptime_s=8560 online=14
+3936:CYCLE 39 elapsed_s=7,822 uptime_s=8763 online=14
+4037:CYCLE 40 elapsed_s=8,024 uptime_s=8966 online=14
+4138:CYCLE 41 elapsed_s=8,228 uptime_s=9169 online=14
+4238:CYCLE 42 elapsed_s=8,431 uptime_s=9373 online=14
+4338:CYCLE 43 elapsed_s=8,633 uptime_s=9575 online=14
+4438:CYCLE 44 elapsed_s=8,838 uptime_s=9780 online=14
+4538:CYCLE 45 elapsed_s=9,039 uptime_s=9981 online=14
+4638:CYCLE 46 elapsed_s=9,246 uptime_s=10188 online=14
+4738:CYCLE 47 elapsed_s=9,450 uptime_s=10392 online=14
+4838:CYCLE 48 elapsed_s=9,654 uptime_s=10596 online=14
+4938:CYCLE 49 elapsed_s=9,857 uptime_s=10798 online=14
+5039:CYCLE 50 elapsed_s=10,059 uptime_s=11001 online=14
+5140:CYCLE 51 elapsed_s=10,261 uptime_s=11203 online=14
+5240:CYCLE 52 elapsed_s=10,464 uptime_s=11406 online=14
+5340:CYCLE 53 elapsed_s=10,669 uptime_s=11610 online=14
+5440:CYCLE 54 elapsed_s=10,872 uptime_s=11814 online=14
+5540:CYCLE 55 elapsed_s=11,077 uptime_s=12019 online=14
+5640:CYCLE 56 elapsed_s=11,282 uptime_s=12224 online=14
+5740:CYCLE 57 elapsed_s=11,487 uptime_s=12429 online=14
+5742:FAIL 2026-10-17T19:53:57.8929382+08:00 使用“1”个参数调用“Write”时发生异常:“端口被关闭。”
+
+--- 末段原文（最后 12 行） ---
+vgruntime: event t_boot_s=621 wall=2026-10-17T16:35:15 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+nsh> [K
+COMMAND_MS 762
+COMMAND 2026-10-17T19:51:57.7561682+08:00 cat /proc/meminfo
+cat /proc/meminfo
+      total       used       free    maxused    maxfree  nused  nfree name
+    7014016     318608    6695408     450216    6291440   1011      9 Umem
+nsh> [K
+COMMAND_MS 104
+CYCLE 57 elapsed_s=11,487 uptime_s=12429 online=14
+COMMAND 2026-10-17T19:53:57.8678972+08:00 vgstoretest 50
+FAIL 2026-10-17T19:53:57.8929382+08:00 使用“1”个参数调用“Write”时发生异常:“端口被关闭。”

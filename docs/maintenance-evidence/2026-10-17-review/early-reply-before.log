@@ -1,0 +1,4 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -o test_modbus_port test_modbus_port.c ../modbus_port_openvela.c ../nanomodbus/nanomodbus.c -Wl,--wrap=poll,--wrap=read,--wrap=write,--wrap=tcdrain,--wrap=tcflush
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+test_modbus_port: test_modbus_port.c:71: main: Assertion `pc.read(actual, sizeof(actual), 20, pc.arg) == sizeof(actual)' failed.

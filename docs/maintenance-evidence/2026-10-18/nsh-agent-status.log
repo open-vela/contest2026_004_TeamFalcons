@@ -1,0 +1,49 @@
+########## boot settle len=2975 ##########
+vgstoretest: OK rounds=50 bytes=25600 elapsed_ms=91950
+nsh> [Kls -l /data/velaguard/discover
+/data/velaguard/discover:
+ -rw-rw-rw-   0        2078 point_table_candidate.json
+ -rw-rw-rw-   0        4552 discover_state.bin
+nsh> [Kls -l /data/velaguard/live
+/data/velaguard/live:
+ -rw-rw-rw-   0         453 values.txt
+nsh> [Kvgpoint list -c
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=candidate n=14
+nsh> [Kvgpoint get
+vgpoint: VALUE id=temp value=- ok=0 unit=C age_ms=3450
+vgpoint: VALUE id=humid value=- ok=0 unit=%RH age_ms=3450
+vgpoint: VALUE id=flood value=- ok=0 unit=- age_ms=3450
+vgpoint: VALUE id=smoke value=- ok=0 unit=% age_ms=3450
+vgpoint: VALUE id=acu_ret value=- ok=0 unit=C age_ms=3450
+vgpoint: VALUE id=acu_set value=- ok=0 unit=C age_ms=3450
+vgpoint: VALUE id=acu_run value=- ok=0 unit=- age_ms=3450
+vgpoint: VALUE id=ups_load value=- ok=0 unit=% age_ms=3450
+vgpoint: VALUE id=ups_soc value=- ok=0 unit=% age_ms=3450
+vgpoint: VALUE id=ups_bypass value=- ok=0 unit=- age_ms=3450
+vgpoint: VALUE id=volt_a value=- ok=0 unit=V age_ms=3450
+vgpoint: VALUE id=pwr_kw value=- ok=0 unit=kW age_ms=3450
+vgpoint: VALUE id=energy_kwh value=- ok=0 unit=kWh age_ms=3450
+vgpoint: VALUE id=door value=- ok=0 unit=- age_ms=3450
+vgpoint: OK cmd=get table=committed n=14
+nsh> [K
+
+########## vgagent status ########## len=170
+vgagent status
+round: state=running gen=2 owner=advice
+llm: credentials=ready provision_file=present
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+

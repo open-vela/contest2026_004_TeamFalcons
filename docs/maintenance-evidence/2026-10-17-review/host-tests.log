@@ -1,0 +1,132 @@
+make: Entering directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'
+rm -f test_modbus_port test_point_commit test_mqtt_session
+rm -f test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_net_policy test_net_policy.c ../vg_net_policy.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_config_store test_config_store.c ../vg_config_store.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_frame_stats test_frame_stats.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime test_runtime.c ../vg_runtime.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_discover test_discover.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_vgpoint test_vgpoint.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_alarm_eval test_alarm_eval.c ../vg_alarm_eval.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_time_sync test_time_sync.c ../vg_sntp.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -pthread -DVG_HMI_PERF_ENABLED=1 -o test_hmi_perf test_hmi_perf.c ../vg_hmi_perf.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_runtime_render test_runtime_render.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_hmi_sched test_hmi_sched.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_mqtt_payload test_mqtt_payload.c ../vg_mqtt_payload.c \
+  ../vg_device_id.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_ai_contract test_ai_contract.c ../vg_ai_contract.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_advice_policy test_advice_policy.c ../vg_advice_policy.c \
+  ../vg_ai_contract.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_provision_creds test_provision_creds.c ../vg_provision.c ../vg_file_store.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_agent_query test_agent_query.c ../vg_agent_query.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -I../../../../apps/include -I../../../../packages/ai_agent/include -o test_agent_tools test_agent_tools.c \
+  ../vg_agent_tools.c ../vg_agent_query.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_maintenance test_maintenance.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_file_store test_file_store.c ../vg_file_store.c -Wl,--wrap=write,--wrap=read,--wrap=fsync,--wrap=rename
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_shell_runner ../../../../packages/ai_agent/tests/test_shell_runner.c ../../../../packages/ai_agent/src/tools/tool_shell_runner.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -DOK=0 -DERROR=-1 -I../../../../packages/ai_agent/include -I../../../../packages/ai_agent/src -o test_local_client ../../../../packages/ai_agent/tests/test_local_client.c ../../../../packages/ai_agent/src/sdk/velaclaw_client_local.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -DOK=0 -DERROR=-1 '-DCONFIG_EXAMPLES_AI_AGENT_VELA_DATA_DIR="data/agent"' '-DVG_DATA_ROOT="data/velaguard"' -I../../../../packages/ai_agent/tests/stub -I../../../../packages/ai_agent/include -I../../../../packages/ai_agent/src -I../../../../apps/include/../netutils/cjson/cJSON -o test_file_policy ../../../../packages/ai_agent/tests/test_file_policy.c ../../../../packages/ai_agent/src/tools/tool_files.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -I../nanomodbus -o test_discover_io test_discover_io.c ../vg_discover_modbus.c ../nanomodbus/nanomodbus.c ../vg_frame_stats.c
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -I../../../../packages/ai_agent/include -o test_agent_round test_agent_round.c ../vg_agent_round.c -Wl,--wrap=clock_gettime
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -DOK=0 -DERROR=-1 -DCONFIG_VG_HMI -I../../../../packages/ai_agent/tests/stub -I../../../../packages/ai_agent/include -I../../../../packages/ai_agent/src -I../../../../apps/include/../netutils/cjson/cJSON -o test_shell_output ../../../../packages/ai_agent/tests/test_shell_output.c ../../../../packages/ai_agent/src/tools/tool_shell_runner.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -o test_modbus_port test_modbus_port.c ../modbus_port_openvela.c ../nanomodbus/nanomodbus.c -Wl,--wrap=poll,--wrap=read,--wrap=write,--wrap=tcdrain,--wrap=tcflush
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -o test_point_commit test_point_commit.c ../vg_point_table.c ../vg_file_store.c ../../../../apps/netutils/cjson/cJSON/cJSON.c -Wl,--wrap=vg_file_replace -lm
+cc -Wall -Werror -I.. -pthread -I../../../../apps/include -Istubs -include stubs/vg_host_shim.h -I../../../../apps/netutils/mqttc/MQTT-C/include -ffunction-sections -fdata-sections -o test_mqtt_session test_mqtt_session.c ../vg_mqtt_payload.c -Wl,--gc-sections -lm
+./test_net_policy
+test_net_policy: all passed
+./test_config_store
+test_config_store: OK
+./test_frame_stats
+test_frame_stats: OK
+./test_runtime
+test_runtime: OK
+./test_discover
+test_discover: OK
+./test_vgpoint
+test_vgpoint: OK
+./test_alarm_eval
+test_alarm_eval: ok
+./test_time_sync
+test_time_sync: all passed
+./test_hmi_perf
+[PASS] window empty after init
+[PASS] no samples after init
+[PASS] uptime starts at zero
+[PASS] total count grows to 300
+[PASS] total duration accumulates
+[PASS] max tracks the largest span
+[PASS] window caps at 256 samples
+[PASS] window keeps the most recent 256 samples in order
+[PASS] stray end does not create a sample
+[PASS] unpaired begin counted as incomplete
+[PASS] paired begin/end records one real sample
+[PASS] wraparound uses unsigned difference
+[PASS] p50 nearest-rank of 5
+[PASS] p95 nearest-rank of 5
+[PASS] 0 pct clamps to minimum
+[PASS] 100 pct is maximum
+[PASS] single sample rank
+[PASS] empty input is zero
+[PASS] every span is recorded or counted as dropped
+[PASS] window stays bounded under concurrency
+[PASS] static stats budget under 8 KiB
+[INFO] vg_hmi_perf budget = 6424 bytes
+
+test_hmi_perf: ALL PASS
+./test_runtime_render
+[PASS] versioned point table copy and stale poll detection
+[PASS] alarm file serialization format
+test_runtime_render: ALL PASS
+./test_hmi_sched
+[PASS] zero idle sleeps minimum
+[PASS] no-timer-ready sleeps minimum
+[PASS] 1 ms stays 1
+[PASS] 5 ms stays 5
+[PASS] 10 ms stays 10
+[PASS] 11 ms clamps to max
+[PASS] large idle clamps to max
+[PASS] indev read target is 10 ms
+[PASS] sleep max matches indev read period
+test_hmi_sched: ALL PASS
+./test_mqtt_payload
+test_mqtt_payload: OK
+./test_ai_contract
+test_ai_contract: ok
+./test_advice_policy
+test_advice_policy: ok
+./test_provision_creds
+test_provision_creds: OK
+./test_agent_query
+test_agent_query: OK
+./test_agent_tools
+test_agent_tools: OK
+./test_maintenance
+test_maintenance: 0 failure(s)
+./test_file_store
+test_file_store: OK (ENOSPC, short write, primary/backup verification, sync, rename, concurrent)
+./test_shell_runner
+test_shell_runner: OK (timeout, closed pipe, overflow, recovery, reap)
+./test_local_client
+test_local_client: OK (busy, stale, duplicate, failed submit, recovery)
+./test_file_policy
+test_file_policy: OK (symlink, missing target, config, firmware facts, allowed report)
+./test_discover_io
+test_discover_io: OK (bounds before I/O, errno, narrow scalar, capacity)
+./test_agent_round
+test_agent_round: OK (timeout, late callback, result ownership, recovery)
+./test_shell_output
+test_shell_output: OK (exact canaries, metadata bounds, product allowlist)
+./test_modbus_port
+test_modbus_port: OK (early reply preserved, pre-request flush, drain failure)
+./test_point_commit
+vgdiscover: applied 1 points → commit-test.json
+vgdiscover: applied 1 points → commit-test.json
+test_point_commit: OK (concurrent commits, failed write, explicit empty table)
+./test_mqtt_session
+vgnet: mqtt pub point_table failed injected
+test_mqtt_session: OK (failed updated table retried after earlier success)
+python3 test_boot_stack.py
+test_boot_stack: OK (system entry stack=8192)
+python3 test_board_pins.py
+test_board_pins: OK (LCD G0/G1 PJ7/PJ8, preserve SDRAM A10/A11)
+make: Leaving directory '/home/hello19y/openvela/contest2026_004_TeamFalcons/app/velaguard/host_tests'

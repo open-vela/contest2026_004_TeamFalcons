@@ -1,0 +1,8 @@
+[  5%] Built target vg_ui
+[ 89%] Built target lvgl
+[ 96%] Built target lvgl_thorvg
+[ 96%] Built target alarm_check
+[ 96%] Built target fixture_check
+[ 96%] Built target lifecycle_render_check
+[ 98%] Built target trend_check
+[100%] Built target interaction_check

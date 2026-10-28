@@ -1,0 +1,116 @@
+START 2026-10-20T22:17:49.6858205+08:00 port=COM7 mode=slave-only baud=9600 rts=False dtr=False reply_delay_ms=0
+STATUS 2026-10-20T22:17:49.6938276+08:00 elapsed_s=0.0 mode=normal requests=0 replies=0 suppressed=0 crc_scan=0
+RX 2026-10-20T22:17:50.1621180+08:00 03-03-00-00-00-01-85-E8
+RX 2026-10-20T22:17:50.2523399+08:00 04-03-00-00-00-01-84-5F
+RX 2026-10-20T22:17:50.3432071+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-20T22:17:50.4340039+08:00 04-03-00-02-00-01-25-9F
+RX 2026-10-20T22:17:50.5112623+08:00 05-03-00-00-00-01-85-8E
+RX 2026-10-20T22:17:50.6189425+08:00 05-03-00-01-00-01-D4-4E
+RX 2026-10-20T22:17:50.7501642+08:00 05-03-00-02-00-01-24-4E
+RX 2026-10-20T22:17:50.8334745+08:00 06-03-00-00-00-01-85-BD
+RX 2026-10-20T22:17:50.9101962+08:00 06-03-00-01-00-01-D4-7D
+RX 2026-10-20T22:17:51.0095777+08:00 06-03-00-02-00-01-24-7D
+RX 2026-10-20T22:17:51.0936426+08:00 07-03-00-00-00-01-84-6C
+RX 2026-10-20T22:17:51.6465479+08:00 01-03-00-00-00-01-84-0A
+RX 2026-10-20T22:17:51.7223012+08:00 01-03-00-01-00-01-D5-CA
+RX 2026-10-20T22:17:51.8042749+08:00 02-03-00-02-00-01-25-F9
+RX 2026-10-20T22:17:51.8881598+08:00 03-03-00-00-00-01-85-E8
+RX 2026-10-20T22:17:51.9651362+08:00 04-03-00-00-00-01-84-5F
+RX 2026-10-20T22:17:52.3226752+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-20T22:17:52.4523508+08:00 04-03-00-02-00-01-25-9F
+RX 2026-10-20T22:17:52.5430526+08:00 05-03-00-00-00-01-85-8E
+RX 2026-10-20T22:17:52.6210298+08:00 05-03-00-01-00-01-D4-4E
+RX 2026-10-20T22:17:52.7131358+08:00 05-03-00-02-00-01-24-4E
+RX 2026-10-20T22:17:52.7892269+08:00 06-03-00-00-00-01-85-BD
+RX 2026-10-20T22:17:52.8802218+08:00 06-03-00-01-00-01-D4-7D
+RX 2026-10-20T22:17:52.9579586+08:00 06-03-00-02-00-01-24-7D
+RX 2026-10-20T22:17:53.0346092+08:00 07-03-00-00-00-01-84-6C
+RX 2026-10-20T22:17:53.5988916+08:00 01-03-00-00-00-01-84-0A
+RX 2026-10-20T22:17:53.6750623+08:00 01-03-00-01-00-01-D5-CA
+RX 2026-10-20T22:17:53.7516358+08:00 02-03-00-02-00-01-25-F9
+RX 2026-10-20T22:17:53.8434059+08:00 03-03-00-00-00-01-85-E8
+RX 2026-10-20T22:17:53.9201291+08:00 04-03-00-00-00-01-84-5F
+RX 2026-10-20T22:17:54.1822465+08:00 04-03-00-01-00-01-D5-9F
+RX 2026-10-20T22:17:54.3798419+08:00 04-03-00-02-00-01-25-9F
+STATUS 2026-10-20T22:17:59.7018660+08:00 elapsed_s=10.0 mode=normal requests=77 replies=77 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:09.7128124+08:00 elapsed_s=20.0 mode=normal requests=163 replies=163 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:19.7196686+08:00 elapsed_s=30.0 mode=normal requests=248 replies=248 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:29.7225253+08:00 elapsed_s=40.0 mode=normal requests=333 replies=333 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:39.7322596+08:00 elapsed_s=50.0 mode=normal requests=419 replies=419 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:49.7339584+08:00 elapsed_s=60.0 mode=normal requests=504 replies=504 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:18:59.7539465+08:00 elapsed_s=70.1 mode=normal requests=589 replies=589 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:09.7606836+08:00 elapsed_s=80.1 mode=normal requests=676 replies=676 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:19.7709752+08:00 elapsed_s=90.1 mode=normal requests=763 replies=763 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:29.7756194+08:00 elapsed_s=100.1 mode=normal requests=849 replies=849 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:39.7795480+08:00 elapsed_s=110.1 mode=normal requests=935 replies=935 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:49.7924741+08:00 elapsed_s=120.1 mode=normal requests=1019 replies=1019 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:19:59.7989266+08:00 elapsed_s=130.1 mode=normal requests=1107 replies=1107 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:09.8103806+08:00 elapsed_s=140.1 mode=normal requests=1191 replies=1191 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:19.8315079+08:00 elapsed_s=150.1 mode=normal requests=1278 replies=1278 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:29.8354637+08:00 elapsed_s=160.1 mode=normal requests=1362 replies=1362 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:39.8507137+08:00 elapsed_s=170.2 mode=normal requests=1450 replies=1450 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:49.8545433+08:00 elapsed_s=180.2 mode=normal requests=1537 replies=1537 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:20:59.8645300+08:00 elapsed_s=190.2 mode=normal requests=1621 replies=1621 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:09.8700547+08:00 elapsed_s=200.2 mode=normal requests=1705 replies=1705 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:19.8738476+08:00 elapsed_s=210.2 mode=normal requests=1789 replies=1789 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:29.8807195+08:00 elapsed_s=220.2 mode=normal requests=1873 replies=1873 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:39.8814440+08:00 elapsed_s=230.2 mode=normal requests=1957 replies=1957 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:49.8824572+08:00 elapsed_s=240.2 mode=normal requests=2041 replies=2041 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:21:59.8965470+08:00 elapsed_s=250.2 mode=normal requests=2129 replies=2129 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:09.8976001+08:00 elapsed_s=260.2 mode=normal requests=2214 replies=2214 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:19.9061459+08:00 elapsed_s=270.2 mode=normal requests=2243 replies=2243 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:29.9179156+08:00 elapsed_s=280.2 mode=normal requests=2243 replies=2243 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:39.9183907+08:00 elapsed_s=290.2 mode=normal requests=2278 replies=2278 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:49.9256459+08:00 elapsed_s=300.2 mode=normal requests=2355 replies=2355 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:22:59.9298618+08:00 elapsed_s=310.2 mode=normal requests=2436 replies=2436 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:23:09.9369487+08:00 elapsed_s=320.2 mode=normal requests=2516 replies=2516 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:23:19.9492377+08:00 elapsed_s=330.3 mode=normal requests=2593 replies=2593 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:23:29.9647164+08:00 elapsed_s=340.3 mode=normal requests=2675 replies=2675 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:23:39.9849292+08:00 elapsed_s=350.3 mode=normal requests=2752 replies=2752 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:23:49.9999471+08:00 elapsed_s=360.3 mode=normal requests=2831 replies=2831 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:00.0084707+08:00 elapsed_s=370.3 mode=normal requests=2907 replies=2907 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:10.0205014+08:00 elapsed_s=380.3 mode=normal requests=2985 replies=2985 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:20.0242170+08:00 elapsed_s=390.3 mode=normal requests=3064 replies=3064 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:30.0256403+08:00 elapsed_s=400.3 mode=normal requests=3141 replies=3141 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:40.0325239+08:00 elapsed_s=410.3 mode=normal requests=3223 replies=3223 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:24:50.0454783+08:00 elapsed_s=420.4 mode=normal requests=3300 replies=3300 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:00.0561288+08:00 elapsed_s=430.4 mode=normal requests=3382 replies=3382 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:10.0585670+08:00 elapsed_s=440.4 mode=normal requests=3461 replies=3461 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:20.0613350+08:00 elapsed_s=450.4 mode=normal requests=3545 replies=3545 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:30.0665153+08:00 elapsed_s=460.4 mode=normal requests=3622 replies=3622 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:40.0810540+08:00 elapsed_s=470.4 mode=normal requests=3699 replies=3699 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:25:50.0955719+08:00 elapsed_s=480.4 mode=normal requests=3783 replies=3783 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:00.0959721+08:00 elapsed_s=490.4 mode=normal requests=3859 replies=3859 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:10.1023658+08:00 elapsed_s=500.4 mode=normal requests=3939 replies=3939 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:20.1154207+08:00 elapsed_s=510.4 mode=normal requests=4021 replies=4021 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:30.1146884+08:00 elapsed_s=520.4 mode=normal requests=4102 replies=4102 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:40.1258502+08:00 elapsed_s=530.4 mode=normal requests=4182 replies=4182 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:26:50.1266929+08:00 elapsed_s=540.4 mode=normal requests=4261 replies=4261 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:00.1381637+08:00 elapsed_s=550.5 mode=normal requests=4343 replies=4343 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:10.1443630+08:00 elapsed_s=560.5 mode=normal requests=4423 replies=4423 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:20.1477249+08:00 elapsed_s=570.5 mode=normal requests=4504 replies=4504 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:30.1497326+08:00 elapsed_s=580.5 mode=normal requests=4583 replies=4583 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:40.1510111+08:00 elapsed_s=590.5 mode=normal requests=4665 replies=4665 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:27:50.1534475+08:00 elapsed_s=600.5 mode=normal requests=4745 replies=4745 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:00.1553570+08:00 elapsed_s=610.5 mode=normal requests=4823 replies=4823 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:10.1566471+08:00 elapsed_s=620.5 mode=normal requests=4903 replies=4903 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:20.1639090+08:00 elapsed_s=630.5 mode=normal requests=4986 replies=4986 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:30.1750485+08:00 elapsed_s=640.5 mode=normal requests=5067 replies=5067 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:40.1898965+08:00 elapsed_s=650.5 mode=normal requests=5148 replies=5148 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:28:50.1985156+08:00 elapsed_s=660.5 mode=normal requests=5225 replies=5225 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:00.2159493+08:00 elapsed_s=670.5 mode=normal requests=5303 replies=5303 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:10.2221238+08:00 elapsed_s=680.5 mode=normal requests=5381 replies=5381 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:20.2331856+08:00 elapsed_s=690.5 mode=normal requests=5463 replies=5463 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:30.2476543+08:00 elapsed_s=700.6 mode=normal requests=5546 replies=5546 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:40.2535206+08:00 elapsed_s=710.6 mode=normal requests=5620 replies=5620 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:29:50.2581362+08:00 elapsed_s=720.6 mode=normal requests=5701 replies=5701 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:00.2669388+08:00 elapsed_s=730.6 mode=normal requests=5783 replies=5783 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:10.2691600+08:00 elapsed_s=740.6 mode=normal requests=5859 replies=5859 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:20.2706933+08:00 elapsed_s=750.6 mode=normal requests=5939 replies=5939 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:30.2740614+08:00 elapsed_s=760.6 mode=normal requests=6018 replies=6018 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:40.2816824+08:00 elapsed_s=770.6 mode=normal requests=6094 replies=6094 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:30:50.2890574+08:00 elapsed_s=780.6 mode=normal requests=6177 replies=6177 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:31:00.3017317+08:00 elapsed_s=790.6 mode=normal requests=6252 replies=6252 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:31:10.3092452+08:00 elapsed_s=800.6 mode=normal requests=6331 replies=6331 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:31:20.3151661+08:00 elapsed_s=810.6 mode=normal requests=6414 replies=6414 suppressed=0 crc_scan=0
+STATUS 2026-10-20T22:31:30.3205346+08:00 elapsed_s=820.6 mode=normal requests=6492 replies=6492 suppressed=0 crc_scan=0

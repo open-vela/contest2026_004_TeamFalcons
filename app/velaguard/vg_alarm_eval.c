@@ -12,17 +12,25 @@
 
 uint8_t vg_alarm_fail_n(const struct vg_alarm_rule *rule)
 {
-  if (rule == NULL || rule->fail_n < 1)
-    {
-      return 3;
-    }
+  uint8_t n = rule ? rule->fail_n : 0;
+  if (n < 5) return 5;
+  if (n > 8) return 8;
+  return n;
+}
 
-  if (rule->fail_n > 20)
-    {
-      return 20;
-    }
-
-  return rule->fail_n;
+enum vg_alarm_kind vg_alarm_sample(const struct vg_alarm_rule *rule,
+                                   struct vg_alarm_window *window,
+                                   int online, float value, float *thr_out)
+{
+  uint8_t mask;
+  if (window == NULL) return VG_ALARM_KIND_NONE;
+  mask = (uint8_t)(1u << (window->pos % 8));
+  if (window->bits & mask) window->failures--;
+  if (!online)
+    { window->bits |= mask; window->failures++; }
+  else window->bits &= (uint8_t)~mask;
+  window->pos = (uint8_t)((window->pos + 1) % 8);
+  return vg_alarm_eval(rule, online, window->failures, value, thr_out);
 }
 
 int vg_alarm_kind_rank(enum vg_alarm_kind kind)
@@ -53,7 +61,7 @@ static int eq_hit(float value, float thr)
 }
 
 enum vg_alarm_kind vg_alarm_eval(const struct vg_alarm_rule *rule,
-                                 int last_ok, uint8_t fail_streak,
+                                 int last_ok, uint8_t failed_samples,
                                  float value, float *thr_out)
 {
   uint8_t need;
@@ -72,7 +80,7 @@ enum vg_alarm_kind vg_alarm_eval(const struct vg_alarm_rule *rule,
   need = vg_alarm_fail_n(rule);
   if (!last_ok)
     {
-      if (fail_streak >= need)
+      if (failed_samples >= need)
         {
           return VG_ALARM_KIND_OFFLINE;
         }

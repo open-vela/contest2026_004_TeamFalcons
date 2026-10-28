@@ -1,0 +1,157 @@
+﻿START 2026-10-17T13:12:41.9388723+08:00 port=COM3 hours=0.01 online_min=0 scope=storage-runtime
+COMMAND 2026-10-17T13:12:41.9637738+08:00 
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3582 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad373e77c9701b3] BEGIN chat=velaguard:3 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 16080 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792242663
+[agent] Dispatching response → local_client:velaguard:3
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x52
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 3 (backoff 4)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad373e77c9701b3] iter=0 tool=(none) latency=11080ms llm=fail backend=0
+[trace:6ad373e77c9701b3] END status=fail iters=1 tools=0 llm_ms=11080 elapsed=11s backend=0
+[agent] Dispatching response → local_client:velaguard:3
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=2
+[vgagent] round submitted: 1311 bytes
+[agent] Processing message from local_client:velaguard:4
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3582 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+
+nsh> [K
+COMMAND_MS 19
+COMMAND 2026-10-17T13:12:41.9880358+08:00 uname -a
+uname -a
+NuttX  0.0.0 581e576b65a-dirty Oct 17 2026 13:03:04 arm stm32h750b-dk
+nsh> [K
+COMMAND_MS 110
+COMMAND 2026-10-17T13:12:42.1107625+08:00 vgpoint list
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+COMMAND_MS 551
+COMMAND 2026-10-17T13:12:42.6841308+08:00 vgstoretest 50
+vgstoretest 50
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad3745403cd357a] BEGIN chat=velaguard:4 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 17295 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792242772
+[agent] Dispatching response → local_client:velaguard:4
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x52
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 4 (backoff 8)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad3745403cd357a] iter=0 tool=(none) latency=11110ms llm=fail backend=0
+[trace:6ad3745403cd357a] END status=fail iters=1 tools=0 llm_ms=11110 elapsed=12s backend=0
+[agent] Dispatching response → local_client:velaguard:4
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30b82ee1 board=30c686a6
+vghmi: live ok=2/14 a1=0.0
+[vgadvice] asked for 8 alarms req=3
+[vgagent] round submitted: 1319 bytes
+[agent] Processing message from local_client:velaguard:5
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vghmi: live ok=3/14 a1=0.0
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3582 bytes
+[llm_router] No healthy backend, retrying host 0 anyway
+vghmi: live ok=3/14 a1=0.0
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad3749d2746feb7] BEGIN chat=velaguard:5 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 17303 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792242845
+[agent] Dispatching response → local_client:velaguard:5
+vgstoretest: OK rounds=50 bytes=25600 elapsed_ms=83120
+nsh> [K
+COMMAND_MS 83157
+COMMAND 2026-10-17T13:14:05.8449528+08:00 vgpoint list
+vgpoint list
+vgpoint: POINT id=temp name=温度 addr=1 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=35 fail_n=3
+vgpoint: POINT id=humid name=湿度 addr=1 fc=3 reg=1 qty=1 dtype=uint16 scale=0.1 unit=%RH cmp=ge warn=70 crit=85 fail_n=3
+vgpoint: POINT id=flood name=水浸 addr=2 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=smoke name=烟雾 addr=3 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=5 crit=10 fail_n=3
+vgpoint: POINT id=acu_ret name=回风温度 addr=4 fc=3 reg=0 qty=1 dtype=int16 scale=0.1 unit=C cmp=ge warn=28 crit=32 fail_n=3
+vgpoint: POINT id=acu_set name=设定温度 addr=4 fc=3 reg=1 qty=1 dtype=int16 scale=0.1 unit=C cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=acu_run name=空调运行 addr=4 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=ups_load name=UPS负载 addr=5 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=% cmp=ge warn=70 crit=90 fail_n=3
+vgpoint: POINT id=ups_soc name=UPS电池 addr=5 fc=3 reg=1 qty=1 dtype=uint16 scale=1 unit=% cmp=le warn=40 crit=20 fail_n=3
+vgpoint: POINT id=ups_bypass name=UPS旁路 addr=5 fc=3 reg=2 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: POINT id=volt_a name=A相电压 addr=6 fc=3 reg=0 qty=1 dtype=uint16 scale=0.1 unit=V cmp=le warn=200 crit=180 fail_n=3
+vgpoint: POINT id=pwr_kw name=有功功率 addr=6 fc=3 reg=1 qty=1 dtype=uint16 scale=0.01 unit=kW cmp=ge warn=8 crit=10 fail_n=3
+vgpoint: POINT id=energy_kwh name=正向电能 addr=6 fc=3 reg=2 qty=1 dtype=uint16 scale=0.1 unit=kWh cmp=- warn=- crit=- fail_n=3
+vgpoint: POINT id=door name=门磁 addr=7 fc=3 reg=0 qty=1 dtype=uint16 scale=1 unit=- cmp=eq warn=- crit=1 fail_n=3
+vgpoint: OK cmd=list table=committed n=14
+nsh> [K
+COMMAND_MS 554
+COMMAND 2026-10-17T13:14:06.4026626+08:00 vgagent status
+vgagent status
+round: state=running gen=4 owner=advice
+llm: credentials=ready provision_file=present
+nsh> [K
+COMMAND_MS 236
+COMMAND 2026-10-17T13:14:06.6421342+08:00 vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=566 wall=2026-10-17T13:14:11
+vgruntime: slave=1 boot_total=64 boot_ok=0 boot_crc=0 boot_timeout=61 boot_echo=0 boot_other=3 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=61 win_echo=0 win_other=3
+vgruntime: slave=2 boot_total=32 boot_ok=2 boot_crc=0 boot_timeout=28 boot_echo=0 boot_other=2 boot_lat_min=190 boot_lat_max=700 boot_lat_avg=445 win_total=32 win_ok=2 win_crc=0 win_timeout=28 win_echo=0 win_other=2
+vgruntime: slave=3 boot_total=32 boot_ok=0 boot_crc=0 boot_timeout=30 boot_echo=0 boot_other=2 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=32 win_ok=0 win_crc=0 win_timeout=30 win_echo=0 win_other=2
+vgruntime: slave=4 boot_total=96 boot_ok=4 boot_crc=0 boot_timeout=92 boot_echo=0 boot_other=0 boot_lat_min=40 boot_lat_max=300 boot_lat_avg=107 win_total=64 win_ok=4 win_crc=0 win_timeout=60 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=93 boot_ok=2 boot_crc=0 boot_timeout=89 boot_echo=0 boot_other=2 boot_lat_min=40 boot_lat_max=40 boot_lat_avg=40 win_total=64 win_ok=2 win_crc=0 win_timeout=60 win_echo=0 win_other=2
+vgruntime: slave=6 boot_total=93 boot_ok=0 boot_crc=0 boot_timeout=91 boot_echo=0 boot_other=2 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=64 win_ok=0 win_crc=0 win_timeout=62 win_echo=0 win_other=2
+vgruntime: slave=7 boot_total=31 boot_ok=2 boot_crc=0 boot_timeout=29 boot_echo=0 boot_other=0 boot_lat_min=40 boot_lat_max=190 boot_lat_avg=115 win_total=31 win_ok=2 win_crc=0 win_timeout=29 win_echo=0 win_other=0
+vgruntime: bus boot_total=441 boot_ok=10 boot_crc=0 boot_timeout=420 boot_echo=0 boot_other=11
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=13040 offline_s=21 last_ok_ago_s=34 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=14530 offline_s=7 last_ok_ago_s=21 value=25 kind=offline
+vgruntime: point id=acu_set slave=4 online=1 online_ms=7310 offline_s=0 last_ok_ago_s=7 value=24 kind=none
+vgruntime: point id=acu_run slave=4 online=1 online_ms=7320 offline_s=0 last_ok_ago_s=7 value=1 kind=none
+vgruntime: point id=ups_load slave=5 online=0 online_ms=14520 offline_s=7 last_ok_ago_s=21 value=40 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=13050 offline_s=21 last_ok_ago_s=34 value=80 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=566 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=1 online_ms=21900 offline_s=0 last_ok_ago_s=7 value=0 kind=none
+vgruntime: event t_boot_s=531 wall=2026-10-17T13:13:37 id=flood action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=531 wall=2026-10-17T13:13:37 id=ups_soc action=clear kind=offline value=80 thr=0 cmp=le reason=offline_recovered
+vgruntime: event t_boot_s=544 wall=2026-10-17T13:13:50 id=flood action=raise kind=offline value=0 thr=0 cmp=eq reason=modbus_fail_offline
+vgruntime: event t_boot_s=544 wall=2026-10-17T13:13:50 id=acu_ret action=clear kind=offline value=25 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=544 wall=2026-10-17T13:13:50 id=ups_load action=clear kind=offline value=40 thr=0 cmp=ge reason=offline_recovered
+vgruntime: event t_boot_s=544 wall=2026-10-17T13:13:50 id=ups_soc action=raise kind=offline value=80 thr=0 cmp=le reason=modbus_fail_offline
+vgruntime: event t_boot_s=544 wall=2026-10-17T13:13:50 id=door action=clear kind=offline value=0 thr=0 cmp=eq reason=offline_recovered
+vgruntime: event t_boot_s=559 wall=2026-10-17T13:14:04 id=acu_ret action=raise kind=offline value=25 thr=0 cmp=ge reason=modbus_fail_offline
+vgruntime: event t_boot_s=559 wall=2026-10-17T13:14:04 id=acu_set action=clear kind=offline value=24 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=559 wall=2026-10-17T13:14:04 id=acu_run action=clear kind=offline value=1 thr=0 cmp=- reason=offline_recovered
+vgruntime: event t_boot_s=559 wall=2026-10-17T13:14:04 id=ups_load action=raise kind=offline value=40 thr=0 cmp=ge reason=modbus_fail_offline
+nsh> [K
+COMMAND_MS 655
+COMMAND 2026-10-17T13:14:07.3134195+08:00 cat /proc/meminfo
+cat /proc/meminfo
+      total       used       free    maxused    maxfree  nused  nfree name
+    7014016     360560    6653456     409760    6291440    964     17 Umem
+nsh> [K
+COMMAND_MS 113
+CYCLE 1 elapsed_s=85 uptime_s=566 online=3
+PASS scope=storage-runtime cycles=1 elapsed_s=85 time=2026-10-17T13:14:07.4405272+08:00

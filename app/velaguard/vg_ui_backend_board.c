@@ -56,6 +56,10 @@
 #  define CONFIG_VG_HMI_REPORT_DIR "/data/velaguard/reports"
 #endif
 
+#ifndef CONFIG_VG_DISCOVER_CANDIDATE_PATH
+#  define CONFIG_VG_DISCOVER_CANDIDATE_PATH "/data/velaguard/discover/point_table_candidate.json"
+#endif
+
 #ifndef CONFIG_VG_DISCOVER_POINTS_PATH
 #  define CONFIG_VG_DISCOVER_POINTS_PATH "/data/velaguard/config/points.json"
 #endif
@@ -117,8 +121,11 @@ static FAR void *vg_hmi_scan_thread(FAR void *arg)
 
   (void)arg;
 
-  while(vg_bus_try_lock() != 0) {
-    usleep(50000);
+  if (vg_bus_lock_timeout(1000) != 0) {
+    g_scan_last_rc = -EBUSY;
+    g_scan_status = -1;
+    g_scan_thread_active = false;
+    return NULL;
   }
 
   vg_discover_reset(sum);
@@ -194,8 +201,11 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
 
   (void)arg;
 
-  while(vg_bus_try_lock() != 0) {
-    usleep(50000);
+  if (vg_bus_lock_timeout(1000) != 0) {
+    g_apply_last_rc = -EBUSY;
+    g_apply_status = -1;
+    g_apply_thread_active = false;
+    return NULL;
   }
 
   if(sum == NULL || sum->n_hits <= 0) {
@@ -206,6 +216,8 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
     return NULL;
   }
 
+  sum->n_blocks = 0;
+  sum->n_points = 0;
   /* Scan alone only fills hits; probe+infer before persistence. */
   for(i = 0; i < sum->n_hits; i++) {
     if(!sum->hits[i].alive) {
@@ -232,10 +244,14 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
     return NULL;
   }
 
-  rc = vg_point_table_apply(sum, CONFIG_VG_DISCOVER_POINTS_PATH,
-                            CONFIG_VG_CONFIG_BASEDIR, true);
+  /* Discovery is not a point-table confirmation. The operator must first
+   * inspect vgpoint test output, then issue apply --confirm separately. */
+  if (access(CONFIG_VG_DISCOVER_CANDIDATE_PATH, F_OK) == 0)
+    rc = -EEXIST;
+  else
+    rc = vg_point_table_create_candidate(sum, CONFIG_VG_DISCOVER_CANDIDATE_PATH);
   vg_bus_unlock();
-  g_apply_last_rc = rc;
+  g_apply_last_rc = (rc == 0 && sum->flags) ? (int)sum->flags : rc;
   g_apply_status = (rc == 0) ? VG_SCAN_DONE : -1;
   g_apply_thread_active = false;
   return NULL;
@@ -255,6 +271,8 @@ static int board_discover_apply_start(void)
   if(sum == NULL || sum->n_hits <= 0) {
     return -ENOENT;
   }
+
+  if (access(CONFIG_VG_DISCOVER_CANDIDATE_PATH, F_OK) == 0) return -EEXIST;
 
   g_apply_last_rc = 0;
   g_apply_status = VG_SCAN_RUNNING;

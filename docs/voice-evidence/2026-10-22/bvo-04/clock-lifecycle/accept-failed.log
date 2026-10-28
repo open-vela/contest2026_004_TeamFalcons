@@ -1,0 +1,137 @@
+vgtime: sync failed (servers unreachable)
+
+HOST 2026-10-22T09:02:34.3190940+08:00 SEND vgaudio txcheck
+vgaudio txcheck
+vgaudio: txcheck invalid-init=0 zero=-22 odd=-22 overcapacity=-22 offset=-22 rounds=20 result=0
+nsh> [K
+HOST 2026-10-22T09:02:35.1321031+08:00 SEND vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=56 wall=2026-10-22T09:01:41
+vgruntime: slave=1 boot_total=9 boot_ok=0 boot_crc=0 boot_timeout=9 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=9 win_ok=0 win_crc=0 win_timeout=9 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=4 boot_ok=0 boot_crc=0 boot_timeout=4 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=4 win_ok=0 win_crc=0 win_timeout=4 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=4 boot_ok=0 boot_crc=0 boot_timeout=4 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=4 win_ok=0 win_crc=0 win_timeout=4 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=12 boot_ok=0 boot_crc=0 boot_timeout=12 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=12 win_ok=0 win_crc=0 win_timeout=12 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=12 boot_ok=0 boot_crc=0 boot_timeout=12 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=12 win_ok=0 win_crc=0 win_timeout=12 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=12 boot_ok=0 boot_crc=0 boot_timeout=12 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=12 win_ok=0 win_crc=0 win_timeout=12 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=4 boot_ok=0 boot_crc=0 boot_timeout=4 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=4 win_ok=0 win_crc=0 win_timeout=4 win_echo=0 win_other=0
+vgruntime: bus boot_total=57 boot_ok=0 boot_crc=0 boot_timeout=57 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=56 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+HOST 2026-10-22T09:02:35.9404395+08:00 SEND vgstats dump 1
+vgstats dump 1
+vgstats: slave=1 window=64 total=10 ok=0 crc=0 timeout=10 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+HOST 2026-10-22T09:02:36.6421311+08:00 SEND vgnet status
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.9 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+HOST 2026-10-22T09:02:37.3542018+08:00 SEND vgstoretest 1
+vgstoretest 1
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=760
+nsh> [K
+HOST 2026-10-22T09:02:45.3643598+08:00 SEND free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     229352    6651488     281400    6291440    971      9 Umem
+nsh> [K
+HOST 2026-10-22T09:02:46.0936880+08:00 SEND vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=50000 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077ca0
+vgaudio: dma_done=16 errors=0 timeouts=0 txbytes=128000
+vgaudio: sai_underruns=0 clockerrors=0
+nsh> [K
+HOST 2026-10-22T09:02:46.6185543+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T09:02:47.0242165+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T09:02:47.1887179+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:02:48.6908189+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077ce0
+vgaudio: dma_done=24 errors=0 timeouts=0 txbytes=192000
+vgaudio: sai_underruns=0 clockerrors=0
+nxplayer> [KACCEPT normal=0 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:02:49.3011460+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:02:50.8090640+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077cc0
+vgaudio: dma_done=32 errors=0 timeouts=0 txbytes=256000
+vgaudio: sai_underruns=0 clockerrors=0
+nxplayer> [KACCEPT normal=1 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:02:51.5399220+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:02:53.0521160+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077cc0
+vgaudio: dma_done=40 errors=0 timeouts=0 txbytes=320000
+vgaudio: sai_underruns=0 clockerrors=0
+nxplayer> [KACCEPT normal=2 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:02:53.9016771+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [Kvghmi: daily report requested
+[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+
+HOST 2026-10-22T09:02:55.4051017+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24075100
+vgaudio: dma_done=48 errors=0 timeouts=0 txbytes=384000
+vgaudio: sai_underruns=3 clockerrors=0
+nxplayer> [KSAI underrun/clock error recorded
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\scripts\audio_accept.ps1:34 字符: 53
++ ... derruns=0 clockerrors=0') {throw 'SAI underrun/clock error recorded'}
++                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (SAI underrun/clock error recorded:String) [], RuntimeException
+    + FullyQualifiedErrorId : SAI underrun/clock error recorded
+ 

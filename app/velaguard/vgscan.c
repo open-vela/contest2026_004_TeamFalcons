@@ -58,7 +58,8 @@ static FAR const char *vgscan_pick_dev(void)
 
 int main(int argc, FAR char *argv[])
 {
-  FAR struct vg_discover_summary *sum = vg_discover_state();
+  struct vg_discover_summary local;
+  FAR struct vg_discover_summary *sum = &local;
   FAR const char *dev;
   int amin = CONFIG_VG_HMI_DISCOVER_ADDR_MIN;
   int amax = CONFIG_VG_HMI_DISCOVER_ADDR_MAX;
@@ -81,7 +82,9 @@ int main(int argc, FAR char *argv[])
   printf("vgscan: %s @%d addr %d..%d inter=%dms\n",
          dev, CONFIG_VG_HMI_DISCOVER_BAUD, amin, amax, inter);
 
+  if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgscan: bus busy\n"); return 1; }
   ret = vg_bus_scan(sum, dev, CONFIG_VG_HMI_DISCOVER_BAUD, amin, amax, inter);
+  vg_bus_unlock();
   if(ret < 0)
     {
       fprintf(stderr, "vgscan: failed %d (errno=%d)\n", ret, errno);
@@ -97,5 +100,6 @@ int main(int argc, FAR char *argv[])
              (unsigned)sum->hits[i].probe_reg);
     }
 
-  return (sum->n_hits >= (amax - amin + 1)) ? 0 : 1;
+  if (sum->flags) fprintf(stderr, "vgscan: capacity-limited results\n");
+  return 0;
 }

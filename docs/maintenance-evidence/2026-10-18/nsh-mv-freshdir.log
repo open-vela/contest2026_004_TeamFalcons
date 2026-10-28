@@ -1,0 +1,24 @@
+########## boot settle len=0 ##########
+
+
+########## mkdir /data/velaguard/scratchmvd ########## len=42
+mkdir /data/velaguard/scratchmvd
+nsh> [K
+
+########## echo AAA > /data/velaguard/scratchmvd/r1.txt ########## len=54
+echo AAA > /data/velaguard/scratchmvd/r1.txt
+nsh> [K
+
+########## echo BBB > /data/velaguard/scratchmvd/r2.txt ########## len=112
+echo BBB > /data/velaguard/scratchmvd/r2.txt
+nsh> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+
+########## mv /data/velaguard/scratchmvd/r1.txt /data/velaguard/scratchmvd/r2.txt ########## len=80
+mv /data/velaguard/scratchmvd/r1.txt /data/velaguard/scratchmvd/r2.txt
+nsh> [K
+
+########## cat /data/velaguard/scratchmvd/r2.txt ########## len=52
+cat /data/velaguard/scratchmvd/r2.txt
+AAA
+nsh> [K

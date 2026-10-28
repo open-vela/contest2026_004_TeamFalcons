@@ -95,6 +95,7 @@ logs/**/errors/
 # Host test binaries built by `make -C app/velaguard/host_tests test`
 /app/velaguard/host_tests/test_*
 !/app/velaguard/host_tests/test_*.c
+!/app/velaguard/host_tests/test_*.py
 
 # Report authoring stays out of the repository. The submission directory keeps
 # the deliverable (DOCX/PDF/poster), its figures and the raw evidence the report
@@ -116,3 +117,6 @@ logs/**/errors/
 
 # Headless/HMI framebuffer captures dropped at the repo root during accept runs
 /*.ppm
+
+# Submission material backups (kept out of git; canonical copies live elsewhere)
+docs/submission/.backup-*/

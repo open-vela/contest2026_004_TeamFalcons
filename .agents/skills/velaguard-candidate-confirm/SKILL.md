@@ -7,6 +7,8 @@ description: "VelaGuard 点表闸门：候选表试读后人确认 apply，采�
 
 上位机经 ST-LINK NSH 写点表。编辑只动候选；人确认 `vgpoint apply --confirm` 之后，周期采集和告警才读已确认表。
 
+用户2026-10-18已选择新增MQTT候选入口，设计见 [候选接入协议](../../../docs/velaguard-candidate-mqtt-protocol.md)。该入口尚未实现，不可直接经当前MQTT下发配置。按用户最新更正，手机接入不试读，板端配置校验通过后弹出人工二次确认，确认后直接添加；所有远程配置状态仅在手机显示。实施时需独立候选、配置入口互斥与候选版本绑定。以下先试读再确认的步骤仅描述现行NSH流程，其固件仅检查 `--confirm`，尚不强制检查试读记录与版本。
+
 命令口径只认 [docs/velaguard-host-nsh-protocol.md](../../../docs/velaguard-host-nsh-protocol.md)。不要在任务文档或本 Skill 再抄命令表。NSH 行长与 `too_long` 见 [references/gotchas.md](references/gotchas.md)。
 
 生成 / 改 MThings `.mthings` 用已有 `mthings-automation-config-skill`，本 Skill 不产出从站工程。
@@ -33,7 +35,7 @@ description: "VelaGuard 点表闸门：候选表试读后人确认 apply，采�
 
 ## 硬约束
 
-- RS485 只给板做 Modbus 主站。不经 RS485、MQTT 或第二路 UART 下发配置。
+- RS485只给板做Modbus主站，不经RS485或第二路UART下发配置。新增MQTT只允许专用确定性候选通道，不提供远程apply/confirm；板载Agent没有配置入口权限。
 - 同一总线只能有一个主站。MThings 做从站 mock 时，关掉 MThings 采集/主站会话，上位机不得自己轮询 485。
 - 板端 Agent 禁止 `vgpoint`、`vgdiscover apply`、`vgcfg commit`（见 `app/velaguard/vg_agent_seed.c`）。
 - 点数量上限 32（`VG_DISCOVER_MAX_POINTS`）。

@@ -1,0 +1,139 @@
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9d10f00000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792659727
+[agent] Dispatching response → local_client:velaguard:1
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9d10f00000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=690 send=140 ttfb=60 body=0 pool=0 build=0 parse=10 http=950 backoff=0 total=970 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad9d10f00000000] iter=0 tool=(none) latency=970ms llm=fail backend=0
+[trace:6ad9d10f00000000] END status=fail iters=1 tools=0 llm_ms=970 tool_ms=0 elapsed_ms=1020 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_client:velaguard:2
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9d11735c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6995 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9d11735c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=0 parse=10 http=320 backoff=0 total=340 req=6995 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9d11735c3b13a] iter=0 tool=(none) latency=340ms llm=fail backend=0
+[trace:6ad9d11735c3b13a] END status=fail iters=1 tools=0 llm_ms=340 tool_ms=0 elapsed_ms=400 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cf8987
+vgtime: synced 2026-10-22 09:03:30
+
+HOST 2026-10-22T09:03:38.2265963+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:03:39.0421003+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T09:03:39.5614567+08:00 SEND vgaudio sai
+vgaudio sai
+vgaudio: SAI2_A cr1=0x00422080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=4 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 4 = 12285714 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24075100
+vgaudio: dma_done=48 errors=0 timeouts=0 txbytes=384000
+vgaudio: sai_underruns=3 clockerrors=0
+nsh> [K
+HOST 2026-10-22T09:03:40.0750703+08:00 SEND vgaudio codec
+vgaudio codec
+vgaudio: codec[0x0000]=0x8994
+vgaudio: codec[0x0001]=0x0303
+vgaudio: codec[0x0003]=0x0030
+vgaudio: codec[0x0005]=0x0303
+vgaudio: codec[0x001c]=0x000a
+vgaudio: codec[0x001d]=0x000a
+vgaudio: codec[0x002d]=0x0001
+vgaudio: codec[0x002e]=0x0001
+vgaudio: codec[0x004c]=0x9f25
+vgaudio: codec[0x0060]=0x00ee
+vgaudio: codec[0x0200]=0x0000
+vgaudio: codec[0x0208]=0x000a
+vgaudio: codec[0x0210]=0x0083
+vgaudio: codec[0x0300]=0x4010
+vgaudio: codec[0x0420]=0x0010
+vgaudio: codec[0x0601]=0x0001
+vgaudio: codec[0x0602]=0x0001
+vgaudio: codec[0x0610]=0x00c0
+vgaudio: codec[0x0611]=0x00c0
+nsh> [K
+HOST 2026-10-22T09:03:40.6046050+08:00 SEND vgpdmdump -r 3 -n 16384
+vgpdmdump -r 3 -n 16384
+vgpdmdump: RX bitrate 256000
+vgpdmdump: 3 rounds, 16384 bytes each
+  round  level_rms  peak   ones
+      0  0.0109     0.0332 0.479
+      1  0.0096     0.0216 0.485
+      2  0.0092     0.0157 0.486
+nsh> [K
+HOST 2026-10-22T09:03:42.1095554+08:00 SEND vgnet status
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.9 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+HOST 2026-10-22T09:03:42.6233918+08:00 SEND vgstats dump 1
+vgstats dump 1
+vgstats: slave=1 window=64 total=16 ok=0 crc=0 timeout=16 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+HOST 2026-10-22T09:03:43.1237155+08:00 SEND vgstoretest 1
+vgstoretest 1
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=1670
+nsh> [K
+HOST 2026-10-22T09:03:49.1379134+08:00 SEND free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     312344    6568496     395416    6291440   1030     22 Umem
+nsh> [K
+HOST 2026-10-22T09:03:49.6445898+08:00 SEND ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 19.8% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 20.9% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  0.0% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.0% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.8% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0012264  3.6% velaguard_app_main 0x90010385 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013e91 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  3.0% ESP8266 0x9005fccd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.0% netinit 0x9005fa39 0
+    9     9  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   10    10 100 RR       Task      - Ready              0000000000000000 0049104 43.7% vghmi vghmi
+   11    10 100 RR       pthread   - Waiting  Semaphore 0000000000000000 0008168  1.7% vghmi 0x900146d1 0
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   13    12  50 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0012264  0.0% ai_agent 0x9002a77d 0x24055128
+   14    12   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x900308d5 0x2405bc10
+   15    12  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9002a77d 0x2405bd10
+   84    10 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  4.0% vghmi 0x90014e35 0
+   90    12  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x9002c411 0x24065108
+nsh> [K

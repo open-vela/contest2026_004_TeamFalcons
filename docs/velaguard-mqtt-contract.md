@@ -13,8 +13,8 @@ VelaGuard 板端 ──MQTT──▶ Broker 8.148.67.174:1883 ◀──只读订
 ```
 
 - LLM 走板载 `ai_agent` HTTPS 直连 MiMo，不走 MQTT（手册 §8.2、V4）。
-- MQTT 只承载 status / telemetry / alarm / point_table。OTA 主题未实现。
-- 本地安全环不依赖 MQTT。云端只读，不向 `vg/{device_id}/...` 发布。
+- 当前MQTT只承载status / telemetry / alarm / point_table，OTA主题未实现。用户2026-10-18选择新增MQTT候选接入，见 [独立协议草案](velaguard-candidate-mqtt-protocol.md) 与 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md)；配置请求与状态主题均待实现，四类上报载荷保持。
+- 本地安全环不依赖MQTT。云看板保持只读；新增配置服务仅可按网关绑定权限发布专用候选请求，不可远程确认生效，也不恢复AI/语音主题。
 
 ## 2. 连接
 
@@ -52,7 +52,7 @@ VelaGuard 板端 ──MQTT──▶ Broker 8.148.67.174:1883 ◀──只读订
 - alarm：`state` 为 `raised`/`cleared`；`kind` 为 `offline` / `threshold_high` / `threshold_low`；另加 `level`（`warn`/`crit`/`offline`）。`alarm_id` 为 `{device_id}-{boot_id}-{seq}`，`boot_id`/`seq` 仅 RAM。
 - point_table：已确认 `points.json` 原文。`points` 为空则不发。
 
-发布只在 `vg_net_mgr` 线程。采集/HMI 只入队。`g_tx` 10 KiB BSS。队列满丢 telemetry、保 alarm。
+发布只在 `vg_net_mgr` 线程。采集/HMI 只入队。`g_tx` 18 KiB BSS，点表缓冲 16 KiB（与点表解析上限一致）。队列满丢 telemetry、保 alarm。
 
 ## 5. 联调
 

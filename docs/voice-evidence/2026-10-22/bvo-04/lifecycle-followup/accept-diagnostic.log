@@ -1,0 +1,898 @@
+
+HOST 2026-10-22T09:25:44.8368065+08:00 SEND vgaudio txcheck
+vgaudiovghmi: daily report requested
+ txcheck[tap] registered tap for channel 'local_client'
+[velaclaw_client] client opened: velaguard
+[vgagent] local agent client ready
+[vgagent] round submitted: 124 bytes
+
+vgaudio: txcheck invalid-init=0 zero=-22 odd=-22 overcapacity=-22 offset=-22 rounds=20 result=0
+nsh> [K[agent] Agent loop started (HMI fixed buffers)
+[agent] Buffers: ctx=4096 hist=4096 tool=4096
+[agent] Tool output pool: 2 x 8192 bytes
+[agent] Tools JSON loaded: 1769 bytes
+[agent] Processing message from local_client:velaguard:1
+[agent] agent_loop started (lazy ask)
+
+HOST 2026-10-22T09:25:45.9543103+08:00 SEND vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=72 wall=2026-10-22T09:25:46
+vgruntime: slave=1 boot_total=11 boot_ok=0 boot_crc=0 boot_timeout=11 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=11 win_ok=0 win_crc=0 win_timeout=11 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=5 boot_ok=0 boot_crc=0 boot_timeout=5 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=5 win_ok=0 win_crc=0 win_timeout=5 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=5 boot_ok=0 boot_crc=0 boot_timeout=5 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=5 win_ok=0 win_crc=0 win_timeout=5 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=15 boot_ok=0 boot_crc=0 boot_timeout=15 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=15 win_ok=0 win_crc=0 win_timeout=15 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=15 boot_ok=0 boot_crc=0 boot_timeout=15 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=15 win_ok=0 win_crc=0 win_timeout=15 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=15 boot_ok=0 boot_crc=0 boot_timeout=15 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=15 win_ok=0 win_crc=0 win_timeout=15 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=5 boot_ok=0 boot_crc=0 boot_timeout=5 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=5 win_ok=0 win_crc=0 win_timeout=5 win_echo=0 win_other=0
+vgruntime: bus boot_total=71 boot_ok=0 boot_crc=0 boot_timeout=71 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=72 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+HOST 2026-10-22T09:25:47.0402107+08:00 SEND vgstats dump 1
+vgstats dump 1
+vgstats: slave=1 window=64 total=12 ok=0 crc=0 timeout=12 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+HOST 2026-10-22T09:25:47.9716691+08:00 SEND vgnet status
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.138 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+HOST 2026-10-22T09:25:48.8806335+08:00 SEND vgstoretest 1
+vgstoretest 1
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=4760
+nsh> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9d6a400000000] BEGIN chat=velaguard:1 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 5790 bytes)
+[vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792661156
+[agent] Dispatching response → local_client:velaguard:1
+
+HOST 2026-10-22T09:25:57.1267385+08:00 SEND free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     386480    6494360     389328    6291440   1050      7 Umem
+nsh> [K[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9d6a400000000] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=640 send=150 ttfb=60 body=0 pool=0 build=0 parse=10 http=910 backoff=0 total=930 req=5790 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad9d6a400000000] iter=0 tool=(none) latency=930ms llm=fail backend=0
+[trace:6ad9d6a400000000] END status=fail iters=1 tools=0 llm_ms=930 tool_ms=0 elapsed_ms=970 backend=0
+[agent] Dispatching response → local_client:velaguard:1
+[vgagent] round finished: reply
+[vgadvice] asked for 8 alarms req=1
+
+HOST 2026-10-22T09:25:57.9248825+08:00 SEND vgaudio sai
+vg[vgagent] round submitted: 1301 bytes
+[agent] Processing message from local_cliaent:velaguard:2
+udio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=50000 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=24077d40
+vgaudio: dma_done=48 errors=0 timeouts=0 txbytes=384000
+vgaudio: sai_underruns=26 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nsh> [KDIAGNOSTIC SAI_UNDERRUN=26 QUALITY=FAIL (strict acceptance unchanged)
+
+HOST 2026-10-22T09:25:58.6546784+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T09:25:59.2073292+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T09:25:59.5270107+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+
+HOST 2026-10-22T09:26:02.2213948+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=56 errors=0 timeouts=0 txbytes=448000
+vgaudio: sai_underruns=30 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=30 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=0 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:02.9466744+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad9d6ac35c3b13a] BEGIN chat=velaguard:2 chan=local_client
+[llm] OpenAI API with tools (model: mimo-v2.5, 6995 bytes)
+[agent] Dispatching response → local_client:velaguard:2
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] API error 400: {
+    "error": {
+        "code": "400",
+        "message": "Unsupported model mimo-v2.5"
+    }
+}
+
+[trace:6ad9d6ac35c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=20 body=0 pool=0 build=0 parse=10 http=320 backoff=0 total=340 req=6995 resp=97 rc=0 status=400 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 2 (backoff 2)
+[llm_router] All backends backed off, using fallback 0
+[agent] LLM call failed (iter 0)
+[trace:6ad9d6ac35c3b13a] iter=0 tool=(none) latency=340ms llm=fail backend=0
+[trace:6ad9d6ac35c3b13a] END status=fail iters=1 tools=0 llm_ms=340 tool_ms=0 elapsed_ms=390 backend=0
+[agent] Dispatching response → local_client:velaguard:2
+[vgagent] round finished: reply
+[vgadvice] advice from another boot: file=30ca00be board=30cf8ff3
+
+HOST 2026-10-22T09:26:05.6724234+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=64 errors=0 timeouts=0 txbytes=512000
+vgaudio: sai_underruns=37 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=37 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=1 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:06.3950915+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:09.0927338+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=72 errors=0 timeouts=0 txbytes=576000
+vgaudio: sai_underruns=39 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=39 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=2 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:09.8058487+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:12.5481914+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=80 errors=0 timeouts=0 txbytes=640000
+vgaudio: sai_underruns=44 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=44 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=3 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:13.2538229+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:15.9527288+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=88 errors=0 timeouts=0 txbytes=704000
+vgaudio: sai_underruns=46 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=46 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=4 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:16.6956570+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:19.4108777+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=96 errors=0 timeouts=0 txbytes=768000
+vgaudio: sai_underruns=50 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=50 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=5 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:20.1165722+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:22.7827330+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=104 errors=0 timeouts=0 txbytes=832000
+vgaudio: sai_underruns=56 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=56 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=6 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:23.4948369+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:26.2243885+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=112 errors=0 timeouts=0 txbytes=896000
+vgaudio: sai_underruns=58 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=58 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=7 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:26.9321858+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:29.6460536+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=120 errors=0 timeouts=0 txbytes=960000
+vgaudio: sai_underruns=63 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=63 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=8 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:30.3823187+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:33.1182986+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=128 errors=0 timeouts=0 txbytes=1024000
+vgaudio: sai_underruns=65 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=65 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=9 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:33.8172135+08:00 SEND !free
+!free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     321408    6559432     396216    6291440   1080      8 Umem
+nxplayer> [K
+HOST 2026-10-22T09:26:34.4102626+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:37.1188534+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=136 errors=0 timeouts=0 txbytes=1088000
+vgaudio: sai_underruns=66 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=66 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=10 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:37.8343893+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:40.5699587+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=144 errors=0 timeouts=0 txbytes=1152000
+vgaudio: sai_underruns=70 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=70 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=11 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:41.2805072+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:44.0089884+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=152 errors=0 timeouts=0 txbytes=1216000
+vgaudio: sai_underruns=77 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=77 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=12 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:44.7228895+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:47.4740144+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=160 errors=0 timeouts=0 txbytes=1280000
+vgaudio: sai_underruns=80 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=80 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=13 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:48.1813628+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:50.8551169+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=168 errors=0 timeouts=0 txbytes=1344000
+vgaudio: sai_underruns=86 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=86 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=14 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:51.5740260+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:54.3234630+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=176 errors=0 timeouts=0 txbytes=1408000
+vgaudio: sai_underruns=88 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=88 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=15 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:55.0578352+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:26:57.7953909+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=184 errors=0 timeouts=0 txbytes=1472000
+vgaudio: sai_underruns=93 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=93 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=16 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:26:58.5098743+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:01.2181053+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=192 errors=0 timeouts=0 txbytes=1536000
+vgaudio: sai_underruns=95 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=95 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=17 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:01.9359539+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:04.6129294+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=200 errors=0 timeouts=0 txbytes=1600000
+vgaudio: sai_underruns=99 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=99 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=18 file=tone bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:05.3178530+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:08.0316697+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=208 errors=0 timeouts=0 txbytes=1664000
+vgaudio: sai_underruns=106 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=106 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT normal=19 file=speech bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:08.7471135+08:00 SEND !free
+!free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     321416    6559424     396216    6291440   1080      7 Umem
+nxplayer> [K
+HOST 2026-10-22T09:27:09.3698891+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:10.1465430+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:11.7319332+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30004060
+vgaudio: dma_done=211 errors=0 timeouts=0 txbytes=1688532
+vgaudio: sai_underruns=108 clockerrors=0
+vgaudio: stream_ms=380 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=108 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=0 completed_bytes=24532 bounded_wait_ms=2318 PASS
+
+HOST 2026-10-22T09:27:12.4646833+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:15.1589121+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=219 errors=0 timeouts=0 txbytes=1752532
+vgaudio: sai_underruns=115 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=115 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=0 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:15.8697582+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:16.6124278+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:18.1908141+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30004060
+vgaudio: dma_done=222 errors=0 timeouts=0 txbytes=1777064
+vgaudio: sai_underruns=115 clockerrors=0
+vgaudio: stream_ms=380 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=115 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=1 completed_bytes=24532 bounded_wait_ms=2289 PASS
+
+HOST 2026-10-22T09:27:18.9019562+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:21.6048999+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=230 errors=0 timeouts=0 txbytes=1841064
+vgaudio: sai_underruns=118 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=118 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=1 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:22.3246415+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:23.1316139+08:00 SEND stop
+stop
+nxplayer> [K[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+HOST 2026-10-22T09:27:24.7125490+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30006080
+vgaudio: dma_done=234 errors=0 timeouts=0 txbytes=1873788
+vgaudio: sai_underruns=118 clockerrors=0
+vgaudio: stream_ms=510 stream_bytes=32724 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=118 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=2 completed_bytes=32724 bounded_wait_ms=2293 PASS
+
+HOST 2026-10-22T09:27:25.4241868+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:28.1282157+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=242 errors=0 timeouts=0 txbytes=1937788
+vgaudio: sai_underruns=124 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=124 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=2 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:28.8377000+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:29.5869489+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:31.1694128+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30004060
+vgaudio: dma_done=245 errors=0 timeouts=0 txbytes=1962320
+vgaudio: sai_underruns=124 clockerrors=0
+vgaudio: stream_ms=390 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=124 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=3 completed_bytes=24532 bounded_wait_ms=2303 PASS
+
+HOST 2026-10-22T09:27:31.8914785+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:34.6120339+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=253 errors=0 timeouts=0 txbytes=2026320
+vgaudio: sai_underruns=127 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=127 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=3 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:35.3165917+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:36.1112834+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:37.6931182+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30004060
+vgaudio: dma_done=256 errors=0 timeouts=0 txbytes=2050852
+vgaudio: sai_underruns=129 clockerrors=0
+vgaudio: stream_ms=390 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=129 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=4 completed_bytes=24532 bounded_wait_ms=2292 PASS
+
+HOST 2026-10-22T09:27:38.4032864+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:41.1333203+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=300080a0
+vgaudio: dma_done=264 errors=0 timeouts=0 txbytes=2114852
+vgaudio: sai_underruns=129 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=129 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=4 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:41.8493132+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:42.6280113+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:44.2158847+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30006080
+vgaudio: dma_done=267 errors=0 timeouts=0 txbytes=2139384
+vgaudio: sai_underruns=129 clockerrors=0
+vgaudio: stream_ms=380 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=129 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=5 completed_bytes=24532 bounded_wait_ms=2313 PASS
+
+HOST 2026-10-22T09:27:44.9424551+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:47.6503493+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=300080a0
+vgaudio: dma_done=275 errors=0 timeouts=0 txbytes=2203384
+vgaudio: sai_underruns=135 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=135 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=5 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:48.3647125+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:49.1101769+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:50.6979693+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30006080
+vgaudio: dma_done=278 errors=0 timeouts=0 txbytes=2227916
+vgaudio: sai_underruns=136 clockerrors=0
+vgaudio: stream_ms=380 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=136 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=6 completed_bytes=24532 bounded_wait_ms=2294 PASS
+
+HOST 2026-10-22T09:27:51.4054647+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:54.1190721+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=300080a0
+vgaudio: dma_done=286 errors=0 timeouts=0 txbytes=2291916
+vgaudio: sai_underruns=141 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=141 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=6 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:27:54.8299590+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:27:55.5874298+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:27:57.1856563+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30004060
+vgaudio: dma_done=289 errors=0 timeouts=0 txbytes=2316448
+vgaudio: sai_underruns=141 clockerrors=0
+vgaudio: stream_ms=390 stream_bytes=24532 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=141 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=7 completed_bytes=24532 bounded_wait_ms=2322 PASS
+
+HOST 2026-10-22T09:27:57.9097062+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:00.6145227+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=297 errors=0 timeouts=0 txbytes=2380448
+vgaudio: sai_underruns=142 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=142 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=7 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:28:01.3259798+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:02.0936672+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:28:03.6822556+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30002040
+vgaudio: dma_done=299 errors=0 timeouts=0 txbytes=2396788
+vgaudio: sai_underruns=142 clockerrors=0
+vgaudio: stream_ms=250 stream_bytes=16340 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=142 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=8 completed_bytes=16340 bounded_wait_ms=2295 PASS
+
+HOST 2026-10-22T09:28:04.3891336+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:07.0975832+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=307 errors=0 timeouts=0 txbytes=2460788
+vgaudio: sai_underruns=147 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=147 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=8 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:28:07.8143597+08:00 SEND play /mnt/emmc/bvo04/tone-stop.wav
+play /mnt/emmc/bvo04/tone-stop.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:08.5708508+08:00 SEND stop
+stop
+nxplayer> [K
+HOST 2026-10-22T09:28:10.1545264+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40008 cr1=c32080 frcr=50f1f slots=30100 count=4096 addr=30002040
+vgaudio: dma_done=309 errors=0 timeouts=0 txbytes=2477128
+vgaudio: sai_underruns=147 clockerrors=0
+vgaudio: stream_ms=250 stream_bytes=16340 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=147 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT stop=9 completed_bytes=16340 bounded_wait_ms=2299 PASS
+
+HOST 2026-10-22T09:28:10.8696431+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvo04/speech.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:13.5833683+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=317 errors=0 timeouts=0 txbytes=2541128
+vgaudio: sai_underruns=147 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=147 QUALITY=FAIL (strict acceptance unchanged)
+ACCEPT restart=9 bytes=64000 dma=8 PASS
+
+HOST 2026-10-22T09:28:14.2999809+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:14.9866801+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30008 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=317 errors=0 timeouts=0 txbytes=2541128
+vgaudio: sai_underruns=147 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [K
+HOST 2026-10-22T09:28:15.4043428+08:00 SEND !vgstoretest 1
+!vgstoretest 1
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=6520
+nxplayer> [K
+HOST 2026-10-22T09:28:22.3167352+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=30009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=325 errors=0 timeouts=0 txbytes=2605128
+vgaudio: sai_underruns=154 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=154 QUALITY=FAIL (strict acceptance unchanged)
+
+HOST 2026-10-22T09:28:23.0292310+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:28:23.6075084+08:00 SEND !vgstats dump 1
+!vgstats dump 1
+vgstats: slave=1 window=64 total=28 ok=0 crc=0 timeout=28 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nxplayer> [K
+HOST 2026-10-22T09:28:24.0770519+08:00 SEND !vgnet status
+!vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.138 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nxplayer> [K
+HOST 2026-10-22T09:28:25.5105498+08:00 SEND !vgaudio sai
+!vgaudio sai
+vgaudio: SAI2_A cr1=0x00c22080 gcr=0x00000000
+vgaudio: mode=master-tx nodiv=0 mckdiv=12 reserved27=0 saien=0
+vgaudio: current MCLK = 49142857 / 12 = 4095238 Hz (inferred)
+vgaudio: last dma=31 sr=40009 cr1=c32080 frcr=50f1f slots=30100 count=3350 addr=30006080
+vgaudio: dma_done=333 errors=0 timeouts=0 txbytes=2669128
+vgaudio: sai_underruns=156 clockerrors=0
+vgaudio: stream_ms=1000 stream_bytes=64000 tick_us=10000
+nxplayer> [KDIAGNOSTIC SAI_UNDERRUN=156 QUALITY=FAIL (strict acceptance unchanged)
+
+HOST 2026-10-22T09:28:26.2142697+08:00 SEND quit
+quit
+nsh> [K
+HOST 2026-10-22T09:28:26.8982626+08:00 SEND vgruntime dump
+vgruntime dump
+vgruntime: uptime_s=233 wall=2026-10-22T09:28:27
+vgruntime: slave=1 boot_total=28 boot_ok=0 boot_crc=0 boot_timeout=28 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=28 win_ok=0 win_crc=0 win_timeout=28 win_echo=0 win_other=0
+vgruntime: slave=2 boot_total=14 boot_ok=0 boot_crc=0 boot_timeout=14 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=14 win_ok=0 win_crc=0 win_timeout=14 win_echo=0 win_other=0
+vgruntime: slave=3 boot_total=14 boot_ok=0 boot_crc=0 boot_timeout=14 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=14 win_ok=0 win_crc=0 win_timeout=14 win_echo=0 win_other=0
+vgruntime: slave=4 boot_total=42 boot_ok=0 boot_crc=0 boot_timeout=42 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=42 win_ok=0 win_crc=0 win_timeout=42 win_echo=0 win_other=0
+vgruntime: slave=5 boot_total=41 boot_ok=0 boot_crc=0 boot_timeout=41 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=41 win_ok=0 win_crc=0 win_timeout=41 win_echo=0 win_other=0
+vgruntime: slave=6 boot_total=39 boot_ok=0 boot_crc=0 boot_timeout=39 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=39 win_ok=0 win_crc=0 win_timeout=39 win_echo=0 win_other=0
+vgruntime: slave=7 boot_total=13 boot_ok=0 boot_crc=0 boot_timeout=13 boot_echo=0 boot_other=0 boot_lat_min=0 boot_lat_max=0 boot_lat_avg=0 win_total=13 win_ok=0 win_crc=0 win_timeout=13 win_echo=0 win_other=0
+vgruntime: bus boot_total=191 boot_ok=0 boot_crc=0 boot_timeout=191 boot_echo=0 boot_other=0
+vgruntime: point id=temp slave=1 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=humid slave=1 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=flood slave=2 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=smoke slave=3 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_ret slave=4 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_set slave=4 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=acu_run slave=4 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_load slave=5 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_soc slave=5 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=ups_bypass slave=5 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=volt_a slave=6 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=pwr_kw slave=6 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=energy_kwh slave=6 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+vgruntime: point id=door slave=7 online=0 online_ms=0 offline_s=233 last_ok_ago_s=0 value=0 kind=offline
+nsh> [K
+HOST 2026-10-22T09:28:27.9427674+08:00 SEND vgstats dump 1
+vgstats dump 1
+vgstats: slave=1 window=64 total=28 ok=0 crc=0 timeout=28 echo=0 other=0 lat_min=0 lat_max=0 lat_avg=0
+nsh> [K
+HOST 2026-10-22T09:28:28.8859172+08:00 SEND vgnet status
+vgnet status
+state=online_rj45 egress=rj45 tcp=posix mqtt=up reason=egress=rj45
+rj45 link=1 ip=192.168.137.138 gw=192.168.137.1 ping_ok=1 fail_streak=0
+wifi ssid=19y assoc=0 ip=-
+nsh> [K
+HOST 2026-10-22T09:28:29.7917631+08:00 SEND vgstoretest 1
+vgstoretest 1
+vgstoretest: OK rounds=1 bytes=512 elapsed_ms=1600
+nsh> [K
+HOST 2026-10-22T09:28:38.0207026+08:00 SEND vgaudio txcheck
+vgaudio txcheck
+vgaudio: txcheck invalid-init=0 zero=-22 odd=-22 overcapacity=-22 offset=-22 rounds=20 result=0
+nsh> [K
+HOST 2026-10-22T09:28:39.0797407+08:00 SEND free
+free
+      total       used       free    maxused    maxfree  nused  nfree name
+    6880840     312264    6568576     396216    6291440   1028     17 Umem
+nsh> [K
+HOST 2026-10-22T09:28:39.8605724+08:00 SEND ps
+ps
+  PID GROUP PRI POLICY   TYPE    NPX STATE    EVENT     SIGMASK            STACK    CPU COMMAND
+    0     0   0 FIFO     Kthread   - Ready              0000000000000000 0001000 25.4% CPU0 IDLE
+    1     0 224 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976 16.7% hpwork 0x24000300 0x24000348
+    2     0 100 RR       Kthread   - Waiting  Semaphore 0000000000000000 0001976  1.1% lpwork 0x24000280 0x240002c8
+    3     3 100 RR       Task      - Waiting  Signal    0000000000000000 0008136  0.5% velaguard_app_main
+    4     3 100 RR       pthread   - Running            0000000000000000 0008168  1.1% velaguard_app_main 0x9000cae1 0
+    5     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0012264  3.3% velaguard_app_main 0x90010385 0
+    6     3 100 RR       pthread   - Waiting  Signal    0000000000000000 0004072  0.0% velaguard_app_main 0x90013e91 0
+    7     3 200 RR       pthread   - Waiting  Semaphore 0000000000000000 0002024  1.6% ESP8266 0x9005fccd 0
+    8     3  80 RR       pthread   - Waiting  Signal    0000000000000000 0002024  0.5% netinit 0x9005fa39 0
+    9     9  90 RR       Task      - Waiting  Semaphore 0000000000000000 0004056  0.0% vgptt
+   10    10 100 RR       Task      - Waiting  Signal    0000000000000000 0049104 40.8% vghmi vghmi
+   11    10 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  2.2% vghmi 0x900146d1 0
+   12    12 100 RR       Task      - Waiting  Signal    0000000000000000 0032696  0.0% ai_agent ai_agent --daemon
+   13    12  50 FIFO     pthread   - Ready              0000000000000000 0012264  0.0% ai_agent 0x9002a77d 0x2405bae0
+   14    12   3 FIFO     pthread   - Waiting  Signal    0000000000000000 0004072  0.0% ai_agent 0x900308d5 0x2405bbe0
+   15    12  50 FIFO     pthread   - Waiting  Signal    0000000000000000 0028648  0.0% ai_agent 0x9002a77d 0x2405bce0
+   26    10 100 RR       pthread   - Waiting  Signal    0000000000000000 0008168  5.3% vghmi 0x90014e35 0
+   28    12  60 FIFO     pthread   - Waiting  Semaphore 0000000000000000 0032744  0.0% ai_agent 0x9002c411 0x24055128
+nsh> [KACCEPT summary normal=20 stop=10 restart=10 lifecycle_checks=PASS sai_quality=FAIL underruns_before=26 underruns_after=156 human_listening=SEPARATE touch=SEPARATE

@@ -1,0 +1,1606 @@
+﻿vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+ai_agent --daemon &
+ai_agent [80:100]
+nsh> [Kai_agent
+[agent] Attaching CLI to daemon agent
+[cli] NSH CLI started. Type 'help' for commands.
+vela> point_shortcut
+point shortcut: off
+vela> point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> vgnet: join 19y failed
+cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p1 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; a[agent] ask: 告诉我UPS负载的值
+gent_loop starting i[agent] Processing message from cli:console
+n background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cb4a35c3b13a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Agent]: 稍等，处理中...��，处理中...
+vel
+a> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=686 text=0 reasoning=100 toolargs=21 calls=1 finish=tool_calls tokens=1560/47/1607
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cb4a35c3b13a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2080 body=0 pool=0 build=0 parse=0 http=2340 backoff=0 total=2350 req=5677 resp=686 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cb4a35c3b13a] iter=0 tool=vg_point_read latency=2370ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 220 ms
+[trace:6ad7cb4a35c3b13a] tool_iter=0 tool=vg_point_read tool_ms=220 out=95 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6018 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=649 text=158 reasoning=39 toolargs=0 calls=0 finish=end_turn tokens=1653/67/1720
+[llm] Response: 158 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cb4a35c3b13a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=170 ttfb=7690 body=0 pool=0 build=0 parse=0 http=7970 backoff=0 total=7970 req=6018 resp=649 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=158, tool_use=0, calls=0
+[trace:6ad7cb4a35c3b13a] iter=1 tool=(none) latency=7990ms llm=ok backend=0
+[trace:6ad7cb4a35c3b13a] END status=ok iters=2 tools=1 llm_ms=10360 tool_ms=220 elapsed_ms=10680 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **U[Pagent] [AgeS nt]: **UPS 负载当前�负载当剺 40%**，数据新鲜（1.5 秒前采样），状态正常。
+
+告警阈值参考：≥70% 预警，≍为 40%*�*90% 严重�＀�目前余量充足「悕
+�据新鲜（1.5 秒前采样），状态正常。
+
+告警阈值参考：≥70% 预警，≥90% 严重。目前余量充足。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p1 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p1 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: 告诉我UPS负载的值
+ agent_loop starting in background...
+Sent to agent: �[�agent] Processing message from cli:console
+�诉我UPS负载的值
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cb5b7c9701b3] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 正�[agent] [��Agent]: 正在分析...分析...
+
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=643 text=0 reasoning=57 toolargs=21 calls=1 finish=tool_calls tokens=1560/36/1596
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cb5b7c9701b3] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2940 body=0 pool=0 build=0 parse=0 http=3210 backoff=0 total=3210 req=5677 resp=643 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cb5b7c9701b3] iter=0 tool=vg_point_read latency=3230ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 550 ms
+[trace:6ad7cb5b7c9701b3] tool_iter=0 tool=vg_point_read tool_ms=550 out=95 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cb5b7c9701b3] END status=ok iters=1 tools=1 llm_ms=3230 tool_ms=550 elapsed_ms=3850 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS[agent] [Agent]: UPS负载当前读数 40 %（在线�负��2 秒前采样）
+载当前读数 40 %（在线，2 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p1 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p2 on ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 现在温度是多少
+agent_loop starting in background...
+Se[agent] Processinnt to agent: 现在�g message from �cli:co��nsole
+��是多少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cbae03cd357a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍等，处�[agent] [Agent]: 稍等，处理中...
+��中...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792527278
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=618 text=0 reasoning=35 toolargs=19 calls=1 finish=tool_calls tokens=1558/28/1586
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbae03cd357a] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=10 tls=590 send=140 ttfb=1180 body=0 pool=0 build=10 parse=0 http=2040 backoff=0 total=2070 req=5674 resp=618 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cbae03cd357a] iter=0 tool=vg_point_read latency=2080ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "温度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 164 bytes, 320 ms
+[trace:6ad7cbae03cd357a] tool_iter=0 tool=vg_point_read tool_ms=320 out=164 ok=1
+[agent] Point shortcut: not_tool_output
+[llm] OpenAI API with tools (model: mimo-v2.5, 6085 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=621 text=0 reasoning=57 toolargs=2 calls=1 finish=tool_calls tokens=1641/27/1668
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbae03cd357a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2150 body=0 pool=0 build=10 parse=10 http=2410 backoff=0 total=2430 req=6085 resp=621 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6ad7cbae03cd357a] iter=1 tool=vg_point_read latency=2440ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 793 bytes, 620 ms
+[trace:6ad7cbae03cd357a] tool_iter=1 tool=vg_point_read tool_ms=620 out=793 ok=1
+[agent] Point shortcut: not_tool_output
+[llm] OpenAI API with tools (model: mimo-v2.5, 7114 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=724 text=0 reasoning=141 toolargs=17 calls=1 finish=tool_calls tokens=1965/53/2018
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbae03cd357a] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=190 ttfb=2340 body=0 pool=0 build=10 parse=0 http=2640 backoff=0 total=2650 req=7114 resp=724 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6ad7cbae03cd357a] iter=2 tool=vg_point_read latency=2670ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "temp"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 520 ms
+[trace:6ad7cbae03cd357a] tool_iter=2 tool=vg_point_read tool_ms=520 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cbae03cd357a] END status=ok iters=3 tools=3 llm_ms=7190 tool_ms=1460 elapsed_ms=8800 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 温[agent] [Agent]: 温度验收当前读数 24 C（在线，2 秒前采样）
+度验收当前读数 24 C（在线，2 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p2 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p2 off ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 现在温度是多少
+agent_loop starting in background...
+Sent to agent: 现在温度�[�age�nt] Processing message �from cli:console
+��少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cbbd2746feb7] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 正�[agent] [Agent]: 正圜�思考中...
+�思考中...v
+ela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=632 text=0 reasoning=48 toolargs=19 calls=1 finish=tool_calls tokens=1558/33/1591
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbbd2746feb7] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2960 body=0 pool=0 build=0 parse=10 http=3220 backoff=0 total=3240 req=5674 resp=632 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cbbd2746feb7] iter=0 tool=vg_point_read latency=3250ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "温度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 164 bytes, 270 ms
+[trace:6ad7cbbd2746feb7] tool_iter=0 tool=vg_point_read tool_ms=270 out=164 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6085 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=906 text=0 reasoning=59 toolargs=40 calls=2 finish=tool_calls tokens=1646/72/1718
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6ad7cbbd2746feb7] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2390 body=0 pool=0 build=0 parse=0 http=2650 backoff=0 total=2660 req=6085 resp=906 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6ad7cbbd2746feb7] iter=1 tool=vg_point_read latency=2680ms llm=ok backend=0
+vgnet: no CONNACK via posix
+[tools] Executed vg tool: vg_point_read
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 96 bytes, 360 ms
+[trace:6ad7cbbd2746feb7] tool_iter=1 tool=vg_point_read tool_ms=360 out=96 ok=1
+[agent] Tool vg_point_read result: 76 bytes, 390 ms
+[trace:6ad7cbbd2746feb7] tool_iter=1 tool=vg_point_read tool_ms=390 out=76 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.5, 6711 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=639 text=0 reasoning=54 toolargs=17 calls=1 finish=tool_calls tokens=1780/37/1817
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbbd2746feb7] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=170 ttfb=2350 body=0 pool=0 build=10 parse=0 http=2630 backoff=0 total=2640 req=6711 resp=639 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 3: 1 calls
+[trace:6ad7cbbd2746feb7] iter=2 tool=vg_point_read latency=2660ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "temp"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 93 bytes, 270 ms
+[trace:6ad7cbbd2746feb7] tool_iter=2 tool=vg_point_read tool_ms=270 out=93 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 7046 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=1 first_read=8050ms total=821 bytes
+[vela_tls] body gap 1: idle=2650ms at=10700ms bytes=816
+[llm] Resp bytes=804 text=313 reasoning=33 toolargs=0 calls=0 finish=end_turn tokens=1860/117/1977
+[llm] Response: 313 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cbbd2746feb7] http iter=3 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=8050 body=2660 pool=0 build=10 parse=0 http=11020 backoff=0 total=11040 req=7046 resp=804 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=313, tool_use=0, calls=0
+[trace:6ad7cbbd2746feb7] iter=3 tool=(none) latency=11060ms llm=ok backend=0
+[trace:6ad7cbbd2746feb7] END status=ok iters=4 tools=3 llm_ms=19650 tool_ms=1290 elapsed_ms=20750 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 当前有三个温度点位（数据新鲜，均正常）：
+
+- **回风温�[agent] [Agent]: �当前有三个温�*��点位（数据新鲜，均正常）：
+
+- **回风温度**：25 ℃（阈值：≥28 预警 / ≥32 严重）*：2
+- **设定温度**：24 ℃
+- **温度（验收点）**：24 ℃（阈值：≥28 预警 / ≥35 严重）5 ℃（阈值�
+
+实际�回风温度 25 ℃，比设定值高 1 ℃，处于正常�⌃围。�
+�28 预警 / ≥32 严重）
+- **设定温度**：24 ℃
+- **温度（验收点）**：24 ℃（阈值：≥28 预警 / ≥35 严重）
+
+实际回风温度 25 ℃，比设定值高 1 ℃，处于正常范围。
+vela> /// RSP03 END p2 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p3 off ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; a[agent] ask: A相电压多少伏
+gent_loop starting in backgr[agent] Processing message from cli:console
+ound...
+Sent to agent: A相电压多少伏
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cbd90830f44a] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 正�[agent] [Agent]: 正在在分析...��析...
+
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=622 text=0 reasoning=34 toolargs=23 calls=1 finish=tool_calls tokens=1560/32/1592
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cbd90830f44a] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=1960 body=0 pool=0 build=0 parse=0 http=2220 backoff=0 total=2230 req=5672 resp=622 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cbd90830f44a] iter=0 tool=vg_point_read latency=2250ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 97 bytes, 220 ms
+[trace:6ad7cbd90830f44a] tool_iter=0 tool=vg_point_read tool_ms=220 out=97 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=7 first_read=8080ms total=672 bytes
+[vela_tls] body gap 1: idle=5000ms at=13080ms bytes=12
+[vela_tls] body gap 2: idle=5000ms at=18080ms bytes=18
+[vela_tls] body gap 3: idle=5000ms at=23080ms bytes=24
+[vela_tls] body gap 4: idle=5000ms at=28080ms bytes=30
+[vela_tls] body gap 5: idle=5000ms at=33080ms bytes=36
+[vela_tls] body gap 6: idle=5000ms at=38080ms bytes=42
+[vela_tls] body gap 7: idle=4250ms at=42330ms bytes=667
+[llm] Resp bytes=625 text=103 reasoning=62 toolargs=0 calls=0 finish=end_turn tokens=1642/60/1702
+[llm] Response: 103 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cbd90830f44a] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=8080 body=34290 pool=0 build=10 parse=0 http=42620 backoff=0 total=42630 req=6017 resp=625 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=103, tool_use=0, calls=0
+[trace:6ad7cbd90830f44a] iter=1 tool=(none) latency=42640ms llm=ok backend=0
+[trace:6ad7cbd90830f44a] END status=ok iters=2 tools=1 llm_ms=44890 tool_ms=220 elapsed_ms=45200 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: A�[agent] [Agent]: A相相电压：**230��� �：**230 V**，数据新鲜（1秒前采样），状态正常，远高于预警阈值 200V。
+V**，数据新鲜（1秒前采样），状态正常，远高于预警阈值 200V。
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p3 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p3 on ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: A agent_loop star相电压多少伏
+ting in background...
+Sent [tagent] Processing message from cli:console
+o agent: A相电压多少伏
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cc0c73b6c3ea] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 让�[agent] [Agent]: 让我查一下...
+�查一下...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=4 first_read=8090ms total=680 bytes
+[vela_tls] body gap 1: idle=5000ms at=13090ms bytes=12
+[vela_tls] body gap 2: idle=5000ms at=18090ms bytes=18
+[vela_tls] body gap 3: idle=5000ms at=23090ms bytes=24
+[vela_tls] body gap 4: idle=2110ms at=25200ms bytes=675
+[llm] Resp bytes=648 text=0 reasoning=56 toolargs=23 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cc0c73b6c3ea] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=8090 body=17140 pool=0 build=0 parse=0 http=25490 backoff=0 total=25500 req=5672 resp=648 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cc0c73b6c3ea] iter=0 tool=vg_point_read latency=25510ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 96 bytes, 420 ms
+[trace:6ad7cc0c73b6c3ea] tool_iter=0 tool=vg_point_read tool_ms=420 out=96 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cc0c73b6c3ea] END status=ok iters=1 tools=1 llm_ms=25510 tool_ms=420 elapsed_ms=25980 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: A�[agent] [Agent]: A相电压当前读数 230 V（在线，1 秸电�前采样）
+压当前读数 230 V（在线，1 秒前采样）
+vela> vgnet: join 19y failed
+vgnet: esp reset
+/// RSP03 END p3 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p4 on ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: 湿度多少
+ agent_loop[agent] Processing message from cli:console
+ starting in background...
+Sent to agent: 湿度多少
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cc2d76c64bb0] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍等�[agent] [Agent]: 稍等，处理中...
+��处理中...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=659 text=0 reasoning=75 toolargs=19 calls=1 finish=tool_calls tokens=1557/36/1593
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cc2d76c64bb0] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=5420 body=0 pool=0 build=10 parse=0 http=5670 backoff=0 total=5680 req=5665 resp=659 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cc2d76c64bb0] iter=0 tool=vg_point_read latency=5700ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "湿度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 90 bytes, 520 ms
+[trace:6ad7cc2d76c64bb0] tool_iter=0 tool=vg_point_read tool_ms=520 out=90 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cc2d76c64bb0] END status=ok iters=1 tools=1 llm_ms=5700 tool_ms=520 elapsed_ms=6280 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: �[ag��度当ent] [Agent]: 湿度当前读数 50 %RH（在线，1 秒前采样）
+前读数 50 %RH（在线，1 秒前采样）
+vela> /// RSP03 END p4 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p4 off ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued[agent] ask: 湿度多少
+; agent_lo[agent] Processingop startin message from cli:console
+g in background...
+Sent to agent: 湿度多少
+vela> vgnet: join 19y failed
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cc3b61ce8483] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 让我查一下.[age..nt]
+vela>  [Agent]: 让我查一下...
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=1 first_read=8070ms total=661 bytes
+[vela_tls] body gap 1: idle=2500ms at=10570ms bytes=656
+[llm] Resp bytes=644 text=0 reasoning=59 toolargs=19 calls=1 finish=tool_calls tokens=1557/33/1590
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cc3b61ce8483] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=8070 body=2510 pool=0 build=0 parse=0 http=10840 backoff=0 total=10850 req=5665 resp=644 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cc3b61ce8483] iter=0 tool=vg_point_read latency=10870ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "湿度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 390 ms
+[trace:6ad7cc3b61ce8483] tool_iter=0 tool=vg_point_read tool_ms=390 out=91 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6000 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=587 text=114 reasoning=22 toolargs=0 calls=0 finish=end_turn tokens=1636/48/1684
+[llm] Response: 114 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cc3b61ce8483] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=4100 body=10 pool=0 build=10 parse=0 http=4360 backoff=0 total=4370 req=6000 resp=587 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=114, tool_use=0, calls=0
+[trace:6ad7cc3b61ce8483] iter=1 tool=(none) latency=4390ms llm=ok backend=0
+[trace:6ad7cc3b61ce8483] END status=ok iters=2 tools=1 llm_ms=15260 tool_ms=390 elapsed_ms=15740 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 当�[agent] [Agent]: 当前湿度 **50 %RH**，数据新鲜（�湿�约 2 秒前采样），处于正常范围（告警阈值 ≥70 %RH）。
+�� **50 %RH**，数据新鲜（约 2 秒前采样），处于正常范围（告警阈值 ≥70 %RH）。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p4 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p5 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [aagent] ask: 告诉我UPS负载的值
+gent_loop s[agent] Processing message from cli:console
+tarting in background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cc5116b6aaad] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Agent]: 稍等Ｍ�，处理中..��.��理中...
+
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=634 text=0 reasoning=48 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cc5116b6aaad] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=1320 body=0 pool=0 build=0 parse=10 http=1590 backoff=0 total=1610 req=5677 resp=634 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cc5116b6aaad] iter=0 tool=vg_point_read latency=1620ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 360 ms
+[trace:6ad7cc5116b6aaad] tool_iter=0 tool=vg_point_read tool_ms=360 out=95 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6018 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=654 text=175 reasoning=25 toolargs=0 calls=0 finish=end_turn tokens=1640/75/1715
+[llm] Response: 175 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cc5116b6aaad] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=4840 body=0 pool=0 build=0 parse=0 http=5100 backoff=0 total=5110 req=6018 resp=654 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=175, tool_use=0, calls=0
+[trace:6ad7cc5116b6aaad] iter=1 tool=(none) latency=5130ms llm=ok backend=0
+[trace:6ad7cc5116b6aaad] END status=ok iters=2 tools=1 llm_ms=6750 tool_ms=360 elapsed_ms=7200 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **UP[agent] [Agent]: **UPS负载：40 %**
+
+- 状态：S负载�正常（数据新鲜，1.5 秒前采样）
+- 阈值：≥70% 预警，≥90% 告警
+- 距预警还有 3�40 %**
+
+- �0 个百刊�点，当前无需处理。
+�态：正常（数据新鲜，1.5 秒前采样）
+- 阈值：≥70% 预警，≥90% 告警
+- 距预警还有 30 个百分点，当前无需处理。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p5 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> vgnet: no CONNACK via posix
+cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p5 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop [agent] Processing message frstarting om cli:console
+in background...
+Sent to agent: 告诉我UPS负载的值
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cc5f3cf284bd] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马�[agent] [Agent]: 马上好...
+��好...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=635 text=0 reasoning=49 toolargs=21 calls=1 finish=tool_calls tokens=1560/34/1594
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cc5f3cf284bd] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=5140 body=0 pool=0 build=0 parse=0 http=5400 backoff=0 total=5410 req=5677 resp=635 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cc5f3cf284bd] iter=0 tool=vg_point_read latency=5430ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 95 bytes, 320 ms
+[trace:6ad7cc5f3cf284bd] tool_iter=0 tool=vg_point_read tool_ms=320 out=95 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cc5f3cf284bd] END status=ok iters=1 tools=1 llm_ms=5430 tool_ms=320 elapsed_ms=5820 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: U[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒前采样）PS负�
+��当前读数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p5 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> vgnet: no CONNACK via posix
+session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p6 on ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued[ag; ent] ask: 现在温度是多少
+agent_loop starting in back[agent] Processing message from cli:console
+ground...
+Sent to agent: 现在温度是多少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7ccb134a9cc0d] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Agent]: 稍等，处理中...
+��，处理中...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792527537
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=637 text=0 reasoning=74 toolargs=2 calls=1 finish=tool_calls tokens=1558/30/1588
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ccb134a9cc0d] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=560 send=150 ttfb=1450 body=0 pool=0 build=0 parse=10 http=2290 backoff=0 total=2310 req=5674 resp=637 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7ccb134a9cc0d] iter=0 tool=vg_point_read latency=2320ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 793 bytes, 170 ms
+[trace:6ad7ccb134a9cc0d] tool_iter=0 tool=vg_point_read tool_ms=170 out=793 ok=1
+[agent] Point shortcut: not_tool_output
+[llm] OpenAI API with tools (model: mimo-v2.5, 6703 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=640 text=0 reasoning=55 toolargs=17 calls=1 finish=tool_calls tokens=1885/33/1918
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ccb134a9cc0d] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=2570 body=0 pool=0 build=0 parse=0 http=2840 backoff=0 total=2850 req=6703 resp=640 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 2: 1 calls
+[trace:6ad7ccb134a9cc0d] iter=1 tool=vg_point_read latency=2860ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "temp"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 93 bytes, 270 ms
+[trace:6ad7ccb134a9cc0d] tool_iter=1 tool=vg_point_read tool_ms=270 out=93 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7ccb134a9cc0d] END status=ok iters=2 tools=2 llm_ms=5180 tool_ms=440 elapsed_ms=5730 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 温度[agent] [Agent]: 温度�验收当剪�收当前读数 24 C（在线，1 秒前采样）
+�读数 24 C（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p6 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p6 off ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[age ant] ask: 现在温度是多少
+gent_loop starting in b[agent] Processing message from cli:console
+ackground...
+Sent to agent: 现在温度是多少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cd04403f40e4] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 马上好...[agent] [Agent]: 马上好...
+
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792527620
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=646 text=0 reasoning=83 toolargs=2 calls=1 finish=tool_calls tokens=1558/29/1587
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cd04403f40e4] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=520 send=150 ttfb=6520 body=0 pool=0 build=10 parse=0 http=7320 backoff=0 total=7340 req=5674 resp=646 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cd04403f40e4] iter=0 tool=vg_point_read latency=7360ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 793 bytes, 280 ms
+[trace:6ad7cd04403f40e4] tool_iter=0 tool=vg_point_read tool_ms=280 out=793 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6703 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=756 text=0 reasoning=36 toolargs=42 calls=2 finish=tool_calls tokens=1884/51/1935
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6ad7cd04403f40e4] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=5200 body=0 pool=0 build=10 parse=0 http=5470 backoff=0 total=5480 req=6703 resp=756 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6ad7cd04403f40e4] iter=1 tool=vg_point_read latency=5500ms llm=ok backend=0
+[tools] Executed vg tool: vg_point_read
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 93 bytes, 520 ms
+[trace:6ad7cd04403f40e4] tool_iter=1 tool=vg_point_read tool_ms=520 out=93 ok=1
+[agent] Tool vg_point_read result: 96 bytes, 540 ms
+[trace:6ad7cd04403f40e4] tool_iter=1 tool=vg_point_read tool_ms=540 out=96 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.5, 7348 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=708 text=228 reasoning=25 toolargs=0 calls=0 finish=end_turn tokens=2022/83/2105
+[llm] Response: 228 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cd04403f40e4] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=200 ttfb=4690 body=0 pool=0 build=0 parse=0 http=5000 backoff=0 total=5010 req=7348 resp=708 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=228, tool_use=0, calls=0
+[trace:6ad7cd04403f40e4] iter=2 tool=(none) latency=5030ms llm=ok backend=0
+[trace:6ad7cd04403f40e4] END status=ok iters=3 tools=2 llm_ms=17890 tool_ms=1340 elapsed_ms=18830 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 当[agent] [Agent]: 当前温度（数据新鲜，采样于 1 秒内）：
+
+- **温�前温度Ｚ�（验收点）**: 24 °C — 正常（告警阈值 ≥28 °C）
+- **空调回风温度**: 25 °C — 正常（告警阈值 ≥28 °C）
+
+均在正常范围内。
+�数据新鲜，采样于 1 秒内）：
+
+- **温度（验收点）**: 24 °C — 正常（告警阈值 ≥28 °C）
+- **空调回风温度**: 25 °C — 正常（告警阈值 ≥28 °C）
+
+均在正常范围内。
+vela> vgnet: join 19y failed
+/// RSP03 END p6 off ///gnet: no CONNACK via posix
+point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p7 off ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: A相电压多少伏
+ agent_loop starting[agent] Processing message from cli:console
+ in background...
+Sent to agent: A相电压多少伏
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cd1d4f6a172b] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 让[agent] [Agent]: 让我查一下...
+我查一下...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=628 text=0 reasoning=40 toolargs=23 calls=1 finish=tool_calls tokens=1560/33/1593
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cd1d4f6a172b] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=3100 body=0 pool=0 build=10 parse=0 http=3350 backoff=0 total=3360 req=5672 resp=628 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cd1d4f6a172b] iter=0 tool=vg_point_read latency=3380ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 96 bytes, 240 ms
+[trace:6ad7cd1d4f6a172b] tool_iter=0 tool=vg_point_read tool_ms=240 out=96 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6016 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=612 text=135 reasoning=26 toolargs=0 calls=0 finish=end_turn tokens=1642/61/1703
+[llm] Response: 135 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cd1d4f6a172b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=170 ttfb=4360 body=0 pool=0 build=10 parse=0 http=4640 backoff=0 total=4650 req=6016 resp=612 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=135, tool_use=0, calls=0
+[trace:6ad7cd1d4f6a172b] iter=1 tool=(none) latency=4670ms llm=ok backend=0
+[trace:6ad7cd1d4f6a172b] END status=ok iters=2 tools=1 llm_ms=8050 tool_ms=240 elapsed_ms=8370 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: **A�[agent] [Agent]: **A相电压：230 V**，数据新鲜电压：2��约1秒前采样），处于正常范围（告警阈值：≤200V 预警，≤180V 严重）。
+30 V**，数据新鲜（约1秒前采样），处于正常范围（告警阈值：≤200V 预警，≤180V 严重）。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p7 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: no CONNACK via posix
+/// RSP03 BEGIN p7 on ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent a] ask: A相电压多少伏
+gent_loop starting in back[agent] Processing message from cli:console
+ground...
+Sent to agent: A相电压多少伏
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cd2b124a6e44] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马�[agent] [Agent]: 马上好...
+�好...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=647 text=0 reasoning=59 toolargs=23 calls=1 finish=tool_calls tokens=1560/36/1596
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cd2b124a6e44] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=1600 body=0 pool=0 build=0 parse=0 http=1860 backoff=0 total=1870 req=5672 resp=647 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cd2b124a6e44] iter=0 tool=vg_point_read latency=1890ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 97 bytes, 220 ms
+[trace:6ad7cd2b124a6e44] tool_iter=0 tool=vg_point_read tool_ms=220 out=97 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cd2b124a6e44] END status=ok iters=1 tools=1 llm_ms=1890 tool_ms=220 elapsed_ms=2180 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: A相[agent] [Agent]: A相电压当前读�电压录� 230 V（在线，1 秒前采样）
+�前读数 230 V（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: esp reset
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+/// RSP03 END p7 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p8 on ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: 湿度多少
+ agent_loop startin[agent] Pg in backgrounrocessing dmessage from cli:console
+...
+Sent to agent: 湿度多少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cd7e27065926] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 正在分析[agent] [Agent]: 正在分析...
+...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792527742
+vgnet: no CONNACK via posix
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=613 text=0 reasoning=30 toolargs=19 calls=1 finish=tool_calls tokens=1557/29/1586
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cd7e27065926] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=30(fused) setup=10 tls=560 send=140 ttfb=2210 body=0 pool=0 build=0 parse=0 http=3020 backoff=0 total=3030 req=5665 resp=613 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cd7e27065926] iter=0 tool=vg_point_read latency=3050ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "湿度"}
+[tools] Executed vg tool: vg_point_read
+vgnet: no CONNACK via posix
+[agent] Tool vg_point_read result: 91 bytes, 360 ms
+[trace:6ad7cd7e27065926] tool_iter=0 tool=vg_point_read tool_ms=360 out=91 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cd7e27065926] END status=ok iters=1 tools=1 llm_ms=3050 tool_ms=360 elapsed_ms=3480 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 湿[agent] [Agent]: 湿度当前读数 5度当前读数 0 %RH（在线，2 秒前采样）5
+0 %RH（在线，2 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p8 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: no CONNACK via posix
+/// RSP03 BEGIN p8 off ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; ag[agent] ask: 湿度多少
+ent_loop starting in[agent] Processing message from cli:console
+ background...
+Sent to agent: 湿度多少
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cdd23f41631c] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 让�[agent] [Agent]: 让我查一下...
+�查一下...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792527826
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+vgnet: no CONNACK via posix
+[llm] Resp bytes=630 text=0 reasoning=46 toolargs=19 calls=1 finish=tool_calls tokens=1557/32/1589
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cdd23f41631c] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=40(fused) setup=10 tls=610 send=140 ttfb=2490 body=0 pool=0 build=0 parse=0 http=3370 backoff=0 total=3380 req=5665 resp=630 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cdd23f41631c] iter=0 tool=vg_point_read latency=3400ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "湿度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 90 bytes, 270 ms
+[trace:6ad7cdd23f41631c] tool_iter=0 tool=vg_point_read tool_ms=270 out=90 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 5999 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=663 text=164 reasoning=46 toolargs=0 calls=0 finish=end_turn tokens=1634/74/1708
+[llm] Response: 164 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cdd23f41631c] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=3420 body=0 pool=0 build=10 parse=0 http=3680 backoff=0 total=3690 req=5999 resp=663 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=164, tool_use=0, calls=0
+[trace:6ad7cdd23f41631c] iter=1 tool=(none) latency=3710ms llm=ok backend=0
+[trace:6ad7cdd23f41631c] END status=ok iters=2 tools=1 llm_ms=7110 tool_ms=270 elapsed_ms=7460 backend=0
+vgnet: no CONNACK via posix
+[agent] Dispatching response → cli:console
+
+[Agent]: 当前湿度 **50 %RH**（数据 0.9[agent] [Agent]:  当前湿度 **50 %RH**（数据 0.9 秒前采样，正常）。
+
+告警阈值：≥70 %RH 预警，≥85 %RH 严重。目前远低于阈值，环境干燥秒前采样，正常适�）���む
+�
+
+告警阈值：≥70 %RH 预警，≥85 %RH 严重。目前远低于阈值，环境干燥适中。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p8 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p9 off ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop s[agent] Procetarting inssing message from cli:console
+ background...
+Sent to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cddf4eb10062] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马[agent] [Agent]: 马�上好...
+v��好...
+ela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=632 text=0 reasoning=46 toolargs=21 calls=1 finish=tool_calls tokens=1560/33/1593
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cddf4eb10062] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=1830 body=0 pool=0 build=0 parse=0 http=2080 backoff=0 total=2090 req=5677 resp=632 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cddf4eb10062] iter=0 tool=vg_point_read latency=2110ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 390 ms
+[trace:6ad7cddf4eb10062] tool_iter=0 tool=vg_point_read tool_ms=390 out=94 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=596 text=131 reasoning=13 toolargs=0 calls=0 finish=end_turn tokens=1638/52/1690
+[llm] Response: 131 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cddf4eb10062] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=160 ttfb=4110 body=0 pool=0 build=0 parse=10 http=4380 backoff=0 total=4390 req=6017 resp=596 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=131, tool_use=0, calls=0
+[trace:6ad7cddf4eb10062] iter=1 tool=(none) latency=4400ms llm=ok backend=0
+[trace:6ad7cddf4eb10062] END status=ok iters=2 tools=1 llm_ms=6510 tool_ms=390 elapsed_ms=7000 backend=0
+vgnet: no CONNACK via posix
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS负载当前为 **40%**（数据新鲜，370ms前采样）。[ag
+ent] [Agent]: UPS负载当前为 **40%**（数据�
+新鲜，370ms前采样）。
+
+正常范围（告警阈值：≥70% 警告，≥90% 严重）。
+��常范围（告警阈值：≥70% 警告，≥90% 严重）。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p9 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p9 on ///ask 告诉我UPS负载的值
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 告诉我UPS负载的值
+agent_loop starting in background...
+S[agenet] Processing message from cli:console
+nt to agent: 告诉我UPS负载的值
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cded0e2b9805] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5677 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 让�[agent] [Agent]: 让我查一下...
+��查一下...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=668 text=0 reasoning=81 toolargs=21 calls=1 finish=tool_calls tokens=1560/39/1599
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cded0e2b9805] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=8070 body=3300 pool=0 build=0 parse=0 http=11630 backoff=0 total=11640 req=5677 resp=668 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cded0e2b9805] iter=0 tool=vg_point_read latency=11670ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "ups_load"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 94 bytes, 240 ms
+[trace:6ad7cded0e2b9805] tool_iter=0 tool=vg_point_read tool_ms=240 out=94 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7cded0e2b9805] END status=ok iters=1 tools=1 llm_ms=11670 tool_ms=240 elapsed_ms=11980 backend=0
+vgnet: no CONNACK via posix
+[agent] Dispatching response → cli:console
+
+[Agent]: UPS负载当[agent] [Agent]: UPS负载当前读数 40 %（在线，1 秒前采样）
+前读数 40 %（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p9 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p10 on ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: 现在温度是多少
+ agent_loop starting i[agent] Processing message from cli:console
+n background...
+Sent to agent: 现在温度是多少
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cdff3bedee8b] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 马[agent] [Agent]: 马上好...
+上好...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=649 text=0 reasoning=65 toolargs=19 calls=1 finish=tool_calls tokens=1558/33/1591
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7cdff3bedee8b] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=1440 body=0 pool=0 build=0 parse=0 http=1690 backoff=0 total=1700 req=5674 resp=649 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7cdff3bedee8b] iter=0 tool=vg_point_read latency=1720ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "温度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 164 bytes, 340 ms
+[trace:6ad7cdff3bedee8b] tool_iter=0 tool=vg_point_read tool_ms=340 out=164 ok=1
+[agent] Point shortcut: not_tool_output
+[llm] OpenAI API with tools (model: mimo-v2.5, 6085 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=988 text=57 reasoning=84 toolargs=37 calls=2 finish=tool_calls tokens=1646/98/1744
+[llm] Response: 57 bytes text, 2 tool calls, finish=tool_calls
+[trace:6ad7cdff3bedee8b] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=4070 body=0 pool=0 build=0 parse=0 http=4330 backoff=0 total=4330 req=6085 resp=988 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=57, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6ad7cdff3bedee8b] iter=1 tool=vg_point_read latency=4350ms llm=ok backend=0
+[tools] Executed vg tool: vg_point_read
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 93 bytes, 680 ms
+[trace:6ad7cdff3bedee8b] tool_iter=1 tool=vg_point_read tool_ms=680 out=93 ok=1
+[agent] Tool vg_point_read result: 96 bytes, 690 ms
+[trace:6ad7cdff3bedee8b] tool_iter=1 tool=vg_point_read tool_ms=690 out=96 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.5, 6795 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+[llm] Resp bytes=739 text=269 reasoning=15 toolargs=0 calls=0 finish=end_turn tokens=1811/86/1897
+[llm] Response: 269 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7cdff3bedee8b] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=2790 body=0 pool=0 build=10 parse=10 http=3040 backoff=0 total=3060 req=6795 resp=739 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=269, tool_use=0, calls=0
+[trace:6ad7cdff3bedee8b] iter=2 tool=(none) latency=3070ms llm=ok backend=0
+[trace:6ad7cdff3bedee8b] END status=ok iters=3 tools=2 llm_ms=9140 tool_ms=1710 elapsed_ms=10310 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 当前温度数据如下：
+
+- [ag**温度验收点ent] [Agent]: �当前温度数据如下：
+
+- **温度验收点（temp）**：24 °C
+- **回��风温度（acu_ret）**：25 °C
+
+数据均为刚刚采集（1秒内），状态正常。回风温度告警阈temp�值为 ≥28 °C（预警）/ ≥32 °C（严重），目前还有安全余量。
+�**：24 °C
+- **回风温度（acu_ret）**：25 °C
+
+数据均为刚刚采集（1秒内），状态正常。回风温度告警阈值为 ≥28 °C（预警）/ ≥32 °C（严重），目前还有安全余量。
+vela> vgnet: join 19y failed
+vgnet: no CONNACK via posix
+/// RSP03 END p10 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p10 off ///ask 现在温度是多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; [agent] ask: 现在温度是多少
+agent_loop starting i[agent] Processing message from cli:console
+n background...
+Sent to agent: 现在温度是多少
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7ce1027548055] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5674 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍[agent] [Agent]: 稍等，处理中...
+等，处理中...
+vela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=755 text=0 reasoning=169 toolargs=19 calls=1 finish=tool_calls tokens=1558/60/1618
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ce1027548055] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=2570 body=0 pool=0 build=0 parse=0 http=2830 backoff=0 total=2830 req=5674 resp=755 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7ce1027548055] iter=0 tool=vg_point_read latency=2850ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "温度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 164 bytes, 450 ms
+[trace:6ad7ce1027548055] tool_iter=0 tool=vg_point_read tool_ms=450 out=164 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6085 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=903 text=0 reasoning=56 toolargs=37 calls=2 finish=tool_calls tokens=1673/76/1749
+[llm] Response: 0 bytes text, 2 tool calls, finish=tool_calls
+[trace:6ad7ce1027548055] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=6260 body=0 pool=0 build=10 parse=0 http=6520 backoff=0 total=6540 req=6085 resp=903 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=2
+[agent] Tool iter 2: 2 calls
+[trace:6ad7ce1027548055] iter=1 tool=vg_point_read latency=6560ms llm=ok backend=0
+[tools] Executed vg tool: vg_point_read
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 93 bytes, 450 ms
+[trace:6ad7ce1027548055] tool_iter=1 tool=vg_point_read tool_ms=450 out=93 ok=1
+[agent] Tool vg_point_read result: 96 bytes, 470 ms
+[trace:6ad7ce1027548055] tool_iter=1 tool=vg_point_read tool_ms=470 out=96 ok=1
+[llm] OpenAI API with tools (model: mimo-v2.5, 6725 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[vela_tls] body progress: gaps=2 first_read=8090ms total=739 bytes
+[vela_tls] body gap 1: idle=5000ms at=13090ms bytes=12
+[vela_tls] body gap 2: idle=3510ms at=16600ms bytes=734
+[llm] Resp bytes=717 text=252 reasoning=7 toolargs=0 calls=0 finish=end_turn tokens=1816/82/1898
+[llm] Response: 252 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7ce1027548055] http iter=2 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=140 ttfb=8090 body=8530 pool=0 build=0 parse=0 http=16880 backoff=0 total=16880 req=6725 resp=717 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=252, tool_use=0, calls=0
+[trace:6ad7ce1027548055] iter=2 tool=(none) latency=16890ms llm=ok backend=0
+[trace:6ad7ce1027548055] END status=ok iters=3 tools=2 llm_ms=26300 tool_ms=1370 elapsed_ms=27350 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: 当前有多个温度�[agent] [Agent]: 当前有多个温度点位：
+
+- **回风温度**：25 °C（数据新鲜，正�位：
+
+常，阈�- *� ≥28°C 预警）
+- **温度验收**：24 °C（正常）
+- **设定温度**：未读*回�取，如需查看可告诉我
+
+最常用的回风温度为 **25 °C**。
+�温度**：25 °C（数据新鲜，正常，阈值 ≥28°C 预警）
+- **温度验收**：24 °C（正常）
+- **设定温度**：未读取，如需查看可告诉我
+
+最常用的回风温度为 **25 °C**。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p10 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p11 off ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: A相电压多少伏
+ agent_loop starting [agent] Processing message froin backgrm cli:console
+ound...
+Sent to agent: A相电压多少伏
+vela> [heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7ce327c5fff76] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍�[agent] [Ag�，处理中...
+ent]: v稍等，处理中...
+ela> [vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=623 text=0 reasoning=35 toolargs=23 calls=1 finish=tool_calls tokens=1560/32/1592
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ce327c5fff76] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2550 body=0 pool=0 build=0 parse=0 http=2810 backoff=0 total=2820 req=5672 resp=623 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7ce327c5fff76] iter=0 tool=vg_point_read latency=2840ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 97 bytes, 170 ms
+[trace:6ad7ce327c5fff76] tool_iter=0 tool=vg_point_read tool_ms=170 out=97 ok=1
+[agent] Point shortcut skipped: switched off
+[llm] OpenAI API with tools (model: mimo-v2.5, 6017 bytes)
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+[llm] Resp bytes=661 text=126 reasoning=82 toolargs=0 calls=0 finish=end_turn tokens=1642/69/1711
+[llm] Response: 126 bytes text, 0 tool calls, finish=end_turn
+[trace:6ad7ce327c5fff76] http iter=1 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=3540 body=0 pool=0 build=0 parse=0 http=3820 backoff=0 total=3820 req=6017 resp=661 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=126, tool_use=0, calls=0
+[trace:6ad7ce327c5fff76] iter=1 tool=(none) latency=3840ms llm=ok backend=0
+[trace:6ad7ce327c5fff76] END status=ok iters=2 tools=1 llm_ms=6680 tool_ms=170 elapsed_ms=6950 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: A相�[agent] [Agent]: A相电压：**230 V**（数据新鲜度约 1 秒，通信正常）。
+
+当前在正常�压：**23��围内（无告警阈值触发）。0
+ V**（数据新鲜度约 1 秒，通信正常）。
+
+当前在正常范围内（无告警阈值触发）。
+vela> vgnet: no CONNACK via posix
+/// RSP03 END p11 off ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> /// RSP03 BEGIN p11 on ///ask A相电压多少伏
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: A相电压多少伏
+ agent_loop starting [agent] Processing message from cli:console
+in background...
+Sent to agent: A相电压多少伏
+vela> vgnet: no CONNACK via posix
+[skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7ce3f296a9fad] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5672 bytes)
+[agent] Dispatching response → cli:console
+
+[Agent]: 稍等，处理中...
+vela> [agent] [Agent]: 稍等，处理中...
+[vela_tls] Reusing pooled connection to token-plan-cn.xiaomimimo.com:443
+vgnet: no CONNACK via posix
+[llm] Resp bytes=678 text=0 reasoning=88 toolargs=23 calls=1 finish=tool_calls tokens=1560/42/1602
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ce3f296a9fad] http iter=0 attempt=1 reused=1 proxy=0 dns_tcp=na(fused) setup=na tls=na send=150 ttfb=2080 body=0 pool=0 build=10 parse=0 http=2350 backoff=0 total=2360 req=5672 resp=678 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7ce3f296a9fad] iter=0 tool=vg_point_read latency=2380ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "A相电压"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 96 bytes, 300 ms
+[trace:6ad7ce3f296a9fad] tool_iter=0 tool=vg_point_read tool_ms=300 out=96 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7ce3f296a9fad] END status=ok iters=1 tools=1 llm_ms=2380 tool_ms=300 elapsed_ms=2720 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: A相�[agent] [Agent]: A相电压当前读数 230 V（在��压当前读数线，1 秒前采样） 
+230 V（在线，1 秒前采样）
+vela> vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p11 on ///point_shortcut on
+[agent] point reply shortcut enabled
+point shortcut: on
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: no CONNACK via posix
+/// RSP03 BEGIN p12 on ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued;[agent] ask: 湿度多少
+ agent_loop starting [agent] Processing message from cli:console
+in background...
+Sent to agent: 湿度多少
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+vgnet: no CONNACK via posix
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7ce922ebff98e] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 让我[agent] [Agent]: 让我查一下...
+查一下...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792528018
+[vela_tls] Handshake OK: TLSv1.2 / TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256
+[llm] Resp bytes=628 text=0 reasoning=44 toolargs=19 calls=1 finish=tool_calls tokens=1557/31/1588
+[llm] Response: 0 bytes text, 1 tool calls, finish=tool_calls
+[trace:6ad7ce922ebff98e] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=50(fused) setup=10 tls=540 send=150 ttfb=1750 body=0 pool=0 build=0 parse=0 http=2600 backoff=0 total=2600 req=5665 resp=628 rc=0 status=200 parse_ok=1
+[agent] LLM resp: text=0, tool_use=1, calls=1
+[agent] Tool iter 1: 1 calls
+[trace:6ad7ce922ebff98e] iter=0 tool=vg_point_read latency=2620ms llm=ok backend=0
+[agent] Tool call: vg_point_read args={"query": "湿度"}
+[tools] Executed vg tool: vg_point_read
+[agent] Tool vg_point_read result: 91 bytes, 570 ms
+[trace:6ad7ce922ebff98e] tool_iter=0 tool=vg_point_read tool_ms=570 out=91 ok=1
+[agent] Point shortcut: hit
+[trace:6ad7ce922ebff98e] END status=ok iters=1 tools=1 llm_ms=2620 tool_ms=570 elapsed_ms=3250 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: �[agent] [Agent]: 湿度当前读数 50 %�度当�RH（在线，2 秒前采样）�
+读数 50 %RH（在线，2 秒前采样）
+vela> vgnet: join 19y failed
+vgnet: esp reset
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p12 on ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> session_clear console
+[session] Session console cleared
+Session cleared.
+vela> cache_clear
+LLM response cache cleared.
+vela> vgnet: no CONNACK via posix
+/// RSP03 BEGIN p12 off ///ask 湿度多少
+[netmgr] Found iface eth0 addr 192.168.137.3
+Ask queued; a[agent] ask: 湿度多少
+gent_loop s[agent] Processtarting in background...
+iSeng nmessage from tcli:console
+ to agent: 湿度多少
+vela> [skills] Skills summary: 1086 bytes
+[context] System prompt built: 3127 bytes
+[llm] LLM config updated atomically: token-plan-cn.xiaomimimo.com/v1/chat/completions (model: mimo-v2.5)
+[trace:6ad7cee4155f88ba] BEGIN chat=console chan=cli
+[llm] OpenAI API with tools (model: mimo-v2.5, 5665 bytes)
+[vela_tls] Pooled connection stale, reconnecting
+[agent] Dispatching response → cli:console
+
+[Agent]: 正�[agent] [Agent]: 正在思考中...
+�思考中...
+vela> [vela_tls] Handshake start: Host=token-plan-cn.xiaomimimo.com, UNIX=1792528100
+[vela_tls] net_connect token-plan-cn.xiaomimimo.com:443 ret=0x42
+[trace:6ad7cee4155f88ba] http iter=0 attempt=1 reused=0 proxy=0 dns_tcp=20(fused) setup=10 tls=na send=na ttfb=na body=na pool=0 build=0 parse=na http=110 backoff=0 total=120 req=5665 resp=0 rc=-1 status=0 parse_ok=0
+[agent] LLM call failed on backend 0, trying failover
+[llm_router] Backend 0 failure count: 1 (backoff 0)
+[agent] LLM call failed (iter 0)
+[trace:6ad7cee4155f88ba] iter=0 tool=(none) latency=120ms llm=fail backend=0
+[trace:6ad7cee4155f88ba] END status=fail iters=1 tools=0 llm_ms=120 tool_ms=0 elapsed_ms=160 backend=0
+[agent] Dispatching response → cli:console
+
+[Agent]: Sorry[agent] [Agent]: Sorry, I encountered an error.
+, I encountered an error.
+vela> vgnet: no CONNACK via posix
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: join 19y failed
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+/// RSP03 END p12 off ///point_shortcut off
+[agent] point reply shortcut disabled
+point shortcut: off
+vela> quit
+Exiting agent...
+[cli] CLI thread exiting
+nsh> [Kvgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+vgnet: no CONNACK via posix
+

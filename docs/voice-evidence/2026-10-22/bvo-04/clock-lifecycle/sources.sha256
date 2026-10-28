@@ -1,0 +1,6 @@
+86984bac4bc9c6398e79a12c7b06cba017ef648e6568f89b8049689ecbc60d1d  nuttx/arch/arm/src/stm32h7/stm32_sai.c
+5a3995d900302eabbe45d0df239ae62755a84d0b34eff81cfac73dad7e7b8dad  nuttx/arch/arm/src/stm32h7/stm32_sai.h
+b7ae00069ec25f003d10173394ca355f7be56fc85c882d7faa895c847a9b52da  nuttx/boards/arm/stm32h7/stm32h750b-dk/src/stm32_audio.c
+bed075182921fd4ff4b054c5083ac8d0ea71b2bd59ca3def25ea428731804def  nuttx/drivers/audio/wm8994.c
+cac424ae6dd9ef650b3fcee154247123d0397bed91558070dafb2124b451538b  nuttx/include/nuttx/audio/wm8994.h
+e441fa606494f7dd723e8532409781d9398bc49dc4833f0ce1f110af297071f9  contest/app/velaguard/vgaudio.c

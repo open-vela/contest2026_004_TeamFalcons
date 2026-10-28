@@ -1,0 +1,9 @@
+=== contest-log-upload validation ===
+Logs dir:       /home/hello19y/openvela/contest2026_004_TeamFalcons/logs
+Files checked:  305
+Events checked: 66642
+
+⚠️  WARNINGS (1):
+  • /home/hello19y/openvela/contest2026_004_TeamFalcons/logs/Foleaf/2026-09-16/claude-code__dbd0eb98-6d13-4bdc-a758-a5c3605ffc49.jsonl: orphan file (exists but not in manifest.sessions)
+
+⚠️  PASSED WITH WARNINGS

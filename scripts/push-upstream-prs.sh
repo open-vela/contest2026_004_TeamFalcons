@@ -92,4 +92,4 @@ create_pr open-vela/apps_netutils_mqttc_MQTT-C velaguard/mqtt-pal-hook \
   "mqtt_pal: add weak hooks for tagged LESP send/recv" \
   "Contest: contest2026_004 Team Falcons / VelaGuard."
 
-echo "Done. Record PR URLs in .trellis/tasks/08-28-nuttx-upstream-pr-submission/submission-checklist.md"
+echo "Done. Record the PR URLs somewhere durable (the old .trellis submission-checklist is only in git history)."

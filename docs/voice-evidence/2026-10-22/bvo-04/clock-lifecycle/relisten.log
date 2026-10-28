@@ -1,0 +1,23 @@
+[heartbeat] skip LLM (HMI, no ReAct from heartbeat/poke)
+
+HOST 2026-10-22T09:06:00.7557282+08:00 SEND nxplayer
+nxplayer
+NxPlayer version 1.05
+h for commands, q to exit
+
+nxplayer> [K
+HOST 2026-10-22T09:06:01.0660349+08:00 SEND volume 15
+volume 15
+nxplayer> [K
+HOST 2026-10-22T09:06:01.2764295+08:00 SEND play /mnt/emmc/bvo04/tone.wav
+play /mnt/emmc/bvo04/tone.wav
+nxplayer> [K
+HOST 2026-10-22T09:06:03.2904921+08:00 SEND play /mnt/emmc/bvo04/speech.wav
+play /mnt/emmc/bvcommand did not return within bounded wait: play /mnt/emmc/bvo04/speech.wav
+所在位置 \\wsl.localhost\Debian\home\hello19y\openvela\contest2026_004_TeamFalcons\.debug\bvo04-clock-relisten.ps1:22 字符: 4
+0
++ ... player>)') {throw "command did not return within bounded wait: $cmd"} ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (command did not...vo04/speech.wav:String) [], RuntimeException
+    + FullyQualifiedErrorId : command did not return within bounded wait: play /mnt/emmc/bvo04/speech.wav
+ 

@@ -1,0 +1,42 @@
+0x900017ea in nx_start ()
+=== attached ===
+Hardware assisted breakpoint 1 at 0x9007c010
+=== waiting for commands ===
+
+Breakpoint 1, 0x9007c010 in nsh_command ()
+
+[stop 1: uname]
+
+Breakpoint 1, 0x9007c010 in nsh_command ()
+[stop 2: echo AAA]
+
+Breakpoint 1, 0x9007c010 in nsh_command ()
+[stop 3: echo BBB]
+
+Breakpoint 1, 0x9007c010 in nsh_command ()
+[stop 4: mv - filling the stack now]
+console tcb = 0x38002af0
+stack alloc = [0x38002be0, 0x38004be0)  adj_stack_size = 8168
+tls_info_s->tl_task before fill = 0x38002be0:	0x38000580
+filled 7192 bytes below sp
+
+=== letting the mv run ===
+
+Breakpoint 1, 0x9007c010 in nsh_command ()
+
+[stop 5: after mv]
+high-water mark = 0x380043e0
+deepest use     = 2048 bytes of 8168 available
+headroom left   = 6120 bytes
+tls_info_s->tl_task after      = 0x38002be0:	0x38000580
+
+--- 16 words around the high-water mark ---
+0x380043d8:	0xdeadbeef	0xdeadbeef	0x0000000b	0x380044e0
+0x380043e8:	0x00000000	0x90000ee9	0x00000080	0x00000007
+0x380043f8:	0x24003538	0x00000080	0x0000000b	0x38004500
+0x38004408:	0x00000000	0x90000ee9	0x00000080	0x00000007
+
+=== resetting target ===
+[Inferior 1 (Remote target) detached]
+
+[exited with code 0]
