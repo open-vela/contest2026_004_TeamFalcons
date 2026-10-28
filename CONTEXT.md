@@ -68,6 +68,14 @@ _Avoid_: 固件版本、网页更新时间
 板端已将人工确认的配置持久化并用于正常采集。传感器是否在线及其读数由之后的实际通信确定。
 _Avoid_: 消息已发送、传感器已在线
 
+**Register Formula**:
+在一份有效寄存器采样块上执行受限换算，得到供显示和规则判断使用的工程值。公式计算不授予采集、配置或确认权限。
+_Avoid_: 远程执行脚本、AI 推测值、配置确认
+
+**Sample Block**:
+同一采集请求从一个从机的连续寄存器范围取得的数据及有效性。不同轮次或缺失的寄存器值不能拼接成一份有效采样块。
+_Avoid_: 跨轮次缓存、设备内部采样原子性的保证
+
 **Alarm Interpretation Session**:
 An Agent session started when a rule-engine alarm is raised (event-driven), which gathers alarm context and live values to produce a human-readable explanation marked as AI-generated.
 _Avoid_: fault triage, diagnostic ticket, troubleshooting session
