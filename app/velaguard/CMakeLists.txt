@@ -50,6 +50,9 @@ if(CONFIG_VG_BRINGUP_TOOLS)
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_fat.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_bcb.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_boot.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_sha256.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_manifest.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_install.c
       INCLUDE_DIRECTORIES
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core
            ${CMAKE_CURRENT_LIST_DIR}/../../scripts/qspi_boot_stub

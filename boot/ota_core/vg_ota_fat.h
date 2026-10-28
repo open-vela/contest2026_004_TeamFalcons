@@ -87,4 +87,9 @@ int vg_ota_fat_read(struct vg_ota_fat_volume *vol,
                     const struct vg_ota_fat_entry *entry,
                     uint32_t offset, uint8_t *buf, uint32_t len);
 
+/* 定位已有文件的扇区，不分配簇、不修改 FAT/目录；只允许扇区对齐偏移。 */
+int vg_ota_fat_file_sector(struct vg_ota_fat_volume *vol,
+                           const struct vg_ota_fat_entry *entry,
+                           uint32_t offset, uint32_t *sector);
+
 #endif

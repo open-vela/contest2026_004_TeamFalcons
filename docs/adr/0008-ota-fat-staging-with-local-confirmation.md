@@ -17,6 +17,7 @@ OTA 使用现有 eMMC FAT，不重新格式化。应用在 `/mnt/emmc/VGOTA/` �
 - QSPI A 槽 `0x90000000`，8MB，出厂和恢复镜像，只由 ST-Link 写入；B 槽 `0x90800000`，8MB，只由 OTA 写入。P0 已复核：单颗 MT25QL512ABB、64MB，两槽都在容量内；QSPI XIP 窗口、MPU、boot stub 和 flash 脚本的地址上限已按 64MB 修正。
 - `BCB0.BIN` 和 `BCB1.BIN` 各 4KB，包含 magic、seq、状态、槽位、版本、task_id、镜像大小、SHA-256 和 CRC。应用通过临时文件加替换更新 BCB；boot stub 读取两份并选择最高有效 seq，trial 和 failed 记录在原文件内就地写入。
 - 不把 BCB 放在片内 Flash。H750 的 128KB 片内 Flash 是单个 128KB 扇区，无法单独擦除；部分字编程还可能触发 ECC 问题。
+- 任务 04 细化启动安装顺序：两份 BCB 预先分配为独立 4 KiB 文件；校验镜像后，先在另一份 BCB 持久化 `FAILED(seq+1)` 并回读，再擦写 B，成功后将原 pending 改为 `TRIAL(seq+2)`。安装中断或 trial 提交撕裂时保留较新的 FAILED，避免误选旧 confirmed B。stub 只更新已有 BCB 首扇区，不修改 FAT/目录；格式见 [启动安装格式](../velaguard-ota-boot-format.md)。
 - 应用校验通过后才写 pending；boot stub 再校验 `MANIFEST.BIN` 的 CRC、`IMAGE.BIN` 的大小和 SHA-256，以及 BCB 的绑定关系。烧写后回读 SHA-256。新固件自检通过后写 confirmed；失败或 trial 次数超限回 A。
 
 ## 安装确认

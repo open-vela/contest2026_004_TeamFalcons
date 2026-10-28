@@ -30,6 +30,7 @@ BOOT_CORE="$REPO_ROOT/boot/ota_core"
   -Wall \
   -Wextra \
   -Werror \
+  -DVG_OTA_STUB_FIXTURES="${OTA_FIXTURES:-0}" \
   -nostartfiles \
   -nostdlib \
   -I"$SCRIPT_DIR" \
@@ -43,6 +44,9 @@ BOOT_CORE="$REPO_ROOT/boot/ota_core"
   "$BOOT_CORE/vg_ota_fat.c" \
   "$BOOT_CORE/vg_ota_bcb.c" \
   "$BOOT_CORE/vg_ota_boot.c" \
+  "$BOOT_CORE/vg_ota_install.c" \
+  "$BOOT_CORE/vg_ota_manifest.c" \
+  "$BOOT_CORE/vg_ota_sha256.c" \
   -o "$OUT_DIR/qspi_bootstub.elf"
 
 "$OBJCOPY" -O ihex "$OUT_DIR/qspi_bootstub.elf" "$OUT_DIR/qspi_bootstub.hex"

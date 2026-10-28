@@ -21,7 +21,9 @@ enum vg_ota_boot_reason_e
   VG_OTA_BOOT_REASON_A_FAT_ERROR,
   VG_OTA_BOOT_REASON_A_READ_ERROR,
   VG_OTA_BOOT_REASON_A_IMAGE_INVALID,
-  VG_OTA_BOOT_REASON_A_SAFE_STOP
+  VG_OTA_BOOT_REASON_A_SAFE_STOP,
+  VG_OTA_BOOT_REASON_B_INSTALLED,
+  VG_OTA_BOOT_REASON_A_INSTALL_FAILED
 };
 
 struct vg_ota_boot_decision
@@ -38,6 +40,9 @@ struct vg_ota_boot_decision
   uint32_t fat_type;
   uint32_t fat_error;
   uint32_t emmc_error;
+  uint32_t install_stage;
+  uint32_t install_error;
+  uint32_t install_bytes;
 };
 
 /* Decides which QSPI slot to boot.  Storage errors always resolve to slot A;

@@ -1,0 +1,48 @@
+Task 04 serial excerpts, 2026-10-28; staging and unconfirmed-request rejection only.
+
+SOURCE: .debug/t04-stage-status.log
+vgota: fixture staged bytes=1520904 task=T04-INSTALL sha=82ecec13; not armed
+vgota: fixture BCB0.BIN valid seq=19 state=failed slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=0
+vgota: fixture BCB1.BIN valid seq=18 state=failed slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=0
+vgota: fixture IMAGE.BIN present size=1520904
+vgota: fixture IMAGE.TMP missing
+vgota: fixture MANIFEST.BIN present size=512
+vgota: fixture BCB0.BIN present size=4096
+vgota: fixture BCB1.BIN present size=4096
+vgota: fixture STATE.BIN missing
+########## vgota fixture status ########## len=775
+vgota: fixture IMAGE.BIN present size=1520904
+vgota: fixture IMAGE.TMP missing
+vgota: fixture MANIFEST.BIN present size=512
+vgota: fixture BCB0.BIN present size=4096
+vgota: fixture BCB1.BIN present size=4096
+vgota: fixture STATE.BIN missing
+
+SOURCE: .debug/t04-unconfirmed-request.log
+########## vgota fixture bcb set 0 pending b 20 1520904 0.1.0 T04-UNCONFIRMED ########## len=177
+vgota: fixture BCB0.BIN seq=20 state=pending slot=B size=1520904 version=0.1.0 task=T04-UNCONFIRMED
+########## vgota reboot ########## len=335
+vgota: safe reboot version=0.1.0 slot=A
+
+SOURCE: .debug/t04-unconfirmed-result.log
+########## vgota identity ########## len=101
+vgota: identity version=0.1.0 slot=A build=72fd0e1d9d84-dirty link=90000000
+########## vgota bootinfo ########## len=216
+vgota: bootinfo slot=A reason=a-install-failed bcb=0 state=pending seq=20 bcb_slot=B valid0=1 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+vgota: install stage=1 error=22 bytes=0
+
+SOURCE: .debug/t04-stage-ready.log
+########## vgota fixture stage 1520904 30 T04-INSTALL ########## len=3063
+vgota: fixture staged bytes=1520904 task=T04-INSTALL sha=82ecec13; not armed
+
+SOURCE: .debug/t04-ready-status.log
+########## vgota fixture bcb status ########## len=293
+vgota: fixture BCB0.BIN valid seq=29 state=failed slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=0
+vgota: fixture BCB1.BIN valid seq=28 state=failed slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=0
+########## vgota fixture status ########## len=357
+vgota: fixture IMAGE.BIN present size=1520904
+vgota: fixture IMAGE.TMP missing
+vgota: fixture MANIFEST.BIN present size=512
+vgota: fixture BCB0.BIN present size=4096
+vgota: fixture BCB1.BIN present size=4096
+vgota: fixture STATE.BIN missing

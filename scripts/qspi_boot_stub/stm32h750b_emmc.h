@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 /* Minimal polling SDMMC1 driver for the soldered eMMC.  It always uses the
- * 1-bit bus at default speed and never writes to the card.
+ * 1-bit bus at default speed.  写入只供启动安装器更新已有 BCB 扇区。
  */
 
 int vg_emmc_init(void);
@@ -14,5 +14,7 @@ uint32_t vg_emmc_error(void);
 /* Matches vg_ota_block_read_fn.  ctx is ignored. */
 int vg_emmc_read_blocks(void *ctx, uint32_t sector, uint8_t *buf,
                         uint32_t count);
+int vg_emmc_write_sector(void *ctx, uint32_t sector, const uint8_t *buf);
+int vg_emmc_sync(void *ctx);
 
 #endif

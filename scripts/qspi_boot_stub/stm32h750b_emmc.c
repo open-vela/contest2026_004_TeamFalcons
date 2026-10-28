@@ -1,10 +1,9 @@
 /*
  * Minimal polling SDMMC1 driver for the soldered eMMC on STM32H750B-DK.
  *
- * Only 1-bit, default-speed, single/multi-block reads are implemented.
- * The boot stub runs with interrupts disabled, so every wait is a bounded
- * poll.  A failure is reported to the caller, which falls back to slot A;
- * this driver never writes to the card.
+ * 使用单线默认速率，支持块读及已有 BCB 的单扇区更新。
+ * boot stub 关闭中断，所有硬件等待均有轮询上限；错误交由上层回 A。
+ * 写入地址由安装核心从已有 BCB 文件映射，不修改 FAT 或目录。
  */
 
 #include <stdint.h>
@@ -96,6 +95,7 @@ static uint32_t g_sectors;
 static uint32_t g_error;
 static uint32_t g_sector_mode;
 static uint32_t g_data_stage;
+static uint32_t g_cache_enabled;
 
 static void delay_cycles(uint32_t count)
 {
@@ -386,6 +386,7 @@ int vg_emmc_init(void)
   g_sectors = 0;
   g_error = 0;
   g_sector_mode = 1;
+  g_cache_enabled = 0;
 
   gpio_init();
 
@@ -483,6 +484,7 @@ int vg_emmc_init(void)
   g_sectors = (uint32_t)extcsd[212] | ((uint32_t)extcsd[213] << 8) |
               ((uint32_t)extcsd[214] << 16) |
               ((uint32_t)extcsd[215] << 24);
+  g_cache_enabled = extcsd[33] & 1u;
 
   if (g_sectors < 2)
     {
@@ -536,4 +538,67 @@ int vg_emmc_read_blocks(void *ctx, uint32_t sector, uint8_t *buf,
     }
 
   return 0;
+}
+
+static int wait_card_ready(void)
+{
+  uint32_t i;
+  for (i=0; i<100000u; i++)
+    {
+      uint32_t r1;
+      if (send_cmd(13,1u<<16,SDMMC_CMD_WAITRESP_SHORT)) return -1;
+      r1=REG32(SDMMC_RESP1);
+      if (r1 & 0xfdffa080u) return -1;
+      if ((r1 & (1u<<8)) && ((r1>>9)&15u)==4u) return 0;
+    }
+  return -1;
+}
+
+int vg_emmc_sync(void *ctx)
+{
+  (void)ctx;
+  if (wait_card_ready()) { g_error=41; return -1; }
+  if (g_cache_enabled)
+    {
+      /* eMMC FLUSH_CACHE，写后等待卡回到 TRAN，再向上层报告持久化。 */
+      if (send_cmd(6,0x03200100u,SDMMC_CMD_WAITRESP_SHORT) || wait_card_ready())
+        { g_error=42; return -1; }
+    }
+  return 0;
+}
+
+int vg_emmc_write_sector(void *ctx, uint32_t sector, const uint8_t *buf)
+{
+  uint32_t i, timeout, arg;
+  (void)ctx;
+  if (!buf || sector>=g_sectors || wait_card_ready())
+    { g_error=43; return -1; }
+  arg=g_sector_mode ? sector : sector*512u;
+  clear_flags();
+  REG32(SDMMC_DTIMER)=0xffffffffu;
+  REG32(SDMMC_DLEN)=512u;
+  REG32(SDMMC_DCTRL)=SDMMC_DCTRL_DBLOCKSIZE_512;
+  REG32(SDMMC_ARG)=arg;
+  REG32(SDMMC_CMD)=24u | SDMMC_CMD_WAITRESP_SHORT |
+                    SDMMC_CMD_CMDTRANS | SDMMC_CMD_CPSMEN;
+  if (wait_status(SDMMC_STA_CMDREND,2000000u)) goto fail;
+  if (REG32(SDMMC_RESP1)&0xfdffa080u) goto fail;
+  for (i=0; i<128u; i++)
+    {
+      timeout=2000000u;
+      while (REG32(SDMMC_STA)&(1u<<16)) /* TXFIFOF */
+        if ((REG32(SDMMC_STA)&SDMMC_ERR_MASK) || timeout--==0) goto fail;
+      REG32(SDMMC_FIFO)=(uint32_t)buf[i*4] | ((uint32_t)buf[i*4+1]<<8) |
+          ((uint32_t)buf[i*4+2]<<16) | ((uint32_t)buf[i*4+3]<<24);
+    }
+  if (wait_status(SDMMC_STA_DATAEND,20000000u)) goto fail;
+  REG32(SDMMC_DCTRL)=0;
+  REG32(SDMMC_DLEN)=0;
+  clear_flags();
+  if (wait_card_ready()) goto fail;
+  return 0;
+fail:
+  g_error=44;
+  abort_transfer();
+  return -1;
 }

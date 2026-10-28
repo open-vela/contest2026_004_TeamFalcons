@@ -11,6 +11,7 @@
 
 #include "stm32h750b_emmc.h"
 #include "vg_ota_boot.h"
+#include "vg_ota_install.h"
 #include "vg_ota_mbox.h"
 
 #define REG32(a) (*(volatile uint32_t *)(uintptr_t)(a))
@@ -455,6 +456,98 @@ static int qspi_no_data_addr(uint8_t inst, uint32_t addr)
   return 0;
 }
 
+static int install_range(uint32_t address, uint32_t len)
+{
+  return address>=APP_B_BASE && address<APP_B_BASE+APP_SLOT_SIZE &&
+         len>0 && len<=APP_B_BASE+APP_SLOT_SIZE-address;
+}
+
+static int install_ready(void)
+{
+  uint32_t i;
+  uint8_t status[2];
+  for (i=0; i<200000u; i++)
+    {
+      if (qspi_indirect_read(0x05,0,0,0,status,2)) return -1;
+      if (!((status[0]|status[1])&1u)) return 0;
+    }
+  return -1;
+}
+
+static int install_write_enable(void)
+{
+  uint8_t status[2];
+  if (install_ready() || qspi_no_data(0x06) ||
+      qspi_indirect_read(0x05,0,0,0,status,2)) return -1;
+  return (status[0]&2u) && (status[1]&2u) ? 0 : -1;
+}
+
+static int install_erase(void *ctx, uint32_t address, uint32_t len)
+{
+  uint8_t id[6];
+  (void)ctx;
+  if (!install_range(address,len) || len!=VG_OTA_ERASE_BYTES ||
+      address%VG_OTA_ERASE_BYTES) return -1;
+  qspi_abort();
+  qspi_select_dual();
+  /* DFM 将两颗器件的字节交错；ID/状态也必须读取偶数字节。 */
+  if (qspi_indirect_read(0x9f,0,0,0,id,6) ||
+      id[0]!=0x20 || id[1]!=0x20 || id[2]!=0xba || id[3]!=0xba ||
+      id[4]!=0x20 || id[5]!=0x20) return -1;
+  if (install_write_enable() ||
+      qspi_no_data_addr(0x21,address-APP_A_BASE)) return -1;
+  return install_ready();
+}
+
+static int install_program(void *ctx, uint32_t address,
+                            const uint8_t *data, uint32_t len)
+{
+  uint8_t page[VG_OTA_PROGRAM_BYTES];
+  uint32_t i;
+  (void)ctx;
+  if (!data || !install_range(address,VG_OTA_PROGRAM_BYTES) ||
+      !len || len>sizeof(page) || address%VG_OTA_PROGRAM_BYTES) return -1;
+  for (i=0; i<sizeof(page); i++) page[i]=i<len ? data[i] : 0xff;
+  qspi_abort();
+  qspi_select_dual();
+  if (install_write_enable() ||
+      qspi_indirect_write(0x12,address-APP_A_BASE,page,sizeof(page))) return -1;
+  return install_ready();
+}
+
+static int install_read_flash(void *ctx, uint32_t address,
+                               uint8_t *data, uint32_t len)
+{
+  uint32_t i;
+  (void)ctx;
+  if (!data || !install_range(address,len)) return -1;
+  qspi_enter_memory_mapped();
+  for (i=0; i<len; i++) data[i]=*(volatile uint8_t *)(uintptr_t)(address+i);
+  return 0;
+}
+
+static void install_progress(void *ctx, uint32_t stage, uint32_t bytes)
+{
+  (void)ctx;
+  VG_OTA_MBOX->install_stage=stage;
+  VG_OTA_MBOX->install_bytes=bytes;
+  __asm__ volatile ("dsb 0xf" ::: "memory");
+}
+
+static void hardware_device_id(char out[32])
+{
+  static const char hex[]="0123456789abcdef";
+  volatile const uint8_t *uid=(volatile const uint8_t *)0x1ff1e800u;
+  uint32_t i;
+  out[0]='v'; out[1]='g'; out[2]='-';
+  for (i=0; i<12; i++)
+    {
+      out[3+i*2]=hex[uid[i]>>4];
+      out[4+i*2]=hex[uid[i]&15u];
+    }
+  out[27]=0;
+}
+
 static int qspi_scratch_one(uint32_t flash, uint32_t addr)
 {
   volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
@@ -732,6 +825,9 @@ static void publish_boot(const struct vg_ota_boot_decision *d,
   mbox->boot_fat_type = d->fat_type;
   mbox->boot_fat_error = d->fat_error;
   mbox->boot_emmc_error = d->emmc_error;
+  mbox->install_stage = d->install_stage;
+  mbox->install_error = d->install_error;
+  mbox->install_bytes = d->install_bytes;
 
   __asm__ volatile ("dsb 0xf" ::: "memory");
 }
@@ -742,10 +838,27 @@ static void boot_select(void)
   uint32_t target = APP_A_BASE;
   uint32_t slot = VG_OTA_BCB_SLOT_A;
   uint32_t reason;
+  char device_id[32];
 
   if (vg_emmc_init() == 0)
     {
       vg_ota_boot_decide(vg_emmc_read_blocks, 0, vg_emmc_sector_count(), &d);
+      if (d.reason==VG_OTA_BOOT_REASON_A_PENDING)
+        {
+          struct vg_ota_install_ports p={0};
+          hardware_device_id(device_id);
+          p.read=vg_emmc_read_blocks; p.sectors=vg_emmc_sector_count();
+          p.write_sector=vg_emmc_write_sector; p.sync=vg_emmc_sync;
+          p.erase=install_erase; p.program=install_program;
+          p.read_flash=install_read_flash; p.device_id=device_id;
+          p.allow_fixture=VG_OTA_STUB_FIXTURES;
+          p.progress=install_progress;
+          vg_ota_install_pending(&p,&d);
+          qspi_abort();
+          qspi_select_dual();
+          install_ready();
+          qspi_enter_memory_mapped();
+        }
       if (d.emmc_error == 0 && vg_emmc_error() != 0)
         {
           d.emmc_error = vg_emmc_error();
@@ -836,6 +949,19 @@ void *memset(void *dst, int c, size_t len)
     }
 
   return dst;
+}
+
+int memcmp(const void *a, const void *b, size_t n)
+{
+  const uint8_t *x=a, *y=b;
+  while (n--) { if (*x!=*y) return (int)*x-(int)*y; x++; y++; }
+  return 0;
+}
+
+int strcmp(const char *a, const char *b)
+{
+  while (*a && *a==*b) { a++; b++; }
+  return (int)(uint8_t)*a-(int)(uint8_t)*b;
 }
 
 void Default_Handler(void)

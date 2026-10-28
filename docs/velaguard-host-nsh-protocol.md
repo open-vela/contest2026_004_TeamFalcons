@@ -486,5 +486,9 @@ JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}`
 | `vgota fixture bcb set <0\|1> <state> <a\|b> <seq> <size> [ver] [task]` | 生成 4 KiB 测试 BCB；state 为 pending/trial/confirmed/failed，size 为 1..8388608，seq 为 uint32 |
 | `vgota fixture bcb corrupt <0\|1> <offset>` | 翻转 BCB 头部字节，offset 为 0..139 |
 | `vgota fixture bcb clear` | 只删除 BCB0.BIN 和 BCB1.BIN |
+| `vgota fixture stage <bytes> <seq> [task]` | 仅在 A 运行时，从固定测试传输窗口 0x91000000 复制镜像到 eMMC，生成真实摘要的 fixture manifest 和两份 FAILED BCB，不授权安装 |
+| `vgota fixture arm` | 等待 USER 键先释放、再长按 2 秒，随后重新检查镜像摘要并写 pending；60 秒内未按键则取消，不自动重启 |
 
-固定文件名为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`，路径始终位于现有 `/mnt/emmc/VGOTA/`。测试 BCB 使用虚构摘要，仅用于 ST-Link 预写 B 镜像后的槽位选择验收，不代表签名、镜像校验或本地安装确认。当前 pending 始终回 A；trial 计数、看门狗和失败回滚按后续任务实现。
+固定文件名为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`，路径始终位于现有 `/mnt/emmc/VGOTA/`。`bcb set` 仍使用虚构摘要，未带本地确认标志的 pending 会拒绝安装；它只用于损坏输入验收。`stage/arm` 使用真实镜像摘要，只有本机按键确认后才写入可安装的测试 pending。正式屏幕确认及完整安全联锁属于任务 07；trial 计数、看门狗和自检回滚属于任务 05。二进制格式与持久化顺序见 [OTA 启动安装格式](velaguard-ota-boot-format.md)。
+
+`vgota bootinfo` 另输出 `install stage=<n> error=<errno> bytes=<n>`：0=未安装，1=元数据，2=镜像预检，3=持久化 FAILED，4=擦除，5=编程，6=回读，7=提交 TRIAL，8=安装完成。`error=0` 只表示该次启动安装路径没有返回错误，不表示完整 OTA 或自检已完成。

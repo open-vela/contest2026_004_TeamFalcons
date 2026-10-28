@@ -252,6 +252,10 @@ const char *vg_ota_boot_reason_name(uint32_t reason)
         return "a-image-invalid";
       case VG_OTA_BOOT_REASON_A_SAFE_STOP:
         return "a-safe-stop";
+      case VG_OTA_BOOT_REASON_B_INSTALLED:
+        return "b-installed";
+      case VG_OTA_BOOT_REASON_A_INSTALL_FAILED:
+        return "a-install-failed";
       default:
         return "none";
     }

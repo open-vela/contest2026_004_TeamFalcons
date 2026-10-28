@@ -26,6 +26,10 @@
 #include "vg_ota_probe.h"
 #include "vg_ota_reboot.h"
 #include "vg_ota_mbox.h"
+#include "vg_ota_manifest.h"
+#include "vg_ota_sha256.h"
+#include "vg_ota_install.h"
+#include "vg_device_id.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
 #define VG_EMMC_MOUNT "/mnt/emmc"
@@ -47,6 +51,8 @@ static void usage(void)
   printf("  vgota fixture bcb set <0|1> <state> <a|b> <seq> <size> [ver] [task]\n");
   printf("  vgota fixture bcb corrupt <0|1> <offset>\n");
   printf("  vgota fixture bcb clear\n");
+  printf("  vgota fixture stage <bytes> <seq> [task]\n");
+  printf("  vgota fixture arm\n");
 #endif
 }
 
@@ -83,6 +89,8 @@ static void print_bootinfo(void)
          mbox->boot_bcb_error,
          vg_ota_fat_type_name((enum vg_ota_fat_type_e)mbox->boot_fat_type),
          mbox->boot_fat_error, mbox->boot_emmc_error);
+  printf("vgota: install stage=%" PRIu32 " error=%" PRIu32 " bytes=%" PRIu32 "\n",
+         mbox->install_stage,mbox->install_error,mbox->install_bytes);
 }
 
 static void print_hex(const char *label, const uint8_t *buf, size_t len)
@@ -729,11 +737,123 @@ static int cmd_fixture_bcb(int argc, char *argv[])
   return 1;
 }
 
+static int fixture_image_hash(uint8_t digest[32])
+{
+  struct vg_ota_sha256 sha;
+  uint8_t buf[512];
+  ssize_t n;
+  int fd=open(VG_OTA_DIR "/IMAGE.BIN",O_RDONLY);
+  if (fd<0) return 1;
+  vg_ota_sha256_init(&sha);
+  while ((n=read(fd,buf,sizeof(buf)))>0)
+    vg_ota_sha256_update(&sha,buf,(uint32_t)n);
+  close(fd);
+  if (n<0) return 1;
+  vg_ota_sha256_final(&sha,digest);
+  return 0;
+}
+
+/* ST-Link 只把传输副本写到固定测试窗口，B 槽交给 boot stub 安装。 */
+static int fixture_stage(int argc, char *argv[])
+{
+  struct vg_ota_manifest m;
+  struct vg_ota_bcb b;
+  uint8_t buf[4096];
+  uint32_t size, seq, off, n, i;
+  volatile const uint8_t *src=(volatile const uint8_t *)0x91000000u;
+  int fd;
+  if ((argc!=5 && argc!=6) || vg_fw_slot()!='A' ||
+      parse_u32(argv[3],&size) || parse_u32(argv[4],&seq) ||
+      size<8 || size>VG_OTA_IMAGE_MAX_BYTES) return 1;
+  for (i=0; i<8; i++) buf[i]=src[i];
+  if (!vg_ota_image_vector_valid(buf,size))
+    { printf("vgota: fixture transport vector invalid\n"); return 1; }
+  memset(&m,0,sizeof(m));
+  snprintf(m.task_id,sizeof(m.task_id),"%s",argc==6 ? argv[5] : "T04-FIXTURE");
+  if (argc==6 && strlen(argv[5])>=sizeof(m.task_id)) return 1;
+  m.slot=VG_OTA_BCB_SLOT_B; m.image_size=size;
+  m.flags=VG_OTA_MANIFEST_FIXTURE; m.issued_at=1; m.expires_at=UINT64_MAX;
+  snprintf(m.version,sizeof(m.version),"%s",vg_fw_version());
+  snprintf(m.device_id,sizeof(m.device_id),"%s",vg_device_id());
+  snprintf(m.model,sizeof(m.model),"%s",VG_OTA_MODEL);
+  snprintf(m.key_id,sizeof(m.key_id),"fixture");
+  if (mkdir(VG_OTA_DIR,0755)<0 && errno!=EEXIST) return 1;
+  fd=open(VG_OTA_DIR "/IMAGE.BIN",O_WRONLY|O_CREAT|O_TRUNC,0644);
+  if (fd<0) return 1;
+  for (off=0; off<size; off+=n)
+    {
+      n=size-off; if (n>sizeof(buf)) n=sizeof(buf);
+      for (i=0; i<n; i++) buf[i]=src[off+i];
+      if (write(fd,buf,n)!=(ssize_t)n) { close(fd); return 1; }
+    }
+  if (fsync(fd)<0) { close(fd); return 1; }
+  close(fd);
+  if (fixture_image_hash(m.sha256) || vg_ota_manifest_encode(&m,buf) ||
+      fixture_store("MANIFEST.BIN",buf,512)) return 1;
+  memset(&b,0,sizeof(b));
+  b.slot=VG_OTA_BCB_SLOT_B; b.image_size=size; b.state=VG_OTA_BCB_STATE_FAILED;
+  snprintf(b.version,sizeof(b.version),"%s",m.version);
+  snprintf(b.task_id,sizeof(b.task_id),"%s",m.task_id);
+  memcpy(b.sha256,m.sha256,32);
+  b.seq=seq-1u;
+  if (vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
+      fixture_store("BCB0.BIN",buf,sizeof(buf))) return 1;
+  b.seq=seq-2u;
+  if (vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
+      fixture_store("BCB1.BIN",buf,sizeof(buf))) return 1;
+  sync();
+  printf("vgota: fixture staged bytes=%" PRIu32 " task=%s sha=%02x%02x%02x%02x; not armed\n",
+         size,m.task_id,m.sha256[0],m.sha256[1],m.sha256[2],m.sha256[3]);
+  return 0;
+}
+
+static int fixture_arm(void)
+{
+  struct vg_ota_manifest m;
+  struct vg_ota_bcb b, other;
+  uint8_t buf[4096], digest[32];
+  uint32_t i, held=0;
+  const char *target;
+  if (vg_fw_slot()!='A' || fixture_read("MANIFEST.BIN",buf,512) ||
+      vg_ota_manifest_decode(buf,512,&m) || m.flags!=VG_OTA_MANIFEST_FIXTURE ||
+      fixture_read("BCB0.BIN",buf,4096) || vg_ota_bcb_decode(buf,4096,&b) ||
+      fixture_read("BCB1.BIN",buf,4096) || vg_ota_bcb_decode(buf,4096,&other))
+    return 1;
+  if (vg_ota_bcb_seq_newer(other.seq,b.seq))
+    { b=other; target="BCB0.BIN"; }
+  else target="BCB1.BIN";
+  b.seq++; b.state=VG_OTA_BCB_STATE_PENDING;
+  b.flags=VG_OTA_BCB_LOCAL_CONFIRMED; b.trial_count=0;
+  if (vg_ota_manifest_bind(&m,&b,vg_device_id(),1)) return 1;
+  printf("vgota: fixture local confirmation version=%s task=%s bytes=%" PRIu32 "\n",
+         m.version,m.task_id,m.image_size);
+  printf("vgota: release board USER button, then hold it for 2 seconds within 60 seconds\n");
+  fflush(stdout);
+  /* 必须先释放再按下，串口命令和调用方不能代替本机按键事件。 */
+  for (i=0; i<600 && board_buttons()!=0; i++) usleep(100000);
+  if (i==600) return 1;
+  for (i=0; i<600 && held<20; i++)
+    {
+      held=board_buttons()!=0 ? held+1 : 0;
+      usleep(100000);
+    }
+  if (held<20) { printf("vgota: fixture local confirmation timed out\n"); return 1; }
+  if (fixture_image_hash(digest) || memcmp(digest,m.sha256,32) ||
+      vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
+      fixture_store(target,buf,sizeof(buf))) return 1;
+  sync();
+  printf("vgota: fixture pending locally confirmed seq=%" PRIu32 "\n",b.seq);
+  return 0;
+}
+
 static int cmd_fixture(int argc, char *argv[])
 {
   char *end;
   unsigned long size;
   unsigned long seed = 0;
+
+  if (argc>=3 && strcmp(argv[2],"stage")==0) return fixture_stage(argc,argv);
+  if (argc==3 && strcmp(argv[2],"arm")==0) return fixture_arm();
 
   if (argc >= 3 && strcmp(argv[2], "bcb") == 0)
     {

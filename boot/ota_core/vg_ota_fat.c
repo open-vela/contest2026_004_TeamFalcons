@@ -832,3 +832,30 @@ int vg_ota_fat_read(struct vg_ota_fat_volume *vol,
       }
     }
 }
+
+int vg_ota_fat_file_sector(struct vg_ota_fat_volume *vol,
+                           const struct vg_ota_fat_entry *entry,
+                           uint32_t offset, uint32_t *sector)
+{
+  uint32_t cluster, skip, cluster_bytes;
+  struct chain_guard guard;
+  if (!vol || !entry || !sector || offset % 512u ||
+      offset >= entry->size || entry->first_cluster < 2 ||
+      entry->first_cluster > vol->max_cluster) return -EINVAL;
+  cluster_bytes=vol->info.sectors_per_cluster*512u;
+  skip=offset/cluster_bytes;
+  if (skip>=vol->info.cluster_count) return -EIO;
+  cluster=entry->first_cluster;
+  guard.anchor=cluster; guard.power=1; guard.length=0;
+  while (skip--)
+    {
+      int eoc=0;
+      uint32_t next=0;
+      if (fat_next_cluster(vol,cluster,&next,&eoc) || eoc ||
+          chain_advance(&guard,next)) return -EIO;
+      cluster=next;
+    }
+  *sector=vol->first_data+(cluster-2u)*vol->info.sectors_per_cluster+
+          (offset%cluster_bytes)/512u;
+  return volume_sector_ok(vol,*sector) ? 0 : -EIO;
+}
