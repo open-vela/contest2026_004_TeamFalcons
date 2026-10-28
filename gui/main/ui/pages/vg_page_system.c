@@ -58,9 +58,14 @@ static void refresh_system(void * user)
              s->latency_ms >= 999 ? vg_color_crit() : vg_color_ok());
     set_tile(s_sys_ui.tile_val[3], s->rs485_ok ? "正常" : "故障",
              s->rs485_ok ? vg_color_ok() : vg_color_crit());
-    lv_snprintf(buf, sizeof(buf), "%d%%", (int)s->fs_free_pct);
-    set_tile(s_sys_ui.tile_val[4], buf,
-             offline ? vg_color_warn() : vg_color_ok());
+    if(s->fs_free_pct >= 0) {
+        lv_snprintf(buf, sizeof(buf), "%d%%", (int)s->fs_free_pct);
+        set_tile(s_sys_ui.tile_val[4], buf,
+                 offline ? vg_color_warn() : vg_color_ok());
+    }
+    else {
+        set_tile(s_sys_ui.tile_val[4], "--", vg_color_muted());
+    }
     set_tile(s_sys_ui.tile_val[5], s->audio_ok ? "正常" : "故障",
              s->audio_ok ? vg_color_ok() : vg_color_crit());
     lv_snprintf(buf, sizeof(buf), "%s · %s", s->version, s->slot);

@@ -101,7 +101,7 @@ vgota: identity version=0.1.0 slot=A build=06966ea7f721 link=90000000
 
 ## 屏幕
 
-系统页显示 `版本 0.1.0 · A`，OTA 行显示 `0.1.0 · 无更新`：
+系统页显示 `版本 0.1.0 · A`，OTA 行显示 `0.1.0 · 无更新`。FS 瓦片改为读取 `/data` 的 `statfs`，截图中为 99%：
 
 ![系统页版本和槽位](t02-system-page.png)
 

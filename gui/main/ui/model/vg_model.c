@@ -8,6 +8,7 @@
 #ifdef VG_HMI_BOARD
 #include "vg_alarm_eval.h"
 #include "vg_fw_identity.h"
+#include <sys/statfs.h>
 #endif
 #include <stdio.h>
 #include <stdlib.h>
@@ -980,7 +981,20 @@ static void refresh_sys_status(void)
     s_sys.mimo_ok = s_net.mimo_ok;
     s_sys.latency_ms = s_net.latency_ms;
     s_sys.rs485_ok = s_net.acq_ok;
+#ifdef VG_HMI_BOARD
+    {
+        struct statfs fs;
+        if(statfs("/data", &fs) == 0 && fs.f_blocks > 0) {
+            s_sys.fs_free_pct = (int32_t)(((uint64_t)fs.f_bfree * 100u) /
+                                          (uint64_t)fs.f_blocks);
+        }
+        else {
+            s_sys.fs_free_pct = -1;
+        }
+    }
+#else
     s_sys.fs_free_pct = 78;
+#endif
     s_sys.audio_ok = s_net.aud_ok;
 #ifdef VG_HMI_BOARD
     snprintf(s_sys.version, sizeof(s_sys.version), "%s", vg_fw_version());
