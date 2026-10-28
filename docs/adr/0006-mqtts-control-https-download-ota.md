@@ -1,6 +1,6 @@
 # OTA采用MQTTS控制与HTTPS固件下载
 
-状态：已确认设计，待实现和验收。
+状态：已确认设计，待实现和验收；暂存介质、槽位和本地安装确认见 [ADR 0008](0008-ota-fat-staging-with-local-confirmation.md)。
 
 日期：2026-10-18。来源为用户在本次会话中确认的方案，替代 [ADR 0005](0005-mqtt-only-pull-based-ota.md)。
 

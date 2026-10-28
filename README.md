@@ -235,10 +235,10 @@ nsh> cat /data/velaguard/logs/agent_tools.log          # 工具调用审计
 | HMI | 诊断 / 日志 / 系统页 | 阶段 2（占位 toast） | `gui/main/ui/shell/vg_shell.c` |
 | 网络 | RJ45 主 + ESP-01S 备：ping 判健康、热备切换、指数退避、稳定窗口回切 | 已落地 | `vg_net_mgr.c`、`vg_net_policy.c` |
 | 网络 | MQTT 四主题上报看板（status / telemetry / alarm / point_table，明文 1883 + 测试凭据） | 已落地 | `vg_mqtt_session.c`、`docs/velaguard-mqtt-contract.md` |
-| 网络 | MQTTS、每设备 HMAC token、OTA 主题 | 规划 | 手册 §16.1、ADR 0005 |
+| 网络 | MQTTS、每设备鉴权、OTA 主题 | 规划 | 手册 §16.1、ADR 0006/0008 |
 | 存储与启动 | eMMC（SDMMC1 + FAT）；配置元数据双槽 + CRC32 + 序号；实际点表使用校验替换与备份 | 已落地 | `vg_config_store.c`、nuttx 板级 `stm32_sdmmc.c` |
 | 存储与启动 | QSPI XIP 启动 + 片内 boot stub | 已落地 | nuttx PR #350、`scripts/qspi_boot_stub/` |
-| 存储与启动 | MQTT-only OTA（下载到 eMMC → boot stub 烧写 QSPI） | 阶段 3 | `docs/adr/0005-mqtt-only-pull-based-ota.md` |
+| 存储与启动 | OTA（MQTTS 控制 + HTTPS 下载，现有 FAT 暂存，A/B 槽，本地安装确认） | 待实现 | `docs/adr/0006-mqtts-control-https-download-ota.md`、`docs/adr/0008-ota-fat-staging-with-local-confirmation.md` |
 | 配套 | Windows 点表上位机：导入 / 编辑 / 试读 / 人工确认落盘 | 已落地 | [FoLeaf/velaguard_host](https://github.com/FoLeaf/velaguard_host) |
 | 配套 | 只读云看板：订阅四主题，SQLite 留档，中文网页查询 | 已落地 | [FoLeaf/velaguard_mimo2mqtt](https://github.com/FoLeaf/velaguard_mimo2mqtt) · [velaguard.19y.cc](https://velaguard.19y.cc/) |
 | 工程 | 主机测试 25 个目标（含存储故障、工具超时、回调和文件权限回归） | 已落地 | `app/velaguard/host_tests/` |

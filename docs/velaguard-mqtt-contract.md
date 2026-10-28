@@ -14,6 +14,7 @@ VelaGuard 板端 ──MQTT──▶ Broker 8.148.67.174:1883 ◀──只读订
 
 - LLM 走板载 `ai_agent` HTTPS 直连 MiMo，不走 MQTT（手册 §8.2、V4）。
 - 当前MQTT只承载status / telemetry / alarm / point_table，OTA主题未实现。用户2026-10-18选择新增MQTT候选接入，见 [独立协议草案](velaguard-candidate-mqtt-protocol.md) 与 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md)；配置请求与状态主题均待实现，四类上报载荷保持。
+- OTA控制按 [ADR 0006](adr/0006-mqtts-control-https-download-ota.md) 和 [ADR 0008](adr/0008-ota-fat-staging-with-local-confirmation.md) 设计：MQTTS承载升级通知、接受状态、进度、自检确认和结果，HTTPS下载镜像；镜像暂存在现有eMMC FAT的`/mnt/emmc/VGOTA/`。安装必须在板载屏幕按task_id和版本本地确认，MQTT不提供远程安装授权；`ota/confirm`只表示设备自检通过。主题、QoS和载荷仍待专用协议，当前未实现。
 - 本地安全环不依赖MQTT。云看板保持只读；新增配置服务仅可按网关绑定权限发布专用候选请求，不可远程确认生效，也不恢复AI/语音主题。
 
 ## 2. 连接

@@ -27,7 +27,7 @@
 | V4 | [HTTPS LLM、密钥与 MQTT 分工](../../AGENTS.md#v4) |
 | V5 | [只读权限与人工确认](../../AGENTS.md#v5) |
 | V6 | [手册辅助接入与维护扫描](../../AGENTS.md#v6) |
-| V7 | [MQTTS控制、HTTPS下载与QSPI](../../AGENTS.md#v7) |
+| V7 | [MQTTS控制、HTTPS下载、FAT暂存与本地确认](../../AGENTS.md#v7) |
 | V8 | [任务范围与用户选择](../../AGENTS.md#v8) |
 | V9 | [产品名称与文档职责](../../AGENTS.md#v9) |
 | V10 | [已授权目标与延期范围](../../AGENTS.md#v10) |

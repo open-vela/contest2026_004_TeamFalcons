@@ -267,13 +267,14 @@ CONFIG_FS_LITTLEFS=y
 
 ## 8. 阶段 3：OTA
 
-硬依赖 eMMC 就绪。这是一个独立的 bootloader 工程。
+硬依赖 eMMC 就绪。这是一个独立的 bootloader 工程。决策见 ADR 0006 和 ADR 0008。
 
-- MQTT 分片下载镜像到 eMMC
-- sha256 + 数字签名校验
-- 扩展片内 Flash 的 boot stub：读升级标志 → 校验 → 擦写 QSPI → 跳转
+- MQTTS 控制 + HTTPS 下载镜像到现有 FAT 的 `/mnt/emmc/VGOTA/`，不格式化 eMMC
+- boot stub 只读 FAT16/32，读 BCB 和镜像，校验后擦写 QSPI B 槽
+- A 槽为出厂恢复镜像，B 槽只做 OTA；失败回 A
+- SHA-256 + ECDSA 签名校验；下载后等待用户在板载屏幕按版本确认
 - 新固件自检与 confirm / rollback
-- 失败注入测试：chunk 丢失、校验失败、签名失败、烧写中途断电
+- 失败注入测试：下载中断、摘要不符、签名失败、BCB 撕裂、烧写中途断电、B 自检失败
 
 ---
 

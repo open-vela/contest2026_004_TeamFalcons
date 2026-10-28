@@ -120,8 +120,16 @@ _Avoid_: retained request, retained telemetry
 A superseded design that used MQTT/TLS for both update control and firmware chunks. Retained only as the historical term in ADR 0005; replaced on 2026-10-18 by ADR 0006.
 
 **MQTTS Control + HTTPS Download OTA**:
-The accepted, not-yet-implemented update design: MQTTS carries offers and status, HTTPS streams the image to eMMC, and the internal-flash boot stub installs it to QSPI after verification. Startup confirmation and failure recovery require separate implementation and tests.
+The accepted, not-yet-implemented update design: MQTTS carries offers and status, HTTPS streams the image to the OTA staging directory on eMMC, and the internal-flash boot stub installs it to QSPI after verification. Installation requires a local user confirmation per version; startup confirmation and failure recovery require separate implementation and tests. See ADR 0006 and ADR 0008.
 _Avoid_: MQTT firmware chunks, direct writes to executing QSPI, assuming existing MQTT or HTTPS support means OTA is complete
+
+**OTA Staging Directory**:
+The fixed 8.3 directory `/mnt/emmc/VGOTA/` on the existing eMMC FAT. It holds the image, manifest, boot control files, and READY state. The directory is outside `/data` and is managed by the OTA module; OTA does not reformat the eMMC.
+_Avoid_: reserved raw partition, reformatting eMMC for OTA
+
+**Install Confirmation**:
+A local, per-version user approval required before OTA installation. It is produced only by the board's touch or button UI; MQTT, phone, voice, and the device Agent cannot produce it.
+_Avoid_: remote confirm, automatic install, Agent approval
 
 **Board Hardware Pack**:
 The local official STM32H750B-DK materials under `F:\Project\Embeded\H750B-DK\BOARD INFO\H750B-DK` (schematic, manufacturing, ST `bsp/`). **Use when** development depends on the real board circuit (drivers, pinmux, peripheral bring-up, expansion wiring). Then follow `docs/agents/BOUNDARY.md` **V11** priority. Files named `*_unofficial*` are non-authoritative notes that require cross-check. Not required for non-hardware work.
@@ -132,5 +140,5 @@ A cloud-published proposal that describes an available firmware update before Ve
 _Avoid_: firmware image, forced update
 
 **Staging Image**:
-A downloaded firmware image stored outside the currently running firmware slot until signature verification and boot switching.
-_Avoid_: active firmware
+A downloaded firmware image stored in the OTA staging directory on the existing eMMC FAT until signature verification, local install confirmation, and boot switching.
+_Avoid_: active firmware, reserved raw partition
