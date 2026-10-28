@@ -29,7 +29,9 @@
 
 ## 2. 与现行文档和代码的关系
 
-本计划细化 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md) 的网页入口、云端解析与实施顺序，不另建一套候选传输协议。消息与字段继续以 [候选接入协议草案 v0.2](velaguard-candidate-mqtt-protocol.md) 为依据；其中手机端的状态展示规则适用于本计划的手机和电脑网页。
+本计划细化 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md) 的网页入口、云端解析与实施顺序，不另建一套候选传输协议。消息与字段继续以 [候选接入协议草案 v0.3](velaguard-candidate-mqtt-protocol.md) 为依据；其中手机端的状态展示规则适用于本计划的手机和电脑网页。
+
+2026-10-28 补充：[业务通信协议](velaguard-web-sensor-onboarding-protocol.md) 定义 HTTPS 接口、解析与选择版本、主动下发和结果查询，配套候选协议定义唯一的云板消息结构。两份协议均为待实现草案，本计划中的已确认产品选择保持。
 
 当前事实与新增目标须分别记录：
 

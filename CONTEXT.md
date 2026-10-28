@@ -40,6 +40,34 @@ _Avoid_: active config, AI config
 An explicit operator approval on the VelaGuard device before a configuration or risky action becomes active.
 _Avoid_: remote approval, AI approval
 
+**Manual Import**:
+用户为一个目标网关和从机地址提交手册、解析并选择测点的业务过程。网关暂时离线不妨碍准备候选。
+_Avoid_: 配置已生效、一次 MQTT 消息
+
+**Parse Result**:
+一次手册解析得到的型号、测点及原文依据。重新解析产生新结果，不等于设备能力已验证或配置已获确认。
+_Avoid_: 已确认点表、传感器实测值
+
+**Point Selection**:
+用户从当前解析结果中选择一个型号和一组受支持测点，形成准备下发的候选范围。
+_Avoid_: 寄存器编辑、本地确认
+
+**Configuration Attempt**:
+用户一次主动下发及其板端处理结果。结果暂时无法核对时不能将其视为失败并自动重新添加。
+_Avoid_: 手册解析任务、网络重连
+
+**Configuration Session**:
+板端为一次候选接入提供的独占、有时限的处理窗口，包含校验和本地人工确认。
+_Avoid_: 登录会话、MQTT 连接、AI 会话
+
+**Candidate Revision**:
+同一配置会话中候选内容的版本。新版候选受理后，旧版人工确认失效。
+_Avoid_: 固件版本、网页更新时间
+
+**Configuration Applied**:
+板端已将人工确认的配置持久化并用于正常采集。传感器是否在线及其读数由之后的实际通信确定。
+_Avoid_: 消息已发送、传感器已在线
+
 **Alarm Interpretation Session**:
 An Agent session started when a rule-engine alarm is raised (event-driven), which gathers alarm context and live values to produce a human-readable explanation marked as AI-generated.
 _Avoid_: fault triage, diagnostic ticket, troubleshooting session
