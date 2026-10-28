@@ -1,6 +1,5 @@
 #include "vg_pages.h"
 #include "widgets/vg_widgets.h"
-#include "widgets/vg_confirm_dialog.h"
 #include "theme/vg_theme.h"
 #include "model/vg_model.h"
 #include "vg_display.h"
@@ -14,6 +13,8 @@ typedef struct {
     lv_obj_t * of_ver;
     lv_obj_t * of_size;
     lv_obj_t * of_note;
+    lv_obj_t * of_warn;
+    lv_obj_t * of_hint;
     lv_obj_t * progress_box;
     lv_obj_t * bar;
     lv_obj_t * bar_lab;
@@ -23,6 +24,10 @@ typedef struct {
 } ota_ctx_t;
 
 static ota_ctx_t s_ota_ui;
+#define VG_OTA_INSTALL_HOLD_MS 2000u
+static uint32_t s_press_ms;
+static bool s_pressed;
+static char s_press_task[41];
 
 static void show_only(lv_obj_t * show)
 {
@@ -43,24 +48,29 @@ static void show_only(lv_obj_t * show)
     }
 }
 
-static void on_accept_ok(void * user)
+static void on_install_btn_event(lv_event_t * e)
 {
-    LV_UNUSED(user);
-    vg_model_ota_accept();
-}
-
-static void on_upgrade(lv_event_t * e)
-{
-    const vg_ota_t * o = vg_model_get_ota();
-    char body[160];
-    LV_UNUSED(e);
-    /* Body follows the live model offer instead of a hardcoded version */
-    lv_snprintf(body, sizeof(body),
-                "将升级固件到 v%s（%d MB）。升级期间请勿断电，"
-                "否则可能导致设备无法启动。",
-                (o && o->version[0]) ? o->version : "--",
-                o ? (int)o->size_mb : 0);
-    vg_confirm_dialog_create("OTA 升级", body, "high", "立即升级", on_accept_ok, NULL);
+    lv_event_code_t code = lv_event_get_code(e);
+    if(code == LV_EVENT_PRESSED) {
+        const vg_ota_t *o = vg_model_get_ota();
+        s_press_ms = lv_tick_get();
+        s_pressed = true;
+        snprintf(s_press_task, sizeof(s_press_task), "%s", o->task_id);
+    }
+    else if(code == LV_EVENT_PRESSING && s_pressed &&
+            lv_tick_elaps(s_press_ms) >= VG_OTA_INSTALL_HOLD_MS) {
+        const vg_ota_t *o = vg_model_get_ota();
+        s_pressed = false;
+        if(strcmp(s_press_task, o->task_id) != 0) return;
+        if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint, "正在检查安装条件...");
+        vg_model_ota_accept();
+    }
+    else if(code == LV_EVENT_RELEASED || code == LV_EVENT_PRESS_LOST) {
+        s_pressed = false;
+    }
+    else if(code == LV_EVENT_CLICKED) {
+        if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint, "请长按 2 秒确认安装");
+    }
 }
 
 static void on_done(lv_event_t * e)
@@ -101,9 +111,13 @@ static void refresh_ota(void * user)
     switch(o->state) {
         case VG_OTA_OFFER:
             lv_label_set_text(s_ota_ui.of_ver, o->version[0] ? o->version : "--");
-            lv_snprintf(buf, sizeof(buf), "%d MB", (int)o->size_mb);
+            if(o->size_bytes) lv_snprintf(buf, sizeof(buf), "%lu B", (unsigned long)o->size_bytes);
+            else lv_snprintf(buf, sizeof(buf), "%d MB", (int)o->size_mb);
             lv_label_set_text(s_ota_ui.of_size, buf);
             lv_label_set_text(s_ota_ui.of_note, o->note[0] ? o->note : "--");
+            if(o->error[0] && s_ota_ui.of_hint) {
+                lv_label_set_text(s_ota_ui.of_hint, o->error);
+            }
             show_only(s_ota_ui.offer_box);
             break;
 
@@ -135,7 +149,7 @@ static void refresh_ota(void * user)
 static void on_ota_delete(lv_event_t * e)
 {
     LV_UNUSED(e);
-    vg_confirm_dialog_close();
+    s_pressed = false;
     vg_model_off_change(refresh_ota, NULL);
     memset(&s_ota_ui, 0, sizeof(s_ota_ui));
 }
@@ -207,16 +221,25 @@ static void build_offer_step(lv_obj_t * parent)
     lv_obj_t * box = make_step_card(parent);
     lv_obj_t * btn_row;
     lv_obj_t * lab;
+    lv_obj_t * btn_install;
     s_ota_ui.offer_box = box;
 
     lab = lv_label_create(box);
-    lv_label_set_text(lab, "发现新固件");
+    lv_label_set_text(lab, "发现新固件 (待本地确认)");
     vg_style_apply_label(lab, false);
 
     /* vg_metric_row_create returns the row; child 1 is the value label. */
     s_ota_ui.of_ver = lv_obj_get_child(vg_metric_row_create(box, "版本", "--"), 1);
     s_ota_ui.of_size = lv_obj_get_child(vg_metric_row_create(box, "大小", "--"), 1);
     s_ota_ui.of_note = lv_obj_get_child(vg_metric_row_create(box, "说明", "--"), 1);
+
+    s_ota_ui.of_warn = lv_label_create(box);
+    lv_label_set_text(s_ota_ui.of_warn, "安装后设备将重启，升级期间请勿断电");
+    vg_style_apply_label(s_ota_ui.of_warn, true);
+
+    s_ota_ui.of_hint = lv_label_create(box);
+    lv_label_set_text(s_ota_ui.of_hint, "");
+    lv_obj_set_style_text_color(s_ota_ui.of_hint, vg_color_warn(), 0);
 
     btn_row = lv_obj_create(box);
     lv_obj_remove_flag(btn_row, LV_OBJ_FLAG_SCROLLABLE);
@@ -230,8 +253,10 @@ static void build_offer_step(lv_obj_t * parent)
                           LV_FLEX_ALIGN_CENTER);
     lv_obj_set_style_pad_column(btn_row, 8, 0);
 
-    make_btn(btn_row, "立即升级", true, on_upgrade);
-    make_btn(btn_row, "暂不升级", false, on_cancel_offer);
+    btn_install = make_btn(btn_row, "长按安装", true, NULL);
+    lv_obj_add_event_cb(btn_install, on_install_btn_event, LV_EVENT_ALL, NULL);
+
+    make_btn(btn_row, "取消升级", false, on_cancel_offer);
 }
 
 static void build_progress_step(lv_obj_t * parent)

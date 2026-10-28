@@ -464,13 +464,18 @@ JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}`
 
 ### OTA 开发诊断
 
-`vgota` 供开发与维护使用，不向设备端 Agent 开放。当前只具备身份、存储探测、启动选择和安全重启能力；没有安装授权接口，不能据此宣称完整 OTA 已实现。
+`vgota` 供开发与维护使用，不向设备端 Agent 开放。当前具备身份、存储探测、暂存 READY、本机长按安装及启动自检接口。NSH 不能确认安装；HTTPS 下载、生产签名验证和 MQTTS 控制仍待后续任务验收，不能据此宣称完整 OTA 已实现。
 
 | 命令 | 行为 |
 |---|---|
 | `vgota identity` | 输出版本、构建号、当前槽位和链接基址 |
 | `vgota bootinfo` | 输出本次 boot stub 选择的槽位、原因、BCB 编号/状态/序号、两份 BCB 有效性及 FAT/eMMC 错误 |
 | `vgota probe` | 读取 eMMC 身份、容量、FAT、剩余空间，并输出 QSPI 探测结果和 bootinfo |
+| `vgota state` | 查看暂存状态、task_id、版本、字节数、摘要前缀和联锁错误 |
+| `vgota selfcheck [--run]` | 查询 B 槽自检；`--run` 显式运行既有自检 |
+| `vgota confirm` | READY 时拒绝串口确认，提示本机长按；B 槽 trial 时仅保留既有自检确认语义 |
+| `vgota decline [reason]` | 取消 READY 任务，清理镜像和 manifest，持久记录 task_id，不能触发安装 |
+| `vgota expire` | 维护用超时诊断，丢弃 READY 任务；实际超时由 OTA 状态管理器按单调时钟执行 |
 | `vgota reboot` | 同步文件系统后复位，不修改 BCB，也不确认安装 |
 | `vgota qspiprobe` | 读取上次 scratch 探测结果 |
 | `vgota qspiprobe --confirm` | 显式请求重启后执行既有 QSPI scratch 擦写探测，不用于安装 |
@@ -487,8 +492,10 @@ JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}`
 | `vgota fixture bcb corrupt <0\|1> <offset>` | 翻转 BCB 头部字节，offset 为 0..139 |
 | `vgota fixture bcb clear` | 只删除 BCB0.BIN 和 BCB1.BIN |
 | `vgota fixture stage <bytes> <seq> [task]` | 仅在 A 运行时，从固定测试传输窗口 0x91000000 复制镜像到 eMMC，生成真实摘要的 fixture manifest 和两份 FAILED BCB，不授权安装 |
-| `vgota fixture arm` | 等待 USER 键先释放、再长按 2 秒，随后重新检查镜像摘要并写 pending；60 秒内未按键则取消，不自动重启 |
+| `vgota fixture offer <bytes> [ver] [task] [fault]` | 从固定传输窗口生成 fixture Offer，校验后进入 READY；不写 pending |
+| `vgota fixture arm` | 只在 READY 时等待 USER 键先释放、再长按 2 秒；通过与触摸相同的联锁和 BCB 交接后重启；60 秒未按键则退出等待，仍受 READY 的 10 分钟超时约束 |
+| `vgota interlock <alarm\|storage\|digest\|idle\|rj45\|clear\|status>` | 仅 fixture 构建存在，注入阻止安装的故障，不提供跳过真实联锁的选项 |
 
-固定文件名为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`，路径始终位于现有 `/mnt/emmc/VGOTA/`。`bcb set` 仍使用虚构摘要，未带本地确认标志的 pending 会拒绝安装；它只用于损坏输入验收。`stage/arm` 使用真实镜像摘要，只有本机按键确认后才写入可安装的测试 pending。正式屏幕确认及完整安全联锁属于任务 07；trial 计数、看门狗和自检回滚属于任务 05。二进制格式与持久化顺序见 [OTA 启动安装格式](velaguard-ota-boot-format.md)。
+暂存镜像和启动文件名为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`，路径始终位于现有 `/mnt/emmc/VGOTA/`。任务 07 增加 `SUPPRESS.BIN` 追加记录取消和超时任务，使用 `BCB0.TMP`、`BCB1.TMP` 和 `WRITE.TMP` 完成写入核验；`fixture clear` 不清除拒绝记录。`bcb set` 仍使用虚构摘要，未带本地确认标志的 pending 会拒绝安装；它只用于损坏输入验收。`stage/arm` 使用真实镜像摘要，只有本机按键确认后才写入可安装的测试 pending。任务 07 将触摸长按和 fixture 按键接入同一本机确认端口，检查活动严重告警、存储写入、镜像大小和摘要、配置空闲及 RJ45 链路，重新绑定 READY 元数据后才写 pending。生产时间有效性检查拒绝不在 manifest 时间窗内的安装；fixture 使用测试时间窗。trial 计数、看门狗和自检回滚沿用任务 05。二进制格式与持久化顺序见 [OTA 启动安装格式](velaguard-ota-boot-format.md)。
 
 `vgota bootinfo` 另输出 `install stage=<n> error=<errno> bytes=<n>`：0=未安装，1=元数据，2=镜像预检，3=持久化 FAILED，4=擦除，5=编程，6=回读，7=提交 TRIAL，8=安装完成。`error=0` 只表示该次启动安装路径没有返回错误，不表示完整 OTA 或自检已完成。

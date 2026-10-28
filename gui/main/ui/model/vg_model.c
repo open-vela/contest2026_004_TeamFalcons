@@ -9,6 +9,8 @@
 #include "vg_alarm_eval.h"
 #include "vg_fw_identity.h"
 #include "vg_ota_staging.h"
+#include "vg_ota_confirm.h"
+#include "vg_ota_self_check.h"
 #include <sys/statfs.h>
 #endif
 #include <stdio.h>
@@ -930,8 +932,23 @@ static void ota_tick_cb(lv_timer_t * t)
 
 void vg_model_ota_accept(void)
 {
-    char logbuf[80];
     if(s_ota.state != VG_OTA_OFFER) return;
+
+#ifdef VG_HMI_BOARD
+    char err[64] = {0};
+    int ret = vg_ota_confirm_install(VG_OTA_CONFIRM_SRC_TOUCH,
+                                     vg_ota_get_board_interlock_ports(),
+                                     err, sizeof(err));
+    if(ret != 0) {
+        snprintf(s_ota.error, sizeof(s_ota.error), "升级未通过: %s", err);
+        vg_model_append_log(VG_LOG_OTA, VG_SEV_WARN, s_ota.error);
+        notify_all();
+        return;
+    }
+    vg_model_append_log(VG_LOG_OTA, VG_SEV_OK, "安装已确认，系统正在重启");
+    notify_all();
+#else
+    char logbuf[80];
     /* Manual 16.9/5.11: block upgrades while a critical alarm is active */
     if(s_alarm.active && s_alarm.severity == VG_SEV_CRIT) {
         s_ota.state = VG_OTA_DONE_FAIL;
@@ -954,14 +971,40 @@ void vg_model_ota_accept(void)
     vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, logbuf);
     notify_all();
     s_ota_tmr = lv_timer_create(ota_tick_cb, VG_OTA_STEP_MS, NULL);
+#endif
 }
 
 void vg_model_ota_cancel(void)
 {
     if(s_ota.state != VG_OTA_OFFER) return;
+#ifdef VG_HMI_BOARD
+    struct vg_ota_staging_info info;
+    if(vg_ota_staging_get_info(&info) == 0 && info.task_id[0]) {
+        if(vg_ota_confirm_decline(info.task_id, "user_declined") != 0) {
+            snprintf(s_ota.error, sizeof(s_ota.error), "取消失败，请检查存储后重试");
+            notify_all();
+            return;
+        }
+    }
+#endif
     s_ota.state = VG_OTA_IDLE;
     s_net.ota_active = false;
     vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, "OTA 升级已取消");
+    notify_all();
+}
+
+void vg_model_ota_expire(void)
+{
+    if(s_ota.state != VG_OTA_OFFER) return;
+#ifdef VG_HMI_BOARD
+    struct vg_ota_staging_info info;
+    if(vg_ota_staging_get_info(&info) == 0 && info.task_id[0]) {
+        if(vg_ota_confirm_expire(info.task_id) != 0) return;
+    }
+#endif
+    s_ota.state = VG_OTA_IDLE;
+    s_net.ota_active = false;
+    vg_model_append_log(VG_LOG_OTA, VG_SEV_WARN, "OTA 任务超时已丢弃");
     notify_all();
 }
 
@@ -1044,14 +1087,35 @@ const vg_ota_t * vg_model_get_ota(void)
 {
 #ifdef VG_HMI_BOARD
     struct vg_ota_staging_info info;
-    if(vg_ota_staging_get_info(&info) == 0 &&
-       info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM) {
-        s_ota.state = VG_OTA_OFFER;
-        snprintf(s_ota.version, sizeof(s_ota.version), "%s", info.version);
-        s_ota.size_mb = (int32_t)((info.image_size + 1048575u) / 1048576u);
-        snprintf(s_ota.note, sizeof(s_ota.note), "SHA: %02x%02x%02x%02x... 任务: %s",
-                 info.sha256[0], info.sha256[1], info.sha256[2], info.sha256[3],
-                 info.task_id);
+    vg_ota_staging_tick();
+    if(vg_ota_staging_get_info(&info) == 0) {
+        if(info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM) {
+            if(strcmp(s_ota.task_id, info.task_id) != 0) s_ota.error[0] = '\0';
+            s_ota.state = VG_OTA_OFFER;
+            snprintf(s_ota.task_id, sizeof(s_ota.task_id), "%s", info.task_id);
+            snprintf(s_ota.version, sizeof(s_ota.version), "%s", info.version);
+            s_ota.size_bytes = info.image_size;
+            s_ota.size_mb = (int32_t)((info.image_size + 1048575u) / 1048576u);
+            snprintf(s_ota.note, sizeof(s_ota.note), "SHA: %02x%02x%02x%02x 任务: %s",
+                     info.sha256[0], info.sha256[1], info.sha256[2], info.sha256[3], info.task_id);
+            if(info.error_code[0] && strcmp(info.error_code, "none") != 0)
+                snprintf(s_ota.error, sizeof(s_ota.error), "%s", info.error_code);
+        }
+        else if(info.state == VG_OTA_STATE_DECLINED || info.state == VG_OTA_STATE_EXPIRED) {
+            s_ota.state = VG_OTA_IDLE;
+            s_net.ota_active = false;
+        }
+        else if(info.state == VG_OTA_STATE_REBOOTING || info.state == VG_OTA_STATE_INSTALL_PENDING) {
+            s_ota.state = VG_OTA_PROGRESS;
+        }
+        else if(info.state == VG_OTA_STATE_IDLE) {
+            struct vg_ota_self_check_status status;
+            if(vg_ota_self_check_get_status(&status) == 0 &&
+               status.state == VG_OTA_CHECK_STATE_PASSED) {
+                s_ota.state = VG_OTA_DONE_OK;
+            }
+            else s_ota.state = VG_OTA_IDLE;
+        }
     }
 #endif
     return &s_ota;
@@ -1502,6 +1566,9 @@ void vg_model_tick(void)
 #else
     dirty = vg_ui_backend_apply_live();
     dirty |= vg_model_board_poll_net();
+    vg_ota_state_t previous_ota = s_ota.state;
+    vg_model_get_ota();
+    dirty |= previous_ota != s_ota.state;
 #endif
     for(i = 0; i < s_sensor_n; i++) {
         if(s_sensors[i].al_active) {

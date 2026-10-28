@@ -7,11 +7,19 @@
 #ifndef __VG_OTA_STAGING_H
 #define __VG_OTA_STAGING_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <sys/types.h>
 
 #include "vg_ota_manifest.h"
+
+#define VG_OTA_READY_TIMEOUT_MS       600000u
+
+/* Serialize staging, local confirmation and cancellation as one transaction. */
+void vg_ota_staging_lock(void);
+void vg_ota_staging_unlock(void);
+void vg_ota_staging_tick(void);
 
 #define VG_OTA_STAGING_DIR            "/mnt/emmc/VGOTA"
 #define VG_OTA_IMAGE_TMP_NAME         "IMAGE.TMP"
@@ -76,6 +84,32 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m,
 
 /* Query live staging / OTA status. */
 int vg_ota_staging_get_info(struct vg_ota_staging_info *info);
+
+/* Set live staging state and error code. */
+int vg_ota_staging_set_state(uint32_t state, const char *err_code);
+int vg_ota_staging_set_error(const char *err_code);
+
+/* Load MANIFEST.BIN from staging directory. */
+int vg_ota_staging_load_manifest(struct vg_ota_manifest *m);
+
+/* Calculate SHA-256 of staged IMAGE.BIN. */
+int vg_ota_staging_calc_image_sha256(uint8_t out[32]);
+
+/* Verify staged IMAGE.BIN SHA-256 against MANIFEST.BIN. */
+int vg_ota_staging_verify_digest(void);
+
+/* Decline staged offer: removes staging files, writes DECLINED to STATE.BIN,
+ * and remembers task_id to suppress repeat popups.
+ */
+int vg_ota_staging_decline(const char *task_id, const char *reason);
+
+/* Expire staged offer on timeout: removes staging files, writes EXPIRED to STATE.BIN,
+ * and remembers task_id to suppress repeat popups.
+ */
+int vg_ota_staging_expire(const char *task_id);
+
+/* Task suppression checks. */
+bool vg_ota_staging_is_suppressed(const char *task_id);
 
 /* Clear staging files (IMAGE.TMP, IMAGE.BIN, MANIFEST.BIN) and return to IDLE. */
 int vg_ota_staging_clear(void);

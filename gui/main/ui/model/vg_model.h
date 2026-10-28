@@ -189,7 +189,9 @@ typedef enum {
 
 typedef struct {
     vg_ota_state_t state;
-    char version[16];
+    char task_id[41];
+    uint32_t size_bytes;
+    char version[33];
     char note[80];
     int32_t size_mb;
     int32_t progress_pct;
@@ -296,6 +298,7 @@ const vg_sys_status_t * vg_model_get_sys_status(void);
 const vg_ota_t * vg_model_get_ota(void);
 void vg_model_ota_accept(void);
 void vg_model_ota_cancel(void);
+void vg_model_ota_expire(void);
 void vg_model_ota_retry(void);
 
 /* Discover / backend sync (Phase B) */

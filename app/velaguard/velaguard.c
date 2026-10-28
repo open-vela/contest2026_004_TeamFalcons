@@ -106,6 +106,7 @@ extern int vghmi_main(int argc, char *argv[]);
 
 #ifdef CONFIG_VG_OTA_PROBE
 #include "vg_ota_self_check.h"
+#include "vg_ota_staging.h"
 #endif
 
 static int g_app_running = 0;
@@ -365,11 +366,13 @@ int main(int argc, char *argv[])
         board_userled(1, true);
 #ifdef CONFIG_VG_OTA_PROBE
         vg_ota_watchdog_kick();
+        vg_ota_staging_tick();
 #endif
         usleep(1000000);
         board_userled(1, false);
 #ifdef CONFIG_VG_OTA_PROBE
         vg_ota_watchdog_kick();
+        vg_ota_staging_tick();
 #endif
     }
 

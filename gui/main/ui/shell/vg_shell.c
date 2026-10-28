@@ -545,9 +545,6 @@ static bool nav_allowed(vg_page_id_t id, const char ** toast_out)
         case VG_PAGE_ADD_SENSOR:
             if(toast_out) *toast_out = "阶段 2 提供";
             return false;
-        case VG_PAGE_OTA:
-            if(toast_out) *toast_out = "阶段 3 提供";
-            return false;
         default:
             return true;
     }

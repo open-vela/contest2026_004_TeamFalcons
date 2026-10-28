@@ -7,12 +7,15 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/statfs.h>
 #include <unistd.h>
+#include <time.h>
+#include <pthread.h>
 
 #include "vg_device_id.h"
 #include "vg_fw_identity.h"
@@ -25,9 +28,95 @@ static char g_staging_dir[128] = VG_OTA_STAGING_DIR;
 static struct vg_ota_staging_info g_staging_info = {
   .state = VG_OTA_STATE_IDLE
 };
+static uint64_t g_ready_since_ms;
+static pthread_once_t g_ota_once = PTHREAD_ONCE_INIT;
+static pthread_mutex_t g_ota_lock;
+
+static void init_ota_lock(void)
+{
+  pthread_mutexattr_t attr;
+  pthread_mutexattr_init(&attr);
+  pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+  pthread_mutex_init(&g_ota_lock, &attr);
+  pthread_mutexattr_destroy(&attr);
+}
+
+void vg_ota_staging_lock(void)
+{
+  pthread_once(&g_ota_once, init_ota_lock);
+  pthread_mutex_lock(&g_ota_lock);
+}
+
+void vg_ota_staging_unlock(void)
+{
+  pthread_mutex_unlock(&g_ota_lock);
+}
+
+static uint64_t monotonic_ms(void)
+{
+  struct timespec ts;
+  if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) return 0;
+  return (uint64_t)ts.tv_sec * 1000u + ts.tv_nsec / 1000000u;
+}
+
+/* Append-only tombstones survive reboot and are never evicted. A damaged
+ * journal blocks new offers, so a torn write cannot reauthorize an old task.
+ */
+static bool vg_ota_staging_is_suppressed_locked(const char *task_id)
+{
+  char path[160];
+  uint8_t record[44];
+  ssize_t n;
+  int fd;
+  bool found = false;
+  if (task_id == NULL || !task_id[0]) return false;
+  snprintf(path, sizeof(path), "%s/SUPPRESS.BIN", g_staging_dir);
+  fd = open(path, O_RDONLY);
+  if (fd < 0) return errno != ENOENT;
+  while ((n = read(fd, record, sizeof(record))) > 0)
+    {
+      uint32_t crc;
+      memcpy(&crc, record + 40, 4);
+      if (n != sizeof(record) || !memchr(record, 0, 40) ||
+          crc != vg_ota_crc32(record, 40))
+        { found = true; break; }
+      if (strcmp((char *)record, task_id) == 0) found = true;
+    }
+  if (n < 0) found = true;
+  close(fd);
+  return found;
+}
+
+static int suppress_task(const char *task_id)
+{
+  char path[160];
+  uint8_t record[44] = {0};
+  uint32_t crc;
+  int fd, ret;
+  if (vg_ota_staging_is_suppressed(task_id)) return 0;
+  snprintf((char *)record, 40, "%s", task_id);
+  crc = vg_ota_crc32(record, 40);
+  memcpy(record + 40, &crc, 4);
+  snprintf(path, sizeof(path), "%s/SUPPRESS.BIN", g_staging_dir);
+  fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
+  if (fd < 0) return -errno;
+  ret = write(fd, record, sizeof(record)) == sizeof(record) && fsync(fd) == 0 ? 0 : -EIO;
+  if (close(fd) < 0) ret = -EIO;
+  return ret;
+}
+
+void vg_ota_staging_tick(void)
+{
+  vg_ota_staging_lock();
+  if (g_staging_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM &&
+      monotonic_ms() - g_ready_since_ms >= VG_OTA_READY_TIMEOUT_MS)
+    vg_ota_staging_expire(g_staging_info.task_id);
+  vg_ota_staging_unlock();
+}
 
 void vg_ota_staging_set_dir(const char *dir)
 {
+  memset(&g_staging_info, 0, sizeof(g_staging_info));
   if (dir != NULL && dir[0] != '\0')
     {
       snprintf(g_staging_dir, sizeof(g_staging_dir), "%s", dir);
@@ -267,7 +356,7 @@ static void record_state_file(const char *state_str, const char *task_id,
     }
 }
 
-int vg_ota_staging_stage(const struct vg_ota_manifest *m,
+static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
                          vg_ota_source_read_fn source_read, void *source_ctx,
                          char *err_out, size_t err_len)
 {
@@ -284,9 +373,6 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m,
   int fd = -1;
   int ret;
 
-  memset(&g_staging_info, 0, sizeof(g_staging_info));
-  g_staging_info.state = VG_OTA_STATE_OFFER_RECEIVED;
-
   if (m == NULL || source_read == NULL)
     {
       snprintf(g_staging_info.error_code, sizeof(g_staging_info.error_code), "invalid_args");
@@ -294,6 +380,25 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m,
       return -EINVAL;
     }
 
+  if (vg_ota_staging_is_suppressed(m->task_id))
+    {
+      if (err_out && err_len)
+        {
+          snprintf(err_out, err_len, "task_suppressed");
+        }
+      return -EALREADY;
+    }
+
+  if (g_staging_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM ||
+      g_staging_info.state == VG_OTA_STATE_INSTALL_PENDING ||
+      g_staging_info.state == VG_OTA_STATE_REBOOTING)
+    {
+      if (err_out && err_len) snprintf(err_out, err_len, "ota_busy");
+      return -EBUSY;
+    }
+
+  memset(&g_staging_info, 0, sizeof(g_staging_info));
+  g_staging_info.state = VG_OTA_STATE_OFFER_RECEIVED;
   snprintf(g_staging_info.task_id, sizeof(g_staging_info.task_id), "%s", m->task_id);
   snprintf(g_staging_info.version, sizeof(g_staging_info.version), "%s", m->version);
   g_staging_info.image_size = m->image_size;
@@ -508,6 +613,7 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m,
   close(fd);
 
   /* 9. Success: Enter READY_AWAITING_CONFIRM (Do NOT write pending BCB!) */
+  g_ready_since_ms = monotonic_ms();
   g_staging_info.state = VG_OTA_STATE_READY_AWAITING_CONFIRM;
   g_staging_info.error_code[0] = '\0';
   record_state_file("READY_AWAITING_CONFIRM", m->task_id, m->version, m->image_size, m->sha256, "none");
@@ -515,7 +621,7 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m,
   return 0;
 }
 
-int vg_ota_staging_get_info(struct vg_ota_staging_info *info)
+static int vg_ota_staging_get_info_locked(struct vg_ota_staging_info *info)
 {
   if (info == NULL)
     {
@@ -526,7 +632,165 @@ int vg_ota_staging_get_info(struct vg_ota_staging_info *info)
   return 0;
 }
 
-int vg_ota_staging_clear(void)
+static int vg_ota_staging_set_state_locked(uint32_t state, const char *err_code)
+{
+  g_staging_info.state = state;
+  if (err_code != NULL)
+    {
+      snprintf(g_staging_info.error_code, sizeof(g_staging_info.error_code), "%s", err_code);
+    }
+
+  record_state_file(vg_ota_state_name(state), g_staging_info.task_id,
+                    g_staging_info.version, g_staging_info.image_size,
+                    g_staging_info.sha256, g_staging_info.error_code);
+  return 0;
+}
+
+static int vg_ota_staging_set_error_locked(const char *err_code)
+{
+  if (err_code != NULL)
+    {
+      snprintf(g_staging_info.error_code, sizeof(g_staging_info.error_code), "%s", err_code);
+    }
+
+  return 0;
+}
+
+static int vg_ota_staging_load_manifest_locked(struct vg_ota_manifest *m)
+{
+  char path[160];
+  uint8_t buf[VG_OTA_MANIFEST_BYTES];
+  int fd;
+
+  if (m == NULL)
+    {
+      return -EINVAL;
+    }
+
+  snprintf(path, sizeof(path), "%s/%s", g_staging_dir, VG_OTA_MANIFEST_BIN_NAME);
+  fd = open(path, O_RDONLY);
+  if (fd < 0)
+    {
+      return -errno;
+    }
+
+  if (read(fd, buf, sizeof(buf)) != sizeof(buf))
+    {
+      close(fd);
+      return -EIO;
+    }
+
+  close(fd);
+  return vg_ota_manifest_decode(buf, sizeof(buf), m);
+}
+
+static int vg_ota_staging_calc_image_sha256_locked(uint8_t out[32])
+{
+  char path[160];
+  uint8_t *buf;
+  struct vg_ota_sha256 sha;
+  ssize_t n;
+  int fd;
+
+  if (out == NULL)
+    {
+      return -EINVAL;
+    }
+
+  snprintf(path, sizeof(path), "%s/%s", g_staging_dir, VG_OTA_IMAGE_BIN_NAME);
+  fd = open(path, O_RDONLY);
+  if (fd < 0)
+    {
+      return -errno;
+    }
+
+  buf = malloc(4096);
+  if (buf == NULL)
+    {
+      close(fd);
+      return -ENOMEM;
+    }
+
+  vg_ota_sha256_init(&sha);
+  while ((n = read(fd, buf, 4096)) > 0)
+    {
+      vg_ota_sha256_update(&sha, buf, (uint32_t)n);
+    }
+
+  free(buf);
+  close(fd);
+
+  if (n < 0)
+    {
+      return -EIO;
+    }
+
+  vg_ota_sha256_final(&sha, out);
+  return 0;
+}
+
+static int vg_ota_staging_verify_digest_locked(void)
+{
+  struct vg_ota_manifest m;
+  uint8_t actual_digest[32];
+  char path[160];
+  struct stat st;
+  int ret;
+
+  ret = vg_ota_staging_load_manifest(&m);
+  if (ret != 0)
+    {
+      return ret;
+    }
+
+  snprintf(path, sizeof(path), "%s/%s", g_staging_dir, VG_OTA_IMAGE_BIN_NAME);
+  if (stat(path, &st) != 0 || st.st_size != m.image_size) return -EBADMSG;
+  ret = vg_ota_staging_calc_image_sha256(actual_digest);
+  if (ret != 0)
+    {
+      return ret;
+    }
+
+  if (memcmp(m.sha256, actual_digest, 32) != 0)
+    {
+      return -EBADMSG;
+    }
+
+  return 0;
+}
+
+static int finish_offer(const char *task_id, uint32_t state, const char *reason)
+{
+  char path[160];
+  int ret;
+  if (g_staging_info.state != VG_OTA_STATE_READY_AWAITING_CONFIRM ||
+      !task_id || strcmp(task_id, g_staging_info.task_id)) return -ESTALE;
+  ret = suppress_task(task_id);
+  if (ret != 0)
+    { vg_ota_staging_set_error("suppress_write_failed"); return ret; }
+  snprintf(path, sizeof(path), "%s/%s", g_staging_dir, VG_OTA_IMAGE_BIN_NAME);
+  ret = unlink(path);
+  if (ret < 0 && errno != ENOENT) return -errno;
+  snprintf(path, sizeof(path), "%s/%s", g_staging_dir, VG_OTA_MANIFEST_BIN_NAME);
+  ret = unlink(path);
+  if (ret < 0 && errno != ENOENT) return -errno;
+  vg_ota_staging_set_state(state, reason);
+  sync();
+  return 0;
+}
+
+static int vg_ota_staging_decline_locked(const char *task_id, const char *reason)
+{
+  return finish_offer(task_id, VG_OTA_STATE_DECLINED,
+                      reason ? reason : "user_declined");
+}
+
+static int vg_ota_staging_expire_locked(const char *task_id)
+{
+  return finish_offer(task_id, VG_OTA_STATE_EXPIRED, "offer_expired_timeout");
+}
+
+static int vg_ota_staging_clear_locked(void)
 {
   char path[160];
 
@@ -543,4 +807,103 @@ int vg_ota_staging_clear(void)
   g_staging_info.state = VG_OTA_STATE_IDLE;
   record_state_file("IDLE", "", "", 0, NULL, "cleared");
   return 0;
+}
+
+int vg_ota_staging_stage(const struct vg_ota_manifest *m, vg_ota_source_read_fn source_read, void *source_ctx, char *err_out, size_t err_len)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_stage_locked(m, source_read, source_ctx, err_out, err_len);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_get_info(struct vg_ota_staging_info *info)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_get_info_locked(info);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_set_state(uint32_t state, const char *err_code)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_set_state_locked(state, err_code);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_set_error(const char *err_code)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_set_error_locked(err_code);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_load_manifest(struct vg_ota_manifest *m)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_load_manifest_locked(m);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_calc_image_sha256(uint8_t out[32])
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_calc_image_sha256_locked(out);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_verify_digest(void)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_verify_digest_locked();
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_decline(const char *task_id, const char *reason)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_decline_locked(task_id, reason);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_expire(const char *task_id)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_expire_locked(task_id);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_clear(void)
+{
+  int ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_clear_locked();
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+bool vg_ota_staging_is_suppressed(const char *task_id)
+{
+  bool ret;
+  vg_ota_staging_lock();
+  ret = vg_ota_staging_is_suppressed_locked(task_id);
+  vg_ota_staging_unlock();
+  return ret;
 }

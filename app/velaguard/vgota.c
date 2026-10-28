@@ -31,6 +31,7 @@
 #include "vg_ota_install.h"
 #include "vg_ota_self_check.h"
 #include "vg_ota_staging.h"
+#include "vg_ota_confirm.h"
 #include "vg_device_id.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
@@ -45,7 +46,12 @@ static void usage(void)
   printf("  vgota state\n");
   printf("  vgota selfcheck [--run]\n");
   printf("  vgota confirm\n");
+  printf("  vgota decline [reason]\n");
+  printf("  vgota expire\n");
   printf("  vgota rollback [reason]\n");
+#ifdef CONFIG_VG_OTA_TEST_FIXTURES
+  printf("  vgota interlock <alarm|storage|digest|idle|rj45|clear|status>\n");
+#endif
   printf("  vgota probe\n");
   printf("  vgota qspiprobe\n");
   printf("  vgota qspiprobe --confirm\n");
@@ -349,6 +355,7 @@ static int fixture_status(void)
 
 static int fixture_clear(void)
 {
+  vg_ota_staging_clear();
   size_t i;
   int ret = 0;
 
@@ -746,35 +753,17 @@ static int cmd_fixture_bcb(int argc, char *argv[])
   return 1;
 }
 
-static int fixture_image_hash(uint8_t digest[32])
-{
-  struct vg_ota_sha256 sha;
-  uint8_t buf[512];
-  ssize_t n;
-  int fd=open(VG_OTA_DIR "/IMAGE.BIN",O_RDONLY);
-  if (fd<0) return 1;
-  vg_ota_sha256_init(&sha);
-  while ((n=read(fd,buf,sizeof(buf)))>0)
-    vg_ota_sha256_update(&sha,buf,(uint32_t)n);
-  close(fd);
-  if (n<0) return 1;
-  vg_ota_sha256_final(&sha,digest);
-  return 0;
-}
-
 static ssize_t transport_window_read(void *ctx, uint32_t offset, uint8_t *buf, size_t len)
 {
   volatile const uint8_t *src = (volatile const uint8_t *)0x91000000u;
   size_t i;
   (void)ctx;
-  for (i = 0; i < len; i++)
-    {
-      buf[i] = src[offset + i];
-    }
+  if (offset > VG_OTA_IMAGE_MAX_BYTES || len > VG_OTA_IMAGE_MAX_BYTES - offset)
+    return -EFBIG;
+  for (i = 0; i < len; i++) buf[i] = src[offset + i];
   return (ssize_t)len;
 }
 
-/* ST-Link 只把传输副本写到固定测试窗口，B 槽交给 boot stub 安装。 */
 static int fixture_stage(int argc, char *argv[])
 {
   struct vg_ota_manifest m;
@@ -865,7 +854,8 @@ static int fixture_offer(int argc, char *argv[])
   uint32_t off;
   int ret;
 
-  if (argc < 4 || parse_u32(argv[3], &size) != 0 || size < 8)
+  if (argc < 4 || parse_u32(argv[3], &size) != 0 || size < 8 ||
+      size > VG_OTA_IMAGE_MAX_BYTES)
     {
       printf("Usage: vgota fixture offer <bytes> [ver] [task] [fault]\n");
       return 1;
@@ -937,24 +927,12 @@ static int fixture_offer(int argc, char *argv[])
 
 static int fixture_arm(void)
 {
-  struct vg_ota_manifest m;
-  struct vg_ota_bcb b, other;
-  uint8_t buf[4096], digest[32];
-  uint32_t i, held=0;
-  const char *target;
-  if (vg_fw_slot()!='A' || fixture_read("MANIFEST.BIN",buf,512) ||
-      vg_ota_manifest_decode(buf,512,&m) || m.flags!=VG_OTA_MANIFEST_FIXTURE ||
-      fixture_read("BCB0.BIN",buf,4096) || vg_ota_bcb_decode(buf,4096,&b) ||
-      fixture_read("BCB1.BIN",buf,4096) || vg_ota_bcb_decode(buf,4096,&other))
-    return 1;
-  if (vg_ota_bcb_seq_newer(other.seq,b.seq))
-    { b=other; target="BCB0.BIN"; }
-  else target="BCB1.BIN";
-  b.seq++; b.state=VG_OTA_BCB_STATE_PENDING;
-  b.flags=VG_OTA_BCB_LOCAL_CONFIRMED; b.trial_count=0;
-  if (vg_ota_manifest_bind(&m,&b,vg_device_id(),1)) return 1;
-  printf("vgota: fixture local confirmation version=%s task=%s bytes=%" PRIu32 "\n",
-         m.version,m.task_id,m.image_size);
+  struct vg_ota_staging_info info;
+  char err[64];
+  uint32_t i, held = 0;
+  vg_ota_staging_get_info(&info);
+  if (info.state != VG_OTA_STATE_READY_AWAITING_CONFIRM) return 1;
+  printf("vgota: local confirmation task=%s version=%s\n", info.task_id, info.version);
   printf("vgota: release board USER button, then hold it for 2 seconds within 60 seconds\n");
   fflush(stdout);
   /* 必须先释放再按下，串口命令和调用方不能代替本机按键事件。 */
@@ -966,12 +944,11 @@ static int fixture_arm(void)
       usleep(100000);
     }
   if (held<20) { printf("vgota: fixture local confirmation timed out\n"); return 1; }
-  if (fixture_image_hash(digest) || memcmp(digest,m.sha256,32) ||
-      vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
-      fixture_store(target,buf,sizeof(buf))) return 1;
-  sync();
-  printf("vgota: fixture pending locally confirmed seq=%" PRIu32 "\n",b.seq);
-  return 0;
+  int ret = vg_ota_confirm_install(VG_OTA_CONFIRM_SRC_BUTTON,
+                                  vg_ota_get_board_interlock_ports(),
+                                  err, sizeof(err));
+  if (ret != 0) printf("vgota: install rejected: %s ERR=%d\n", err, ret);
+  return ret != 0;
 }
 
 static int cmd_fixture(int argc, char *argv[])
@@ -1251,16 +1228,136 @@ static int cmd_selfcheck(int argc, char *argv[])
 
 static int cmd_confirm(void)
 {
-  int ret = vg_ota_self_check_manual_confirm();
-  if (ret == 0)
+  int ret;
+  struct vg_ota_staging_info info;
+  vg_ota_staging_get_info(&info);
+  if (info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM)
     {
-      printf("vgota: manual confirm SUCCESS, confirmed BCB written\n");
+      printf("vgota: installation requires board touch or button long press\n");
+      return 1;
+    }
+
+  if (vg_fw_slot() == 'B' && vg_ota_self_check_needed())
+    {
+      ret = vg_ota_self_check_manual_confirm();
+      if (ret == 0)
+        {
+          printf("vgota: manual confirm SUCCESS, confirmed BCB written\n");
+          return 0;
+        }
+
+      printf("vgota: manual confirm FAILED ERR=%d\n", -ret);
+      return 1;
+    }
+
+  printf("vgota: confirm ignored (not in READY state and not in trial)\n");
+  return 1;
+}
+
+static int cmd_decline(int argc, char *argv[])
+{
+  const char *reason = (argc >= 3) ? argv[2] : "user_declined";
+  struct vg_ota_staging_info info;
+  int ret;
+
+  if (vg_ota_staging_get_info(&info) != 0 ||
+      info.state != VG_OTA_STATE_READY_AWAITING_CONFIRM)
+    {
+      printf("vgota: decline ignored (not in READY state)\n");
+      return 1;
+    }
+
+  ret = vg_ota_confirm_decline(info.task_id, reason);
+  printf("vgota: task=%s DECLINED (%s)\n", info.task_id, reason);
+  return (ret == 0) ? 0 : 1;
+}
+
+static int cmd_expire(void)
+{
+  struct vg_ota_staging_info info;
+  int ret;
+
+  if (vg_ota_staging_get_info(&info) != 0 ||
+      info.state != VG_OTA_STATE_READY_AWAITING_CONFIRM)
+    {
+      printf("vgota: expire ignored (not in READY state)\n");
+      return 1;
+    }
+
+  ret = vg_ota_confirm_expire(info.task_id);
+  printf("vgota: task=%s EXPIRED (timeout)\n", info.task_id);
+  return (ret == 0) ? 0 : 1;
+}
+
+#ifdef CONFIG_VG_OTA_TEST_FIXTURES
+static int cmd_interlock(int argc, char *argv[])
+{
+  if (argc < 3)
+    {
+      printf("Usage: vgota interlock <alarm|storage|digest|idle|rj45|clear|status>\n");
+      return 1;
+    }
+
+  if (strcmp(argv[2], "clear") == 0)
+    {
+      vg_ota_confirm_clear_faults();
+      printf("vgota: interlock faults cleared\n");
       return 0;
     }
 
-  printf("vgota: manual confirm FAILED ERR=%d\n", -ret);
+  if (strcmp(argv[2], "status") == 0)
+    {
+      uint32_t f = vg_ota_confirm_get_fault();
+      printf("vgota: interlock faults mask=0x%02x (alarm=%d storage=%d digest=%d idle=%d rj45=%d)\n",
+             (unsigned)f,
+             (f & VG_OTA_FAULT_ALARM) != 0,
+             (f & VG_OTA_FAULT_STORAGE) != 0,
+             (f & VG_OTA_FAULT_DIGEST) != 0,
+             (f & VG_OTA_FAULT_BUSY) != 0,
+             (f & VG_OTA_FAULT_RJ45) != 0);
+      return 0;
+    }
+
+  if (strcmp(argv[2], "alarm") == 0)
+    {
+      vg_ota_confirm_set_fault(VG_OTA_FAULT_ALARM);
+      printf("vgota: interlock fault injected: ALARM\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "storage") == 0)
+    {
+      vg_ota_confirm_set_fault(VG_OTA_FAULT_STORAGE);
+      printf("vgota: interlock fault injected: STORAGE\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "digest") == 0)
+    {
+      vg_ota_confirm_set_fault(VG_OTA_FAULT_DIGEST);
+      printf("vgota: interlock fault injected: DIGEST\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "idle") == 0)
+    {
+      vg_ota_confirm_set_fault(VG_OTA_FAULT_BUSY);
+      printf("vgota: interlock fault injected: IDLE/BUSY\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "rj45") == 0)
+    {
+      vg_ota_confirm_set_fault(VG_OTA_FAULT_RJ45);
+      printf("vgota: interlock fault injected: RJ45\n");
+      return 0;
+    }
+
+  printf("vgota: unknown interlock fault: %s\n", argv[2]);
   return 1;
 }
+
+#endif
 
 static int cmd_rollback(int argc, char *argv[])
 {
@@ -1336,6 +1433,23 @@ int main(int argc, char *argv[])
     {
       return cmd_confirm();
     }
+
+  if (strcmp(argv[1], "decline") == 0)
+    {
+      return cmd_decline(argc, argv);
+    }
+
+  if (strcmp(argv[1], "expire") == 0 && argc == 2)
+    {
+      return cmd_expire();
+    }
+
+#ifdef CONFIG_VG_OTA_TEST_FIXTURES
+  if (strcmp(argv[1], "interlock") == 0)
+    {
+      return cmd_interlock(argc, argv);
+    }
+#endif
 
   if (strcmp(argv[1], "rollback") == 0)
     {

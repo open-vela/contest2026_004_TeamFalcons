@@ -10,6 +10,7 @@
 #include <SDL2/SDL.h>
 #endif
 #include <string.h>
+#include <stdio.h>
 
 #ifndef VG_HMI_BOARD
 static uint8_t s_prev_keys[7];
@@ -55,6 +56,24 @@ static void scenario_key_poll(lv_timer_t * t)
 }
 #endif /* !VG_HMI_BOARD */
 
+#ifdef VG_HMI_BOARD
+static void ota_offer_poll(lv_timer_t *t)
+{
+    static char shown_task[41];
+    static bool shown_result;
+    const vg_ota_t *o = vg_model_get_ota();
+    LV_UNUSED(t);
+    if(o->state == VG_OTA_OFFER && strcmp(shown_task, o->task_id) != 0) {
+        snprintf(shown_task, sizeof(shown_task), "%s", o->task_id);
+        vg_nav_goto(VG_PAGE_OTA, NULL);
+    }
+    else if(o->state == VG_OTA_DONE_OK && !shown_result) {
+        shown_result = true;
+        vg_nav_goto(VG_PAGE_OTA, NULL);
+    }
+}
+#endif
+
 static void on_key(lv_event_t * e)
 {
     uint32_t key;
@@ -72,6 +91,9 @@ static void on_key(lv_event_t * e)
 
 void vg_app_init(void)
 {
+#ifdef VG_HMI_BOARD
+    lv_timer_create(ota_offer_poll, 1000, NULL);
+#endif
     lv_group_t * g;
     lv_indev_t * indev;
 #ifndef VG_HMI_BOARD
