@@ -26,6 +26,8 @@ void hg_init(void);
 
 /* Advance LVGL time and run the timer handler `frames` times. */
 void hg_pump(int frames);
+/* 已完成的绘制刷新次数，用于检查重复重绘。 */
+uint32_t hg_flush_count(void);
 
 /* Dump the composed framebuffer as P6 PPM into out_dir. */
 void hg_dump_ppm(const char * out_dir, const char * name);

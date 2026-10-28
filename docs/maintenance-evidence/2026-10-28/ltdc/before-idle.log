@@ -1,0 +1,56 @@
+﻿start=2026-10-28T11:32:19.2007699+08:00 elf_sha256=8EB6F01EBFB6DCFD2E43518358C87EAE43564C4331839D690E8CC78B4FE82E43
+xPack Open On-Chip Debugger 0.12.0+dev-02228-ge5888bda3-dirty (2025-10-04-22:44)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+none separate
+adapter speed: 1000 kHz
+Info : STLINK V3J17M11 (API v3) VID:PID 0483:374E
+Info : Target voltage: 3.270259
+Info : clock speed 1000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32h7x.ap2] Examination succeed
+Info : [stm32h7x.cpu0] Cortex-M7 r1p1 processor detected
+Warn : [stm32h7x.cpu0] Erratum 3092511: Cortex-M7 can halt in an incorrect address when breakpoint and exception occurs simultaneously
+Info : [stm32h7x.cpu0] The erratum 3092511 workaround will resume after an incorrect halt
+Info : [stm32h7x.cpu0] target has 8 breakpoints, 4 watchpoints
+Info : [stm32h7x.cpu0] Examination succeed
+Info : [stm32h7x.ap2] gdb port disabled
+Info : [stm32h7x.cpu0] starting gdb server on 3333
+Info : Listening on port 3333 for gdb connections
+0x24003ea4
+30
+1000
+vg-ltdc registers (IER/ISR, CFBAR/pitch/lines, NVIC ISER2):
+vg-ltdc sample=0 fifo=0x2 transfer=0x0 reload=0x73a last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=1 fifo=0x2 transfer=0x0 reload=0x73b last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=2 fifo=0x2 transfer=0x0 reload=0x73c last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=3 fifo=0x2 transfer=0x0 reload=0x73d last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=4 fifo=0x2 transfer=0x0 reload=0x73e last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=5 fifo=0x2 transfer=0x0 reload=0x73f last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=6 fifo=0x2 transfer=0x0 reload=0x740 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=7 fifo=0x2 transfer=0x0 reload=0x741 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=8 fifo=0x2 transfer=0x0 reload=0x742 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=9 fifo=0x2 transfer=0x0 reload=0x743 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=10 fifo=0x2 transfer=0x0 reload=0x744 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=11 fifo=0x2 transfer=0x0 reload=0x745 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=12 fifo=0x2 transfer=0x0 reload=0x746 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=13 fifo=0x2 transfer=0x0 reload=0x747 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=14 fifo=0x2 transfer=0x0 reload=0x748 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=15 fifo=0x2 transfer=0x0 reload=0x749 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=16 fifo=0x2 transfer=0x0 reload=0x74a last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=17 fifo=0x2 transfer=0x0 reload=0x74b last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=18 fifo=0x2 transfer=0x0 reload=0x74c last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=19 fifo=0x2 transfer=0x0 reload=0x74d last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=20 fifo=0x2 transfer=0x0 reload=0x74e last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=21 fifo=0x2 transfer=0x0 reload=0x74f last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=22 fifo=0x2 transfer=0x0 reload=0x750 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=23 fifo=0x2 transfer=0x0 reload=0x751 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=24 fifo=0x2 transfer=0x0 reload=0x752 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=25 fifo=0x2 transfer=0x0 reload=0x753 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=26 fifo=0x2 transfer=0x0 reload=0x754 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=27 fifo=0x2 transfer=0x0 reload=0x755 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=28 fifo=0x2 transfer=0x0 reload=0x756 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=29 fifo=0x2 transfer=0x0 reload=0x757 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc result fifo_delta=0 transfer_delta=0 reload_delta=30
+shutdown command invoked

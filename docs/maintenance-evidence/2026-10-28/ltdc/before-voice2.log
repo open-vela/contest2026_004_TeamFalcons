@@ -1,0 +1,86 @@
+﻿start=2026-10-28T11:29:48.2598293+08:00 elf_sha256=8EB6F01EBFB6DCFD2E43518358C87EAE43564C4331839D690E8CC78B4FE82E43
+xPack Open On-Chip Debugger 0.12.0+dev-02228-ge5888bda3-dirty (2025-10-04-22:44)
+Licensed under GNU GPL v2
+For bug reports, read
+	http://openocd.org/doc/doxygen/bugs.html
+none separate
+adapter speed: 1000 kHz
+Info : STLINK V3J17M11 (API v3) VID:PID 0483:374E
+Info : Target voltage: 3.267066
+Info : clock speed 1000 kHz
+Info : SWD DPIDR 0x6ba02477
+Info : [stm32h7x.ap2] Examination succeed
+Info : [stm32h7x.cpu0] Cortex-M7 r1p1 processor detected
+Warn : [stm32h7x.cpu0] Erratum 3092511: Cortex-M7 can halt in an incorrect address when breakpoint and exception occurs simultaneously
+Info : [stm32h7x.cpu0] The erratum 3092511 workaround will resume after an incorrect halt
+Info : [stm32h7x.cpu0] target has 8 breakpoints, 4 watchpoints
+Info : [stm32h7x.cpu0] Examination succeed
+Info : [stm32h7x.ap2] gdb port disabled
+Info : [stm32h7x.cpu0] starting gdb server on 3333
+Info : Listening on port 3333 for gdb connections
+0x24003ea4
+60
+1000
+vg-ltdc registers (IER/ISR, CFBAR/pitch/lines, NVIC ISER2):
+vg-ltdc sample=0 fifo=0x1 transfer=0x0 reload=0x27b last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=1 fifo=0x1 transfer=0x0 reload=0x27c last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=2 fifo=0x1 transfer=0x0 reload=0x27d last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=3 fifo=0x1 transfer=0x0 reload=0x27e last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=4 fifo=0x1 transfer=0x0 reload=0x27f last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=5 fifo=0x1 transfer=0x0 reload=0x280 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=6 fifo=0x1 transfer=0x0 reload=0x281 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=7 fifo=0x1 transfer=0x0 reload=0x282 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=8 fifo=0x1 transfer=0x0 reload=0x283 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=9 fifo=0x1 transfer=0x0 reload=0x284 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=10 fifo=0x1 transfer=0x0 reload=0x287 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=11 fifo=0x1 transfer=0x0 reload=0x290 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=12 fifo=0x1 transfer=0x0 reload=0x298 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=13 fifo=0x1 transfer=0x0 reload=0x2a1 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=14 fifo=0x1 transfer=0x0 reload=0x2aa last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=15 fifo=0x1 transfer=0x0 reload=0x2b3 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=16 fifo=0x1 transfer=0x0 reload=0x2bc last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=17 fifo=0x1 transfer=0x0 reload=0x2c5 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=18 fifo=0x1 transfer=0x0 reload=0x2ce last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=19 fifo=0x1 transfer=0x0 reload=0x2d7 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=20 fifo=0x1 transfer=0x0 reload=0x2e0 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=21 fifo=0x1 transfer=0x0 reload=0x2e9 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=22 fifo=0x1 transfer=0x0 reload=0x2f2 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=23 fifo=0x1 transfer=0x0 reload=0x2fb last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=24 fifo=0x1 transfer=0x0 reload=0x304 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=25 fifo=0x1 transfer=0x0 reload=0x30c last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=26 fifo=0x1 transfer=0x0 reload=0x316 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=27 fifo=0x1 transfer=0x0 reload=0x320 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=28 fifo=0x1 transfer=0x0 reload=0x329 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=29 fifo=0x1 transfer=0x0 reload=0x332 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=30 fifo=0x1 transfer=0x0 reload=0x33b last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=31 fifo=0x1 transfer=0x0 reload=0x344 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=32 fifo=0x1 transfer=0x0 reload=0x34d last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=33 fifo=0x1 transfer=0x0 reload=0x356 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=34 fifo=0x1 transfer=0x0 reload=0x35e last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=35 fifo=0x1 transfer=0x0 reload=0x367 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=36 fifo=0x1 transfer=0x0 reload=0x370 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=37 fifo=0x1 transfer=0x0 reload=0x379 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=38 fifo=0x1 transfer=0x0 reload=0x381 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=39 fifo=0x1 transfer=0x0 reload=0x38a last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=40 fifo=0x1 transfer=0x0 reload=0x392 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=41 fifo=0x1 transfer=0x0 reload=0x39b last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=42 fifo=0x1 transfer=0x0 reload=0x3a4 last_isr=0x2 last_fb=0xd0000000 last_pos=0xb50012
+vg-ltdc sample=43 fifo=0x2 transfer=0x0 reload=0x3ac last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=44 fifo=0x2 transfer=0x0 reload=0x3b4 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=45 fifo=0x2 transfer=0x0 reload=0x3bd last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=46 fifo=0x2 transfer=0x0 reload=0x3c6 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=47 fifo=0x2 transfer=0x0 reload=0x3ce last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=48 fifo=0x2 transfer=0x0 reload=0x3d7 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=49 fifo=0x2 transfer=0x0 reload=0x3e0 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=50 fifo=0x2 transfer=0x0 reload=0x3e9 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=51 fifo=0x2 transfer=0x0 reload=0x3f2 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=52 fifo=0x2 transfer=0x0 reload=0x3fb last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=53 fifo=0x2 transfer=0x0 reload=0x403 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=54 fifo=0x2 transfer=0x0 reload=0x40c last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=55 fifo=0x2 transfer=0x0 reload=0x415 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=56 fifo=0x2 transfer=0x0 reload=0x41e last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=57 fifo=0x2 transfer=0x0 reload=0x427 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=58 fifo=0x2 transfer=0x0 reload=0x430 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc sample=59 fifo=0x2 transfer=0x0 reload=0x438 last_isr=0x2 last_fb=0xd003fc00 last_pos=0x580062
+vg-ltdc result fifo_delta=1 transfer_delta=0 reload_delta=454
+shutdown command invoked

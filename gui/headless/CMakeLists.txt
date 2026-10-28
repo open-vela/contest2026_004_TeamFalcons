@@ -118,8 +118,20 @@ foreach(check alarm_check trend_check fixture_check lifecycle_render_check inter
   )
 endforeach()
 
+add_library(vg_ui_voice STATIC ${VG_UI_SRCS})
+target_include_directories(vg_ui_voice PUBLIC
+  $<TARGET_PROPERTY:vg_ui,INTERFACE_INCLUDE_DIRECTORIES>)
+target_compile_definitions(vg_ui_voice PUBLIC VG_VOICE_ROUND=1)
+if(VG_HEADLESS_PROFILE STREQUAL "board")
+  target_compile_definitions(vg_ui_voice PUBLIC VG_MODEL_BOARD_CAPACITY=1)
+endif()
+
+add_executable(voice_overlay_check voice_overlay_check_main.c harness_common.c)
+target_compile_options(voice_overlay_check PRIVATE -Wall -Wextra)
+target_link_libraries(voice_overlay_check PRIVATE vg_ui_voice lvgl lvgl::thorvg m pthread)
+
 enable_testing()
-foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check)
+foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check voice_overlay_check)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")
   add_test(NAME ${check}
            COMMAND ${check} "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")

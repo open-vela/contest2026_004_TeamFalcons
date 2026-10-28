@@ -1,5 +1,7 @@
 #include "vg_model.h"
+#ifdef VG_VOICE_ROUND
 #include "vg_voice_round.h"
+#endif
 #include "vg_ui_backend.h"
 #include "vg_mthings_points.h"
 #include "lvgl/lvgl.h"
@@ -1466,9 +1468,12 @@ void vg_model_tick(void)
      * catch-up refresh fires on the tick after the overlay hides. */
 
     {
-        struct vg_voice_ui vui;
         static bool covered_last;
-        bool covered = vg_voice_round_ui(&vui) && vui.visible;
+        bool covered = false;
+#ifdef VG_VOICE_ROUND
+        struct vg_voice_ui vui;
+        covered = vg_voice_round_ui(&vui) && vui.visible;
+#endif
 
         if((dirty || covered_last) && !covered) {
             /* Live severity/online changes never rebuild the cached home

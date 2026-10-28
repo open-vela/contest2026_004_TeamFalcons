@@ -12,6 +12,7 @@
 static uint8_t * s_fb;   /* HG_H rows of HG_W RGB triples */
 static uint8_t * s_lvbuf;/* display draw buffer, sized by format + stride */
 static int s_failures;
+static uint32_t s_flush_count;
 
 /* ---------------- scripted pointer indev ---------------- */
 
@@ -117,6 +118,7 @@ static void indev_read_cb(lv_indev_t * indev, lv_indev_data_t * data)
 
 static void flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_map)
 {
+    s_flush_count++;
     int y, x;
     uint32_t area_w = (uint32_t)(area->x2 - area->x1 + 1);
     lv_color_format_t cf = lv_display_get_color_format(disp);
@@ -150,6 +152,11 @@ static void flush_cb(lv_display_t * disp, const lv_area_t * area, uint8_t * px_m
 }
 
 /* ---------------- lifecycle ---------------- */
+
+uint32_t hg_flush_count(void)
+{
+    return s_flush_count;
+}
 
 void hg_init(void)
 {

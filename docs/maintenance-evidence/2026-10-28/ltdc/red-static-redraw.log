@@ -1,0 +1,54 @@
+Internal ctest changing into directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/ui-memory-audit-system
+Test project /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/ui-memory-audit-system
+    Start 6: voice_overlay_check
+1/1 Test #6: voice_overlay_check ..............***Failed    3.91 sec
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[FAIL] unchanged voice snapshot does not redraw
+[PASS] voice panel hides after the round
+[PASS] 180 voice states with maximum text rendered
+
+
+0% tests passed, 1 tests failed out of 1
+
+Total Test time (real) =   3.91 sec
+
+The following tests FAILED:
+	  6 - voice_overlay_check (Failed)
+Errors while running CTest

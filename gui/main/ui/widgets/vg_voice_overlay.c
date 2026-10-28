@@ -41,6 +41,8 @@ static lv_obj_t * s_mute_label;
 static lv_obj_t * s_retry;
 static lv_obj_t * s_answer_box;
 static lv_timer_t * s_timer;
+/* LONG_DOT 排版时会改写标签中的文本，比较问题是否变化时保留原始文本。 */
+static char s_question_text[VG_VS_TEXT_MAX];
 
 /* BVO-12 layout snapshot, written from the LVGL thread and copied out by the
  * NSH diagnostic.  Measuring from another thread would race the layout. */
@@ -48,17 +50,24 @@ static lv_timer_t * s_timer;
 static char s_dbg[512];
 static pthread_mutex_t s_dbg_lock = PTHREAD_MUTEX_INITIALIZER;
 
+static void set_hidden(lv_obj_t *obj, bool hidden)
+{
+    if(lv_obj_has_flag(obj, LV_OBJ_FLAG_HIDDEN) == hidden) return;
+    if(hidden) lv_obj_add_flag(obj, LV_OBJ_FLAG_HIDDEN);
+    else lv_obj_remove_flag(obj, LV_OBJ_FLAG_HIDDEN);
+}
+
 static void overlay_hide(void)
 {
     if(s_panel) {
-        lv_obj_add_flag(s_panel, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_panel, true);
     }
 }
 
 static void overlay_show(void)
 {
     if(s_panel) {
-        lv_obj_remove_flag(s_panel, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_panel, false);
     }
 }
 
@@ -215,6 +224,16 @@ static void overlay_measure(void)
     pthread_mutex_unlock(&s_dbg_lock);
 }
 
+/* lv_label_set_text 即使内容相同也会重新分配并重绘。
+ * 快照每秒轮询 10 次，文本不变时应避免增加 SDRAM 访问负载。
+ */
+static void update_text(lv_obj_t *label, const char *text)
+{
+    if(strcmp(lv_label_get_text(label), text) != 0) {
+        lv_label_set_text(label, text);
+    }
+}
+
 static void poll_cb(lv_timer_t * t)
 {
     struct vg_voice_ui ui;
@@ -237,41 +256,43 @@ static void poll_cb(lv_timer_t * t)
         size_t n = strlen(status);
         snprintf(status + n, sizeof(status) - n, " · %s", ui.status);
     }
-    lv_label_set_text(s_status, status);
+    update_text(s_status, status);
 
     if(ui.question[0] != '\0') {
-        lv_label_set_text(s_question, ui.question);
-        lv_obj_remove_flag(s_question, LV_OBJ_FLAG_HIDDEN);
+        if(strcmp(s_question_text, ui.question) != 0) {
+            lv_label_set_text(s_question, ui.question);
+            memcpy(s_question_text, ui.question, sizeof(s_question_text));
+        }
+        set_hidden(s_question, false);
     }
     else {
-        lv_obj_add_flag(s_question, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_question, true);
     }
 
-    lv_label_set_text(s_answer, ui.answer);
+    update_text(s_answer, ui.answer);
 
     if(ui.error[0] != '\0') {
-        lv_label_set_text(s_error, ui.error);
-        lv_obj_remove_flag(s_error, LV_OBJ_FLAG_HIDDEN);
+        update_text(s_error, ui.error);
+        set_hidden(s_error, false);
     }
     else {
-        lv_obj_add_flag(s_error, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_error, true);
     }
 
     if(ui.speech_failed) {
-        lv_obj_remove_flag(s_retry, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_retry, false);
     }
     else {
-        lv_obj_add_flag(s_retry, LV_OBJ_FLAG_HIDDEN);
+        set_hidden(s_retry, true);
     }
 
     /* s_mute is a button, not a label.  Calling lv_label_set_text on it
      * wrote label fields into a button object and asserted on the next
      * invalidation; the text belongs to the label inside the button. */
     if(s_mute_label) {
-        lv_label_set_text(s_mute_label, ui.muted ? "播报:关" : "播报:开");
-
-    overlay_measure();
+        update_text(s_mute_label, ui.muted ? "播报:关" : "播报:开");
     }
+    overlay_measure();
 }
 
 void vg_voice_overlay_create(void)
@@ -355,6 +376,7 @@ void vg_voice_overlay_create(void)
     }
 
     s_question = lv_label_create(s_panel);
+    s_question_text[0] = '\0';
     lv_obj_set_width(s_question, LV_PCT(100));
     lv_obj_set_style_text_color(s_question, lv_color_hex(VG_COLOR_MUTED), 0);
     lv_obj_set_style_text_font(s_question, vg_font_ui(), 0);
