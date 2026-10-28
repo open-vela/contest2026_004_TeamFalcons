@@ -7,6 +7,7 @@
 #include "lvgl/lvgl.h"
 #ifdef VG_HMI_BOARD
 #include "vg_alarm_eval.h"
+#include "vg_fw_identity.h"
 #endif
 #include <stdio.h>
 #include <stdlib.h>
@@ -981,7 +982,13 @@ static void refresh_sys_status(void)
     s_sys.rs485_ok = s_net.acq_ok;
     s_sys.fs_free_pct = 78;
     s_sys.audio_ok = s_net.aud_ok;
-    strncpy(s_sys.version, "v9.1.0-sim", sizeof(s_sys.version) - 1);
+#ifdef VG_HMI_BOARD
+    snprintf(s_sys.version, sizeof(s_sys.version), "%s", vg_fw_version());
+    snprintf(s_sys.slot, sizeof(s_sys.slot), "%s", vg_fw_slot_name());
+#else
+    strncpy(s_sys.version, "0.0.0-sim", sizeof(s_sys.version) - 1);
+    strncpy(s_sys.slot, "SIM", sizeof(s_sys.slot) - 1);
+#endif
     if(s_ota.state == VG_OTA_PROGRESS) {
         strncpy(s_sys.ota_label, "升级中", sizeof(s_sys.ota_label) - 1);
     }

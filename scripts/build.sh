@@ -19,9 +19,14 @@
 #     bash scripts/build.sh --ota-fixtures   # 诊断镜像：启用 OTA 测试 fixture（不进发布配置）
 #
 # 产物：
-#   nuttx/nuttx.hex、nuttx/nuttx.bin
-#   .debug/nuttx.{hex,bin,elf} + qspi_bootstub.hex
-#   Download 固定烧 .debug 里的这两份 HEX。
+#   nuttx/nuttx.hex、nuttx/nuttx.bin（A 槽，默认烧录）
+#   .debug/nuttx.hex、nuttx-a.hex、nuttx-b.hex 及对应 bin/elf
+#   .debug/qspi_bootstub.hex
+#   Download 固定烧 .debug 里的 bootstub 和 nuttx.hex（A 槽）。
+#
+# 每次构建重新链接 A 和 B 两份镜像。B 镜像使用从 A 链接脚本生成的
+# 0x90800000/8MiB 脚本，并用 check_fw_images.py 校验版本、槽位标记和
+# 向量表；本阶段 boot stub 仍只启动 A，B 镜像供后续 OTA 安装使用。
 #
 # Rebuild（--clean）会 configure.sh -E 复位到所选预设：未 savedefconfig
 # 的本地 nuttx/.config / menuconfig 改动会被丢掉。
@@ -108,6 +113,34 @@ CONTEST_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 OPENVELA_ROOT="$(cd "$CONTEST_ROOT/.." && pwd)"
 NUTTX_ROOT="$OPENVELA_ROOT/nuttx"
 STAGE_DIR="$CONTEST_ROOT/.debug"
+
+if [ ! -f "$CONTEST_ROOT/VERSION" ]; then
+  echo "error: 缺少 $CONTEST_ROOT/VERSION" >&2
+  exit 1
+fi
+
+FW_VERSION="$(tr -d '[:space:]' < "$CONTEST_ROOT/VERSION")"
+if [[ ! "$FW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "error: VERSION 必须是 MAJOR.MINOR.PATCH，实际为 '$FW_VERSION'" >&2
+  exit 1
+fi
+
+FW_BUILD_ID="$(git -C "$CONTEST_ROOT" describe --always --dirty --abbrev=12 2>/dev/null || true)"
+if [ -z "$FW_BUILD_ID" ]; then
+  FW_BUILD_ID="unknown"
+fi
+
+write_fw_build_header()
+{
+  local objdir="$CONTEST_ROOT/build/velaguard"
+  mkdir -p "$objdir"
+  printf '%s\n' \
+    '#ifndef __VG_FW_BUILD_H' \
+    '#define __VG_FW_BUILD_H' \
+    "#define VG_FW_VERSION \"$FW_VERSION\"" \
+    "#define VG_FW_BUILD_ID \"$FW_BUILD_ID\"" \
+    '#endif' > "$objdir/vg_fw_build.h"
+}
 
 # LLM 凭据走 eMMC 加密 provision（secrets/ + scripts/provision-llm-from-secrets.sh）
 
@@ -380,18 +413,56 @@ if ! expect_dev_config; then
   exit 1
 fi
 
+write_fw_build_header
+
 cd "$NUTTX_ROOT"
 if [ "$need_clean" = 1 ] && [ "$MODE" != "--clean" ]; then
   echo "[build] 编译器模式变化，make clean..."
   make clean
 fi
+
+echo "[build] 链接 A 槽镜像 version=${FW_VERSION} build=${FW_BUILD_ID}"
 make -j"$(nproc)"
 
 mkdir -p "$STAGE_DIR"
-cp nuttx.hex nuttx.bin "$STAGE_DIR/"
+cp nuttx.hex "$STAGE_DIR/nuttx-a.hex"
+cp nuttx.bin "$STAGE_DIR/nuttx-a.bin"
+cp nuttx "$STAGE_DIR/nuttx-a.elf"
+
+SLOT_B_LD="$STAGE_DIR/qspi_flash_slotb.ld"
+python3 "$SCRIPT_DIR/gen_slot_b_ld.py" \
+  "$NUTTX_ROOT/boards/arm/stm32h7/stm32h750b-dk/scripts/qspi_flash.ld" \
+  "$SLOT_B_LD"
+
+echo "[build] 链接 B 槽镜像 0x90800000"
+rm -f nuttx nuttx.hex nuttx.bin
+make -j"$(nproc)" ARCHSCRIPT="$SLOT_B_LD"
+cp nuttx.hex "$STAGE_DIR/nuttx-b.hex"
+cp nuttx.bin "$STAGE_DIR/nuttx-b.bin"
+cp nuttx "$STAGE_DIR/nuttx-b.elf"
+
+echo "[build] 重新链接 A 槽镜像"
+rm -f nuttx nuttx.hex nuttx.bin
+make -j"$(nproc)"
+cp nuttx.hex "$STAGE_DIR/nuttx.hex"
+cp nuttx.bin "$STAGE_DIR/nuttx.bin"
 cp nuttx "$STAGE_DIR/nuttx.elf"
+cp nuttx.hex "$STAGE_DIR/nuttx-a.hex"
+cp nuttx.bin "$STAGE_DIR/nuttx-a.bin"
+cp nuttx "$STAGE_DIR/nuttx-a.elf"
+
+python3 "$SCRIPT_DIR/check_fw_images.py" \
+  --version "$FW_VERSION" --build-id "$FW_BUILD_ID" \
+  --a-elf "$STAGE_DIR/nuttx-a.elf" --a-bin "$STAGE_DIR/nuttx-a.bin" \
+  --b-elf "$STAGE_DIR/nuttx-b.elf" --b-bin "$STAGE_DIR/nuttx-b.bin" ||
+  { rm -f "$STAGE_DIR/nuttx.hex"; exit 1; }
+
+printf 'version=%s\nbuild_id=%s\n' "$FW_VERSION" "$FW_BUILD_ID" \
+  > "$STAGE_DIR/fw-identity.txt"
+
 if [ "$DEBUG" = 1 ]; then
   echo "staged: $STAGE_DIR/nuttx.hex（调试构建 -g3 -Og，TARGET=${TARGET}）"
 else
   echo "staged: $STAGE_DIR/nuttx.hex（发布构建，TARGET=${TARGET}）"
 fi
+echo "staged: A=$STAGE_DIR/nuttx-a.hex B=$STAGE_DIR/nuttx-b.hex"

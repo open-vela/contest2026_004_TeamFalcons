@@ -542,7 +542,6 @@ static bool nav_allowed(vg_page_id_t id, const char ** toast_out)
     switch(id) {
         case VG_PAGE_DIAGNOSIS:
         case VG_PAGE_LOGS:
-        case VG_PAGE_SYSTEM:
         case VG_PAGE_ADD_SENSOR:
             if(toast_out) *toast_out = "阶段 2 提供";
             return false;

@@ -173,6 +173,7 @@ typedef struct {
     int32_t fs_free_pct;
     bool audio_ok;
     char version[16];
+    char slot[4];
     char ota_label[16];
     int32_t log_used;
     int32_t log_cap;

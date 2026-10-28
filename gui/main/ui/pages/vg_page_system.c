@@ -63,12 +63,13 @@ static void refresh_system(void * user)
              offline ? vg_color_warn() : vg_color_ok());
     set_tile(s_sys_ui.tile_val[5], s->audio_ok ? "正常" : "故障",
              s->audio_ok ? vg_color_ok() : vg_color_crit());
-    set_tile(s_sys_ui.tile_val[6], s->version, vg_color_text());
+    lv_snprintf(buf, sizeof(buf), "%s · %s", s->version, s->slot);
+    set_tile(s_sys_ui.tile_val[6], buf, vg_color_text());
     lv_snprintf(buf, sizeof(buf), "%d/%d", (int)s->log_used, (int)s->log_cap);
     set_tile(s_sys_ui.tile_val[7], buf, vg_color_text());
 
     if(s_sys_ui.ota_lab) {
-        lv_snprintf(buf, sizeof(buf), "v%s · %s", s->version + 1, s->ota_label);
+        lv_snprintf(buf, sizeof(buf), "%s · %s", s->version, s->ota_label);
         lv_label_set_text(s_sys_ui.ota_lab, buf);
         lv_obj_set_style_text_color(s_sys_ui.ota_lab,
                                     (strcmp(s->ota_label, "无更新") == 0)

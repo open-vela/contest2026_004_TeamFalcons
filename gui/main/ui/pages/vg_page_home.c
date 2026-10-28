@@ -466,7 +466,7 @@ static void on_home_delete(lv_event_t * e)
 static lv_obj_t * make_action(lv_obj_t * parent, const char * text, bool primary, lv_event_cb_t cb, void * ud)
 {
     lv_obj_t * btn = lv_button_create(parent);
-    /* 5 actions: 5x62 + 4x4 gaps = 326 <= 468 inner width */
+    /* 6 actions: 6x62 + 5x4 gaps = 392 <= 468 inner width */
     lv_obj_set_size(btn, 62, VG_MIN_TOUCH_H);
     vg_style_apply_btn(btn, primary);
     lv_obj_t * lab = lv_label_create(btn);
@@ -573,6 +573,7 @@ void vg_page_home_create(lv_obj_t * parent, const void * args)
     make_action(actions, "告警", false, on_nav, (void *)(intptr_t)VG_PAGE_ALARM);
     make_action(actions, "报告", false, on_nav, (void *)(intptr_t)VG_PAGE_REPORT);
     make_action(actions, "探查", false, on_nav, (void *)(intptr_t)VG_PAGE_DISCOVER);
+    make_action(actions, "系统", false, on_nav, (void *)(intptr_t)VG_PAGE_SYSTEM);
     make_action(actions, "静音", false, on_mute, NULL);
 
     vg_model_on_change(refresh_home, NULL);

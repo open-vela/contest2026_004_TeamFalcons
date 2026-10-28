@@ -48,7 +48,7 @@ VelaGuard 板端 ──MQTT──▶ Broker 8.148.67.174:1883 ◀──只读订
 
 与看板 `dashboard-api.md` §2 对齐。
 
-- status：`device_id`、`online`、`firmware`、`build_mode`、`network`（`rj45\|esp01\|none`）、`uptime_ms`、`ts_ms`、`time_quality`。
+- status：`device_id`、`online`、`firmware`、`slot`（`A\|B`）、`build_mode`、`network`（`rj45\|esp01\|none`）、`uptime_ms`、`ts_ms`、`time_quality`。`firmware` 与屏幕来自同一构建版本来源，`slot` 是当前启动槽位。
 - telemetry：顶层数组 `{id,value,ok,age_ms}`。读失败时 `value` 为 JSON `null`，`ok` 为 false。同一点位连续空值不重复上报：仅当上次成功发出去的是有值时才带一次 null。从未有值的空点省略。过滤后数组为空则本周期不发 telemetry。
 - alarm：`state` 为 `raised`/`cleared`；`kind` 为 `offline` / `threshold_high` / `threshold_low`；另加 `level`（`warn`/`crit`/`offline`）。`alarm_id` 为 `{device_id}-{boot_id}-{seq}`，`boot_id`/`seq` 仅 RAM。
 - point_table：已确认 `points.json` 原文。`points` 为空则不发。

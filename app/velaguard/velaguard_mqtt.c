@@ -31,6 +31,7 @@
 #include <mqtt.h>
 
 #include "vg_device_id.h"
+#include "vg_fw_identity.h"
 #include "vg_mqtt_payload.h"
 
 #ifndef CONFIG_VG_MQTT_BROKER_HOST
@@ -248,8 +249,8 @@ static void build_status_payload(FAR char *buf, size_t bufsz)
                   mono.tv_nsec / 1000000LL;
     }
 
-  vg_mqtt_format_status(buf, bufsz, vg_device_id(), "rj45", uptime_ms,
-                        0);
+  vg_mqtt_format_status(buf, bufsz, vg_device_id(), vg_fw_version(),
+                        vg_fw_slot_name(), "rj45", uptime_ms, 0);
 }
 
 /****************************************************************************

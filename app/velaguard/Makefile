@@ -29,7 +29,7 @@ MAINSRC  += vgcfg.c
 CSRCS    += vg_config_store.c
 endif
 
-CSRCS    += vg_device_id.c vg_mqtt_payload.c
+CSRCS    += vg_device_id.c vg_mqtt_payload.c vg_fw_identity.c
 
 ifeq ($(CONFIG_VG_FRAME_STATS),y)
 PROGNAME += vgstats vgruntime
@@ -130,7 +130,7 @@ endif
 ifeq ($(CONFIG_VG_OTA_PROBE),y)
 PROGNAME += vgota
 MAINSRC  += vgota.c
-CSRCS    += vg_ota_probe.c
+CSRCS    += vg_ota_probe.c vg_ota_reboot.c
 CFLAGS   += -DCONFIG_VG_OTA_PROBE=1
 CFLAGS   += ${INCDIR_PREFIX}$(abspath $(CURDIR)/../../scripts/qspi_boot_stub)
 endif
@@ -218,6 +218,7 @@ PRIORITY  := $(foreach p,$(PROGNAME),$(strip \
 VG_OBJDIR := $(abspath $(CURDIR)/../../build/velaguard)
 $(shell mkdir -p "$(VG_OBJDIR)")
 PREFIX := $(VG_OBJDIR)$(DELIM)
+CFLAGS += ${INCDIR_PREFIX}$(VG_OBJDIR)
 
 ifneq ($(filter y,$(CONFIG_VG_BRINGUP_TOOLS) $(CONFIG_VG_HMI)),)
 CSRCS += vg_file_store.c

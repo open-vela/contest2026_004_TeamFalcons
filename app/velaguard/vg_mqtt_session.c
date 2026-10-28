@@ -18,6 +18,7 @@
 
 #include "vg_device_id.h"
 #include "vg_discover.h"
+#include "vg_fw_identity.h"
 #include "vg_mqtt_payload.h"
 #include "vg_mqtt_session.h"
 #include "vg_tcp_transport.h"
@@ -212,6 +213,7 @@ static void publish_status(void)
     }
 
   if (vg_mqtt_format_status(g_status, sizeof(g_status), vg_device_id(),
+                            vg_fw_version(), vg_fw_slot_name(),
                             g_net, uptime_ms, wall_ms()) != 0)
     {
       return;

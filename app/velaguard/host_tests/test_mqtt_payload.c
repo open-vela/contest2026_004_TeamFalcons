@@ -48,13 +48,22 @@ static void test_topics_and_status(void)
   expect(vg_mqtt_format_lwt(buf, sizeof(buf), "vg-abc") == 0, "lwt");
   expect(strstr(buf, "\"device_id\":\"vg-abc\"") != NULL, "lwt device");
   expect(strstr(buf, "\"online\":false") != NULL, "lwt offline");
-  expect(vg_mqtt_format_status(buf, sizeof(buf), "vg-abc", "rj45", 123,
-                               456) == 0,
+  expect(vg_mqtt_format_status(buf, sizeof(buf), "vg-abc", "9.8.7",
+                               "B", "rj45", 123, 456) == 0,
          "status");
+  expect(strstr(buf, "\"firmware\":\"9.8.7\"") != NULL, "status fw");
+  expect(strstr(buf, "\"slot\":\"B\"") != NULL, "status slot");
   expect(strstr(buf, "\"network\":\"rj45\"") != NULL, "status net");
   expect(strstr(buf, "\"uptime_ms\":123") != NULL, "status uptime");
   expect(strstr(buf, "\"ts_ms\":456") != NULL, "status ts");
   expect(strstr(buf, "\"time_quality\":\"unknown\"") != NULL, "time q");
+  expect(vg_mqtt_format_status(buf, sizeof(buf), "vg-abc", "", "B", "rj45",
+                               123, 456) != 0, "empty fw rejected");
+  expect(vg_mqtt_format_status(buf, sizeof(buf), "vg-abc", "9.8.7", "",
+                               "rj45", 123, 456) != 0,
+         "empty slot rejected");
+  expect(vg_mqtt_format_status(buf, 16, "vg-abc", "9.8.7", "B", "rj45",
+                               123, 456) != 0, "small buffer rejected");
 }
 
 static void test_telemetry_and_alarm(void)

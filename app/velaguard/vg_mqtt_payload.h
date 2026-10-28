@@ -35,6 +35,7 @@ int vg_mqtt_topic(char *out, size_t n, const char *device_id,
 int vg_mqtt_format_lwt(char *out, size_t n, const char *device_id);
 
 int vg_mqtt_format_status(char *out, size_t n, const char *device_id,
+                          const char *firmware, const char *slot,
                           const char *network, long long uptime_ms,
                           long long ts_ms);
 

@@ -21,7 +21,7 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 - A 槽为出厂和恢复镜像，只由 ST-Link 写入；B 槽只由 OTA 写入。B 槽启动后自检，成功写 confirmed，失败或 trial 次数超限回到 A 槽。
 - OTA 只使用 RJ45 出口，ESP-01S Wi-Fi 出口拒绝 OTA。
 
-实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇；QSPI 单颗 MT25QL512ABB、64MB，4 KiB 擦除、256 B 页写，第二片未响应。按 64MB 修正了 QSPI 窗口、MPU、boot stub 和 flash 脚本的上限；A/B 8 MiB 槽位成立。证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。
+实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇；QSPI 单颗 MT25QL512ABB、64MB，4 KiB 擦除、256 B 页写，第二片未响应。按 64MB 修正了 QSPI 窗口、MPU、boot stub 和 flash 脚本的上限；A/B 8 MiB 槽位成立。证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。P1 的身份基础（ticket 02）已完成：`VERSION` 单一来源、A/B 镜像元数据检查、状态和屏幕统一显示版本/槽位、`vgota reboot` 安全重启；证据见 [t02-identity](../../ota-evidence/2026-10-28/t02-identity.md)。
 
 ## User Stories
 

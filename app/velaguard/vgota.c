@@ -19,7 +19,9 @@
 #include <nuttx/mmcsd.h>
 #include <nuttx/board.h>
 
+#include "vg_fw_identity.h"
 #include "vg_ota_probe.h"
+#include "vg_ota_reboot.h"
 #include "vg_ota_mbox.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
@@ -28,6 +30,8 @@
 static void usage(void)
 {
   printf("Usage:\n");
+  printf("  vgota identity\n");
+  printf("  vgota reboot\n");
   printf("  vgota probe\n");
   printf("  vgota qspiprobe\n");
   printf("  vgota qspiprobe --confirm\n");
@@ -36,6 +40,13 @@ static void usage(void)
   printf("  vgota fixture write <NAME> <bytes> [seed]\n");
   printf("  vgota fixture clear\n");
 #endif
+}
+
+static void print_identity(void)
+{
+  printf("vgota: identity version=%s slot=%s build=%s link=%08" PRIx32 "\n",
+         vg_fw_version(), vg_fw_slot_name(), vg_fw_build_id(),
+         vg_fw_link_base());
 }
 
 static void print_hex(const char *label, const uint8_t *buf, size_t len)
@@ -385,6 +396,8 @@ static void probe_emmc(const char *dev)
   int fd;
   int ret;
 
+  print_identity();
+
   fd = open(dev, O_RDONLY);
   if (fd < 0)
     {
@@ -510,6 +523,19 @@ int main(int argc, char *argv[])
   if (argc < 2)
     {
       usage();
+      return 1;
+    }
+
+  if (strcmp(argv[1], "identity") == 0 && argc == 2)
+    {
+      print_identity();
+      return 0;
+    }
+
+  if (strcmp(argv[1], "reboot") == 0 && argc == 2)
+    {
+      int ret = vg_ota_safe_reboot();
+      printf("vgota: safe reboot failed ERR=%d\n", -ret);
       return 1;
     }
 

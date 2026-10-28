@@ -48,11 +48,13 @@ config VG_NSH_STACKSIZE
 config VG_OTA_PROBE
 	bool "VelaGuard OTA hardware readiness probe (vgota)"
 	default y
-	depends on VG_BRINGUP_TOOLS && MMCSD && FS_FAT
+	depends on VG_BRINGUP_TOOLS && MMCSD && FS_FAT && BOARDCTL_RESET
 	---help---
 		Build the read-only vgota NSH command.  It reads eMMC CID,
 		CSD and EXT_CSD, block geometry, statfs and the FAT boot
-		sector.  It does not format, erase or write the eMMC.
+		sector.  It does not format, erase or write the eMMC.  It also
+		reports the firmware version and boot slot and can request a
+		synced reboot for OTA.
 
 config VG_OTA_TEST_FIXTURES
 	bool "VelaGuard OTA test fixtures (development only)"

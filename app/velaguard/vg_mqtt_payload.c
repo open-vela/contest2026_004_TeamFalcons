@@ -65,10 +65,17 @@ int vg_mqtt_format_lwt(char *out, size_t n, const char *device_id)
 }
 
 int vg_mqtt_format_status(char *out, size_t n, const char *device_id,
+                          const char *firmware, const char *slot,
                           const char *network, long long uptime_ms,
                           long long ts_ms)
 {
   if (out == NULL || device_id == NULL || device_id[0] == '\0')
+    {
+      return -1;
+    }
+
+  if (firmware == NULL || firmware[0] == '\0' ||
+      slot == NULL || slot[0] == '\0')
     {
       return -1;
     }
@@ -80,10 +87,12 @@ int vg_mqtt_format_status(char *out, size_t n, const char *device_id,
 
   if (snprintf(out, n,
                "{\"device_id\":\"%s\",\"online\":true,"
-               "\"firmware\":\"0.1.0\",\"build_mode\":\"TEST\","
+               "\"firmware\":\"%s\",\"slot\":\"%s\","
+               "\"build_mode\":\"TEST\","
                "\"network\":\"%s\",\"uptime_ms\":%lld,\"ts_ms\":%lld,"
                "\"time_quality\":\"unknown\"}",
-               device_id, network, uptime_ms, ts_ms) >= (int)n)
+               device_id, firmware, slot, network, uptime_ms,
+               ts_ms) >= (int)n)
     {
       return -1;
     }
