@@ -30,6 +30,7 @@
 #include "vg_ota_sha256.h"
 #include "vg_ota_install.h"
 #include "vg_ota_self_check.h"
+#include "vg_ota_staging.h"
 #include "vg_device_id.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
@@ -41,6 +42,7 @@ static void usage(void)
   printf("  vgota identity\n");
   printf("  vgota bootinfo\n");
   printf("  vgota reboot\n");
+  printf("  vgota state\n");
   printf("  vgota selfcheck [--run]\n");
   printf("  vgota confirm\n");
   printf("  vgota rollback [reason]\n");
@@ -56,6 +58,7 @@ static void usage(void)
   printf("  vgota fixture bcb corrupt <0|1> <offset>\n");
   printf("  vgota fixture bcb clear\n");
   printf("  vgota fixture stage <bytes> <seq> [task]\n");
+  printf("  vgota fixture offer <bytes> [ver] [task] [fault]\n");
   printf("  vgota fixture arm\n");
   printf("  vgota fixture fail <on|off|status>\n");
 #endif
@@ -759,57 +762,176 @@ static int fixture_image_hash(uint8_t digest[32])
   return 0;
 }
 
+static ssize_t transport_window_read(void *ctx, uint32_t offset, uint8_t *buf, size_t len)
+{
+  volatile const uint8_t *src = (volatile const uint8_t *)0x91000000u;
+  size_t i;
+  (void)ctx;
+  for (i = 0; i < len; i++)
+    {
+      buf[i] = src[offset + i];
+    }
+  return (ssize_t)len;
+}
+
 /* ST-Link 只把传输副本写到固定测试窗口，B 槽交给 boot stub 安装。 */
 static int fixture_stage(int argc, char *argv[])
 {
   struct vg_ota_manifest m;
   struct vg_ota_bcb b;
   uint8_t buf[4096];
-  uint32_t size, seq, off, n, i;
-  volatile const uint8_t *src=(volatile const uint8_t *)0x91000000u;
-  int fd;
-  if ((argc!=5 && argc!=6) || vg_fw_slot()!='A' ||
-      parse_u32(argv[3],&size) || parse_u32(argv[4],&seq) ||
-      size<8 || size>VG_OTA_IMAGE_MAX_BYTES) return 1;
-  for (i=0; i<8; i++) buf[i]=src[i];
-  if (!vg_ota_image_vector_valid(buf,size))
-    { printf("vgota: fixture transport vector invalid\n"); return 1; }
-  memset(&m,0,sizeof(m));
-  snprintf(m.task_id,sizeof(m.task_id),"%s",argc==6 ? argv[5] : "T04-FIXTURE");
-  if (argc==6 && strlen(argv[5])>=sizeof(m.task_id)) return 1;
-  m.slot=VG_OTA_BCB_SLOT_B; m.image_size=size;
-  m.flags=VG_OTA_MANIFEST_FIXTURE; m.issued_at=1; m.expires_at=UINT64_MAX;
-  snprintf(m.version,sizeof(m.version),"%s",vg_fw_version());
-  snprintf(m.device_id,sizeof(m.device_id),"%s",vg_device_id());
-  snprintf(m.model,sizeof(m.model),"%s",VG_OTA_MODEL);
-  snprintf(m.key_id,sizeof(m.key_id),"fixture");
-  if (mkdir(VG_OTA_DIR,0755)<0 && errno!=EEXIST) return 1;
-  fd=open(VG_OTA_DIR "/IMAGE.BIN",O_WRONLY|O_CREAT|O_TRUNC,0644);
-  if (fd<0) return 1;
-  for (off=0; off<size; off+=n)
+  uint32_t size, seq;
+  char err_msg[64] = {0};
+  struct vg_ota_sha256 sha;
+  uint8_t chunk[512];
+  uint32_t to_hash;
+  int ret;
+
+  if ((argc != 5 && argc != 6) || vg_fw_slot() != 'A' ||
+      parse_u32(argv[3], &size) || parse_u32(argv[4], &seq) ||
+      size < 8 || size > VG_OTA_IMAGE_MAX_BYTES)
     {
-      n=size-off; if (n>sizeof(buf)) n=sizeof(buf);
-      for (i=0; i<n; i++) buf[i]=src[off+i];
-      if (write(fd,buf,n)!=(ssize_t)n) { close(fd); return 1; }
+      return 1;
     }
-  if (fsync(fd)<0) { close(fd); return 1; }
-  close(fd);
-  if (fixture_image_hash(m.sha256) || vg_ota_manifest_encode(&m,buf) ||
-      fixture_store("MANIFEST.BIN",buf,512)) return 1;
-  memset(&b,0,sizeof(b));
-  b.slot=VG_OTA_BCB_SLOT_B; b.image_size=size; b.state=VG_OTA_BCB_STATE_FAILED;
-  snprintf(b.version,sizeof(b.version),"%s",m.version);
-  snprintf(b.task_id,sizeof(b.task_id),"%s",m.task_id);
-  memcpy(b.sha256,m.sha256,32);
-  b.seq=seq-1u;
-  if (vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
-      fixture_store("BCB0.BIN",buf,sizeof(buf))) return 1;
-  b.seq=seq-2u;
-  if (vg_ota_bcb_encode(&b,buf,sizeof(buf)) ||
-      fixture_store("BCB1.BIN",buf,sizeof(buf))) return 1;
+
+  transport_window_read(NULL, 0, buf, 8);
+  if (!vg_ota_image_vector_valid(buf, size))
+    {
+      printf("vgota: fixture transport vector invalid\n");
+      return 1;
+    }
+
+  memset(&m, 0, sizeof(m));
+  snprintf(m.task_id, sizeof(m.task_id), "%s", argc == 6 ? argv[5] : "T04-FIXTURE");
+  if (argc == 6 && strlen(argv[5]) >= sizeof(m.task_id)) return 1;
+
+  m.slot = VG_OTA_BCB_SLOT_B;
+  m.image_size = size;
+  m.flags = VG_OTA_MANIFEST_FIXTURE;
+  m.issued_at = 1;
+  m.expires_at = UINT64_MAX;
+  snprintf(m.version, sizeof(m.version), "%s", vg_fw_version());
+  snprintf(m.device_id, sizeof(m.device_id), "%s", vg_device_id());
+  snprintf(m.model, sizeof(m.model), "%s", VG_OTA_MODEL);
+  snprintf(m.key_id, sizeof(m.key_id), "fixture");
+
+  vg_ota_sha256_init(&sha);
+  for (to_hash = 0; to_hash < size; to_hash += sizeof(chunk))
+    {
+      uint32_t nbytes = size - to_hash;
+      if (nbytes > sizeof(chunk)) nbytes = sizeof(chunk);
+      transport_window_read(NULL, to_hash, chunk, nbytes);
+      vg_ota_sha256_update(&sha, chunk, nbytes);
+    }
+  vg_ota_sha256_final(&sha, m.sha256);
+
+  ret = vg_ota_staging_stage(&m, transport_window_read, NULL, err_msg, sizeof(err_msg));
+  if (ret != 0)
+    {
+      printf("vgota: fixture stage failed: %s ERR=%d\n", err_msg, ret);
+      return 1;
+    }
+
+  memset(&b, 0, sizeof(b));
+  b.slot = VG_OTA_BCB_SLOT_B;
+  b.image_size = size;
+  b.state = VG_OTA_BCB_STATE_FAILED;
+  snprintf(b.version, sizeof(b.version), "%s", m.version);
+  snprintf(b.task_id, sizeof(b.task_id), "%s", m.task_id);
+  memcpy(b.sha256, m.sha256, 32);
+  b.seq = seq - 1u;
+  if (vg_ota_bcb_encode(&b, buf, sizeof(buf)) ||
+      fixture_store("BCB0.BIN", buf, sizeof(buf))) return 1;
+  b.seq = seq - 2u;
+  if (vg_ota_bcb_encode(&b, buf, sizeof(buf)) ||
+      fixture_store("BCB1.BIN", buf, sizeof(buf))) return 1;
   sync();
-  printf("vgota: fixture staged bytes=%" PRIu32 " task=%s sha=%02x%02x%02x%02x; not armed\n",
-         size,m.task_id,m.sha256[0],m.sha256[1],m.sha256[2],m.sha256[3]);
+  printf("vgota: fixture staged bytes=%" PRIu32 " task=%s sha=%02x%02x%02x%02x; READY (not armed)\n",
+         size, m.task_id, m.sha256[0], m.sha256[1], m.sha256[2], m.sha256[3]);
+  return 0;
+}
+
+static int fixture_offer(int argc, char *argv[])
+{
+  struct vg_ota_manifest m;
+  uint8_t vector[8];
+  uint32_t size;
+  const char *ver = "0.2.0";
+  const char *task = "T06-OFFER";
+  const char *fault = "ok";
+  char err_msg[64] = {0};
+  struct vg_ota_sha256 sha;
+  uint8_t chunk[512];
+  uint32_t off;
+  int ret;
+
+  if (argc < 4 || parse_u32(argv[3], &size) != 0 || size < 8)
+    {
+      printf("Usage: vgota fixture offer <bytes> [ver] [task] [fault]\n");
+      return 1;
+    }
+
+  if (argc >= 5) ver = argv[4];
+  if (argc >= 6) task = argv[5];
+  if (argc >= 7) fault = argv[6];
+
+  memset(&m, 0, sizeof(m));
+  m.slot = VG_OTA_BCB_SLOT_B;
+  m.image_size = size;
+  m.flags = VG_OTA_MANIFEST_FIXTURE;
+  m.issued_at = 1;
+  m.expires_at = UINT64_MAX;
+  snprintf(m.version, sizeof(m.version), "%s", ver);
+  snprintf(m.device_id, sizeof(m.device_id), "%s", vg_device_id());
+  snprintf(m.model, sizeof(m.model), "%s", VG_OTA_MODEL);
+  snprintf(m.key_id, sizeof(m.key_id), "fixture");
+  snprintf(m.task_id, sizeof(m.task_id), "%s", task);
+
+  transport_window_read(NULL, 0, vector, sizeof(vector));
+  vg_ota_sha256_init(&sha);
+  for (off = 0; off < size; off += sizeof(chunk))
+    {
+      uint32_t n = size - off;
+      if (n > sizeof(chunk)) n = sizeof(chunk);
+      transport_window_read(NULL, off, chunk, n);
+      vg_ota_sha256_update(&sha, chunk, n);
+    }
+  vg_ota_sha256_final(&sha, m.sha256);
+
+  if (strcmp(fault, "bad_dev") == 0)
+    {
+      snprintf(m.device_id, sizeof(m.device_id), "vg-fake-device");
+    }
+  else if (strcmp(fault, "bad_model") == 0)
+    {
+      snprintf(m.model, sizeof(m.model), "FAKE-MODEL");
+    }
+  else if (strcmp(fault, "bad_slot") == 0)
+    {
+      m.slot = VG_OTA_BCB_SLOT_A;
+    }
+  else if (strcmp(fault, "bad_hash") == 0)
+    {
+      m.sha256[0] ^= 0xff;
+    }
+  else if (strcmp(fault, "bad_time") == 0)
+    {
+      m.expires_at = m.issued_at;
+    }
+  else if (strcmp(fault, "no_space") == 0)
+    {
+      m.image_size = 0xffffffffu;
+    }
+
+  ret = vg_ota_staging_stage(&m, transport_window_read, NULL, err_msg, sizeof(err_msg));
+  if (ret != 0)
+    {
+      printf("vgota: offer REJECTED: %s ERR=%d\n", err_msg, ret);
+      return 1;
+    }
+
+  printf("vgota: offer ACCEPTED into READY: task=%s ver=%s bytes=%" PRIu32 "\n",
+         m.task_id, m.version, m.image_size);
   return 0;
 }
 
@@ -859,6 +981,7 @@ static int cmd_fixture(int argc, char *argv[])
   unsigned long seed = 0;
 
   if (argc>=3 && strcmp(argv[2],"stage")==0) return fixture_stage(argc,argv);
+  if (argc>=3 && strcmp(argv[2],"offer")==0) return fixture_offer(argc,argv);
   if (argc==3 && strcmp(argv[2],"arm")==0) return fixture_arm();
 
   if (argc >= 3 && strcmp(argv[2], "fail") == 0)
@@ -1152,6 +1275,26 @@ static int cmd_rollback(int argc, char *argv[])
   return 0;
 }
 
+static int cmd_state(void)
+{
+  struct vg_ota_staging_info info;
+  int ret = vg_ota_staging_get_info(&info);
+  if (ret != 0)
+    {
+      printf("vgota: state unavailable\n");
+      return 1;
+    }
+
+  printf("vgota: state=%s task=%s ver=%s size=%" PRIu32
+         " sha=%02x%02x%02x%02x free=%" PRIu64 " req=%" PRIu64 " err=%s\n",
+         vg_ota_state_name(info.state),
+         info.task_id, info.version, info.image_size,
+         info.sha256[0], info.sha256[1], info.sha256[2], info.sha256[3],
+         info.free_bytes, info.required_bytes,
+         info.error_code[0] ? info.error_code : "none");
+  return 0;
+}
+
 int main(int argc, char *argv[])
 {
   if (argc < 2)
@@ -1170,6 +1313,11 @@ int main(int argc, char *argv[])
     {
       print_bootinfo();
       return 0;
+    }
+
+  if (strcmp(argv[1], "state") == 0 && argc == 2)
+    {
+      return cmd_state();
     }
 
   if (strcmp(argv[1], "reboot") == 0 && argc == 2)

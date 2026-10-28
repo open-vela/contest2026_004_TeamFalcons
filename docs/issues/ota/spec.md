@@ -27,7 +27,9 @@ Feature: ota
 
 任务 04 已完成 pending 镜像的 manifest/摘要校验、B 槽安装、回读和 TRIAL 持久化；用户本机按键确认后的诊断安装已启动 B，完整 8 MiB A 槽摘要前后一致。见 [t04-install](../../ota-evidence/2026-10-28/t04-install.md)。任务 03 当时 pending 回 A 的限制由本任务替代。
 
-任务 05 已完成 B 槽新固件自检、confirmed 提交、重启直接进入 B（`b-confirmed`）、自检失败或指令回滚到 A 槽（`a-failed`），以及硬件看门狗超时复位与 trial 计数自动步进 1->2->3 超限后降级回滚 A 槽；见 [t05-rollback](../../ota-evidence/2026-10-28/t05-rollback.md)。正式应用验签、本地屏幕确认和网络 OTA 仍待后续任务实现。
+任务 05 已完成 B 槽新固件自检、confirmed 提交、重启直接进入 B（`b-confirmed`）、自检失败或指令回滚到 A 槽（`a-failed`），以及硬件看门狗超时复位与 trial 计数自动步进 1->2->3 超限后降级回滚 A 槽；见 [t05-rollback](../../ota-evidence/2026-10-28/t05-rollback.md)。
+
+任务 06 已完成暂存存储管理、Manifest 校验矩阵（Device ID、型号、槽位、版本、时间窗、签名及摘要）、空间不足拒绝、写临时文件与原子改名，以及进入 `READY_AWAITING_CONFIRM` 并在屏幕和状态机中就绪；验证无 pending BCB，重启不触发安装；见 [t06-staging](../../ota-evidence/2026-10-28/t06-staging.md)。正式应用验签、本地屏幕长按确认和网络 OTA 仍待后续任务实现。
 
 ## User Stories
 

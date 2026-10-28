@@ -8,6 +8,7 @@
 #ifdef VG_HMI_BOARD
 #include "vg_alarm_eval.h"
 #include "vg_fw_identity.h"
+#include "vg_ota_staging.h"
 #include <sys/statfs.h>
 #endif
 #include <stdio.h>
@@ -1003,6 +1004,22 @@ static void refresh_sys_status(void)
     strncpy(s_sys.version, "0.0.0-sim", sizeof(s_sys.version) - 1);
     strncpy(s_sys.slot, "SIM", sizeof(s_sys.slot) - 1);
 #endif
+#ifdef VG_HMI_BOARD
+    struct vg_ota_staging_info ota_info;
+    if(vg_ota_staging_get_info(&ota_info) == 0 &&
+       ota_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM) {
+        strncpy(s_sys.ota_label, "待确认", sizeof(s_sys.ota_label) - 1);
+    }
+    else if(s_ota.state == VG_OTA_PROGRESS) {
+        strncpy(s_sys.ota_label, "升级中", sizeof(s_sys.ota_label) - 1);
+    }
+    else if(s_net.ota_active) {
+        strncpy(s_sys.ota_label, "可升级", sizeof(s_sys.ota_label) - 1);
+    }
+    else {
+        strncpy(s_sys.ota_label, "无更新", sizeof(s_sys.ota_label) - 1);
+    }
+#else
     if(s_ota.state == VG_OTA_PROGRESS) {
         strncpy(s_sys.ota_label, "升级中", sizeof(s_sys.ota_label) - 1);
     }
@@ -1012,6 +1029,7 @@ static void refresh_sys_status(void)
     else {
         strncpy(s_sys.ota_label, "无更新", sizeof(s_sys.ota_label) - 1);
     }
+#endif
     s_sys.log_used = s_log_n;
     s_sys.log_cap = VG_LOG_MAX;
 }
@@ -1024,6 +1042,18 @@ const vg_sys_status_t * vg_model_get_sys_status(void)
 
 const vg_ota_t * vg_model_get_ota(void)
 {
+#ifdef VG_HMI_BOARD
+    struct vg_ota_staging_info info;
+    if(vg_ota_staging_get_info(&info) == 0 &&
+       info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM) {
+        s_ota.state = VG_OTA_OFFER;
+        snprintf(s_ota.version, sizeof(s_ota.version), "%s", info.version);
+        s_ota.size_mb = (int32_t)((info.image_size + 1048575u) / 1048576u);
+        snprintf(s_ota.note, sizeof(s_ota.note), "SHA: %02x%02x%02x%02x... 任务: %s",
+                 info.sha256[0], info.sha256[1], info.sha256[2], info.sha256[3],
+                 info.task_id);
+    }
+#endif
     return &s_ota;
 }
 
