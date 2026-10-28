@@ -8,11 +8,13 @@
 
 #include <stdint.h>
 
+#include "vg_ota_mbox.h"
+
 #define REG32(a) (*(volatile uint32_t *)(uintptr_t)(a))
 #define REG16(a) (*(volatile uint16_t *)(uintptr_t)(a))
 
 #define APP_BASE              0x90000000u
-#define APP_LIMIT             0x98000000u
+#define APP_LIMIT             0x94000000u
 
 #define SRAM_BASE             0x20000000u
 #define SRAM_LIMIT            0x40000000u
@@ -46,14 +48,32 @@
 #define QSPI_CR               0x52005000u
 #define QSPI_DCR              0x52005004u
 #define QSPI_SR               0x52005008u
+#define QSPI_FCR              0x5200500cu
 #define QSPI_DLR              0x52005010u
 #define QSPI_CCR              0x52005014u
+#define QSPI_AR               0x52005018u
+#define QSPI_ABR              0x5200501cu
 #define QSPI_DR               0x52005020u
 #define QSPI_LPTR             0x52005030u
 
 #define QSPI_CR_EN            (1u << 0)
 #define QSPI_CR_ABORT         (1u << 1)
+#define QSPI_SR_TEF           (1u << 0)
+#define QSPI_SR_TCF           (1u << 1)
+#define QSPI_SR_FTF           (1u << 2)
 #define QSPI_SR_BUSY          (1u << 5)
+#define QSPI_SR_FLEVEL_SHIFT  (8)
+#define QSPI_SR_FLEVEL_MASK   (0x1fu << QSPI_SR_FLEVEL_SHIFT)
+#define QSPI_FCR_CTEF         (1u << 0)
+#define QSPI_FCR_CTCF         (1u << 1)
+#define QSPI_FCR_CSMF         (1u << 3)
+#define QSPI_FCR_CTOF         (1u << 4)
+#define QSPI_CCR_IMODE_1      (1u << 8)
+#define QSPI_CCR_ADMODE_1     (1u << 10)
+#define QSPI_CCR_ADSIZE_32    (3u << 12)
+#define QSPI_CCR_DMODE_1      (1u << 24)
+#define QSPI_CCR_FMODE_INDRD  (1u << 26)
+#define QSPI_CCR_DCYC(n)      ((uint32_t)(n) << 18)
 
 #define SCB_VTOR              0xe000ed08u
 
@@ -196,6 +216,423 @@ static void qspi_enter_memory_mapped(void)
   short_delay();
 }
 
+static void qspi_clear_flags(void)
+{
+  REG32(QSPI_FCR) = QSPI_FCR_CTEF | QSPI_FCR_CTCF |
+                    QSPI_FCR_CSMF | QSPI_FCR_CTOF;
+}
+
+static int qspi_wait_tcf(void)
+{
+  uint32_t timeout = 20000000u;
+
+  while (timeout-- > 0)
+    {
+      uint32_t sr = REG32(QSPI_SR);
+
+      if ((sr & QSPI_SR_TEF) != 0)
+        {
+          return -1;
+        }
+
+      if ((sr & QSPI_SR_TCF) != 0)
+        {
+          return 0;
+        }
+    }
+
+  return -1;
+}
+
+static void qspi_select_flash(uint32_t flash)
+{
+  /* Keep dual-flash mode and QSPI enabled; FSELECT chooses the device. */
+  REG32(QSPI_CR) = 0x05500059u | (flash != 0 ? (1u << 7) : 0u);
+}
+
+static void qspi_select_dual(void)
+{
+  REG32(QSPI_CR) = 0x05500059u;
+}
+
+static int qspi_read_data(uint8_t *buf, uint32_t len)
+{
+  volatile uint8_t *dr = (volatile uint8_t *)QSPI_DR;
+  uint32_t remaining = len;
+  uint32_t timeout;
+  uint32_t sr;
+
+  while (remaining > 0)
+    {
+      timeout = 20000000u;
+      for (; ; )
+        {
+          sr = REG32(QSPI_SR);
+          if ((sr & QSPI_SR_TEF) != 0)
+            {
+              return -1;
+            }
+
+          if (((sr & QSPI_SR_FLEVEL_MASK) >> QSPI_SR_FLEVEL_SHIFT) != 0 ||
+              (sr & QSPI_SR_TCF) != 0)
+            {
+              break;
+            }
+
+          if (timeout-- == 0)
+            {
+              return -1;
+            }
+        }
+
+      while (remaining > 0)
+        {
+          sr = REG32(QSPI_SR);
+          if (((sr & QSPI_SR_FLEVEL_MASK) >> QSPI_SR_FLEVEL_SHIFT) == 0)
+            {
+              break;
+            }
+
+          *buf++ = dr[0];
+          remaining--;
+        }
+
+      if ((REG32(QSPI_SR) & QSPI_SR_TCF) != 0)
+        {
+          break;
+        }
+    }
+
+  if (remaining != 0)
+    {
+      return -1;
+    }
+
+  if (qspi_wait_tcf() != 0)
+    {
+      return -1;
+    }
+
+  qspi_clear_flags();
+  return 0;
+}
+
+static int qspi_write_data(const uint8_t *buf, uint32_t len)
+{
+  volatile uint8_t *dr = (volatile uint8_t *)QSPI_DR;
+  uint32_t remaining = len;
+  uint32_t timeout;
+
+  while (remaining > 0)
+    {
+      timeout = 20000000u;
+      while ((REG32(QSPI_SR) & QSPI_SR_FTF) == 0)
+        {
+          if ((REG32(QSPI_SR) & QSPI_SR_TEF) != 0)
+            {
+              return -1;
+            }
+
+          if (timeout-- == 0)
+            {
+              return -1;
+            }
+        }
+
+      *dr = *buf++;
+      remaining--;
+    }
+
+  if (qspi_wait_tcf() != 0)
+    {
+      return -1;
+    }
+
+  qspi_clear_flags();
+  return 0;
+}
+
+static int qspi_indirect_read(uint8_t inst, uint32_t addr, int has_addr,
+                              uint32_t dummy, uint8_t *buf, uint32_t len)
+{
+  uint32_t ccr;
+
+  if (len == 0)
+    {
+      return -1;
+    }
+
+  qspi_clear_flags();
+  REG32(QSPI_DLR) = len - 1u;
+
+  ccr = (uint32_t)inst | QSPI_CCR_IMODE_1 | QSPI_CCR_DMODE_1 |
+        QSPI_CCR_FMODE_INDRD | QSPI_CCR_DCYC(dummy);
+  if (has_addr)
+    {
+      ccr |= QSPI_CCR_ADMODE_1 | QSPI_CCR_ADSIZE_32;
+    }
+
+  REG32(QSPI_CCR) = ccr;
+  if (has_addr)
+    {
+      REG32(QSPI_AR) = addr;
+    }
+
+  if (qspi_read_data(buf, len) != 0)
+    {
+      qspi_abort();
+      qspi_clear_flags();
+      return -1;
+    }
+
+  qspi_wait_idle();
+  return 0;
+}
+
+static int qspi_indirect_write(uint8_t inst, uint32_t addr,
+                               const uint8_t *buf, uint32_t len)
+{
+  if (len == 0)
+    {
+      return -1;
+    }
+
+  qspi_clear_flags();
+  REG32(QSPI_DLR) = len - 1u;
+  REG32(QSPI_CCR) = (uint32_t)inst | QSPI_CCR_IMODE_1 |
+                    QSPI_CCR_ADMODE_1 | QSPI_CCR_ADSIZE_32 |
+                    QSPI_CCR_DMODE_1;
+  REG32(QSPI_AR) = addr;
+
+  if (qspi_write_data(buf, len) != 0)
+    {
+      qspi_abort();
+      qspi_clear_flags();
+      return -1;
+    }
+
+  qspi_wait_idle();
+  return 0;
+}
+
+static int qspi_no_data(uint8_t inst)
+{
+  qspi_clear_flags();
+  REG32(QSPI_CCR) = (uint32_t)inst | QSPI_CCR_IMODE_1;
+
+  if (qspi_wait_tcf() != 0)
+    {
+      qspi_abort();
+      qspi_clear_flags();
+      return -1;
+    }
+
+  qspi_wait_idle();
+  qspi_clear_flags();
+  return 0;
+}
+
+static int qspi_no_data_addr(uint8_t inst, uint32_t addr)
+{
+  qspi_clear_flags();
+  REG32(QSPI_CCR) = (uint32_t)inst | QSPI_CCR_IMODE_1 |
+                    QSPI_CCR_ADMODE_1 | QSPI_CCR_ADSIZE_32;
+  REG32(QSPI_AR) = addr;
+
+  if (qspi_wait_tcf() != 0)
+    {
+      qspi_abort();
+      qspi_clear_flags();
+      return -1;
+    }
+
+  qspi_wait_idle();
+  qspi_clear_flags();
+  return 0;
+}
+
+static int qspi_scratch_one(uint32_t flash, uint32_t addr)
+{
+  volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
+  volatile uint8_t *mem;
+  uint8_t pattern[256];
+  uint8_t readback[256];
+  uint32_t i;
+
+  qspi_abort();
+  qspi_select_flash(flash);
+
+  for (i = 0; i < sizeof(pattern); i++)
+    {
+      pattern[i] = (uint8_t)(0xa5u ^ i ^ (addr >> 16));
+    }
+
+  if (qspi_no_data(0x06) != 0)
+    {
+      return 1;
+    }
+
+  if (qspi_no_data_addr(0x21, addr) != 0)
+    {
+      return 2;
+    }
+
+  /* A 4 KiB sector erase is typically tens of milliseconds; allow ample
+   * time because this diagnostic does not poll the status register.
+   */
+
+  delay_cycles(200000000u);
+
+  qspi_enter_memory_mapped();
+  mem = (volatile uint8_t *)(0x90000000u + addr);
+  for (i = 0; i < sizeof(readback); i++)
+    {
+      readback[i] = mem[i];
+    }
+
+  for (i = 0; i < sizeof(readback); i++)
+    {
+      if (readback[i] != 0xffu)
+        {
+          mbox->fail_index = i;
+          mbox->fail_got = readback[i];
+          mbox->fail_want = 0xffu;
+          return 5;
+        }
+    }
+
+  qspi_abort();
+  qspi_select_flash(flash);
+
+  if (qspi_no_data(0x06) != 0)
+    {
+      return 6;
+    }
+
+  if (qspi_indirect_write(0x12, addr, pattern, sizeof(pattern)) != 0)
+    {
+      return 7;
+    }
+
+  delay_cycles(20000000u);
+
+  qspi_enter_memory_mapped();
+  mem = (volatile uint8_t *)(0x90000000u + addr);
+  for (i = 0; i < sizeof(readback); i++)
+    {
+      readback[i] = mem[i];
+    }
+
+  for (i = 0; i < sizeof(readback); i++)
+    {
+      if (readback[i] != pattern[i])
+        {
+          mbox->fail_index = i;
+          mbox->fail_got = readback[i];
+          mbox->fail_want = pattern[i];
+          return 10;
+        }
+    }
+
+  return 0;
+}
+
+static int qspi_probe_run(void)
+{
+  volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
+  uint8_t id[3];
+  uint32_t fsize;
+  int has_flash2 = 0;
+  int ret;
+
+  mbox->state = VG_OTA_MBOX_RUNNING;
+  mbox->run_seq = mbox->seq;
+  mbox->error = 0;
+  mbox->jedec1 = 0;
+  mbox->jedec2 = 0;
+  mbox->capacity = 0;
+  mbox->erase_size = 4096;
+  mbox->write_size = 256;
+  mbox->sr = 0;
+  mbox->cr = 0;
+  mbox->ccr = 0;
+  mbox->dcr = 0;
+  mbox->raw1 = 0;
+  mbox->raw2 = 0;
+  mbox->fail_index = 0;
+  mbox->fail_got = 0;
+  mbox->fail_want = 0;
+
+  qspi_select_flash(0);
+  if (qspi_indirect_read(0x9f, 0, 0, 0, id, sizeof(id)) != 0)
+    {
+      mbox->error = 1;
+      goto fail;
+    }
+
+  mbox->raw1 = ((uint32_t)id[0] << 16) |
+               ((uint32_t)id[1] << 8) | id[2];
+  mbox->jedec1 = ((uint32_t)id[0] << 16) |
+                 ((uint32_t)id[2] << 8) | id[1];
+
+  qspi_select_flash(1);
+  if (qspi_indirect_read(0x9f, 0, 0, 0, id, sizeof(id)) != 0)
+    {
+      /* The second device may not be populated.  Its absence is a valid
+       * P0 result; keep the single-flash capacity and test flash 1.
+       */
+
+      qspi_abort();
+      qspi_clear_flags();
+      has_flash2 = 0;
+    }
+  else
+    {
+      mbox->raw2 = ((uint32_t)id[0] << 16) |
+                   ((uint32_t)id[1] << 8) | id[2];
+      mbox->jedec2 = ((uint32_t)id[0] << 16) |
+                     ((uint32_t)id[2] << 8) | id[1];
+      has_flash2 = 1;
+    }
+
+  fsize = (REG32(QSPI_DCR) >> 16) & 0x1fu;
+  mbox->capacity = 1u << fsize;
+  if (has_flash2)
+    {
+      mbox->capacity <<= 1;
+    }
+
+  ret = qspi_scratch_one(0, 0x03ff0000u);
+  if (ret != 0)
+    {
+      mbox->error = 10u + (uint32_t)ret;
+      goto fail;
+    }
+
+  if (has_flash2)
+    {
+      ret = qspi_scratch_one(1, 0x03ff0000u);
+      if (ret != 0)
+        {
+          mbox->error = 20u + (uint32_t)ret;
+          goto fail;
+        }
+    }
+
+  qspi_select_dual();
+  mbox->state = VG_OTA_MBOX_OK;
+  return 0;
+
+fail:
+  mbox->sr = REG32(QSPI_SR);
+  mbox->cr = REG32(QSPI_CR);
+  mbox->ccr = REG32(QSPI_CCR);
+  mbox->dcr = REG32(QSPI_DCR);
+  qspi_select_dual();
+  mbox->state = VG_OTA_MBOX_FAIL;
+  return -1;
+}
+
 static int valid_sram(uint32_t value)
 {
   /* Cortex-M loads the initial MSP from the vector table and requires a
@@ -229,6 +666,7 @@ static void jump_to_image(uint32_t, uint32_t)
 
 void Reset_Handler(void)
 {
+  volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
   uint32_t app_stack;
   uint32_t app_entry;
 
@@ -236,6 +674,17 @@ void Reset_Handler(void)
 
   clock_init();
   qspi_enter_memory_mapped();
+
+  if (mbox->magic == VG_OTA_MBOX_MAGIC &&
+      mbox->version == VG_OTA_MBOX_VERSION &&
+      mbox->request == VG_OTA_MBOX_REQ_QSPI_PROBE &&
+      mbox->state == VG_OTA_MBOX_REQUESTED)
+    {
+      qspi_abort();
+      qspi_probe_run();
+      mbox->request = VG_OTA_MBOX_REQ_NONE;
+      qspi_enter_memory_mapped();
+    }
 
   app_stack = REG32(APP_BASE);
   app_entry = REG32(APP_BASE + 4u);

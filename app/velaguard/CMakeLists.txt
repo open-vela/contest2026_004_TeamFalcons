@@ -42,4 +42,11 @@ if(CONFIG_VG_BRINGUP_TOOLS)
     STACKSIZE 4096
     INCLUDE_DIRECTORIES ${CMAKE_CURRENT_LIST_DIR}/nanomodbus
     DEFINITIONS NMBS_SERVER_DISABLED)
+
+  if(CONFIG_VG_OTA_PROBE)
+    nuttx_add_application(
+      NAME vgota
+      SRCS vgota.c vg_ota_probe.c
+      STACKSIZE 8192)
+  endif()
 endif()

@@ -45,6 +45,23 @@ config VG_NSH_STACKSIZE
 		pointer, took a precise bus fault and the board stopped responding
 		until an SWD reset.
 
+config VG_OTA_PROBE
+	bool "VelaGuard OTA hardware readiness probe (vgota)"
+	default y
+	depends on VG_BRINGUP_TOOLS && MMCSD && FS_FAT
+	---help---
+		Build the read-only vgota NSH command.  It reads eMMC CID,
+		CSD and EXT_CSD, block geometry, statfs and the FAT boot
+		sector.  It does not format, erase or write the eMMC.
+
+config VG_OTA_TEST_FIXTURES
+	bool "VelaGuard OTA test fixtures (development only)"
+	default n
+	depends on VG_OTA_PROBE
+	---help---
+		Reserved for test-only staging of fixture images, manifests
+		and BCBs.  Production builds must leave this disabled.
+
 config VG_CONFIG_STORE
 	bool "VelaGuard dual-slot config store (eMMC FAT)"
 	default n

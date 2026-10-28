@@ -21,7 +21,7 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 - A 槽为出厂和恢复镜像，只由 ST-Link 写入；B 槽只由 OTA 写入。B 槽启动后自检，成功写 confirmed，失败或 trial 次数超限回到 A 槽。
 - OTA 只使用 RJ45 出口，ESP-01S Wi-Fi 出口拒绝 OTA。
 
-实现按 P0 到 P5 推进。P0 的实测结果可以修正槽位大小和 QSPI 擦除参数；在 P0 完成前，8 MiB 槽位只是上限假设。
+实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇；QSPI 单颗 MT25QL512ABB、64MB，4 KiB 擦除、256 B 页写，第二片未响应。按 64MB 修正了 QSPI 窗口、MPU、boot stub 和 flash 脚本的上限；A/B 8 MiB 槽位成立。证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。
 
 ## User Stories
 
@@ -62,7 +62,7 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 35. 作为设备用户，我希望 A 槽始终是出厂和恢复镜像，OTA 永远不写 A 槽，以便恢复目标稳定。
 36. 作为设备用户，我希望 B 槽只由 OTA 写入，以便现场不会被误写恢复镜像。
 37. 作为设备用户，我希望 OTA 使用现有 eMMC FAT 和固定 8.3 暂存目录，不重新格式化，以便 AI 凭据、点表和运行配置保留。
-38. 作为设备用户，我希望设备以运行时读取的 eMMC 容量和 `df` 结果决定可用空间，以便 4GB 或 8GB 的差异不会导致布局错误。
+38. 作为设备用户，我希望设备以运行时读取的 eMMC 容量和 `df` 结果决定可用空间，以便 4GB 级器件的容量差异不会导致布局错误。
 39. 作为发布运维人员，我希望设备上报 task_id、版本、状态、进度、字节数和错误码，以便发布过程可观察。
 40. 作为发布运维人员，我希望设备上报 declined、expired、failed、installed 和自检结果，以便云端知道任务结果。
 41. 作为安全负责人，我希望完整下载 URL、MQTT 密码、API key 和签名私钥不出现在日志、串口、屏幕或 MQTT payload 中，以便凭据不会泄漏。
@@ -86,7 +86,7 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 ### 启动链与槽位
 
 - boot stub 位于 H750 片内 128 KiB Flash，是唯一在运行期写 QSPI 的组件。应用不得在 QSPI XIP 运行期间擦写 QSPI。
-- QSPI A 槽从 `0x90000000` 开始，B 槽从 `0x90800000` 开始，各按 8 MiB 上限设计。P0 读取 QSPI JEDEC ID、实际容量和擦除粒度后可以修正大小；修正值必须同时进入链接脚本、boot stub 常量、构建脚本和板级验收。
+- QSPI A 槽从 `0x90000000` 开始，B 槽从 `0x90800000` 开始，各 8 MiB。P0 已实测单颗 MT25QL512ABB（JEDEC `0x20BA20`）64MB、4 KiB 擦除、256 B 页写；A/B 槽位都在容量内，QSPI 地址上限已按 64MB 修正。
 - A 槽只由 ST-Link 写入，作为出厂和恢复镜像。B 槽只由 OTA 写入。boot stub 和构建脚本都要有地址范围检查，拒绝跨槽写入。
 - A 镜像和 B 镜像由同一份源码构建，使用不同的链接地址、槽位标记和版本来源。B 镜像启动后检查自身槽位标记与 boot stub 设置的槽位一致；不一致时自检失败。
 - boot stub 增加最小 eMMC 1-bit 读取驱动、只读 FAT16/32 解析、BCB 选择、QSPI 间接擦写、镜像校验和跳转。FAT12、exFAT、不支持的扇区或簇大小、损坏簇链、目录项异常、文件超出槽位和读失败都回到 A 槽。
@@ -195,7 +195,7 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 
 ### 实施阶段
 
-- P0：读取 eMMC CID、CSD、EXT_CSD 和 `df`，确认 FAT 类型和实际容量；在主机和板上验证只读 FAT 解析原型；在 QSPI scratch 区验证擦除、写入和回读；复核 QSPI 实际容量和擦除粒度。
+- P0（2026-10-28 已完成）：读取 eMMC CID、CSD、EXT_CSD 和 `df`，确认 4GB 级容量、FAT16、64 KiB 簇；在板上验证只读 FAT 解析原型；在 QSPI scratch 区验证 4 KiB 擦除、256 B 页写和回读；确认单颗 64MB QSPI 并修正地址窗口。
 - P1：boot stub 的 eMMC 读取、FAT 解析、BCB 选择、QSPI 烧写、trial/rollback 和 B 镜像构建。
 - P2：OTA Staging Directory 的文件存储、镜像、manifest、BCB 和状态文件写入，以及断电测试。不格式化 eMMC，不迁移凭据。
 - P3：HTTPS 下载、manifest 验签、SHA-256、READY 状态、本地确认和安装交接。
@@ -236,8 +236,8 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 
 ## Further Notes
 
-- 8 MiB 槽位、B 槽基址和 QSPI 擦除参数来自 ADR 0008 的暂定值。P0 的 JEDEC ID、容量和擦除粒度实测可以修正这些值；修正前不得把暂定值写成已验收事实。
-- eMMC 手册原记录为 8GB，公开型号资料更可能是 4GB。实现以板上 CID、CSD、EXT_CSD 和 `df` 为准，不按 8GB 设计固定布局。
+- P0 已完成：eMMC 3,909,091,328 B（4GB 级）、FAT16、64 KiB 簇；QSPI 单颗 MT25QL512ABB、JEDEC `0x20BA20`、64MB、4 KiB 擦除、256 B 页写，第二片未响应。A/B 8 MiB 槽位保持。P0 的 JEDEC、容量和擦除参数已写入链接脚本、MPU、boot stub、flash 脚本和板级证据。
+- eMMC 手册原记录为 8GB，实测为 4GB 级；实现以 CID、CSD、EXT_CSD 和 `df` 为准，不按 8GB 设计固定布局。
 - boot stub v1 不验证签名，信任边界是应用完成签名校验后才写 pending BCB。物理改写 eMMC 的威胁不在 v1 范围。
 - `ota/confirm` 只表示新固件自检状态，不是安装授权。安装授权只来自板载触摸或按键。
 - 现有 OTA 页面是模拟 UI，不能作为能力证据。实现完成后必须用真机下载、确认、重启和回滚证据替换。

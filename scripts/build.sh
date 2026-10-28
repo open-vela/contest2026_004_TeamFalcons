@@ -16,6 +16,7 @@
 #     bash scripts/build.sh --no-llm-health  # P0 计时矩阵：关 30s 健康探测（不进发布配置）
 #     bash scripts/build.sh --tls-forensics  # 诊断镜像：TLS 握手失败取证（不进发布配置）
 #     bash scripts/build.sh --tls-pool       # 诊断镜像：mbedTLS 静态池 A/B 实验（不进发布配置）
+#     bash scripts/build.sh --ota-fixtures   # 诊断镜像：启用 OTA 测试 fixture（不进发布配置）
 #
 # 产物：
 #   nuttx/nuttx.hex、nuttx/nuttx.bin
@@ -38,6 +39,7 @@ DEBUG=0
 SYNC_UPSTREAM=0
 HMI_PERF=0
 VOICE_FIXTURE=0
+OTA_FIXTURES=0
 TLS_FORENSICS=0
 TLS_POOL=0
 NO_LLM_HEALTH=0
@@ -62,6 +64,9 @@ for arg in "$@"; do
     --voice-fixture)
       VOICE_FIXTURE=1
       ;;
+    --ota-fixtures)
+      OTA_FIXTURES=1
+      ;;
     --tls-forensics)
       TLS_FORENSICS=1
       ;;
@@ -85,6 +90,11 @@ TARGET="$(vg_normalize_build_target "$TARGET")"
 
 if [ "$VOICE_FIXTURE" = 1 ] && [ "$TARGET" != "velaguard-lvgl" ]; then
   echo "error: --voice-fixture 仅适用于作品主线" >&2
+  exit 1
+fi
+
+if [ "$OTA_FIXTURES" = 1 ] && [ "$TARGET" != "velaguard-lvgl" ]; then
+  echo "error: --ota-fixtures 仅适用于作品主线" >&2
   exit 1
 fi
 
@@ -182,7 +192,8 @@ expect_dev_config()
         { [ "$VOICE_FIXTURE" = 1 ] || ! grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config"; } &&
         grep -q '^CONFIG_VG_AUDIO_PROBE=y$' "$NUTTX_ROOT/.config" &&
         ! grep -q '^CONFIG_EXAMPLES_LVGLDEMO=y' "$NUTTX_ROOT/.config" &&
-        ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config"
+        ! grep -q '^CONFIG_VG_HMI_PERF=y' "$NUTTX_ROOT/.config" &&
+        { [ "$OTA_FIXTURES" = 1 ] || ! grep -q '^CONFIG_VG_OTA_TEST_FIXTURES=y$' "$NUTTX_ROOT/.config"; }
       ;;
 
     ai-probe)
@@ -306,6 +317,14 @@ if [ "$VOICE_FIXTURE" = 1 ]; then
   kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_VOICE_TEST_FIXTURE
   make -C "$NUTTX_ROOT" olddefconfig
   grep -q '^CONFIG_VG_VOICE_TEST_FIXTURE=y$' "$NUTTX_ROOT/.config" || exit 1
+  rm -rf "$SCRIPT_DIR/../build/velaguard"
+fi
+
+if [ "$OTA_FIXTURES" = 1 ]; then
+  echo "[build] diagnostic image: enabling OTA test fixtures"
+  kconfig-tweak --file "$NUTTX_ROOT/.config" --enable CONFIG_VG_OTA_TEST_FIXTURES
+  make -C "$NUTTX_ROOT" olddefconfig
+  grep -q '^CONFIG_VG_OTA_TEST_FIXTURES=y$' "$NUTTX_ROOT/.config" || exit 1
   rm -rf "$SCRIPT_DIR/../build/velaguard"
 fi
 

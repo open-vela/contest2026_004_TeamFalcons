@@ -10,11 +10,11 @@ ADR 0006 确定 MQTTS 控制、HTTPS 下载和片内 boot stub 烧写 QSPI，未
 
 OTA 使用现有 eMMC FAT，不重新格式化。应用在 `/mnt/emmc/VGOTA/` 下创建 8.3 专用目录，文件名固定为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`。boot stub 增加只读 FAT16/32 解析，按目录项和簇链读取镜像；不支持的 FAT、损坏的簇链和超出槽位大小的文件一律回 A 槽。
 
-eMMC 容量以板上 CID/CSD/EXT_CSD 和 `df` 实测为准，不作为 OTA 布局的固定参数。B-01/Revision B 的公开型号资料为 4GB，手册原 8GB 记录待实测更正。
+2026-10-28 P0 实测：eMMC 用户分区 3,909,091,328 B（4GB 级），FAT16、64 KiB 簇；QSPI 只有一颗 MT25QL512ABB 响应（JEDEC `0x20BA20`，64MB），第二片未响应；4 KiB 扇区擦除和 256 B 页写在 flash1 的 scratch 区通过。原始串口证据见 [OTA P0 证据](../ota-evidence/2026-10-28/p0-probe.md)。A/B 8MB 槽位和现有 FAT 暂存方案保持。
 
 ## 槽位与启动控制
 
-- QSPI A 槽 `0x90000000`，8MB，出厂和恢复镜像，只由 ST-Link 写入；B 槽 `0x90800000`，8MB，只由 OTA 写入。槽位偏移在 P0 按 QSPI JEDEC ID 和实际容量复核。
+- QSPI A 槽 `0x90000000`，8MB，出厂和恢复镜像，只由 ST-Link 写入；B 槽 `0x90800000`，8MB，只由 OTA 写入。P0 已复核：单颗 MT25QL512ABB、64MB，两槽都在容量内；QSPI XIP 窗口、MPU、boot stub 和 flash 脚本的地址上限已按 64MB 修正。
 - `BCB0.BIN` 和 `BCB1.BIN` 各 4KB，包含 magic、seq、状态、槽位、版本、task_id、镜像大小、SHA-256 和 CRC。应用通过临时文件加替换更新 BCB；boot stub 读取两份并选择最高有效 seq，trial 和 failed 记录在原文件内就地写入。
 - 不把 BCB 放在片内 Flash。H750 的 128KB 片内 Flash 是单个 128KB 扇区，无法单独擦除；部分字编程还可能触发 ECC 问题。
 - 应用校验通过后才写 pending；boot stub 再校验 `MANIFEST.BIN` 的 CRC、`IMAGE.BIN` 的大小和 SHA-256，以及 BCB 的绑定关系。烧写后回读 SHA-256。新固件自检通过后写 confirmed；失败或 trial 次数超限回 A。
@@ -38,7 +38,7 @@ eMMC 容量以板上 CID/CSD/EXT_CSD 和 `df` 实测为准，不作为 OTA 布�
 
 ## 实施门槛
 
-1. P0：读 eMMC CID/CSD/EXT_CSD 和 `df`，确认 FAT 类型；在主机和板上验证 stub 的只读 FAT 解析；在 QSPI scratch 区验证擦写；复核 QSPI 实际容量和擦除粒度。
+1. P0（2026-10-28 已完成）：读 eMMC CID/CSD/EXT_CSD 和 `df`，确认 FAT16/64 KiB 簇和 4GB 级容量；在板上验证 stub 的只读 FAT 解析；在 QSPI scratch 区验证 4 KiB 擦除、256 B 页写和回读；确认单颗 64MB QSPI 容量，并修正地址窗口。
 2. P1：boot stub 的 eMMC 1-bit 驱动、FAT 解析、BCB、槽位选择、trial/rollback 和 B 镜像构建。
 3. P2：`/mnt/emmc/VGOTA/` 文件存储，镜像、清单和 BCB 的写入及断电测试；不格式化 eMMC，不迁移 AI/MQTT 凭据。
 4. P3：HTTPS 下载、manifest 验签、SHA-256、READY 状态和本地确认。

@@ -42,7 +42,7 @@
 | NEXT-03 | P2 / 未实现 | 更多寄存器数据类型/字序、帧间隔违规和异常码单独计数。 |
 | NEXT-04 | P2 / 未实现 | 诊断、日志、系统页和周报；依赖真实数据接口、存储及Agent稳定性。 |
 | NEXT-05 | P2 / 未实现 | MQTTS、每设备鉴权；依赖部署证书和服务端策略。 |
-| NEXT-06 | P0设计已确认，待实现 | OTA使用现有eMMC FAT的`/mnt/emmc/VGOTA/`暂存，不格式化；boot stub只读FAT16/32；A出厂/B OTA，回滚A；MQTTS控制+HTTPS下载仅RJ45；下载校验后需用户在板载屏幕按版本确认才安装。eMMC容量、FAT类型、QSPI擦写和实际槽位须先实测。见ADR 0006和[ADR 0008](adr/0008-ota-fat-staging-with-local-confirmation.md)。 |
+| NEXT-06 | P0实测完成，P1待开始 | OTA使用现有eMMC FAT的`/mnt/emmc/VGOTA/`暂存，不格式化；boot stub只读FAT16/32；A出厂/B OTA，回滚A；MQTTS控制+HTTPS下载仅RJ45；下载校验后需用户在板载屏幕按版本确认才安装。2026-10-28 P0实测：eMMC 3,909,091,328 B、FAT16 64 KiB簇；QSPI单颗MT25QL512ABB 64MB、4 KiB擦除、256 B页写，第二片未响应；A/B 8MB槽位成立。探测和fixture证据见[p0-probe](ota-evidence/2026-10-28/p0-probe.md)，ticket 01已完成。见ADR 0006和[ADR 0008](adr/0008-ota-fat-staging-with-local-confirmation.md)。 |
 | NEXT-07 | 延期，待授权 | 确定性故障归因、屏幕任意配置编辑；手册上传解析已纳入目标，另见CFG-01。 |
 | NEXT-08 | 配套仓后续 | Windows上位机与只读云看板独立审查。需评估当前空表不发布的MQTT合同对云端旧点位保留的影响，再确定清除策略。 |
 | NEXT-09 | P1 / 待设计验证 | 快照与完整点表版本/本次启动标识的强绑定；需测试同id改寄存器后、重启后旧快照的隔离。当前只按采样tick计算age，并检查文件结构。 |

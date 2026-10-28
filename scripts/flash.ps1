@@ -88,7 +88,7 @@ if ([string]::IsNullOrWhiteSpace($OutDir)) {
 $cubeCandidates = @(
   "D:\Develop\STM32CubeCLT_1.21.0\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe",
   "D:\Develop\STM32CubeCLT\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe",
-  (Join-Path $env:ProgramFiles "STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe")
+  "$env:ProgramFiles\STMicroelectronics\STM32Cube\STM32CubeProgrammer\bin\STM32_Programmer_CLI.exe"
 )
 Get-ChildItem -Path "D:\Develop" -Filter "STM32CubeCLT*" -Directory -ErrorAction SilentlyContinue |
   ForEach-Object {
@@ -115,7 +115,7 @@ if (-not (Test-Path -LiteralPath $stubHex -PathType Leaf)) {
 
 $mainRange = Get-IntelHexAddressRange $mainHex
 $stubRange = Get-IntelHexAddressRange $stubHex
-Assert-Range "Main QSPI image" $mainRange 0x90000000L 0x98000000L
+Assert-Range "Main QSPI image" $mainRange 0x90000000L 0x94000000L
 Assert-Range "Internal boot stub" $stubRange 0x08000000L 0x08020000L
 
 Write-Host ("Main QSPI image : 0x{0:x8}..0x{1:x8}" -f $mainRange.Min, $mainRange.Max)
@@ -130,25 +130,20 @@ if ($ValidateOnly) {
 function Invoke-CubeStep {
   param(
     [string]$Label,
-    [scriptblock]$Action
+    [string[]]$Arguments
   )
 
   Write-Host $Label
-  & $Action
-  if ($LASTEXITCODE -ne 0) {
-    Write-Host ("error: CubeProgrammer failed during '{0}' (exit {1}). If ST-LINK is occupied, close CubeProgrammer GUI and other OpenOCD, then retry." -f $Label, $LASTEXITCODE)
-    exit $LASTEXITCODE
+  $process = Start-Process -FilePath $CubeCli -ArgumentList $Arguments `
+    -Wait -NoNewWindow -PassThru
+  if ($process.ExitCode -ne 0) {
+    Write-Host ("error: CubeProgrammer failed during '{0}' (exit {1}). If ST-LINK is occupied, close CubeProgrammer GUI and other OpenOCD, then retry." -f $Label, $process.ExitCode)
+    exit $process.ExitCode
   }
 }
 
-Invoke-CubeStep "1/3 Programming and verifying external QSPI..." {
-  & $CubeCli -c port=SWD mode=UR -el $ExternalLoader -d $mainHex -v
-}
-Invoke-CubeStep "2/3 Programming and verifying internal boot stub..." {
-  & $CubeCli -c port=SWD mode=UR -d $stubHex -v
-}
-Invoke-CubeStep "3/3 Resetting target..." {
-  & $CubeCli -c port=SWD mode=UR -rst
-}
+Invoke-CubeStep "1/3 Programming and verifying external QSPI..." @('-c', 'port=SWD', 'mode=UR', '-el', $ExternalLoader, '-d', $mainHex, '-v')
+Invoke-CubeStep "2/3 Programming and verifying internal boot stub..." @('-c', 'port=SWD', 'mode=UR', '-d', $stubHex, '-v')
+Invoke-CubeStep "3/3 Resetting target..." @('-c', 'port=SWD', 'mode=UR', '-rst')
 
 Write-Host "Flash completed: internal stub -> QSPI XIP image."

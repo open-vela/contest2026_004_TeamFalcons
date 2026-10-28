@@ -127,6 +127,14 @@ CSRCS    += vg_discover_modbus.c vg_point_table.c
 CFLAGS   += -DCONFIG_VG_BUS_DISCOVER=1
 endif
 
+ifeq ($(CONFIG_VG_OTA_PROBE),y)
+PROGNAME += vgota
+MAINSRC  += vgota.c
+CSRCS    += vg_ota_probe.c
+CFLAGS   += -DCONFIG_VG_OTA_PROBE=1
+CFLAGS   += ${INCDIR_PREFIX}$(abspath $(CURDIR)/../../scripts/qspi_boot_stub)
+endif
+
 CFLAGS += ${INCDIR_PREFIX}$(CURDIR)/nanomodbus
 CFLAGS += -DNMBS_SERVER_DISABLED
 VPATH += :nanomodbus
@@ -196,7 +204,7 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
   $(if $(filter vgvoice,$(p)),32768, \
-  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent,$(p)),16384,$(VG_STACK_DEFAULT))))))
+  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent vgota,$(p)),16384,$(VG_STACK_DEFAULT))))))
 # vgptt is a thin NSH front end; the button thread gets its own stack from
 # Kconfig.  vgvoice is not thin: its asr/tts diagnostics run the same cloud
 # call chain as the round worker (4 KB response buffer, 4 KB body piece and
