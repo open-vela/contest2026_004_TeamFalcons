@@ -39,6 +39,9 @@ test_vgpoint: test_vgpoint.c ../vg_point_table.c ../vg_discover.h ../vg_file_sto
 test_alarm_eval: test_alarm_eval.c ../vg_alarm_eval.c ../vg_alarm_eval.h
 	$(CC) $(CFLAGS) -o $@ test_alarm_eval.c ../vg_alarm_eval.c
 
+test_formula: test_formula.c ../vg_formula.c ../vg_formula.h
+	$(CC) $(CFLAGS) -o $@ test_formula.c ../vg_formula.c -lm
+
 test_time_sync: test_time_sync.c ../vg_sntp.c ../vg_sntp.h
 	$(CC) $(CFLAGS) -o $@ test_time_sync.c ../vg_sntp.c
 
@@ -94,7 +97,7 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_frame_stats
@@ -125,6 +128,7 @@ test: test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_age
 	./test_discover
 	./test_vgpoint
 	./test_alarm_eval
+	./test_formula
 	./test_time_sync
 	./test_hmi_perf
 	./test_runtime_render
@@ -165,7 +169,7 @@ clean:
 	rm -f test_voice_scope
 	rm -f test_voice_facts
 	rm -f test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles
-	rm -f test_voice_answer test_voice_pref test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_voice_answer test_discover test_vgpoint test_alarm_eval test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
+	rm -f test_voice_answer test_voice_pref test_shell_output test_agent_round test_discover_io test_file_policy test_maintenance test_file_store test_shell_runner test_local_client test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_voice_answer test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools
 
 test_maintenance: test_maintenance.c ../vg_point_table.c ../vg_file_store.c $(CJSON_SRC)
 	$(CC) $(CFLAGS) -o $@ $^ -lm

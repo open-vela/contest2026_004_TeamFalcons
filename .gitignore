@@ -33,6 +33,7 @@ app/velaguard/host_tests/test_config_store
 app/velaguard/host_tests/test_discover
 app/velaguard/host_tests/test_vgpoint
 app/velaguard/host_tests/test_alarm_eval
+app/velaguard/host_tests/test_formula
 app/velaguard/host_tests/test_time_sync
 app/velaguard/host_tests/test_hmi_perf
 app/velaguard/host_tests/test_hmi_sched
