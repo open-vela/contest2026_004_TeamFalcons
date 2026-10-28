@@ -498,6 +498,14 @@ static int confirm_install_locked(enum vg_ota_confirm_source_e src,
         }
     }
 
+  ret = vg_ota_manifest_validate(&m, NULL, reason, sizeof(reason));
+  if (ret != 0)
+    {
+      vg_ota_staging_set_error(reason);
+      if (err_out && err_len) snprintf(err_out, err_len, "%s", reason);
+      return ret;
+    }
+
   /* 5. Write pending BCB with VG_OTA_BCB_LOCAL_CONFIRMED */
   ret = vg_ota_write_pending_bcb(&m, err_out, err_len);
   if (ret != 0)

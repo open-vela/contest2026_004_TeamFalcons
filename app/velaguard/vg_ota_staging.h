@@ -50,6 +50,7 @@ struct vg_ota_staging_info
   char     task_id[41];
   char     version[33];
   uint32_t image_size;
+  uint32_t downloaded_bytes;
   uint8_t  sha256[32];
   char     error_code[48];      /* e.g. "insufficient_space", "bad_device_id" */
   uint64_t free_bytes;

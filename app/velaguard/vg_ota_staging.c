@@ -4,6 +4,10 @@
  * Staging image storage, manifest validation, and READY_AWAITING_CONFIRM.
  ****************************************************************************/
 
+#ifdef __NuttX__
+#include <nuttx/config.h>
+#endif
+
 #include <errno.h>
 #include <fcntl.h>
 #include <inttypes.h>
@@ -23,11 +27,21 @@
 #include "vg_ota_manifest.h"
 #include "vg_ota_sha256.h"
 #include "vg_ota_staging.h"
+#include "vg_ota_trust.h"
 
 static char g_staging_dir[128] = VG_OTA_STAGING_DIR;
 static struct vg_ota_staging_info g_staging_info = {
   .state = VG_OTA_STATE_IDLE
 };
+/* 网络读取期间仍可读取上一份完整状态，界面和心跳不能等待下载锁。 */
+static struct vg_ota_staging_info g_published_info;
+static pthread_mutex_t g_info_lock = PTHREAD_MUTEX_INITIALIZER;
+static void publish_info(void)
+{
+  pthread_mutex_lock(&g_info_lock);
+  g_published_info = g_staging_info;
+  pthread_mutex_unlock(&g_info_lock);
+}
 static uint64_t g_ready_since_ms;
 static pthread_once_t g_ota_once = PTHREAD_ONCE_INIT;
 static pthread_mutex_t g_ota_lock;
@@ -107,7 +121,8 @@ static int suppress_task(const char *task_id)
 
 void vg_ota_staging_tick(void)
 {
-  vg_ota_staging_lock();
+  pthread_once(&g_ota_once, init_ota_lock);
+  if (pthread_mutex_trylock(&g_ota_lock) != 0) return;
   if (g_staging_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM &&
       monotonic_ms() - g_ready_since_ms >= VG_OTA_READY_TIMEOUT_MS)
     vg_ota_staging_expire(g_staging_info.task_id);
@@ -117,6 +132,7 @@ void vg_ota_staging_tick(void)
 void vg_ota_staging_set_dir(const char *dir)
 {
   memset(&g_staging_info, 0, sizeof(g_staging_info));
+  publish_info();
   if (dir != NULL && dir[0] != '\0')
     {
       snprintf(g_staging_dir, sizeof(g_staging_dir), "%s", dir);
@@ -233,6 +249,14 @@ int vg_ota_manifest_validate(const struct vg_ota_manifest *m,
       goto fail;
     }
 
+  if (!memchr(m->version,0,sizeof(m->version)) ||
+      !memchr(m->task_id,0,sizeof(m->task_id)) ||
+      !memchr(m->device_id,0,sizeof(m->device_id)) ||
+      !memchr(m->model,0,sizeof(m->model)) ||
+      !memchr(m->key_id,0,sizeof(m->key_id)) ||
+      (m->flags & ~VG_OTA_MANIFEST_FIXTURE))
+    { snprintf(err,sizeof(err),"manifest_text_or_flags_invalid"); goto fail; }
+
   /* 1. Target slot must be B */
   if (m->slot != VG_OTA_BCB_SLOT_B)
     {
@@ -304,6 +328,22 @@ int vg_ota_manifest_validate(const struct vg_ota_manifest *m,
       goto fail;
     }
 
+  if (m->flags & VG_OTA_MANIFEST_FIXTURE)
+    {
+#if defined(__NuttX__) && !defined(CONFIG_VG_OTA_TEST_FIXTURES)
+      snprintf(err, sizeof(err), "fixture_forbidden");
+      goto fail;
+#endif
+    }
+  else
+    {
+      time_t now = time(NULL);
+      if (now < 1767225600 || (uint64_t)now < m->issued_at || (uint64_t)now >= m->expires_at)
+        { snprintf(err, sizeof(err), "manifest_expired_or_time_invalid"); goto fail; }
+      if (vg_ota_trust_verify_manifest(m) != 0)
+        { snprintf(err, sizeof(err), "signature_invalid_or_untrusted"); goto fail; }
+    }
+
   /* 8. Digest match */
   if (actual_digest != NULL)
     {
@@ -373,6 +413,14 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
   int fd = -1;
   int ret;
 
+  if (g_staging_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM ||
+      g_staging_info.state == VG_OTA_STATE_INSTALL_PENDING ||
+      g_staging_info.state == VG_OTA_STATE_REBOOTING)
+    {
+      if (err_out && err_len) snprintf(err_out, err_len, "ota_busy");
+      return -EBUSY;
+    }
+
   if (m == NULL || source_read == NULL)
     {
       snprintf(g_staging_info.error_code, sizeof(g_staging_info.error_code), "invalid_args");
@@ -387,14 +435,6 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
           snprintf(err_out, err_len, "task_suppressed");
         }
       return -EALREADY;
-    }
-
-  if (g_staging_info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM ||
-      g_staging_info.state == VG_OTA_STATE_INSTALL_PENDING ||
-      g_staging_info.state == VG_OTA_STATE_REBOOTING)
-    {
-      if (err_out && err_len) snprintf(err_out, err_len, "ota_busy");
-      return -EBUSY;
     }
 
   memset(&g_staging_info, 0, sizeof(g_staging_info));
@@ -441,6 +481,7 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
 
   /* 4. Stream write into IMAGE.TMP */
   g_staging_info.state = VG_OTA_STATE_DOWNLOADING;
+  publish_info();
   fd = open(tmp_path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (fd < 0)
     {
@@ -459,6 +500,7 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
       return -ENOMEM;
     }
 
+  vg_ota_sha256_init(&sha);
   for (off = 0; off < m->image_size; )
     {
       uint32_t chunk = m->image_size - off;
@@ -498,7 +540,18 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
           done += (size_t)nwritten;
         }
 
+      vg_ota_sha256_update(&sha, buf, chunk);
       off += chunk;
+      g_staging_info.downloaded_bytes = off;
+      publish_info();
+    }
+  vg_ota_sha256_final(&sha, calc_digest);
+  if (memcmp(calc_digest, m->sha256, 32))
+    {
+      close(fd); unlink(tmp_path); free(buf);
+      vg_ota_staging_set_state(VG_OTA_STATE_FAILED, "stream_digest_mismatch");
+      if (err_out && err_len) snprintf(err_out, err_len, "digest_mismatch");
+      return -EBADMSG;
     }
 
   if (fsync(fd) < 0)
@@ -515,6 +568,7 @@ static int vg_ota_staging_stage_locked(const struct vg_ota_manifest *m,
 
   /* 5. Read back IMAGE.TMP and verify SHA-256 + vector table */
   g_staging_info.state = VG_OTA_STATE_VERIFYING;
+  publish_info();
   fd = open(tmp_path, O_RDONLY);
   if (fd < 0)
     {
@@ -628,7 +682,9 @@ static int vg_ota_staging_get_info_locked(struct vg_ota_staging_info *info)
       return -EINVAL;
     }
 
-  *info = g_staging_info;
+  pthread_mutex_lock(&g_info_lock);
+  *info = g_published_info;
+  pthread_mutex_unlock(&g_info_lock);
   return 0;
 }
 
@@ -814,6 +870,7 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m, vg_ota_source_read_fn 
   int ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_stage_locked(m, source_read, source_ctx, err_out, err_len);
+  publish_info();
   vg_ota_staging_unlock();
   return ret;
 }
@@ -821,9 +878,7 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m, vg_ota_source_read_fn 
 int vg_ota_staging_get_info(struct vg_ota_staging_info *info)
 {
   int ret;
-  vg_ota_staging_lock();
   ret = vg_ota_staging_get_info_locked(info);
-  vg_ota_staging_unlock();
   return ret;
 }
 
@@ -832,6 +887,7 @@ int vg_ota_staging_set_state(uint32_t state, const char *err_code)
   int ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_set_state_locked(state, err_code);
+  publish_info();
   vg_ota_staging_unlock();
   return ret;
 }
@@ -841,6 +897,7 @@ int vg_ota_staging_set_error(const char *err_code)
   int ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_set_error_locked(err_code);
+  publish_info();
   vg_ota_staging_unlock();
   return ret;
 }
@@ -895,6 +952,7 @@ int vg_ota_staging_clear(void)
   int ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_clear_locked();
+  publish_info();
   vg_ota_staging_unlock();
   return ret;
 }

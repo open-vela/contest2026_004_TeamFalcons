@@ -4,7 +4,7 @@
 
 **Blocked by:** 07。
 
-**Status:** ready-for-agent
+**Status:** in-progress
 
 - [ ] 有效 HTTPS OTA Offer 完成流式下载、manifest 验签、回读摘要、READY、本地确认和 B 槽安装。
 - [ ] 无效服务器证书、错误主机名、过期证书或未知 CA 被拒绝，不使用 `VERIFY_OPTIONAL` 或未知证书回退。
@@ -14,3 +14,5 @@
 - [ ] 完整 URL、query token、MQTT 密码和 API key 不出现在日志、屏幕或状态 payload。
 - [ ] 板级验收使用本地 HTTPS 测试服务覆盖成功、断线、无效证书和无效签名。
 - [ ] 主机测试覆盖下载状态、续传绑定、回读摘要和拒绝原因。
+
+2026-10-28：HTTPS 流式下载、严格证书/主机名验证、P-256 验签、强 ETag/Range 续传与安全重下已实现，真实主机 TLS/签名集成、全量主机回归和生产构建通过。见[任务 08 主机证据](../../../ota-evidence/2026-10-28/t08-https-host.md)。当前以太网未连接，生产信任材料未配置；硬件熵源仍在推进，严格 TLS 在这些条件未满足时拒绝。板级联网和本机确认验收留在[待办清单](../acceptance-todo.md)，未据主机结果勾选完整板验。

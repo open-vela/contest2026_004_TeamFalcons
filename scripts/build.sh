@@ -414,6 +414,7 @@ if ! expect_dev_config; then
 fi
 
 write_fw_build_header
+python3 "$SCRIPT_DIR/ota/build_trust.py" --output "$CONTEST_ROOT/build/velaguard/vg_ota_trust_build.h"
 
 cd "$NUTTX_ROOT"
 if [ "$need_clean" = 1 ] && [ "$MODE" != "--clean" ]; then
