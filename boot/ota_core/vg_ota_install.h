@@ -29,5 +29,10 @@ struct vg_ota_install_ports
 /* pending 安装专用。失败保持 A；擦写前持久化较新 FAILED，成功后再提交 TRIAL。 */
 int vg_ota_install_pending(const struct vg_ota_install_ports *ports,
                             struct vg_ota_boot_decision *decision);
+
+/* 试用启动计数步进。若试用次数超限（>= VG_OTA_MAX_TRIALS），持久化 FAILED 并回滚 A 槽。 */
+int vg_ota_trial_advance(const struct vg_ota_install_ports *ports,
+                         struct vg_ota_boot_decision *decision);
+
 int vg_ota_image_vector_valid(const uint8_t vector[8], uint32_t size);
 #endif

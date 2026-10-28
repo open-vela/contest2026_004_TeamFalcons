@@ -46,7 +46,7 @@ if(CONFIG_VG_BRINGUP_TOOLS)
   if(CONFIG_VG_OTA_PROBE)
     nuttx_add_application(
       NAME vgota
-      SRCS vgota.c vg_ota_probe.c vg_ota_reboot.c
+      SRCS vgota.c vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_fat.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_bcb.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_boot.c

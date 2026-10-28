@@ -240,6 +240,28 @@ static void test_point_table_empty(void)
   expect(vg_mqtt_point_table_has_points(NULL, 0) == 0, "null json");
 }
 
+static void test_ota_payloads(void)
+{
+  char buf[256];
+
+  expect(vg_mqtt_format_ota_result(buf, sizeof(buf), "vg-123", "TASK-01",
+                                  "0.2.0", "self_check_failed", -22) == 0,
+         "ota result");
+  expect(strstr(buf, "\"device_id\":\"vg-123\"") != NULL, "ota res dev");
+  expect(strstr(buf, "\"result\":\"self_check_failed\"") != NULL, "ota res fail");
+  expect(strstr(buf, "\"task_id\":\"TASK-01\"") != NULL, "ota res task");
+  expect(strstr(buf, "\"version\":\"0.2.0\"") != NULL, "ota res ver");
+  expect(strstr(buf, "\"error\":-22") != NULL, "ota res err");
+
+  expect(vg_mqtt_format_ota_confirm(buf, sizeof(buf), "vg-123", "TASK-01",
+                                   "0.2.0", "B", "passed") == 0,
+         "ota confirm");
+  expect(strstr(buf, "\"device_id\":\"vg-123\"") != NULL, "ota conf dev");
+  expect(strstr(buf, "\"self_check\":\"passed\"") != NULL, "ota conf pass");
+  expect(strstr(buf, "\"slot\":\"B\"") != NULL, "ota conf slot");
+  expect(strstr(buf, "\"version\":\"0.2.0\"") != NULL, "ota conf ver");
+}
+
 int main(void)
 {
   test_device_id_from_uid();
@@ -247,6 +269,7 @@ int main(void)
   test_telemetry_and_alarm();
   test_telemetry_empty_suppress();
   test_point_table_empty();
+  test_ota_payloads();
 
   if (g_fail != 0)
     {

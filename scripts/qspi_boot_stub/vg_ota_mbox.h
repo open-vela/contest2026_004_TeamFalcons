@@ -10,7 +10,7 @@
 
 #define VG_OTA_MBOX_ADDR     0x2001f000u
 #define VG_OTA_MBOX_MAGIC    0x56474f54u /* VGOT */
-#define VG_OTA_MBOX_VERSION  3u
+#define VG_OTA_MBOX_VERSION  4u
 
 enum vg_ota_mbox_request_e
 {
@@ -67,8 +67,14 @@ struct vg_ota_mbox
   uint32_t install_stage;
   uint32_t install_error;
   uint32_t install_bytes;
+  uint32_t boot_bcb_trials;
 };
 
+#if defined(__arm__)
 #define VG_OTA_MBOX ((volatile struct vg_ota_mbox *)VG_OTA_MBOX_ADDR)
+#else
+extern volatile struct vg_ota_mbox g_host_ota_mbox;
+#define VG_OTA_MBOX (&g_host_ota_mbox)
+#endif
 
 #endif

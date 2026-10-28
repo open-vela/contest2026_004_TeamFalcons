@@ -17,6 +17,8 @@
 #define VG_OTA_BCB_TASK_ID_BYTES   40u
 #define VG_OTA_BCB_SHA256_BYTES    32u
 
+#define VG_OTA_MAX_TRIALS          3u
+
 #define VG_OTA_SLOT_A_BASE         0x90000000u
 #define VG_OTA_SLOT_B_BASE         0x90800000u
 #define VG_OTA_SLOT_BYTES          (8u * 1024u * 1024u)

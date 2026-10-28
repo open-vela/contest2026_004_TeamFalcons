@@ -104,6 +104,10 @@ extern int vghmi_main(int argc, char *argv[]);
 #endif
 #endif
 
+#ifdef CONFIG_VG_OTA_PROBE
+#include "vg_ota_self_check.h"
+#endif
+
 static int g_app_running = 0;
 
 /**
@@ -221,6 +225,10 @@ int main(int argc, char *argv[])
                  cfg.device_name);
         }
     }
+#endif
+
+#ifdef CONFIG_VG_OTA_PROBE
+    vg_ota_self_check_boot();
 #endif
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA
@@ -355,8 +363,14 @@ int main(int argc, char *argv[])
     {
         usleep(1000000);
         board_userled(1, true);
+#ifdef CONFIG_VG_OTA_PROBE
+        vg_ota_watchdog_kick();
+#endif
         usleep(1000000);
         board_userled(1, false);
+#ifdef CONFIG_VG_OTA_PROBE
+        vg_ota_watchdog_kick();
+#endif
     }
 
     return 0;

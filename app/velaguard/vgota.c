@@ -29,6 +29,7 @@
 #include "vg_ota_manifest.h"
 #include "vg_ota_sha256.h"
 #include "vg_ota_install.h"
+#include "vg_ota_self_check.h"
 #include "vg_device_id.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
@@ -40,6 +41,9 @@ static void usage(void)
   printf("  vgota identity\n");
   printf("  vgota bootinfo\n");
   printf("  vgota reboot\n");
+  printf("  vgota selfcheck [--run]\n");
+  printf("  vgota confirm\n");
+  printf("  vgota rollback [reason]\n");
   printf("  vgota probe\n");
   printf("  vgota qspiprobe\n");
   printf("  vgota qspiprobe --confirm\n");
@@ -53,6 +57,7 @@ static void usage(void)
   printf("  vgota fixture bcb clear\n");
   printf("  vgota fixture stage <bytes> <seq> [task]\n");
   printf("  vgota fixture arm\n");
+  printf("  vgota fixture fail <on|off|status>\n");
 #endif
 }
 
@@ -78,7 +83,7 @@ static void print_bootinfo(void)
          " state=%s seq=%" PRIu32 " bcb_slot=%s"
          " valid0=%" PRIu32 " valid1=%" PRIu32
          " bcb_error=%" PRIu32 " fat=%s fat_error=%" PRIu32
-         " emmc_error=%" PRIu32 "\n",
+         " emmc_error=%" PRIu32 " trials=%" PRIu32 "\n",
          vg_ota_bcb_slot_name(mbox->boot_slot),
          vg_ota_boot_reason_name(mbox->boot_reason),
          mbox->boot_bcb_which,
@@ -88,7 +93,8 @@ static void print_bootinfo(void)
          mbox->boot_valid0, mbox->boot_valid1,
          mbox->boot_bcb_error,
          vg_ota_fat_type_name((enum vg_ota_fat_type_e)mbox->boot_fat_type),
-         mbox->boot_fat_error, mbox->boot_emmc_error);
+         mbox->boot_fat_error, mbox->boot_emmc_error,
+         mbox->boot_bcb_trials);
   printf("vgota: install stage=%" PRIu32 " error=%" PRIu32 " bytes=%" PRIu32 "\n",
          mbox->install_stage,mbox->install_error,mbox->install_bytes);
 }
@@ -855,6 +861,30 @@ static int cmd_fixture(int argc, char *argv[])
   if (argc>=3 && strcmp(argv[2],"stage")==0) return fixture_stage(argc,argv);
   if (argc==3 && strcmp(argv[2],"arm")==0) return fixture_arm();
 
+  if (argc >= 3 && strcmp(argv[2], "fail") == 0)
+    {
+      if (argc == 4 && strcmp(argv[3], "on") == 0)
+        {
+          vg_ota_self_check_set_inject_fail(1);
+          printf("vgota: fixture fail injection enabled\n");
+          return 0;
+        }
+      if (argc == 4 && strcmp(argv[3], "off") == 0)
+        {
+          vg_ota_self_check_set_inject_fail(0);
+          printf("vgota: fixture fail injection disabled\n");
+          return 0;
+        }
+      if (argc == 3 || (argc == 4 && strcmp(argv[3], "status") == 0))
+        {
+          int on = vg_ota_self_check_get_inject_fail();
+          printf("vgota: fixture fail injection %s\n", on ? "ON" : "OFF");
+          return 0;
+        }
+      usage();
+      return 1;
+    }
+
   if (argc >= 3 && strcmp(argv[2], "bcb") == 0)
     {
       return cmd_fixture_bcb(argc, argv);
@@ -1058,6 +1088,70 @@ static void probe_emmc(const char *dev)
   print_bootinfo();
 }
 
+static int cmd_selfcheck(int argc, char *argv[])
+{
+  struct vg_ota_self_check_status st;
+  char detail[128];
+  int ret;
+
+  if (argc == 3 && strcmp(argv[2], "--run") == 0)
+    {
+      ret = vg_ota_self_check_run(detail, sizeof(detail));
+      printf("vgota: selfcheck %s: %s\n", ret == 0 ? "PASSED" : "FAILED", detail);
+      return ret == 0 ? 0 : 1;
+    }
+
+  if (vg_ota_self_check_get_status(&st) == 0)
+    {
+      const char *sname = "none";
+      if (st.state == VG_OTA_CHECK_STATE_PASSED)
+        {
+          sname = "passed";
+        }
+      else if (st.state == VG_OTA_CHECK_STATE_FAILED)
+        {
+          sname = "failed";
+        }
+
+      printf("vgota: selfcheck state=%s slot=%s running_slot=%s trials=%" PRIu32
+             " seq=%" PRIu32 " bcb_state=%s task=%s ver=%s detail=%s\n",
+             sname, vg_ota_bcb_slot_name(st.active_bcb_slot),
+             vg_fw_slot_name(), st.trial_count, st.active_bcb_seq,
+             vg_ota_bcb_state_name(st.active_bcb_state),
+             st.active_task_id, st.active_version, st.detail);
+      return 0;
+    }
+
+  printf("vgota: selfcheck status unavailable\n");
+  return 1;
+}
+
+static int cmd_confirm(void)
+{
+  int ret = vg_ota_self_check_manual_confirm();
+  if (ret == 0)
+    {
+      printf("vgota: manual confirm SUCCESS, confirmed BCB written\n");
+      return 0;
+    }
+
+  printf("vgota: manual confirm FAILED ERR=%d\n", -ret);
+  return 1;
+}
+
+static int cmd_rollback(int argc, char *argv[])
+{
+  const char *reason = (argc >= 3) ? argv[2] : "user-requested rollback";
+  int ret = vg_ota_self_check_manual_rollback(reason);
+  if (ret != 0)
+    {
+      printf("vgota: manual rollback failed ERR=%d\n", -ret);
+      return 1;
+    }
+
+  return 0;
+}
+
 int main(int argc, char *argv[])
 {
   if (argc < 2)
@@ -1083,6 +1177,21 @@ int main(int argc, char *argv[])
       int ret = vg_ota_safe_reboot();
       printf("vgota: safe reboot failed ERR=%d\n", -ret);
       return 1;
+    }
+
+  if (strcmp(argv[1], "selfcheck") == 0)
+    {
+      return cmd_selfcheck(argc, argv);
+    }
+
+  if (strcmp(argv[1], "confirm") == 0 && argc == 2)
+    {
+      return cmd_confirm();
+    }
+
+  if (strcmp(argv[1], "rollback") == 0)
+    {
+      return cmd_rollback(argc, argv);
     }
 
   if (strcmp(argv[1], "probe") == 0 && argc == 2)

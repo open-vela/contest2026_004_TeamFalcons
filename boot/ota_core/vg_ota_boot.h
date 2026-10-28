@@ -43,6 +43,7 @@ struct vg_ota_boot_decision
   uint32_t install_stage;
   uint32_t install_error;
   uint32_t install_bytes;
+  uint32_t bcb_trial_count;
 };
 
 /* Decides which QSPI slot to boot.  Storage errors always resolve to slot A;

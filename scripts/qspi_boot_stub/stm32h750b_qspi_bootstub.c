@@ -828,8 +828,25 @@ static void publish_boot(const struct vg_ota_boot_decision *d,
   mbox->install_stage = d->install_stage;
   mbox->install_error = d->install_error;
   mbox->install_bytes = d->install_bytes;
+  mbox->boot_bcb_trials = d->bcb_trial_count;
 
   __asm__ volatile ("dsb 0xf" ::: "memory");
+}
+
+static void trial_watchdog_enable(void)
+{
+  /* STM32H7 IWDG1 at 0x58004800:
+   * 1. Write 0x5555 to KR to enable access to PR/RLR
+   * 2. Set PR = 6 (/256)
+   * 3. Set RLR = 0xFFF (4095) -> ~32 seconds timeout
+   * 4. Write 0xAAAA to KR to reload
+   * 5. Write 0xCCCC to KR to start counter and enable LSI
+   */
+  REG32(0x58004800u) = 0x5555u;
+  REG32(0x58004804u) = 6u;
+  REG32(0x58004808u) = 0xfffu;
+  REG32(0x58004800u) = 0xaaaau;
+  REG32(0x58004800u) = 0xccccu;
 }
 
 static void boot_select(void)
@@ -858,6 +875,15 @@ static void boot_select(void)
           qspi_select_dual();
           install_ready();
           qspi_enter_memory_mapped();
+        }
+      else if (d.reason == VG_OTA_BOOT_REASON_B_TRIAL)
+        {
+          struct vg_ota_install_ports p = {0};
+          p.read = vg_emmc_read_blocks;
+          p.sectors = vg_emmc_sector_count();
+          p.write_sector = vg_emmc_write_sector;
+          p.sync = vg_emmc_sync;
+          vg_ota_trial_advance(&p, &d);
         }
       if (d.emmc_error == 0 && vg_emmc_error() != 0)
         {
@@ -894,6 +920,13 @@ static void boot_select(void)
     }
 
   publish_boot(&d, slot, reason);
+
+  if (slot == VG_OTA_BCB_SLOT_B &&
+      (reason == VG_OTA_BOOT_REASON_B_TRIAL ||
+       reason == VG_OTA_BOOT_REASON_B_INSTALLED))
+    {
+      trial_watchdog_enable();
+    }
 
   REG32(SCB_VTOR) = target;
   __asm__ volatile ("dsb 0xf" ::: "memory");

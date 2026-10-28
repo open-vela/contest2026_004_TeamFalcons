@@ -193,6 +193,7 @@ int vg_ota_boot_decide(vg_ota_block_read_fn read, void *ctx,
   out->bcb_seq = bcb.seq;
   out->bcb_state = bcb.state;
   out->bcb_slot = bcb.slot;
+  out->bcb_trial_count = bcb.trial_count;
 
   if (bcb.state == VG_OTA_BCB_STATE_PENDING)
     {
@@ -213,6 +214,13 @@ int vg_ota_boot_decide(vg_ota_block_read_fn read, void *ctx,
   if (bcb.slot != VG_OTA_BCB_SLOT_B)
     {
       out->reason = VG_OTA_BOOT_REASON_SLOT_A;
+      return 0;
+    }
+
+  if (bcb.state == VG_OTA_BCB_STATE_TRIAL && bcb.trial_count >= VG_OTA_MAX_TRIALS)
+    {
+      out->slot = VG_OTA_BCB_SLOT_A;
+      out->reason = VG_OTA_BOOT_REASON_A_FAILED;
       return 0;
     }
 

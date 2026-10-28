@@ -164,6 +164,7 @@ static int install(const struct vg_ota_install_ports *p,
   if (store_bcb(p,&vol,&entries[which],&changed)) return -EIO;
   d->slot=VG_OTA_BCB_SLOT_B; d->reason=VG_OTA_BOOT_REASON_B_INSTALLED;
   d->bcb_seq=changed.seq; d->bcb_state=changed.state;
+  d->bcb_trial_count=1;
   d->bcb_valid0=1; d->bcb_valid1=1;
   stage(p,d,VG_OTA_INSTALL_DONE,image.size);
   return 0;
@@ -185,4 +186,88 @@ int vg_ota_install_pending(const struct vg_ota_install_ports *p,
       d->install_error=(uint32_t)-ret;
     }
   return ret;
+}
+
+int vg_ota_trial_advance(const struct vg_ota_install_ports *p,
+                         struct vg_ota_boot_decision *d)
+{
+  static const char names[2][11] = {"BCB0    BIN", "BCB1    BIN"};
+  struct vg_ota_fat_volume vol;
+  struct vg_ota_fat_entry dir, entries[2];
+  struct vg_ota_bcb b, changed;
+  uint8_t blocks[2][4096];
+  uint32_t which, i, lba[2];
+  int valid0, valid1;
+
+  if (!p || !d || !p->read || !p->write_sector || !p->sync)
+    {
+      return -EINVAL;
+    }
+
+  if (d->reason != VG_OTA_BOOT_REASON_B_TRIAL)
+    {
+      return 0;
+    }
+
+  if (vg_ota_fat_mount(&vol, p->read, p->ctx, p->sectors) ||
+      vg_ota_fat_find(&vol, "VGOTA      ", 0, &dir) || !(dir.attr & 0x10))
+    {
+      d->slot = VG_OTA_BCB_SLOT_A;
+      d->reason = VG_OTA_BOOT_REASON_A_FAT_ERROR;
+      return -EINVAL;
+    }
+
+  for (i = 0; i < 2; i++)
+    {
+      if (vg_ota_fat_find(&vol, names[i], dir.first_cluster, &entries[i]) ||
+          (entries[i].attr & 0x10) || entries[i].size != 4096 ||
+          vg_ota_fat_read(&vol, &entries[i], 0, blocks[i], 4096) ||
+          vg_ota_fat_file_sector(&vol, &entries[i], 0, &lba[i]))
+        {
+          d->slot = VG_OTA_BCB_SLOT_A;
+          d->reason = VG_OTA_BOOT_REASON_A_BCB_INVALID;
+          return -EINVAL;
+        }
+    }
+
+  if (lba[0] == lba[1] ||
+      vg_ota_bcb_select(blocks[0], 4096, 1, blocks[1], 4096, 1, &b, &which,
+                        &valid0, &valid1) ||
+      b.seq != d->bcb_seq || which != d->bcb_which ||
+      b.state != VG_OTA_BCB_STATE_TRIAL)
+    {
+      d->slot = VG_OTA_BCB_SLOT_A;
+      d->reason = VG_OTA_BOOT_REASON_A_BCB_INVALID;
+      return -EINVAL;
+    }
+
+  if (b.trial_count >= VG_OTA_MAX_TRIALS)
+    {
+      changed = b;
+      changed.seq = b.seq + 1u;
+      changed.state = VG_OTA_BCB_STATE_FAILED;
+      changed.slot = VG_OTA_BCB_SLOT_B;
+      store_bcb(p, &vol, &entries[1 - which], &changed);
+
+      d->slot = VG_OTA_BCB_SLOT_A;
+      d->reason = VG_OTA_BOOT_REASON_A_FAILED;
+      d->bcb_state = VG_OTA_BCB_STATE_FAILED;
+      d->bcb_seq = changed.seq;
+      d->bcb_which = 1 - which;
+      d->bcb_trial_count = b.trial_count;
+      return 0;
+    }
+
+  changed = b;
+  changed.trial_count = b.trial_count + 1u;
+  if (store_bcb(p, &vol, &entries[which], &changed) != 0)
+    {
+      d->bcb_trial_count = changed.trial_count;
+      return -EIO;
+    }
+
+  d->bcb_trial_count = changed.trial_count;
+  d->slot = VG_OTA_BCB_SLOT_B;
+  d->reason = VG_OTA_BOOT_REASON_B_TRIAL;
+  return 0;
 }

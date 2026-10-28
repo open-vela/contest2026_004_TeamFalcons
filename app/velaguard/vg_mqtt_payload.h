@@ -59,4 +59,12 @@ int vg_mqtt_format_alarm(char *out, size_t n, const char *device_id,
 
 int vg_mqtt_point_table_has_points(const char *json, size_t len);
 
+int vg_mqtt_format_ota_result(char *out, size_t n, const char *device_id,
+                              const char *task_id, const char *version,
+                              const char *result, int error_code);
+
+int vg_mqtt_format_ota_confirm(char *out, size_t n, const char *device_id,
+                               const char *task_id, const char *version,
+                               const char *slot, const char *self_check);
+
 #endif

@@ -25,7 +25,9 @@ Feature: ota
 
 任务 03 已完成 boot stub 的 eMMC 单线读取、只读 FAT16/32、双份 BCB 选序与 A/B 跳转，提供 `vgota bootinfo` 和仅诊断构建的 BCB fixture；见 [t03-boot-selection](../../ota-evidence/2026-10-28/t03-boot-selection.md)。普通启动路径不写 QSPI；pending 仍回 A，镜像安装与 trial 自检/回滚分别属于任务 04、05。
 
-任务 04 已完成 pending 镜像的 manifest/摘要校验、B 槽安装、回读和 TRIAL 持久化；用户本机按键确认后的诊断安装已启动 B，完整 8 MiB A 槽摘要前后一致。见 [t04-install](../../ota-evidence/2026-10-28/t04-install.md)。任务 03 当时 pending 回 A 的限制由本任务替代；正式应用验签、本地屏幕确认、trial 自检/看门狗和完整 OTA 仍待后续实现。
+任务 04 已完成 pending 镜像的 manifest/摘要校验、B 槽安装、回读和 TRIAL 持久化；用户本机按键确认后的诊断安装已启动 B，完整 8 MiB A 槽摘要前后一致。见 [t04-install](../../ota-evidence/2026-10-28/t04-install.md)。任务 03 当时 pending 回 A 的限制由本任务替代。
+
+任务 05 已完成 B 槽新固件自检、confirmed 提交、重启直接进入 B（`b-confirmed`）、自检失败或指令回滚到 A 槽（`a-failed`），以及硬件看门狗超时复位与 trial 计数自动步进 1->2->3 超限后降级回滚 A 槽；见 [t05-rollback](../../ota-evidence/2026-10-28/t05-rollback.md)。正式应用验签、本地屏幕确认和网络 OTA 仍待后续任务实现。
 
 ## User Stories
 

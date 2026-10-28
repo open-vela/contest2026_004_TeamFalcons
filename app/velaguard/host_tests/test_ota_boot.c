@@ -63,6 +63,20 @@ static void add_bcb(struct fixture *f, const char name[11],
                            sizeof(buf)) == 0);
 }
 
+static void add_bcb_with_trials(struct fixture *f, const char name[11],
+                                uint32_t state, uint32_t slot, uint32_t seq,
+                                uint32_t trials)
+{
+  struct vg_ota_bcb bcb;
+  uint8_t buf[VG_OTA_BCB_FILE_BYTES];
+
+  fill_bcb(&bcb, state, slot, seq);
+  bcb.trial_count = trials;
+  assert(vg_ota_bcb_encode(&bcb, buf, sizeof(buf)) == 0);
+  assert(test_fat_add_file(&f->img, f->dir_cluster, name, buf,
+                           sizeof(buf)) == 0);
+}
+
 static void decide(struct fixture *f, struct vg_ota_boot_decision *d)
 {
   assert(vg_ota_boot_decide(test_block_read, &f->block, f->img.sectors,
@@ -323,10 +337,39 @@ static void test_fat_errors(void)
   fixture_done(&f);
 }
 
+static void test_trial_limits(void)
+{
+  struct fixture f;
+  struct vg_ota_boot_decision d;
+  uint32_t t;
+
+  for (t = 0; t <= 5; t++)
+    {
+      fixture_init(&f, 0);
+      add_staging(&f);
+      add_bcb_with_trials(&f, NAME_BCB0, VG_OTA_BCB_STATE_TRIAL,
+                          VG_OTA_BCB_SLOT_B, 10, t);
+      decide(&f, &d);
+      assert(d.bcb_trial_count == t);
+      if (t < VG_OTA_MAX_TRIALS)
+        {
+          assert(d.slot == VG_OTA_BCB_SLOT_B);
+          assert(d.reason == VG_OTA_BOOT_REASON_B_TRIAL);
+        }
+      else
+        {
+          assert(d.slot == VG_OTA_BCB_SLOT_A);
+          assert(d.reason == VG_OTA_BOOT_REASON_A_FAILED);
+        }
+      fixture_done(&f);
+    }
+}
+
 int main(void)
 {
   test_boot_b();
   test_boot_a_states();
+  test_trial_limits();
   test_missing();
   test_corruption();
   test_size_and_chain();

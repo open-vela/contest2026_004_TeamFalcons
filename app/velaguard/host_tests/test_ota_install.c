@@ -269,9 +269,56 @@ static void test_power_cuts(void)
   printf("test_ota_install: power cut boundaries=%u modes=2\n",events);
   free(f);
 }
+
+static void test_trial_advance(void)
+{
+  struct fixture f;
+  struct vg_ota_boot_decision d;
+
+  init(&f, 0);
+  assert(!run(&f, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_B && d.reason == VG_OTA_BOOT_REASON_B_INSTALLED);
+  assert(d.bcb_trial_count == 1);
+
+  /* Reboot attempt 2 under TRIAL */
+  assert(!vg_ota_boot_decide(read_block, &f, f.img.sectors, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_B && d.reason == VG_OTA_BOOT_REASON_B_TRIAL);
+  assert(d.bcb_trial_count == 1);
+
+  assert(!vg_ota_trial_advance(&f.ports, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_B && d.reason == VG_OTA_BOOT_REASON_B_TRIAL);
+  assert(d.bcb_trial_count == 2);
+
+  /* Reboot attempt 3 under TRIAL */
+  assert(!vg_ota_boot_decide(read_block, &f, f.img.sectors, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_B && d.reason == VG_OTA_BOOT_REASON_B_TRIAL);
+  assert(d.bcb_trial_count == 2);
+
+  assert(!vg_ota_trial_advance(&f.ports, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_B && d.reason == VG_OTA_BOOT_REASON_B_TRIAL);
+  assert(d.bcb_trial_count == 3);
+
+  /* Reboot attempt 4 under TRIAL: trial_count 3 >= MAX_TRIALS -> rolled back to A */
+  assert(!vg_ota_boot_decide(read_block, &f, f.img.sectors, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_A && d.reason == VG_OTA_BOOT_REASON_A_FAILED);
+
+  /* Advance persists FAILED to eMMC */
+  d.reason = VG_OTA_BOOT_REASON_B_TRIAL;
+  assert(!vg_ota_trial_advance(&f.ports, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_A && d.reason == VG_OTA_BOOT_REASON_A_FAILED);
+  assert(d.bcb_state == VG_OTA_BCB_STATE_FAILED);
+
+  /* Subsequent boots stay permanently on A */
+  assert(!vg_ota_boot_decide(read_block, &f, f.img.sectors, &d));
+  assert(d.slot == VG_OTA_BCB_SLOT_A && d.reason == VG_OTA_BOOT_REASON_A_FAILED);
+  assert(d.bcb_state == VG_OTA_BCB_STATE_FAILED);
+
+  done(&f);
+}
+
 int main(void)
 {
-  test_sha(); test_success(); test_reject(); test_errors(); test_power_cuts();
+  test_sha(); test_success(); test_trial_advance(); test_reject(); test_errors(); test_power_cuts();
   puts("test_ota_install: OK");
   return 0;
 }

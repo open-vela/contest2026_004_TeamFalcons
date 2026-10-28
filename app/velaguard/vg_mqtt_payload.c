@@ -324,3 +324,94 @@ int vg_mqtt_point_table_has_points(const char *json, size_t len)
 
   return 0;
 }
+
+int vg_mqtt_format_ota_result(char *out, size_t n, const char *device_id,
+                              const char *task_id, const char *version,
+                              const char *result, int error_code)
+{
+  int off;
+
+  if (out == NULL || device_id == NULL || result == NULL)
+    {
+      return -1;
+    }
+
+  off = snprintf(out, n,
+                 "{\"device_id\":\"%s\",\"result\":\"%s\",\"error\":%d",
+                 device_id, result, error_code);
+  if (off < 0 || (size_t)off >= n)
+    {
+      return -1;
+    }
+
+  if (task_id != NULL && task_id[0] != '\0')
+    {
+      off = appendf(out, n, off, ",\"task_id\":\"%s\"", task_id);
+      if (off < 0)
+        {
+          return -1;
+        }
+    }
+
+  if (version != NULL && version[0] != '\0')
+    {
+      off = appendf(out, n, off, ",\"version\":\"%s\"", version);
+      if (off < 0)
+        {
+          return -1;
+        }
+    }
+
+  off = appendf(out, n, off, "}");
+  return (off < 0) ? -1 : 0;
+}
+
+int vg_mqtt_format_ota_confirm(char *out, size_t n, const char *device_id,
+                               const char *task_id, const char *version,
+                               const char *slot, const char *self_check)
+{
+  int off;
+
+  if (out == NULL || device_id == NULL || self_check == NULL)
+    {
+      return -1;
+    }
+
+  off = snprintf(out, n,
+                 "{\"device_id\":\"%s\",\"self_check\":\"%s\"",
+                 device_id, self_check);
+  if (off < 0 || (size_t)off >= n)
+    {
+      return -1;
+    }
+
+  if (slot != NULL && slot[0] != '\0')
+    {
+      off = appendf(out, n, off, ",\"slot\":\"%s\"", slot);
+      if (off < 0)
+        {
+          return -1;
+        }
+    }
+
+  if (task_id != NULL && task_id[0] != '\0')
+    {
+      off = appendf(out, n, off, ",\"task_id\":\"%s\"", task_id);
+      if (off < 0)
+        {
+          return -1;
+        }
+    }
+
+  if (version != NULL && version[0] != '\0')
+    {
+      off = appendf(out, n, off, ",\"version\":\"%s\"", version);
+      if (off < 0)
+        {
+          return -1;
+        }
+    }
+
+  off = appendf(out, n, off, "}");
+  return (off < 0) ? -1 : 0;
+}
