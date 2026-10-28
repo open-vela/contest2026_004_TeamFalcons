@@ -1,6 +1,6 @@
 # OTA P1 固件身份、槽位与安全重启
 
-日期：2026-10-28。板：STM32H750B-DK。固件：`velaguard-lvgl`，版本 `0.1.0`，A 槽。最终构建号 `06966ea7f721`（提交 `06966ea` 的干净工作区构建）。
+日期：2026-10-28。板：STM32H750B-DK。固件：`velaguard-lvgl`，版本 `0.1.0`，A 槽。最终构建号 `886723ef6437`（提交 `886723e` 的干净工作区构建）。
 
 ## 单一版本来源
 
@@ -19,7 +19,7 @@ bash scripts/build.sh
 构建检查输出：
 
 ```text
-check_fw_images: OK version=0.1.0 A=0x90000000 B=0x90800000 a_size=1511880 b_size=1511880
+check_fw_images: OK version=0.1.0 A=0x90000000 B=0x90800000 a_size=1511968 b_size=1511968
 ```
 
 ELF 符号：
@@ -39,13 +39,13 @@ $ nm -g --defined-only .debug/nuttx-b.elf
 两份 BIN 都含有版本和构建号：
 
 ```text
-$ strings .debug/nuttx-a.bin | grep -E '^0\.1\.0$|^06966e'
+$ strings .debug/nuttx-a.bin | grep -E '^0\.1\.0$|^886723'
 0.1.0
-06966ea7f721
+886723ef6437
 
-$ strings .debug/nuttx-b.bin | grep -E '^0\.1\.0$|^06966e'
+$ strings .debug/nuttx-b.bin | grep -E '^0\.1\.0$|^886723'
 0.1.0
-06966ea7f721
+886723ef6437
 ```
 
 `check_fw_images.py` 还校验向量表初始 MSP、复位入口位于各自槽内、Thumb 位、8 MiB 槽位上限，以及 A/B 二进制不相同。两镜像由同一批对象重新链接，只有链接脚本的 flash 基址、槽位长度和绝对槽位标记不同。当前 boot stub 仍只启动 A；B 镜像留给后续 BCB 选择和安装票使用。
@@ -76,7 +76,7 @@ test_fw_identity: OK
 
 ```text
 nsh> vgota identity
-vgota: identity version=0.1.0 slot=A build=06966ea7f721 link=90000000
+vgota: identity version=0.1.0 slot=A build=886723ef6437 link=90000000
 ```
 
 通过 OTA 安全重启接口重启：
@@ -90,9 +90,9 @@ vgota: safe reboot version=0.1.0 slot=A
 
 ```text
 nsh> cat /proc/uptime
-     22.12
+     24.49
 nsh> vgota identity
-vgota: identity version=0.1.0 slot=A build=06966ea7f721 link=90000000
+vgota: identity version=0.1.0 slot=A build=886723ef6437 link=90000000
 ```
 
 重启前版本和槽位与重启后一致。`vgota reboot` 先 `sync()` 已挂载文件系统，再调用板级复位；后续 OTA 服务复用同一入口。
