@@ -47,6 +47,12 @@ if(CONFIG_VG_BRINGUP_TOOLS)
     nuttx_add_application(
       NAME vgota
       SRCS vgota.c vg_ota_probe.c vg_ota_reboot.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_fat.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_bcb.c
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_boot.c
+      INCLUDE_DIRECTORIES
+           ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core
+           ${CMAKE_CURRENT_LIST_DIR}/../../scripts/qspi_boot_stub
       STACKSIZE 8192)
   endif()
 endif()

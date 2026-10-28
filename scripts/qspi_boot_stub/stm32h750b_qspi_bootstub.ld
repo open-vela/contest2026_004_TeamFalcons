@@ -32,6 +32,8 @@ SECTIONS
     _edata = .;
   } > ram AT > flash
 
+  _sidata = LOADADDR(.data);
+
   .bss (NOLOAD) :
   {
     _sbss = .;
@@ -48,4 +50,9 @@ SECTIONS
     *(.note*)
     *(.eh_frame*)
   }
+
+  ASSERT(_etext <= ORIGIN(flash) + LENGTH(flash),
+         "boot stub exceeds the 128 KiB internal flash")
+  ASSERT(_ebss + 32768 <= _estack,
+         "boot stub leaves less than 32 KiB of stack")
 }

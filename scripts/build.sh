@@ -274,10 +274,10 @@ prepare_build_trees()
 ensure_bootstub()
 {
   mkdir -p "$STAGE_DIR"
-  if [ "$MODE" = "--clean" ] || [ ! -f "$STAGE_DIR/qspi_bootstub.hex" ]; then
-    echo "[build] 构建 QSPI boot stub..."
-    bash "$SCRIPT_DIR/qspi_boot_stub/build_bootstub.sh" "$STAGE_DIR"
-  fi
+  # The stub is small and now carries the FAT/BCB boot path.  Rebuild it on
+  # every invocation so a stale HEX can never hide a source change.
+  echo "[build] 构建 QSPI boot stub..."
+  bash "$SCRIPT_DIR/qspi_boot_stub/build_bootstub.sh" "$STAGE_DIR"
   if [ ! -f "$STAGE_DIR/qspi_bootstub.hex" ]; then
     echo "error: 缺少 $STAGE_DIR/qspi_bootstub.hex（bootstub 构建未产出 HEX）" >&2
     exit 1

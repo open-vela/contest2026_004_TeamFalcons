@@ -461,3 +461,30 @@ JSON 参数需要的引号，`{"query":"ups_load"}` 会变成 `{query:ups_load}`
 在 Windows 执行 `scripts/maintenance_soak.ps1` 可进行 24 小时串口观察，遇到故障即停止，不自动复位。该脚本要求已配置 LLM 凭证；物理阈值/拔线注入、人工点表确认和实际 AI 产物仍须单独验收。
 
 扫描页的生成候选操作不提交已确认表；已有候选时拒绝覆盖。需要先在 NSH 用 `vgpoint test` 核对实际结果，再由人单独发送 `vgpoint apply --confirm`。本轮仍未增加候选版本绑定校验。
+
+### OTA 开发诊断
+
+`vgota` 供开发与维护使用，不向设备端 Agent 开放。当前只具备身份、存储探测、启动选择和安全重启能力；没有安装授权接口，不能据此宣称完整 OTA 已实现。
+
+| 命令 | 行为 |
+|---|---|
+| `vgota identity` | 输出版本、构建号、当前槽位和链接基址 |
+| `vgota bootinfo` | 输出本次 boot stub 选择的槽位、原因、BCB 编号/状态/序号、两份 BCB 有效性及 FAT/eMMC 错误 |
+| `vgota probe` | 读取 eMMC 身份、容量、FAT、剩余空间，并输出 QSPI 探测结果和 bootinfo |
+| `vgota reboot` | 同步文件系统后复位，不修改 BCB，也不确认安装 |
+| `vgota qspiprobe` | 读取上次 scratch 探测结果 |
+| `vgota qspiprobe --confirm` | 显式请求重启后执行既有 QSPI scratch 擦写探测，不用于安装 |
+
+仅用 `bash scripts/build.sh --ota-fixtures` 构建的诊断固件提供以下命令。生产构建排除整个 `fixture` 入口。
+
+| 命令 | 行为与限制 |
+|---|---|
+| `vgota fixture status` | 查看六个固定暂存文件 |
+| `vgota fixture write <NAME> <bytes> [seed]` | 写入固定文件名的测试数据，最多 8 MiB |
+| `vgota fixture clear` | 删除六个固定测试文件 |
+| `vgota fixture bcb status` | 解码两份 BCB，报告缺失或无效 |
+| `vgota fixture bcb set <0\|1> <state> <a\|b> <seq> <size> [ver] [task]` | 生成 4 KiB 测试 BCB；state 为 pending/trial/confirmed/failed，size 为 1..8388608，seq 为 uint32 |
+| `vgota fixture bcb corrupt <0\|1> <offset>` | 翻转 BCB 头部字节，offset 为 0..139 |
+| `vgota fixture bcb clear` | 只删除 BCB0.BIN 和 BCB1.BIN |
+
+固定文件名为 `IMAGE.BIN`、`IMAGE.TMP`、`MANIFEST.BIN`、`BCB0.BIN`、`BCB1.BIN`、`STATE.BIN`，路径始终位于现有 `/mnt/emmc/VGOTA/`。测试 BCB 使用虚构摘要，仅用于 ST-Link 预写 B 镜像后的槽位选择验收，不代表签名、镜像校验或本地安装确认。当前 pending 始终回 A；trial 计数、看门狗和失败回滚按后续任务实现。

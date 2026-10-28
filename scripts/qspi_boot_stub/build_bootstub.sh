@@ -14,6 +14,8 @@ SIZE="${SIZE:-arm-none-eabi-size}"
 
 mkdir -p "$OUT_DIR"
 
+BOOT_CORE="$REPO_ROOT/boot/ota_core"
+
 "$CC" \
   -mcpu=cortex-m7 \
   -mthumb \
@@ -30,11 +32,17 @@ mkdir -p "$OUT_DIR"
   -Werror \
   -nostartfiles \
   -nostdlib \
+  -I"$SCRIPT_DIR" \
+  -I"$BOOT_CORE" \
   -Wl,--build-id=none \
   -Wl,--gc-sections \
   -Wl,-Map="$OUT_DIR/qspi_bootstub.map" \
   -T "$SCRIPT_DIR/stm32h750b_qspi_bootstub.ld" \
   "$SCRIPT_DIR/stm32h750b_qspi_bootstub.c" \
+  "$SCRIPT_DIR/stm32h750b_emmc.c" \
+  "$BOOT_CORE/vg_ota_fat.c" \
+  "$BOOT_CORE/vg_ota_bcb.c" \
+  "$BOOT_CORE/vg_ota_boot.c" \
   -o "$OUT_DIR/qspi_bootstub.elf"
 
 "$OBJCOPY" -O ihex "$OUT_DIR/qspi_bootstub.elf" "$OUT_DIR/qspi_bootstub.hex"

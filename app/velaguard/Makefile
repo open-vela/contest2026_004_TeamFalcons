@@ -128,11 +128,16 @@ CFLAGS   += -DCONFIG_VG_BUS_DISCOVER=1
 endif
 
 ifeq ($(CONFIG_VG_OTA_PROBE),y)
+VG_BOOT_CORE := $(abspath $(CURDIR)/../../boot/ota_core)
 PROGNAME += vgota
 MAINSRC  += vgota.c
-CSRCS    += vg_ota_probe.c vg_ota_reboot.c
+CSRCS    += vg_ota_probe.c vg_ota_reboot.c vg_ota_fat.c vg_ota_bcb.c \
+            vg_ota_boot.c
 CFLAGS   += -DCONFIG_VG_OTA_PROBE=1
 CFLAGS   += ${INCDIR_PREFIX}$(abspath $(CURDIR)/../../scripts/qspi_boot_stub)
+CFLAGS   += ${INCDIR_PREFIX}$(VG_BOOT_CORE)
+VPATH    += :$(VG_BOOT_CORE)
+DEPPATH  += --dep-path $(VG_BOOT_CORE)
 endif
 
 CFLAGS += ${INCDIR_PREFIX}$(CURDIR)/nanomodbus

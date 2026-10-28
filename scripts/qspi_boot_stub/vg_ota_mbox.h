@@ -10,7 +10,7 @@
 
 #define VG_OTA_MBOX_ADDR     0x2001f000u
 #define VG_OTA_MBOX_MAGIC    0x56474f54u /* VGOT */
-#define VG_OTA_MBOX_VERSION  1u
+#define VG_OTA_MBOX_VERSION  2u
 
 enum vg_ota_mbox_request_e
 {
@@ -50,6 +50,20 @@ struct vg_ota_mbox
   uint32_t fail_index;
   uint32_t fail_got;
   uint32_t fail_want;
+
+  /* Boot selection result, written on every reset. */
+  uint32_t boot_slot;
+  uint32_t boot_reason;
+  uint32_t boot_bcb_which;
+  uint32_t boot_bcb_state;
+  uint32_t boot_bcb_seq;
+  uint32_t boot_bcb_slot;
+  uint32_t boot_valid0;
+  uint32_t boot_valid1;
+  uint32_t boot_bcb_error;
+  uint32_t boot_fat_type;
+  uint32_t boot_fat_error;
+  uint32_t boot_emmc_error;
 };
 
 #define VG_OTA_MBOX ((volatile struct vg_ota_mbox *)VG_OTA_MBOX_ADDR)

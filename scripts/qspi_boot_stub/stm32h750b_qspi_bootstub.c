@@ -6,15 +6,19 @@
  * image linked at 0x90000000.
  */
 
+#include <stddef.h>
 #include <stdint.h>
 
+#include "stm32h750b_emmc.h"
+#include "vg_ota_boot.h"
 #include "vg_ota_mbox.h"
 
 #define REG32(a) (*(volatile uint32_t *)(uintptr_t)(a))
 #define REG16(a) (*(volatile uint16_t *)(uintptr_t)(a))
 
-#define APP_BASE              0x90000000u
-#define APP_LIMIT             0x94000000u
+#define APP_A_BASE            0x90000000u
+#define APP_B_BASE            0x90800000u
+#define APP_SLOT_SIZE         0x00800000u
 
 #define SRAM_BASE             0x20000000u
 #define SRAM_LIMIT            0x40000000u
@@ -643,11 +647,19 @@ static int valid_sram(uint32_t value)
   return value >= SRAM_BASE && value < SRAM_LIMIT && (value & 3u) == 0;
 }
 
-static int valid_entry(uint32_t value)
+static int valid_entry(uint32_t base, uint32_t value)
 {
   uint32_t addr = value & ~1u;
 
-  return addr >= APP_BASE && addr < APP_LIMIT && (value & 1u) != 0;
+  return addr >= base && addr < base + APP_SLOT_SIZE && (value & 1u) != 0;
+}
+
+static int valid_vector(uint32_t base)
+{
+  uint32_t stack = REG32(base);
+  uint32_t entry = REG32(base + 4u);
+
+  return valid_sram(stack) && valid_entry(base, entry);
 }
 
 __attribute__((naked, noreturn))
@@ -664,14 +676,125 @@ static void jump_to_image(uint32_t, uint32_t)
     );
 }
 
+extern uint32_t _sidata[];
+extern uint32_t _sdata[];
+extern uint32_t _edata[];
+extern uint32_t _sbss[];
+extern uint32_t _ebss[];
+
+static void init_data_bss(void)
+{
+  uint32_t *src = _sidata;
+  uint32_t *dst;
+
+  for (dst = _sdata; dst < _edata; )
+    {
+      *dst++ = *src++;
+    }
+
+  for (dst = _sbss; dst < _ebss; )
+    {
+      *dst++ = 0;
+    }
+}
+
+static void zero_boot_decision(struct vg_ota_boot_decision *d)
+{
+  uint8_t *p = (uint8_t *)d;
+  uint32_t i;
+
+  for (i = 0; i < sizeof(*d); i++)
+    {
+      p[i] = 0;
+    }
+
+  d->slot = VG_OTA_BCB_SLOT_A;
+  d->reason = VG_OTA_BOOT_REASON_A_EMMC_ERROR;
+  d->bcb_which = 0xffu;
+}
+
+static void publish_boot(const struct vg_ota_boot_decision *d,
+                         uint32_t slot, uint32_t reason)
+{
+  volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
+
+  mbox->magic = VG_OTA_MBOX_MAGIC;
+  mbox->version = VG_OTA_MBOX_VERSION;
+  mbox->boot_slot = slot;
+  mbox->boot_reason = reason;
+  mbox->boot_bcb_which = d->bcb_which;
+  mbox->boot_bcb_state = d->bcb_state;
+  mbox->boot_bcb_seq = d->bcb_seq;
+  mbox->boot_bcb_slot = d->bcb_slot;
+  mbox->boot_valid0 = d->bcb_valid0;
+  mbox->boot_valid1 = d->bcb_valid1;
+  mbox->boot_bcb_error = d->bcb_error;
+  mbox->boot_fat_type = d->fat_type;
+  mbox->boot_fat_error = d->fat_error;
+  mbox->boot_emmc_error = d->emmc_error;
+
+  __asm__ volatile ("dsb 0xf" ::: "memory");
+}
+
+static void boot_select(void)
+{
+  struct vg_ota_boot_decision d;
+  uint32_t target = APP_A_BASE;
+  uint32_t slot = VG_OTA_BCB_SLOT_A;
+  uint32_t reason;
+
+  if (vg_emmc_init() == 0)
+    {
+      vg_ota_boot_decide(vg_emmc_read_blocks, 0, vg_emmc_sector_count(), &d);
+      if (d.emmc_error == 0 && vg_emmc_error() != 0)
+        {
+          d.emmc_error = vg_emmc_error();
+        }
+    }
+  else
+    {
+      zero_boot_decision(&d);
+      d.emmc_error = vg_emmc_error();
+    }
+
+  reason = d.reason;
+
+  if (d.slot == VG_OTA_BCB_SLOT_B)
+    {
+      if (valid_vector(APP_B_BASE))
+        {
+          target = APP_B_BASE;
+          slot = VG_OTA_BCB_SLOT_B;
+        }
+      else
+        {
+          target = APP_A_BASE;
+          slot = VG_OTA_BCB_SLOT_A;
+          reason = VG_OTA_BOOT_REASON_A_IMAGE_INVALID;
+        }
+    }
+
+  if (!valid_vector(target))
+    {
+      publish_boot(&d, VG_OTA_BCB_SLOT_A, VG_OTA_BOOT_REASON_A_SAFE_STOP);
+      Default_Handler();
+    }
+
+  publish_boot(&d, slot, reason);
+
+  REG32(SCB_VTOR) = target;
+  __asm__ volatile ("dsb 0xf" ::: "memory");
+  __asm__ volatile ("isb 0xf" ::: "memory");
+  jump_to_image(REG32(target), REG32(target + 4u));
+}
+
 void Reset_Handler(void)
 {
   volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
-  uint32_t app_stack;
-  uint32_t app_entry;
 
   __asm__ volatile ("cpsid i");
 
+  init_data_bss();
   clock_init();
   qspi_enter_memory_mapped();
 
@@ -686,18 +809,33 @@ void Reset_Handler(void)
       qspi_enter_memory_mapped();
     }
 
-  app_stack = REG32(APP_BASE);
-  app_entry = REG32(APP_BASE + 4u);
+  boot_select();
+}
 
-  if (valid_sram(app_stack) && valid_entry(app_entry))
+/* GCC may emit these for structure copies even with -ffreestanding. */
+void *memcpy(void *dst, const void *src, size_t len)
+{
+  uint8_t *d = dst;
+  const uint8_t *s = src;
+
+  while (len-- > 0)
     {
-      REG32(SCB_VTOR) = APP_BASE;
-      __asm__ volatile ("dsb 0xf" ::: "memory");
-      __asm__ volatile ("isb 0xf" ::: "memory");
-      jump_to_image(app_stack, app_entry);
+      *d++ = *s++;
     }
 
-  Default_Handler();
+  return dst;
+}
+
+void *memset(void *dst, int c, size_t len)
+{
+  uint8_t *d = dst;
+
+  while (len-- > 0)
+    {
+      *d++ = (uint8_t)c;
+    }
+
+  return dst;
 }
 
 void Default_Handler(void)

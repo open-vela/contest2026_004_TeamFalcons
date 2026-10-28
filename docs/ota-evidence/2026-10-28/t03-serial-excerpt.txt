@@ -1,0 +1,122 @@
+COM3 serial excerpts, 2026-10-28; only OTA commands and their responses.
+
+SOURCE: .debug/t03-board-fixtures.log
+CMD: vgota fixture bcb clear
+vgota: fixture bcb clear done
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=A
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+CMD: vgota bootinfo
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb set 0 confirmed b 1 1517120 0.2.0 T03-B1
+vgota: fixture BCB0.BIN seq=1 state=confirmed slot=B size=1517120 version=0.2.0 task=T03-B1
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=A
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=B build=8aae0cad7c3c-dirty link=90800000
+CMD: vgota bootinfo
+vgota: bootinfo slot=B reason=b-confirmed bcb=0 state=confirmed seq=1 bcb_slot=B valid0=1 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb set 1 confirmed b 2 1517120 0.2.0 T03-B2
+vgota: fixture BCB1.BIN seq=2 state=confirmed slot=B size=1517120 version=0.2.0 task=T03-B2
+CMD: vgota fixture bcb corrupt 0 8
+vgota: fixture BCB0.BIN corrupted offset=8
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=B
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=B build=8aae0cad7c3c-dirty link=90800000
+CMD: vgota bootinfo
+vgota: bootinfo slot=B reason=b-confirmed bcb=1 state=confirmed seq=2 bcb_slot=B valid0=0 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb corrupt 1 8
+vgota: fixture BCB1.BIN corrupted offset=8
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=B
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+CMD: vgota bootinfo
+vgota: bootinfo slot=A reason=a-bcb-invalid bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb set 0 confirmed a 0xffffffff 1517120 0.2.0 T03-A
+vgota: fixture BCB0.BIN seq=4294967295 state=confirmed slot=A size=1517120 version=0.2.0 task=T03-A
+CMD: vgota fixture bcb set 1 confirmed b 0 1517120 0.2.0 T03-B0
+vgota: fixture BCB1.BIN seq=0 state=confirmed slot=B size=1517120 version=0.2.0 task=T03-B0
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=A
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=B build=8aae0cad7c3c-dirty link=90800000
+CMD: vgota bootinfo
+vgota: bootinfo slot=B reason=b-confirmed bcb=1 state=confirmed seq=0 bcb_slot=B valid0=1 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb set 0 confirmed b 0x80000000 1517120 0.2.0 T03-AMBIG
+vgota: fixture BCB0.BIN seq=2147483648 state=confirmed slot=B size=1517120 version=0.2.0 task=T03-AMBIG
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=B
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+CMD: vgota bootinfo
+vgota: bootinfo slot=A reason=a-bcb-invalid bcb=255 state=invalid seq=0 bcb_slot=A valid0=1 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture write BCB0.BIN 4095 7
+vgota: fixture write BCB0.BIN size=4095 seed=7
+CMD: vgota fixture write BCB1.BIN 4095 7
+vgota: fixture write BCB1.BIN size=4095 seed=7
+CMD: vgota fixture bcb status
+vgota: fixture BCB0.BIN invalid ERR=22
+vgota: fixture BCB1.BIN invalid ERR=22
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=A
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+CMD: vgota bootinfo
+vgota: bootinfo slot=A reason=a-bcb-invalid bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=22 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb clear
+vgota: fixture bcb clear done
+CMD: vgota fixture bcb set 0 pending b 8 1517120 0.2.0 T03-PENDING
+vgota: fixture BCB0.BIN seq=8 state=pending slot=B size=1517120 version=0.2.0 task=T03-PENDING
+CMD: vgota reboot
+vgota: safe reboot version=0.1.0 slot=A
+CMD: vgota identity
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+CMD: vgota bootinfo
+vgota: bootinfo slot=A reason=a-pending bcb=0 state=pending seq=8 bcb_slot=B valid0=1 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+CMD: vgota fixture bcb clear
+vgota: fixture bcb clear done
+CMD: vgota fixture bcb set 0 confirmed b 9 1517120 0.2.0 T03-EMPTY-B
+vgota: fixture BCB0.BIN seq=9 state=confirmed slot=B size=1517120 version=0.2.0 task=T03-EMPTY-B
+PASS: all BCB cases; BCB for empty-B test is ready
+
+SOURCE: .debug/t03-board-empty-b.log
+########## vgota identity ########## len=101
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+########## vgota bootinfo ########## len=175
+vgota: bootinfo slot=A reason=a-image-invalid bcb=0 state=confirmed seq=9 bcb_slot=B valid0=1 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+########## vgota fixture bcb clear ########## len=64
+vgota: fixture bcb clear done
+########## vgota reboot ########## len=267
+vgota: safe reboot version=0.1.0 slot=A
+
+SOURCE: .debug/t03-board-production.log
+########## vgota identity ########## len=101
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+########## vgota bootinfo ########## len=168
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+########## vgota fixture bcb status ########## len=157
+Usage:
+  vgota identity
+  vgota bootinfo
+  vgota reboot
+  vgota probe
+  vgota qspiprobe
+  vgota qspiprobe --confirm
+########## ls /mnt/emmc/VGOTA ########## len=46
+/mnt/emmc/VGOTA:
+########## vgota probe ########## len=1075
+vgota: identity version=0.1.0 slot=A build=8aae0cad7c3c-dirty link=90000000
+vgota: cid=13014e51324a353441100d8cddf6b5f4
+vgota: emmc cid mid=13 oid=4e pnm=Q2J54A prv=10 psn=0d8cddf6 mdt=b5 crc=7a
+vgota: csd=d02f01320f5913ffffffffef8e400030
+vgota: emmc csd struct=3 spec=4 csize=4095 mult=7 read_bl_len=9 capacity=0
+vgota: emmc extcsd rev=7 sec_count=7634944 capacity=3909091328
+vgota: emmc geometry sectors=7634944 sector_size=512 capacity=3909091328 model=
+vgota: emmc fat type=FAT16 bps=512 spc=128 reserved=1 fats=2 root_entries=512 clusters=59644 total_sectors=7634944
+vgota: emmc statfs type=00004d44 bsize=65536 total=3908829184 free=3884580864
+vgota: emmc probe done
+vgota: qspi state=ok error=0 jedec1=20ba20 jedec2=000000 capacity=67108864 (64 MiB) erase=4096 write=256 seq=2322015246 run=2322015246 sr=00000000 cr=00000000 ccr=00000000 dcr=00000000 raw1=2020ba raw2=000000 fi=0 fg=00 fw=00
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0

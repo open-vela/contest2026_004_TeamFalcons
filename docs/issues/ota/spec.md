@@ -5,7 +5,7 @@ Feature: ota
 
 ## Problem Statement
 
-VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调试器和停机，无法远程发布，也没有失败恢复路径。现有固件没有 OTA 模块、MQTTS 控制通道、HTTPS 下载器、订阅能力、服务器证书校验、固件版本单一来源或安全重启接口；OTA 页面使用模拟数据；启动 stub 只负责把 QSPI 映射到 `0x90000000` 并跳转，没有 eMMC、FAT、启动控制和烧写能力。
+立项时，VelaGuard 只能通过 ST-Link 写 QSPI，现场升级需要电脑、调试器和停机。当前已完成存储探测、固件身份与安全重启，以及 boot stub 读取 eMMC FAT/BCB 后选择槽位的基础能力。镜像安装、trial 自检与回滚、MQTTS 控制、HTTPS 下载、验签和本地安装确认仍待实现，OTA 页面仍使用模拟数据。
 
 设备用户需要一条受控的 MQTTS Control + HTTPS Download OTA 路径：新版本由云端提议，设备在后台下载并验证，安装前必须由用户在本机明确确认，失败或断电后仍能回到可用固件。升级不能重新格式化 eMMC，不能丢失现有 AI 凭据、MQTT 参数、点表和运行配置，也不能把 eMMC 容量当作固定已知值。
 
@@ -22,6 +22,8 @@ VelaGuard 目前只能通过 ST-Link 写 QSPI。现场升级需要电脑、调�
 - OTA 只使用 RJ45 出口，ESP-01S Wi-Fi 出口拒绝 OTA。
 
 实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇；QSPI 单颗 MT25QL512ABB、64MB，4 KiB 擦除、256 B 页写，第二片未响应。按 64MB 修正了 QSPI 窗口、MPU、boot stub 和 flash 脚本的上限；A/B 8 MiB 槽位成立。证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。P1 的身份基础（ticket 02）已完成：`VERSION` 单一来源、A/B 镜像元数据检查、状态和屏幕统一显示版本/槽位、`vgota reboot` 安全重启；证据见 [t02-identity](../../ota-evidence/2026-10-28/t02-identity.md)。
+
+任务 03 已完成 boot stub 的 eMMC 单线读取、只读 FAT16/32、双份 BCB 选序与 A/B 跳转，提供 `vgota bootinfo` 和仅诊断构建的 BCB fixture；见 [t03-boot-selection](../../ota-evidence/2026-10-28/t03-boot-selection.md)。普通启动路径不写 QSPI；pending 仍回 A，镜像安装与 trial 自检/回滚分别属于任务 04、05。
 
 ## User Stories
 

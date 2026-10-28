@@ -97,6 +97,7 @@ logs/**/errors/
 # Host test binaries built by `make -C app/velaguard/host_tests test`
 /app/velaguard/host_tests/test_*
 !/app/velaguard/host_tests/test_*.c
+!/app/velaguard/host_tests/test_*.h
 !/app/velaguard/host_tests/test_*.py
 
 # Report authoring stays out of the repository. The submission directory keeps

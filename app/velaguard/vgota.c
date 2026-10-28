@@ -20,6 +20,9 @@
 #include <nuttx/board.h>
 
 #include "vg_fw_identity.h"
+#include "vg_ota_bcb.h"
+#include "vg_ota_boot.h"
+#include "vg_ota_fat.h"
 #include "vg_ota_probe.h"
 #include "vg_ota_reboot.h"
 #include "vg_ota_mbox.h"
@@ -31,6 +34,7 @@ static void usage(void)
 {
   printf("Usage:\n");
   printf("  vgota identity\n");
+  printf("  vgota bootinfo\n");
   printf("  vgota reboot\n");
   printf("  vgota probe\n");
   printf("  vgota qspiprobe\n");
@@ -39,6 +43,10 @@ static void usage(void)
   printf("  vgota fixture status\n");
   printf("  vgota fixture write <NAME> <bytes> [seed]\n");
   printf("  vgota fixture clear\n");
+  printf("  vgota fixture bcb status\n");
+  printf("  vgota fixture bcb set <0|1> <state> <a|b> <seq> <size> [ver] [task]\n");
+  printf("  vgota fixture bcb corrupt <0|1> <offset>\n");
+  printf("  vgota fixture bcb clear\n");
 #endif
 }
 
@@ -47,6 +55,34 @@ static void print_identity(void)
   printf("vgota: identity version=%s slot=%s build=%s link=%08" PRIx32 "\n",
          vg_fw_version(), vg_fw_slot_name(), vg_fw_build_id(),
          vg_fw_link_base());
+}
+
+static void print_bootinfo(void)
+{
+  volatile struct vg_ota_mbox *mbox = VG_OTA_MBOX;
+
+  if (mbox->magic != VG_OTA_MBOX_MAGIC ||
+      mbox->version != VG_OTA_MBOX_VERSION)
+    {
+      printf("vgota: bootinfo unavailable\n");
+      return;
+    }
+
+  printf("vgota: bootinfo slot=%s reason=%s bcb=%" PRIu32
+         " state=%s seq=%" PRIu32 " bcb_slot=%s"
+         " valid0=%" PRIu32 " valid1=%" PRIu32
+         " bcb_error=%" PRIu32 " fat=%s fat_error=%" PRIu32
+         " emmc_error=%" PRIu32 "\n",
+         vg_ota_bcb_slot_name(mbox->boot_slot),
+         vg_ota_boot_reason_name(mbox->boot_reason),
+         mbox->boot_bcb_which,
+         vg_ota_bcb_state_name(mbox->boot_bcb_state),
+         mbox->boot_bcb_seq,
+         vg_ota_bcb_slot_name(mbox->boot_bcb_slot),
+         mbox->boot_valid0, mbox->boot_valid1,
+         mbox->boot_bcb_error,
+         vg_ota_fat_type_name((enum vg_ota_fat_type_e)mbox->boot_fat_type),
+         mbox->boot_fat_error, mbox->boot_emmc_error);
 }
 
 static void print_hex(const char *label, const uint8_t *buf, size_t len)
@@ -315,11 +351,394 @@ static int fixture_clear(void)
   return ret;
 }
 
+static int fixture_store(const char *name, const uint8_t *data,
+                         uint32_t size)
+{
+  char path[64];
+  uint32_t done = 0;
+  int fd;
+
+  if (mkdir(VG_OTA_DIR, 0755) < 0 && errno != EEXIST)
+    {
+      printf("vgota: fixture mkdir %s ERR=%d\n", VG_OTA_DIR, errno);
+      return 1;
+    }
+
+  snprintf(path, sizeof(path), "%s/%s", VG_OTA_DIR, name);
+  fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+  if (fd < 0)
+    {
+      printf("vgota: fixture open %s ERR=%d\n", path, errno);
+      return 1;
+    }
+
+  while (done < size)
+    {
+      ssize_t written = write(fd, data + done, size - done);
+
+      if (written <= 0)
+        {
+          printf("vgota: fixture write %s ERR=%d\n", path, errno);
+          close(fd);
+          return 1;
+        }
+
+      done += (uint32_t)written;
+    }
+
+  if (fsync(fd) < 0)
+    {
+      printf("vgota: fixture fsync %s ERR=%d\n", path, errno);
+      close(fd);
+      return 1;
+    }
+
+  close(fd);
+  return 0;
+}
+
+static int fixture_read(const char *name, uint8_t *data, uint32_t size)
+{
+  char path[64];
+  uint32_t done = 0;
+  int fd;
+
+  snprintf(path, sizeof(path), "%s/%s", VG_OTA_DIR, name);
+  fd = open(path, O_RDONLY);
+  if (fd < 0)
+    {
+      return -errno;
+    }
+
+  while (done < size)
+    {
+      ssize_t got = read(fd, data + done, size - done);
+
+      if (got == 0)
+        {
+          close(fd);
+          return -EINVAL;
+        }
+
+      if (got < 0)
+        {
+          close(fd);
+          return -EIO;
+        }
+
+      done += (uint32_t)got;
+    }
+
+  close(fd);
+  return 0;
+}
+
+static int fixture_bcb_index(const char *arg, uint32_t *index,
+                             const char **name)
+{
+  char *end;
+  unsigned long value;
+
+  errno = 0;
+  value = strtoul(arg, &end, 0);
+  if (errno != 0 || *end != '\0' || value > 1)
+    {
+      printf("vgota: fixture bcb invalid index %s\n", arg);
+      return 1;
+    }
+
+  *index = (uint32_t)value;
+  *name = value == 0 ? "BCB0.BIN" : "BCB1.BIN";
+  return 0;
+}
+
+static int fixture_bcb_state(const char *arg, uint32_t *state)
+{
+  if (strcmp(arg, "pending") == 0)
+    {
+      *state = VG_OTA_BCB_STATE_PENDING;
+    }
+  else if (strcmp(arg, "trial") == 0)
+    {
+      *state = VG_OTA_BCB_STATE_TRIAL;
+    }
+  else if (strcmp(arg, "confirmed") == 0)
+    {
+      *state = VG_OTA_BCB_STATE_CONFIRMED;
+    }
+  else if (strcmp(arg, "failed") == 0)
+    {
+      *state = VG_OTA_BCB_STATE_FAILED;
+    }
+  else
+    {
+      printf("vgota: fixture bcb invalid state %s\n", arg);
+      return 1;
+    }
+
+  return 0;
+}
+
+static int fixture_bcb_slot(const char *arg, uint32_t *slot)
+{
+  if (strcmp(arg, "a") == 0 || strcmp(arg, "A") == 0 ||
+      strcmp(arg, "0") == 0)
+    {
+      *slot = VG_OTA_BCB_SLOT_A;
+      return 0;
+    }
+
+  if (strcmp(arg, "b") == 0 || strcmp(arg, "B") == 0 ||
+      strcmp(arg, "1") == 0)
+    {
+      *slot = VG_OTA_BCB_SLOT_B;
+      return 0;
+    }
+
+  printf("vgota: fixture bcb invalid slot %s\n", arg);
+  return 1;
+}
+
+static int parse_u32(const char *arg, uint32_t *out)
+{
+  char *end;
+  unsigned long value;
+
+  errno = 0;
+  value = strtoul(arg, &end, 0);
+  if (errno != 0 || *end != '\0' || value > 0xfffffffful)
+    {
+      printf("vgota: fixture bcb invalid number %s\n", arg);
+      return 1;
+    }
+
+  *out = (uint32_t)value;
+  return 0;
+}
+
+static int fixture_bcb_status(void)
+{
+  static const char *names[2] = { "BCB0.BIN", "BCB1.BIN" };
+  uint8_t buf[VG_OTA_BCB_FILE_BYTES];
+  uint32_t i;
+
+  for (i = 0; i < 2; i++)
+    {
+      struct vg_ota_bcb bcb;
+      int ret = fixture_read(names[i], buf, sizeof(buf));
+
+      if (ret < 0)
+        {
+          if (ret == -ENOENT)
+            {
+              printf("vgota: fixture %s missing ERR=%d\n", names[i], -ret);
+            }
+          else
+            {
+              printf("vgota: fixture %s invalid ERR=%d\n", names[i], -ret);
+            }
+
+          continue;
+        }
+
+      ret = vg_ota_bcb_decode(buf, sizeof(buf), &bcb);
+      if (ret != 0)
+        {
+          printf("vgota: fixture %s invalid ERR=%d\n", names[i], -ret);
+          continue;
+        }
+
+      printf("vgota: fixture %s valid seq=%" PRIu32 " state=%s slot=%s"
+             " size=%" PRIu32 " version=%s task=%s trials=%" PRIu32 "\n",
+             names[i], bcb.seq, vg_ota_bcb_state_name(bcb.state),
+             vg_ota_bcb_slot_name(bcb.slot), bcb.image_size, bcb.version,
+             bcb.task_id, bcb.trial_count);
+    }
+
+  return 0;
+}
+
+static int fixture_bcb_set(int argc, char *argv[])
+{
+  struct vg_ota_bcb bcb;
+  uint8_t buf[VG_OTA_BCB_FILE_BYTES];
+  const char *version = "0.2.0";
+  const char *task = "FIXTURE";
+  const char *name;
+  uint32_t index;
+  uint32_t i;
+  int ret;
+
+  if (argc < 9 || argc > 11)
+    {
+      usage();
+      return 1;
+    }
+
+  if (fixture_bcb_index(argv[4], &index, &name) != 0)
+    {
+      return 1;
+    }
+
+  (void)index;
+  memset(&bcb, 0, sizeof(bcb));
+
+  if (fixture_bcb_state(argv[5], &bcb.state) != 0 ||
+      fixture_bcb_slot(argv[6], &bcb.slot) != 0 ||
+      parse_u32(argv[7], &bcb.seq) != 0 ||
+      parse_u32(argv[8], &bcb.image_size) != 0)
+    {
+      return 1;
+    }
+
+  if (argc >= 10)
+    {
+      version = argv[9];
+    }
+
+  if (argc >= 11)
+    {
+      task = argv[10];
+    }
+
+  if (strlen(version) >= sizeof(bcb.version) ||
+      strlen(task) >= sizeof(bcb.task_id))
+    {
+      printf("vgota: fixture bcb version or task too long\n");
+      return 1;
+    }
+
+  snprintf(bcb.version, sizeof(bcb.version), "%s", version);
+  snprintf(bcb.task_id, sizeof(bcb.task_id), "%s", task);
+
+  for (i = 0; i < sizeof(bcb.sha256); i++)
+    {
+      bcb.sha256[i] = (uint8_t)(0x5au ^ i);
+    }
+
+  ret = vg_ota_bcb_encode(&bcb, buf, sizeof(buf));
+  if (ret != 0)
+    {
+      printf("vgota: fixture bcb encode ERR=%d\n", -ret);
+      return 1;
+    }
+
+  if (fixture_store(name, buf, sizeof(buf)) != 0)
+    {
+      return 1;
+    }
+
+  printf("vgota: fixture %s seq=%" PRIu32 " state=%s slot=%s"
+         " size=%" PRIu32 " version=%s task=%s\n",
+         name, bcb.seq, vg_ota_bcb_state_name(bcb.state),
+         vg_ota_bcb_slot_name(bcb.slot), bcb.image_size, bcb.version,
+         bcb.task_id);
+  return 0;
+}
+
+static int fixture_bcb_corrupt(int argc, char *argv[])
+{
+  uint8_t buf[VG_OTA_BCB_FILE_BYTES];
+  const char *name;
+  uint32_t index;
+  uint32_t offset;
+  int ret;
+
+  if (argc != 6)
+    {
+      usage();
+      return 1;
+    }
+
+  if (fixture_bcb_index(argv[4], &index, &name) != 0 ||
+      parse_u32(argv[5], &offset) != 0)
+    {
+      return 1;
+    }
+
+  (void)index;
+
+  if (offset >= VG_OTA_BCB_HEADER_BYTES)
+    {
+      printf("vgota: fixture bcb offset must be under %u\n",
+             VG_OTA_BCB_HEADER_BYTES);
+      return 1;
+    }
+
+  ret = fixture_read(name, buf, sizeof(buf));
+  if (ret < 0)
+    {
+      printf("vgota: fixture %s missing ERR=%d\n", name, -ret);
+      return 1;
+    }
+
+  buf[offset] ^= 0x5a;
+
+  if (fixture_store(name, buf, sizeof(buf)) != 0)
+    {
+      return 1;
+    }
+
+  printf("vgota: fixture %s corrupted offset=%" PRIu32 "\n", name, offset);
+  return 0;
+}
+
+static int fixture_bcb_clear(void)
+{
+  static const char *names[2] = { "BCB0.BIN", "BCB1.BIN" };
+  char path[64];
+  uint32_t i;
+
+  for (i = 0; i < 2; i++)
+    {
+      snprintf(path, sizeof(path), "%s/%s", VG_OTA_DIR, names[i]);
+      if (unlink(path) < 0 && errno != ENOENT)
+        {
+          printf("vgota: fixture unlink %s ERR=%d\n", path, errno);
+          return 1;
+        }
+    }
+
+  printf("vgota: fixture bcb clear done\n");
+  return 0;
+}
+
+static int cmd_fixture_bcb(int argc, char *argv[])
+{
+  if (argc == 4 && strcmp(argv[3], "status") == 0)
+    {
+      return fixture_bcb_status();
+    }
+
+  if (argc == 4 && strcmp(argv[3], "clear") == 0)
+    {
+      return fixture_bcb_clear();
+    }
+
+  if (argc >= 5 && strcmp(argv[3], "set") == 0)
+    {
+      return fixture_bcb_set(argc, argv);
+    }
+
+  if (argc == 6 && strcmp(argv[3], "corrupt") == 0)
+    {
+      return fixture_bcb_corrupt(argc, argv);
+    }
+
+  usage();
+  return 1;
+}
+
 static int cmd_fixture(int argc, char *argv[])
 {
   char *end;
   unsigned long size;
   unsigned long seed = 0;
+
+  if (argc >= 3 && strcmp(argv[2], "bcb") == 0)
+    {
+      return cmd_fixture_bcb(argc, argv);
+    }
 
   if (argc == 3 && strcmp(argv[2], "status") == 0)
     {
@@ -516,6 +935,7 @@ static void probe_emmc(const char *dev)
 
   printf("vgota: emmc probe done\n");
   print_qspi_result();
+  print_bootinfo();
 }
 
 int main(int argc, char *argv[])
@@ -529,6 +949,12 @@ int main(int argc, char *argv[])
   if (strcmp(argv[1], "identity") == 0 && argc == 2)
     {
       print_identity();
+      return 0;
+    }
+
+  if (strcmp(argv[1], "bootinfo") == 0 && argc == 2)
+    {
+      print_bootinfo();
       return 0;
     }
 

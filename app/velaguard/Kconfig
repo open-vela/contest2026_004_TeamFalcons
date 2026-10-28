@@ -53,7 +53,8 @@ config VG_OTA_PROBE
 		Build the read-only vgota NSH command.  It reads eMMC CID,
 		CSD and EXT_CSD, block geometry, statfs and the FAT boot
 		sector.  It does not format, erase or write the eMMC.  It also
-		reports the firmware version and boot slot and can request a
+		reports the firmware version, the boot slot chosen by the
+		internal stub and the decoded BCB0/BCB1 state, and can request a
 		synced reboot for OTA.
 
 config VG_OTA_TEST_FIXTURES
@@ -61,8 +62,10 @@ config VG_OTA_TEST_FIXTURES
 	default n
 	depends on VG_OTA_PROBE
 	---help---
-		Reserved for test-only staging of fixture images, manifests
-		and BCBs.  Production builds must leave this disabled.
+		Test-only staging of fixture images, manifests and BCBs.  The
+		bcb subcommand writes, corrupts and clears BCB0.BIN/BCB1.BIN
+		under the existing eMMC VGOTA directory so the boot stub can be
+		exercised.  Production builds must leave this disabled.
 
 config VG_CONFIG_STORE
 	bool "VelaGuard dual-slot config store (eMMC FAT)"

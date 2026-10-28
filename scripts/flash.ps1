@@ -3,7 +3,8 @@ param(
   [string]$CubeCli = "",
   [string]$ExternalLoader = "",
   [string]$OutDir = "",
-  [switch]$ValidateOnly
+  [switch]$ValidateOnly,
+  [switch]$WithSlotB
 )
 
 $ErrorActionPreference = "Stop"
@@ -105,6 +106,7 @@ $loaderCandidates = @(
 $ExternalLoader = Resolve-ExistingFile $ExternalLoader "STM32_EXTERNAL_LOADER" $loaderCandidates "STM32H750B-DK External Loader"
 
 $mainHex = Join-Path $OutDir "nuttx.hex"
+$slotBHex = Join-Path $OutDir "nuttx-b.hex"
 $stubHex = Join-Path $OutDir "qspi_bootstub.hex"
 if (-not (Test-Path -LiteralPath $mainHex -PathType Leaf)) {
   throw "Main firmware was not found: $mainHex. Run 'openvela: Build' (contest scripts/build.sh) first. Download will not flash a previous image."
@@ -120,6 +122,16 @@ Assert-Range "Internal boot stub" $stubRange 0x08000000L 0x08020000L
 
 Write-Host ("Main QSPI image : 0x{0:x8}..0x{1:x8}" -f $mainRange.Min, $mainRange.Max)
 Write-Host ("Internal stub   : 0x{0:x8}..0x{1:x8}" -f $stubRange.Min, $stubRange.Max)
+
+if ($WithSlotB) {
+  if (-not (Test-Path -LiteralPath $slotBHex -PathType Leaf)) {
+    throw "Slot B firmware was not found: $slotBHex. Re-run scripts/build.sh."
+  }
+  $slotBRange = Get-IntelHexAddressRange $slotBHex
+  Assert-Range "QSPI slot B image" $slotBRange 0x90800000L 0x91000000L
+  Write-Host ("Slot B QSPI image: 0x{0:x8}..0x{1:x8}" -f $slotBRange.Min, $slotBRange.Max)
+}
+
 Write-Host "External Loader : $ExternalLoader"
 
 if ($ValidateOnly) {
@@ -142,8 +154,15 @@ function Invoke-CubeStep {
   }
 }
 
-Invoke-CubeStep "1/3 Programming and verifying external QSPI..." @('-c', 'port=SWD', 'mode=UR', '-el', $ExternalLoader, '-d', $mainHex, '-v')
-Invoke-CubeStep "2/3 Programming and verifying internal boot stub..." @('-c', 'port=SWD', 'mode=UR', '-d', $stubHex, '-v')
-Invoke-CubeStep "3/3 Resetting target..." @('-c', 'port=SWD', 'mode=UR', '-rst')
+if ($WithSlotB) {
+  Invoke-CubeStep "1/4 Programming and verifying QSPI slot A..." @('-c', 'port=SWD', 'mode=UR', '-el', $ExternalLoader, '-d', $mainHex, '-v')
+  Invoke-CubeStep "2/4 Programming and verifying QSPI slot B..." @('-c', 'port=SWD', 'mode=UR', '-el', $ExternalLoader, '-d', $slotBHex, '-v')
+  Invoke-CubeStep "3/4 Programming and verifying internal boot stub..." @('-c', 'port=SWD', 'mode=UR', '-d', $stubHex, '-v')
+  Invoke-CubeStep "4/4 Resetting target..." @('-c', 'port=SWD', 'mode=UR', '-rst')
+} else {
+  Invoke-CubeStep "1/3 Programming and verifying external QSPI..." @('-c', 'port=SWD', 'mode=UR', '-el', $ExternalLoader, '-d', $mainHex, '-v')
+  Invoke-CubeStep "2/3 Programming and verifying internal boot stub..." @('-c', 'port=SWD', 'mode=UR', '-d', $stubHex, '-v')
+  Invoke-CubeStep "3/3 Resetting target..." @('-c', 'port=SWD', 'mode=UR', '-rst')
+}
 
 Write-Host "Flash completed: internal stub -> QSPI XIP image."
