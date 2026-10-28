@@ -173,13 +173,13 @@ Agent 解释 / 报告
 | 资源 | 历史容量记录 | 当时状态 |
 |---|---|---|
 | 片内 Flash | 128 KB @ `0x08000000` | 仅存 QSPI boot stub（720 B），余量 ~127 KB |
-| QSPI NOR (MT25QL512ABB) | 512 Mbit ≈ 64 MB（2026-10-28 实测 JEDEC 0x20BA20；第二片未响应） | 主固件XIP地址 `0x90000000`，当时约220KB；现有镜像大小另查构建 |
+| QSPI NOR（MT25 系列） | 当前保留 64 MiB 软件地址上限；总容量和封装数量待核验 | DFM 交错模式；前 16 MiB 的 A/B 各 8 MiB 已板验，安装逻辑擦除单位 8 KiB |
 | 外部 SDRAM | **8 MB**（16-bit 走线，非 128 MB） | FMC Bank6 `0xD0000000`，首 1 MB 预留，7 MB 已入堆 |
 | 片内 SRAM | ~1 MB | AXI 512 KB / SRAM1-3 288 KB / SRAM4 64 KB / DTCM 128 KB / ITCM 64 KB |
 | eMMC | 4 GB 级（2026-10-28 实测 3,909,091,328 B） | SDMMC 接口，FAT16、64 KiB 簇；当前固件已挂载使用 |
 | microSD | 卡槽 | SDMMC 接口，默认未启用；**本项目无卡，不使用** |
 
-> 2026-10-28 P0 实测：eMMC 为 4GB 级，3,909,091,328 B，FAT16、64 KiB 簇；QSPI 为单颗 MT25QL512ABB，JEDEC 0x20BA20，64MB，4 KiB 擦除、256 B 页写，第二片未响应。原 8GB eMMC 和 32MB QSPI 记录作废。详细输出见 [OTA P0 证据](docs/ota-evidence/2026-10-28/p0-probe.md)。
+> 2026-10-28：eMMC 实测为 4GB 级，3,909,091,328 B，FAT16、64 KiB 簇。QSPI 在 P0 曾按单颗 64MB 解读；任务 04 复核确认控制器启用了 DFM，成对 ID 为 `20 20 ba ba 20 20`，安装按 8 KiB 逻辑擦除、256 字节编程通过。P0 的单颗/第二片未响应解释不能继续作为器件数量或总容量结论；本轮保留现有软件地址上限，不扩大布局。原始输出见 [P0 证据](docs/ota-evidence/2026-10-28/p0-probe.md)，更正与安装板验见 [任务 04 证据](docs/ota-evidence/2026-10-28/t04-install.md)。
 
 **历史堆预算**：原记录AXI约450KB、其他扩展区约464KB、SDRAM约7MB。当前显示预留和链接布局已变化，资源余量应从实际固件及 `/proc/meminfo` 获取；本次文档更新未重测。DTCM不作为DMA缓冲。
 
@@ -626,7 +626,7 @@ vg/{device_id}/ota/confirm
 
 HTTPS按小缓冲流式写盘，不要求整份固件进RAM。断点续传可基于Range设计，但须服务器支持，并按同一镜像版本、大小和摘要验证已下载内容，禁止把不同版本片段拼接。通知/任务标识用于防止重复升级，带凭证的下载URL不完整写入日志。
 
-暂存使用现有eMMC FAT的`/mnt/emmc/VGOTA/`目录，不重新格式化eMMC，避免丢失AI凭据、点表和运行配置。boot stub只读解析FAT16/32，按目录项和簇链读取镜像；不支持的FAT、损坏簇链和超出槽位大小的文件一律回A槽。下载、签名校验和SHA-256可以后台自动完成，安装前必须由用户在本机屏幕明确确认，每个task_id/version单独确认；MQTT、手机、语音和设备端Agent不能确认安装。确认后再次检查无高等级活动告警、存储可写和摘要匹配，才写pending并重启。P0 实测 eMMC 为 4GB 级、FAT16 64 KiB 簇，QSPI 单颗 64MB，A/B 8MB 槽位成立。
+暂存使用现有eMMC FAT的`/mnt/emmc/VGOTA/`目录，不重新格式化eMMC，避免丢失AI凭据、点表和运行配置。boot stub只读解析FAT16/32，按目录项和簇链读取镜像；不支持的FAT、损坏簇链和超出槽位大小的文件一律回A槽。下载、签名校验和SHA-256可以后台自动完成，安装前必须由用户在本机屏幕明确确认，每个task_id/version单独确认；MQTT、手机、语音和设备端Agent不能确认安装。确认后再次检查无高等级活动告警、存储可写和摘要匹配，才写pending并重启。eMMC 实测为 4GB 级、FAT16 64 KiB 簇；任务 04 已通过本机按键确认的诊断镜像安装及 A/B 槽位板验，正式屏幕确认和完整 OTA 仍待后续任务。
 
 实现仍需新增MQTTS、OTA控制订阅、流式HTTPS下载器、FAT暂存、本地确认、任务状态机、镜像验证及boot stub/回滚；当前LLM的HTTPS和明文MQTT不代表这些已完成。TLS/下载与Agent的连接、堆和任务资源要单独预算，不影响本地安全环。
 
@@ -1050,7 +1050,7 @@ Log4j2-inspired 滚动日志风格，不引入真正的 Log4j2。
 - 存在高等级 active alarm、存储异常或供电不稳时不允许升级
 - 生产固件只接受生产签名
 - OTA 全过程写结构化事件
-- P0 实测 eMMC 为 4GB 级，3,909,091,328 B，FAT16、64 KiB 簇；QSPI 为单颗 MT25QL512ABB，64MB，4 KiB 擦除、256 B 页写。原 8GB eMMC 和 32MB QSPI 记录作废，见 [OTA P0 证据](ota-evidence/2026-10-28/p0-probe.md)。
+- eMMC 实测为 4GB 级，3,909,091,328 B，FAT16、64 KiB 簇。QSPI 安装路径按 DFM 交错模式和 8 KiB 逻辑擦除验证；P0 对单颗/容量的解释已由任务 04 更正，见 [任务 04 证据](docs/ota-evidence/2026-10-28/t04-install.md)，不据此扩大地址布局。
 - OTA仍为待实现/待验证方案；现有启动stub不等于完整烧写、回滚和抗断电能力。决策见ADR 0006和[ADR 0008](docs/adr/0008-ota-fat-staging-with-local-confirmation.md)，旧ADR 0005已被替代
 
 ### 16.10 构建模式

@@ -12,9 +12,11 @@ OTA 使用现有 eMMC FAT，不重新格式化。应用在 `/mnt/emmc/VGOTA/` �
 
 2026-10-28 P0 实测：eMMC 用户分区 3,909,091,328 B（4GB 级），FAT16、64 KiB 簇；QSPI 只有一颗 MT25QL512ABB 响应（JEDEC `0x20BA20`，64MB），第二片未响应；4 KiB 扇区擦除和 256 B 页写在 flash1 的 scratch 区通过。原始串口证据见 [OTA P0 证据](../ota-evidence/2026-10-28/p0-probe.md)。A/B 8MB 槽位和现有 FAT 暂存方案保持。
 
+任务 04 复核更正：上述 QSPI 单颗/第二片未响应是 P0 当时的解释。现有控制器启用 DFM，安装时成对 ID `20 20 ba ba 20 20`、8 KiB 逻辑擦除和 256 字节编程通过真机安装及完整镜像回读。P0 不能据此判定器件数量或总容量；当前只保留既有 64 MiB 软件地址上限，A/B 前 16 MiB 布局已板验，不扩大容量预算。原始历史证据保持不改，当前结论见 [任务 04 证据](../ota-evidence/2026-10-28/t04-install.md)。
+
 ## 槽位与启动控制
 
-- QSPI A 槽 `0x90000000`，8MB，出厂和恢复镜像，只由 ST-Link 写入；B 槽 `0x90800000`，8MB，只由 OTA 写入。P0 已复核：单颗 MT25QL512ABB、64MB，两槽都在容量内；QSPI XIP 窗口、MPU、boot stub 和 flash 脚本的地址上限已按 64MB 修正。
+- QSPI A 槽 `0x90000000`，8MB，出厂和恢复镜像，只由 ST-Link 写入；B 槽 `0x90800000`，8MB，只由 OTA 写入。两槽已通过任务 04 安装、完整回读及 A 不变校验；QSPI XIP 窗口、MPU、boot stub 和 flash 脚本保留既有 64 MiB 软件上限，不把该上限当作实测总容量。
 - `BCB0.BIN` 和 `BCB1.BIN` 各 4KB，包含 magic、seq、状态、槽位、版本、task_id、镜像大小、SHA-256 和 CRC。应用通过临时文件加替换更新 BCB；boot stub 读取两份并选择最高有效 seq，trial 和 failed 记录在原文件内就地写入。
 - 不把 BCB 放在片内 Flash。H750 的 128KB 片内 Flash 是单个 128KB 扇区，无法单独擦除；部分字编程还可能触发 ECC 问题。
 - 任务 04 细化启动安装顺序：两份 BCB 预先分配为独立 4 KiB 文件；校验镜像后，先在另一份 BCB 持久化 `FAILED(seq+1)` 并回读，再擦写 B，成功后将原 pending 改为 `TRIAL(seq+2)`。安装中断或 trial 提交撕裂时保留较新的 FAILED，避免误选旧 confirmed B。stub 只更新已有 BCB 首扇区，不修改 FAT/目录；格式见 [启动安装格式](../velaguard-ota-boot-format.md)。
@@ -39,7 +41,7 @@ OTA 使用现有 eMMC FAT，不重新格式化。应用在 `/mnt/emmc/VGOTA/` �
 
 ## 实施门槛
 
-1. P0（2026-10-28 已完成）：读 eMMC CID/CSD/EXT_CSD 和 `df`，确认 FAT16/64 KiB 簇和 4GB 级容量；在板上验证 stub 的只读 FAT 解析；在 QSPI scratch 区验证 4 KiB 擦除、256 B 页写和回读；确认单颗 64MB QSPI 容量，并修正地址窗口。
+1. P0（2026-10-28 已完成）：读 eMMC CID/CSD/EXT_CSD 和 `df`，确认 FAT16/64 KiB 簇和 4GB 级容量；在板上验证 stub 的只读 FAT 解析和 QSPI scratch 擦写回读。QSPI 器件数量/容量的旧解释按任务 04 复核更正，地址上限保守保持。
 2. P1：boot stub 的 eMMC 1-bit 驱动、FAT 解析、BCB、槽位选择、trial/rollback 和 B 镜像构建。
 3. P2：`/mnt/emmc/VGOTA/` 文件存储，镜像、清单和 BCB 的写入及断电测试；不格式化 eMMC，不迁移 AI/MQTT 凭据。
 4. P3：HTTPS 下载、manifest 验签、SHA-256、READY 状态和本地确认。

@@ -5,7 +5,7 @@ Feature: ota
 
 ## Problem Statement
 
-立项时，VelaGuard 只能通过 ST-Link 写 QSPI，现场升级需要电脑、调试器和停机。当前已完成存储探测、固件身份与安全重启，以及 boot stub 读取 eMMC FAT/BCB 后选择槽位的基础能力。镜像安装、trial 自检与回滚、MQTTS 控制、HTTPS 下载、验签和本地安装确认仍待实现，OTA 页面仍使用模拟数据。
+立项时，VelaGuard 只能通过 ST-Link 写 QSPI，现场升级需要电脑、调试器和停机。当前已完成存储探测、固件身份、安全重启、FAT/BCB 选槽，以及本机按键确认后的诊断镜像安装到 B。trial 自检与回滚、MQTTS 控制、HTTPS 下载、应用验签和正式屏幕安装确认仍待实现，OTA 页面仍使用模拟数据。
 
 设备用户需要一条受控的 MQTTS Control + HTTPS Download OTA 路径：新版本由云端提议，设备在后台下载并验证，安装前必须由用户在本机明确确认，失败或断电后仍能回到可用固件。升级不能重新格式化 eMMC，不能丢失现有 AI 凭据、MQTT 参数、点表和运行配置，也不能把 eMMC 容量当作固定已知值。
 
@@ -21,9 +21,11 @@ Feature: ota
 - A 槽为出厂和恢复镜像，只由 ST-Link 写入；B 槽只由 OTA 写入。B 槽启动后自检，成功写 confirmed，失败或 trial 次数超限回到 A 槽。
 - OTA 只使用 RJ45 出口，ESP-01S Wi-Fi 出口拒绝 OTA。
 
-实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇；QSPI 单颗 MT25QL512ABB、64MB，4 KiB 擦除、256 B 页写，第二片未响应。按 64MB 修正了 QSPI 窗口、MPU、boot stub 和 flash 脚本的上限；A/B 8 MiB 槽位成立。证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。P1 的身份基础（ticket 02）已完成：`VERSION` 单一来源、A/B 镜像元数据检查、状态和屏幕统一显示版本/槽位、`vgota reboot` 安全重启；证据见 [t02-identity](../../ota-evidence/2026-10-28/t02-identity.md)。
+实现按 P0 到 P5 推进。P0 已于 2026-10-28 完成：eMMC 实测 4GB 级、FAT16 64 KiB 簇，QSPI scratch 擦写回读通过；原始证据见 [OTA P0 证据](../../ota-evidence/2026-10-28/p0-probe.md)。P0 对单颗/总容量的解释已按任务 04 更正：当前按 DFM 使用 8 KiB 逻辑擦除，保持原 64 MiB 软件上限，不扩大布局。P1 的身份基础（ticket 02）已完成：`VERSION` 单一来源、A/B 镜像元数据检查、状态和屏幕统一显示版本/槽位、`vgota reboot` 安全重启；证据见 [t02-identity](../../ota-evidence/2026-10-28/t02-identity.md)。
 
 任务 03 已完成 boot stub 的 eMMC 单线读取、只读 FAT16/32、双份 BCB 选序与 A/B 跳转，提供 `vgota bootinfo` 和仅诊断构建的 BCB fixture；见 [t03-boot-selection](../../ota-evidence/2026-10-28/t03-boot-selection.md)。普通启动路径不写 QSPI；pending 仍回 A，镜像安装与 trial 自检/回滚分别属于任务 04、05。
+
+任务 04 已完成 pending 镜像的 manifest/摘要校验、B 槽安装、回读和 TRIAL 持久化；用户本机按键确认后的诊断安装已启动 B，完整 8 MiB A 槽摘要前后一致。见 [t04-install](../../ota-evidence/2026-10-28/t04-install.md)。任务 03 当时 pending 回 A 的限制由本任务替代；正式应用验签、本地屏幕确认、trial 自检/看门狗和完整 OTA 仍待后续实现。
 
 ## User Stories
 
@@ -88,7 +90,7 @@ Feature: ota
 ### 启动链与槽位
 
 - boot stub 位于 H750 片内 128 KiB Flash，是唯一在运行期写 QSPI 的组件。应用不得在 QSPI XIP 运行期间擦写 QSPI。
-- QSPI A 槽从 `0x90000000` 开始，B 槽从 `0x90800000` 开始，各 8 MiB。P0 已实测单颗 MT25QL512ABB（JEDEC `0x20BA20`）64MB、4 KiB 擦除、256 B 页写；A/B 槽位都在容量内，QSPI 地址上限已按 64MB 修正。
+- QSPI A 槽从 `0x90000000` 开始，B 槽从 `0x90800000` 开始，各 8 MiB。任务 04 已按 DFM 和成对 ID 验证 8 KiB 逻辑擦除、256 字节编程、完整 B 镜像回读及 A 不变。地址上限保持 64 MiB，不把 P0 旧解释当作器件数量或总容量证明。
 - A 槽只由 ST-Link 写入，作为出厂和恢复镜像。B 槽只由 OTA 写入。boot stub 和构建脚本都要有地址范围检查，拒绝跨槽写入。
 - A 镜像和 B 镜像由同一份源码构建，使用不同的链接地址、槽位标记和版本来源。B 镜像启动后检查自身槽位标记与 boot stub 设置的槽位一致；不一致时自检失败。
 - boot stub 增加最小 eMMC 1-bit 读取驱动、只读 FAT16/32 解析、BCB 选择、QSPI 间接擦写、镜像校验和跳转。FAT12、exFAT、不支持的扇区或簇大小、损坏簇链、目录项异常、文件超出槽位和读失败都回到 A 槽。
@@ -197,7 +199,7 @@ Feature: ota
 
 ### 实施阶段
 
-- P0（2026-10-28 已完成）：读取 eMMC CID、CSD、EXT_CSD 和 `df`，确认 4GB 级容量、FAT16、64 KiB 簇；在板上验证只读 FAT 解析原型；在 QSPI scratch 区验证 4 KiB 擦除、256 B 页写和回读；确认单颗 64MB QSPI 并修正地址窗口。
+- P0（2026-10-28 已完成）：读取 eMMC CID、CSD、EXT_CSD 和 `df`，确认 4GB 级容量、FAT16、64 KiB 簇；在板上验证只读 FAT 解析原型和 QSPI scratch 擦写回读。QSPI 旧单颗/容量解释按任务 04 更正，保留现有软件地址上限。
 - P1：boot stub 的 eMMC 读取、FAT 解析、BCB 选择、QSPI 烧写、trial/rollback 和 B 镜像构建。
 - P2：OTA Staging Directory 的文件存储、镜像、manifest、BCB 和状态文件写入，以及断电测试。不格式化 eMMC，不迁移凭据。
 - P3：HTTPS 下载、manifest 验签、SHA-256、READY 状态、本地确认和安装交接。
@@ -238,7 +240,7 @@ Feature: ota
 
 ## Further Notes
 
-- P0 已完成：eMMC 3,909,091,328 B（4GB 级）、FAT16、64 KiB 簇；QSPI 单颗 MT25QL512ABB、JEDEC `0x20BA20`、64MB、4 KiB 擦除、256 B 页写，第二片未响应。A/B 8 MiB 槽位保持。P0 的 JEDEC、容量和擦除参数已写入链接脚本、MPU、boot stub、flash 脚本和板级证据。
+- P0 已完成 eMMC 和 scratch 探测。QSPI 当前以任务 04 的 DFM 成对 ID、8 KiB 逻辑擦除和安装回读为依据；单颗/总容量结论待独立核验，保留既有 64 MiB 软件上限及 A/B 各 8 MiB 布局，不改写原始历史证据。
 - eMMC 手册原记录为 8GB，实测为 4GB 级；实现以 CID、CSD、EXT_CSD 和 `df` 为准，不按 8GB 设计固定布局。
 - boot stub v1 不验证签名，信任边界是应用完成签名校验后才写 pending BCB。物理改写 eMMC 的威胁不在 v1 范围。
 - `ota/confirm` 只表示新固件自检状态，不是安装授权。安装授权只来自板载触摸或按键。

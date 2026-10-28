@@ -1,4 +1,4 @@
-Task 04 serial excerpts, 2026-10-28; staging and unconfirmed-request rejection only.
+Task 04 COM3 serial excerpts, 2026-10-28. Only OTA commands and responses; unrelated application output omitted.
 
 SOURCE: .debug/t04-stage-status.log
 vgota: fixture staged bytes=1520904 task=T04-INSTALL sha=82ecec13; not armed
@@ -46,3 +46,60 @@ vgota: fixture MANIFEST.BIN present size=512
 vgota: fixture BCB0.BIN present size=4096
 vgota: fixture BCB1.BIN present size=4096
 vgota: fixture STATE.BIN missing
+
+SOURCE: .debug/t04-arm.log
+########## vgota fixture arm ########## len=1373
+vgota: fixture local confirmation version=0.1.0 task=T04-INSTALL bytes=1520904
+vgota: release board USER button, then hold it for 2 seconds within 60 seconds
+vgota: fixture pending locally confirmed seq=30
+
+SOURCE: .debug/t04-install-boot.log
+########## vgota reboot ########## len=8429
+vgota: safe reboot version=0.1.0 slot=A
+
+SOURCE: .debug/t04-install-result.log
+########## vgota identity ########## len=181
+vgota: identity version=0.1.0 slot=B build=72fd0e1d9d84-dirty link=90800000
+########## vgota bootinfo ########## len=639
+vgota: bootinfo slot=B reason=b-installed bcb=1 state=trial seq=32 bcb_slot=B valid0=1 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+vgota: install stage=8 error=0 bytes=1520904
+########## vgota fixture bcb status ########## len=255
+vgota: fixture BCB0.BIN valid seq=31 state=failed slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=0
+vgota: fixture BCB1.BIN valid seq=32 state=trial slot=B size=1520904 version=0.1.0 task=T04-INSTALL trials=1
+
+SOURCE: .debug/t04-trial-and-clear.log
+########## vgota identity ########## len=101
+vgota: identity version=0.1.0 slot=B build=72fd0e1d9d84-dirty link=90800000
+########## vgota bootinfo ########## len=204
+vgota: bootinfo slot=B reason=b-trial bcb=1 state=trial seq=32 bcb_slot=B valid0=1 valid1=1 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+vgota: install stage=0 error=0 bytes=0
+########## vgota fixture clear ########## len=56
+vgota: fixture clear done
+########## vgota reboot ########## len=267
+vgota: safe reboot version=0.1.0 slot=B
+
+SOURCE: .debug/t04-back-a.log
+########## vgota identity ########## len=144
+vgota: identity version=0.1.0 slot=A build=72fd0e1d9d84-dirty link=90000000
+########## vgota bootinfo ########## len=208
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+vgota: install stage=0 error=0 bytes=0
+########## ls /mnt/emmc/VGOTA ########## len=46
+/mnt/emmc/VGOTA:
+
+SOURCE: .debug/t04-production-final.log
+########## vgota identity ########## len=95
+vgota: identity version=0.1.0 slot=A build=c6c163af5172 link=90000000
+########## vgota bootinfo ########## len=208
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0
+vgota: install stage=0 error=0 bytes=0
+########## vgota fixture status ########## len=153
+Usage:
+  vgota identity
+  vgota bootinfo
+  vgota reboot
+  vgota probe
+  vgota qspiprobe
+  vgota qspiprobe --confirm
+########## ls /mnt/emmc/VGOTA ########## len=46
+/mnt/emmc/VGOTA:
