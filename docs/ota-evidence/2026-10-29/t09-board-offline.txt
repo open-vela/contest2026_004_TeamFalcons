@@ -1,0 +1,11 @@
+vgota: identity version=0.1.0 slot=A build=74fc4ad83474-dirty link=90000000
+vgota: state=FAILED task=T07-INSTALL-02 ver=0.1.0 size=0 sha=00000000 free=0 req=0 err=interrupted_before_confirmation
+vgota: link current=1 phy=1 bmsr_first=782d bmsr_second=782d err=0
+vgota: entropy source=stm32h750-trng bytes=8192 mbedtls_seed=pass elapsed_ms=0 health=pass
+vgota: control running=0 online=0 active=0 downloading=0 error=credentials_unconfigured
+vgota: provision configured=0 trust=0 entropy=0
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0 trials=0
+vgota: install stage=0 error=0 bytes=0
+vgota: entropy source=stm32h750-trng bytes=8192 mbedtls_seed=pass elapsed_ms=10 health=pass
+vgota: entropy source=stm32h750-trng bytes=8192 mbedtls_seed=pass elapsed_ms=10 health=pass
+vgota: selfcheck state=none slot=A running_slot=A trials=0 seq=0 bcb_state=invalid task= ver= detail=

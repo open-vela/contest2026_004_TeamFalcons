@@ -16,3 +16,5 @@
 - [ ] 主机测试覆盖下载状态、续传绑定、回读摘要和拒绝原因。
 
 2026-10-28：HTTPS 流式下载、严格证书/主机名验证、P-256 验签、强 ETag/Range 续传与安全重下已实现，真实主机 TLS/签名集成、全量主机回归和生产构建通过。见[任务 08 主机证据](../../../ota-evidence/2026-10-28/t08-https-host.md)。当前以太网未连接，生产信任材料未配置；硬件熵源仍在推进，严格 TLS 在这些条件未满足时拒绝。板级联网和本机确认验收留在[待办清单](../acceptance-todo.md)，未据主机结果勾选完整板验。
+
+2026-10-29：H750 硬件 RNG 源、真实 /dev/random/getrandom 与 mbedTLS seed 已板测通过，主线开启 VERIFIED_ENTROPY；PHY 双读实际返回 link up，但未验证拔线与板端 TLS。默认生产信任和 OTA 凭据仍为空，见[T09](../../../ota-evidence/2026-10-29/t09-control-host.md)。
