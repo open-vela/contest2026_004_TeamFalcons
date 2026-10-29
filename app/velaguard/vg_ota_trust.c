@@ -15,7 +15,7 @@
 #define VG_OTA_SIGNING_PUBLIC_PEM ""
 #define VG_OTA_SIGNING_KEY_ID ""
 #endif
-#if defined(__NuttX__) || defined(VG_OTA_CRYPTO_MBEDTLS)
+#if (defined(__NuttX__) && defined(CONFIG_CRYPTO_MBEDTLS)) || defined(VG_OTA_CRYPTO_MBEDTLS)
 #include <mbedtls/pk.h>
 #include <mbedtls/ecdsa.h>
 #endif
@@ -32,7 +32,7 @@ int vg_ota_trust_verify_with_key(const struct vg_ota_manifest *m,
 {
   if (!m || !key_id || !pem || !pem[0] || !key_id[0]) return -ENOKEY;
   if (m->flags != 0 || strcmp(m->key_id, key_id)) return -EKEYREJECTED;
-#if defined(__NuttX__) || defined(VG_OTA_CRYPTO_MBEDTLS)
+#if (defined(__NuttX__) && defined(CONFIG_CRYPTO_MBEDTLS)) || defined(VG_OTA_CRYPTO_MBEDTLS)
   uint8_t wire[VG_OTA_MANIFEST_BYTES], digest[32];
   struct vg_ota_sha256 hash;
   mbedtls_pk_context key;

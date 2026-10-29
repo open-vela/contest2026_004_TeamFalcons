@@ -21,6 +21,7 @@
 #include "vg_fw_identity.h"
 #include "vg_ota_bcb.h"
 #include "vg_ota_confirm.h"
+#include "vg_ota_link.h"
 #include "vg_ota_manifest.h"
 #if defined(__arm__) || defined(__NuttX__)
 #include "vg_ota_reboot.h"
@@ -449,9 +450,9 @@ static int confirm_install_locked(enum vg_ota_confirm_source_e src,
       return -EBUSY;
     }
 
-  if (vg_fw_slot() != 'A')
+  if (vg_fw_slot() != 'A' && vg_fw_slot() != 'B')
     {
-      if (err_out && err_len) snprintf(err_out, err_len, "requires_factory_a");
+      if (err_out && err_len) snprintf(err_out,err_len,"running_slot_invalid");
       return -EPERM;
     }
 
@@ -658,13 +659,8 @@ static int board_check_rj45(void *ctx)
       return -ENETDOWN;
     }
 
-#if defined(__arm__) && defined(CONFIG_NET_ETHERNET)
-  struct vg_eth_sample sample;
-  vg_eth_sample(&sample, false);
-  if (!sample.link)
-    {
-      return -ENETDOWN;
-    }
+#if defined(__NuttX__)
+  if (!vg_ota_link_ready()) return -ENETDOWN;
 #else
   return -ENETDOWN;
 #endif

@@ -44,9 +44,15 @@ if(CONFIG_VG_BRINGUP_TOOLS)
     DEFINITIONS NMBS_SERVER_DISABLED)
 
   if(CONFIG_VG_OTA_PROBE)
+    set(VG_OTA_NETWORK_SRCS)
+    if(CONFIG_VG_OTA_NETWORK)
+      list(APPEND VG_OTA_NETWORK_SRCS vg_ota_http.c vg_ota_https.c vg_ota_download.c
+           vg_ota_json.c vg_ota_protocol.c vg_ota_config.c vg_ota_config_crypto.c
+           vg_ota_config_store.c vg_ota_outbox.c vg_ota_mqtt.c vg_ota_service.c)
+    endif()
     nuttx_add_application(
       NAME vgota
-      SRCS vgota.c vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_ota_trust.c vg_ota_http.c vg_ota_https.c vg_ota_download.c
+      SRCS ${VG_OTA_NETWORK_SRCS} vgota.c vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_ota_link.c vg_ota_entropy.c vg_ota_trust.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_fat.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_bcb.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_boot.c

@@ -75,6 +75,8 @@ static uint64_t monotonic_ms(void)
 
 /* Append-only tombstones survive reboot and are never evicted. A damaged
  * journal blocks new offers, so a torn write cannot reauthorize an old task.
+ * At 4096 terminal tasks (176 KiB), new offers require maintenance; no silent
+ * eviction or unbounded storage growth is permitted.
  */
 static bool vg_ota_staging_is_suppressed_locked(const char *task_id)
 {
@@ -83,6 +85,7 @@ static bool vg_ota_staging_is_suppressed_locked(const char *task_id)
   ssize_t n;
   int fd;
   bool found = false;
+  unsigned records = 0;
   if (task_id == NULL || !task_id[0]) return false;
   snprintf(path, sizeof(path), "%s/SUPPRESS.BIN", g_staging_dir);
   fd = open(path, O_RDONLY);
@@ -95,6 +98,7 @@ static bool vg_ota_staging_is_suppressed_locked(const char *task_id)
           crc != vg_ota_crc32(record, 40))
         { found = true; break; }
       if (strcmp((char *)record, task_id) == 0) found = true;
+      if (++records >= 4096u) { found = true; break; }
     }
   if (n < 0) found = true;
   close(fd);
@@ -870,6 +874,8 @@ int vg_ota_staging_stage(const struct vg_ota_manifest *m, vg_ota_source_read_fn 
   int ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_stage_locked(m, source_read, source_ctx, err_out, err_len);
+  if(ret && err_out && err_len && !err_out[0])
+    snprintf(err_out,err_len,"%s",g_staging_info.error_code[0] ? g_staging_info.error_code : "staging_failed");
   publish_info();
   vg_ota_staging_unlock();
   return ret;
@@ -962,6 +968,40 @@ bool vg_ota_staging_is_suppressed(const char *task_id)
   bool ret;
   vg_ota_staging_lock();
   ret = vg_ota_staging_is_suppressed_locked(task_id);
+  vg_ota_staging_unlock();
+  return ret;
+}
+
+int vg_ota_staging_remember(const char *task_id)
+{
+  if(!task_id || !task_id[0] || strnlen(task_id,40)>=40) return -EINVAL;
+  vg_ota_staging_lock();
+  int ret=suppress_task(task_id);
+  vg_ota_staging_unlock();
+  return ret;
+}
+int vg_ota_staging_fail(const char *task_id,const char *version,const char *reason)
+{
+  char path[160];
+  int ret;
+  if(!task_id || !version || !reason || strnlen(task_id,40)>=40 || strnlen(version,32)>=32) return -EINVAL;
+  vg_ota_staging_lock();
+  if(g_staging_info.state==VG_OTA_STATE_READY_AWAITING_CONFIRM ||
+      g_staging_info.state==VG_OTA_STATE_INSTALL_PENDING || g_staging_info.state==VG_OTA_STATE_REBOOTING) {
+    vg_ota_staging_unlock(); return -EBUSY;
+  }
+  ret=suppress_task(task_id);
+  if(!ret) {
+    const char *names[]={VG_OTA_IMAGE_TMP_NAME,VG_OTA_IMAGE_BIN_NAME,VG_OTA_MANIFEST_BIN_NAME};
+    for(unsigned i=0;i<3;i++) {
+      snprintf(path,sizeof(path),"%s/%s",g_staging_dir,names[i]);
+      if(unlink(path) && errno!=ENOENT) ret=-errno;
+    }
+  }
+  if(strcmp(g_staging_info.task_id,task_id)) memset(&g_staging_info,0,sizeof(g_staging_info));
+  snprintf(g_staging_info.task_id,sizeof(g_staging_info.task_id),"%s",task_id);
+  snprintf(g_staging_info.version,sizeof(g_staging_info.version),"%s",version);
+  vg_ota_staging_set_state(VG_OTA_STATE_FAILED,reason);
   vg_ota_staging_unlock();
   return ret;
 }

@@ -32,6 +32,14 @@
 #include "vg_ota_self_check.h"
 #include "vg_ota_staging.h"
 #include "vg_ota_confirm.h"
+#include "vg_ota_entropy.h"
+#include "vg_ota_link.h"
+#ifdef CONFIG_VG_OTA_NETWORK
+#include "vg_ota_config.h"
+#include "vg_ota_service.h"
+#include "vg_ota_trust.h"
+#include "vg_ota_https.h"
+#endif
 #include "vg_device_id.h"
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
@@ -44,6 +52,12 @@ static void usage(void)
   printf("  vgota bootinfo\n");
   printf("  vgota reboot\n");
   printf("  vgota state\n");
+  printf("  vgota entropy\n");
+  printf("  vgota link\n");
+#ifdef CONFIG_VG_OTA_NETWORK
+  printf("  vgota control <status|start>\n");
+  printf("  vgota provision <status|begin|put HEX|commit>\n");
+#endif
   printf("  vgota selfcheck [--run]\n");
   printf("  vgota confirm\n");
   printf("  vgota decline [reason]\n");
@@ -69,6 +83,70 @@ static void usage(void)
   printf("  vgota fixture fail <on|off|status>\n");
 #endif
 }
+
+#ifdef CONFIG_VG_OTA_NETWORK
+static int config_nibble(char c)
+{
+  return c>='0' && c<='9' ? c-'0' : c>='a' && c<='f' ? c-'a'+10 : c>='A' && c<='F' ? c-'A'+10 : -1;
+}
+static int cmd_ota_provision(int argc,char **argv)
+{
+  struct vg_ota_config *config;
+  struct stat st;
+  uint8_t bytes[32],*blob;
+  int fd,ret;
+  if(argc==3 && !strcmp(argv[2],"status")) {
+    config=calloc(1,sizeof(*config));
+    if(!config) return 1;
+    ret=vg_ota_config_load(config);
+    printf("vgota: provision configured=%d trust=%d entropy=%d\n",ret==0,vg_ota_trust_configured(),vg_ota_tls_entropy_ready());
+    volatile unsigned char *erase=(volatile unsigned char *)config;
+    for(size_t i=0;i<sizeof(*config);i++) erase[i]=0;
+    free(config); return 0;
+  }
+  if(argc==3 && !strcmp(argv[2],"begin")) {
+    if(mkdir("/data/velaguard/provision",0700) && errno!=EEXIST) return 1;
+    fd=open(VG_OTA_CONFIG_IMPORT,O_WRONLY|O_CREAT|O_TRUNC,0600);
+    if(fd<0) return 1;
+    close(fd); printf("vgota: encrypted import started\n"); return 0;
+  }
+  if(argc==4 && !strcmp(argv[2],"put")) {
+    size_t n=strlen(argv[3]);
+    if(!n || n>64 || n%2) return 1;
+    for(size_t i=0;i<n;i+=2) {
+      int a=config_nibble(argv[3][i]),b=config_nibble(argv[3][i+1]);
+      if(a<0 || b<0) return 1;
+      bytes[i/2]=(uint8_t)((a<<4)|b);
+    }
+    fd=open(VG_OTA_CONFIG_IMPORT,O_WRONLY|O_APPEND);
+    if(fd<0) return 1;
+    ret=fstat(fd,&st);
+    if(ret || st.st_size<0 || (size_t)st.st_size+n/2>VG_OTA_CONFIG_BLOB_MAX) { close(fd); return 1; }
+    ret=write(fd,bytes,n/2)==(ssize_t)(n/2) && fsync(fd)==0 ? 0 : 1;
+    close(fd); printf("vgota: encrypted chunk %s\n",ret ? "failed" : "stored"); return ret;
+  }
+  if(argc==3 && !strcmp(argv[2],"commit")) {
+    fd=open(VG_OTA_CONFIG_IMPORT,O_RDONLY);
+    if(fd<0) return 1;
+    if(fstat(fd,&st) || st.st_size<52 || st.st_size>VG_OTA_CONFIG_BLOB_MAX) { close(fd); return 1; }
+    blob=malloc((size_t)st.st_size);
+    if(!blob) { close(fd); return 1; }
+    size_t got=0;
+    while(got<(size_t)st.st_size) {
+      ssize_t n=read(fd,blob+got,(size_t)st.st_size-got);
+      if(n<=0) break;
+      got+=(size_t)n;
+    }
+    close(fd);
+    ret=got==(size_t)st.st_size ? vg_ota_config_import(blob,got) : -EIO;
+    memset(blob,0,(size_t)st.st_size); free(blob);
+    if(!ret) { unlink(VG_OTA_CONFIG_IMPORT); sync(); }
+    printf("vgota: encrypted credentials %s err=%d; running service changes require restart\n",ret ? "rejected" : "committed",ret);
+    return ret ? 1 : 0;
+  }
+  return 1;
+}
+#endif
 
 static void print_identity(void)
 {
@@ -1398,6 +1476,29 @@ int main(int argc, char *argv[])
     {
       usage();
       return 1;
+    }
+
+#ifdef CONFIG_VG_OTA_NETWORK
+  if (strcmp(argv[1], "provision") == 0) return cmd_ota_provision(argc,argv);
+  if (strcmp(argv[1], "control") == 0 && argc==3)
+    {
+      if (!strcmp(argv[2], "start")) { int ret=vg_ota_service_start(); printf("vgota: control start err=%d\n",ret); return ret ? 1 : 0; }
+      if (!strcmp(argv[2], "status")) { vg_ota_service_print(stdout); return 0; }
+      return 1;
+    }
+#endif
+
+  if (strcmp(argv[1], "link") == 0 && argc==2)
+    {
+      struct vg_ota_link_info info;
+      int ret=vg_ota_link_probe(&info);
+      printf("vgota: link current=%d phy=%u bmsr_first=%04x bmsr_second=%04x err=%d\n",ret==1,info.phy,info.first,info.second,ret<0 ? ret : 0);
+      return ret<0 ? 1 : 0;
+    }
+
+  if (strcmp(argv[1], "entropy") == 0 && argc == 2)
+    {
+      return vg_ota_entropy_probe() == 0 ? 0 : 1;
     }
 
   if (strcmp(argv[1], "identity") == 0 && argc == 2)

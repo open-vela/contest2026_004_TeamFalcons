@@ -195,6 +195,13 @@ expect_dev_config()
         grep -q 'CONFIG_INIT_ENTRYPOINT="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_INIT_STACKSIZE=8192$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STACK_COLORATION=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_VG_OTA_NETWORK=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_NETDEV_PHY_IOCTL=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_STM32H7_RNG=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_DEV_RANDOM=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_DEV_URANDOM_ARCH=y$' "$NUTTX_ROOT/.config" &&
+        ! grep -q '^CONFIG_DEV_URANDOM_XORSHIFT128=y$' "$NUTTX_ROOT/.config" &&
+        ! grep -q '^CONFIG_DEV_URANDOM_CONGRUENTIAL=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_NET_STATISTICS=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_NET_SOLINGER=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_SCHED_CHILD_STATUS=y$' "$NUTTX_ROOT/.config" &&
@@ -457,6 +464,18 @@ python3 "$SCRIPT_DIR/check_fw_images.py" \
   --a-elf "$STAGE_DIR/nuttx-a.elf" --a-bin "$STAGE_DIR/nuttx-a.bin" \
   --b-elf "$STAGE_DIR/nuttx-b.elf" --b-bin "$STAGE_DIR/nuttx-b.bin" ||
   { rm -f "$STAGE_DIR/nuttx.hex"; exit 1; }
+
+if [ "$TARGET" = velaguard-lvgl ] && [ "$OTA_FIXTURES" = 0 ]; then
+  forbid_material=()
+  for name in ca.pem signing-public.pem; do
+    material="$STAGE_DIR/ota-network-tests/$name"
+    if [ -f "$material" ]; then forbid_material+=(--forbid-material "$material"); fi
+  done
+  python3 "$SCRIPT_DIR/ota/check_release.py" --config "$NUTTX_ROOT/.config" \
+    --trust-header "$CONTEST_ROOT/build/velaguard/vg_ota_trust_build.h" \
+    --image "$STAGE_DIR/nuttx-a.bin" --image "$STAGE_DIR/nuttx-b.bin" \
+    "${forbid_material[@]}" || { rm -f "$STAGE_DIR/nuttx.hex"; exit 1; }
+fi
 
 printf 'version=%s\nbuild_id=%s\n' "$FW_VERSION" "$FW_BUILD_ID" \
   > "$STAGE_DIR/fw-identity.txt"

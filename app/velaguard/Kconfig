@@ -57,6 +57,23 @@ config VG_OTA_PROBE
 		internal stub and the decoded BCB0/BCB1 state, and can request a
 		synced reboot for OTA.
 
+config VG_OTA_NETWORK
+	bool "VelaGuard strict MQTTS and HTTPS OTA"
+	default y
+	depends on VG_OTA_PROBE && VG_NET_FAILOVER && CRYPTO_MBEDTLS && NETUTILS_MQTTC
+	---help---
+		Use a separate verified TLS control session and a bounded HTTPS
+		downloader. Missing trust, device credentials or verified entropy
+		keeps the service inactive. Network messages never confirm install.
+
+config VG_OTA_VERIFIED_ENTROPY
+	bool "VelaGuard verified hardware entropy source"
+	default n
+	depends on VG_OTA_NETWORK && STM32H7_RNG && DEV_URANDOM_ARCH
+	---help---
+		Enable only after the H750 source and mbedTLS entropy seed have
+		passed board acceptance. This does not permit a software PRNG.
+
 config VG_OTA_TEST_FIXTURES
 	bool "VelaGuard OTA test fixtures (development only)"
 	default n

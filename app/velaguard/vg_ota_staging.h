@@ -115,6 +115,10 @@ bool vg_ota_staging_is_suppressed(const char *task_id);
 /* Clear staging files (IMAGE.TMP, IMAGE.BIN, MANIFEST.BIN) and return to IDLE. */
 int vg_ota_staging_clear(void);
 
+/* 服务端失败与启动结果只记录/清理任务，绝不产生 pending。 */
+int vg_ota_staging_fail(const char *task_id,const char *version,const char *reason);
+int vg_ota_staging_remember(const char *task_id);
+
 /* State name helper. */
 const char *vg_ota_state_name(uint32_t state);
 

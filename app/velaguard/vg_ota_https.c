@@ -124,16 +124,10 @@ static int dial_eth0(struct ota_tls_session *s, const struct vg_ota_url *url)
       setsockopt(s->net.fd,SOL_SOCKET,SO_RCVTIMEO,&timeout,sizeof(timeout))!=0) return -EIO;
   return 0;
 }
-int vg_ota_https_open(void *ctx, const char *url, uint32_t offset,
-                       const char *etag, struct vg_ota_http_response *response)
+static int open_tls_endpoint(struct vg_ota_https *c,const struct vg_ota_url *endpoint)
 {
-  struct vg_ota_https *c=ctx;
-  struct vg_ota_url endpoint;
   struct ota_tls_session *s;
-  char *header=NULL, *request=NULL;
-  size_t used=0, sent=0;
-  int ret=-EIO, length;
-  if (!c || !response || vg_ota_url_parse(url,&endpoint)) return -EINVAL;
+  int ret=-EIO;
   vg_ota_https_close(c);
   if (!c->ca_pem || !c->ca_pem[0]) return -ENOKEY;
   if (!vg_ota_tls_entropy_ready()) return -EAGAIN;
@@ -159,8 +153,8 @@ int vg_ota_https_open(void *ctx, const char *url, uint32_t offset,
   mbedtls_ssl_conf_ca_chain(&s->config,&s->ca,NULL);
   mbedtls_ssl_conf_rng(&s->config,mbedtls_ctr_drbg_random,&s->random);
   mbedtls_ssl_conf_read_timeout(&s->config,OTA_IO_TIMEOUT_MS);
-  if (mbedtls_ssl_setup(&s->ssl,&s->config)!=0 || mbedtls_ssl_set_hostname(&s->ssl,endpoint.host)!=0) goto fail;
-  ret=dial_eth0(s,&endpoint);
+  if (mbedtls_ssl_setup(&s->ssl,&s->config)!=0 || mbedtls_ssl_set_hostname(&s->ssl,endpoint->host)!=0) goto fail;
+  ret=dial_eth0(s,endpoint);
   if (ret) goto fail;
   mbedtls_ssl_set_bio(&s->ssl,s,tls_send,tls_recv,tls_recv_timeout);
   ret=mbedtls_ssl_handshake(&s->ssl);
@@ -168,6 +162,56 @@ int vg_ota_https_open(void *ctx, const char *url, uint32_t offset,
     ret=mbedtls_ssl_get_verify_result(&s->ssl)!=0 || ret==MBEDTLS_ERR_X509_CERT_VERIFY_FAILED ? -EKEYREJECTED : -ECONNRESET;
     goto fail;
   }
+  return 0;
+fail:
+  vg_ota_https_close(c);
+  return ret<0 ? ret : -EIO;
+}
+
+int vg_ota_tls_connect(struct vg_ota_https *c,const char *host,const char *port)
+{
+  char authority[VG_OTA_HOST_MAX+24];
+  struct vg_ota_url endpoint;
+  if (!c || !host || !port || strlen(host)>=VG_OTA_HOST_MAX || strlen(port)>5) return -EINVAL;
+  snprintf(authority,sizeof(authority),"https://%s:%s/",host,port);
+  if (vg_ota_url_parse(authority,&endpoint)) return -EINVAL;
+  int ret=open_tls_endpoint(c,&endpoint);
+  if (!ret) ((struct ota_tls_session *)c->session)->deadline_ms=0;
+  return ret;
+}
+
+ssize_t vg_ota_tls_send(struct vg_ota_https *c,const void *bytes,size_t length)
+{
+  struct ota_tls_session *s=c ? c->session : NULL;
+  if (!s || !bytes) return -EINVAL;
+  int ret=mbedtls_ssl_write(&s->ssl,bytes,length);
+  return ret>0 ? ret : -EIO;
+}
+
+ssize_t vg_ota_tls_receive(struct vg_ota_https *c,void *bytes,size_t length,uint32_t timeout_ms)
+{
+  struct ota_tls_session *s=c ? c->session : NULL;
+  if (!s || !bytes) return -EINVAL;
+  mbedtls_ssl_conf_read_timeout(&s->config,timeout_ms);
+  int ret=mbedtls_ssl_read(&s->ssl,bytes,length);
+  if (ret==MBEDTLS_ERR_SSL_TIMEOUT || ret==MBEDTLS_ERR_SSL_WANT_READ) return -EAGAIN;
+  if (!ret || ret==MBEDTLS_ERR_SSL_PEER_CLOSE_NOTIFY) return -ECONNRESET;
+  return ret>0 ? ret : -EIO;
+}
+
+int vg_ota_https_open(void *ctx, const char *url, uint32_t offset,
+                       const char *etag, struct vg_ota_http_response *response)
+{
+  struct vg_ota_https *c=ctx;
+  struct vg_ota_url endpoint;
+  struct ota_tls_session *s;
+  char *header=NULL, *request=NULL;
+  size_t used=0, sent=0;
+  int ret=-EIO, length;
+  if (!c || !response || vg_ota_url_parse(url,&endpoint)) return -EINVAL;
+  ret=open_tls_endpoint(c,&endpoint);
+  if (ret) return ret;
+  s=c->session;
   request=malloc(1024);
   header=malloc(VG_OTA_HTTP_HEADER_MAX);
   if (!request || !header) { ret=-ENOMEM; goto fail; }

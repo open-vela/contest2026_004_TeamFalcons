@@ -107,6 +107,9 @@ extern int vghmi_main(int argc, char *argv[]);
 #ifdef CONFIG_VG_OTA_PROBE
 #include "vg_ota_self_check.h"
 #include "vg_ota_staging.h"
+#ifdef CONFIG_VG_OTA_NETWORK
+#include "vg_ota_service.h"
+#endif
 #endif
 
 static int g_app_running = 0;
@@ -230,6 +233,9 @@ int main(int argc, char *argv[])
 
 #ifdef CONFIG_VG_OTA_PROBE
     vg_ota_self_check_boot();
+#ifdef CONFIG_VG_OTA_NETWORK
+    (void)vg_ota_service_start();
+#endif
 #endif
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA

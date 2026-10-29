@@ -27,6 +27,10 @@
 #include "vg_esp_bearer.h"
 #include "vg_tcp_transport.h"
 
+/* 独立 OTA TLS 句柄，普通 POSIX/ESP 遥测路径继续使用原适配。 */
+extern int vg_ota_mqtt_pal_send(int,const void *,size_t,ssize_t *) __attribute__((weak));
+extern int vg_ota_mqtt_pal_recv(int,void *,size_t,ssize_t *) __attribute__((weak));
+
 /**
   * @brief  为已连接套接字设置收/发超时（约 2s）。
   * @note   lesp 路径只设 SO_RCVTIMEO 且须持 AT 锁；POSIX 同时设 RCV/SND。
@@ -242,6 +246,7 @@ void vg_tcp_close(int *fd)
 int vg_mqtt_pal_try_sendall(mqtt_pal_socket_handle fd, const void *buf,
                             size_t len, int flags, ssize_t *out)
 {
+  if (vg_ota_mqtt_pal_send && vg_ota_mqtt_pal_send(fd,buf,len,out)==0) return 0;
 #ifdef CONFIG_NETUTILS_ESP8266
   const uint8_t *p = (const uint8_t *)buf;
   size_t sent = 0;
@@ -308,6 +313,7 @@ int vg_mqtt_pal_try_sendall(mqtt_pal_socket_handle fd, const void *buf,
 int vg_mqtt_pal_try_recvall(mqtt_pal_socket_handle fd, void *buf,
                             size_t bufsz, int flags, ssize_t *out)
 {
+  if (vg_ota_mqtt_pal_recv && vg_ota_mqtt_pal_recv(fd,buf,bufsz,out)==0) return 0;
   uint8_t *p;
   size_t left;
   ssize_t ntot;

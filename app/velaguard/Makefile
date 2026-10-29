@@ -131,8 +131,13 @@ ifeq ($(CONFIG_VG_OTA_PROBE),y)
 VG_BOOT_CORE := $(abspath $(CURDIR)/../../boot/ota_core)
 PROGNAME += vgota
 MAINSRC  += vgota.c
-CSRCS    += vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_ota_trust.c vg_ota_http.c vg_ota_https.c vg_ota_download.c vg_ota_fat.c vg_ota_bcb.c \
+CSRCS    += vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_ota_link.c vg_ota_entropy.c vg_ota_trust.c vg_ota_fat.c vg_ota_bcb.c \
             vg_ota_boot.c vg_ota_sha256.c vg_ota_manifest.c vg_ota_install.c
+ifeq ($(CONFIG_VG_OTA_NETWORK),y)
+CSRCS += vg_ota_http.c vg_ota_https.c vg_ota_download.c vg_ota_json.c \
+         vg_ota_protocol.c vg_ota_config.c vg_ota_config_crypto.c \
+         vg_ota_config_store.c vg_ota_outbox.c vg_ota_mqtt.c vg_ota_service.c
+endif
 CFLAGS   += -DCONFIG_VG_OTA_PROBE=1
 CFLAGS   += ${INCDIR_PREFIX}$(abspath $(CURDIR)/../../scripts/qspi_boot_stub)
 CFLAGS   += ${INCDIR_PREFIX}$(VG_BOOT_CORE)
