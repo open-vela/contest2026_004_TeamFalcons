@@ -195,6 +195,7 @@ expect_dev_config()
         grep -q 'CONFIG_INIT_ENTRYPOINT="velaguard_app_main"' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_INIT_STACKSIZE=8192$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STACK_COLORATION=y$' "$NUTTX_ROOT/.config" &&
+        grep -q '^CONFIG_VG_OTA_VERIFIED_ENTROPY=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_VG_OTA_NETWORK=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_NETDEV_PHY_IOCTL=y$' "$NUTTX_ROOT/.config" &&
         grep -q '^CONFIG_STM32H7_RNG=y$' "$NUTTX_ROOT/.config" &&

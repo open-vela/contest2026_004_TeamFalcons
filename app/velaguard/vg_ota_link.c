@@ -48,6 +48,8 @@ static void delay(void *ctx,unsigned ms) { (void)ctx; usleep(ms*1000u); }
 #endif
 int vg_ota_link_probe(struct vg_ota_link_info *info)
 {
+  if(!info) return -EINVAL;
+  memset(info,0,sizeof(*info));
 #if defined(__NuttX__) && defined(CONFIG_NETDEV_PHY_IOCTL)
   int fd=socket(AF_INET,SOCK_DGRAM,0);
   if(fd<0) return -errno;

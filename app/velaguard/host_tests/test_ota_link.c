@@ -24,6 +24,7 @@ int main(void)
   assert(vg_ota_link_check(&p,&info)==-EAGAIN && f.address_calls==3 && f.delays==3);
   f.busy=0; f.error=-ETIMEDOUT; assert(vg_ota_link_check(&p,&info)==-ETIMEDOUT);
   assert(vg_ota_link_check(NULL,&info)==-EINVAL);
+  assert(vg_ota_link_probe(NULL)==-EINVAL);
   assert(vg_ota_link_probe(&info)==-ENOTSUP && !vg_ota_link_ready());
   puts("test_ota_link: OK (double BMSR, stale link, bus errors, bounded busy retry)"); return 0;
 }
