@@ -41,6 +41,9 @@ static lv_obj_t * s_mute_label;
 static lv_obj_t * s_retry;
 static lv_obj_t * s_answer_box;
 static lv_timer_t * s_timer;
+/* 关闭按钮先隐藏本轮浮窗，避免网络阶段仍在处理时面板一直盖住页面。 */
+static bool s_dismissed;
+static uint32_t s_dismissed_gen;
 /* LONG_DOT 排版时会改写标签中的文本，比较问题是否变化时保留原始文本。 */
 static char s_question_text[VG_VS_TEXT_MAX];
 
@@ -71,9 +74,38 @@ static void overlay_show(void)
     }
 }
 
+/* 主题给按钮留了 16 px 水平、10 px 垂直内边距，按内容排布标签。
+ * 这几个固定尺寸的小按钮放不下该内边距，标签会被裁掉；
+ * 统一清零内边距并居中标签，保证文字完整落在按钮内。 */
+static lv_obj_t * overlay_button(lv_obj_t * parent, lv_coord_t w,
+                                 const char * text, lv_obj_t ** label_out)
+{
+    lv_obj_t * btn = lv_button_create(parent);
+    lv_obj_t * lab;
+
+    lv_obj_set_size(btn, w, 24);
+    lv_obj_set_style_pad_all(btn, 0, 0);
+    lab = lv_label_create(btn);
+    lv_obj_set_style_text_font(lab, vg_font_ui(), 0);
+    lv_label_set_text(lab, text);
+    lv_obj_center(lab);
+
+    if(label_out != NULL) {
+        *label_out = lab;
+    }
+    return btn;
+}
+
 static void close_cb(lv_event_t * e)
 {
+    struct vg_voice_ui ui;
+
     LV_UNUSED(e);
+    if(vg_voice_round_ui(&ui)) {
+        s_dismissed = true;
+        s_dismissed_gen = ui.generation;
+    }
+    overlay_hide();
     vg_voice_round_end();
 }
 
@@ -242,6 +274,7 @@ static void poll_cb(lv_timer_t * t)
     LV_UNUSED(t);
 
     if(!vg_voice_round_ui(&ui) || !ui.visible) {
+        s_dismissed = false;
         overlay_hide();
         pthread_mutex_lock(&s_dbg_lock);
         snprintf(s_dbg, sizeof(s_dbg), "overlay: hidden\n");
@@ -249,6 +282,16 @@ static void poll_cb(lv_timer_t * t)
         return;
     }
 
+    /* 结束请求到达工作线程前，快照仍可能短暂显示本轮内容。 */
+    if(s_dismissed && ui.generation == s_dismissed_gen) {
+        overlay_hide();
+        pthread_mutex_lock(&s_dbg_lock);
+        snprintf(s_dbg, sizeof(s_dbg), "overlay: hidden\n");
+        pthread_mutex_unlock(&s_dbg_lock);
+        return;
+    }
+
+    s_dismissed = false;
     overlay_show();
 
     status_text(&ui, status, sizeof(status));
@@ -333,6 +376,8 @@ void vg_voice_overlay_create(void)
                           LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 
     s_status = lv_label_create(row);
+    lv_obj_set_flex_grow(s_status, 1);
+    lv_label_set_long_mode(s_status, LV_LABEL_LONG_DOT);
     lv_obj_set_style_text_color(s_status, lv_color_hex(VG_COLOR_TEXT), 0);
     lv_obj_set_style_text_font(s_status, vg_font_ui(), 0);
     lv_label_set_text(s_status, "");
@@ -346,33 +391,15 @@ void vg_voice_overlay_create(void)
         lv_obj_set_flex_flow(btns, LV_FLEX_FLOW_ROW);
         lv_obj_set_style_pad_column(btns, 4, 0);
 
-        s_mute = lv_button_create(btns);
-        lv_obj_set_size(s_mute, 62, 24);
+        s_mute = overlay_button(btns, 62, "播报:开", &s_mute_label);
         lv_obj_add_event_cb(s_mute, mute_cb, LV_EVENT_CLICKED, NULL);
-        {
-            s_mute_label = lv_label_create(s_mute);
-            lv_obj_set_style_text_font(s_mute_label, vg_font_ui(), 0);
-            lv_label_set_text(s_mute_label, "播报:开");
-        }
 
-        s_retry = lv_button_create(btns);
-        lv_obj_set_size(s_retry, 62, 24);
+        s_retry = overlay_button(btns, 68, "重试播报", NULL);
         lv_obj_add_flag(s_retry, LV_OBJ_FLAG_HIDDEN);
         lv_obj_add_event_cb(s_retry, retry_cb, LV_EVENT_CLICKED, NULL);
-        {
-            lv_obj_t * lab = lv_label_create(s_retry);
-            lv_obj_set_style_text_font(lab, vg_font_ui(), 0);
-            lv_label_set_text(lab, "重试播报");
-        }
 
-        s_close = lv_button_create(btns);
-        lv_obj_set_size(s_close, 30, 24);
+        s_close = overlay_button(btns, 30, "×", NULL);
         lv_obj_add_event_cb(s_close, close_cb, LV_EVENT_CLICKED, NULL);
-        {
-            lv_obj_t * lab = lv_label_create(s_close);
-            lv_obj_set_style_text_font(lab, vg_font_ui(), 0);
-            lv_label_set_text(lab, "×");
-        }
     }
 
     s_question = lv_label_create(s_panel);
@@ -448,6 +475,8 @@ void vg_voice_overlay_destroy(void)
     s_mute_label = NULL;
     s_retry = NULL;
     s_answer_box = NULL;
+    s_dismissed = false;
+    s_dismissed_gen = 0;
 }
 
 #endif /* VG_VOICE_ROUND */

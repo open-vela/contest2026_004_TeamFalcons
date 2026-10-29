@@ -14,6 +14,7 @@
 #include "vg_ota_self_check.h"
 #include "vg_ota_boot.h"
 #include "vg_ota_trust.h"
+#include "vg_ota_clock.h"
 #include "vg_device_id.h"
 #include "vg_fw_identity.h"
 #ifdef __NuttX__
@@ -45,7 +46,7 @@ static void clear_memory(void *memory,size_t n)
 struct download_context { struct vg_ota_offer offer; char hosts[2][102]; unsigned host_count; struct vg_ota_https https; };
 static uint64_t monotonic(void *ctx)
 { struct timespec ts; (void)ctx; clock_gettime(CLOCK_MONOTONIC,&ts); return (uint64_t)ts.tv_sec*1000+ts.tv_nsec/1000000; }
-static uint64_t wall(void *ctx) { (void)ctx; return (uint64_t)time(NULL); }
+static uint64_t wall(void *ctx) { (void)ctx; return (uint64_t)vg_ota_utc_now(); }
 #ifdef __NuttX__
 int vg_ota_service_egress(void)
 {

@@ -44,6 +44,11 @@ int vg_sntp_parse_response(const uint8_t buf[48], int64_t *utc_out);
 int64_t vg_time_utc_to_wall(int64_t utc_sec);
 
 /**
+  * @brief  北京时间墙钟秒换算 Unix UTC 秒（协议时间使用）。
+  */
+int64_t vg_time_wall_to_utc(int64_t wall_sec);
+
+/**
   * @brief  墙钟值是否在 2020..2100 年范围内（恢复/持久化的护栏）。
   */
 bool vg_time_wall_plausible(int64_t wall_sec);

@@ -2,6 +2,7 @@
 #include <nuttx/config.h>
 #endif
 #include "vg_ota_https.h"
+#include "vg_ota_clock.h"
 #include <errno.h>
 #include <fcntl.h>
 #include <netdb.h>
@@ -131,7 +132,7 @@ static int open_tls_endpoint(struct vg_ota_https *c,const struct vg_ota_url *end
   vg_ota_https_close(c);
   if (!c->ca_pem || !c->ca_pem[0]) return -ENOKEY;
   if (!vg_ota_tls_entropy_ready()) return -EAGAIN;
-  if (time(NULL)<1767225600) return -ETIME;
+  if (vg_ota_utc_now()<1767225600) return -ETIME;
 #if !defined(MBEDTLS_HAVE_TIME_DATE)
   return -ENOTSUP;
 #endif

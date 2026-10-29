@@ -82,6 +82,10 @@ static void test_wall_math(void)
 {
   expect(vg_time_utc_to_wall(1789000000) == 1789000000 + 28800,
          "utc->wall +8h");
+  expect(vg_time_wall_to_utc(1789000000 + 28800) == 1789000000,
+         "wall->utc -8h");
+  expect(vg_time_wall_to_utc(vg_time_utc_to_wall(1789000000)) == 1789000000,
+         "utc/wall round trip");
   expect(vg_time_wall_plausible(VG_TIME_WALL_MIN), "wall min ok");
   expect(vg_time_wall_plausible(1789000000 + 28800), "wall 2026 ok");
   expect(!vg_time_wall_plausible(VG_TIME_WALL_MIN - 1), "wall below min");

@@ -21,6 +21,7 @@
 #include "vg_fw_identity.h"
 #include "vg_ota_bcb.h"
 #include "vg_ota_confirm.h"
+#include "vg_ota_clock.h"
 #include "vg_ota_link.h"
 #include "vg_ota_manifest.h"
 #if defined(__arm__) || defined(__NuttX__)
@@ -489,7 +490,7 @@ static int confirm_install_locked(enum vg_ota_confirm_source_e src,
     }
   if (!(m.flags & VG_OTA_MANIFEST_FIXTURE))
     {
-      time_t now = time(NULL);
+      time_t now = vg_ota_utc_now();
       if (now < 1767225600 || (uint64_t)now < m.issued_at ||
           (uint64_t)now >= m.expires_at)
         {

@@ -1,0 +1,17 @@
+{"t":1793244787.849,"kind":"https_listen","port":8443}
+{"t":1793244787.856,"kind":"broker_listen","port":8883}
+{"t":1793244787.856,"kind":"scenario","name":"normal","task":"T-BOARD-NET-06","image_bytes":16384,"sha":"4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c","expires":1793248387}
+{"t":1793244788.345,"kind":"tcp_accept","peer":"192.168.137.56"}
+{"t":1793244788.964,"kind":"tls_ok","cipher":"ECDHE-ECDSA-AES256-GCM-SHA384","version":"TLSv1.2"}
+{"t":1793244789.028,"kind":"connect","client":"vg-09001a800451383430303835-ota","username":"board-accept","auth_ok":true}
+{"t":1793244789.164,"kind":"subscribe","topic":"vg/vg-09001a800451383430303835/ota/offer","ok":true}
+{"t":1793244789.565,"kind":"offer_tx","task":"T-BOARD-NET-06"}
+{"t":1793244790.425,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"offer_expired_timeout","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244790.445,"kind":"puback","pid":"0007"}
+{"t":1793244791.895,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244795.115,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244798.354,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244801.207,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244803.635,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244806.085,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}
+{"t":1793244808.899,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-NET-06","version":"0.2.0","slot":"A","error_code":"task_suppressed","state":"EXPIRED","downloaded_bytes":1553704,"progress":100}}

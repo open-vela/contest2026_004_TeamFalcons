@@ -1,0 +1,7 @@
+vgota: state=READY_AWAITING_CONFIRM task=T-BOARD-NET-06 ver=0.2.0 size=1553704 sha=73993b73 free=3884318720 req=2618664 err=none
+vgota: bootinfo slot=A reason=a-no-bcb bcb=255 state=invalid seq=0 bcb_slot=A valid0=0 valid1=0 bcb_error=0 fat=FAT16 fat_error=0 emmc_error=0 trials=0
+vgota: install stage=0 error=0 bytes=0
+ MANIFEST.BIN
+ IMAGE.BIN
+ STATE.BIN
+ SUPPRESS.BIN

@@ -28,6 +28,7 @@
 #include "vg_ota_sha256.h"
 #include "vg_ota_staging.h"
 #include "vg_ota_trust.h"
+#include "vg_ota_clock.h"
 
 static char g_staging_dir[128] = VG_OTA_STAGING_DIR;
 static struct vg_ota_staging_info g_staging_info = {
@@ -341,7 +342,7 @@ int vg_ota_manifest_validate(const struct vg_ota_manifest *m,
     }
   else
     {
-      time_t now = time(NULL);
+      time_t now = vg_ota_utc_now();
       if (now < 1767225600 || (uint64_t)now < m->issued_at || (uint64_t)now >= m->expires_at)
         { snprintf(err, sizeof(err), "manifest_expired_or_time_invalid"); goto fail; }
       if (vg_ota_trust_verify_manifest(m) != 0)

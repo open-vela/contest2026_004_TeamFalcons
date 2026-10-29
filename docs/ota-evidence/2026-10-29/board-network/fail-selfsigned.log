@@ -1,0 +1,17 @@
+{"t":1793244844.864,"kind":"https_listen","port":8443}
+{"t":1793244844.866,"kind":"broker_listen","port":8883}
+{"t":1793244844.866,"kind":"scenario","name":"self-signed","task":"T-BOARD-FAIL-TLS-01","image_bytes":16384,"sha":"4348e3b98e8a327b34ced39c1da9e67cdb4cd5e48e4d7960607a3ae403d35f0c","expires":1793248444}
+{"t":1793244845.154,"kind":"tcp_accept","peer":"192.168.137.56"}
+{"t":1793244845.764,"kind":"tls_ok","cipher":"ECDHE-ECDSA-AES256-GCM-SHA384","version":"TLSv1.2"}
+{"t":1793244845.825,"kind":"connect","client":"vg-09001a800451383430303835-ota","username":"board-accept","auth_ok":true}
+{"t":1793244846.014,"kind":"subscribe","topic":"vg/vg-09001a800451383430303835/ota/offer","ok":true}
+{"t":1793244846.414,"kind":"offer_tx","task":"T-BOARD-FAIL-TLS-01"}
+{"t":1793244848.504,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-SIG-01","version":"0.2.0","slot":"A","error_code":"signature_invalid_or_untrusted","state":"FAILED","downloaded_bytes":0,"progress":0}}
+{"t":1793244848.524,"kind":"puback","pid":"0007"}
+{"t":1793244849.895,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"signature_invalid_or_untrusted","state":"OFFER_RECEIVED","downloaded_bytes":0,"progress":0}}
+{"t":1793244854.045,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/result","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","result":"failed"}}
+{"t":1793244855.793,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","state":"FAILED","downloaded_bytes":0,"progress":0}}
+{"t":1793244858.816,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","state":"FAILED","downloaded_bytes":0,"progress":0}}
+{"t":1793244861.595,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","state":"FAILED","downloaded_bytes":0,"progress":0}}
+{"t":1793244864.284,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","state":"FAILED","downloaded_bytes":0,"progress":0}}
+{"t":1793244867.095,"kind":"publish","topic":"vg/vg-09001a800451383430303835/ota/status","qos":1,"data":{"schema":1,"device_id":"vg-09001a800451383430303835","task_id":"T-BOARD-FAIL-TLS-01","version":"0.2.0","slot":"A","error_code":"tls_verification_failed","state":"FAILED","downloaded_bytes":0,"progress":0}}

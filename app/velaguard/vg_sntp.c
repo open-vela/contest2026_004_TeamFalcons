@@ -73,6 +73,11 @@ int64_t vg_time_utc_to_wall(int64_t utc_sec)
   return utc_sec + VG_TIME_TZ_OFFSET_SEC;
 }
 
+int64_t vg_time_wall_to_utc(int64_t wall_sec)
+{
+  return wall_sec - VG_TIME_TZ_OFFSET_SEC;
+}
+
 bool vg_time_wall_plausible(int64_t wall_sec)
 {
   return wall_sec >= VG_TIME_WALL_MIN && wall_sec < VG_TIME_WALL_MAX;
