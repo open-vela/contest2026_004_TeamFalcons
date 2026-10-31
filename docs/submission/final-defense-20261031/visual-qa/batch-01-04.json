@@ -1,0 +1,47 @@
+{
+  "route": "Edit Native PPTX",
+  "render_source": "Microsoft PowerPoint 16.0 PNG export",
+  "canvas": [
+    0,
+    0,
+    2560,
+    1440
+  ],
+  "raster": [
+    1600,
+    900
+  ],
+  "static_errors": 0,
+  "accepted_advisory": "MiSans 是官方模板字体，保留嵌入字体。",
+  "iterations": 2,
+  "pages": [
+    {
+      "page": 1,
+      "status": "ok",
+      "hard_hits": 0,
+      "soft_hits": 0,
+      "reviewer": "lead"
+    },
+    {
+      "page": 2,
+      "status": "ok",
+      "hard_hits": 0,
+      "soft_hits": 0,
+      "reviewer": "lead"
+    },
+    {
+      "page": 3,
+      "status": "ok",
+      "hard_hits": 0,
+      "soft_hits": 0,
+      "reviewer": "lead"
+    },
+    {
+      "page": 4,
+      "status": "ok",
+      "hard_hits": 0,
+      "soft_hits": 0,
+      "reviewer": "lead"
+    }
+  ]
+}

@@ -19,54 +19,54 @@
 
 <text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">APPENDIX · 问答附录</text>
 </g>
-<g id="shape-3" data-pptx-object="shape" data-pptx-frame="186.67 133.33 1733.33 96" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
-<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+<g id="shape-3" data-pptx-object="shape" data-pptx-frame="180 126 2100 120" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
+<path d="M 180 126 L 2280 126 L 2280 246 L 180 246 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">设备接入方式</text></g>
-<g id="shape-4" data-pptx-object="shape" data-pptx-frame="189.33 256 101.33 10.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
-<path d="M 189.33 261.33 A 5.33 5.33 0 0 1 194.67 256 L 285.33 256 A 5.33 5.33 0 0 1 290.67 261.33 L 290.67 261.33 A 5.33 5.33 0 0 1 285.33 266.67 L 194.67 266.67 A 5.33 5.33 0 0 1 189.33 261.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
-
-</g>
-<g id="shape-5" data-pptx-object="shape" data-pptx-frame="186.67 381.33 1013.33 800" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
-<path d="M 186.67 408 A 26.66 26.66 0 0 1 213.33 381.33 L 1173.34 381.33 A 26.66 26.66 0 0 1 1200 408 L 1200 1154.67 A 26.66 26.66 0 0 1 1173.34 1181.33 L 213.33 1181.33 A 26.66 26.66 0 0 1 186.67 1154.67 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0891B2" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
+<text x="180" y="205.8" text-anchor="start" xml:space="preserve" font-size="76" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">设备接入方式</text></g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="180 285 110 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 185.5 285 L 284.5 285 Q 290 285 290 290.5 L 290 290.5 Q 290 296 284.5 296 L 185.5 296 Q 180 296 180 290.5 L 180 290.5 Q 180 285 185.5 285 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
 
 
 </g>
-<g id="shape-6" data-pptx-object="shape" data-pptx-frame="261.33 448 864 80" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
-<path d="M 261.33 448 L 1125.33 448 L 1125.33 528 L 261.33 528 Z" fill="none" stroke="none" data-pptx-part="geometry" />
-
-
-<text x="261.33" y="504.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">现行接入流程</text></g>
-<g id="shape-7" data-pptx-object="connector" data-pptx-frame="261.33 572.67 864 1.33" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 693.33 573.33)" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
-<path d="M 261.33 572.67 L 1125.33 574" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
-
-</g>
-<g id="shape-8" data-pptx-object="shape" data-pptx-frame="261.33 626.67 864 506.67" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
-<path d="M 261.33 626.67 L 1125.33 626.67 L 1125.33 1133.34 L 261.33 1133.34 Z" fill="none" stroke="none" data-pptx-part="geometry" />
-
-
-<text x="261.33" y="660" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">录入点位参数<tspan x="261.33" dy="60.0">试读并核对返回值</tspan><tspan x="261.33" dy="60.0">查看本次配置变更</tspan><tspan x="261.33" dy="60.0">确认生效</tspan><tspan x="261.33" dy="60.0">返回首页查看采集状态</tspan></text></g>
-<g id="shape-9" data-pptx-object="shape" data-pptx-frame="1360 381.33 1013.33 800" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
-<path d="M 1360 408 A 26.66 26.66 0 0 1 1386.66 381.33 L 2346.67 381.33 A 26.66 26.66 0 0 1 2373.33 408 L 2373.33 1154.67 A 26.66 26.66 0 0 1 2346.67 1181.33 L 1386.66 1181.33 A 26.66 26.66 0 0 1 1360 1154.67 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#9333EA" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
+<g id="shape-5" data-pptx-object="shape" data-pptx-frame="180 350 1050 880" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
+<path d="M 204 350 L 1206 350 Q 1230 350 1230 374 L 1230 1206 Q 1230 1230 1206 1230 L 204 1230 Q 180 1230 180 1206 L 180 374 Q 180 350 204 350 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0891B2" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
 
 
 </g>
-<g id="shape-10" data-pptx-object="shape" data-pptx-frame="1434.67 448 864 80" data-pptx-prst="rect" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
-<path d="M 1434.67 448 L 2298.67 448 L 2298.67 528 L 1434.67 528 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="250 420 910 100" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 250 420 L 1160 420 L 1160 520 L 250 520 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1434.67" y="504.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#9333EA" font-weight="bold" data-pptx-text-baseline="metrics-v1">手机接入规划</text></g>
-<g id="shape-11" data-pptx-object="connector" data-pptx-frame="1434.67 572.67 864 1.33" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 1866.67 573.33)" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
-<path d="M 1434.67 572.67 L 2298.67 574" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
+<text x="250" y="485.1" text-anchor="start" xml:space="preserve" font-size="62" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">现行接入流程</text></g>
+<g id="shape-7" data-pptx-object="connector" data-pptx-frame="250 555 910 0" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 693.33 573.33)" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 250 555 L 1160 555" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
-<g id="shape-12" data-pptx-object="shape" data-pptx-frame="1434.67 626.67 864 506.67" data-pptx-prst="rect" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
-<path d="M 1434.67 626.67 L 2298.67 626.67 L 2298.67 1133.34 L 1434.67 1133.34 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+<g id="shape-8" data-pptx-object="shape" data-pptx-frame="250 610 910 570" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
+<path d="M 250 610 L 1160 610 L 1160 1180 L 250 1180 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1434.67" y="660" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">上传 PDF 手册<tspan x="1434.67" dy="60.0">填写从站地址</tspan><tspan x="1434.67" dy="60.0">查看识别结果</tspan><tspan x="1434.67" dy="60.0">在网关确认添加</tspan><tspan x="1434.67" dy="60.0">查看采集状态</tspan></text></g>
+<text x="250" y="666.7" text-anchor="start" xml:space="preserve" font-size="54" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">录入点位参数<tspan x="250" dy="120">试读并核对返回值</tspan><tspan x="250" dy="120">查看本次配置变更</tspan><tspan x="250" dy="120">确认生效</tspan><tspan x="250" dy="120">返回首页查看采集状态</tspan></text></g>
+<g id="shape-9" data-pptx-object="shape" data-pptx-frame="1310 350 1070 880" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
+<path d="M 1334 350 L 2356 350 Q 2380 350 2380 374 L 2380 1206 Q 2380 1230 2356 1230 L 1334 1230 Q 1310 1230 1310 1206 L 1310 374 Q 1310 350 1334 350 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#9333EA" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-10" data-pptx-object="shape" data-pptx-frame="1380 420 930 100" data-pptx-prst="rect" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
+<path d="M 1380 420 L 2310 420 L 2310 520 L 1380 520 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="1380" y="485.1" text-anchor="start" xml:space="preserve" font-size="62" fill="#9333EA" font-weight="bold" data-pptx-text-baseline="metrics-v1">手机接入规划</text></g>
+<g id="shape-11" data-pptx-object="connector" data-pptx-frame="1380 555 930 0" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 1866.67 573.33)" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
+<path d="M 1380 555 L 2310 555" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-12" data-pptx-object="shape" data-pptx-frame="1380 610 930 570" data-pptx-prst="rect" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
+<path d="M 1380 610 L 2310 610 L 2310 1180 L 1380 1180 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="1380" y="666.7" text-anchor="start" xml:space="preserve" font-size="54" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">上传 PDF 手册<tspan x="1380" dy="120">填写从站地址</tspan><tspan x="1380" dy="120">查看识别结果</tspan><tspan x="1380" dy="120">在网关确认添加</tspan><tspan x="1380" dy="120">查看采集状态</tspan></text></g>
 <g id="shape-27" data-pptx-object="group" data-pptx-frame="94.08 1359.33 30.09 35.42" data-pptx-source-ref="slide:27">
 <g id="shape-26" data-pptx-object="shape" data-pptx-frame="94.08 1359.33 30.09 35.42" data-pptx-prst="rect" data-pptx-source-ref="slide:26" data-pptx-semantic-object="shape">
 <path d="M 94.08 1359.33 L 124.17 1359.33 L 124.17 1394.75 L 94.08 1394.75 Z" fill="none" stroke="none" data-pptx-part="geometry" />

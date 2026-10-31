@@ -1,0 +1,65 @@
+{
+  "route": "Edit Native PPTX",
+  "review_mode": "read_only",
+  "iterations_run": 1,
+  "source_plan": ".review/qa-plan.md",
+  "canvas": {"view_box": [0,0,2560,1440], "png_width":1600, "png_height":900},
+  "pages": [
+    {
+      "page":9,
+      "page_role":"data",
+      "status":"ok",
+      "hard_hits":[],
+      "soft_hits":[],
+      "evidence":[
+        "实际PowerPoint PNG为1600×900且非空；标题、两列卡片及页脚均完整显示。",
+        "两列标题条、卡片边界和正文左边线一致；文字未越界或重叠，行间距舒适。",
+        "649 / 649次成功与优化后24 / 46次使用显著的大字号和品牌色，形成明确数字层级；两列工程结果均易读。"
+      ],
+      "suggested_fix":"无需修复；保留当前双列和数字强调。",
+      "screenshot_path":"validation/powerpoint-v2/幻灯片9.PNG"
+    },
+    {
+      "page":10,
+      "page_role":"content",
+      "status":"ok",
+      "hard_hits":[],
+      "soft_hits":[],
+      "evidence":[
+        "实际PowerPoint PNG为1600×900且非空；原型照片主体和屏幕清晰可辨，比例自然，没有拉伸。",
+        "底部深色说明条连续贯穿整页，主说明与原型实拍副说明均置于条内，无文字压在复杂照片上。",
+        "主说明与副说明层级明确，居中对齐，未发生溢出、重叠或裁字。照片两侧留白保持完整展示。"
+      ],
+      "suggested_fix":"无需修复；保留连续深色说明条和照片完整展示。",
+      "screenshot_path":"validation/powerpoint-v2/幻灯片10.PNG"
+    },
+    {
+      "page":11,
+      "page_role":"content",
+      "status":"ok",
+      "hard_hits":[],
+      "soft_hits":[],
+      "evidence":[
+        "实际PowerPoint PNG为1600×900且非空；标题和四个进度块完整显示。",
+        "四张卡片尺寸一致，横纵间隔均衡，标题条和正文在各自列内对齐。",
+        "各卡片两行正文大小一致且易读；下行与卡片底边保留足够空间，没有挤压和重叠。"
+      ],
+      "suggested_fix":"无需修复；保留当前等大四卡片与两行正文。",
+      "screenshot_path":"validation/powerpoint-v2/幻灯片11.PNG"
+    },
+    {
+      "page":12,
+      "page_role":"closing",
+      "status":"ok",
+      "hard_hits":[],
+      "soft_hits":[],
+      "evidence":[
+        "实际PowerPoint PNG为1600×900且非空；官方背景完整保留，THANKS、标语与团队行均居中。",
+        "THANKS具有最大视觉权重，标语次之，团队与页底短语作为次级信息，结束页文字层级清楚。",
+        "SVG中的全页62%黑色遮罩降低了背景干扰；正文可读，无越界、文字重叠或图像变形。"
+      ],
+      "suggested_fix":"无需修复；保留当前居中层级和背景遮罩。",
+      "screenshot_path":"validation/powerpoint-v2/幻灯片12.PNG"
+    }
+  ]
+}

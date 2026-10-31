@@ -20,12 +20,14 @@
 
 - `content.json`：逐页标题、口播、来源和证据备注。
 - `polish_deck.py`：本轮页面文案修改及表格更新。
+- `layout_deck.py`：字号、内容区比例、图片、流程图与表格排版调整。
 - `write_speech.py`：从逐页内容生成口播稿。
 - `build_deck.py`：首版官方模板填充程序，保留供初始制作复现。
 - `normalize_package.py`：JPEG 类型声明规范化工具。
 - `authoring/`、`images/`、`icons/`：当前页面 SVG 与引用素材。
 - `page_plan.json`：页面顺序及源页映射。
 - `verification.json`：输出摘要、检查和素材来源。
+- `visual-qa/`：排版视觉检查记录和预览。
 
 ## 重建本轮润色稿
 
@@ -68,3 +70,17 @@ python docs/submission/final-defense-20261031/write_speech.py
 该帧由当前 GUI 代码的 board/RGB565 无头构建生成，2026-10-31 执行的 6 项 CTest 通过。原始测试记录位于 `.debug/defense-20261031/Testing/Temporary/LastTest.log`。真机证据的日期与条件见各页备注。
 
 官方模板使用 MiSans 和嵌入字体。发布前在 PowerPoint 中打开并导出全部 16 页，检查文字、表格和图像。线上答辩前再用实际电脑检查共享声音与视频播放。
+
+## 排版优化与视觉 QA
+
+排版输入为提交 `9e8b07e` 的文案润色版。统一放大标题与正文，流程节点扩展到内容区，实机图按原比例放大，工程数据增加字号层级。页面顺序、文字、数据和备注与输入版一致。
+
+采用 Edit Native PPTX 流程，基于 PowerPoint 实际渲染进行视觉检查。主代理检查第 1–4 页，三个独立检查分别覆盖第 5–8、9–12、13–16 页。两轮渲染后，修正封面副标题对齐和演示页字幕背景高度，最终检查记录见 `visual-qa/QA_REPORT.md`。
+
+重建排版版时，从 Git 提取 `9e8b07e` 的 PPT，使用上述导入命令创建新工作区，再运行：
+
+```powershell
+python docs/submission/final-defense-20261031/layout_deck.py '<新工作区>'
+```
+
+随后刷新摘要，运行 `svg_quality_checker.py --roundtrip --json`，以 `svg_to_pptx.py --roundtrip --native-charts-and-tables` 导出，并用 PowerPoint 渲染复核。

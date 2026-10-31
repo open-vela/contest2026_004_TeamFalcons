@@ -7,8 +7,8 @@
   },
   "output": {
     "file": "VelaGuard-决赛答辩-20261031.pptx",
-    "bytes": 28593903,
-    "sha256": "d50ada4d456812b5c379de9316dcebb6834695c4bbe2980f2b01647f50c8ef85",
+    "bytes": 28591734,
+    "sha256": "a546489b6e843cf30b98e3b174b2daa0a7d2bccb8f32d6e401bbd5022ac91974",
     "slides": 16,
     "main_slides": 12,
     "appendix_slides": 4,
@@ -32,7 +32,8 @@
     "svg_quality_errors": 0,
     "headless_ctest_passed": 6,
     "headless_ctest_total": 6,
-    "headless_ctest_seconds": 4.25
+    "headless_ctest_seconds": 4.25,
+    "visual_review_pages": 16
   },
   "package_repair": {
     "part": "[Content_Types].xml",
@@ -71,5 +72,22 @@
     "source": ".debug/defense-20261031/frames/fixture_check/05_fixture_alarm_warn3.ppm",
     "sha256": "96daa85f3280e6cabcc965fc8c81119214849f05b1d06ffded63cb05b36d9c9b",
     "kind": "模拟数据界面"
+  },
+  "layout_revision": {
+    "date": "2026-10-31",
+    "input_commit": "9e8b07e",
+    "input_pptx_sha256": "d50ada4d456812b5c379de9316dcebb6834695c4bbe2980f2b01647f50c8ef85",
+    "skill": "ppt-master Edit Native PPTX",
+    "title_font_px": 76,
+    "flow_caption_font_px": 42,
+    "table_body_font_px": 46,
+    "visual_qa_pages": 16,
+    "visual_qa_iterations": 2,
+    "visual_qa_hard_hits": 0,
+    "visual_qa_soft_hits": 0,
+    "reviewers": 4,
+    "copy_data_notes_equal_to_input": true,
+    "preview": "visual-qa/preview.jpg",
+    "comparison": "visual-qa/comparison.jpg"
   }
 }

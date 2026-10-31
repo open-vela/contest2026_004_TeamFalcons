@@ -1,0 +1,62 @@
+{
+  "batch": "13-16",
+  "route": "Edit Native PPTX",
+  "iterations_run": 1,
+  "read_only": true,
+  "canvas": {"view_box": [0,0,2560,1440], "png_width":1600, "png_height":900},
+  "results": [
+    {
+      "page": 13,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已逐页查看实际 PowerPoint 导出的 1600×900 PNG，非空且渲染完整。",
+        "三列表格完整，表头 48、数据 46 SVG px；各行基线等距 150 SVG px，文本全部位于单元格内，最长结果项仍保留左右内边距。",
+        "表格行列对齐，深色表头与浅色数据行层级清晰，表格底部与页脚分隔线约 58 PNG px，无溢出、重叠或图片异常。"
+      ],
+      "suggested_fix": "无需修复。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片13.PNG"
+    },
+    {
+      "page": 14,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整，双列卡片顶、底对齐且视觉等重，标题、横线和正文采用相同内部网格。",
+        "两列正文均为 54 SVG px，五行列表间距舒适；最长一行未贴近右侧边界，最后一行与卡片底边有约 50 PNG px 空间。",
+        "正文颜色清楚，无溢出、文本重叠、元素碰撞或页脚遮挡。"
+      ],
+      "suggested_fix": "无需修复。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片14.PNG"
+    },
+    {
+      "page": 15,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整，四张步骤卡片等宽等高、水平间距一致，连接箭头未侵入文字。",
+        "步骤标题与说明层级清楚，42 SVG px 双行说明行距为 67 SVG px，均在卡片内，第三步长标题未越界。",
+        "下方环境行及两行测试/进展文字可读；末行基线 1247.9 SVG px，页脚分隔线 y=1333.33，实际文字底部至分隔线约 50 PNG px，无挤压或遮挡。"
+      ],
+      "suggested_fix": "无需修复；保留当前 OTA 下方说明与页脚间距。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片15.PNG"
+    },
+    {
+      "page": 16,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整，两张功能卡片等宽等高，标题栏、正文起点和各行节奏一致。",
+        "两列正文 58/54 SVG px，视觉大小接近，英文混排无异常；最长正文行完整留在列内，图文层级符合双功能列意图。",
+        "仓库地址独立居中位于卡片与页脚之间，基线 1293.6 SVG px，与分隔线相距约 25 PNG px，实际字形与分隔线保留清楚间隔；无溢出、重叠和页脚遮挡。"
+      ],
+      "suggested_fix": "无需修复。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片16.PNG"
+    }
+  ],
+  "summary": "第13–16页均通过本轮只读视觉检查，硬规则命中0项，明确软问题0项，未修改任何幻灯片、文案、图片或颜色。"
+}

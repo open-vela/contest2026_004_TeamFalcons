@@ -1,0 +1,68 @@
+{
+  "route": "Edit Native PPTX",
+  "review_mode": "read_only",
+  "iterations_run": 1,
+  "canvas": {"view_box": [0, 0, 2560, 1440], "png_width": 1600, "png_height": 900},
+  "results": [
+    {
+      "page": 5,
+      "page_role": "content",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已逐张检查实际PowerPoint PNG；1600×900，画面非空。",
+        "左栏四项操作文字清楚，起始位置一致，行距舒适，无越界或相互重叠。",
+        "右栏HMI图片完整、比例正常，图像占据主体区域；图片下方说明与正文、页脚均分开。",
+        "两栏顶部、底部和内部标题分隔线形成稳定网格；主标题、页码与官方页脚完整。"
+      ],
+      "suggested_fix": "无需修复，保持现有排版。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片5.PNG"
+    },
+    {
+      "page": 6,
+      "page_role": "content",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已逐张检查实际PowerPoint PNG；1600×900，画面非空。",
+        "四阶段卡片尺寸、间距和上沿一致，数字、标题与正文层级清楚，箭头位于卡片之间且未遮挡文字。",
+        "自定义Skill说明独立成行；底部单次样本耗时清楚可读，与流程及页脚均有足够间隔。",
+        "各卡片内容完整，无文本溢出、重叠、图片问题或明显留白失衡。"
+      ],
+      "suggested_fix": "无需修复，保持现有排版。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片6.PNG"
+    },
+    {
+      "page": 7,
+      "page_role": "data",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已逐张检查实际PowerPoint PNG；1600×900，画面非空。",
+        "三列表头和五行正文均清楚可读，单元格文字居中一致，行高稳定，隔行底色便于阅读。",
+        "最长单元格内容仍留有左右余量，表格边界完整，无溢出、重叠或异常换行。",
+        "表格与主标题、页脚留白清楚，信息层级符合数据页意图。"
+      ],
+      "suggested_fix": "无需修复，保持现有排版。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片7.PNG"
+    },
+    {
+      "page": 8,
+      "page_role": "content",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已逐张检查实际PowerPoint PNG；1600×900，画面非空。",
+        "左侧硬件照片尺寸充足、比例正常，未发生渲染破损或明显拉伸；图下注释紧邻图片且未叠在照片上。",
+        "右栏三组语音动作清楚可读，项目符号、文本左边缘及分组间距一致，无文本溢出或遮挡。",
+        "底部真人按键测试说明与照片注释、右栏及页脚分开，照片和操作文字具有平衡的视觉权重。"
+      ],
+      "suggested_fix": "无需修复，保持现有排版。",
+      "screenshot_path": "validation/powerpoint-v2/幻灯片8.PNG"
+    }
+  ]
+}
