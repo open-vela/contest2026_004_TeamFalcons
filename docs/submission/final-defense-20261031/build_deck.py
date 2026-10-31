@@ -163,7 +163,7 @@ def main():
         shutil.copyfile(source, image_dir / target)
         asset_manifest.append({"file": target, "source": str(source),
                                "sha256": hashlib.sha256(source.read_bytes()).hexdigest()})
-    (workspace / "asset_manifest.json").write_text(json.dumps(asset_manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    (workspace / "asset_manifest.json").write_text(json.dumps(asset_manifest, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
 
     pages = []
     for n, item in enumerate(content["pages"], 1):
@@ -336,9 +336,9 @@ def main():
         notes = item["speech"]
         if item.get("sources"):
             notes += "\n\n资料来源：\n" + "\n".join(item["sources"])
-        (note_dir / f"{stem}.md").write_text(notes + "\n", encoding="utf-8")
+        (note_dir / f"{stem}.md").write_text(notes + "\n", encoding="utf-8", newline="\n")
 
-    (workspace / "page_plan.json").write_text(json.dumps({"schema": "ppt-master.roundtrip-page-plan.v1", "pages": pages}, ensure_ascii=False, indent=2), encoding="utf-8")
+    (workspace / "page_plan.json").write_text(json.dumps({"schema": "ppt-master.roundtrip-page-plan.v1", "pages": pages}, ensure_ascii=False, indent=2), encoding="utf-8", newline="\n")
     # 用户确认不添加动画和配音。清除模板对象动画，避免删去示例对象后保留动画目标。
     print(f"已填充 {len(pages)} 页。接下来刷新摘要、质量检查并以 --roundtrip --native-charts-and-tables 导出。")
 

@@ -53,5 +53,5 @@ lines.extend([
     "语音与工程证据两页信息较多，可使用预留的 40 秒适当放慢。若超时，优先删解释性重复句，不加快到听不清。", "",
     "未经用户研究，不补充节省工时、市场规模、成本收益或识别准确率。主机测试、历史板测、当前模拟界面和待实现目标保持分别说明。", "",
 ])
-(HERE / "逐页口播稿.md").write_text("\n".join(lines), encoding="utf-8")
+(HERE / "逐页口播稿.md").write_text("\n".join(lines), encoding="utf-8", newline="\n")
 print(f"口播稿已生成：{len(main_pages)} 页，净内容 {total} 秒，预留 40 秒。")
