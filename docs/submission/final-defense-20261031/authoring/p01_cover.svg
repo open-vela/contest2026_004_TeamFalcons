@@ -7,7 +7,8 @@
 <path d="M 203 488 L 2360 488 L 2360 738 L 203 738 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1281.5" y="706.4" text-anchor="middle" xml:space="preserve" font-size="208" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">VelaGuard</text></g>
+<text x="1281.5" y="706.4" text-anchor="middle" xml:space="preserve" font-size="208" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">VelaGuard</text>
+</g>
 <g id="shape-5" data-pptx-object="group" data-pptx-frame="928.13 362.52 706.53 73.6" data-pptx-source-ref="slide:5">
 <g id="shape-20" data-pptx-object="shape" data-pptx-frame="928.13 396.79 56 5.33" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
 <path d="M 928.13 399.45 A 2.67 2.67 0 0 1 930.8 396.79 L 981.47 396.79 A 2.67 2.67 0 0 1 984.13 399.45 L 984.13 399.45 A 2.67 2.67 0 0 1 981.47 402.12 L 930.8 402.12 A 2.67 2.67 0 0 1 928.13 399.45 Z" fill="url(#ggrad1)" stroke-width="0" stroke="none" data-pptx-part="geometry" />
@@ -27,4 +28,5 @@
 <path d="M 220 790 L 2340 790 L 2340 1000 L 220 1000 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1280.0" y="850" text-anchor="middle" xml:space="preserve" font-family="&quot;MiSans Medium&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="60" fill="#D9E5F0" data-pptx-text-baseline="metrics-v1"><tspan font-size="60" fill="#D9E5F0" font-weight="normal" x="1280.0" dy="0">基于 openvela 的 AI 辅助监测网关</tspan><tspan font-size="42" fill="#D9E5F0" font-weight="normal" x="1280.0" dy="94">Team Falcons   叶培林   AI 硬件产品创新</tspan></text></g></svg>
+<text x="1280" y="850" text-anchor="middle" xml:space="preserve" font-family="&quot;MiSans Medium&quot;, &quot;Microsoft YaHei&quot;, sans-serif" font-size="60" fill="#D9E5F0" data-pptx-text-baseline="metrics-v1" data-pptx-text-model="paragraphs" data-paragraph-line-height="90"><tspan><tspan>基于 openvela 的 AI 辅助监测网关</tspan></tspan><tspan font-size="42" data-paragraph-space-before="4"><tspan>Team Falcons   叶培林   AI 硬件产品创新</tspan></tspan></text>
+</g></svg>

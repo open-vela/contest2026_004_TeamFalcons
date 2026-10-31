@@ -7,11 +7,11 @@
   },
   "output": {
     "file": "VelaGuard-决赛答辩-20261031.pptx",
-    "bytes": 28591734,
-    "sha256": "a546489b6e843cf30b98e3b174b2daa0a7d2bccb8f32d6e401bbd5022ac91974",
+    "bytes": 28590780,
+    "sha256": "b76d4c5dc8c8609bdaa78a64d68151305667cff8f9fdd78dfe1dc61745b53fd7",
     "slides": 16,
-    "main_slides": 12,
-    "appendix_slides": 4,
+    "main_slides": 16,
+    "appendix_slides": 0,
     "notes": 16,
     "native_tables": 2
   },
@@ -33,7 +33,11 @@
     "headless_ctest_passed": 6,
     "headless_ctest_total": 6,
     "headless_ctest_seconds": 4.25,
-    "visual_review_pages": 16
+    "visual_review_pages": 16,
+    "thanks_is_last_slide": true,
+    "appendix_labels_remaining": false,
+    "current_speech_matches_all_notes": true,
+    "svg_quality_warnings": 0
   },
   "package_repair": {
     "part": "[Content_Types].xml",
@@ -43,7 +47,7 @@
   },
   "font_advisory": "MiSans / MiSans Medium 是官方模板字体。模板嵌入字体，本机有 MiSans-Regular；非默认 Office 字体仍须在实际答辩电脑试播。",
   "limitations": [
-    "第10页为原型实拍，配套80秒视频按脚本录制。",
+    "第14页为原型实拍，配套80秒视频按脚本录制。",
     "历史板测条件与当前进度见各页备注；手机接入与手机语音列为规划。",
     "完整OTA链路与长期稳定性列入后续验证计划。"
   ],
@@ -89,5 +93,46 @@
     "copy_data_notes_equal_to_input": true,
     "preview": "visual-qa/preview.jpg",
     "comparison": "visual-qa/comparison.jpg"
+  },
+  "story_revision": {
+    "date": "2026-10-31",
+    "input_commit": "6d2fcdf",
+    "input_pptx_sha256": "a546489b6e843cf30b98e3b174b2daa0a7d2bccb8f32d6e401bbd5022ac91974",
+    "skill": "ppt-master Edit Native PPTX",
+    "source_slide_order": [
+      1,
+      2,
+      3,
+      7,
+      4,
+      5,
+      14,
+      6,
+      8,
+      16,
+      9,
+      13,
+      15,
+      10,
+      11,
+      12
+    ],
+    "main_slides": 16,
+    "appendix_slides": 0,
+    "demo_slide": 14,
+    "thanks_slide": 16,
+    "new_narratives": [
+      "断网值守场景",
+      "语音查询数据路径"
+    ],
+    "planned_content_seconds": 440,
+    "reserved_seconds": 40,
+    "new_board_tests_run": false,
+    "visual_qa_iterations": 2,
+    "visual_qa_final_hard_hits": 0,
+    "visual_qa_final_soft_hits": 0,
+    "visual_qa_fix": "结束页仓库地址改为白色，提高水纹背景上的文字对比。",
+    "preview": "visual-qa/preview.jpg",
+    "full_deck_preview": "visual-qa/full-deck.jpg"
   }
 }

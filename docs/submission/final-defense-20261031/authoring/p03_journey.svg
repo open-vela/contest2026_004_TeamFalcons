@@ -23,122 +23,126 @@
 <path d="M 180 126 L 2280 126 L 2280 246 L 180 246 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="180" y="205.8" text-anchor="start" xml:space="preserve" font-size="76" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">一次巡检的使用流程</text></g>
+<text x="180" y="205.8" text-anchor="start" xml:space="preserve" font-size="76" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">一次巡检的使用流程</text>
+</g>
 <g id="shape-4" data-pptx-object="shape" data-pptx-frame="180 285 110 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
-<path d="M 185.5 285 L 284.5 285 Q 290 285 290 290.5 L 290 290.5 Q 290 296 284.5 296 L 185.5 296 Q 180 296 180 290.5 L 180 290.5 Q 180 285 185.5 285 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 180 290.5 A 5.5 5.5 0 0 1 185.5 285 L 284.5 285 A 5.5 5.5 0 0 1 290 290.5 L 290 290.5 A 5.5 5.5 0 0 1 284.5 296 L 185.5 296 A 5.5 5.5 0 0 1 180 290.5 Z" fill="url(#ggrad1)" stroke="none" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-5" data-pptx-object="shape" data-pptx-frame="180 430 480 720" data-pptx-prst="roundRect" data-pptx-av-adj="val 8333" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
-<path d="M 204 430 L 636 430 Q 660 430 660 454 L 660 1126 Q 660 1150 636 1150 L 204 1150 Q 180 1150 180 1126 L 180 454 Q 180 430 204 430 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 180 470 A 40 40 0 0 1 220 430 L 620 430 A 40 40 0 0 1 660 470 L 660 1110 A 40 40 0 0 1 620 1150 L 220 1150 A 40 40 0 0 1 180 1110 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-6" data-pptx-object="shape" data-pptx-frame="180 430 480 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
-<path d="M 185.5 430 L 654.5 430 Q 660 430 660 435.5 L 660 435.5 Q 660 441 654.5 441 L 185.5 441 Q 180 441 180 435.5 L 180 435.5 Q 180 430 185.5 430 Z" fill="#0891B2" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 180 435.5 A 5.5 5.5 0 0 1 185.5 430 L 654.5 430 A 5.5 5.5 0 0 1 660 435.5 L 660 435.5 A 5.5 5.5 0 0 1 654.5 441 L 185.5 441 A 5.5 5.5 0 0 1 180 435.5 Z" fill="#0891B2" stroke="none" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-7" data-pptx-object="shape" data-pptx-frame="212 490 416 130" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
-<path d="M 212 490 L 628 490 L 628 620 L 212 620 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 212 490 L 628 490 L 628 620 L 212 620 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="420.0" y="595.0" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">01</text></g>
+<text x="420" y="595" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">01</text>
+</g>
 <g id="shape-8" data-pptx-object="shape" data-pptx-frame="206 730 428 94" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
 <path d="M 206 730 L 634 730 L 634 824 L 206 824 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="420.0" y="786.7" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">看实时状态</text></g>
+<text x="420" y="786.70005249" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">看实时状态</text>
+</g>
 <g id="shape-9" data-pptx-object="shape" data-pptx-frame="206 930 428 170" data-pptx-prst="rect" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
 <path d="M 206 930 L 634 930 L 634 1100 L 206 1100 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="420.0" y="974.1" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">数值、在线情况</text></g>
+<text x="420" y="974.10005249" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">数值、在线情况</text>
+</g>
 <g id="shape-10" data-pptx-object="shape" data-pptx-frame="740 430 480 720" data-pptx-prst="roundRect" data-pptx-av-adj="val 8333" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
-<path d="M 764 430 L 1196 430 Q 1220 430 1220 454 L 1220 1126 Q 1220 1150 1196 1150 L 764 1150 Q 740 1150 740 1126 L 740 454 Q 740 430 764 430 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 740 470 A 40 40 0 0 1 780 430 L 1180 430 A 40 40 0 0 1 1220 470 L 1220 1110 A 40 40 0 0 1 1180 1150 L 780 1150 A 40 40 0 0 1 740 1110 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-11" data-pptx-object="shape" data-pptx-frame="740 430 480 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
-<path d="M 745.5 430 L 1214.5 430 Q 1220 430 1220 435.5 L 1220 435.5 Q 1220 441 1214.5 441 L 745.5 441 Q 740 441 740 435.5 L 740 435.5 Q 740 430 745.5 430 Z" fill="#3B6EF6" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 740 435.5 A 5.5 5.5 0 0 1 745.5 430 L 1214.5 430 A 5.5 5.5 0 0 1 1220 435.5 L 1220 435.5 A 5.5 5.5 0 0 1 1214.5 441 L 745.5 441 A 5.5 5.5 0 0 1 740 435.5 Z" fill="#3B6EF6" stroke="none" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-12" data-pptx-object="shape" data-pptx-frame="772 490 416 130" data-pptx-prst="rect" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
-<path d="M 772 490 L 1188 490 L 1188 620 L 772 620 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 772 490 L 1188 490 L 1188 620 L 772 620 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="980.0" y="595.0" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#3B6EF6" font-weight="bold" data-pptx-text-baseline="metrics-v1">02</text></g>
+<text x="980" y="595" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#3B6EF6" font-weight="bold" data-pptx-text-baseline="metrics-v1">02</text>
+</g>
 <g id="shape-13" data-pptx-object="shape" data-pptx-frame="766 730 428 94" data-pptx-prst="rect" data-pptx-source-ref="slide:13" data-pptx-semantic-object="shape">
 <path d="M 766 730 L 1194 730 L 1194 824 L 766 824 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="980.0" y="786.7" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">定位异常点位</text></g>
+<text x="980" y="786.70005249" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">定位异常点位</text>
+</g>
 <g id="shape-14" data-pptx-object="shape" data-pptx-frame="766 930 428 170" data-pptx-prst="rect" data-pptx-source-ref="slide:14" data-pptx-semantic-object="shape">
 <path d="M 766 930 L 1194 930 L 1194 1100 L 766 1100 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="980.0" y="974.1" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">告警等级、<tspan x="980.0" dy="67">触发阈值</tspan></text></g>
+<text x="980" y="974.10005249" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1" data-pptx-text-model="lines" data-paragraph-line-height="67"><tspan><tspan>告警等级、</tspan></tspan><tspan data-paragraph-line-break="1">触发阈值</tspan></text>
+</g>
 <g id="shape-15" data-pptx-object="shape" data-pptx-frame="1300 430 480 720" data-pptx-prst="roundRect" data-pptx-av-adj="val 8333" data-pptx-source-ref="slide:15" data-pptx-semantic-object="shape">
-<path d="M 1324 430 L 1756 430 Q 1780 430 1780 454 L 1780 1126 Q 1780 1150 1756 1150 L 1324 1150 Q 1300 1150 1300 1126 L 1300 454 Q 1300 430 1324 430 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 1300 470 A 40 40 0 0 1 1340 430 L 1740 430 A 40 40 0 0 1 1780 470 L 1780 1110 A 40 40 0 0 1 1740 1150 L 1340 1150 A 40 40 0 0 1 1300 1110 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-16" data-pptx-object="shape" data-pptx-frame="1300 430 480 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:16" data-pptx-semantic-object="shape">
-<path d="M 1305.5 430 L 1774.5 430 Q 1780 430 1780 435.5 L 1780 435.5 Q 1780 441 1774.5 441 L 1305.5 441 Q 1300 441 1300 435.5 L 1300 435.5 Q 1300 430 1305.5 430 Z" fill="#9333EA" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 1300 435.5 A 5.5 5.5 0 0 1 1305.5 430 L 1774.5 430 A 5.5 5.5 0 0 1 1780 435.5 L 1780 435.5 A 5.5 5.5 0 0 1 1774.5 441 L 1305.5 441 A 5.5 5.5 0 0 1 1300 435.5 Z" fill="#9333EA" stroke="none" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-17" data-pptx-object="shape" data-pptx-frame="1332 490 416 130" data-pptx-prst="rect" data-pptx-source-ref="slide:17" data-pptx-semantic-object="shape">
-<path d="M 1332 490 L 1748 490 L 1748 620 L 1332 620 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1332 490 L 1748 490 L 1748 620 L 1332 620 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1540.0" y="595.0" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#9333EA" font-weight="bold" data-pptx-text-baseline="metrics-v1">03</text></g>
+<text x="1540" y="595" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#9333EA" font-weight="bold" data-pptx-text-baseline="metrics-v1">03</text>
+</g>
 <g id="shape-18" data-pptx-object="shape" data-pptx-frame="1326 730 428 94" data-pptx-prst="rect" data-pptx-source-ref="slide:18" data-pptx-semantic-object="shape">
 <path d="M 1326 730 L 1754 730 L 1754 824 L 1326 824 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1540.0" y="786.7" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">查看 AI 解释</text></g>
+<text x="1540" y="786.70005249" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">查看 AI 解释</text>
+</g>
 <g id="shape-19" data-pptx-object="shape" data-pptx-frame="1326 930 428 170" data-pptx-prst="rect" data-pptx-source-ref="slide:19" data-pptx-semantic-object="shape">
 <path d="M 1326 930 L 1754 930 L 1754 1100 L 1326 1100 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1540.0" y="974.1" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">异常说明、<tspan x="1540.0" dy="67">数据依据</tspan></text></g>
+<text x="1540" y="974.10005249" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1" data-pptx-text-model="lines" data-paragraph-line-height="67"><tspan><tspan>异常说明、</tspan></tspan><tspan data-paragraph-line-break="1">数据依据</tspan></text>
+</g>
 <g id="shape-20" data-pptx-object="shape" data-pptx-frame="1860 430 480 720" data-pptx-prst="roundRect" data-pptx-av-adj="val 8333" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
-<path d="M 1884 430 L 2316 430 Q 2340 430 2340 454 L 2340 1126 Q 2340 1150 2316 1150 L 1884 1150 Q 1860 1150 1860 1126 L 1860 454 Q 1860 430 1884 430 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 1860 470 A 40 40 0 0 1 1900 430 L 2300 430 A 40 40 0 0 1 2340 470 L 2340 1110 A 40 40 0 0 1 2300 1150 L 1900 1150 A 40 40 0 0 1 1860 1110 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-21" data-pptx-object="shape" data-pptx-frame="1860 430 480 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:21" data-pptx-semantic-object="shape">
-<path d="M 1865.5 430 L 2334.5 430 Q 2340 430 2340 435.5 L 2340 435.5 Q 2340 441 2334.5 441 L 1865.5 441 Q 1860 441 1860 435.5 L 1860 435.5 Q 1860 430 1865.5 430 Z" fill="#0891B2" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
-
+<path d="M 1860 435.5 A 5.5 5.5 0 0 1 1865.5 430 L 2334.5 430 A 5.5 5.5 0 0 1 2340 435.5 L 2340 435.5 A 5.5 5.5 0 0 1 2334.5 441 L 1865.5 441 A 5.5 5.5 0 0 1 1860 435.5 Z" fill="#0891B2" stroke="none" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-22" data-pptx-object="shape" data-pptx-frame="1892 490 416 130" data-pptx-prst="rect" data-pptx-source-ref="slide:22" data-pptx-semantic-object="shape">
-<path d="M 1892 490 L 2308 490 L 2308 620 L 1892 620 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1892 490 L 2308 490 L 2308 620 L 1892 620 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="2100.0" y="595.0" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">04</text></g>
+<text x="2100" y="595" text-anchor="middle" xml:space="preserve" font-family="MiSans, sans-serif" font-size="100" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">04</text>
+</g>
 <g id="shape-23" data-pptx-object="shape" data-pptx-frame="1886 730 428 94" data-pptx-prst="rect" data-pptx-source-ref="slide:23" data-pptx-semantic-object="shape">
 <path d="M 1886 730 L 2314 730 L 2314 824 L 1886 824 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="2100.0" y="786.7" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">回顾运行报告</text></g>
+<text x="2100" y="786.70005249" text-anchor="middle" xml:space="preserve" font-size="54" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">回顾运行报告</text>
+</g>
 <g id="shape-24" data-pptx-object="shape" data-pptx-frame="1886 930 428 170" data-pptx-prst="rect" data-pptx-source-ref="slide:24" data-pptx-semantic-object="shape">
 <path d="M 1886 930 L 2314 930 L 2314 1100 L 1886 1100 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="2100.0" y="974.1" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">运行统计、<tspan x="2100.0" dy="67">告警记录</tspan></text></g>
-<g id="shape-25" data-pptx-object="connector" data-pptx-frame="662 750 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 706.67 640)" data-pptx-source-ref="slide:25" data-pptx-semantic-object="shape">
-<path d="M 662 750 L 738 750" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
+<text x="2100" y="974.10005249" text-anchor="middle" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1" data-pptx-text-model="lines" data-paragraph-line-height="67"><tspan><tspan>运行统计、</tspan></tspan><tspan data-paragraph-line-break="1">告警记录</tspan></text>
+</g>
+<g id="shape-25" data-pptx-object="connector" data-pptx-frame="663.97 750.1 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 701.97 750.1)" data-pptx-source-ref="slide:25" data-pptx-semantic-object="shape">
+<path d="M 663.97 750.1 L 739.97 750.1" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
 
 </g>
-<g id="shape-26" data-pptx-object="connector" data-pptx-frame="1222 750 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 1266.67 640)" data-pptx-source-ref="slide:26" data-pptx-semantic-object="shape">
-<path d="M 1222 750 L 1298 750" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
+<g id="shape-26" data-pptx-object="connector" data-pptx-frame="1223.97 750.1 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 1261.97 750.1)" data-pptx-source-ref="slide:26" data-pptx-semantic-object="shape">
+<path d="M 1223.97 750.1 L 1299.97 750.1" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
 
 </g>
-<g id="shape-27" data-pptx-object="connector" data-pptx-frame="1782 750 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 1826.67 640)" data-pptx-source-ref="slide:27" data-pptx-semantic-object="shape">
-<path d="M 1782 750 L 1858 750" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
+<g id="shape-27" data-pptx-object="connector" data-pptx-frame="1783.97 750.1 76 0" data-pptx-prst="straightConnector1" transform="rotate(-1.02301667 1821.97 750.1)" data-pptx-source-ref="slide:27" data-pptx-semantic-object="shape">
+<path d="M 1783.97 750.1 L 1859.97 750.1" fill="#DEE0E3" stroke-width="2.66667" stroke-linecap="butt" stroke="#64748B" stroke-linejoin="round" marker-end="url(#marrow1)" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-59" data-pptx-object="group" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-source-ref="slide:59">

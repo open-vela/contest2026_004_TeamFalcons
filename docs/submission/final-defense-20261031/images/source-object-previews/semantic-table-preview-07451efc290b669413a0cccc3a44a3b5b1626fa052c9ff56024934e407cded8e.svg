@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440"><g id="shape-5" data-pptx-object="graphic-frame" data-pptx-frame="180 370 2200 870" data-pptx-import-source="pptx" data-pptx-replace-with="table" data-pptx-native-authority="json" data-pptx-semantic-object="table">
+<rect x="180" y="370" width="440" height="120" fill="#111827" />
+<rect x="620" y="370" width="880" height="120" fill="#0891B2" />
+<rect x="1500" y="370" width="880" height="120" fill="#9333EA" />
+<rect x="180" y="490" width="440" height="150" fill="#F1F5F9" />
+<rect x="620" y="490" width="880" height="150" fill="#F1F5F9" />
+<rect x="1500" y="490" width="880" height="150" fill="#F1F5F9" />
+<rect x="180" y="640" width="440" height="150" fill="#FFFFFF" />
+<rect x="620" y="640" width="880" height="150" fill="#FFFFFF" />
+<rect x="1500" y="640" width="880" height="150" fill="#FFFFFF" />
+<rect x="180" y="790" width="440" height="150" fill="#F1F5F9" />
+<rect x="620" y="790" width="880" height="150" fill="#F1F5F9" />
+<rect x="1500" y="790" width="880" height="150" fill="#F1F5F9" />
+<rect x="180" y="940" width="440" height="150" fill="#FFFFFF" />
+<rect x="620" y="940" width="880" height="150" fill="#FFFFFF" />
+<rect x="1500" y="940" width="880" height="150" fill="#FFFFFF" />
+<rect x="180" y="1090" width="440" height="150" fill="#F1F5F9" />
+<rect x="620" y="1090" width="880" height="150" fill="#F1F5F9" />
+<rect x="1500" y="1090" width="880" height="150" fill="#F1F5F9" />
+<text x="400" y="430.66666667" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">验证项目</text>
+<text x="1060" y="430.66666667" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">测试条件</text>
+<text x="1940" y="430.66666667" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="48" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">观察结果</text>
+<text x="400" y="548" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">采集</text>
+<text x="1060" y="548" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">0 ms 回复，649 次</text>
+<text x="1940" y="548" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">649 次成功</text>
+<text x="400" y="698" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">告警解释</text>
+<text x="1060" y="698" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">10-25，8 条告警单样本</text>
+<text x="1940" y="698" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">41.83 秒完成并加载</text>
+<text x="400" y="848" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">语音</text>
+<text x="1060" y="848" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">10-25，按键人声单样本</text>
+<text x="1940" y="848" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">完成查询与播放</text>
+<text x="400" y="998" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">界面</text>
+<text x="1060" y="998" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">10-31，主机无头测试</text>
+<text x="1940" y="998" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">6 / 6 项通过</text>
+<text x="400" y="1148" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">显示</text>
+<text x="1060" y="1148" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">两组各 60 秒语音窗口</text>
+<text x="1940" y="1148" text-anchor="middle" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="46" fill="#334155" data-pptx-text-baseline="metrics-v1">FIFO 欠载各 1 次降为 0</text>
+<line x1="180" y1="370" x2="620" y2="370" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="370" x2="620" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="490" x2="620" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="370" x2="180" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="370" x2="1500" y2="370" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="370" x2="1500" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="490" x2="1500" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="370" x2="620" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="370" x2="2380" y2="370" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="370" x2="2380" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="490" x2="2380" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="370" x2="1500" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="490" x2="620" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="490" x2="620" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="640" x2="620" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="490" x2="180" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="490" x2="1500" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="490" x2="1500" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="640" x2="1500" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="490" x2="620" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="490" x2="2380" y2="490" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="490" x2="2380" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="640" x2="2380" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="490" x2="1500" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="640" x2="620" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="640" x2="620" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="790" x2="620" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="640" x2="180" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="640" x2="1500" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="640" x2="1500" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="790" x2="1500" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="640" x2="620" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="640" x2="2380" y2="640" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="640" x2="2380" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="790" x2="2380" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="640" x2="1500" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="790" x2="620" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="790" x2="620" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="940" x2="620" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="790" x2="180" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="790" x2="1500" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="790" x2="1500" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="940" x2="1500" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="790" x2="620" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="790" x2="2380" y2="790" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="790" x2="2380" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="940" x2="2380" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="790" x2="1500" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="940" x2="620" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="940" x2="620" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="1090" x2="620" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="940" x2="180" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="940" x2="1500" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="940" x2="1500" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="1090" x2="1500" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="940" x2="620" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="940" x2="2380" y2="940" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="940" x2="2380" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="1090" x2="2380" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="940" x2="1500" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="1090" x2="620" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="1090" x2="620" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="1240" x2="620" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="180" y1="1090" x2="180" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="1090" x2="1500" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="1090" x2="1500" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="1240" x2="1500" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="620" y1="1090" x2="620" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="1090" x2="2380" y2="1090" stroke-width="1" stroke="#CBD5E1" />
+<line x1="2380" y1="1090" x2="2380" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="1240" x2="2380" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+<line x1="1500" y1="1090" x2="1500" y2="1240" stroke-width="1" stroke="#CBD5E1" />
+</g>
+</svg>

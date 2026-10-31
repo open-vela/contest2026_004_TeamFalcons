@@ -1,0 +1,120 @@
+{
+  "batch": "story-7-10-13-16",
+  "route": "Edit Native PPTX",
+  "iterations_run": 2,
+  "read_only": true,
+  "canvas": {
+    "view_box": [
+      0,
+      0,
+      2560,
+      1440
+    ],
+    "png_width": 1600,
+    "png_height": 900
+  },
+  "source_mapping": {
+    "7": 14,
+    "10": 16,
+    "13": 15,
+    "16": 12
+  },
+  "results": [
+    {
+      "page": 7,
+      "source_slide": 14,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整；联网/断网双列等宽等高，标题、分隔线和列表均沿同一内部网格排布。",
+        "两列各五行列表，正文大小和行距舒适，最长行有清楚内边距，卡片底部到页脚分隔线约64 PNG px，无溢出、重叠和遮挡。"
+      ],
+      "suggested_fix": "无需修复。",
+      "screenshot_path": "validation/powerpoint-final/幻灯片7.PNG"
+    },
+    {
+      "page": 10,
+      "source_slide": 16,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整；语音数据路径分为两个清楚的功能列，标题栏等高，左右正文和下方说明无越界。",
+        "正文清楚，混排自然；下方真人按键样本注释独立居中，至页脚分隔线约25 PNG px，无碰撞。"
+      ],
+      "suggested_fix": "无需修复。",
+      "screenshot_path": "validation/powerpoint-final/幻灯片10.PNG"
+    },
+    {
+      "page": 13,
+      "source_slide": 15,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "实际 PowerPoint PNG 完整；四张 OTA 步骤卡片等宽等高、间距统一，箭头未侵入文字。",
+        "第三步长标题、各步骤双行说明均完整；环境行与下方两行进展文字可读，末行字形底部至页脚分隔线约50 PNG px，未挤压页脚。"
+      ],
+      "suggested_fix": "无需修复，保留现有底部信息间距。",
+      "screenshot_path": "validation/powerpoint-final/幻灯片13.PNG"
+    },
+    {
+      "page": 16,
+      "source_slide": 12,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已重新查看候选104411经PowerPoint导出的第16页实际PNG，地址已变为白色，水纹区域各段字形完整清楚。",
+        "仓库地址仍居中，与团队名和页面底边间距保持充足，未引入重叠或越界。",
+        "第16页仍是THANKS收尾页；首轮H4对比问题已解决，当前无未解决硬问题或明确软问题。"
+      ],
+      "suggested_fix": "无需继续修复。首轮URL对比问题已由主agent改为白字，并经本轮PowerPoint实际PNG复核通过。",
+      "screenshot_path": "validation/powerpoint-final/幻灯片16.PNG",
+      "iterations_run": 2,
+      "unresolved_findings": []
+    }
+  ],
+  "summary": "第7、10、13页首轮通过。第16页第二轮复核通过，仓库地址白字清楚，原H4对比问题已解决；谢谢仍为最后一页。当前4页均无未解决问题。仅更新QA记录，未修改PPT或文案。",
+  "review_history": [
+    {
+      "iteration": 1,
+      "page": 16,
+      "status": "needs_human",
+      "hard_hits": [
+        {
+          "rule": "H4",
+          "element": "source slide_12.svg #shape-8 repository URL",
+          "evidence": "仓库地址 #8A94A6、40 SVG px（25 PNG px）位于水面亮纹上，现有全页黑色62%遮罩仍使部分局部对比不足；该文字颜色相对亮纹附近背景 RGB(54,87,97) 的对比约2.55:1，低于大字3:1。实际PNG上地址明显弱于上方队名且局部字形受水纹干扰。"
+        }
+      ],
+      "soft_hits": [],
+      "evidence": [
+        "page_plan.json 最后一项 source_slide=12，输出第16页确为 THANKS 收尾，未在其后附加问答页。",
+        "THANKS、主标语、团队名与仓库地址均完整，无重叠或越界，地址距页面底边约90 PNG px，底部间距充足。",
+        "主标题和主标语可读，需单独改善最下方地址的局部背景对比。"
+      ],
+      "suggested_fix": "保留文字、字号和颜色，在仓库地址所在横条下加窄幅半透明黑色底，覆盖水纹并保证最亮处对比至少3:1；无需移动谢谢页或改写文案。"
+    },
+    {
+      "iteration": 2,
+      "page": 16,
+      "status": "ok",
+      "fix_applied": {
+        "element": "repository URL",
+        "before": "fill=#8A94A6",
+        "after": "fill=#FFFFFF",
+        "position_and_size": "unchanged",
+        "applied_by": "lead agent"
+      },
+      "evidence": [
+        "已重新查看候选104411经PowerPoint导出的第16页实际PNG，地址已变为白色，水纹区域各段字形完整清楚。",
+        "仓库地址仍居中，与团队名和页面底边间距保持充足，未引入重叠或越界。",
+        "第16页仍是THANKS收尾页；首轮H4对比问题已解决，当前无未解决硬问题或明确软问题。"
+      ],
+      "hard_hits": [],
+      "soft_hits": []
+    }
+  ]
+}

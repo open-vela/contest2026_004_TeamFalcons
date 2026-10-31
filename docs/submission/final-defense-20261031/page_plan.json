@@ -14,56 +14,56 @@
       "svg": "p03_journey.svg"
     },
     {
+      "source_slide": 7,
+      "svg": "p04_configuration.svg"
+    },
+    {
       "source_slide": 4,
-      "svg": "p04_architecture.svg"
+      "svg": "p05_architecture.svg"
     },
     {
       "source_slide": 5,
-      "svg": "p05_local_alarm.svg"
-    },
-    {
-      "source_slide": 6,
-      "svg": "p06_agent.svg"
-    },
-    {
-      "source_slide": 7,
-      "svg": "p07_permissions.svg"
-    },
-    {
-      "source_slide": 8,
-      "svg": "p08_voice.svg"
-    },
-    {
-      "source_slide": 9,
-      "svg": "p09_engineering.svg"
-    },
-    {
-      "source_slide": 10,
-      "svg": "p10_demo.svg"
-    },
-    {
-      "source_slide": 11,
-      "svg": "p11_progress.svg"
-    },
-    {
-      "source_slide": 12,
-      "svg": "p12_closing.svg"
-    },
-    {
-      "source_slide": 13,
-      "svg": "p13_evidence.svg"
+      "svg": "p06_local_alarm.svg"
     },
     {
       "source_slide": 14,
-      "svg": "p14_configuration.svg"
+      "svg": "p07_offline_scene.svg"
     },
     {
-      "source_slide": 15,
-      "svg": "p15_ota.svg"
+      "source_slide": 6,
+      "svg": "p08_agent.svg"
+    },
+    {
+      "source_slide": 8,
+      "svg": "p09_voice.svg"
     },
     {
       "source_slide": 16,
-      "svg": "p16_why.svg"
+      "svg": "p10_voice_path.svg"
+    },
+    {
+      "source_slide": 9,
+      "svg": "p11_engineering.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "p12_evidence.svg"
+    },
+    {
+      "source_slide": 15,
+      "svg": "p13_ota.svg"
+    },
+    {
+      "source_slide": 10,
+      "svg": "p14_demo.svg"
+    },
+    {
+      "source_slide": 11,
+      "svg": "p15_progress.svg"
+    },
+    {
+      "source_slide": 12,
+      "svg": "p16_closing.svg"
     }
   ]
 }

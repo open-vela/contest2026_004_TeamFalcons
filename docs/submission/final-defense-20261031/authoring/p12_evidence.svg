@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
+<image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
+</g>
+<g id="layout-shape-20" data-pptx-object="shape" data-pptx-frame="1638.47 1354.67 800 40" data-pptx-prst="rect" data-pptx-source-ref="layout:20" data-pptx-semantic-object="shape">
+<path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+</g>
+<g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
+<path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-2" data-pptx-object="shape" data-pptx-frame="186.67 77.33 933.33 40" data-pptx-prst="rect" data-pptx-source-ref="slide:2" data-pptx-semantic-object="shape">
+<path d="M 186.67 77.33 L 1120.0 77.33 L 1120.0 117.33 L 186.67 117.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="186.67" y="102.53" text-anchor="start" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text></g>
+<g id="shape-3" data-pptx-object="shape" data-pptx-frame="180 126 2100 120" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
+<path d="M 180 126 L 2280 126 L 2280 246 L 180 246 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="180" y="205.8" text-anchor="start" xml:space="preserve" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif" font-size="76" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">台架与真机验证</text></g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="180 285 110 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 180 290.5 A 5.5 5.5 0 0 1 185.5 285 L 284.5 285 A 5.5 5.5 0 0 1 290 290.5 L 290 290.5 A 5.5 5.5 0 0 1 284.5 296 L 185.5 296 A 5.5 5.5 0 0 1 180 290.5 Z" fill="url(#ggrad1)" stroke="none" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-5" data-pptx-object="graphic-frame" data-pptx-frame="180 370 2200 870" data-pptx-import-source="pptx" data-pptx-replace-with="table" data-pptx-native-authority="json" data-pptx-source-ref="slide:5" data-pptx-semantic-object="table">
+<metadata type="application/json">{"schema":"ppt-master.semantic-table.v2","x":180,"y":370,"width":2200,"height":870,"strict_grid":true,"header_rows":1,"column_widths":[440,880,880],"row_heights":[120,150,150,150,150,150],"style":{"band_row":false},"defaults":{"cell":{"fill":"#F1F5F9","align":"ctr","valign":"middle","borders":{"left":{"style":"solid","color":"#CBD5E1","width":1},"right":{"style":"solid","color":"#CBD5E1","width":1},"top":{"style":"solid","color":"#CBD5E1","width":1},"bottom":{"style":"solid","color":"#CBD5E1","width":1}},"padding_left":14,"padding_right":14,"padding_top":14,"padding_bottom":14},"paragraph":{"align":"ctr"},"run":{"bold":false,"color":"#334155","font_size":46,"lang":"zh-CN"}},"rows":[[{"paragraphs":[{"runs":[{"text":"验证项目","bold":true,"font_size":48,"color":"#FFFFFF"}]}],"fill":"#111827"},{"paragraphs":[{"runs":[{"text":"测试条件","bold":true,"font_size":48,"color":"#FFFFFF"}]}],"fill":"#0891B2"},{"paragraphs":[{"runs":[{"text":"观察结果","bold":true,"font_size":48,"color":"#FFFFFF"}]}],"fill":"#9333EA"}],[{"paragraphs":[{"runs":[{"text":"采集","bold":true,"color":"#111827"}]}]},{"paragraphs":[{"runs":[{"text":"0 ms 回复，649 次"}]}]},{"paragraphs":[{"runs":[{"text":"649 次成功"}]}]}],[{"paragraphs":[{"runs":[{"text":"告警解释","bold":true,"color":"#111827"}]}],"fill":"#FFFFFF"},{"paragraphs":[{"runs":[{"text":"10-25，8 条告警单样本"}]}],"fill":"#FFFFFF"},{"paragraphs":[{"runs":[{"text":"41.83 秒完成并加载"}]}],"fill":"#FFFFFF"}],[{"paragraphs":[{"runs":[{"text":"语音","bold":true,"color":"#111827"}]}]},{"paragraphs":[{"runs":[{"text":"10-25，按键人声单样本"}]}]},{"paragraphs":[{"runs":[{"text":"完成查询与播放"}]}]}],[{"paragraphs":[{"runs":[{"text":"界面","bold":true,"color":"#111827"}]}],"fill":"#FFFFFF"},{"paragraphs":[{"runs":[{"text":"10-31，主机无头测试"}]}],"fill":"#FFFFFF"},{"paragraphs":[{"runs":[{"text":"6 / 6 项通过"}]}],"fill":"#FFFFFF"}],[{"paragraphs":[{"runs":[{"text":"显示","bold":true,"color":"#111827"}]}]},{"paragraphs":[{"runs":[{"text":"两组各 60 秒语音窗口"}]}]},{"paragraphs":[{"runs":[{"text":"FIFO 欠载各 1 次降为 0"}]}]}]],"name":"shape-5"}</metadata><image x="0" y="0" width="2560" height="1440" preserveAspectRatio="none" href="../images/source-object-previews/semantic-table-preview-07451efc290b669413a0cccc3a44a3b5b1626fa052c9ff56024934e407cded8e.svg" data-pptx-part="authoring-preview" /></g>
+<g id="shape-12" data-pptx-object="group" data-pptx-frame="94.08 1359.33 30.09 35.42" data-pptx-source-ref="slide:12">
+<g id="shape-11" data-pptx-object="shape" data-pptx-frame="94.08 1359.33 30.09 35.42" data-pptx-prst="rect" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
+<path d="M 94.08 1359.33 L 124.17 1359.33 L 124.17 1394.75 L 94.08 1394.75 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="94.08" y="1382" text-anchor="start" xml:space="preserve" font-size="22.93" fill="#64748B" data-pptx-text-baseline="metrics-v1">12</text>
+</g>
+</g></svg>

@@ -9,8 +9,9 @@
 <path d="M 0 1265 L 2560 1265 L 2560 1440 L 0 1440 Z" fill="#0F172A" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1280.0" y="1325.9" text-anchor="middle" xml:space="preserve" font-size="58" fill="#FFFFFF" data-pptx-text-baseline="metrics-v1">真机演示：采集、告警、解释与断网监测</text></g>
-<g id="shape-6" data-pptx-object="group" data-pptx-frame="848.92 1374.67 458.95 41.58" data-pptx-source-ref="slide:6">
+<text x="1280" y="1325.90005249" text-anchor="middle" xml:space="preserve" font-size="58" fill="#FFFFFF" data-pptx-text-baseline="metrics-v1">真机演示：采集、告警、解释与断网监测</text>
+</g>
+<g id="shape-6" data-pptx-object="group" data-pptx-frame="0 1380 2560 55" data-pptx-source-ref="slide:6">
 <g id="shape-5" data-pptx-object="shape" data-pptx-frame="0 1380 2560 55" data-pptx-prst="rect" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
 <path d="M 0 1380 L 2560 1380 L 2560 1435 L 0 1435 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
