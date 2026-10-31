@@ -7,8 +7,8 @@
   },
   "output": {
     "file": "VelaGuard-决赛答辩-20261031.pptx",
-    "bytes": 28595336,
-    "sha256": "17c9ef87a52b882fdd608cf3b9d2263608010ba8547ade048d8de175ab00e100",
+    "bytes": 28593903,
+    "sha256": "d50ada4d456812b5c379de9316dcebb6834695c4bbe2980f2b01647f50c8ef85",
     "slides": 16,
     "main_slides": 12,
     "appendix_slides": 4,
@@ -37,15 +37,14 @@
   "package_repair": {
     "part": "[Content_Types].xml",
     "reason": "JPG/jpg duplicate Default and malformed image/.jpg inherited from template",
-    "other_parts_preserved_byte_for_byte": true
+    "other_parts_preserved_byte_for_byte": true,
+    "applied_this_revision": false
   },
   "font_advisory": "MiSans / MiSans Medium 是官方模板字体。模板嵌入字体，本机有 MiSans-Regular；非默认 Office 字体仍须在实际答辩电脑试播。",
   "limitations": [
-    "本次未进行新的板端操作，真机结论来自标明日期的历史记录。",
-    "当前代码截图来自模拟夹具，非真机截图。",
-    "第10页是实拍静帧，没有内嵌新视频，配套分镜仍需录制。",
-    "手机接入与手机语音仍为目标，板端语音仅按已有分项证据介绍。",
-    "OTA分项不等于完整生产升级链路验收；长期稳定性与并发存储问题仍待验证。"
+    "第10页为原型实拍，配套80秒视频按脚本录制。",
+    "历史板测条件与当前进度见各页备注；手机接入与手机语音列为规划。",
+    "完整OTA链路与长期稳定性列入后续验证计划。"
   ],
   "log_validation": {
     "files": 324,
@@ -53,5 +52,24 @@
     "status": "passed-with-warnings",
     "exit_code": 1,
     "warning": "2026-09-16 一份既有 Claude 会话未列入 manifest.sessions；未修改日志及清单。"
+  },
+  "copy_revision": {
+    "date": "2026-10-31",
+    "input_commit": "0d4474a",
+    "input_pptx_sha256": "17c9ef87a52b882fdd608cf3b9d2263608010ba8547ade048d8de175ab00e100",
+    "skill": "anti-defensive-writing",
+    "pages_before_chars": 2907,
+    "pages_after_chars": 2076,
+    "changed_visible_slides": 14,
+    "notes_only_slides": [
+      1,
+      12
+    ]
+  },
+  "screenshot": {
+    "file": "assets/alarm-rule-current.png",
+    "source": ".debug/defense-20261031/frames/fixture_check/05_fixture_alarm_warn3.ppm",
+    "sha256": "96daa85f3280e6cabcc965fc8c81119214849f05b1d06ffded63cb05b36d9c9b",
+    "kind": "模拟数据界面"
   }
 }

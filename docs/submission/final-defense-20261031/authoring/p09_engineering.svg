@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
 <g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
 <image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
 </g>
@@ -7,22 +7,23 @@
 <path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
 
 
-<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-family="MiSans, sans-serif" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
 </g>
 <g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
 <path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-2" data-pptx-object="shape" data-pptx-frame="186.67 77.33 933.33 40" data-pptx-prst="rect" data-pptx-source-ref="slide:2" data-pptx-semantic-object="shape">
-<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text></g>
+<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text>
+</g>
 <g id="shape-3" data-pptx-object="shape" data-pptx-frame="186.67 133.33 1733.33 96" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
-<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">工程难点，有对应工况与修复证据</text></g>
+<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">采集兼容与显示优化</text></g>
 <g id="shape-4" data-pptx-object="shape" data-pptx-frame="189.33 256 101.33 10.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
 <path d="M 189.33 261.33 A 5.33 5.33 0 0 1 194.67 256 L 285.33 256 A 5.33 5.33 0 0 1 290.67 261.33 L 290.67 261.33 A 5.33 5.33 0 0 1 285.33 266.67 L 194.67 266.67 A 5.33 5.33 0 0 1 189.33 261.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -39,15 +40,16 @@
 
 </g>
 <g id="shape-7" data-pptx-object="shape" data-pptx-frame="261.33 416 960 80" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
-<path d="M 261.33 416 L 1221.33 416 L 1221.33 496 L 261.33 496 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 416 L 1221.33 416 L 1221.33 496 L 261.33 496 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="470.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">RS485 快速回复兼容</text></g>
+<text x="261.33" y="470.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">RS485 快速回复兼容</text>
+</g>
 <g id="shape-8" data-pptx-object="shape" data-pptx-frame="261.33 573.33 920 560" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
-<path d="M 261.33 573.33 L 1181.33 573.33 L 1181.33 1133.33 L 261.33 1133.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 573.33 L 1181.33 573.33 L 1181.33 1133.33 L 261.33 1133.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="635" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">0 ms 回复工况<tspan x="261.33" dy="92">修复方向释放时序后</tspan><tspan x="261.33" dy="92">649 / 649 次采集成功</tspan><tspan x="261.33" dy="92">另测 5 / 20 / 150 ms 回复</tspan><tspan x="261.33" dy="92">四档启动错误计数均为 0</tspan></text></g>
+<text x="261.33" y="635" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">调整 RS485 方向释放时序<tspan x="261.33" dy="60.0">0 ms 回复：649 / 649 次成功</tspan><tspan x="261.33" dy="60.0">另测 5 / 20 / 150 ms 回复</tspan><tspan x="261.33" dy="60.0">四档启动错误计数均为 0</tspan></text></g>
 <g id="shape-9" data-pptx-object="shape" data-pptx-frame="1320 400 1053.33 746.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 3571" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
 <path d="M 1320 426.66 A 26.66 26.66 0 0 1 1346.66 400 L 2346.67 400 A 26.66 26.66 0 0 1 2373.33 426.66 L 2373.33 1120 A 26.66 26.66 0 0 1 2346.67 1146.67 L 1346.66 1146.67 A 26.66 26.66 0 0 1 1320 1120 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -59,17 +61,21 @@
 
 </g>
 <g id="shape-11" data-pptx-object="shape" data-pptx-frame="1394.67 416 960 80" data-pptx-prst="rect" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
-<path d="M 1394.67 416 L 2354.67 416 L 2354.67 496 L 1394.67 496 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 416 L 2354.67 416 L 2354.67 496 L 1394.67 496 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="470.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">图形与语音并发</text></g>
+<text x="1394.67" y="470.66666667" text-anchor="start" xml:space="preserve" font-size="42" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">图形与语音并发</text>
+</g>
 <g id="shape-12" data-pptx-object="shape" data-pptx-frame="1394.67 573.33 920 560" data-pptx-prst="rect" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
-<path d="M 1394.67 573.33 L 2314.67 573.33 L 2314.67 1133.33 L 1394.67 1133.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 573.33 L 2314.67 573.33 L 2314.67 1133.33 L 1394.67 1133.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="635" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">减少语音浮层重复重绘<tspan x="1394.67" dy="92">两组各 60 秒板测</tspan><tspan x="1394.67" dy="92">显示提交 438 / 454 次</tspan><tspan x="1394.67" dy="92">降为 24 / 46 次</tspan><tspan x="1394.67" dy="92">FIFO 欠载各 1 次降为 0</tspan></text></g>
-<g id="shape-13" data-pptx-object="shape" data-pptx-frame="280 1186.67 2000 53.33" data-pptx-prst="rect" data-pptx-source-ref="slide:13" data-pptx-semantic-object="shape">
-<path d="M 280 1186.67 L 2280 1186.67 L 2280 1240 L 280 1240 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<text x="1394.67" y="635" text-anchor="start" xml:space="preserve" font-size="40" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">减少语音浮层重复重绘<tspan x="1394.67" dy="60.0">两组各 60 秒板测</tspan><tspan x="1394.67" dy="60.0">显示提交：438 / 454 次</tspan><tspan x="1394.67" dy="60.0">优化后：24 / 46 次</tspan><tspan x="1394.67" dy="60.0">FIFO 欠载：各 1 次降为 0</tspan></text></g>
+<g id="shape-27" data-pptx-object="group" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-source-ref="slide:27">
+<g id="shape-26" data-pptx-object="shape" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-prst="rect" data-pptx-source-ref="slide:26" data-pptx-semantic-object="shape">
+<path d="M 94.08 1359.33 L 122.66 1359.33 L 122.66 1394.75 L 94.08 1394.75 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1280" y="1222" text-anchor="middle" xml:space="preserve" font-size="32" fill="#64748B" data-pptx-text-baseline="metrics-v1">短测支持对应修复有效，长期稳定性与并发存储仍需继续验证</text></g><g id="output-page-number" data-pptx-bounds="95 1359 2285 34.5"><text x="95" y="1382" font-size="23" fill="#64748B" font-weight="normal">09</text></g></svg>
+<text x="94.08" y="1382" text-anchor="start" xml:space="preserve" font-family="MiSans, sans-serif" font-size="22.93" fill="#64748B" data-pptx-text-baseline="metrics-v1">09</text>
+</g>
+</g></svg>

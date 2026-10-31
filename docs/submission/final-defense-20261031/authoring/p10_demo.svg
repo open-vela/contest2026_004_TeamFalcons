@@ -1,9 +1,19 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
-<g id="shape-21" data-pptx-object="picture" data-pptx-frame="0 0.4 2559.27 1439.6" data-pptx-source-ref="slide:21">
-<image href="../images/defense-board.jpeg" x="0" y="0" width="2560" height="1440" preserveAspectRatio="xMidYMid meet" /></g>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif"><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="shape-3" data-pptx-object="group" data-pptx-frame="320 0 1920 1440" data-pptx-source-ref="slide:3">
+<g id="shape-2" data-pptx-object="picture" data-pptx-frame="320 0 1920 1440" data-pptx-source-ref="slide:2">
+<image data-pptx-object="picture" data-pptx-frame="320 0 1920 1440" href="../images/image_4ed3da31383c9acc.jpg" x="320" y="0" width="1920" height="1440" preserveAspectRatio="none" />
+</g>
+</g>
 <g id="shape-20" data-pptx-object="shape" data-pptx-frame="0 1265 2560 175" data-pptx-prst="rect" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
-<path d="M 0 1265 L 2560 1265 L 2560 1440 L 0 1440 Z" fill="#0F172A" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 0 1265 L 2560 1265 L 2560 1440 L 0 1440 Z" fill="#0F172A" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1279.63" y="1335" text-anchor="middle" xml:space="preserve" font-size="42" fill="#FFFFFF" data-pptx-text-baseline="metrics-v1">真机演示：采集、告警、取证解释、断网监测</text></g><g id="demo-still-disclosure" data-pptx-bounds="850 1373 1530 40.5"><text x="850" y="1400" font-size="27" fill="#CBD5E1" font-weight="normal">原型实拍静帧，配套视频按脚本录制</text></g></svg>
+<text x="1279.63" y="1335" text-anchor="middle" xml:space="preserve" font-size="42" fill="#FFFFFF" data-pptx-text-baseline="metrics-v1">真机演示：采集、告警、解释与断网监测</text></g>
+<g id="shape-6" data-pptx-object="group" data-pptx-frame="848.92 1374.67 458.95 41.58" data-pptx-source-ref="slide:6">
+<g id="shape-5" data-pptx-object="shape" data-pptx-frame="848.92 1374.67 458.95 41.58" data-pptx-prst="rect" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
+<path d="M 848.92 1374.67 L 1307.87 1374.67 L 1307.87 1416.25 L 848.92 1416.25 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="848.92" y="1400" text-anchor="start" xml:space="preserve" font-size="26.93" fill="#CBD5E1" data-pptx-text-baseline="metrics-v1">原型实拍</text></g>
+</g></svg>

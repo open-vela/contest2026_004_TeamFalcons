@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
 <g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
 <image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
 </g>
@@ -7,22 +7,23 @@
 <path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
 
 
-<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-family="MiSans, sans-serif" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
 </g>
 <g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
 <path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
 </g>
 <g id="shape-2" data-pptx-object="shape" data-pptx-frame="186.67 77.33 933.33 40" data-pptx-prst="rect" data-pptx-source-ref="slide:2" data-pptx-semantic-object="shape">
-<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text></g>
+<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text>
+</g>
 <g id="shape-3" data-pptx-object="shape" data-pptx-frame="186.67 133.33 1733.33 96" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
-<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">初赛后更新与当前进度</text></g>
+<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">初赛后更新与下一步计划</text></g>
 <g id="shape-4" data-pptx-object="shape" data-pptx-frame="189.33 256 101.33 10.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
 <path d="M 189.33 261.33 A 5.33 5.33 0 0 1 194.67 256 L 285.33 256 A 5.33 5.33 0 0 1 290.67 261.33 L 290.67 261.33 A 5.33 5.33 0 0 1 285.33 266.67 L 194.67 266.67 A 5.33 5.33 0 0 1 189.33 261.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -39,15 +40,15 @@
 
 </g>
 <g id="shape-7" data-pptx-object="shape" data-pptx-frame="261.33 416 960 64" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
-<path d="M 261.33 416 L 1221.33 416 L 1221.33 480 L 261.33 480 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 416 L 1221.33 416 L 1221.33 480 L 261.33 480 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="460.66666667" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">本地业务与显示</text></g>
+<text x="261.33" y="460.66666667" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">采集与显示</text></g>
 <g id="shape-8" data-pptx-object="shape" data-pptx-frame="261.33 536 920 160" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
-<path d="M 261.33 536 L 1181.33 536 L 1181.33 696 L 261.33 696 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 536 L 1181.33 536 L 1181.33 696 L 261.33 696 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="627.86666667" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">快速从站兼容、减少重复重绘<tspan x="261.33" dy="63">当前界面无头检查 6 / 6 通过</tspan></text></g>
+<text x="261.33" y="627.86666667" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">快速从站兼容、语音浮层优化<tspan x="261.33" dy="51.0">界面检查 6 / 6 通过</tspan></text></g>
 <g id="shape-9" data-pptx-object="shape" data-pptx-frame="1320 400 1053.33 333.33" data-pptx-prst="roundRect" data-pptx-av-adj="val 8000" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
 <path d="M 1320 426.67 A 26.67 26.67 0 0 1 1346.67 400 L 2346.67 400 A 26.67 26.67 0 0 1 2373.33 426.67 L 2373.33 706.67 A 26.67 26.67 0 0 1 2346.67 733.33 L 1346.67 733.33 A 26.67 26.67 0 0 1 1320 706.67 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -59,15 +60,15 @@
 
 </g>
 <g id="shape-11" data-pptx-object="shape" data-pptx-frame="1394.67 416 960 64" data-pptx-prst="rect" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
-<path d="M 1394.67 416 L 2354.67 416 L 2354.67 480 L 1394.67 480 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 416 L 2354.67 416 L 2354.67 480 L 1394.67 480 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="460.66666667" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">板端只读语音</text></g>
+<text x="1394.67" y="460.66666667" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">板端语音</text></g>
 <g id="shape-12" data-pptx-object="shape" data-pptx-frame="1394.67 536 920 160" data-pptx-prst="rect" data-pptx-source-ref="slide:12" data-pptx-semantic-object="shape">
-<path d="M 1394.67 536 L 2314.67 536 L 2314.67 696 L 1394.67 696 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 536 L 2314.67 536 L 2314.67 696 L 1394.67 696 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="627.86666667" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">按键录音、只读问答和播报<tspan x="1394.67" dy="63">已留真机记录，继续做稳定性验证</tspan></text></g>
+<text x="1394.67" y="627.86666667" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">按键提问、状态查询、语音播报<tspan x="1394.67" dy="51.0">已完成真人操作链路验证</tspan></text></g>
 <g id="shape-13" data-pptx-object="shape" data-pptx-frame="186.67 786.67 1053.33 333.33" data-pptx-prst="roundRect" data-pptx-av-adj="val 8000" data-pptx-source-ref="slide:13" data-pptx-semantic-object="shape">
 <path d="M 186.67 813.33 A 26.67 26.67 0 0 1 213.33 786.67 L 1213.33 786.67 A 26.67 26.67 0 0 1 1240 813.33 L 1240 1093.33 A 26.67 26.67 0 0 1 1213.33 1120 L 213.33 1120 A 26.67 26.67 0 0 1 186.67 1093.33 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -79,15 +80,15 @@
 
 </g>
 <g id="shape-15" data-pptx-object="shape" data-pptx-frame="261.33 802.67 960 64" data-pptx-prst="rect" data-pptx-source-ref="slide:15" data-pptx-semantic-object="shape">
-<path d="M 261.33 802.67 L 1221.33 802.67 L 1221.33 866.67 L 261.33 866.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 802.67 L 1221.33 802.67 L 1221.33 866.67 L 261.33 866.67 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="847.33333333" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">OTA 分项进展</text></g>
+<text x="261.33" y="847.33333333" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">OTA 进展</text></g>
 <g id="shape-16" data-pptx-object="shape" data-pptx-frame="261.33 922.67 920 160" data-pptx-prst="rect" data-pptx-source-ref="slide:16" data-pptx-semantic-object="shape">
-<path d="M 261.33 922.67 L 1181.33 922.67 L 1181.33 1082.67 L 261.33 1082.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 261.33 922.67 L 1181.33 922.67 L 1181.33 1082.67 L 261.33 1082.67 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="261.33" y="1014.53333333" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">测试信任下下载与续传到 READY<tspan x="261.33" dy="63">安装与回滚另有分项，完整链路待验</tspan></text></g>
+<text x="261.33" y="1014.53333333" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">测试 CA 下下载、续传到待确认<tspan x="261.33" dy="51.0">安装与回滚已分别完成板测</tspan></text></g>
 <g id="shape-17" data-pptx-object="shape" data-pptx-frame="1320 786.67 1053.33 333.33" data-pptx-prst="roundRect" data-pptx-av-adj="val 8000" data-pptx-source-ref="slide:17" data-pptx-semantic-object="shape">
 <path d="M 1320 813.33 A 26.67 26.67 0 0 1 1346.67 786.67 L 2346.67 786.67 A 26.67 26.67 0 0 1 2373.33 813.33 L 2373.33 1093.33 A 26.67 26.67 0 0 1 2346.67 1120 L 1346.67 1120 A 26.67 26.67 0 0 1 1320 1093.33 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
 
@@ -99,17 +100,20 @@
 
 </g>
 <g id="shape-19" data-pptx-object="shape" data-pptx-frame="1394.67 802.67 960 64" data-pptx-prst="rect" data-pptx-source-ref="slide:19" data-pptx-semantic-object="shape">
-<path d="M 1394.67 802.67 L 2354.67 802.67 L 2354.67 866.67 L 1394.67 866.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 802.67 L 2354.67 802.67 L 2354.67 866.67 L 1394.67 866.67 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="847.33333333" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">后续产品目标</text></g>
+<text x="1394.67" y="847.33333333" text-anchor="start" xml:space="preserve" font-size="38" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">后续计划</text></g>
 <g id="shape-20" data-pptx-object="shape" data-pptx-frame="1394.67 922.67 920 160" data-pptx-prst="rect" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
-<path d="M 1394.67 922.67 L 2314.67 922.67 L 2314.67 1082.67 L 1394.67 1082.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<path d="M 1394.67 922.67 L 2314.67 922.67 L 2314.67 1082.67 L 1394.67 1082.67 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1394.67" y="1014.53333333" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">手机 PDF 接入、手机语音<tspan x="1394.67" dy="63">仍需完成完整链路实现和验收</tspan></text></g>
-<g id="shape-21" data-pptx-object="shape" data-pptx-frame="280 1186.67 2000 53.33" data-pptx-prst="rect" data-pptx-source-ref="slide:21" data-pptx-semantic-object="shape">
-<path d="M 280 1186.67 L 2280 1186.67 L 2280 1240 L 280 1240 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+<text x="1394.67" y="1014.53333333" text-anchor="start" xml:space="preserve" font-size="34" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">整机稳定性与 OTA 全流程验证<tspan x="1394.67" dy="51.0">手机手册接入和语音巡检</tspan></text></g>
+<g id="shape-43" data-pptx-object="group" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-source-ref="slide:43">
+<g id="shape-42" data-pptx-object="shape" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-prst="rect" data-pptx-source-ref="slide:42" data-pptx-semantic-object="shape">
+<path d="M 94.08 1359.33 L 122.66 1359.33 L 122.66 1394.75 L 94.08 1394.75 Z" fill="none" stroke="none" data-pptx-part="geometry" />
 
 
-<text x="1280" y="1222" text-anchor="middle" xml:space="preserve" font-size="32" fill="#64748B" data-pptx-text-baseline="metrics-v1">以原型和可复核证据交付，下一步补齐稳定性、接入体验与完整升级链路</text></g><g id="output-page-number" data-pptx-bounds="95 1359 2285 34.5"><text x="95" y="1382" font-size="23" fill="#64748B" font-weight="normal">11</text></g></svg>
+<text x="94.08" y="1382" text-anchor="start" xml:space="preserve" font-family="MiSans, sans-serif" font-size="22.93" fill="#64748B" data-pptx-text-baseline="metrics-v1">11</text>
+</g>
+</g></svg>

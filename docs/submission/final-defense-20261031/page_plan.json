@@ -6,63 +6,63 @@
       "svg": "p01_cover.svg"
     },
     {
-      "source_slide": 26,
+      "source_slide": 2,
       "svg": "p02_scene.svg"
     },
     {
-      "source_slide": 13,
+      "source_slide": 3,
       "svg": "p03_journey.svg"
     },
     {
-      "source_slide": 24,
+      "source_slide": 4,
       "svg": "p04_architecture.svg"
     },
     {
-      "source_slide": 12,
+      "source_slide": 5,
       "svg": "p05_local_alarm.svg"
     },
     {
-      "source_slide": 13,
+      "source_slide": 6,
       "svg": "p06_agent.svg"
     },
     {
-      "source_slide": 17,
+      "source_slide": 7,
       "svg": "p07_permissions.svg"
     },
     {
-      "source_slide": 26,
+      "source_slide": 8,
       "svg": "p08_voice.svg"
     },
     {
-      "source_slide": 21,
+      "source_slide": 9,
       "svg": "p09_engineering.svg"
     },
     {
-      "source_slide": 25,
+      "source_slide": 10,
       "svg": "p10_demo.svg"
     },
     {
-      "source_slide": 23,
+      "source_slide": 11,
       "svg": "p11_progress.svg"
     },
     {
-      "source_slide": 31,
+      "source_slide": 12,
       "svg": "p12_closing.svg"
     },
     {
-      "source_slide": 14,
+      "source_slide": 13,
       "svg": "p13_evidence.svg"
     },
     {
-      "source_slide": 12,
+      "source_slide": 14,
       "svg": "p14_configuration.svg"
     },
     {
-      "source_slide": 13,
+      "source_slide": 15,
       "svg": "p15_ota.svg"
     },
     {
-      "source_slide": 21,
+      "source_slide": 16,
       "svg": "p16_why.svg"
     }
   ]
