@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#35E6E8" /><stop offset="1" stop-color="#A855F7" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="layout-shape-6" data-pptx-object="picture" data-pptx-frame="0 0 2560 1440" data-pptx-source-ref="layout:6">
+<svg data-pptx-object="picture" data-pptx-frame="0 0 2560 1440" x="0" y="0" width="2560" height="1440" viewBox="0.06481 0 0.87038 1" preserveAspectRatio="none" overflow="hidden"><image href="../images/image3.jpeg" x="0" y="0" width="1" height="1" preserveAspectRatio="none" /></svg>
+</g>
+<g id="layout-shape-7" data-pptx-object="shape" data-pptx-frame="0 0 2560 1440" data-pptx-prst="roundRect" data-pptx-av-adj="val 0" data-pptx-source-ref="layout:7" data-pptx-semantic-object="shape">
+<path d="M 0 0 L 2560 0 L 2560 1440 L 0 1440 Z" fill="#000000" fill-opacity="0.62" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="613.33 480 1333.33 240" data-pptx-prst="rect" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 613.33 480 L 1946.67 480 L 1946.67 720 L 613.33 720 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1280" y="670.66666667" text-anchor="middle" xml:space="preserve" font-size="186.67" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">THANKS</text></g>
+<g id="shape-5" data-pptx-object="shape" data-pptx-frame="1093.33 781.33 373.33 8" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
+<path d="M 1093.33 785.33 A 4 4 0 0 1 1097.33 781.33 L 1462.67 781.33 A 4 4 0 0 1 1466.67 785.33 L 1466.67 785.33 A 4 4 0 0 1 1462.67 789.33 L 1097.33 789.33 A 4 4 0 0 1 1093.33 785.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="613.33 848 1333.33 80" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 613.33 848 L 1946.67 848 L 1946.67 928 L 613.33 928 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1280" y="904" text-anchor="middle" xml:space="preserve" font-size="44" fill="#E0E6EF" fill-opacity="0.94902" font-weight="bold" data-pptx-text-baseline="metrics-v1">本地持续监测，AI 依据真实数据辅助巡检</text></g>
+<g id="shape-7" data-pptx-object="shape" data-pptx-frame="613.33 1173.33 1333.33 58.67" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 613.33 1173.33 L 1946.67 1173.33 L 1946.67 1232 L 613.33 1232 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1280" y="1214" text-anchor="middle" xml:space="preserve" font-size="34" fill="#B2BCCA" data-pptx-text-baseline="metrics-v1">VelaGuard   Team Falcons   叶培林</text></g>
+<g id="shape-8" data-pptx-object="shape" data-pptx-frame="613.33 1237.33 1333.33 53.33" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
+<path d="M 613.33 1237.33 L 1946.67 1237.33 L 1946.67 1290.67 L 613.33 1290.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1280" y="1272.66666667" text-anchor="middle" xml:space="preserve" font-size="33" fill="#8A94A6" data-pptx-text-baseline="metrics-v1">独立监测   /   告警有依据   /   运行可回顾</text></g></svg>

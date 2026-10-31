@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-31",
+  "baseline_commit": "02eef41",
+  "official_template": {
+    "file": "2026 首届 openvela AI 硬件全球开发者大赛答辩模板.pptx",
+    "sha256": "05ef51df50ac54f2a1efc8e76e0b3e4ef513018e16cc27f7cdcd20c05ed44fa7"
+  },
+  "output": {
+    "file": "VelaGuard-决赛答辩-20261031.pptx",
+    "bytes": 28595336,
+    "sha256": "17c9ef87a52b882fdd608cf3b9d2263608010ba8547ade048d8de175ab00e100",
+    "slides": 16,
+    "main_slides": 12,
+    "appendix_slides": 4,
+    "notes": 16,
+    "native_tables": 2
+  },
+  "timing": {
+    "planned_content_seconds": 440,
+    "video_seconds_included": 80,
+    "reserved_seconds": 40,
+    "limit_seconds": 480,
+    "full_rehearsal_completed": false
+  },
+  "checks": {
+    "powerpoint_16_opened_and_exported_png": true,
+    "rendered_slides": 16,
+    "delivery_status": "passed-with-advisories",
+    "delivery_errors": [],
+    "official_master_layout_theme_parts_byte_identical": 8,
+    "template_placeholder_text_remaining": false,
+    "svg_quality_errors": 0,
+    "headless_ctest_passed": 6,
+    "headless_ctest_total": 6,
+    "headless_ctest_seconds": 4.25
+  },
+  "package_repair": {
+    "part": "[Content_Types].xml",
+    "reason": "JPG/jpg duplicate Default and malformed image/.jpg inherited from template",
+    "other_parts_preserved_byte_for_byte": true
+  },
+  "font_advisory": "MiSans / MiSans Medium 是官方模板字体。模板嵌入字体，本机有 MiSans-Regular；非默认 Office 字体仍须在实际答辩电脑试播。",
+  "limitations": [
+    "本次未进行新的板端操作，真机结论来自标明日期的历史记录。",
+    "当前代码截图来自模拟夹具，非真机截图。",
+    "第10页是实拍静帧，没有内嵌新视频，配套分镜仍需录制。",
+    "手机接入与手机语音仍为目标，板端语音仅按已有分项证据介绍。",
+    "OTA分项不等于完整生产升级链路验收；长期稳定性与并发存储问题仍待验证。"
+  ],
+  "log_validation": {
+    "files": 324,
+    "events": 77600,
+    "status": "passed-with-warnings",
+    "exit_code": 1,
+    "warning": "2026-09-16 一份既有 Claude 会话未列入 manifest.sessions；未修改日志及清单。"
+  }
+}

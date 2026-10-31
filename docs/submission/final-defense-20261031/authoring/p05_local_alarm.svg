@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" fill-opacity="0.04" />
+<g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
+<image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
+</g>
+<g id="layout-shape-20" data-pptx-object="shape" data-pptx-frame="1638.47 1354.67 800 40" data-pptx-prst="rect" data-pptx-source-ref="layout:20" data-pptx-semantic-object="shape">
+<path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+</g>
+<g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
+<path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-2" data-pptx-object="shape" data-pptx-frame="186.67 77.33 933.33 40" data-pptx-prst="rect" data-pptx-source-ref="slide:2" data-pptx-semantic-object="shape">
+<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text></g>
+<g id="shape-3" data-pptx-object="shape" data-pptx-frame="186.67 133.33 1733.33 96" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
+<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">阈值与离线判定在本地完成</text></g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="189.33 256 101.33 10.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 189.33 261.33 A 5.33 5.33 0 0 1 194.67 256 L 285.33 256 A 5.33 5.33 0 0 1 290.67 261.33 L 290.67 261.33 A 5.33 5.33 0 0 1 285.33 266.67 L 194.67 266.67 A 5.33 5.33 0 0 1 189.33 261.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-5" data-pptx-object="shape" data-pptx-frame="186.67 381.33 1013.33 800" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:5" data-pptx-semantic-object="shape">
+<path d="M 186.67 408 A 26.66 26.66 0 0 1 213.33 381.33 L 1173.34 381.33 A 26.66 26.66 0 0 1 1200 408 L 1200 1154.67 A 26.66 26.66 0 0 1 1173.34 1181.33 L 213.33 1181.33 A 26.66 26.66 0 0 1 186.67 1154.67 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#0891B2" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="261.33 448 864 80" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 261.33 448 L 1125.33 448 L 1125.33 528 L 261.33 528 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="261.33" y="504.66666667" text-anchor="start" xml:space="preserve" font-size="44" fill="#0891B2" font-weight="bold" data-pptx-text-baseline="metrics-v1">规则先判定</text></g>
+<g id="shape-7" data-pptx-object="connector" data-pptx-frame="261.33 572.67 864 1.33" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 693.33 573.33)" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 261.33 572.67 L 1125.33 574" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-8" data-pptx-object="shape" data-pptx-frame="261.33 626.67 864 506.67" data-pptx-prst="rect" data-pptx-source-ref="slide:8" data-pptx-semantic-object="shape">
+<path d="M 261.33 626.67 L 1125.33 626.67 L 1125.33 1133.33 L 261.33 1133.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="261.33" y="680" text-anchor="start" xml:space="preserve" font-size="42" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">采集只使用已确认点表<tspan x="261.33" dy="104">阈值与离线由 C 代码判定</tspan><tspan x="261.33" dy="104">候选编辑不改变运行配置</tspan><tspan x="261.33" dy="104">联网失败保留本地依据</tspan></text></g>
+<g id="shape-9" data-pptx-object="shape" data-pptx-frame="1360 381.33 1013.33 800" data-pptx-prst="roundRect" data-pptx-av-adj="val 3333" data-pptx-source-ref="slide:9" data-pptx-semantic-object="shape">
+<path d="M 1360 408 A 26.66 26.66 0 0 1 1386.66 381.33 L 2346.67 381.33 A 26.66 26.66 0 0 1 2373.33 408 L 2373.33 1154.67 A 26.66 26.66 0 0 1 2346.67 1181.33 L 1386.66 1181.33 A 26.66 26.66 0 0 1 1360 1154.67 Z" fill="#0F172A" fill-opacity="0.04" stroke-width="1.33333" stroke-linecap="butt" stroke="#9333EA" stroke-opacity="0.35" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-10" data-pptx-object="shape" data-pptx-frame="1434.67 448 864 80" data-pptx-prst="rect" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
+<path d="M 1434.67 448 L 2298.67 448 L 2298.67 528 L 1434.67 528 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1434.67" y="504.66666667" text-anchor="start" xml:space="preserve" font-size="44" fill="#9333EA" font-weight="bold" data-pptx-text-baseline="metrics-v1">界面呈现</text></g>
+<g id="shape-11" data-pptx-object="connector" data-pptx-frame="1434.67 572.67 864 1.33" data-pptx-prst="straightConnector1" transform="rotate(-0.08841667 1866.67 573.33)" data-pptx-source-ref="slide:11" data-pptx-semantic-object="shape">
+<path d="M 1434.67 572.67 L 2298.67 574" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.14" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="current-alarm-screen" data-pptx-bounds="1415 640 900 450"><image href="../images/defense-alarm.png" x="1415" y="640" width="900" height="450" preserveAspectRatio="xMidYMid meet" /></g><g id="simulation-disclosure" data-pptx-bounds="1438 1124 942 39.0"><text x="1438" y="1150" font-size="26" fill="#64748B" font-weight="normal">当前代码渲染，模拟数据界面</text></g><g id="offline-value-note" data-pptx-bounds="270 1224 2110 46.5"><text x="270" y="1255" font-size="31" fill="#334155" font-weight="normal">离线时明确显示不可用，最后一次成功值不冒充当前读数</text></g><g id="output-page-number" data-pptx-bounds="95 1359 2285 34.5"><text x="95" y="1382" font-size="23" fill="#64748B" font-weight="normal">05</text></g></svg>

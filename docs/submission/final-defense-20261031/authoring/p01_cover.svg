@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="&quot;MiSans Medium&quot;, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#22EFFF" /><stop offset="1" stop-color="#8F4EFF" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="layout-shape-8" data-pptx-object="picture" data-pptx-frame="0.07 0.04 2583.73 1446.32" data-pptx-source-ref="layout:8">
+<svg data-pptx-object="picture" data-pptx-frame="0.07 0.04 2583.73 1446.32" x="0.07" y="0.04" width="2583.73" height="1446.32" viewBox="0.00476 0.00533 0.99377 0.98164" preserveAspectRatio="none" overflow="hidden"><image href="../images/image2.png" x="0" y="0" width="1" height="1" preserveAspectRatio="none" /></svg>
+</g>
+<g id="shape-10" data-pptx-object="shape" data-pptx-frame="202.72 505.62 2157.35 242.2" data-pptx-prst="rect" data-pptx-source-ref="slide:10" data-pptx-semantic-object="shape">
+<path d="M 202.72 505.62 L 2360.08 505.62 L 2360.08 747.82 L 202.72 747.82 Z" fill="none" data-pptx-part="geometry" />
+
+
+<text x="1281.4" y="694.42204724" text-anchor="middle" xml:space="preserve" font-family="&quot;MiSans Medium&quot;, &quot;MiSans Heavy&quot;, sans-serif" font-size="176" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">VelaGuard</text></g>
+<g id="shape-5" data-pptx-object="group" data-pptx-frame="928.13 362.52 706.53 73.6" data-pptx-source-ref="slide:5">
+<g id="shape-20" data-pptx-object="shape" data-pptx-frame="928.13 396.79 56 5.33" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
+<path d="M 928.13 399.45 A 2.67 2.67 0 0 1 930.8 396.79 L 981.47 396.79 A 2.67 2.67 0 0 1 984.13 399.45 L 984.13 399.45 A 2.67 2.67 0 0 1 981.47 402.12 L 930.8 402.12 A 2.67 2.67 0 0 1 928.13 399.45 Z" fill="url(#ggrad1)" stroke-width="0" stroke="none" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-21" data-pptx-object="shape" data-pptx-frame="1018.13 362.52 616.67 73.73" data-pptx-prst="rect" data-pptx-source-ref="slide:21" data-pptx-semantic-object="shape">
+<path d="M 1018.13 362.52 L 1634.8 362.52 L 1634.8 436.25 L 1018.13 436.25 Z" fill="none" stroke-width="0" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="1634.8" y="410.85343832" text-anchor="end" xml:space="preserve" font-size="32" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+</g>
+</g>
+<g id="shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="slide:4">
+<image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
+</g>
+<g id="shape-7" data-pptx-object="shape" data-pptx-frame="129.4 777.93 2304 76.8" data-pptx-prst="rect" data-pptx-source-ref="slide:7" data-pptx-semantic-object="shape">
+<path d="M 129.4 777.93 L 2433.4 777.93 L 2433.4 854.73 L 129.4 854.73 Z" fill="none" data-pptx-part="geometry" />
+
+
+<text x="1281.4" y="814" text-anchor="middle" xml:space="preserve" font-family="&quot;MiSans Medium&quot;, &quot;Noto Sans CJK SC&quot;, sans-serif" font-size="44" fill="#D9E5F0" data-pptx-text-baseline="metrics-v1">基于 openvela 的 AI 辅助监测网关<tspan x="1281.4" dy="78">Team Falcons   叶培林   AI 硬件产品创新</tspan></text></g></svg>

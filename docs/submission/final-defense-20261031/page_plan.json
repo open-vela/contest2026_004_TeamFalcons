@@ -1,0 +1,69 @@
+{
+  "schema": "ppt-master.roundtrip-page-plan.v1",
+  "pages": [
+    {
+      "source_slide": 1,
+      "svg": "p01_cover.svg"
+    },
+    {
+      "source_slide": 26,
+      "svg": "p02_scene.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "p03_journey.svg"
+    },
+    {
+      "source_slide": 24,
+      "svg": "p04_architecture.svg"
+    },
+    {
+      "source_slide": 12,
+      "svg": "p05_local_alarm.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "p06_agent.svg"
+    },
+    {
+      "source_slide": 17,
+      "svg": "p07_permissions.svg"
+    },
+    {
+      "source_slide": 26,
+      "svg": "p08_voice.svg"
+    },
+    {
+      "source_slide": 21,
+      "svg": "p09_engineering.svg"
+    },
+    {
+      "source_slide": 25,
+      "svg": "p10_demo.svg"
+    },
+    {
+      "source_slide": 23,
+      "svg": "p11_progress.svg"
+    },
+    {
+      "source_slide": 31,
+      "svg": "p12_closing.svg"
+    },
+    {
+      "source_slide": 14,
+      "svg": "p13_evidence.svg"
+    },
+    {
+      "source_slide": 12,
+      "svg": "p14_configuration.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "p15_ota.svg"
+    },
+    {
+      "source_slide": 21,
+      "svg": "p16_why.svg"
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "date": "2026-10-31",
+  "baseline_commit": "02eef41",
+  "team": "Team Falcons",
+  "presenter": "叶培林",
+  "pages": [
+    {
+      "key": "cover", "source_slide": 1, "seconds": 15,
+      "title": "VelaGuard",
+      "speech": "各位评委老师好，我是 Team Falcons 的叶培林。VelaGuard 是基于 openvela 的 AI 辅助监测网关，面向小型机房和设备间的现场巡检。",
+      "sources": ["用户提供的决赛通知：8 分钟演讲、2 分钟问答", "VelaGuard_项目手册.md", "F:/Documents/velaguard作品提交/VelaGuard-技术报告.docx：团队信息"]
+    },
+    {
+      "key": "scene", "source_slide": 26, "seconds": 35,
+      "title": "小型设备现场，需要持续值守",
+      "speech": "现场运维需要持续了解设备状态。温湿度、供电等数据分散在不同设备里，出现告警时还要核对阈值、在线情况和采样记录。VelaGuard 把这些信息集中在一台网关上，配置完成后独立监测。图中是我们的原型台架，包含真实从站和测试从站。当前验证主要来自台架，尚未把它当成已经规模部署的产品。",
+      "sources": ["VelaGuard_项目手册.md：场景与定位", "F:/Documents/velaguard作品提交/图片内容/实物链接拓扑图.jpg", "docs/submission/答辩PPT大纲.md：不虚构市场规模或节省工时"]
+    },
+    {
+      "key": "journey", "source_slide": 13, "seconds": 35,
+      "title": "一次巡检，覆盖状态查看到运行回顾",
+      "speech": "我们用同一个温湿度监测场景说明使用过程。平时看实时数值和在线状态。数值越限后，先看到本地规则告警，再联网查看 AI 根据真实上下文给出的解释。交接时查看运行报告，核对日期、来源和统计。配置是使用前的独立步骤，只有人工确认的点表进入周期采集，日常值守不需要一直连接电脑。",
+      "sources": ["docs/submission/答辩PPT大纲.md：产品使用过程", "app/velaguard/vg_agent_seed.c", "gui/main/ui/pages/"]
+    },
+    {
+      "key": "architecture", "source_slide": 24, "seconds": 40,
+      "title": "本地持续监测，板载 Agent 调度工具",
+      "speech": "系统运行在 STM32H750B-DK 上。本地业务负责 Modbus 采集、帧统计、规则告警、LVGL 显示和记录。板载 ai_agent 运行 ReAct 调度和自定义 Skill，调用只读工具取证。模型推理通过 HTTPS 直连 MiMo，解释产物经板端校验后展示。MQTT 用于状态、遥测、告警和已确认点表留档，不承载 AI 请求。网络失效时，本地监测仍继续。",
+      "sources": ["app/velaguard/vg_agent_round.c", "app/velaguard/vg_agent_tools.c", "app/velaguard/vg_agent_seed.c", "VelaGuard_项目手册.md：网络链路", "AGENTS.md：V2、V3、V4"]
+    },
+    {
+      "key": "local_alarm", "source_slide": 12, "seconds": 35,
+      "title": "阈值与离线判定在本地完成",
+      "speech": "告警先由本地 C 代码判定，依据是已确认点表里的阈值和真实采样结果。候选表怎么编辑，都不改变正在运行的表。网络或 AI 不可用时，界面仍显示本地规则依据，离线状态也不会拿旧值冒充当前读数。右侧是本次从当前代码生成的模拟数据界面，用来说明显示方式，真机过程放在后面的录像里展示。",
+      "sources": ["AGENTS.md：V2、V5、现行 NSH 确认流程", "gui/headless/alarm_check_main.c", "本次运行：cmake board/RGB565 无头构建，CTest 6/6 通过", "assets/alarm-current.png：模拟夹具数据，非真机截图"]
+    },
+    {
+      "key": "agent", "source_slide": 13, "seconds": 45,
+      "title": "Agent 主动取证，产出可校验的解释与日报",
+      "speech": "这里是 AI 的主动执行过程。告警集合变化时请求解释，当天没有有效日报时请求日报。板端 Agent 先读取对应 Skill，再用只读工具查询统计、时间和点位，最后写入受限产物。板端校验后上屏，解释明确标注 AI 推测。我们保留了一次八条告警的主动解释记录，用时四十一点八三秒；另有一次带屏自主日报样本，用时一百九十四秒。这些是单次实测，云端等待期间本地采集继续。",
+      "sources": ["app/velaguard/vg_agent_seed.c：alarm_interpretation、operations_report、modbus_query", "docs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log：主动 8 告警，1756 B，elapsed_ms=41830，advice loaded=8", "logs/Foleaf/2026-09-16/claude-code__dbd0eb98-6d13-4bdc-a758-a5c3605ffc49.jsonl：第 1458 行保存原始串口，自主日报 194 秒/4 轮/824 B；原始日志未改写"]
+    },
+    {
+      "key": "permissions", "source_slide": 17, "seconds": 35,
+      "title": "AI 只读查询，配置生效由人确认",
+      "speech": "AI 的权限落实在工具注册和 C 实现中，包括参数检查、数量上限、限流和审计。它可以读运行快照、写受限解释和日报，但没有寄存器写入、配置提交、清除告警或输出控制权限。现行 NSH 配置流程要求先试读、展示结果，停下来等待人确认，再单独发送 apply。设备端 Agent 不能代替这一步，提示词只是补充约束。",
+      "sources": ["AGENTS.md：人工确认与设备端工具", "app/velaguard/vg_agent_tools.c", "docs/velaguard-host-nsh-protocol.md", "docs/velaguard-agent-query-acceptance.md"]
+    },
+    {
+      "key": "voice", "source_slide": 26, "seconds": 35,
+      "title": "按键提问，板端只读查询并播报",
+      "speech": "初赛后，我们还验证了板端按键语音。人声录音交给云侧识别，原始问题交给板载 Agent，工具返回真实状态，屏幕显示全文，语音播报摘要。十月二十五日的实体按键样本完成了从录音到播放结束的链路。当时被查询点位离线，回答如实说明没有当前读数。多问法和追问还有合成语音回喂测试，它与真人测试分别记录。这项板端成果和手机语音目标分开说明。",
+      "sources": ["用户本次 Q4 确认纳入已存在板端语音成果，不扩展设备控制权限", "docs/voice-evidence/2026-10-25/tts-continuity/manual.log：136–173 行", "docs/voice-evidence/2026-10-25/tts-continuity/manual-tail.log：完整 play_done", "docs/voice-evidence/2026-10-25/ops-assistant/README.md：多问法/追问使用合成 WAV 回喂 ASR", "F:/Documents/velaguard作品提交/图片内容/扩展板与开发板链接方式.jpg：历史硬件照片，不证明新语音固件"]
+    },
+    {
+      "key": "engineering", "source_slide": 21, "seconds": 40,
+      "title": "工程难点，有对应工况与修复证据",
+      "speech": "工程上重点处理了两类问题。RS485 方向释放不及时会漏掉快速回复，修复后零毫秒工况六百四十九次全部成功，其余三档也完成了板测。语音浮层原来重复触发重绘，修复后，两组各六十秒窗口的显示提交从四百多次降为二十四和四十六次，FIFO 欠载各一次降为零。这支持对应修复，长期稳定性还需继续验证。AI 开发会话和验收依据保留在仓库。",
+      "sources": ["docs/maintenance-evidence/2026-10-18/defects.md：D-04", "docs/maintenance-todo.md：BUS-03", "docs/maintenance-evidence/2026-10-28/ltdc/README.md：两组 60 秒窗口，前后云端延迟不完全相同", "logs/：真实 AI 开发日志，未据此推算 AI 贡献比例"]
+    },
+    {
+      "key": "demo", "source_slide": 25, "seconds": 80,
+      "title": "真机演示：采集、告警、取证解释、断网监测",
+      "speech": "下面用一段八十秒真机实录展示完整过程。先看正常采集，再触发已配置的越限，观察本地告警和 Agent 取证解释，最后断开网络，检查采集与本地告警继续运行。",
+      "sources": ["本页当前为历史原型静帧，尚未包含新视频", "F:/Documents/velaguard作品提交/图片内容/OPENVELA官方邮寄的开发板.jpg", "同目录《80秒视频脚本.md》：需由用户按实际设备条件录制，不将脚本当运行证据"]
+    },
+    {
+      "key": "progress", "source_slide": 23, "seconds": 30,
+      "title": "初赛后更新与当前进度",
+      "speech": "初赛后主要补了采集兼容、显示并发、板端只读语音和 OTA 分项。OTA 已在测试信任下完成网络下载和续传到待确认，安装与回滚有独立板测，完整签名任务从确认到安装上报还需串联验收。手机手册接入和手机语音仍是后续目标。我们优先补齐稳定性和完整交付链路，再推进接入体验。",
+      "sources": ["docs/maintenance-evidence/2026-10-18/defects.md", "docs/maintenance-evidence/2026-10-28/ltdc/README.md", "docs/voice-evidence/2026-10-25/ops-assistant/README.md", "docs/ota-evidence/2026-10-29/board-network.md", "docs/ota-evidence/2026-10-28/t04-install.md", "docs/ota-evidence/2026-10-28/t05-rollback.md", "docs/velaguard-web-sensor-onboarding-plan.md"]
+    },
+    {
+      "key": "closing", "source_slide": 31, "seconds": 15,
+      "title": "项目价值与结束",
+      "speech": "VelaGuard 把持续监测和规则告警放在本地，让 AI 依据真实数据辅助理解异常、整理运行记录。我们希望让小型设备现场的巡检更容易开展。谢谢各位老师，欢迎提问。",
+      "sources": ["docs/submission/答辩PPT大纲.md：产品价值", "专属仓库：https://github.com/open-vela/contest2026_004_TeamFalcons"]
+    },
+    {
+      "key": "evidence", "source_slide": 14, "seconds": 0,
+      "title": "问答附录：证据、条件与限制",
+      "speech": "这些结论分别对应主机检查和不同日期的板测。采集四档回复、主动解释和真人语音都有明确样本条件。当前代码的六项无头界面检查通过，只证明该范围的界面逻辑。我们尚未宣称整机二十四小时稳定通过，并发存储超时及诊断与语音并发等问题仍需继续验证。",
+      "sources": ["docs/maintenance-evidence/2026-10-18/defects.md", "docs/maintenance-evidence/2026-10-28/ltdc/README.md", "docs/voice-evidence/2026-10-25/ops-assistant/README.md：未关闭故障", "docs/voice-evidence/2026-10-25/tts-continuity/README.md", "本次 CTest：.debug/defense-20261031/Testing/Temporary/LastTest.log"]
+    },
+    {
+      "key": "configuration", "source_slide": 12, "seconds": 0,
+      "title": "问答附录：两种配置入口的确认边界",
+      "speech": "现行 NSH 入口先编辑候选和试读，展示结果后等待人工确认，再单独生效。手机入口是未来目标，按用户确认不试读：云侧生成候选，板端确定性校验，再由本机人工二次确认后添加。两种入口不混用，远程候选不能交给原 NSH 直接提交，Agent 也不能确认。",
+      "sources": ["docs/velaguard-host-nsh-protocol.md", "docs/adr/0007-mqtt-candidate-import-with-local-confirmation.md", "docs/velaguard-candidate-mqtt-protocol.md", "AGENTS.md：现行 NSH 与手机目标入口分别说明"]
+    },
+    {
+      "key": "ota", "source_slide": 13, "seconds": 0,
+      "title": "问答附录：OTA 的分项证据与待验项",
+      "speech": "OTA 的已验证范围必须拆开说。十月二十九日使用测试 CA、签名密钥和设备凭据，经 RJ45 完成 MQTTS 通知和 HTTPS 下载，一百五十五万余字节镜像进入待确认，也验证了 Range 续传和部分证书拒绝。真实安装与回滚来自另外的诊断夹具板测。本机确认签名任务、安装、自检和上报的整条链路尚未验收，生产信任配置和真实断电矩阵也还要补。",
+      "sources": ["docs/ota-evidence/2026-10-29/board-network.md：1553704 B、READY_AWAITING_CONFIRM、Range、证书拒绝、未完成项与时间基准问题", "docs/ota-evidence/2026-10-28/t04-install.md", "docs/ota-evidence/2026-10-28/t05-rollback.md", "docs/adr/0008-ota-fat-staging-with-local-confirmation.md", "docs/issues/ota/acceptance-todo.md"]
+    },
+    {
+      "key": "why", "source_slide": 21, "seconds": 0,
+      "title": "问答附录：为什么使用 AI 与 openvela",
+      "speech": "规则负责判断已经定义的异常，Agent 用只读工具获得上下文，帮助解释和整理运行信息。当前还没有用用户研究证明效率收益，因此不承诺节省比例。openvela 在这里实际承担 LVGL 图形交互、ai_agent 的 ReAct 和 Skill 调度，以及任务、网络、文件系统协作，不只是使用内核。产品当前仍是原型，下一步用真实场景评估解释质量与运维价值。",
+      "sources": ["app/velaguard/vg_agent_seed.c", "app/velaguard/vg_agent_tools.c", "gui/main/ui/", "README.md：openvela 能力落点", "本地开发 Skill：.agents/skills/ 与 AGENTS.md；开发助手 Skill 和设备 Skill 是两类证据"]
+    }
+  ]
+}

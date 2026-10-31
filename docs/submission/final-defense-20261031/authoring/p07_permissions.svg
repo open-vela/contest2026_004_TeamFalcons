@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
+<image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
+</g>
+<g id="layout-shape-20" data-pptx-object="shape" data-pptx-frame="1638.47 1354.67 800 40" data-pptx-prst="rect" data-pptx-source-ref="layout:20" data-pptx-semantic-object="shape">
+<path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+</g>
+<g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
+<path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-2" data-pptx-object="shape" data-pptx-frame="186.67 77.33 933.33 40" data-pptx-prst="rect" data-pptx-source-ref="slide:2" data-pptx-semantic-object="shape">
+<path d="M 186.67 77.33 L 1120 77.33 L 1120 117.33 L 186.67 117.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="186.67" y="106" text-anchor="start" xml:space="preserve" font-size="24" fill="#0891B2" data-pptx-text-baseline="metrics-v1">PROJECT DEFENSE · 决赛答辩</text></g>
+<g id="shape-3" data-pptx-object="shape" data-pptx-frame="186.67 133.33 1733.33 96" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
+<path d="M 186.67 133.33 L 1920 133.33 L 1920 229.33 L 186.67 229.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="186.67" y="204.66666667" text-anchor="start" xml:space="preserve" font-size="61.33" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">AI 只读查询，配置生效由人确认</text></g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="189.33 256 101.33 10.67" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 189.33 261.33 A 5.33 5.33 0 0 1 194.67 256 L 285.33 256 A 5.33 5.33 0 0 1 290.67 261.33 L 290.67 261.33 A 5.33 5.33 0 0 1 285.33 266.67 L 194.67 266.67 A 5.33 5.33 0 0 1 189.33 261.33 Z" fill="url(#ggrad1)" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+</g>
+<g id="shape-5" data-pptx-object="graphic-frame" data-pptx-frame="186.67 400 2186.67 688" data-pptx-import-source="pptx" data-pptx-source-ref="slide:5" data-pptx-replace-with="table" data-pptx-native-authority="json">
+<metadata type="application/json">{"schema": "ppt-master.semantic-table.v2", "name": "shape-5", "x": 186.67, "y": 400.0, "width": 2186.67, "height": 688.0, "columns": [{"text": "对象", "fill": "#111827", "color": "#FFFFFF", "bold": true, "align": "ctr"}, {"text": "允许的行为", "fill": "#0891B2", "color": "#FFFFFF", "bold": true, "align": "ctr"}, {"text": "边界落实位置", "fill": "#9333EA", "color": "#FFFFFF", "bold": true, "align": "ctr"}], "rows": [[{"text": "实时数据", "fill": "#F1F5F9", "bold": true, "color": "#111827", "align": "ctr"}, {"text": "读取运行快照", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}, {"text": "C 工具参数与数量上限", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}], [{"text": "解释和日报", "fill": "#FFFFFF", "bold": true, "color": "#111827", "align": "ctr"}, {"text": "写入受限产物", "fill": "#FFFFFF", "bold": false, "color": "#334155", "align": "ctr"}, {"text": "产物格式与来源校验", "fill": "#FFFFFF", "bold": false, "color": "#334155", "align": "ctr"}], [{"text": "设备处置", "fill": "#F1F5F9", "bold": true, "color": "#111827", "align": "ctr"}, {"text": "不向 Agent 授权", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}, {"text": "无寄存器写入、清警权限", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}], [{"text": "配置变更", "fill": "#FFFFFF", "bold": true, "color": "#111827", "align": "ctr"}, {"text": "人工单独确认", "fill": "#FFFFFF", "bold": false, "color": "#334155", "align": "ctr"}, {"text": "候选与已确认表分离", "fill": "#FFFFFF", "bold": false, "color": "#334155", "align": "ctr"}], [{"text": "审计", "fill": "#F1F5F9", "bold": true, "color": "#111827", "align": "ctr"}, {"text": "记录工具调用", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}, {"text": "限流与会话门控", "fill": "#F1F5F9", "bold": false, "color": "#334155", "align": "ctr"}]], "column_widths": [0.2, 0.4, 0.4], "row_heights": [0.85, 1.0, 1.0, 1.0, 1.0, 1.0], "style": {"font_family": "MiSans", "font_size": 36, "border_color": "#CBD5E1", "border_width": 1, "band_row": false}, "defaults": {"cell": {"font_size": 36, "valign": "middle", "padding": 14}}}</metadata><use data-icon="imported/flat_slide_17_ill01" data-pptx-asset-role="decoration" /><text x="400" y="438.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">对象</text>
+<text x="1053.33" y="438.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">允许的行为</text>
+<text x="1933.33" y="438.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#FFFFFF" font-weight="bold" data-pptx-text-baseline="metrics-v1">边界落实位置</text>
+<text x="400" y="537.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">实时数据</text>
+<text x="1053.33" y="537.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">读取运行快照</text>
+<text x="1933.33" y="537.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">C 工具参数与数量上限</text>
+<text x="400" y="654.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">解释和日报</text>
+<text x="1053.33" y="654.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">写入受限产物</text>
+<text x="1933.33" y="654.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">产物格式与来源校验</text>
+<text x="400" y="772" text-anchor="middle" xml:space="preserve" font-size="36" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">设备处置</text>
+<text x="1053.33" y="772" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">不向 Agent 授权</text>
+<text x="1933.33" y="772" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">无寄存器写入、清警权限</text>
+<text x="400" y="889.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">配置变更</text>
+<text x="1053.33" y="889.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">人工单独确认</text>
+<text x="1933.33" y="889.33333333" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">候选与已确认表分离</text>
+<text x="400" y="1006.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">审计</text>
+<text x="1053.33" y="1006.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">记录工具调用</text>
+<text x="1933.33" y="1006.66666667" text-anchor="middle" xml:space="preserve" font-size="36" fill="#334155" fill-opacity="0.94902" data-pptx-text-baseline="metrics-v1">限流与会话门控</text>
+</g>
+<g id="shape-6" data-pptx-object="shape" data-pptx-frame="280 1144 2000 53.33" data-pptx-prst="rect" data-pptx-source-ref="slide:6" data-pptx-semantic-object="shape">
+<path d="M 280 1144 L 2280 1144 L 2280 1197.33 L 280 1197.33 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1280" y="1179.33333333" text-anchor="middle" xml:space="preserve" font-size="32" fill="#64748B" data-pptx-text-baseline="metrics-v1">NSH 现行流程：编辑候选、试读并展示、等待人工确认、单独 apply</text></g><g id="output-page-number" data-pptx-bounds="95 1359 2285 34.5"><text x="95" y="1382" font-size="23" fill="#64748B" font-weight="normal">07</text></g></svg>

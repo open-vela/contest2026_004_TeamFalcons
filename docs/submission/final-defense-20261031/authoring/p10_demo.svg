@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, sans-serif"><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="shape-21" data-pptx-object="picture" data-pptx-frame="0 0.4 2559.27 1439.6" data-pptx-source-ref="slide:21">
+<image href="../images/defense-board.jpeg" x="0" y="0" width="2560" height="1440" preserveAspectRatio="xMidYMid meet" /></g>
+<g id="shape-20" data-pptx-object="shape" data-pptx-frame="0 1265 2560 175" data-pptx-prst="rect" data-pptx-source-ref="slide:20" data-pptx-semantic-object="shape">
+<path d="M 0 1265 L 2560 1265 L 2560 1440 L 0 1440 Z" fill="#0F172A" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="1279.63" y="1335" text-anchor="middle" xml:space="preserve" font-size="42" fill="#FFFFFF" data-pptx-text-baseline="metrics-v1">真机演示：采集、告警、取证解释、断网监测</text></g><g id="demo-still-disclosure" data-pptx-bounds="850 1373 1530 40.5"><text x="850" y="1400" font-size="27" fill="#CBD5E1" font-weight="normal">原型实拍静帧，配套视频按脚本录制</text></g></svg>
