@@ -22,7 +22,7 @@
 #define VG_CONFIG_STATE_MAX 4096
 #define VG_CONFIG_LEASE_MS 600000u
 #define VG_CONFIG_ID_MAX 65
-#define VG_CONFIG_REQUEST_CACHE 16
+#define VG_CONFIG_REQUEST_CACHE 32
 #define VG_CONFIG_USED_TASKS 32
 
 enum vg_config_session_state_e
@@ -55,6 +55,7 @@ struct vg_config_table_snapshot
   uint32_t slave_count;
   bool has_base_hash;
   char base_hash[VG_CONFIG_HASH_LEN];
+  struct vg_discover_summary current;
 };
 
 struct vg_config_device_snapshot
@@ -110,6 +111,23 @@ struct vg_config_cancel_request
   char session_id[VG_CONFIG_HEX32_LEN];
 };
 
+struct vg_config_put_request
+{
+  char req_id[VG_CONFIG_ID_MAX];
+  char request_hash[VG_CONFIG_HASH_LEN];
+  char task_id[VG_CONFIG_ID_MAX];
+  char boot_id[VG_CONFIG_HEX32_LEN];
+  char link_id[VG_CONFIG_HEX32_LEN];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  uint32_t expected_revision;
+  uint32_t revision;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+  char payload_hash[VG_CONFIG_HASH_LEN];
+  const void *candidate_json;
+  size_t candidate_json_len;
+};
+
 struct vg_config_task_status
 {
   char task_id[VG_CONFIG_ID_MAX];
@@ -130,11 +148,29 @@ struct vg_config_task_status
   bool retryable;
 };
 
+struct vg_config_pending_candidate
+{
+  bool valid;
+  char task_id[VG_CONFIG_ID_MAX];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  uint32_t revision;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+  char payload_hash[VG_CONFIG_HASH_LEN];
+  char candidate_hash[VG_CONFIG_HASH_LEN];
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+  size_t candidate_json_len;
+  char candidate_json[VG_CONFIG_REQUEST_MAX + 1];
+  size_t target_len;
+  char target_json[VG_POINT_TABLE_JSON_MAX];
+};
+
 struct vg_config_cached_request
 {
   bool used;
   char req_id[VG_CONFIG_ID_MAX];
   char request_hash[VG_CONFIG_HASH_LEN];
+  int result;
   struct vg_config_task_status status;
 };
 
@@ -153,6 +189,7 @@ struct vg_config_service
   size_t request_cursor;
   struct vg_config_cached_request requests[VG_CONFIG_REQUEST_CACHE];
   struct vg_config_task_status session;
+  struct vg_config_pending_candidate pending;
   bool session_active;
   bool open_seq_exhausted;
   bool initialized;
@@ -175,5 +212,11 @@ int vg_config_service_query_task(struct vg_config_service *service,
 int vg_config_service_cancel(struct vg_config_service *service,
                              const struct vg_config_cancel_request *request,
                              struct vg_config_task_status *out);
+int vg_config_service_put(struct vg_config_service *service,
+                          const struct vg_config_put_request *request,
+                          struct vg_config_task_status *out);
+int vg_config_service_pending_candidate(
+  struct vg_config_service *service,
+  struct vg_config_pending_candidate *out);
 
 #endif

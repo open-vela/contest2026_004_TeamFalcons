@@ -107,6 +107,9 @@ int vg_point_table_infer(FAR struct vg_discover_summary *sum);
 int vg_point_table_write_candidate(FAR const struct vg_discover_summary *sum,
                                    FAR const char *path);
 
+int vg_point_table_serialize(FAR const struct vg_discover_summary *sum,
+                             FAR char *out, size_t cap, size_t *out_len);
+
 int vg_point_table_create_candidate(const struct vg_discover_summary *sum,
                                     const char *path);
 

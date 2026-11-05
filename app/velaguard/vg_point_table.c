@@ -335,8 +335,8 @@ static int valid_point(const struct vg_point_entry *p)
     (!p->has_crit || isfinite(p->crit)) && p->fail_n <= 20;
 }
 
-static int write_point_table(FAR const struct vg_discover_summary *sum,
-                              FAR const char *path, int create_only)
+int vg_point_table_serialize(FAR const struct vg_discover_summary *sum,
+                             FAR char *out, size_t cap, size_t *out_len)
 {
   cJSON *doc = NULL;
   cJSON *bus;
@@ -346,7 +346,10 @@ static int write_point_table(FAR const struct vg_discover_summary *sum,
   int rc = -ENOMEM;
   int i;
   int j;
-  if (sum == NULL || path == NULL || sum->n_points < 0 ||
+  size_t length;
+
+  if (sum == NULL || out == NULL || out_len == NULL || cap == 0 ||
+      sum->n_points < 0 ||
       sum->n_points > VG_DISCOVER_MAX_POINTS || sum->n_hits < 0 ||
       sum->n_hits > VG_DISCOVER_MAX_SLAVES ||
       !memchr(sum->devpath, 0, sizeof(sum->devpath))) return -EINVAL;
@@ -356,8 +359,6 @@ static int write_point_table(FAR const struct vg_discover_summary *sum,
       for (j = 0; j < i; j++)
         if (!strcmp(sum->points[j].id, sum->points[i].id)) return -EINVAL;
     }
-  rc = mkdir_parent(path);
-  if (rc != 0) return rc;
   rc = -ENOMEM;
   doc = cJSON_CreateObject();
   if (doc == NULL) goto done;
@@ -395,13 +396,57 @@ static int write_point_table(FAR const struct vg_discover_summary *sum,
       ADD(cJSON_AddNumberToObject(obj, "fail_n", p->fail_n ? p->fail_n : 3));
     }
   ADD(body = cJSON_PrintUnformatted(doc));
-  rc = strlen(body) < VG_POINTS_JSON_MAX - 1 ?
-       (create_only ? vg_file_create(path, body, strlen(body), 0644) :
-                      vg_file_replace(path, body, strlen(body), 0644)) : -EFBIG;
+  length = strlen(body);
+  if (length >= cap || length >= VG_POINTS_JSON_MAX)
+    {
+      rc = -EFBIG;
+      goto done;
+    }
+
+  memcpy(out, body, length);
+  out[length] = '\0';
+  *out_len = length;
+  rc = 0;
 #undef ADD
  done:
   cJSON_free(body);
   cJSON_Delete(doc);
+  return rc;
+}
+
+static int write_point_table(FAR const struct vg_discover_summary *sum,
+                              FAR const char *path, int create_only)
+{
+  char *body;
+  size_t length = 0;
+  int rc;
+
+  if (path == NULL)
+    {
+      return -EINVAL;
+    }
+
+  rc = mkdir_parent(path);
+  if (rc != 0)
+    {
+      return rc;
+    }
+
+  body = malloc(VG_POINTS_JSON_MAX);
+  if (body == NULL)
+    {
+      return -ENOMEM;
+    }
+
+  rc = vg_point_table_serialize(sum, body, VG_POINTS_JSON_MAX, &length);
+  if (rc == 0)
+    {
+      rc = create_only ?
+           vg_file_create(path, body, length, 0644) :
+           vg_file_replace(path, body, length, 0644);
+    }
+
+  free(body);
   return rc;
 }
 

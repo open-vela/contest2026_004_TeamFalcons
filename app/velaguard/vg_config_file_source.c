@@ -175,6 +175,7 @@ int vg_config_file_source_load(void *ctx,
       return ret != 0 ? ret : -EINVAL;
     }
 
+  out->current = table;
   if (table.n_points == 0)
     {
       out->state = VG_CONFIG_TABLE_EMPTY;

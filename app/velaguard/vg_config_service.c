@@ -7,7 +7,9 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "vg_config_candidate.h"
 #include "vg_config_service.h"
+#include "../../boot/ota_core/vg_ota_sha256.h"
 
 static void digest_to_hex(const uint8_t digest[16], char out[33])
 {
@@ -21,6 +23,39 @@ static void digest_to_hex(const uint8_t digest[16], char out[33])
     }
 
   out[32] = '\0';
+}
+
+static void digest32_to_hex(const uint8_t digest[32], char out[65])
+{
+  static const char digits[] = "0123456789abcdef";
+  size_t i;
+
+  for (i = 0; i < 32; i++)
+    {
+      out[i * 2] = digits[digest[i] >> 4];
+      out[i * 2 + 1] = digits[digest[i] & 0x0f];
+    }
+
+  out[64] = '\0';
+}
+
+static int payload_hash(const void *data, size_t length, char out[65])
+{
+  struct vg_ota_sha256 sha;
+  uint8_t digest[32];
+
+  if (data == NULL || length == 0 || out == NULL)
+    {
+      return -EINVAL;
+    }
+
+  vg_ota_sha256_init(&sha);
+  vg_ota_sha256_update(&sha, data, (uint32_t)length);
+  vg_ota_sha256_final(&sha, digest);
+  digest32_to_hex(digest, out);
+  memset(digest, 0, sizeof(digest));
+  memset(&sha, 0, sizeof(sha));
+  return 0;
 }
 
 static int make_identity(struct vg_config_service *service, char out[33])
@@ -181,6 +216,7 @@ find_request(struct vg_config_service *service, const char *req_id)
 
 static void cache_request(struct vg_config_service *service,
                           const char *req_id, const char *request_hash,
+                          int result,
                           const struct vg_config_task_status *status)
 {
   struct vg_config_cached_request *entry =
@@ -190,6 +226,7 @@ static void cache_request(struct vg_config_service *service,
   entry->used = true;
   memcpy(entry->req_id, req_id, sizeof(entry->req_id));
   memcpy(entry->request_hash, request_hash, sizeof(entry->request_hash));
+  entry->result = result;
   entry->status = *status;
   service->request_cursor =
     (service->request_cursor + 1) % VG_CONFIG_REQUEST_CACHE;
@@ -465,7 +502,7 @@ int vg_config_service_open(struct vg_config_service *service,
 
       fill_status(service, &cached->status, out);
       pthread_mutex_unlock(&service->lock);
-      return 0;
+      return cached->result;
     }
 
   if (strcmp(request->boot_id, service->boot_id) != 0 ||
@@ -575,7 +612,8 @@ int vg_config_service_open(struct vg_config_service *service,
       service->next_open_seq++;
     }
 
-  cache_request(service, request->req_id, request->request_hash, &status);
+  cache_request(service, request->req_id, request->request_hash, 0,
+                &status);
   fill_status(service, &status, out);
   pthread_mutex_unlock(&service->lock);
   memset(session_id, 0, sizeof(session_id));
@@ -650,7 +688,7 @@ int vg_config_service_cancel(struct vg_config_service *service,
 
       fill_status(service, &cached->status, out);
       pthread_mutex_unlock(&service->lock);
-      return 0;
+      return cached->result;
     }
 
   if (!service->session_active ||
@@ -682,7 +720,7 @@ int vg_config_service_cancel(struct vg_config_service *service,
   gate_token = service->remote_gate_token;
   service->remote_gate_token = 0;
   release = gate_token != 0;
-  cache_request(service, request->req_id, request->request_hash,
+  cache_request(service, request->req_id, request->request_hash, 0,
                 &service->session);
   fill_status(service, &service->session, out);
   pthread_mutex_unlock(&service->lock);
@@ -692,5 +730,290 @@ int vg_config_service_cancel(struct vg_config_service *service,
       (void)vg_config_gate_release(VG_CONFIG_GATE_REMOTE, gate_token);
     }
 
+  return 0;
+}
+
+static const char *candidate_error_code(int ret)
+{
+  switch (ret)
+    {
+      case -EEXIST:
+        return "candidate_conflict";
+      case -E2BIG:
+        return "capacity_exceeded";
+      case -ENOMEM:
+        return "validation_resource";
+      default:
+        return "invalid_candidate";
+    }
+}
+
+int vg_config_service_put(struct vg_config_service *service,
+                          const struct vg_config_put_request *request,
+                          struct vg_config_task_status *out)
+{
+  struct vg_config_candidate_build build;
+  struct vg_config_cached_request *cached;
+  struct vg_config_table_snapshot table;
+  char calculated_payload_hash[VG_CONFIG_HASH_LEN];
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+  uint32_t generation_before;
+  int tick_ret;
+  int ret;
+
+  if (service == NULL || request == NULL || out == NULL ||
+      !service->initialized || !valid_text_id(request->req_id) ||
+      !valid_hash(request->request_hash) ||
+      !valid_text_id(request->task_id) ||
+      !valid_hex32(request->boot_id) || !valid_hex32(request->link_id) ||
+      !valid_hex32(request->session_id) ||
+      (request->has_base_hash && !valid_hash(request->base_hash)) ||
+      !valid_hash(request->payload_hash) ||
+      request->candidate_json == NULL ||
+      request->candidate_json_len == 0 ||
+      request->candidate_json_len > VG_CONFIG_REQUEST_MAX)
+    {
+      return -EINVAL;
+    }
+
+  if (request->revision == 0 ||
+      request->expected_revision == UINT32_MAX ||
+      request->revision != request->expected_revision + 1)
+    {
+      return -EINVAL;
+    }
+
+  ret = payload_hash(request->candidate_json, request->candidate_json_len,
+                     calculated_payload_hash);
+  if (ret != 0)
+    {
+      return ret;
+    }
+
+  if (strcmp(calculated_payload_hash, request->payload_hash) != 0)
+    {
+      memset(calculated_payload_hash, 0, sizeof(calculated_payload_hash));
+      return -EINVAL;
+    }
+
+  ret = vg_config_service_tick(service);
+  if (ret != 0)
+    {
+      memset(calculated_payload_hash, 0, sizeof(calculated_payload_hash));
+      return ret;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  cached = find_request(service, request->req_id);
+  if (cached != NULL)
+    {
+      if (strcmp(cached->request_hash, request->request_hash) != 0)
+        {
+          pthread_mutex_unlock(&service->lock);
+          return -EEXIST;
+        }
+
+      fill_status(service, &cached->status, out);
+      ret = cached->result;
+      pthread_mutex_unlock(&service->lock);
+      return ret;
+    }
+
+  if (!service->session_active)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ENOENT;
+    }
+
+  if (strcmp(request->task_id, service->session.task_id) != 0 ||
+      strcmp(request->session_id, service->session.session_id) != 0)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ENOENT;
+    }
+
+  if (strcmp(request->boot_id, service->boot_id) != 0 ||
+      strcmp(request->link_id, service->link_id) != 0)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ESTALE;
+    }
+
+  if ((service->session.has_base_hash != request->has_base_hash) ||
+      (request->has_base_hash &&
+       strcmp(service->session.base_hash, request->base_hash) != 0))
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ESTALE;
+    }
+
+  if (service->session.state == VG_CONFIG_SESSION_VALIDATING ||
+      service->session.state == VG_CONFIG_SESSION_COMMITTING)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -EBUSY;
+    }
+
+  if (service->session.state != VG_CONFIG_SESSION_OPENED &&
+      service->session.state != VG_CONFIG_SESSION_AWAITING_CONFIRM)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -EALREADY;
+    }
+
+  if (request->expected_revision != service->session.revision)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -EINVAL;
+    }
+
+  service->session.state = VG_CONFIG_SESSION_VALIDATING;
+  service->session.state_seq++;
+  service->session.has_payload_hash = false;
+  memset(service->session.payload_hash, 0,
+         sizeof(service->session.payload_hash));
+  service->session.has_candidate_hash = false;
+  memset(service->session.candidate_hash, 0,
+         sizeof(service->session.candidate_hash));
+  service->session.has_confirmation_id = false;
+  memset(service->session.confirmation_id, 0,
+         sizeof(service->session.confirmation_id));
+  service->session.error_code[0] = '\0';
+  service->session.retryable = false;
+  memset(&service->pending, 0, sizeof(service->pending));
+  generation_before = service->session.state_seq;
+  pthread_mutex_unlock(&service->lock);
+
+  memset(&table, 0, sizeof(table));
+  ret = service->ports.load_table(service->ports.ctx, &table);
+  if (ret == 0 &&
+      (table.state == VG_CONFIG_TABLE_UNAVAILABLE ||
+       ((table.state == VG_CONFIG_TABLE_VALID) !=
+        request->has_base_hash) ||
+       (request->has_base_hash &&
+        strcmp(table.base_hash, request->base_hash) != 0)))
+    {
+      ret = -ESTALE;
+    }
+
+  memset(&build, 0, sizeof(build));
+  if (ret == 0)
+    {
+      ret = vg_config_candidate_build_json(
+        request->candidate_json, request->candidate_json_len,
+        &table.current, &build);
+    }
+
+  memset(confirmation_id, 0, sizeof(confirmation_id));
+  if (ret == 0)
+    {
+      ret = make_identity(service, confirmation_id);
+    }
+
+  tick_ret = vg_config_service_tick(service);
+  if (ret == 0 && tick_ret != 0)
+    {
+      ret = tick_ret;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (!service->session_active ||
+      service->session.state != VG_CONFIG_SESSION_VALIDATING ||
+      service->session.state_seq != generation_before ||
+      strcmp(service->session.task_id, request->task_id) != 0 ||
+      strcmp(service->session.session_id, request->session_id) != 0)
+    {
+      pthread_mutex_unlock(&service->lock);
+      ret = -EAGAIN;
+      goto done;
+    }
+
+  if (ret == 0)
+    {
+      memset(&service->pending, 0, sizeof(service->pending));
+      service->pending.valid = true;
+      memcpy(service->pending.task_id, request->task_id,
+             sizeof(service->pending.task_id));
+      memcpy(service->pending.session_id, request->session_id,
+             sizeof(service->pending.session_id));
+      service->pending.revision = request->revision;
+      service->pending.has_base_hash = request->has_base_hash;
+      if (request->has_base_hash)
+        {
+          memcpy(service->pending.base_hash, request->base_hash,
+                 sizeof(service->pending.base_hash));
+        }
+      memcpy(service->pending.payload_hash, request->payload_hash,
+             sizeof(service->pending.payload_hash));
+      memcpy(service->pending.candidate_hash, build.candidate_hash,
+             sizeof(service->pending.candidate_hash));
+      memcpy(service->pending.confirmation_id, confirmation_id,
+             sizeof(service->pending.confirmation_id));
+      service->pending.candidate_json_len =
+        request->candidate_json_len;
+      memcpy(service->pending.candidate_json, request->candidate_json,
+             request->candidate_json_len);
+      service->pending.candidate_json[request->candidate_json_len] = '\0';
+      service->pending.target_len = build.target_len;
+      memcpy(service->pending.target_json, build.target_json,
+             build.target_len + 1);
+
+      service->session.state = VG_CONFIG_SESSION_AWAITING_CONFIRM;
+      service->session.revision = request->revision;
+      service->session.has_payload_hash = true;
+      memcpy(service->session.payload_hash, request->payload_hash,
+             sizeof(service->session.payload_hash));
+      service->session.has_candidate_hash = true;
+      memcpy(service->session.candidate_hash, build.candidate_hash,
+             sizeof(service->session.candidate_hash));
+      service->session.has_confirmation_id = true;
+      memcpy(service->session.confirmation_id, confirmation_id,
+             sizeof(service->session.confirmation_id));
+      service->session.error_code[0] = '\0';
+      service->session.retryable = false;
+    }
+  else
+    {
+      memset(&service->pending, 0, sizeof(service->pending));
+      service->session.state = VG_CONFIG_SESSION_OPENED;
+      service->session.state_seq++;
+      set_error(&service->session,
+                ret == -ESTALE ? "base_conflict" :
+                                 candidate_error_code(ret),
+                false);
+    }
+
+  service->session.state_seq += ret == 0 ? 1 : 0;
+  cache_request(service, request->req_id, request->request_hash, ret,
+                &service->session);
+  fill_status(service, &service->session, out);
+  pthread_mutex_unlock(&service->lock);
+
+ done:
+  memset(calculated_payload_hash, 0, sizeof(calculated_payload_hash));
+  memset(confirmation_id, 0, sizeof(confirmation_id));
+  memset(&build, 0, sizeof(build));
+  return ret;
+}
+
+int vg_config_service_pending_candidate(
+  struct vg_config_service *service,
+  struct vg_config_pending_candidate *out)
+{
+  if (service == NULL || out == NULL || !service->initialized)
+    {
+      return -EINVAL;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (!service->session_active || !service->pending.valid ||
+      service->session.state != VG_CONFIG_SESSION_AWAITING_CONFIRM)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ENOENT;
+    }
+
+  *out = service->pending;
+  pthread_mutex_unlock(&service->lock);
   return 0;
 }
