@@ -36,6 +36,8 @@ function Send-Command {
 }
 
 Send-Command "vgconfigmqtt status"
+Send-Command "vgpoint list"
+Send-Command "vgpoint get"
 Send-Command "ps"
 Send-Command "free"
 $port.Close()

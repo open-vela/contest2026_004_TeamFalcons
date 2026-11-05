@@ -176,7 +176,7 @@ class Broker:
             "scope": "device",
         }
 
-    def candidate(self, snapshot: dict) -> tuple[str, str]:
+    def candidate(self, snapshot: dict) -> tuple[str, str, str]:
         used_addresses = set(snapshot.get("slave_addresses", []))
         used_ids = set(snapshot.get("point_ids", []))
         address = next(
@@ -227,7 +227,7 @@ class Broker:
             ],
         }
         raw = compact_json(candidate)
-        return raw.decode("utf-8"), hashlib.sha256(raw).hexdigest()
+        return raw.decode("utf-8"), hashlib.sha256(raw).hexdigest(), point_id
 
     def connection(self, raw: socket.socket) -> None:
         current_stage = "connect"
@@ -239,9 +239,14 @@ class Broker:
         put_request: dict | None = None
         confirm_state_seq = 0
         confirmation_id = ""
+        candidate_point_id = ""
 
         try:
-            raw.settimeout(20)
+            raw.settimeout(
+                self.args.confirm_timeout + 20
+                if self.args.await_confirm
+                else 20
+            )
             with self.tls.wrap_socket(raw, server_side=True) as conn:
                 kind, payload = packet(conn)
                 if kind != 0x10:
@@ -332,7 +337,11 @@ class Broker:
                             ):
                                 raise ValueError("query did not return device_snapshot")
                             snapshot = state
-                            candidate_json, payload_hash = self.candidate(snapshot)
+                            (
+                                candidate_json,
+                                payload_hash,
+                                candidate_point_id,
+                            ) = self.candidate(snapshot)
                             current_stage = "open"
                             request = {
                                 "schema_version": 1,
@@ -414,6 +423,14 @@ class Broker:
                                 raise ValueError(
                                     "duplicate put changed the confirmation"
                                 )
+                            if self.args.await_confirm:
+                                current_stage = "await_local_confirm"
+                                print(
+                                    "READY config MQTT board: candidate is "
+                                    "awaiting local confirmation; click "
+                                    "Confirm Add on the board display"
+                                )
+                                continue
                             current_stage = "cancel"
                             run_resource_probe(self.args.com_port)
                             time.sleep(2)
@@ -454,6 +471,33 @@ class Broker:
                                 packet_id=next_packet_id,
                             )
                             next_packet_id += 1
+                        elif current_stage == "await_local_confirm":
+                            if kind_name != "state":
+                                raise ValueError(
+                                    "invalid response while awaiting local confirmation"
+                                )
+                            if state.get("state") == "applied":
+                                current_stage = "postcheck_applied"
+                                self.publish(
+                                    conn,
+                                    topic,
+                                    compact_json(
+                                        self.query(
+                                            f"rq-device-applied-{self.run_id}"
+                                        )
+                                    ),
+                                    packet_id=next_packet_id,
+                                )
+                                next_packet_id += 1
+                            elif state.get("state") in {
+                                "cancelled",
+                                "expired",
+                                "failed",
+                                "recovery_unknown",
+                            }:
+                                raise ValueError(
+                                    f"local confirmation ended as {state.get('state')}"
+                                )
                         elif current_stage == "postcheck":
                             if kind_name != "device_snapshot":
                                 raise ValueError("post-cancel query failed")
@@ -469,6 +513,29 @@ class Broker:
                                 f"points={snapshot['point_count']} "
                                 "query=ok open=ok put=awaiting_local_confirm "
                                 "cancel=ok unchanged=ok"
+                            )
+                            self.done.set()
+                            conn.sendall(frame(0xE0, b""))
+                            return
+                        elif current_stage == "postcheck_applied":
+                            if kind_name != "device_snapshot":
+                                raise ValueError("post-apply query failed")
+                            expected_count = int(snapshot["point_count"]) + 1
+                            if (
+                                state["point_count"] != expected_count
+                                or candidate_point_id
+                                not in state["point_ids"]
+                                or state["base_hash"] == snapshot["base_hash"]
+                            ):
+                                raise ValueError(
+                                    "confirmed candidate was not persisted"
+                                )
+                            print(
+                                "PASS config MQTT board apply: "
+                                f"mode=local-tls device={self.device_id} "
+                                f"points={state['point_count']} "
+                                "query=ok open=ok put=awaiting_local_confirm "
+                                "local_confirm=applied persisted=ok"
                             )
                             self.done.set()
                             conn.sendall(frame(0xE0, b""))
@@ -564,6 +631,8 @@ def main() -> int:
     parser.add_argument("--password", default="config-board-local-only")
     parser.add_argument("--com-port", default="COM3")
     parser.add_argument("--skip-provision", action="store_true")
+    parser.add_argument("--await-confirm", action="store_true")
+    parser.add_argument("--confirm-timeout", type=int, default=660)
     args = parser.parse_args()
 
     broker = Broker(args)
@@ -584,7 +653,12 @@ def main() -> int:
                 daemon=True,
             )
             provision_thread.start()
-        if not broker.done.wait(timeout=75):
+        wait_timeout = (
+            args.confirm_timeout + 20
+            if args.await_confirm
+            else 75
+        )
+        if not broker.done.wait(timeout=wait_timeout):
             raise TimeoutError("board acceptance timed out")
         if broker.failure is not None:
             return 1

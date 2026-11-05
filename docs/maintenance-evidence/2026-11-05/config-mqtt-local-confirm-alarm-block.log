@@ -1,0 +1,28 @@
+MQTT candidate local confirmation attempt, 2026-11-05
+
+Condition
+- board reached awaiting_local_confirm over a verified TLS Broker
+- vgconfigmqtt: initialized=1 running=1 online=1 error=none
+- confirmation worker and HMI threads were present in ps
+- MQTT duplicate put kept the same state_seq and confirmation_id
+
+Observed Modbus and alarm precondition
+- vgpoint list: committed table contains 14 points
+- vgpoint get: all 14 points reported ok=0 with no value
+- board UI alarm policy gives active local alarms priority over configuration
+  confirmation; with all measured points offline, the confirmation surface
+  remains suppressed
+
+Safety decision
+- no alarm was muted, acknowledged away, cleared, or bypassed
+- no fake Modbus value was injected
+- no MQTT, NSH, desktop or Agent action was used to confirm
+- no candidate was applied or persisted during this attempt
+
+Blocking external condition
+- restore the RS485 slaves/MThings simulation so no active alarm suppresses the
+  confirmation surface
+- rerun:
+  python scripts/config_mqtt_board_accept.py ... --skip-provision --await-confirm
+- a human must click Confirm Add on the physical display, then the harness will
+  verify applied state, increased point count, new point ID and changed base hash
