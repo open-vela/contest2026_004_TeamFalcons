@@ -14,9 +14,9 @@
 #include "vg_config_candidate.h"
 #include "../../boot/ota_core/vg_ota_sha256.h"
 
-#define JSON_KEY_MAX 64
-#define JSON_STRING_MAX 1024
-#define JSON_OBJECT_FIELDS_MAX 32
+#define JSON_KEY_MAX 40
+#define JSON_STRING_MAX 192
+#define JSON_OBJECT_FIELDS_MAX 16
 #define JSON_ARRAY_ITEMS_MAX 64
 #define JSON_DEPTH_MAX 12
 
@@ -1203,10 +1203,10 @@ static void hash_to_hex(const uint8_t digest[32], char out[65])
   out[64] = '\0';
 }
 
-int vg_config_candidate_build_json(
-  const void *json, size_t length,
-  const struct vg_discover_summary *current,
-  struct vg_config_candidate_build *out)
+int vg_config_candidate_parse_json(
+  const void *json,
+  size_t length,
+  struct vg_config_candidate *out)
 {
   static const char *const root_keys[] =
   {
@@ -1222,7 +1222,6 @@ int vg_config_candidate_build_json(
   {
     "manual_id", "sha256"
   };
-  struct vg_config_candidate_build build;
   cJSON *doc = NULL;
   const cJSON *root;
   const cJSON *bus;
@@ -1230,14 +1229,10 @@ int vg_config_candidate_build_json(
   const cJSON *manual;
   const cJSON *evidence;
   const cJSON *points;
-  struct vg_ota_sha256 sha;
-  uint8_t digest[32];
   double value;
   int ret;
 
-  if (json == NULL || current == NULL || out == NULL ||
-      current->n_points < 0 ||
-      current->n_points > VG_DISCOVER_MAX_POINTS)
+  if (json == NULL || out == NULL)
     {
       return -EINVAL;
     }
@@ -1248,7 +1243,7 @@ int vg_config_candidate_build_json(
       return ret;
     }
 
-  memset(&build, 0, sizeof(build));
+  memset(out, 0, sizeof(*out));
   {
     char *copy = malloc(length + 1);
     if (copy == NULL)
@@ -1274,10 +1269,9 @@ int vg_config_candidate_build_json(
       ret = -EINVAL;
       goto done;
     }
-  build.candidate.schema_version = (uint32_t)value;
-  ret = string_field(root, "mode", build.candidate.mode,
-                     sizeof(build.candidate.mode), true);
-  if (ret != 0 || strcmp(build.candidate.mode, "add_sensor") != 0)
+  out->schema_version = (uint32_t)value;
+  ret = string_field(root, "mode", out->mode, sizeof(out->mode), true);
+  if (ret != 0 || strcmp(out->mode, "add_sensor") != 0)
     {
       ret = -EINVAL;
       goto done;
@@ -1290,29 +1284,28 @@ int vg_config_candidate_build_json(
       ret = -EINVAL;
       goto done;
     }
-  build.candidate.baud = 9600;
+  out->baud = 9600;
 
   sensor = required_item(root, "sensor", cJSON_Object);
   if (sensor == NULL || allowed_keys(sensor, sensor_keys, 2) != 0 ||
       integer_field(sensor, "slave_address", 1, 247, true, &value) != 0 ||
-      string_field(sensor, "model", build.candidate.model,
-                   sizeof(build.candidate.model), true) != 0 ||
-      !text_without_controls(build.candidate.model,
-                             sizeof(build.candidate.model) - 1, false))
+      string_field(sensor, "model", out->model,
+                   sizeof(out->model), true) != 0 ||
+      !text_without_controls(out->model, sizeof(out->model) - 1, false))
     {
       ret = -EINVAL;
       goto done;
     }
-  build.candidate.slave_address = (uint8_t)value;
+  out->slave_address = (uint8_t)value;
 
   manual = required_item(root, "manual", cJSON_Object);
   if (manual == NULL || allowed_keys(manual, manual_keys, 2) != 0 ||
-      string_field(manual, "manual_id", build.candidate.manual_id,
-                   sizeof(build.candidate.manual_id), true) != 0 ||
-      !text_id(build.candidate.manual_id) ||
-      string_field(manual, "sha256", build.candidate.manual_sha256,
-                   sizeof(build.candidate.manual_sha256), true) != 0 ||
-      !lowercase_hex(build.candidate.manual_sha256, 64))
+      string_field(manual, "manual_id", out->manual_id,
+                   sizeof(out->manual_id), true) != 0 ||
+      !text_id(out->manual_id) ||
+      string_field(manual, "sha256", out->manual_sha256,
+                   sizeof(out->manual_sha256), true) != 0 ||
+      !lowercase_hex(out->manual_sha256, 64))
     {
       ret = -EINVAL;
       goto done;
@@ -1326,39 +1319,66 @@ int vg_config_candidate_build_json(
       goto done;
     }
 
-  ret = parse_evidence(evidence, &build.candidate);
+  ret = parse_evidence(evidence, out);
   if (ret == 0)
     {
-      ret = parse_points(points, &build.candidate);
-    }
-  if (ret == 0)
-    {
-      ret = merge_candidate(&build.candidate, current, &build.merged);
+      ret = parse_points(points, out);
     }
   if (ret != 0)
     {
       goto done;
     }
 
-  ret = vg_point_table_serialize(&build.merged, build.target_json,
-                                 sizeof(build.target_json),
-                                 &build.target_len);
-  if (ret != 0)
-    {
-      goto done;
-    }
-
-  vg_ota_sha256_init(&sha);
-  vg_ota_sha256_update(&sha, (const uint8_t *)build.target_json,
-                       (uint32_t)build.target_len);
-  vg_ota_sha256_final(&sha, digest);
-  hash_to_hex(digest, build.candidate_hash);
-  memset(&sha, 0, sizeof(sha));
-  memset(digest, 0, sizeof(digest));
-  *out = build;
   ret = 0;
 
  done:
   cJSON_Delete(doc);
+  if (ret != 0)
+    {
+      memset(out, 0, sizeof(*out));
+    }
   return ret;
+}
+
+int vg_config_candidate_build_json(
+  const void *json, size_t length,
+  const struct vg_discover_summary *current,
+  struct vg_config_candidate_build *out)
+{
+  struct vg_ota_sha256 sha;
+  uint8_t digest[32];
+  int ret;
+
+  if (current == NULL || out == NULL || current->n_points < 0 ||
+      current->n_points > VG_DISCOVER_MAX_POINTS)
+    {
+      return -EINVAL;
+    }
+
+  memset(out, 0, sizeof(*out));
+  ret = vg_config_candidate_parse_json(json, length, &out->candidate);
+  if (ret == 0)
+    {
+      ret = merge_candidate(&out->candidate, current, &out->merged);
+    }
+  if (ret == 0)
+    {
+      ret = vg_point_table_serialize(&out->merged, out->target_json,
+                                     sizeof(out->target_json),
+                                     &out->target_len);
+    }
+  if (ret != 0)
+    {
+      memset(out, 0, sizeof(*out));
+      return ret;
+    }
+
+  vg_ota_sha256_init(&sha);
+  vg_ota_sha256_update(&sha, (const uint8_t *)out->target_json,
+                       (uint32_t)out->target_len);
+  vg_ota_sha256_final(&sha, digest);
+  hash_to_hex(digest, out->candidate_hash);
+  memset(&sha, 0, sizeof(sha));
+  memset(digest, 0, sizeof(digest));
+  return 0;
 }

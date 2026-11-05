@@ -104,6 +104,10 @@ extern int vghmi_main(int argc, char *argv[]);
 #endif
 #endif
 
+#ifdef CONFIG_VG_CONFIG_MQTT
+#include "vg_config_mqtt_runtime.h"
+#endif
+
 #ifdef CONFIG_VG_OTA_PROBE
 #include "vg_ota_self_check.h"
 #include "vg_ota_staging.h"
@@ -236,6 +240,20 @@ int main(int argc, char *argv[])
 #ifdef CONFIG_VG_OTA_NETWORK
     (void)vg_ota_service_start();
 #endif
+#endif
+
+#ifdef CONFIG_VG_CONFIG_MQTT
+    {
+      int config_mqtt_ret = vg_config_mqtt_runtime_start();
+      if (config_mqtt_ret != 0)
+        {
+          printf("vgconfig-mqtt: service closed (%d)\n", config_mqtt_ret);
+        }
+      else
+        {
+          vg_config_mqtt_runtime_print(stdout);
+        }
+    }
 #endif
 
 #ifdef CONFIG_EXAMPLES_AI_AGENT_VELA

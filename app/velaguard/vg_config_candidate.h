@@ -69,6 +69,10 @@ struct vg_config_candidate_build
 };
 
 int vg_config_json_strict_validate(const void *json, size_t length);
+int vg_config_candidate_parse_json(
+  const void *json,
+  size_t length,
+  struct vg_config_candidate *out);
 int vg_config_candidate_build_json(
   const void *json, size_t length,
   const struct vg_discover_summary *current,

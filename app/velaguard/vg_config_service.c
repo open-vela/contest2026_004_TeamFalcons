@@ -440,6 +440,12 @@ int vg_config_service_snapshot(struct vg_config_service *service,
   out->recovery_blocked = recovery_blocked;
   out->uptime_ms = now >= service->started_ms ?
                    now - service->started_ms : 0;
+  if (service->session_active)
+    {
+      out->has_active_task_id = true;
+      memcpy(out->active_task_id, service->session.task_id,
+             sizeof(out->active_task_id));
+    }
   pthread_mutex_unlock(&service->lock);
 
   out->config_state = table.state;
@@ -861,7 +867,7 @@ int vg_config_service_put(struct vg_config_service *service,
                           const struct vg_config_put_request *request,
                           struct vg_config_task_status *out)
 {
-  struct vg_config_candidate_build build;
+  struct vg_config_candidate_build *build = NULL;
   struct vg_config_cached_request *cached;
   struct vg_config_table_snapshot table;
   char calculated_payload_hash[VG_CONFIG_HASH_LEN];
@@ -1005,12 +1011,19 @@ int vg_config_service_put(struct vg_config_service *service,
       ret = -ESTALE;
     }
 
-  memset(&build, 0, sizeof(build));
+  if (ret == 0)
+    {
+      build = calloc(1, sizeof(*build));
+      if (build == NULL)
+        {
+          ret = -ENOMEM;
+        }
+    }
   if (ret == 0)
     {
       ret = vg_config_candidate_build_json(
         request->candidate_json, request->candidate_json_len,
-        &table.current, &build);
+        &table.current, build);
     }
 
   memset(confirmation_id, 0, sizeof(confirmation_id));
@@ -1054,20 +1067,19 @@ int vg_config_service_put(struct vg_config_service *service,
         }
       memcpy(service->pending.payload_hash, request->payload_hash,
              sizeof(service->pending.payload_hash));
-      memcpy(service->pending.candidate_hash, build.candidate_hash,
+      memcpy(service->pending.candidate_hash, build->candidate_hash,
              sizeof(service->pending.candidate_hash));
       memcpy(service->pending.confirmation_id, confirmation_id,
              sizeof(service->pending.confirmation_id));
-      service->pending.candidate = build.candidate;
       service->pending.candidate_json_len =
         request->candidate_json_len;
       memcpy(service->pending.candidate_json, request->candidate_json,
              request->candidate_json_len);
       service->pending.candidate_json[request->candidate_json_len] = '\0';
-      service->pending.target_len = build.target_len;
-      memcpy(service->pending.target_json, build.target_json,
-             build.target_len + 1);
-      service->pending.target_table = build.merged;
+      service->pending.target_len = build->target_len;
+      memcpy(service->pending.target_json, build->target_json,
+             build->target_len + 1);
+      service->pending.target_table = build->merged;
 
       service->session.state = VG_CONFIG_SESSION_AWAITING_CONFIRM;
       service->session.revision = request->revision;
@@ -1075,7 +1087,7 @@ int vg_config_service_put(struct vg_config_service *service,
       memcpy(service->session.payload_hash, request->payload_hash,
              sizeof(service->session.payload_hash));
       service->session.has_candidate_hash = true;
-      memcpy(service->session.candidate_hash, build.candidate_hash,
+      memcpy(service->session.candidate_hash, build->candidate_hash,
              sizeof(service->session.candidate_hash));
       service->session.has_confirmation_id = true;
       memcpy(service->session.confirmation_id, confirmation_id,
@@ -1103,7 +1115,11 @@ int vg_config_service_put(struct vg_config_service *service,
  done:
   memset(calculated_payload_hash, 0, sizeof(calculated_payload_hash));
   memset(confirmation_id, 0, sizeof(confirmation_id));
-  memset(&build, 0, sizeof(build));
+  if (build != NULL)
+    {
+      memset(build, 0, sizeof(*build));
+      free(build);
+    }
   return ret;
 }
 
@@ -1132,9 +1148,30 @@ int vg_config_service_pending_candidate(
       return -ENOENT;
     }
 
-  *out = service->pending;
+  memset(out, 0, sizeof(*out));
+  out->valid = service->pending.valid;
+  memcpy(out->task_id, service->pending.task_id, sizeof(out->task_id));
+  memcpy(out->session_id, service->pending.session_id,
+         sizeof(out->session_id));
+  out->revision = service->pending.revision;
+  out->has_base_hash = service->pending.has_base_hash;
+  memcpy(out->base_hash, service->pending.base_hash, sizeof(out->base_hash));
+  memcpy(out->payload_hash, service->pending.payload_hash,
+         sizeof(out->payload_hash));
+  memcpy(out->candidate_hash, service->pending.candidate_hash,
+         sizeof(out->candidate_hash));
+  memcpy(out->confirmation_id, service->pending.confirmation_id,
+         sizeof(out->confirmation_id));
+  out->candidate_json_len = service->pending.candidate_json_len;
+  memcpy(out->candidate_json, service->pending.candidate_json,
+         service->pending.candidate_json_len + 1);
+  out->target_len = service->pending.target_len;
+  memcpy(out->target_json, service->pending.target_json,
+         service->pending.target_len + 1);
+  out->target_table = service->pending.target_table;
   pthread_mutex_unlock(&service->lock);
-  return 0;
+  return vg_config_candidate_parse_json(
+    out->candidate_json, out->candidate_json_len, &out->candidate);
 }
 
 int vg_config_service_pending_preview(
@@ -1176,14 +1213,16 @@ int vg_config_service_pending_preview(
          sizeof(out->candidate_hash));
   memcpy(out->confirmation_id, service->pending.confirmation_id,
          sizeof(out->confirmation_id));
-  out->candidate = service->pending.candidate;
+  ret = vg_config_candidate_parse_json(
+    service->pending.candidate_json,
+    service->pending.candidate_json_len, &out->candidate);
   pthread_mutex_unlock(&service->lock);
-  return 0;
+  return ret;
 }
 
 static bool confirmation_matches(
   const struct vg_config_task_status *status,
-  const struct vg_config_pending_candidate *pending,
+  const struct vg_config_pending_storage *pending,
   const struct vg_config_confirm_request *request)
 {
   if (!status->has_confirmation_id || !pending->valid ||
@@ -1214,7 +1253,7 @@ int vg_config_service_confirm(struct vg_config_service *service,
                               const struct vg_config_confirm_request *request,
                               struct vg_config_task_status *out)
 {
-  struct vg_config_pending_candidate *candidate;
+  struct vg_config_pending_storage *candidate;
   struct vg_config_table_snapshot table;
   uint32_t gate_token;
   uint32_t generation_before;

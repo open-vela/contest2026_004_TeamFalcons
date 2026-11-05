@@ -1,6 +1,6 @@
 # VelaGuard MQTT 候选接入协议草案 v0.3
 
-日期：2026-10-28。状态：通信协议设计，未实现、未部署、未板验。
+日期：2026-11-05。状态：板端软件已实现并通过主机与局域网 TLS Broker 真机验收；生产 MQTTS、云端服务和网页尚未部署。
 
 本文是云端配置服务与板端之间候选接入消息的唯一规范入口，替代本文件 v0.2 草案。配合 [网页接入业务协议](velaguard-web-sensor-onboarding-protocol.md)、[实施计划](velaguard-web-sensor-onboarding-plan.md) 和 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md) 使用。
 

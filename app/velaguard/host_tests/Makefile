@@ -14,7 +14,7 @@ TEST_AGENT_TOOLS_CFLAGS := $(CFLAGS) -Istubs -include stubs/vg_host_shim.h \
                            -DVG_AGENT_TOOLS_HOST_TEST=1 \
                            -I$(APPS_INC) -I$(AI_AGENT_INC)
 
-.PHONY: test clean
+.PHONY: test test_config_mqtt_network clean
 
 test_net_policy: test_net_policy.c ../vg_net_policy.c ../vg_net_policy.h
 	$(CC) $(CFLAGS) -o $@ test_net_policy.c ../vg_net_policy.c
@@ -120,6 +120,50 @@ test_config_file_source: test_config_file_source.c ../vg_config_file_source.c \
 	  ../vg_config_file_source.c ../vg_config_gate.c ../vg_point_table.c \
 	  ../vg_file_store.c ../../../boot/ota_core/vg_ota_sha256.c \
 	  $(CJSON_SRC) -lm
+
+test_config_mqtt_protocol: test_config_mqtt_protocol.c \
+                           ../vg_config_mqtt_protocol.c \
+                           ../vg_config_mqtt_protocol.h \
+                           ../vg_config_service.h ../vg_ota_json.c \
+                           ../../../boot/ota_core/vg_ota_sha256.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -I$(APPS_INC)/../netutils/cjson/cJSON \
+	  -I../../../boot/ota_core -o $@ \
+	  test_config_mqtt_protocol.c ../vg_config_mqtt_protocol.c \
+	  ../vg_ota_json.c ../../../boot/ota_core/vg_ota_sha256.c \
+	  $(CJSON_SRC) -lm
+
+test_config_mqtt_credentials: test_config_mqtt_credentials.c \
+                              ../vg_config_mqtt_credentials.c \
+                              ../vg_config_mqtt_credentials.h \
+                              ../vg_config_mqtt_transport.h \
+                              ../vg_ota_http.c ../vg_ota_json.c \
+                              $(CJSON_SRC)
+	$(CC) $(CFLAGS) -I$(APPS_INC)/../netutils/cjson/cJSON -o $@ \
+	  -I$(OPENVELA_ROOT)/apps/netutils/mqttc/MQTT-C/include \
+	  test_config_mqtt_credentials.c ../vg_config_mqtt_credentials.c \
+	  ../vg_ota_http.c ../vg_ota_json.c $(CJSON_SRC) -lm
+
+test_config_mqtt_service: test_config_mqtt_service.c \
+                          ../vg_config_mqtt_service.c \
+                          ../vg_config_mqtt_service.h \
+                          ../vg_config_mqtt_protocol.c \
+                          ../vg_config_mqtt_protocol.h \
+                          ../vg_config_service.c ../vg_config_service.h \
+                          ../vg_config_gate.c ../vg_config_candidate.c \
+                          ../vg_point_table.c ../vg_file_store.c \
+                          ../vg_ota_json.c \
+                          ../../../boot/ota_core/vg_ota_sha256.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -I$(APPS_INC)/../netutils/cjson/cJSON \
+	  -I$(OPENVELA_ROOT)/apps/netutils/mqttc/MQTT-C/include \
+	  -I../../../boot/ota_core -o $@ \
+	  test_config_mqtt_service.c ../vg_config_mqtt_service.c \
+	  ../vg_config_mqtt_protocol.c ../vg_config_service.c \
+	  ../vg_config_gate.c ../vg_config_candidate.c \
+	  ../vg_point_table.c ../vg_file_store.c ../vg_ota_json.c \
+	  ../../../boot/ota_core/vg_ota_sha256.c $(CJSON_SRC) -lm
+
+test_config_mqtt_network:
+	python3 test_config_mqtt.py
 
 test_frame_stats: test_frame_stats.c ../vg_frame_stats.c ../vg_frame_stats.h
 	$(CC) $(CFLAGS) -o $@ test_frame_stats.c ../vg_frame_stats.c
@@ -285,7 +329,7 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_ota_confirm_b test_ota_link test_ota_agent_gate test_ota_protocol test_ota_entropy test_ota_staging_concurrent test_ota_http test_ota_confirm test_ota_staging test_ota_self_check test_ota_install test_ota_probe test_ota_bcb test_ota_fat test_ota_boot test_fw_identity test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_config_gate test_config_gate_nsh test_config_snapshot test_config_session test_config_put test_config_confirm test_config_confirmation test_config_transaction test_config_candidate test_config_file_source test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_ota_confirm_b test_ota_link test_ota_agent_gate test_ota_protocol test_ota_entropy test_ota_staging_concurrent test_ota_http test_ota_confirm test_ota_staging test_ota_self_check test_ota_install test_ota_probe test_ota_bcb test_ota_fat test_ota_boot test_fw_identity test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_config_gate test_config_gate_nsh test_config_snapshot test_config_session test_config_put test_config_confirm test_config_confirmation test_config_transaction test_config_candidate test_config_file_source test_config_mqtt_protocol test_config_mqtt_credentials test_config_mqtt_service test_config_mqtt_network test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
 	./test_config_gate
@@ -298,6 +342,9 @@ test: test_ota_confirm_b test_ota_link test_ota_agent_gate test_ota_protocol tes
 	./test_config_transaction
 	./test_config_candidate
 	./test_config_file_source
+	./test_config_mqtt_protocol
+	./test_config_mqtt_credentials
+	./test_config_mqtt_service
 	./test_frame_stats
 	./test_runtime
 	./test_runtime_anomaly

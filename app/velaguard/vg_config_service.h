@@ -69,6 +69,8 @@ struct vg_config_device_snapshot
   bool remote_config;
   bool recovery_blocked;
   enum vg_config_gate_owner_e active_gate;
+  bool has_active_task_id;
+  char active_task_id[VG_CONFIG_ID_MAX];
   uint64_t uptime_ms;
   bool time_synced;
 };
@@ -184,6 +186,24 @@ struct vg_config_pending_candidate
   struct vg_discover_summary target_table;
 };
 
+struct vg_config_pending_storage
+{
+  bool valid;
+  char task_id[VG_CONFIG_ID_MAX];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  uint32_t revision;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+  char payload_hash[VG_CONFIG_HASH_LEN];
+  char candidate_hash[VG_CONFIG_HASH_LEN];
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+  size_t candidate_json_len;
+  char candidate_json[VG_CONFIG_REQUEST_MAX + 1];
+  size_t target_len;
+  char target_json[VG_POINT_TABLE_JSON_MAX];
+  struct vg_discover_summary target_table;
+};
+
 /* Small UI-facing copy of the current confirmation. Frozen JSON and the
  * parsed target table stay owned by vg_config_service. */
 struct vg_config_pending_preview
@@ -224,7 +244,7 @@ struct vg_config_service
   size_t request_cursor;
   struct vg_config_cached_request requests[VG_CONFIG_REQUEST_CACHE];
   struct vg_config_task_status session;
-  struct vg_config_pending_candidate pending;
+  struct vg_config_pending_storage pending;
   bool session_active;
   bool open_seq_exhausted;
   bool initialized;

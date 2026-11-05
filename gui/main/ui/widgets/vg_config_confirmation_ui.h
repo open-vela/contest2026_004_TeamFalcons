@@ -6,6 +6,7 @@
 #include "vg_config_confirmation.h"
 
 void vg_config_confirmation_ui_init(void);
+int vg_config_confirmation_ui_attach_runtime(void);
 int vg_config_confirmation_ui_bind(
     const struct vg_config_confirmation_ports *ports);
 void vg_config_confirmation_ui_poll(void);

@@ -74,6 +74,18 @@ config VG_OTA_VERIFIED_ENTROPY
 		Enable only after the H750 source and mbedTLS entropy seed have
 		passed board acceptance. This does not permit a software PRNG.
 
+config VG_CONFIG_MQTT
+	bool "VelaGuard dedicated MQTTS candidate configuration"
+	default y
+	depends on VG_BRINGUP_TOOLS && VG_HMI && VG_CONFIG_STORE && \
+	           VG_BUS_DISCOVER && VG_OTA_NETWORK
+	---help---
+		Run a separate MQTT 3.1.1 over TLS client for deterministic
+		candidate configuration. It subscribes only to the device config
+		request topic and publishes only to the device config state topic.
+		Remote confirmation is rejected. Missing CA, credentials, verified
+		entropy, CONNACK, or SUBACK keeps the service closed.
+
 config VG_OTA_TEST_FIXTURES
 	bool "VelaGuard OTA test fixtures (development only)"
 	default n

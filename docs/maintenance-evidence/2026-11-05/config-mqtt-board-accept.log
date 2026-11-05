@@ -1,0 +1,62 @@
+MQTT candidate configuration board acceptance, 2026-11-05
+
+Target
+- STM32H750B-DK through ST-LINK COM3
+- device_id=vg-09001a800451383430303835
+- RJ45 link up; board received 192.168.137.232/24 from 192.168.137.1
+- firmware generated with a temporary local test CA; this image is not a
+  production release image
+
+Build
+- command: bash scripts/build.sh --ota-fixtures
+- check_fw_images: OK version=0.1.0 A=0x90000000 B=0x90800000
+- A/B image size: 1689152 bytes
+- SRAM static use: 388624/524288 bytes (74.12%)
+
+Host tests
+- command: make -C app/velaguard/host_tests test
+- result: PASS
+- MQTT fixture cases: strict TLS, wrong credentials, wrong host name,
+  denied SUBACK, QoS1, retained request rejection, foreign device rejection,
+  and oversized request disconnect all PASS
+
+Credential provisioning
+- COM3 command sequence: vgprovision uid, vgconfigmqtt wipe,
+  vgconfigmqtt put <sealed-hex>..., vgconfigmqtt commit
+- only the device-bound encrypted blob was sent over serial
+- commit output: vgconfigmqtt: credentials stored; reset required
+- after SWD reset: service initialized=1 running=1 online=1
+
+Real board and LAN TLS Broker flow
+- local MQTT 3.1.1 Broker bound to the host side of the RJ45 LAN
+- TLS certificate chain and host identity verified by the board
+- device credentials verified by the Broker
+- CleanSession=1 and QoS1 subscription verified
+- query(scope=device): PASS, 14 existing points
+- foreign device topic: rejected without a state response
+- RETAIN=1 request: rejected without a state response
+- wrong direction state-topic delivery: rejected without a state response
+- open: PASS; session_id and lease returned
+- put: PASS; candidate reached awaiting_local_confirm
+- cancel: PASS
+- post-cancel query: point count, point IDs and base hash unchanged
+- final result:
+  PASS config MQTT board: points=14 query=ok open=ok
+  put=awaiting_local_confirm cancel=ok unchanged=ok
+
+Resource finding corrected during acceptance
+- initial put exposed a 32 KiB worker stack overflow
+- measured candidate_build=34552 bytes
+- the candidate build object was moved from the worker stack to an owned,
+  zeroed and freed heap allocation
+- final service thread stack use observed at 69.6 percent, no overflow
+
+Deployment limitation
+- the supplied external Broker connection information advertises plaintext
+  MQTT and WebSocket ports, not MQTTS
+- the candidate service correctly refuses plaintext and was therefore tested
+  against a real LAN TLS Broker
+- production MQTTS endpoint, cloud PDF service and browser page are not yet
+  available and are outside this evidence file
+- no MQTT password, encrypted credential blob, private key or CA private key
+  is included

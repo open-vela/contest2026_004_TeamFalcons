@@ -88,8 +88,14 @@ def parse_endpoint(endpoint: str) -> tuple[str, str, str]:
 
 
 def main() -> int:
-    if len(sys.argv) != 3:
-        print(f"usage: {sys.argv[0]} <uid-hex-24> <plain-json-file|->", file=sys.stderr)
+    if len(sys.argv) not in (3, 5) or (
+        len(sys.argv) == 5 and sys.argv[3] != "--output"
+    ):
+        print(
+            f"usage: {sys.argv[0]} <uid-hex-24> "
+            "<plain-json-file|-> [--output <file>]",
+            file=sys.stderr,
+        )
         return 2
     uid = bytes.fromhex(sys.argv[1])
     if len(uid) != 12:
@@ -99,7 +105,11 @@ def main() -> int:
         plain = sys.stdin.buffer.read()
     else:
         plain = Path(sys.argv[2]).read_bytes()
-    sys.stdout.buffer.write(seal(uid, plain))
+    blob = seal(uid, plain)
+    if len(sys.argv) == 5:
+        Path(sys.argv[4]).write_bytes(blob)
+    else:
+        sys.stdout.buffer.write(blob)
     return 0
 
 

@@ -18,6 +18,11 @@ static bool s_initialized;
 static lv_obj_t * s_modal;
 static char s_shown_confirmation_id[VG_CONFIG_HEX32_LEN];
 
+extern int vg_config_mqtt_runtime_bind_confirmation(
+    struct vg_config_confirmation *confirmation,
+    bool (*alarm_active)(void *ctx),
+    void *alarm_ctx) __attribute__((weak));
+
 static void delete_cb(lv_event_t *e)
 {
     LV_UNUSED(e);
@@ -288,12 +293,28 @@ static void poll_timer_cb(lv_timer_t *timer)
     vg_config_confirmation_ui_poll();
 }
 
+static bool confirmation_alarm_active(void *ctx)
+{
+    const vg_alarm_t *alarm = vg_model_get_active_alarm();
+    LV_UNUSED(ctx);
+    return alarm != NULL && alarm->active;
+}
+
 void vg_config_confirmation_ui_init(void)
 {
     if(s_initialized) return;
     if(vg_config_confirmation_init(&s_confirmation, NULL) != 0) return;
     s_initialized = true;
     lv_timer_create(poll_timer_cb, VG_CONFIG_UI_POLL_MS, NULL);
+    (void)vg_config_confirmation_ui_attach_runtime();
+}
+
+int vg_config_confirmation_ui_attach_runtime(void)
+{
+    if(!s_initialized) return -1;
+    if(vg_config_mqtt_runtime_bind_confirmation == NULL) return -1;
+    return vg_config_mqtt_runtime_bind_confirmation(
+        &s_confirmation, confirmation_alarm_active, NULL);
 }
 
 int vg_config_confirmation_ui_bind(

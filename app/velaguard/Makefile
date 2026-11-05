@@ -138,6 +138,17 @@ CSRCS += vg_ota_http.c vg_ota_https.c vg_ota_download.c vg_ota_json.c \
          vg_ota_protocol.c vg_ota_config.c vg_ota_config_crypto.c \
          vg_ota_config_store.c vg_ota_outbox.c vg_ota_mqtt.c vg_ota_service.c
 endif
+
+ifeq ($(CONFIG_VG_CONFIG_MQTT),y)
+PROGNAME += vgconfigmqtt
+MAINSRC  += vgconfigmqtt.c
+CSRCS    += vg_config_mqtt_runtime.c vg_config_mqtt_service.c \
+            vg_config_mqtt_transport.c vg_config_mqtt_protocol.c \
+            vg_config_mqtt_credentials.c vg_config_confirmation_worker.c \
+            vg_config_service.c vg_config_candidate.c \
+            vg_config_file_source.c
+endif
+
 CFLAGS   += -DCONFIG_VG_OTA_PROBE=1
 CFLAGS   += ${INCDIR_PREFIX}$(abspath $(CURDIR)/../../scripts/qspi_boot_stub)
 CFLAGS   += ${INCDIR_PREFIX}$(VG_BOOT_CORE)
@@ -214,7 +225,7 @@ VG_HMI_PRIO  := $(if $(CONFIG_VG_HMI_PRIORITY),$(CONFIG_VG_HMI_PRIORITY),100)
 STACKSIZE := $(foreach p,$(PROGNAME),$(strip \
   $(if $(filter vghmi,$(p)),$(VG_HMI_STACK), \
   $(if $(filter vgvoice,$(p)),32768, \
-  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent vgota,$(p)),16384,$(VG_STACK_DEFAULT))))))
+  $(if $(filter vgdiscover vgscan vgpoint vgstoretest vgruntime vgagent vgota vgconfigmqtt,$(p)),16384,$(VG_STACK_DEFAULT))))))
 # vgptt is a thin NSH front end; the button thread gets its own stack from
 # Kconfig.  vgvoice is not thin: its asr/tts diagnostics run the same cloud
 # call chain as the round worker (4 KB response buffer, 4 KB body piece and
