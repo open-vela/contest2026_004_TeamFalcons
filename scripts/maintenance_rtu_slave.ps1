@@ -47,6 +47,7 @@ public static class VelaMaintenanceSlave {
   if(slave==6&&reg==1)return 300;
   if(slave==6&&reg==2)return 1234;
   if(slave==7&&reg==0)return 0;
+  if(slave==8&&reg==1)return 500;
   return -1;
  }
  public static void Run(string port,string control,string log,int hours,bool rts,bool dtr,int replyDelayMs) {
@@ -69,7 +70,7 @@ public static class VelaMaintenanceSlave {
     while(rx.Count>=8){byte[] q=rx.GetRange(0,8).ToArray();ushort crc=Crc(q,6);
      if(q[6]!=(byte)crc||q[7]!=(byte)(crc>>8)){rx.RemoveAt(0);bad++;continue;}
      rx.RemoveRange(0,8);requests++;int s=q[0],fc=q[1],reg=(q[2]<<8)|q[3],qty=(q[4]<<8)|q[5];
-     if(s<1||s>7||mode=="offline"||
+     if(s<1||s>8||mode=="offline"||
         ((mode=="offline1"||mode=="offline12")&&s==1)||
         ((mode=="offline2"||mode=="offline12"||mode=="critical_offline2")&&s==2)){ignored++;continue;}
      byte error=0;if(fc!=3&&fc!=4)error=1;else if(qty<1||qty>125)error=3;
