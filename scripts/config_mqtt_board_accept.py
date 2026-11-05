@@ -236,6 +236,9 @@ class Broker:
         candidate_json = ""
         payload_hash = ""
         next_packet_id = 200
+        put_request: dict | None = None
+        confirm_state_seq = 0
+        confirmation_id = ""
 
         try:
             raw.settimeout(20)
@@ -374,6 +377,7 @@ class Broker:
                                 "payload_sha256": payload_hash,
                                 "candidate_json": candidate_json,
                             }
+                            put_request = request
                             self.publish(
                                 conn,
                                 topic,
@@ -390,7 +394,28 @@ class Broker:
                                 raise ValueError(
                                     "put did not reach awaiting_local_confirm"
                                 )
+                            confirm_state_seq = state["state_seq"]
+                            confirmation_id = state["confirmation_id"]
+                            current_stage = "put_replay"
+                            self.publish(
+                                conn,
+                                topic,
+                                compact_json(put_request),
+                                packet_id=next_packet_id,
+                            )
+                            next_packet_id += 1
+                        elif current_stage == "put_replay":
+                            if (
+                                kind_name != "state"
+                                or state.get("state") != "awaiting_local_confirm"
+                                or state.get("state_seq") != confirm_state_seq
+                                or state.get("confirmation_id") != confirmation_id
+                            ):
+                                raise ValueError(
+                                    "duplicate put changed the confirmation"
+                                )
                             current_stage = "cancel"
+                            run_resource_probe(self.args.com_port)
                             time.sleep(2)
                             request = {
                                 "schema_version": 1,
@@ -578,6 +603,25 @@ def run_provision_error(
         return None
     except BaseException as error:
         return error
+
+
+def run_resource_probe(com_port: str) -> None:
+    command = [
+        "powershell.exe",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(ROOT / "scripts" / "config_mqtt_board_probe.ps1"),
+        "-ComPort",
+        com_port,
+    ]
+    result = subprocess.run(command, capture_output=True, text=True, timeout=30)
+    output = (result.stdout + result.stderr).strip()
+    if output:
+        print(output)
+    if result.returncode:
+        raise RuntimeError("board resource probe failed")
 
 
 if __name__ == "__main__":

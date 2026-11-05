@@ -216,6 +216,7 @@ int main(void)
   assert(duplicate.state == VG_CONFIG_SESSION_CANCELLED);
   assert(duplicate.state_seq == 2);
   assert(vg_config_gate_is_idle());
+  assert(vg_config_service_open(&service, &request, &duplicate) == -ESTALE);
   assert(vg_config_service_cancel(&service, &cancel, &duplicate) == 0);
   assert(duplicate.state == VG_CONFIG_SESSION_CANCELLED);
 

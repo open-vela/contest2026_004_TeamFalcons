@@ -442,9 +442,116 @@ static void test_request_flow_and_disconnect(void)
   assert(vg_config_gate_is_idle());
 }
 
+static void test_pending_disconnect_invalidates_session(void)
+{
+  struct fixture fixture;
+  struct fake_wire wire;
+  struct vg_config_service config;
+  struct vg_config_service_ports config_ports;
+  struct vg_config_mqtt_service service;
+  struct vg_config_mqtt_service_ports ports;
+  struct vg_config_mqtt_service_status service_status;
+  struct vg_config_pending_candidate pending;
+  char json[VG_CONFIG_REQUEST_MAX];
+  char session[VG_CONFIG_HEX32_LEN];
+  char old_link[VG_CONFIG_HEX32_LEN];
+  cJSON *root;
+  cJSON *session_json;
+  char *session_string;
+
+  memset(&fixture, 0, sizeof(fixture));
+  fixture.now = 1000;
+  fixture.table.state = VG_CONFIG_TABLE_EMPTY;
+  fixture.table.current.baud = 9600;
+  strcpy(fixture.table.current.devpath, "/dev/rs485");
+  memset(&config_ports, 0, sizeof(config_ports));
+  config_ports.load_table = load_table;
+  config_ports.random_bytes = random_bytes;
+  config_ports.now_ms = now_ms;
+  config_ports.ctx = &fixture;
+  config_ports.commit_table = commit_table;
+  config_ports.notify_table = notify_table;
+  assert(vg_config_service_init(&config, &config_ports) == 0);
+
+  memset(&wire, 0, sizeof(wire));
+  wire.ready = true;
+  memset(&ports, 0, sizeof(ports));
+  ports.open_connection = wire_open;
+  ports.poll_connection = wire_poll;
+  ports.online = wire_online;
+  ports.close_connection = wire_close;
+  ports.peek = wire_peek;
+  ports.release = wire_release;
+  ports.publish = wire_publish;
+  ports.acked = wire_acked;
+  ports.ready = wire_ready;
+  ports.now_ms = wire_now;
+  ports.delay_ms = wire_delay;
+  ports.ctx = &wire;
+  assert(vg_config_mqtt_service_init(
+           &service, &config, device_id, &ports) == 0);
+  assert(vg_config_mqtt_service_pump(&service) == 0);
+  strcpy(old_link, config.link_id);
+
+  make_request(json, sizeof(json), "pending-open", "pending-task", "open",
+               config.boot_id, config.link_id, NULL,
+               config.next_open_seq, 0, 0);
+  put_request(&wire, json);
+  assert(vg_config_mqtt_service_pump(&service) == 0);
+  root = last_json(&wire);
+  session_json = cJSON_GetObjectItem(root, "session_id");
+  assert(cJSON_IsString(session_json));
+  session_string = strdup(session_json->valuestring);
+  assert(session_string != NULL);
+  strcpy(session, session_string);
+  free(session_string);
+  cJSON_Delete(root);
+
+  make_request(json, sizeof(json), "pending-put", "pending-task", "put",
+               config.boot_id, config.link_id, session, 0, 0, 1);
+  put_request(&wire, json);
+  assert(vg_config_mqtt_service_pump(&service) == 0);
+  root = last_json(&wire);
+  assert(strcmp(cJSON_GetObjectItem(root, "state")->valuestring,
+                "awaiting_local_confirm") == 0);
+  cJSON_Delete(root);
+  assert(vg_config_service_pending_candidate(&config, &pending) == 0);
+  assert(config.session_active);
+  assert(fixture.commit_count == 0);
+
+  wire.poll_result = -EIO;
+  assert(vg_config_mqtt_service_pump(&service) == -ENOTCONN);
+  assert(vg_config_mqtt_service_status(&service, &service_status) == 0);
+  assert(strcmp(service_status.error, "link_lost") == 0);
+  assert(!config.session_active);
+  assert(config.session.state == VG_CONFIG_SESSION_CANCELLED);
+  assert(strcmp(config.session.error_code, "link_lost") == 0);
+  assert(vg_config_service_pending_candidate(&config, &pending) == -ENOENT);
+  assert(fixture.commit_count == 0);
+  assert(vg_config_gate_is_idle());
+
+  wire.poll_result = 0;
+  assert(vg_config_mqtt_service_pump(&service) == 0);
+  assert(wire.connected);
+  assert(strcmp(config.link_id, old_link) != 0);
+
+  make_request(json, sizeof(json), "pending-open", "pending-task", "open",
+               config.boot_id, old_link, NULL, 1, 0, 0);
+  put_request(&wire, json);
+  assert(vg_config_mqtt_service_pump(&service) == 0);
+  root = last_json(&wire);
+  assert(strcmp(cJSON_GetObjectItem(root, "kind")->valuestring,
+                "request_error") == 0);
+  cJSON_Delete(root);
+  assert(!config.session_active);
+  assert(vg_config_service_pending_candidate(&config, &pending) == -ENOENT);
+  assert(fixture.commit_count == 0);
+}
+
 int main(void)
 {
   test_request_flow_and_disconnect();
+  test_pending_disconnect_invalidates_session();
   puts("test_config_mqtt_service: PASS");
   return 0;
 }

@@ -261,6 +261,20 @@ int main(void)
                                &duplicate_status) == -EEXIST);
   assert(fixture.load_count == loads_after_put);
 
+  memset(service.requests, 0, sizeof(service.requests));
+  service.request_cursor = 0;
+  duplicate = put;
+  assert(vg_config_service_put(&service, &duplicate,
+                               &duplicate_status) == 0);
+  assert(strcmp(duplicate_status.confirmation_id,
+                first_pending.confirmation_id) == 0);
+  assert(fixture.load_count == loads_after_put);
+
+  duplicate.request_hash[0] = '3';
+  assert(vg_config_service_put(&service, &duplicate,
+                               &duplicate_status) == -EEXIST);
+  assert(fixture.load_count == loads_after_put);
+
   duplicate = put;
   duplicate.payload_hash[0] = '0';
   assert(vg_config_service_put(&service, &duplicate,

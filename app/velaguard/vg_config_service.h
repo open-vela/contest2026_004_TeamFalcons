@@ -245,6 +245,9 @@ struct vg_config_service
   struct vg_config_cached_request requests[VG_CONFIG_REQUEST_CACHE];
   struct vg_config_task_status session;
   struct vg_config_pending_storage pending;
+  bool has_put_request;
+  char put_req_id[VG_CONFIG_ID_MAX];
+  char put_request_hash[VG_CONFIG_HASH_LEN];
   bool session_active;
   bool open_seq_exhausted;
   bool initialized;

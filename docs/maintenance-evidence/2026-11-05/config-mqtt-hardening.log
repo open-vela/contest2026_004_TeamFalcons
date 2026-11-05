@@ -1,0 +1,44 @@
+MQTT candidate configuration hardening, 2026-11-05
+
+Host regression coverage
+- make -C app/velaguard/host_tests test: PASS
+- a pending local confirmation is cancelled by disconnect; gate ownership is
+  released, pending bytes are cleared, and reconnect does not replay it
+- a delayed open after link loss returns request_error instead of resurrecting
+  a cached opened response
+- a delayed put after session advancement returns request_error instead of
+  resurrecting a cached awaiting_local_confirm response
+- an exact put replay after clearing the 32-entry request cache returns the
+  existing status and confirmation_id without loading or committing the table
+- the same req_id with a different request hash returns conflict
+- two inbound MQTT PUBLISH packets delivered before the first is drained cause
+  a bounded-link disconnect
+- a message larger than the 16384-byte request budget causes disconnect
+- exact request size constants used by the implementation:
+  request=16384, state=4096, lease=600000 ms, point limit=32
+
+Measured target object sizes
+- candidate_build=34552 bytes; moved off thread stack to an owned heap object
+- pending_candidate=51216 bytes
+- pending_storage=37672 bytes
+- pending_preview=13876 bytes
+- config_service=57376 bytes
+- mqtt_transport=38288 bytes
+- mqtt_service=1280 bytes
+- confirmation_worker=480 bytes
+
+Real board duplicate put and resource probe
+- duplicate put reused the original req_id, task, session, revision and
+  candidate bytes while the first candidate was awaiting local confirmation
+- returned state remained awaiting_local_confirm
+- state_seq remained unchanged
+- confirmation_id remained unchanged
+- service thread: 22720/32744 bytes (69.3 percent)
+- kernel Usermem: total=6786544 used=1063024 free=5723520 bytes
+- vgconfigmqtt status during the candidate: initialized=1 running=1 online=1
+
+Final board flow result
+- query=ok, open=ok, put=awaiting_local_confirm, exact replay=unchanged,
+  cancel=ok, post-cancel table unchanged
+- no candidate was confirmed or committed in this test; manual apply remains
+  ticket 10

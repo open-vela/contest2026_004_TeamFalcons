@@ -83,7 +83,8 @@ int main(int argc, char **argv)
   assert(ret == 0);
   assert(vg_config_mqtt_transport_online(&transport));
 
-  if (strcmp(mode, "oversize") == 0)
+  if (strcmp(mode, "oversize") == 0 ||
+      strcmp(mode, "burst") == 0)
     {
       deadline = now_ms() + 5000;
       ret = 0;
@@ -101,7 +102,9 @@ int main(int argc, char **argv)
       assert(!vg_config_mqtt_transport_online(&transport));
       memset(&config, 0, sizeof(config));
       memset(&transport, 0, sizeof(transport));
-      puts("config mqtt helper: oversized request disconnected");
+      puts(strcmp(mode, "burst") == 0 ?
+           "config mqtt helper: inbound burst disconnected" :
+           "config mqtt helper: oversized request disconnected");
       return 0;
     }
 

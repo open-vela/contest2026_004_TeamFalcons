@@ -226,13 +226,30 @@ class Broker:
                             conn.sendall(frame(0x32, body))
                         else:
                             valid = request()
-                            self.publish(
-                                conn,
-                                "vg/vg-test/config/request",
-                                valid,
-                                0x02,
-                                101,
-                            )
+                            if self.mode == "burst":
+                                body = (
+                                    frame(
+                                        0x32,
+                                        utf("vg/vg-test/config/request")
+                                        + struct.pack(">H", 101)
+                                        + valid,
+                                    )
+                                    + frame(
+                                        0x32,
+                                        utf("vg/vg-test/config/request")
+                                        + struct.pack(">H", 102)
+                                        + valid,
+                                    )
+                                )
+                                conn.sendall(body)
+                            else:
+                                self.publish(
+                                    conn,
+                                    "vg/vg-test/config/request",
+                                    valid,
+                                    0x02,
+                                    101,
+                                )
                     elif category == 3:
                         topic, position = read_utf(payload, 0)
                         qos = (kind >> 1) & 3
@@ -326,9 +343,11 @@ if __name__ == "__main__":
     run_case("wrong-auth")
     run_case("wrong-host")
     run_case("deny-sub")
+    run_case("burst")
     run_case("oversize")
     assert not failures, failures
     print(
         "test_config_mqtt: OK "
-        "(strict TLS, credentials, SUBACK, QoS1, retained, device and size rejection)"
+        "(strict TLS, credentials, SUBACK, QoS1, retained, device, "
+        "burst and size rejection)"
     )
