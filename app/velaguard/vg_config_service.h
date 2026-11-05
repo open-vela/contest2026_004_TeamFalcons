@@ -21,6 +21,23 @@
 #define VG_CONFIG_REQUEST_MAX 16384
 #define VG_CONFIG_STATE_MAX 4096
 #define VG_CONFIG_LEASE_MS 600000u
+#define VG_CONFIG_ID_MAX 65
+#define VG_CONFIG_REQUEST_CACHE 16
+#define VG_CONFIG_USED_TASKS 32
+
+enum vg_config_session_state_e
+{
+  VG_CONFIG_SESSION_NONE = 0,
+  VG_CONFIG_SESSION_OPENED,
+  VG_CONFIG_SESSION_VALIDATING,
+  VG_CONFIG_SESSION_AWAITING_CONFIRM,
+  VG_CONFIG_SESSION_COMMITTING,
+  VG_CONFIG_SESSION_APPLIED,
+  VG_CONFIG_SESSION_CANCELLED,
+  VG_CONFIG_SESSION_EXPIRED,
+  VG_CONFIG_SESSION_FAILED,
+  VG_CONFIG_SESSION_RECOVERY_UNKNOWN
+};
 
 enum vg_config_table_state_e
 {
@@ -71,6 +88,56 @@ struct vg_config_service_ports
   void *ctx;
 };
 
+struct vg_config_open_request
+{
+  char req_id[VG_CONFIG_ID_MAX];
+  char request_hash[VG_CONFIG_HASH_LEN];
+  char task_id[VG_CONFIG_ID_MAX];
+  char boot_id[VG_CONFIG_HEX32_LEN];
+  char link_id[VG_CONFIG_HEX32_LEN];
+  uint32_t expected_open_seq;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+};
+
+struct vg_config_cancel_request
+{
+  char req_id[VG_CONFIG_ID_MAX];
+  char request_hash[VG_CONFIG_HASH_LEN];
+  char task_id[VG_CONFIG_ID_MAX];
+  char boot_id[VG_CONFIG_HEX32_LEN];
+  char link_id[VG_CONFIG_HEX32_LEN];
+  char session_id[VG_CONFIG_HEX32_LEN];
+};
+
+struct vg_config_task_status
+{
+  char task_id[VG_CONFIG_ID_MAX];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  enum vg_config_session_state_e state;
+  uint32_t revision;
+  uint32_t state_seq;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+  bool has_payload_hash;
+  char payload_hash[VG_CONFIG_HASH_LEN];
+  bool has_candidate_hash;
+  char candidate_hash[VG_CONFIG_HASH_LEN];
+  bool has_confirmation_id;
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+  uint64_t lease_remaining_ms;
+  char error_code[32];
+  bool retryable;
+};
+
+struct vg_config_cached_request
+{
+  bool used;
+  char req_id[VG_CONFIG_ID_MAX];
+  char request_hash[VG_CONFIG_HASH_LEN];
+  struct vg_config_task_status status;
+};
+
 struct vg_config_service
 {
   pthread_mutex_t lock;
@@ -79,13 +146,34 @@ struct vg_config_service
   char link_id[VG_CONFIG_HEX32_LEN];
   uint32_t next_open_seq;
   uint64_t started_ms;
+  uint64_t lease_deadline_ms;
+  uint32_t remote_gate_token;
+  char used_tasks[VG_CONFIG_USED_TASKS][VG_CONFIG_ID_MAX];
+  uint32_t used_task_count;
+  size_t request_cursor;
+  struct vg_config_cached_request requests[VG_CONFIG_REQUEST_CACHE];
+  struct vg_config_task_status session;
+  bool session_active;
+  bool open_seq_exhausted;
   bool initialized;
 };
 
 int vg_config_service_init(struct vg_config_service *service,
                            const struct vg_config_service_ports *ports);
 int vg_config_service_new_link(struct vg_config_service *service);
+int vg_config_service_disconnect(struct vg_config_service *service,
+                                 const char *reason);
+int vg_config_service_tick(struct vg_config_service *service);
 int vg_config_service_snapshot(struct vg_config_service *service,
                                struct vg_config_device_snapshot *out);
+int vg_config_service_open(struct vg_config_service *service,
+                           const struct vg_config_open_request *request,
+                           struct vg_config_task_status *out);
+int vg_config_service_query_task(struct vg_config_service *service,
+                                 const char *task_id,
+                                 struct vg_config_task_status *out);
+int vg_config_service_cancel(struct vg_config_service *service,
+                             const struct vg_config_cancel_request *request,
+                             struct vg_config_task_status *out);
 
 #endif
