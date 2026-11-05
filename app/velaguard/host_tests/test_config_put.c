@@ -236,6 +236,12 @@ int main(void)
   assert(vg_config_service_pending_candidate(&service, &first_pending) == 0);
   assert(first_pending.valid);
   assert(first_pending.revision == 1);
+  assert(first_pending.candidate.schema_version == 1);
+  assert(first_pending.candidate.slave_address == 1);
+  assert(first_pending.candidate.evidence_count == 1);
+  assert(first_pending.candidate.point_count == 1);
+  assert(strcmp(first_pending.candidate.points[0].id, "temp") == 0);
+  assert(strcmp(first_pending.candidate.evidence[0].id, "ev1") == 0);
   assert(first_pending.target_len > 0);
   assert(strstr(first_pending.target_json, "\"id\":\"external\"") != NULL);
   assert(strstr(first_pending.target_json, "\"id\":\"temp\"") != NULL);

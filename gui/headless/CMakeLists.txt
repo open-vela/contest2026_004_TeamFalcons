@@ -93,6 +93,9 @@ foreach(_d ${VG_UI_SUBDIRS})
   list(APPEND VG_UI_SRCS ${_c})
 endforeach()
 list(REMOVE_ITEM VG_UI_SRCS "${VG_UI_DIR}/app/vg_app.c")
+list(APPEND VG_UI_SRCS
+  "${VG_ROOT}/app/velaguard/vg_config_confirmation.c"
+)
 
 add_library(vg_ui STATIC ${VG_UI_SRCS})
 target_include_directories(vg_ui PUBLIC
@@ -130,8 +133,12 @@ add_executable(voice_overlay_check voice_overlay_check_main.c harness_common.c)
 target_compile_options(voice_overlay_check PRIVATE -Wall -Wextra)
 target_link_libraries(voice_overlay_check PRIVATE vg_ui_voice lvgl lvgl::thorvg m pthread)
 
+add_executable(config_confirmation_check config_confirmation_check_main.c harness_common.c)
+target_compile_options(config_confirmation_check PRIVATE -Wall -Wextra)
+target_link_libraries(config_confirmation_check PRIVATE vg_ui lvgl lvgl::thorvg m pthread)
+
 enable_testing()
-foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check voice_overlay_check)
+foreach(check alarm_check trend_check fixture_check lifecycle_render_check interaction_check voice_overlay_check config_confirmation_check)
   file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")
   add_test(NAME ${check}
            COMMAND ${check} "${CMAKE_CURRENT_BINARY_DIR}/frames/${check}")

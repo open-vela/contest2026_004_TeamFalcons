@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#include "../vg_config_confirmation.h"
+#include "../vg_config_confirmation_worker.h"
 #include "../vg_config_service.h"
 #include "../../../boot/ota_core/vg_ota_sha256.h"
 
@@ -428,6 +430,204 @@ static void test_cancel_before_confirm(void)
   assert(vg_config_gate_is_idle());
 }
 
+static void test_local_cancel_and_stale_token(void)
+{
+  struct fixture fixture;
+  struct vg_config_service service;
+  struct vg_config_task_status status;
+  struct vg_config_pending_candidate pending;
+  struct vg_config_confirm_request confirmation;
+  struct vg_config_local_cancel_request cancel;
+
+  setup_pending(&fixture, &service, &status, &pending, &confirmation);
+  memset(&cancel, 0, sizeof(cancel));
+  strcpy(cancel.task_id, pending.task_id);
+  strcpy(cancel.session_id, pending.session_id);
+  cancel.revision = pending.revision;
+  strcpy(cancel.confirmation_id, pending.confirmation_id);
+  cancel.confirmation_id[0] =
+    cancel.confirmation_id[0] == '0' ? '1' : '0';
+  assert(vg_config_service_cancel_local(&service, &cancel, &status)
+         == -ESTALE);
+  assert(status.state == VG_CONFIG_SESSION_AWAITING_CONFIRM);
+  assert(fixture.commit_count == 0);
+
+  strcpy(cancel.confirmation_id, pending.confirmation_id);
+  cancel.revision = pending.revision + 1;
+  assert(vg_config_service_cancel_local(&service, &cancel, &status)
+         == -ESTALE);
+  cancel.revision = pending.revision;
+  assert(vg_config_service_cancel_local(&service, &cancel, &status) == 0);
+  assert(status.state == VG_CONFIG_SESSION_CANCELLED);
+  assert(strcmp(status.error_code, "local_cancelled") == 0);
+  assert(vg_config_service_pending_candidate(&service, &pending) == -ENOENT);
+  assert(vg_config_service_confirm(&service, &confirmation, &status)
+         == -EALREADY);
+  assert(fixture.commit_count == 0);
+  assert(fixture.notify_count == 0);
+  assert(vg_config_gate_is_idle());
+}
+
+struct local_ui_capture
+{
+  struct vg_config_service *service;
+  bool queued;
+  struct vg_config_confirmation_action action;
+};
+
+static int local_ui_load(void *ctx,
+                         struct vg_config_pending_preview *out)
+{
+  struct local_ui_capture *capture = ctx;
+
+  return vg_config_service_pending_preview(capture->service, out);
+}
+
+static int local_ui_submit(
+  void *ctx,
+  const struct vg_config_confirmation_action *action)
+{
+  struct local_ui_capture *capture = ctx;
+
+  capture->queued = true;
+  capture->action = *action;
+  return 0;
+}
+
+static void test_local_ui_event_commits_exact_candidate(void)
+{
+  struct fixture fixture;
+  struct vg_config_service service;
+  struct vg_config_task_status status;
+  struct vg_config_pending_candidate pending;
+  struct vg_config_confirm_request confirmation;
+  struct vg_config_confirmation ui;
+  struct local_ui_capture capture;
+  struct vg_config_confirmation_ports ports = {
+    local_ui_load, local_ui_submit, &capture
+  };
+
+  setup_pending(&fixture, &service, &status, &pending, &confirmation);
+  memset(&capture, 0, sizeof(capture));
+  capture.service = &service;
+  assert(vg_config_confirmation_init(&ui, &ports) == 0);
+  assert(vg_config_confirmation_sync(&ui, false) == 0);
+  assert(vg_config_confirmation_is_visible(&ui));
+  assert(vg_config_confirmation_submit(
+           &ui, VG_CONFIG_CONFIRMATION_CONFIRM, false) == 0);
+  assert(capture.queued);
+  assert(capture.action.kind == VG_CONFIG_CONFIRMATION_CONFIRM);
+  assert(fixture.commit_count == 0);
+  assert(vg_config_confirmation_submit(
+           &ui, VG_CONFIG_CONFIRMATION_CONFIRM, false) == -EALREADY);
+  assert(vg_config_confirmation_claim(&ui, &capture.action));
+  assert(vg_config_service_confirm(
+           &service, &capture.action.request.confirm, &status) == 0);
+  assert(status.state == VG_CONFIG_SESSION_APPLIED);
+  assert(fixture.commit_count == 1);
+  assert(fixture.notify_count == 1);
+  assert(strcmp(fixture.committed_json, pending.target_json) == 0);
+  assert(!vg_config_confirmation_claim(&ui, &capture.action));
+  vg_config_confirmation_deinit(&ui);
+}
+
+static void test_worker_commits_exact_candidate(void)
+{
+  struct fixture fixture;
+  struct vg_config_service service;
+  struct vg_config_task_status status;
+  struct vg_config_pending_candidate pending;
+  struct vg_config_confirm_request confirmation;
+  struct vg_config_confirmation ui;
+  struct vg_config_confirmation_worker worker;
+  struct vg_config_confirmation_ports ports;
+
+  setup_pending(&fixture, &service, &status, &pending, &confirmation);
+  assert(vg_config_confirmation_init(&ui, NULL) == 0);
+  assert(vg_config_confirmation_worker_init(
+           &worker, &ui, &service, NULL, NULL) == 0);
+  assert(vg_config_confirmation_worker_ports(&worker, &ports) == 0);
+  assert(vg_config_confirmation_bind(&ui, &ports) == 0);
+  assert(vg_config_confirmation_worker_start(&worker) == 0);
+  assert(vg_config_confirmation_sync(&ui, false) == 0);
+  assert(vg_config_confirmation_is_visible(&ui));
+  assert(vg_config_confirmation_submit(
+           &ui, VG_CONFIG_CONFIRMATION_CONFIRM, false) == 0);
+  assert(vg_config_confirmation_worker_stop(&worker) == 0);
+
+  assert(vg_config_service_query_task(&service, confirmation.task_id,
+                                      &status) == 0);
+  assert(status.state == VG_CONFIG_SESSION_APPLIED);
+  assert(fixture.commit_count == 1);
+  assert(fixture.notify_count == 1);
+  assert(strcmp(fixture.committed_json, pending.target_json) == 0);
+  vg_config_confirmation_deinit(&ui);
+}
+
+static bool alarm_is_active(void *ctx)
+{
+  return *(bool *)ctx;
+}
+
+static void test_worker_alarm_revokes_queued_action(void)
+{
+  struct fixture fixture;
+  struct vg_config_service service;
+  struct vg_config_task_status status;
+  struct vg_config_pending_candidate pending;
+  struct vg_config_confirm_request confirmation;
+  struct vg_config_confirmation ui;
+  struct vg_config_confirmation_worker worker;
+  struct vg_config_confirmation_ports ports;
+  struct vg_config_local_cancel_request cancel;
+  bool alarm = true;
+
+  setup_pending(&fixture, &service, &status, &pending, &confirmation);
+  assert(vg_config_confirmation_init(&ui, NULL) == 0);
+  assert(vg_config_confirmation_worker_init(
+           &worker, &ui, &service, alarm_is_active, &alarm) == 0);
+  assert(vg_config_confirmation_worker_ports(&worker, &ports) == 0);
+  assert(vg_config_confirmation_bind(&ui, &ports) == 0);
+  assert(vg_config_confirmation_worker_start(&worker) == 0);
+  assert(vg_config_confirmation_sync(&ui, false) == 0);
+  assert(vg_config_confirmation_submit(
+           &ui, VG_CONFIG_CONFIRMATION_CONFIRM, false) == 0);
+  assert(vg_config_confirmation_worker_stop(&worker) == 0);
+
+  assert(vg_config_service_query_task(&service, confirmation.task_id,
+                                      &status) == 0);
+  assert(status.state == VG_CONFIG_SESSION_AWAITING_CONFIRM);
+  assert(fixture.commit_count == 0);
+  assert(fixture.notify_count == 0);
+  assert(!vg_config_confirmation_is_visible(&ui));
+
+  memset(&cancel, 0, sizeof(cancel));
+  strcpy(cancel.task_id, pending.task_id);
+  strcpy(cancel.session_id, pending.session_id);
+  cancel.revision = pending.revision;
+  strcpy(cancel.confirmation_id, pending.confirmation_id);
+  assert(vg_config_service_cancel_local(&service, &cancel, &status) == 0);
+  assert(vg_config_gate_is_idle());
+  vg_config_confirmation_deinit(&ui);
+}
+
+static void test_pending_getter_expires_candidate(void)
+{
+  struct fixture fixture;
+  struct vg_config_service service;
+  struct vg_config_task_status status;
+  struct vg_config_pending_candidate pending;
+  struct vg_config_confirm_request confirmation;
+
+  setup_pending(&fixture, &service, &status, &pending, &confirmation);
+  fixture.now += VG_CONFIG_LEASE_MS;
+  assert(vg_config_service_pending_candidate(&service, &pending) == -ENOENT);
+  assert(vg_config_service_query_task(&service, confirmation.task_id,
+                                     &status) == 0);
+  assert(status.state == VG_CONFIG_SESSION_EXPIRED);
+  assert(vg_config_gate_is_idle());
+}
+
 int main(void)
 {
   test_applied_and_old_event();
@@ -436,5 +636,10 @@ int main(void)
   test_ownership_lost();
   test_cancel_competition();
   test_cancel_before_confirm();
+  test_local_cancel_and_stale_token();
+  test_local_ui_event_commits_exact_candidate();
+  test_worker_commits_exact_candidate();
+  test_worker_alarm_revokes_queued_action();
+  test_pending_getter_expires_candidate();
   return 0;
 }

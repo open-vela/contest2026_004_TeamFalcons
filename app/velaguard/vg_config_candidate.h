@@ -11,7 +11,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "vg_config_service.h"
+#include "vg_config_contract.h"
 
 #define VG_CONFIG_MODEL_MAX 65
 #define VG_CONFIG_QUOTE_MAX 161

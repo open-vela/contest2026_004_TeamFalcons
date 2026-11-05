@@ -261,6 +261,9 @@ lv_obj_t * hg_find_obj(bool (*match)(lv_obj_t * o, void * user), void * user,
     int qh = 0, qt = 0;
 
     queue[qt++] = lv_screen_active();
+    if(lv_layer_top() != lv_screen_active() && qt < 256) {
+        queue[qt++] = lv_layer_top();
+    }
     while(qh < qt) {
         lv_obj_t * o = queue[qh++];
         uint32_t i;
@@ -311,6 +314,9 @@ bool hg_find_btn_center(const char * text, int nth, int * cx, int * cy)
     int counter = 0;
 
     queue[qt++] = lv_screen_active();
+    if(lv_layer_top() != lv_screen_active() && qt < 256) {
+        queue[qt++] = lv_layer_top();
+    }
     while(qh < qt) {
         lv_obj_t * o = queue[qh++];
         uint32_t i;
@@ -346,6 +352,9 @@ bool hg_find_row_click_point(const char * text, int nth, int * cx, int * cy)
     int counter = 0;
 
     queue[qt++] = lv_screen_active();
+    if(lv_layer_top() != lv_screen_active() && qt < 256) {
+        queue[qt++] = lv_layer_top();
+    }
     while(qh < qt) {
         lv_obj_t * o = queue[qh++];
         uint32_t i;

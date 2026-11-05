@@ -179,6 +179,7 @@ static void expire_if_due(struct vg_config_service *service, bool *release)
   service->session.state_seq++;
   set_error(&service->session, "lease_expired", false);
   service->session_active = false;
+  memset(&service->pending, 0, sizeof(service->pending));
   *release = service->remote_gate_token != 0;
 }
 
@@ -349,6 +350,7 @@ int vg_config_service_disconnect(struct vg_config_service *service,
       service->session.state_seq++;
       set_error(&service->session, reason, false);
       service->session_active = false;
+      memset(&service->pending, 0, sizeof(service->pending));
       gate_token = service->remote_gate_token;
       service->remote_gate_token = 0;
       release = gate_token != 0;
@@ -748,11 +750,87 @@ int vg_config_service_cancel(struct vg_config_service *service,
   service->session.state_seq++;
   set_error(&service->session, "cancelled", false);
   service->session_active = false;
+  memset(&service->pending, 0, sizeof(service->pending));
   gate_token = service->remote_gate_token;
   service->remote_gate_token = 0;
   release = gate_token != 0;
   cache_request(service, request->req_id, request->request_hash, 0,
                 &service->session);
+  fill_status(service, &service->session, out);
+  pthread_mutex_unlock(&service->lock);
+
+  if (release)
+    {
+      (void)vg_config_gate_release(VG_CONFIG_GATE_REMOTE, gate_token);
+    }
+
+  return 0;
+}
+
+int vg_config_service_cancel_local(
+  struct vg_config_service *service,
+  const struct vg_config_local_cancel_request *request,
+  struct vg_config_task_status *out)
+{
+  uint32_t gate_token = 0;
+  bool release = false;
+  int ret;
+
+  if (service == NULL || request == NULL || out == NULL ||
+      !service->initialized || !valid_text_id(request->task_id) ||
+      !valid_hex32(request->session_id) ||
+      request->revision == 0 ||
+      !valid_hex32(request->confirmation_id))
+    {
+      return -EINVAL;
+    }
+
+  ret = vg_config_service_tick(service);
+  if (ret != 0)
+    {
+      return ret;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (!service->session_active ||
+      strcmp(request->task_id, service->session.task_id) != 0 ||
+      strcmp(request->session_id, service->session.session_id) != 0)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ENOENT;
+    }
+
+  if (service->session.state == VG_CONFIG_SESSION_COMMITTING)
+    {
+      fill_status(service, &service->session, out);
+      pthread_mutex_unlock(&service->lock);
+      return -EALREADY;
+    }
+
+  if (service->session.state != VG_CONFIG_SESSION_AWAITING_CONFIRM ||
+      !service->pending.valid ||
+      service->session.revision != request->revision ||
+      service->pending.revision != request->revision ||
+      !service->session.has_confirmation_id ||
+      strcmp(service->session.confirmation_id,
+             request->confirmation_id) != 0 ||
+      strcmp(service->pending.confirmation_id,
+             request->confirmation_id) != 0)
+    {
+      fill_status(service, &service->session, out);
+      pthread_mutex_unlock(&service->lock);
+      return -ESTALE;
+    }
+
+  service->session.state = VG_CONFIG_SESSION_CANCELLED;
+  service->session.lease_remaining_ms = 0;
+  service->session.state_seq++;
+  set_error(&service->session, "local_cancelled", false);
+  service->session_active = false;
+  memset(&service->pending, 0, sizeof(service->pending));
+  gate_token = service->remote_gate_token;
+  service->remote_gate_token = 0;
+  release = gate_token != 0;
   fill_status(service, &service->session, out);
   pthread_mutex_unlock(&service->lock);
 
@@ -980,6 +1058,7 @@ int vg_config_service_put(struct vg_config_service *service,
              sizeof(service->pending.candidate_hash));
       memcpy(service->pending.confirmation_id, confirmation_id,
              sizeof(service->pending.confirmation_id));
+      service->pending.candidate = build.candidate;
       service->pending.candidate_json_len =
         request->candidate_json_len;
       memcpy(service->pending.candidate_json, request->candidate_json,
@@ -1032,9 +1111,17 @@ int vg_config_service_pending_candidate(
   struct vg_config_service *service,
   struct vg_config_pending_candidate *out)
 {
+  int ret;
+
   if (service == NULL || out == NULL || !service->initialized)
     {
       return -EINVAL;
+    }
+
+  ret = vg_config_service_tick(service);
+  if (ret != 0)
+    {
+      return ret;
     }
 
   pthread_mutex_lock(&service->lock);
@@ -1046,6 +1133,50 @@ int vg_config_service_pending_candidate(
     }
 
   *out = service->pending;
+  pthread_mutex_unlock(&service->lock);
+  return 0;
+}
+
+int vg_config_service_pending_preview(
+  struct vg_config_service *service,
+  struct vg_config_pending_preview *out)
+{
+  int ret;
+
+  if (service == NULL || out == NULL || !service->initialized)
+    {
+      return -EINVAL;
+    }
+
+  ret = vg_config_service_tick(service);
+  if (ret != 0)
+    {
+      return ret;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (!service->session_active || !service->pending.valid ||
+      service->session.state != VG_CONFIG_SESSION_AWAITING_CONFIRM)
+    {
+      pthread_mutex_unlock(&service->lock);
+      return -ENOENT;
+    }
+
+  memset(out, 0, sizeof(*out));
+  out->valid = true;
+  memcpy(out->task_id, service->pending.task_id, sizeof(out->task_id));
+  memcpy(out->session_id, service->pending.session_id,
+         sizeof(out->session_id));
+  out->revision = service->pending.revision;
+  out->has_base_hash = service->pending.has_base_hash;
+  memcpy(out->base_hash, service->pending.base_hash, sizeof(out->base_hash));
+  memcpy(out->payload_hash, service->pending.payload_hash,
+         sizeof(out->payload_hash));
+  memcpy(out->candidate_hash, service->pending.candidate_hash,
+         sizeof(out->candidate_hash));
+  memcpy(out->confirmation_id, service->pending.confirmation_id,
+         sizeof(out->confirmation_id));
+  out->candidate = service->pending.candidate;
   pthread_mutex_unlock(&service->lock);
   return 0;
 }
@@ -1156,6 +1287,7 @@ int vg_config_service_confirm(struct vg_config_service *service,
       service->session.state_seq++;
       service->session.lease_remaining_ms = 0;
       service->session_active = false;
+      memset(&service->pending, 0, sizeof(service->pending));
       set_error(&service->session, "ownership_lost", false);
       fill_status(service, &service->session, out);
       pthread_mutex_unlock(&service->lock);
@@ -1232,6 +1364,7 @@ int vg_config_service_confirm(struct vg_config_service *service,
 
   service->session.lease_remaining_ms = 0;
   service->session_active = false;
+  memset(&service->pending, 0, sizeof(service->pending));
   release_gate = service->remote_gate_token != 0;
   service->remote_gate_token = 0;
   service->session.state_seq++;

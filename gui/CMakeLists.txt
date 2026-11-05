@@ -92,6 +92,9 @@ target_include_directories(lvgl PUBLIC ${PROJECT_SOURCE_DIR} ${SDL2_INCLUDE_DIRS
 file(GLOB_RECURSE VG_UI_SOURCES
     "${PROJECT_SOURCE_DIR}/main/ui/*.c"
 )
+list(APPEND VG_UI_SOURCES
+    "${PROJECT_SOURCE_DIR}/../app/velaguard/vg_config_confirmation.c"
+)
 
 # The voice overlay belongs to the board HMI: it calls into the voice round,
 # which is only linked into the firmware.

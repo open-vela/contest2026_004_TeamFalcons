@@ -1,6 +1,7 @@
 #include "vg_shell.h"
 #include "pages/vg_pages.h"
 #include "widgets/vg_confirm_dialog.h"
+#include "widgets/vg_config_confirmation_ui.h"
 #include "theme/vg_theme.h"
 #include "vg_display.h"
 #include "vg_hmi_perf.h"
@@ -362,6 +363,10 @@ void vg_shell_refresh_status(void)
 
 void vg_shell_modal_close(void)
 {
+    if(vg_config_confirmation_ui_is_open()) {
+        vg_config_confirmation_ui_back();
+        return;
+    }
     vg_confirm_dialog_close();
 }
 
@@ -594,7 +599,12 @@ void vg_nav_back(void)
     uint32_t nav_t0;
     vg_nav_state_t target;
 
-    /* Modal wins over navigation: back/Esc closes the confirm dialog first. */
+    /* Modal wins over navigation. The candidate surface cancels its exact
+     * displayed version; the generic dialog only closes itself. */
+    if(vg_config_confirmation_ui_is_open()) {
+        vg_config_confirmation_ui_back();
+        return;
+    }
     if(vg_confirm_dialog_is_open()) {
         vg_confirm_dialog_close();
         return;

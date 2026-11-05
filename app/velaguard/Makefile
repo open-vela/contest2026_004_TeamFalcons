@@ -174,7 +174,7 @@ endif
 
 CSRCS    += $(notdir $(VG_UI_CSRCS))
 CSRCS    += vg_ui_backend_board.c vg_alarm_eval.c vg_advice.c \
-            vg_advice_policy.c vg_ai_contract.c
+            vg_advice_policy.c vg_ai_contract.c vg_config_confirmation.c
 ifeq ($(CONFIG_VG_LLM_HEALTH),y)
 CSRCS    += vg_llm_health.c
 CFLAGS   += -DCONFIG_VG_LLM_HEALTH=1

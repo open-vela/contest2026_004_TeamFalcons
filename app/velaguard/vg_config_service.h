@@ -12,18 +12,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "vg_config_candidate.h"
 #include "vg_config_gate.h"
-#include "vg_discover.h"
-
-#define VG_CONFIG_HEX32_LEN 33
-#define VG_CONFIG_HASH_LEN  65
-#define VG_CONFIG_BOOTSTRAP_CAPACITY VG_DISCOVER_MAX_POINTS
-#define VG_CONFIG_REQUEST_MAX 16384
-#define VG_CONFIG_STATE_MAX 4096
-#define VG_CONFIG_LEASE_MS 600000u
-#define VG_CONFIG_ID_MAX 65
-#define VG_CONFIG_REQUEST_CACHE 32
-#define VG_CONFIG_USED_TASKS 32
+#include "vg_config_contract.h"
 
 enum vg_config_session_state_e
 {
@@ -117,6 +108,14 @@ struct vg_config_cancel_request
   char session_id[VG_CONFIG_HEX32_LEN];
 };
 
+struct vg_config_local_cancel_request
+{
+  char task_id[VG_CONFIG_ID_MAX];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  uint32_t revision;
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+};
+
 struct vg_config_put_request
 {
   char req_id[VG_CONFIG_ID_MAX];
@@ -177,11 +176,28 @@ struct vg_config_pending_candidate
   char payload_hash[VG_CONFIG_HASH_LEN];
   char candidate_hash[VG_CONFIG_HASH_LEN];
   char confirmation_id[VG_CONFIG_HEX32_LEN];
+  struct vg_config_candidate candidate;
   size_t candidate_json_len;
   char candidate_json[VG_CONFIG_REQUEST_MAX + 1];
   size_t target_len;
   char target_json[VG_POINT_TABLE_JSON_MAX];
   struct vg_discover_summary target_table;
+};
+
+/* Small UI-facing copy of the current confirmation. Frozen JSON and the
+ * parsed target table stay owned by vg_config_service. */
+struct vg_config_pending_preview
+{
+  bool valid;
+  char task_id[VG_CONFIG_ID_MAX];
+  char session_id[VG_CONFIG_HEX32_LEN];
+  uint32_t revision;
+  bool has_base_hash;
+  char base_hash[VG_CONFIG_HASH_LEN];
+  char payload_hash[VG_CONFIG_HASH_LEN];
+  char candidate_hash[VG_CONFIG_HASH_LEN];
+  char confirmation_id[VG_CONFIG_HEX32_LEN];
+  struct vg_config_candidate candidate;
 };
 
 struct vg_config_cached_request
@@ -231,12 +247,19 @@ int vg_config_service_query_task(struct vg_config_service *service,
 int vg_config_service_cancel(struct vg_config_service *service,
                              const struct vg_config_cancel_request *request,
                              struct vg_config_task_status *out);
+int vg_config_service_cancel_local(
+  struct vg_config_service *service,
+  const struct vg_config_local_cancel_request *request,
+  struct vg_config_task_status *out);
 int vg_config_service_put(struct vg_config_service *service,
                           const struct vg_config_put_request *request,
                           struct vg_config_task_status *out);
 int vg_config_service_pending_candidate(
   struct vg_config_service *service,
   struct vg_config_pending_candidate *out);
+int vg_config_service_pending_preview(
+  struct vg_config_service *service,
+  struct vg_config_pending_preview *out);
 int vg_config_service_confirm(struct vg_config_service *service,
                               const struct vg_config_confirm_request *request,
                               struct vg_config_task_status *out);

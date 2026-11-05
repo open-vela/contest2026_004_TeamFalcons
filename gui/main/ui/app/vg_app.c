@@ -2,6 +2,7 @@
 #include "theme/vg_theme.h"
 #include "model/vg_model.h"
 #include "shell/vg_shell.h"
+#include "widgets/vg_config_confirmation_ui.h"
 #include "lvgl/lvgl.h"
 #ifdef VG_VOICE_ROUND
 #include "widgets/vg_voice_overlay.h"
@@ -105,6 +106,7 @@ void vg_app_init(void)
     vg_theme_init();
     vg_model_init();
     vg_shell_create();
+    vg_config_confirmation_ui_init();
     vg_nav_goto(VG_PAGE_HOME, NULL);
 #ifdef VG_VOICE_ROUND
     /* Lives on lv_layer_top(), so it stays across page switches. */
