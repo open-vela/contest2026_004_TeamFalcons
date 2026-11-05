@@ -1,0 +1,46 @@
+MiMo credential rotation verification, 2026-11-05 (Asia/Shanghai)
+
+Target: STM32H750B-DK via COM3, existing firmware; no firmware changes.
+Provisioning: packed in host memory with scripts/vg-provision-pack.py;
+only encrypted chunks sent to vgprovision. No plaintext credential file created.
+Endpoint: https://token-plan-cn.xiaomimimo.com/v1/chat/completions
+Model: mimo-v2.6-flash
+
+Observed board output:
+vgprovision: committed /data/velaguard/provision/llm_secrets.v1 (232 bytes)
+vgprovision: OK file=/data/velaguard/provision/llm_secrets.v1
+
+After SWD reset without reflashing:
+eMMC mounted at /mnt/emmc
+Symlink /data -> /mnt/emmc/data
+llm: credentials=ready provision_file=present
+[llm] LLM proxy initialized (model: mimo-v2.6-flash, host: token-plan-cn.xiaomimimo.com)
+
+Host API test using the new credential:
+Request: Reply only MIMO_KEY_OK_1105
+Response model: mimo-v2.6-flash
+Response content: MIMO_KEY_OK_1105
+Result: PASS (credential/service test from computer).
+
+Board request submitted:
+vgagent ask Reply only MIMO_KEY_OK_1105 and do not call tools
+[vgagent] round submitted: 49 bytes
+[netmgr] Timed out waiting for network
+No successful board model response observed.
+
+Board network diagnostics:
+eth0 RUNNING; inet addr:0.0.0.0
+state=down egress=none tcp=none mqtt=down reason=boot
+rj45 link=1 ip=- gw=223.5.5.5 ping_ok=0 fail_streak=0
+
+Computer network diagnostics:
+USB2.0 Ethernet Adapter / Ethernet: 169.254.6.135/16
+Local Connection* 10: 192.168.137.1/24
+Internet uplink / Ethernet 3: 10.16.6.141/16
+Reading Windows Internet Connection Sharing configuration: E_ACCESSDENIED.
+User confirmed the board uses computer Internet sharing.
+Board end-to-end verification requires working network sharing/DHCP.
+
+Device logs restored a 2026-10-29 clock; report date uses host/client date.
+No API key, encrypted credential blob, or existing unrelated working changes
+are included in this evidence file.
