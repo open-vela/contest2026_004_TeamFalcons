@@ -20,6 +20,7 @@
 #include <time.h>
 
 #include "vg_device_id.h"
+#include "vg_config_gate.h"
 #include "vg_fw_identity.h"
 #include "vg_ota_bcb.h"
 #include "vg_ota_confirm.h"
@@ -550,6 +551,27 @@ static void test_pending_write_failures(void)
     cleanup_temp_dir();
   }
 }
+
+static void test_config_gate_blocks_install(void)
+{
+  struct vg_ota_interlock_ports ports = success_ports();
+  uint32_t token = 0;
+  bool created = false;
+  char err[64];
+
+  setup_temp_dir();
+  stage_valid_offer("T07-GATE", "0.2.0");
+  assert(vg_config_gate_acquire(VG_CONFIG_GATE_NSH, &token, &created) == 0);
+  assert(created);
+  assert(vg_ota_confirm_install(VG_OTA_CONFIRM_SRC_TOUCH,
+                                &ports, err, sizeof(err)) == -EBUSY);
+  assert(strcmp(err, "interlock_device_busy") == 0);
+  assert(vg_config_gate_owns(VG_CONFIG_GATE_NSH, token));
+  assert_ready_without_pending();
+  assert(vg_config_gate_release(VG_CONFIG_GATE_NSH, token) == 0);
+  cleanup_temp_dir();
+}
+
 static void test_timeout_and_restart_suppression(void)
 {
   struct vg_ota_staging_info info;
@@ -627,6 +649,7 @@ int main(void)
 {
   test_suppression_not_evicted_and_torn_journal();
   test_pending_write_failures();
+  test_config_gate_blocks_install();
   test_timeout_and_restart_suppression();
   test_missing_interlock_and_stale_manifest();
   test_unauthorized_sources();

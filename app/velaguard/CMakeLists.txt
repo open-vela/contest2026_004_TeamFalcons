@@ -52,7 +52,7 @@ if(CONFIG_VG_BRINGUP_TOOLS)
     endif()
     nuttx_add_application(
       NAME vgota
-      SRCS ${VG_OTA_NETWORK_SRCS} vgota.c vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_ota_link.c vg_ota_entropy.c vg_ota_trust.c
+      SRCS ${VG_OTA_NETWORK_SRCS} vgota.c vg_ota_probe.c vg_ota_reboot.c vg_ota_self_check.c vg_ota_staging.c vg_ota_confirm.c vg_config_gate.c vg_ota_link.c vg_ota_entropy.c vg_ota_trust.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_fat.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_bcb.c
            ${CMAKE_CURRENT_LIST_DIR}/../../boot/ota_core/vg_ota_boot.c

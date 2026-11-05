@@ -11,6 +11,7 @@
 
 #include <nuttx/config.h>
 
+#include "vg_config_gate.h"
 #include "vg_discover.h"
 
 #ifndef CONFIG_VG_HMI_RS485_DEVPATH
@@ -64,6 +65,8 @@ int main(int argc, FAR char *argv[])
   int amin = CONFIG_VG_HMI_DISCOVER_ADDR_MIN;
   int amax = CONFIG_VG_HMI_DISCOVER_ADDR_MAX;
   int inter = CONFIG_VG_HMI_DISCOVER_INTER_MS;
+  uint32_t gate_token = 0;
+  bool created;
   int ret;
   int i;
 
@@ -82,9 +85,20 @@ int main(int argc, FAR char *argv[])
   printf("vgscan: %s @%d addr %d..%d inter=%dms\n",
          dev, CONFIG_VG_HMI_DISCOVER_BAUD, amin, amax, inter);
 
-  if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgscan: bus busy\n"); return 1; }
+  if (vg_config_gate_acquire(VG_CONFIG_GATE_SCAN, &gate_token, &created) != 0)
+    {
+      fprintf(stderr, "vgscan: another configuration workflow is active\n");
+      return 1;
+    }
+  if (vg_bus_lock_timeout(1000) != 0)
+    {
+      (void)vg_config_gate_release(VG_CONFIG_GATE_SCAN, gate_token);
+      fprintf(stderr, "vgscan: bus busy\n");
+      return 1;
+    }
   ret = vg_bus_scan(sum, dev, CONFIG_VG_HMI_DISCOVER_BAUD, amin, amax, inter);
   vg_bus_unlock();
+  (void)vg_config_gate_release(VG_CONFIG_GATE_SCAN, gate_token);
   if(ret < 0)
     {
       fprintf(stderr, "vgscan: failed %d (errno=%d)\n", ret, errno);

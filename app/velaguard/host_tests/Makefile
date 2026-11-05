@@ -22,6 +22,24 @@ test_net_policy: test_net_policy.c ../vg_net_policy.c ../vg_net_policy.h
 test_config_store: test_config_store.c ../vg_config_store.c ../vg_config_store.h
 	$(CC) $(CFLAGS) -o $@ test_config_store.c ../vg_config_store.c
 
+test_config_gate: test_config_gate.c ../vg_config_gate.c ../vg_config_gate.h
+	$(CC) $(CFLAGS) -o $@ test_config_gate.c ../vg_config_gate.c
+
+test_config_gate_nsh: test_config_gate_nsh.c ../vgpoint.c ../vg_point_table.c \
+                      ../vg_config_gate.c ../vg_config_gate.h ../vg_discover.h \
+                      ../vg_file_store.c ../vg_discover_modbus.c \
+                      ../vg_frame_stats.c ../nanomodbus/nanomodbus.c $(CJSON_SRC)
+	$(CC) $(CFLAGS) -Istubs -include stubs/vg_host_shim.h \
+	  -I../nanomodbus \
+	  -DCONFIG_VG_DISCOVER_CANDIDATE_PATH='"gate-nsh-candidate.json"' \
+	  -DCONFIG_VG_DISCOVER_POINTS_PATH='"gate-nsh-points.json"' \
+	  -DCONFIG_VG_CONFIG_BASEDIR='"gate-nsh-config"' \
+	  -DCONFIG_VG_STORE_ROOT='"."' \
+	  -DCONFIG_VG_LIVE_VALUES_PATH='"gate-nsh-live-values.txt"' \
+	  -o $@ test_config_gate_nsh.c ../vg_point_table.c ../vg_config_gate.c \
+	  ../vg_file_store.c ../vg_discover_modbus.c ../vg_frame_stats.c \
+	  ../nanomodbus/nanomodbus.c $(CJSON_SRC) -lm
+
 test_frame_stats: test_frame_stats.c ../vg_frame_stats.c ../vg_frame_stats.h
 	$(CC) $(CFLAGS) -o $@ test_frame_stats.c ../vg_frame_stats.c
 
@@ -112,20 +130,22 @@ test_ota_staging: test_ota_staging.c ../vg_ota_staging.c ../vg_ota_staging.h \
 	  ../vg_ota_staging.c ../vg_ota_trust.c ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
 
 test_ota_confirm: test_ota_confirm.c ../vg_ota_confirm.c ../vg_ota_confirm.h \
+                  ../vg_config_gate.c ../vg_config_gate.h \
                   ../vg_ota_staging.c ../vg_ota_staging.h \
                   ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
 	$(CC) $(CFLAGS) -I$(BOOT_CORE) -I.. -DVG_FW_VERSION='"0.1.0"' \
 	  -DVG_FW_BUILD_ID='"test-bid"' -DVG_FW_TEST_SLOT_MARKER=0x41 \
 	  -DVG_FW_TEST_LINK_BASE=0x90000000u -Wl,--wrap=clock_gettime,--wrap=fsync,--wrap=rename,--wrap=read -o $@ test_ota_confirm.c \
-	  ../vg_ota_confirm.c ../vg_ota_staging.c ../vg_ota_trust.c ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
+	  ../vg_ota_confirm.c ../vg_config_gate.c ../vg_ota_staging.c ../vg_ota_trust.c ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
 
 test_ota_confirm_b: test_ota_confirm.c ../vg_ota_confirm.c ../vg_ota_confirm.h \
+                  ../vg_config_gate.c ../vg_config_gate.h \
                   ../vg_ota_staging.c ../vg_ota_staging.h \
                   ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
 	$(CC) $(CFLAGS) -I$(BOOT_CORE) -I.. -DVG_FW_VERSION='"0.1.0"' \
 	  -DVG_FW_BUILD_ID='"test-bid"' -DVG_FW_TEST_SLOT_MARKER=0x42 \
 	  -DVG_FW_TEST_LINK_BASE=0x90800000u -Wl,--wrap=clock_gettime,--wrap=fsync,--wrap=rename,--wrap=read -o $@ test_ota_confirm.c \
-	  ../vg_ota_confirm.c ../vg_ota_staging.c ../vg_ota_trust.c ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
+	  ../vg_ota_confirm.c ../vg_config_gate.c ../vg_ota_staging.c ../vg_ota_trust.c ../vg_device_id.c ../vg_fw_identity.c $(wildcard $(BOOT_CORE)/*.c)
 
 test_ota_protocol: test_ota_protocol.c ../vg_ota_protocol.c ../vg_ota_json.c ../vg_ota_outbox.c ../vg_ota_http.c ../vg_fw_identity.c ../vg_file_store.c $(BOOT_CORE)/vg_ota_bcb.c $(CJSON_SRC)
 	$(CC) $(CFLAGS) -I$(BOOT_CORE) -I$(APPS_INC)/../netutils/cjson/cJSON -DVG_FW_TEST_SLOT_MARKER=0x41 -DVG_FW_TEST_LINK_BASE=0x90000000u -o $@ $^ -lm
@@ -184,9 +204,11 @@ test_ptt: test_ptt.c ../vg_ptt.c ../vg_ptt.h
 test_ptt_cycles: test_ptt_cycles.c ../vg_ptt.c ../vg_ptt.h
 	$(CC) $(CFLAGS) -o $@ test_ptt_cycles.c ../vg_ptt.c
 
-test: test_ota_confirm_b test_ota_link test_ota_agent_gate test_ota_protocol test_ota_entropy test_ota_staging_concurrent test_ota_http test_ota_confirm test_ota_staging test_ota_self_check test_ota_install test_ota_probe test_ota_bcb test_ota_fat test_ota_boot test_fw_identity test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
+test: test_ota_confirm_b test_ota_link test_ota_agent_gate test_ota_protocol test_ota_entropy test_ota_staging_concurrent test_ota_http test_ota_confirm test_ota_staging test_ota_self_check test_ota_install test_ota_probe test_ota_bcb test_ota_fat test_ota_boot test_fw_identity test_tls_stream_upload test_tls_voice_slot test_tls_voice_session test_agent_timing test_live_memory test_tool_audit test_runtime_concurrent test_tls_send_pressure test_tls_pool test_context_cache test_voice_cloud test_dns_control test_llm_runtime_config test_voice_scope test_voice_facts test_net_policy test_config_store test_config_gate test_config_gate_nsh test_frame_stats test_runtime test_runtime_anomaly test_voice_session test_voice_pcm test_tts_player test_voice_answer test_voice_pref test_discover test_vgpoint test_alarm_eval test_formula test_time_sync test_hmi_perf test_runtime_render test_hmi_sched test_mqtt_payload test_ai_contract test_advice_policy test_provision_creds test_agent_query test_agent_tools test_maintenance test_file_store test_shell_runner test_local_client test_file_policy test_discover_io test_agent_round test_shell_output test_modbus_port test_point_commit test_mqtt_session test_ptt test_ptt_cycles test_pdm_filter
 	./test_net_policy
 	./test_config_store
+	./test_config_gate
+	./test_config_gate_nsh
 	./test_frame_stats
 	./test_runtime
 	./test_runtime_anomaly

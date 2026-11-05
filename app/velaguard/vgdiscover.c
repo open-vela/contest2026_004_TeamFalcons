@@ -12,6 +12,7 @@
 
 #include <nuttx/config.h>
 
+#include "vg_config_gate.h"
 #include "vg_discover.h"
 
 #ifndef CONFIG_VG_DISCOVER_DEVPATH
@@ -50,6 +51,35 @@
 #ifndef CONFIG_VG_CONFIG_BASEDIR
 #  define CONFIG_VG_CONFIG_BASEDIR "/data/velaguard/config"
 #endif
+
+static uint32_t g_scan_gate_token;
+static uint32_t g_nsh_gate_token;
+
+static int claim_gate(enum vg_config_gate_owner_e owner, uint32_t *token)
+{
+  bool created;
+
+  if (*token != 0 && vg_config_gate_owns(owner, *token))
+    {
+      return 0;
+    }
+
+  if (vg_config_gate_acquire(owner, token, &created) != 0)
+    {
+      return -EBUSY;
+    }
+
+  return 0;
+}
+
+static void release_gate(enum vg_config_gate_owner_e owner, uint32_t *token)
+{
+  if (*token != 0)
+    {
+      (void)vg_config_gate_release(owner, *token);
+      *token = 0;
+    }
+}
 
 static void usage(FAR const char *prog)
 {
@@ -149,10 +179,21 @@ int main(int argc, char *argv[])
       printf("vgdiscover: scan %s @%d addr %d..%d\n",
              dev, CONFIG_VG_DISCOVER_BAUD, amin, amax);
 
-      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
+      if (claim_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token) != 0)
+        {
+          fprintf(stderr, "vgdiscover: another configuration workflow is active\n");
+          return 1;
+        }
+      if (vg_bus_lock_timeout(1000) != 0)
+        {
+          release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
+          fprintf(stderr, "vgdiscover: bus busy\n");
+          return 1;
+        }
       ret = vg_bus_scan(sum, dev, CONFIG_VG_DISCOVER_BAUD,
                         amin, amax, CONFIG_VG_DISCOVER_INTER_MS);
       vg_bus_unlock();
+      release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
       if (ret < 0)
         {
           fprintf(stderr, "vgdiscover: scan failed %d\n", ret);
@@ -213,10 +254,21 @@ int main(int argc, char *argv[])
       (void)vg_discover_state_load(sum, NULL);
       sum->n_blocks = 0;
 
-      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
+      if (claim_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token) != 0)
+        {
+          fprintf(stderr, "vgdiscover: another configuration workflow is active\n");
+          return 1;
+        }
+      if (vg_bus_lock_timeout(1000) != 0)
+        {
+          release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
+          fprintf(stderr, "vgdiscover: bus busy\n");
+          return 1;
+        }
       ret = vg_reg_probe_slave(sum, dev, CONFIG_VG_DISCOVER_BAUD,
                                addr, fc, CONFIG_VG_DISCOVER_REG_MAX);
       vg_bus_unlock();
+      release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
       if (ret < 0)
         {
           fprintf(stderr, "vgdiscover: probe failed %d\n", ret);
@@ -254,12 +306,23 @@ int main(int argc, char *argv[])
         }
 
       if (access(out, F_OK) == 0) { fprintf(stderr, "vgdiscover: candidate exists; inspect or abort it first\n"); return 1; }
+      if (claim_gate(VG_CONFIG_GATE_NSH, &g_nsh_gate_token) != 0)
+        {
+          fprintf(stderr, "vgdiscover: another configuration workflow is active\n");
+          return 1;
+        }
       vg_point_table_infer(sum);
-      if (sum->n_points == 0) { fprintf(stderr, "vgdiscover: no inferred points\n"); return 1; }
+      if (sum->n_points == 0)
+        {
+          release_gate(VG_CONFIG_GATE_NSH, &g_nsh_gate_token);
+          fprintf(stderr, "vgdiscover: no inferred points\n");
+          return 1;
+        }
       if (sum->flags) fprintf(stderr, "vgdiscover: partial/capacity-limited results flags=%u\n", (unsigned)sum->flags);
       ret = vg_point_table_create_candidate(sum, out);
       if (ret != 0)
         {
+          release_gate(VG_CONFIG_GATE_NSH, &g_nsh_gate_token);
           fprintf(stderr, "vgdiscover: dump failed %d\n", ret);
           return 1;
         }
@@ -289,10 +352,21 @@ int main(int argc, char *argv[])
 
       if (qty == 0 || qty > 16 || (uint32_t)reg + qty > 65536) { fprintf(stderr, "vgdiscover: invalid quantity\n"); return 1; }
 
-      if (vg_bus_lock_timeout(1000) != 0) { fprintf(stderr, "vgdiscover: bus busy\n"); return 1; }
+      if (claim_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token) != 0)
+        {
+          fprintf(stderr, "vgdiscover: another configuration workflow is active\n");
+          return 1;
+        }
+      if (vg_bus_lock_timeout(1000) != 0)
+        {
+          release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
+          fprintf(stderr, "vgdiscover: bus busy\n");
+          return 1;
+        }
       ret = vg_discover_test_read(dev, CONFIG_VG_DISCOVER_BAUD,
                                   addr, reg, qty, vals);
       vg_bus_unlock();
+      release_gate(VG_CONFIG_GATE_SCAN, &g_scan_gate_token);
       if (ret != 0)
         {
           fprintf(stderr, "vgdiscover: test-read failed %d\n", ret);
@@ -327,8 +401,14 @@ int main(int argc, char *argv[])
       if (vg_point_table_read(sum, CONFIG_VG_DISCOVER_CANDIDATE_PATH) != 0)
         { fprintf(stderr, "vgdiscover: no valid candidate; run dump first\n"); return 1; }
 
+      if (claim_gate(VG_CONFIG_GATE_NSH, &g_nsh_gate_token) != 0)
+        {
+          fprintf(stderr, "vgdiscover: another configuration workflow is active\n");
+          return 1;
+        }
       ret = vg_point_table_apply(sum, CONFIG_VG_DISCOVER_POINTS_PATH,
                                  CONFIG_VG_CONFIG_BASEDIR, confirm);
+      if (confirm) release_gate(VG_CONFIG_GATE_NSH, &g_nsh_gate_token);
       return (ret == 0) ? 0 : 1;
     }
 

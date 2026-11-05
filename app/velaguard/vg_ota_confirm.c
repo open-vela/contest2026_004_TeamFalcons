@@ -19,6 +19,7 @@
 #include <time.h>
 
 #include "vg_fw_identity.h"
+#include "vg_config_gate.h"
 #include "vg_ota_bcb.h"
 #include "vg_ota_confirm.h"
 #include "vg_ota_clock.h"
@@ -641,8 +642,15 @@ static int candidate_is_pending(void)
 
 static int board_check_idle(void *ctx)
 {
+  enum vg_config_gate_owner_e owner;
+
   (void)ctx;
   if (g_fault_mask & VG_OTA_FAULT_BUSY) return -EBUSY;
+  owner = vg_config_gate_current();
+  if (owner != VG_CONFIG_GATE_NONE && owner != VG_CONFIG_GATE_OTA)
+    {
+      return -EBUSY;
+    }
 #if defined(__arm__) || defined(__NuttX__)
   if (vg_bus_is_locked() || candidate_is_pending() != 0) return -EBUSY;
 #endif
@@ -697,10 +705,24 @@ int vg_ota_confirm_install(enum vg_ota_confirm_source_e src,
                            const struct vg_ota_interlock_ports *ports,
                            char *err_out, size_t err_len)
 {
+  uint32_t gate_token = 0;
+  bool created = false;
   int ret;
+
+  ret = vg_config_gate_acquire(VG_CONFIG_GATE_OTA, &gate_token, &created);
+  if (ret != 0)
+    {
+      if (err_out && err_len)
+        {
+          snprintf(err_out, err_len, "interlock_device_busy");
+        }
+      return -EBUSY;
+    }
+
   vg_ota_staging_lock();
   vg_ota_staging_tick();
   ret = confirm_install_locked(src, ports, err_out, err_len);
   vg_ota_staging_unlock();
+  (void)vg_config_gate_release(VG_CONFIG_GATE_OTA, gate_token);
   return ret;
 }

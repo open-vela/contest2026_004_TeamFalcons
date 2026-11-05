@@ -234,6 +234,10 @@ ifneq ($(filter y,$(CONFIG_VG_BRINGUP_TOOLS) $(CONFIG_VG_HMI)),)
 CSRCS += vg_file_store.c
 endif
 
+ifneq ($(filter y,$(CONFIG_VG_BUS_DISCOVER) $(CONFIG_VG_OTA_PROBE) $(CONFIG_VG_HMI)),)
+CSRCS += vg_config_gate.c
+endif
+
 include $(APPDIR)/Application.mk
 
 # Application.mk appends "--obj-path .". Replace that pair only — do not

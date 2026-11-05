@@ -19,6 +19,7 @@
 
 #include "model/vg_ui_backend.h"
 #include "model/vg_model.h"
+#include "vg_config_gate.h"
 #include "vg_discover.h"
 #ifdef CONFIG_VG_NET_FAILOVER
 #include "vg_net_mgr.h"
@@ -85,6 +86,8 @@ static volatile bool g_scan_thread_active;
 static volatile int g_apply_status = VG_SCAN_IDLE;
 static volatile int g_apply_last_rc;
 static volatile bool g_apply_thread_active;
+static uint32_t g_hmi_scan_gate_token;
+static uint32_t g_hmi_apply_gate_token;
 static int g_scan_amin = CONFIG_VG_HMI_DISCOVER_ADDR_MIN;
 static int g_scan_amax = CONFIG_VG_HMI_DISCOVER_ADDR_MAX;
 static char g_rs485_dev[32];
@@ -123,6 +126,9 @@ static FAR void *vg_hmi_scan_thread(FAR void *arg)
   (void)arg;
 
   if (vg_bus_lock_timeout(1000) != 0) {
+    (void)vg_config_gate_release(VG_CONFIG_GATE_SCAN,
+                                 g_hmi_scan_gate_token);
+    g_hmi_scan_gate_token = 0;
     g_scan_last_rc = -EBUSY;
     g_scan_status = -1;
     g_scan_thread_active = false;
@@ -135,6 +141,9 @@ static FAR void *vg_hmi_scan_thread(FAR void *arg)
                    g_scan_amin, g_scan_amax,
                    CONFIG_VG_HMI_DISCOVER_INTER_MS);
   vg_bus_unlock();
+  (void)vg_config_gate_release(VG_CONFIG_GATE_SCAN,
+                               g_hmi_scan_gate_token);
+  g_hmi_scan_gate_token = 0;
   g_scan_last_rc = rc;
   g_scan_status = (rc >= 0) ? VG_SCAN_DONE : -1;
   g_scan_thread_active = false;
@@ -145,6 +154,7 @@ static int board_discover_scan_start(int addr_min, int addr_max)
 {
   pthread_t tid;
   pthread_attr_t attr;
+  bool created;
 
   if(g_scan_thread_active || g_scan_status == VG_SCAN_RUNNING ||
      g_apply_thread_active || g_apply_status == VG_SCAN_RUNNING) {
@@ -166,6 +176,11 @@ static int board_discover_scan_start(int addr_min, int addr_max)
     return -errno;
   }
 
+  if(vg_config_gate_acquire(VG_CONFIG_GATE_SCAN,
+                            &g_hmi_scan_gate_token, &created) != 0) {
+    return -EBUSY;
+  }
+
   g_scan_amin = addr_min;
   g_scan_amax = addr_max;
   g_scan_last_rc = 0;
@@ -180,6 +195,9 @@ static int board_discover_scan_start(int addr_min, int addr_max)
     g_scan_thread_active = false;
     g_scan_status = VG_SCAN_IDLE;
     g_scan_last_rc = -EIO;
+    (void)vg_config_gate_release(VG_CONFIG_GATE_SCAN,
+                                 g_hmi_scan_gate_token);
+    g_hmi_scan_gate_token = 0;
     return -EIO;
   }
 
@@ -203,6 +221,9 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
   (void)arg;
 
   if (vg_bus_lock_timeout(1000) != 0) {
+    (void)vg_config_gate_release(VG_CONFIG_GATE_NSH,
+                                 g_hmi_apply_gate_token);
+    g_hmi_apply_gate_token = 0;
     g_apply_last_rc = -EBUSY;
     g_apply_status = -1;
     g_apply_thread_active = false;
@@ -211,6 +232,9 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
 
   if(sum == NULL || sum->n_hits <= 0) {
     vg_bus_unlock();
+    (void)vg_config_gate_release(VG_CONFIG_GATE_NSH,
+                                 g_hmi_apply_gate_token);
+    g_hmi_apply_gate_token = 0;
     g_apply_last_rc = -ENOENT;
     g_apply_status = -1;
     g_apply_thread_active = false;
@@ -239,6 +263,9 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
 
   if(sum->n_points <= 0) {
     vg_bus_unlock();
+    (void)vg_config_gate_release(VG_CONFIG_GATE_NSH,
+                                 g_hmi_apply_gate_token);
+    g_hmi_apply_gate_token = 0;
     g_apply_last_rc = -ENOENT;
     g_apply_status = -1;
     g_apply_thread_active = false;
@@ -255,6 +282,11 @@ static FAR void *vg_hmi_apply_thread(FAR void *arg)
   g_apply_last_rc = (rc == 0 && sum->flags) ? (int)sum->flags : rc;
   g_apply_status = (rc == 0) ? VG_SCAN_DONE : -1;
   g_apply_thread_active = false;
+  if (rc != 0) {
+    (void)vg_config_gate_release(VG_CONFIG_GATE_NSH,
+                                 g_hmi_apply_gate_token);
+    g_hmi_apply_gate_token = 0;
+  }
   return NULL;
 }
 
@@ -263,6 +295,7 @@ static int board_discover_apply_start(void)
   pthread_t tid;
   pthread_attr_t attr;
   FAR const struct vg_discover_summary *sum = vg_discover_state();
+  bool created;
 
   if(g_scan_thread_active || g_scan_status == VG_SCAN_RUNNING ||
      g_apply_thread_active || g_apply_status == VG_SCAN_RUNNING) {
@@ -275,6 +308,11 @@ static int board_discover_apply_start(void)
 
   if (access(CONFIG_VG_DISCOVER_CANDIDATE_PATH, F_OK) == 0) return -EEXIST;
 
+  if(vg_config_gate_acquire(VG_CONFIG_GATE_NSH,
+                            &g_hmi_apply_gate_token, &created) != 0) {
+    return -EBUSY;
+  }
+
   g_apply_last_rc = 0;
   g_apply_status = VG_SCAN_RUNNING;
   g_apply_thread_active = true;
@@ -286,6 +324,9 @@ static int board_discover_apply_start(void)
     g_apply_thread_active = false;
     g_apply_status = VG_SCAN_IDLE;
     g_apply_last_rc = -EIO;
+    (void)vg_config_gate_release(VG_CONFIG_GATE_NSH,
+                                 g_hmi_apply_gate_token);
+    g_hmi_apply_gate_token = 0;
     return -EIO;
   }
 

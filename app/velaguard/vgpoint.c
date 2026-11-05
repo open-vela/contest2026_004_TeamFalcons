@@ -12,6 +12,7 @@
 
 #include <nuttx/config.h>
 
+#include "vg_config_gate.h"
 #include "vg_discover.h"
 
 #ifdef CONFIG_VG_CONFIG_STORE
@@ -57,6 +58,8 @@
 
 #define VGPOINT_CMDLEN_MAX 120
 
+static uint32_t g_nsh_gate_token;
+
 static void reply_ok(FAR const char *cmd, FAR const char *table, int n)
 {
   char line[160];
@@ -73,6 +76,44 @@ static int reply_err(FAR const char *cmd, FAR const char *code,
   vg_point_format_err(line, sizeof(line), cmd, code, msg);
   printf("%s\n", line);
   return 1;
+}
+
+static int claim_nsh(bool *created)
+{
+  uint32_t token;
+  int ret;
+
+  if (g_nsh_gate_token != 0 &&
+      vg_config_gate_owns(VG_CONFIG_GATE_NSH, g_nsh_gate_token))
+    {
+      *created = false;
+      return 0;
+    }
+
+  ret = vg_config_gate_acquire(VG_CONFIG_GATE_NSH, &token, created);
+  if (ret == 0)
+    {
+      g_nsh_gate_token = token;
+    }
+
+  return ret;
+}
+
+static void release_nsh(void)
+{
+  if (g_nsh_gate_token == 0)
+    {
+      return;
+    }
+
+  (void)vg_config_gate_release(VG_CONFIG_GATE_NSH, g_nsh_gate_token);
+  g_nsh_gate_token = 0;
+}
+
+static int reply_gate_busy(FAR const char *cmd)
+{
+  return vg_config_gate_owner_name(vg_config_gate_current()) != NULL ?
+         reply_err(cmd, "config_busy", "config_busy") : 1;
 }
 
 static int flag_index(int argc, char *argv[], int start, FAR const char *flag)
@@ -497,6 +538,7 @@ static int cmd_add(int argc, char *argv[])
   struct vg_discover_summary sum;
   FAR const char *id = NULL;
   FAR struct vg_point_entry *p;
+  bool created = false;
   int rc;
 
   if (flag_value(argc, argv, 2, "-i", &id) <= 0 ||
@@ -505,11 +547,17 @@ static int cmd_add(int argc, char *argv[])
       return reply_err("add", "bad_arg", "bad_id");
     }
 
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("add");
+    }
+
   rc = vg_point_table_ensure_candidate(&sum,
                                        CONFIG_VG_DISCOVER_CANDIDATE_PATH,
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
+      if (created) release_nsh();
       return reply_err("add", "io", vg_point_table_err_token(rc));
     }
 
@@ -564,6 +612,7 @@ static int cmd_set(int argc, char *argv[])
 {
   struct vg_discover_summary sum;
   FAR const char *id;
+  bool created = false;
   int idx;
   int rc;
 
@@ -578,11 +627,17 @@ static int cmd_set(int argc, char *argv[])
       return reply_err("set", "bad_arg", "bad_id");
     }
 
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("set");
+    }
+
   rc = vg_point_table_ensure_candidate(&sum,
                                        CONFIG_VG_DISCOVER_CANDIDATE_PATH,
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
+      if (created) release_nsh();
       return reply_err("set", "io", vg_point_table_err_token(rc));
     }
 
@@ -611,6 +666,7 @@ static int cmd_del(int argc, char *argv[])
 {
   struct vg_discover_summary sum;
   FAR const char *id;
+  bool created = false;
   int idx;
   int i;
   int rc;
@@ -621,11 +677,17 @@ static int cmd_del(int argc, char *argv[])
     }
 
   id = argv[2];
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("del");
+    }
+
   rc = vg_point_table_ensure_candidate(&sum,
                                        CONFIG_VG_DISCOVER_CANDIDATE_PATH,
                                        CONFIG_VG_DISCOVER_POINTS_PATH);
   if (rc != 0)
     {
+      if (created) release_nsh();
       return reply_err("del", "io", vg_point_table_err_token(rc));
     }
 
@@ -658,6 +720,7 @@ static int cmd_test(int argc, char *argv[])
   uint8_t oks[VG_DISCOVER_MAX_POINTS];
   FAR const char *id = NULL;
   FAR const char *dev;
+  bool created = false;
   int i;
   int n_ok = 0;
   int n_try = 0;
@@ -673,9 +736,15 @@ static int cmd_test(int argc, char *argv[])
         }
     }
 
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("test");
+    }
+
   rc = vg_point_table_read(&sum, CONFIG_VG_DISCOVER_CANDIDATE_PATH);
   if (rc != 0 || sum.n_points <= 0)
     {
+      if (created && rc == -ENOENT) release_nsh();
       return reply_err("test", "no_candidate", "empty");
     }
 
@@ -841,6 +910,7 @@ static int cmd_get(int argc, char *argv[])
 static int cmd_apply(int argc, char *argv[])
 {
   struct vg_discover_summary sum;
+  bool created = false;
   int confirm = 0;
   int i;
   int rc;
@@ -858,30 +928,46 @@ static int cmd_apply(int argc, char *argv[])
       return reply_err("apply", "need_confirm", "need_confirm");
     }
 
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("apply");
+    }
+
   rc = vg_point_table_read(&sum, CONFIG_VG_DISCOVER_CANDIDATE_PATH);
   if (rc != 0)
     {
+      if (created) release_nsh();
       return reply_err("apply", "no_candidate", "missing");
     }
 
   if (vg_point_table_commit(&sum, CONFIG_VG_DISCOVER_POINTS_PATH) != 0)
     {
+      if (created) release_nsh();
       return reply_err("apply", "io", "write_points");
     }
+  release_nsh();
   reply_ok("apply", "committed", sum.n_points);
   return 0;
 }
 
 static int cmd_abort(void)
 {
+  bool created = false;
   int rc;
+
+  if (claim_nsh(&created) != 0)
+    {
+      return reply_gate_busy("abort");
+    }
 
   rc = unlink(CONFIG_VG_DISCOVER_CANDIDATE_PATH);
   if (rc != 0 && errno != ENOENT)
     {
+      if (created) release_nsh();
       return reply_err("abort", "io", "unlink_fail");
     }
 
+  release_nsh();
   reply_ok("abort", "candidate", 0);
   return 0;
 }
