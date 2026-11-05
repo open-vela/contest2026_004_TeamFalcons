@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "vg_config_candidate.h"
@@ -159,6 +160,10 @@ static void expire_if_due(struct vg_config_service *service, bool *release)
 
   *release = false;
   if (!service->session_active)
+    {
+      return;
+    }
+  if (service->session.state == VG_CONFIG_SESSION_COMMITTING)
     {
       return;
     }
@@ -336,7 +341,8 @@ int vg_config_service_disconnect(struct vg_config_service *service,
     }
 
   pthread_mutex_lock(&service->lock);
-  if (service->session_active)
+  if (service->session_active &&
+      service->session.state != VG_CONFIG_SESSION_COMMITTING)
     {
       service->session.state = VG_CONFIG_SESSION_CANCELLED;
       service->session.lease_remaining_ms = 0;
@@ -708,6 +714,7 @@ int vg_config_service_cancel(struct vg_config_service *service,
 
   if (service->session.state == VG_CONFIG_SESSION_COMMITTING)
     {
+      fill_status(service, &service->session, out);
       pthread_mutex_unlock(&service->lock);
       return -EALREADY;
     }
@@ -957,6 +964,7 @@ int vg_config_service_put(struct vg_config_service *service,
       service->pending.target_len = build.target_len;
       memcpy(service->pending.target_json, build.target_json,
              build.target_len + 1);
+      service->pending.target_table = build.merged;
 
       service->session.state = VG_CONFIG_SESSION_AWAITING_CONFIRM;
       service->session.revision = request->revision;
@@ -1016,4 +1024,222 @@ int vg_config_service_pending_candidate(
   *out = service->pending;
   pthread_mutex_unlock(&service->lock);
   return 0;
+}
+
+static bool confirmation_matches(
+  const struct vg_config_task_status *status,
+  const struct vg_config_pending_candidate *pending,
+  const struct vg_config_confirm_request *request)
+{
+  if (!status->has_confirmation_id || !pending->valid ||
+      strcmp(status->task_id, request->task_id) != 0 ||
+      strcmp(status->session_id, request->session_id) != 0 ||
+      strcmp(pending->task_id, request->task_id) != 0 ||
+      strcmp(pending->session_id, request->session_id) != 0 ||
+      status->revision != request->revision ||
+      pending->revision != request->revision ||
+      pending->has_base_hash != request->has_base_hash ||
+      status->has_base_hash != request->has_base_hash ||
+      strcmp(status->payload_hash, request->payload_hash) != 0 ||
+      strcmp(status->candidate_hash, request->candidate_hash) != 0 ||
+      strcmp(status->confirmation_id, request->confirmation_id) != 0 ||
+      strcmp(pending->payload_hash, request->payload_hash) != 0 ||
+      strcmp(pending->candidate_hash, request->candidate_hash) != 0 ||
+      strcmp(pending->confirmation_id, request->confirmation_id) != 0)
+    {
+      return false;
+    }
+
+  return !request->has_base_hash ||
+         (strcmp(status->base_hash, request->base_hash) == 0 &&
+          strcmp(pending->base_hash, request->base_hash) == 0);
+}
+
+int vg_config_service_confirm(struct vg_config_service *service,
+                              const struct vg_config_confirm_request *request,
+                              struct vg_config_task_status *out)
+{
+  struct vg_config_pending_candidate *candidate;
+  struct vg_config_table_snapshot table;
+  uint32_t gate_token;
+  uint32_t generation_before;
+  const char *failure_code = "commit_failed";
+  int commit_ret = -EAGAIN;
+  int notify_ret = 0;
+  bool applied = false;
+  bool release_gate = false;
+  int result;
+  int ret;
+
+  if (service == NULL || request == NULL || out == NULL ||
+      !service->initialized || !valid_text_id(request->task_id) ||
+      !valid_hex32(request->session_id) ||
+      (request->has_base_hash && !valid_hash(request->base_hash)) ||
+      !valid_hash(request->payload_hash) ||
+      !valid_hash(request->candidate_hash) ||
+      !valid_hex32(request->confirmation_id) ||
+      service->ports.commit_table == NULL ||
+      service->ports.notify_table == NULL)
+    {
+      return -EINVAL;
+    }
+
+  candidate = malloc(sizeof(*candidate));
+  if (candidate == NULL)
+    {
+      return -ENOMEM;
+    }
+
+  ret = vg_config_service_tick(service);
+  if (ret != 0)
+    {
+      free(candidate);
+      return ret;
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (service->session.task_id[0] == '\0' ||
+      strcmp(service->session.task_id, request->task_id) != 0 ||
+      strcmp(service->session.session_id, request->session_id) != 0)
+    {
+      pthread_mutex_unlock(&service->lock);
+      free(candidate);
+      return -ENOENT;
+    }
+
+  if (service->session.state == VG_CONFIG_SESSION_COMMITTING ||
+      service->session.state != VG_CONFIG_SESSION_AWAITING_CONFIRM ||
+      !service->session_active || !service->pending.valid)
+    {
+      fill_status(service, &service->session, out);
+      pthread_mutex_unlock(&service->lock);
+      free(candidate);
+      return -EALREADY;
+    }
+
+  if (!confirmation_matches(&service->session, &service->pending,
+                            request))
+    {
+      fill_status(service, &service->session, out);
+      pthread_mutex_unlock(&service->lock);
+      free(candidate);
+      return -ESTALE;
+    }
+
+  if (service->remote_gate_token == 0)
+    {
+      service->session.state = VG_CONFIG_SESSION_FAILED;
+      service->session.state_seq++;
+      service->session.lease_remaining_ms = 0;
+      service->session_active = false;
+      set_error(&service->session, "ownership_lost", false);
+      fill_status(service, &service->session, out);
+      pthread_mutex_unlock(&service->lock);
+      free(candidate);
+      return -ESTALE;
+    }
+
+  *candidate = service->pending;
+  gate_token = service->remote_gate_token;
+  generation_before = service->session.state_seq + 1;
+  service->session.state = VG_CONFIG_SESSION_COMMITTING;
+  service->session.state_seq = generation_before;
+  service->session.lease_remaining_ms = 0;
+  service->session.error_code[0] = '\0';
+  service->session.retryable = false;
+  pthread_mutex_unlock(&service->lock);
+
+  if (!vg_config_gate_owns(VG_CONFIG_GATE_REMOTE, gate_token))
+    {
+      commit_ret = -ESTALE;
+      failure_code = "ownership_lost";
+    }
+  else
+    {
+      memset(&table, 0, sizeof(table));
+      commit_ret = service->ports.load_table(service->ports.ctx, &table);
+      if (commit_ret != 0)
+        {
+          failure_code = "storage_error";
+        }
+      else if (table.state == VG_CONFIG_TABLE_UNAVAILABLE ||
+               ((table.state == VG_CONFIG_TABLE_VALID) !=
+                candidate->has_base_hash) ||
+               (candidate->has_base_hash &&
+                strcmp(table.base_hash, candidate->base_hash) != 0))
+        {
+          commit_ret = -ESTALE;
+          failure_code = "base_conflict";
+        }
+
+      if (commit_ret == 0 &&
+          !vg_config_gate_owns(VG_CONFIG_GATE_REMOTE, gate_token))
+        {
+          commit_ret = -ESTALE;
+          failure_code = "ownership_lost";
+        }
+
+      if (commit_ret == 0)
+        {
+          commit_ret = service->ports.commit_table(
+            service->ports.ctx, candidate->target_json,
+            candidate->target_len, &candidate->target_table);
+          if (commit_ret != 0)
+            {
+              failure_code = "storage_error";
+            }
+        }
+    }
+
+  if (commit_ret == 0)
+    {
+      applied = true;
+      notify_ret = service->ports.notify_table(service->ports.ctx);
+    }
+
+  pthread_mutex_lock(&service->lock);
+  if (service->session.state != VG_CONFIG_SESSION_COMMITTING ||
+      service->session.state_seq != generation_before)
+    {
+      pthread_mutex_unlock(&service->lock);
+      free(candidate);
+      return -EAGAIN;
+    }
+
+  service->session.lease_remaining_ms = 0;
+  service->session_active = false;
+  release_gate = service->remote_gate_token != 0;
+  service->remote_gate_token = 0;
+  service->session.state_seq++;
+
+  if (applied)
+    {
+      service->session.state = VG_CONFIG_SESSION_APPLIED;
+      if (notify_ret != 0)
+        {
+          set_error(&service->session, "notify_failed", true);
+        }
+      else
+        {
+          service->session.error_code[0] = '\0';
+          service->session.retryable = false;
+        }
+    }
+  else
+    {
+      service->session.state = VG_CONFIG_SESSION_FAILED;
+      set_error(&service->session, failure_code, false);
+    }
+
+  fill_status(service, &service->session, out);
+  pthread_mutex_unlock(&service->lock);
+
+  if (release_gate)
+    {
+      (void)vg_config_gate_release(VG_CONFIG_GATE_REMOTE, gate_token);
+    }
+
+  free(candidate);
+  result = applied ? notify_ret : commit_ret;
+  return result;
 }
