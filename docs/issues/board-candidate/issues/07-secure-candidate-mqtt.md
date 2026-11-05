@@ -18,4 +18,4 @@
 - 真机对错设备、retained 和错方向消息均不返回状态，证实设备侧不会只依赖 Broker ACL。
 - 线程生命周期固定在 `velaguard_app_main`，NSH 只保存加密凭据并要求复位。首次真机 put 发现 32 KiB 栈溢出，候选构建对象已移到堆；最终线程栈占用 69.6%。
 - 证据见 [config-mqtt-board-accept.log](../../../maintenance-evidence/2026-11-05/config-mqtt-board-accept.log)。
-- 外部连接资料当前只提供明文 MQTT/WebSocket，生产 MQTTS Broker 地址、页面和云端 PDF 服务尚未上线；本票以局域网真实 TLS Broker 完成板端软件验收。
+- 2026-11-05 已在 aliwh 的 Mosquitto 上增加独立 TLS 监听、设备与服务账号及 ACL，云端配置服务启用 MQTTS 下发；真机完成 query→open→put→awaiting_local_confirm→本地确认→applied，重启后运行表与凭据保持。记录见 [config-mqtt-production.log](../../../maintenance-evidence/2026-11-05/config-mqtt-production.log)。外部连接资料原有的 1883 明文监听继续只承载遥测和看板。

@@ -1,6 +1,6 @@
 # VelaGuard MQTT 候选接入协议草案 v0.3
 
-日期：2026-11-05。状态：板端软件已实现并通过主机与局域网 TLS Broker 真机验收；生产 MQTTS、云端服务和网页尚未部署。
+日期：2026-11-05。状态：板端软件已实现并通过主机、局域网 TLS Broker 和生产环境验收；生产 MQTTS 端点、云端配置服务和网页接入页已在 aliwh 启用，板端本地确认后写入运行表。生产联调记录见 [config-mqtt-production.log](maintenance-evidence/2026-11-05/config-mqtt-production.log)。
 
 本文是云端配置服务与板端之间候选接入消息的唯一规范入口，替代本文件 v0.2 草案。配合 [网页接入业务协议](velaguard-web-sensor-onboarding-protocol.md)、[实施计划](velaguard-web-sensor-onboarding-plan.md) 和 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md) 使用。
 
@@ -19,7 +19,7 @@ v0.3 补齐设备能力查询、启动与连接标识、open 防重放、候选�
 
 ## 2. 传输与 Broker 策略
 
-首版使用 MQTT 3.1.1 over TLS。板端主动建立出站连接，校验 Broker 证书链和主机身份；每设备独立凭证，需接入现有 provision 加密存储机制，MQTT 凭证装载能力仍待实现。证书校验所需的可信时间与信任材料在实施时验证，失败时远程配置不可用，不关闭校验绕过。明文公网链路不开放候选功能。
+首版使用 MQTT 3.1.1 over TLS。板端主动建立出站连接，校验 Broker 证书链和主机身份；每设备独立凭证，已接入现有 provision 加密存储机制（`vgconfigmqtt put/commit` 写入设备绑定密文）。证书校验所需的可信时间由 RJ45 SNTP 提供，失败时远程配置不可用，不关闭校验绕过。明文公网链路不开放候选功能。
 
 | 主题 | 发布者 | 订阅者 | QoS | retained |
 |---|---|---|---|---|
@@ -470,7 +470,7 @@ receipt 完整形状示例；applied 时 applied_hash 必须等于已核对的 c
 
 外层 JSON 的双引号/换行转义会增加消息大小，不能把 candidate_json 的未转义长度直接当作 MQTT 包长。MQTT 固定头、主题和包标识还会增加接收缓冲需求。
 
-当前 `vg_mqtt_session.c` 的 RX 缓冲只有 512 字节，不能接收上述候选预算；当前数值启动标记、忽略消息的接收回调、明文连接和既有点表解析也不具备本协议能力。这些是后续实施项，本轮不修改代码，不以文档证明已支持。
+候选通道使用独立的 `vg_config_mqtt_transport.c` 会话，不共用 `vg_mqtt_session.c` 的遥测连接。它按请求预算分配收发缓冲，只接受通过证书链和主机身份校验的 TLS 连接，并在解码前拒绝 retained、错误方向和其它设备的主题。遥测会话仍是 512 字节接收缓冲的明文连接，只承载 status、telemetry、alarm 和 point_table，不参与候选接入。
 
 ## 11. 实施验收
 

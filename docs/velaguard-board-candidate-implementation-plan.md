@@ -1,6 +1,6 @@
 # VelaGuard 云端候选点表：板端协议实现计划
 
-日期：2026-11-05。状态：板端候选核心、安全 MQTT 与本地确认已实现；安全 MQTT 已通过局域网 TLS Broker 真机验收，生产 MQTTS、云端 PDF 服务和网页尚未部署。
+日期：2026-11-05。状态：板端候选核心、安全 MQTT 与本地确认已实现；安全 MQTT 已通过局域网 TLS Broker 和生产环境真机验收，生产 MQTTS、云端 PDF 服务和网页接入页已在 aliwh 启用。
 
 本计划先落实板端协议，云端 PDF 上传、解析和网页在后续任务接入。消息结构唯一依据为 [候选协议 v0.3](velaguard-candidate-mqtt-protocol.md)，产品决策见 [ADR 0007](adr/0007-mqtt-candidate-import-with-local-confirmation.md)，全链路见 [网页接入计划](velaguard-web-sensor-onboarding-plan.md)。本文只细化模块、开发顺序和验收，不另定义消息版本。
 

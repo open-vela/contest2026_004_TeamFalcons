@@ -1,0 +1,61 @@
+生产环境候选接入联调，2026-11-05
+
+目标
+- 云端配置服务：velaguard.19y.cc（aliwh，8.148.67.174）
+- 板端：STM32H750B-DK，device_id=vg-09001a800451383430303835
+- 把网页侧冻结的候选点表经 MQTTS 下发到板端，板端本地人工确认后写入运行点表
+
+Broker 与安全边界
+- Mosquitto 原有 1883 明文监听保留给看板与遥测，账号 velaguard
+- 新增 8883 TLS 监听，只承载 config/request 与 config/state
+- TLS 使用独立的本地 CA（CN=VelaGuard MQTT CA 2026，有效期 10 年）
+- 服务器证书有效期 5 年，SAN 包含 IP 8.148.67.174、IP 127.0.0.1、
+  DNS mqtt.19y.cc、DNS velaguard.19y.cc
+- 8883 启用 per-listener 密码与 ACL：
+  config-board 只能读自己的 config/request、写自己的 config/state；
+  config-service 只能写该设备的 config/request、读 config/state
+- 版本协商为 TLS 1.2，供板端 mbedtls 使用
+
+云端部署
+- /opt/velaguard 的 config_service 与 dashboard 代码与本地仓库逐文件核对一致，
+  仅 CRLF 差异，本轮不替换代码文件
+- config-service.env 增加 CONFIG_MQTT_ENABLED、TLS 地址、CA 路径、
+  config-service 账号和 client_id；CA 放在 config-service-secrets 并只读挂载
+- 重启后日志显示 config_mqtt_connected、config_mqtt_subscribed、
+  config_dispatch_enabled
+
+板端构建与凭据
+- 构建时通过 VG_OTA_CA_FILE 注入上述 CA，VG_OTA_PUBLIC_KEY_FILE 和
+  VG_OTA_SIGNING_KEY_ID 提供 OTA 签名公钥
+- OTA 发布检查 PASS，trust=configured，entropy=verified
+- 遥测仍走 8.148.67.174:1883，broker host 与账号在本地 .config 提供，
+  不进入仓库
+- 候选凭据通过 vgconfigmqtt put/commit 以设备绑定密文写入 eMMC，
+  重启后 vgconfigmqtt status 为 initialized=1 running=1 online=1
+
+真实闭环结果
+- 云端 import imp_4328862bb14b44bc9f8a1acb35286222，
+  parse prs_f43697a28c5a4a2cbc11446f529eec20
+- 候选：从机 8，ZS-SHT30-1T-1H-5-36V-RS485，FC04 寄存器 1，
+  uint16，倍率 0.1，点位 s8_f4_r1（湿度值，%RH）
+- 冻结 payload_sha256 d1e3be2f85a714be09a74599577e24433029b82b0b9b936a400decfe510c8335
+- dispatch dsp_7a523d9b491a43aa8ebecee895113f4f：
+  query、open、put 后进入 awaiting_local_confirm
+- 期间板端存在 offline 告警时确认框不显示，恢复 COM11 维护从站、
+  告警清除后，本地触摸屏点确认添加
+- 提交后 state_seq=5，state=applied，confirmation_id bde77f22afc7111700d8b5e81ed6e92d
+- 板端 vgpoint get 显示 committed 表 15 个点位，包含 s8_f4_r1
+- 看板设备列表 point_count 从 14 变为 15
+
+重启验证
+- SWD 硬复位后 vgconfigmqtt 自动重连 online=1
+- 运行表仍为 15 个点位，s8_f4_r1 仍在
+- 看板仍显示该设备在线、15 个点位
+
+当前限制
+- 从机 8 没有真实传感器，s8_f4_r1 的采集值为 ok=0；
+  配置生效不代表采集在线，读数要等实际从站或维护模拟器响应
+- MQTT 服务器证书 2031-11-04 到期，续期前需要重新签服务器证书；
+  板端信任的 CA 到 2036 年
+- OTA 与候选接入共用同一个 CA，当前是联调姿态；正式 OTA 需要独立规划
+- 板端遥测仍使用原有 1883 明文账号，候选通道的加密和 ACL 不改变这一点
