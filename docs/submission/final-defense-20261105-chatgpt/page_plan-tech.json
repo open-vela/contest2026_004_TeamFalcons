@@ -1,0 +1,61 @@
+{
+  "schema": "ppt-master.roundtrip-page-plan.v1",
+  "pages": [
+    {
+      "source_slide": 1,
+      "svg": "chatgpt_tech_01.svg"
+    },
+    {
+      "source_slide": 2,
+      "svg": "chatgpt_tech_02.svg"
+    },
+    {
+      "source_slide": 3,
+      "svg": "chatgpt_tech_03.svg"
+    },
+    {
+      "source_slide": 5,
+      "svg": "chatgpt_tech_04.svg"
+    },
+    {
+      "source_slide": 6,
+      "svg": "chatgpt_tech_05.svg"
+    },
+    {
+      "source_slide": 11,
+      "svg": "chatgpt_tech_06.svg"
+    },
+    {
+      "source_slide": 8,
+      "svg": "chatgpt_tech_07.svg"
+    },
+    {
+      "source_slide": 4,
+      "svg": "chatgpt_tech_08.svg"
+    },
+    {
+      "source_slide": 10,
+      "svg": "chatgpt_tech_09.svg"
+    },
+    {
+      "source_slide": 11,
+      "svg": "chatgpt_tech_10.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "chatgpt_tech_11.svg"
+    },
+    {
+      "source_slide": 14,
+      "svg": "chatgpt_tech_12.svg"
+    },
+    {
+      "source_slide": 15,
+      "svg": "chatgpt_tech_13.svg"
+    },
+    {
+      "source_slide": 16,
+      "svg": "chatgpt_tech_14.svg"
+    }
+  ]
+}

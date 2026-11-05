@@ -1,0 +1,29 @@
+{
+  "author": "CHATGPT",
+  "date": "2026-11-05",
+  "rendered_pages": 28,
+  "reviewed_pages": 28,
+  "native_renderer": "Microsoft PowerPoint 16",
+  "png_size": [
+    1600,
+    900
+  ],
+  "render_iterations": 4,
+  "unresolved_hard_hits": 0,
+  "unresolved_soft_hits": 0,
+  "independent_reports": {
+    "scene": "qa/visual-review-scene.json",
+    "tech": "qa/visual-review-tech.json"
+  },
+  "final_recheck_pages": {
+    "scene": [
+      9,
+      13
+    ],
+    "tech": [
+      4,
+      13
+    ]
+  },
+  "visible_xml_other_pages_unchanged_in_last_revision": true
+}

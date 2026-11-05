@@ -1,0 +1,592 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "f33cfc5ee8abe8ab22e3f00522dd2b3290a2caeadb0546534d8b0ae1e5b4384c",
+    "file_count": 31,
+    "files": [
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_01.svg",
+        "sha256": "bd529fb21c73b24da8280578c8834aba2afd85077b229c26f8164f1a13b1254f"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_02.svg",
+        "sha256": "18999779f78141113d051576b7875098127acd8fbb164db93278269cf3ebde45"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_03.svg",
+        "sha256": "5be6f18a8fac230766b06cf297d1fea4956e14d678168a29345e900535674735"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_04.svg",
+        "sha256": "b23927d880a260d2cf2f2e7e1fff2c6a8834e57e1753b2a7464820833962166b"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_05.svg",
+        "sha256": "e7eb1c26c128460cc8b975aaddc2db22a8a6ce83eda21316ebadcdbbf5ca156b"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_06.svg",
+        "sha256": "a6b5a2d3e59af350f385afd3c18c5ce9b6adebe52556c08d8be6595f89163bac"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_07.svg",
+        "sha256": "53c4b9716bbf462ae03715cc9f7f9ea29f2aaba323acabce3264e7f3c720b9f7"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_08.svg",
+        "sha256": "f27fa1d43959a4f4031cd40f8d93a07d53a892a13c2442d5ee31e46d964f29d6"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_09.svg",
+        "sha256": "3abcdefd70d44be176af9161e5fdfd2ff499329dd277a3c3d1ee2600d830b566"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_10.svg",
+        "sha256": "72ec4fc2f449339e8f7ecaf58547013afde3e1008ca2dab5e8cab9d5c6fa1b27"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_11.svg",
+        "sha256": "0a9056e8dda6437761bb9a72b4a7afd7c1290cebeeacfe369bdfd59762a02c6d"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_12.svg",
+        "sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_13.svg",
+        "sha256": "54ca628fe43780d93117077714f2231b22b69e6df60ee01e9dffc1066238d08e"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_scene_14.svg",
+        "sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+      },
+      {
+        "file": "authoring-svg-flat/slide_01.svg",
+        "sha256": "76fa69e5a4be692df13bf3c1d33ccacfabdbf9c56888ed84d5b1eaeafae5b54d"
+      },
+      {
+        "file": "authoring-svg-flat/slide_02.svg",
+        "sha256": "7b3f68c3b4c38bf24be5db98ddaab4db1c7a71c8c9e32791ff82dc43c93ce556"
+      },
+      {
+        "file": "authoring-svg-flat/slide_03.svg",
+        "sha256": "3d3853322b797880342209431a07bbd26a0ed47ebdc86516b06d75aa77586780"
+      },
+      {
+        "file": "authoring-svg-flat/slide_04.svg",
+        "sha256": "c90a7eb27ab38ae0be9e713f401e2d9ad4357cfeda567a912a7714f9cfe90c8e"
+      },
+      {
+        "file": "authoring-svg-flat/slide_05.svg",
+        "sha256": "4b465cde42c63692c5c50de15a9fa8b64ee87835dcd6bfa9bd8878b9636c4977"
+      },
+      {
+        "file": "authoring-svg-flat/slide_06.svg",
+        "sha256": "adf8b4aa011ee819aa08e7baf7e62f974d6c662295f3259be3c5cdf4aec82047"
+      },
+      {
+        "file": "authoring-svg-flat/slide_07.svg",
+        "sha256": "e33708f987890cdc442f53b4f6b75be60e912872584247751a4b7cc9498efdf5"
+      },
+      {
+        "file": "authoring-svg-flat/slide_08.svg",
+        "sha256": "c6bef952521c4917c2b333fd3f2a4536ecaed2c511a0ae91b41f22e3840120f1"
+      },
+      {
+        "file": "authoring-svg-flat/slide_09.svg",
+        "sha256": "4939893555de446050d3c213dedaeb97ce746a714feeba632eee34e623be39de"
+      },
+      {
+        "file": "authoring-svg-flat/slide_10.svg",
+        "sha256": "9b1398455bc79bd6783688df2a8148e9341ece9bfc3fbcc33c96f737cb8edfa4"
+      },
+      {
+        "file": "authoring-svg-flat/slide_11.svg",
+        "sha256": "0b95c1b2743da4e72a147a8d2df54d7d84ad1c76c13963ca0d2dad03704e61d7"
+      },
+      {
+        "file": "authoring-svg-flat/slide_12.svg",
+        "sha256": "01a944c7a85053050fa3a5296432502df8d45da639770eb7cefe639703ad803a"
+      },
+      {
+        "file": "authoring-svg-flat/slide_13.svg",
+        "sha256": "2a92662812c145995bfa09aa4d2dab6a0e3d55d9640b659aa944b02deafb3bf8"
+      },
+      {
+        "file": "authoring-svg-flat/slide_14.svg",
+        "sha256": "88f0eaafd9e64de69fe4a50f61e851e049822f3d26de4210bdc21019d4e9095d"
+      },
+      {
+        "file": "authoring-svg-flat/slide_15.svg",
+        "sha256": "0cabcce403753e736876e5de0a19274166b80f915a3811d2b625f1d794549afa"
+      },
+      {
+        "file": "authoring-svg-flat/slide_16.svg",
+        "sha256": "1e8b789160c1ea8b6395e279dce9cc1f50778bb2fbf57747ac860c770406caaf"
+      },
+      {
+        "file": "page_plan.json",
+        "sha256": "1bf80a7379b70adebcb56ef06c8076c02d4a280fc3b3caf3f5a679c53d11098a"
+      }
+    ]
+  },
+  "summary": {
+    "total": 14,
+    "passed": 3,
+    "warnings": 11,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 11,
+      "issues": [
+        {
+          "file": "chatgpt_scene_02.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_03.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_04.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_05.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_06.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_07.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_08.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_09.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_10.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_11.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_scene_13.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "carrier_receipt": {
+    "scope": "informational-not-a-quota",
+    "pages": 0,
+    "totals": {
+      "text_elements": 0,
+      "image_placements": 0,
+      "icons": 0,
+      "svg_geometry_elements": 0,
+      "preset_shapes": 0,
+      "page_frame_elements": 0,
+      "marker_uses": 0,
+      "inline_emphasis_runs": 0,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "pages_with": {
+      "images": 0,
+      "icons": 0,
+      "presets": 0,
+      "charts": 0,
+      "tables": 0,
+      "formulas": 0,
+      "inline_emphasis_runs": 0,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "relationship_pages": null,
+    "geometry_elements": {},
+    "preset_names": {},
+    "native_objects": {},
+    "image_page_max_frame_share_range": []
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "chatgpt_scene_01.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_01.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 1,
+        "source_slide": 1,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "bd529fb21c73b24da8280578c8834aba2afd85077b229c26f8164f1a13b1254f"
+    },
+    {
+      "file": "chatgpt_scene_02.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_02.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 2,
+        "source_slide": 2,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 17,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "18999779f78141113d051576b7875098127acd8fbb164db93278269cf3ebde45"
+    },
+    {
+      "file": "chatgpt_scene_03.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_03.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 3,
+        "source_slide": 3,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 10,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "5be6f18a8fac230766b06cf297d1fea4956e14d678168a29345e900535674735"
+    },
+    {
+      "file": "chatgpt_scene_04.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_04.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 4,
+        "source_slide": 4,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 22,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "b23927d880a260d2cf2f2e7e1fff2c6a8834e57e1753b2a7464820833962166b"
+    },
+    {
+      "file": "chatgpt_scene_05.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_05.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 5,
+        "source_slide": 6,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 9,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "e7eb1c26c128460cc8b975aaddc2db22a8a6ce83eda21316ebadcdbbf5ca156b"
+    },
+    {
+      "file": "chatgpt_scene_06.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_06.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 6,
+        "source_slide": 8,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 13,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "a6b5a2d3e59af350f385afd3c18c5ce9b6adebe52556c08d8be6595f89163bac"
+    },
+    {
+      "file": "chatgpt_scene_07.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_07.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 7,
+        "source_slide": 10,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 9,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "53c4b9716bbf462ae03715cc9f7f9ea29f2aaba323acabce3264e7f3c720b9f7"
+    },
+    {
+      "file": "chatgpt_scene_08.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_08.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 8,
+        "source_slide": 7,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 10,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "f27fa1d43959a4f4031cd40f8d93a07d53a892a13c2442d5ee31e46d964f29d6"
+    },
+    {
+      "file": "chatgpt_scene_09.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_09.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 9,
+        "source_slide": 5,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 21,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "3abcdefd70d44be176af9161e5fdfd2ff499329dd277a3c3d1ee2600d830b566"
+    },
+    {
+      "file": "chatgpt_scene_10.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_10.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 10,
+        "source_slide": 11,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 20,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "72ec4fc2f449339e8f7ecaf58547013afde3e1008ca2dab5e8cab9d5c6fa1b27"
+    },
+    {
+      "file": "chatgpt_scene_11.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_11.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 11,
+        "source_slide": 13,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 28,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "0a9056e8dda6437761bb9a72b4a7afd7c1290cebeeacfe369bdfd59762a02c6d"
+    },
+    {
+      "file": "chatgpt_scene_12.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_12.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 12,
+        "source_slide": 14,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+    },
+    {
+      "file": "chatgpt_scene_13.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_13.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 13,
+        "source_slide": 15,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 11,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "54ca628fe43780d93117077714f2231b22b69e6df60ee01e9dffc1066238d08e"
+    },
+    {
+      "file": "chatgpt_scene_14.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-scene-20261105\\authoring-svg-flat\\chatgpt_scene_14.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 14,
+        "source_slide": 16,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 3,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+    }
+  ]
+}

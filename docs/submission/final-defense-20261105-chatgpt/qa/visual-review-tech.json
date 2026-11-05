@@ -1,0 +1,715 @@
+{
+  "schema": "velaguard.visual-review.v1",
+  "deck": "exports/chatgpt-defense-tech-20261105_20261105_152722_native_charts_tables.pptx",
+  "review_mode": "read_only_actual_powerpoint_png",
+  "reviewed_revision": "r4",
+  "rubric": "C:/Users/19y/.config/magpie/library/skills/ppt-master/references/visual-review.md",
+  "canvas": {
+    "view_box": [
+      0,
+      0,
+      2560,
+      1440
+    ],
+    "png_width": 1600,
+    "png_height": 900
+  },
+  "coordinate_system": "Evidence coordinates use actual PNG pixels; SVG coordinates are PNG coordinates multiplied by 1.6.",
+  "prerequisites": {
+    "static_check": "14 pages passed; official MiSans portability advisory accepted",
+    "renders": "All 14 files exist, are nonempty, 1600x900, and visibly contain slide content.",
+    "page_order": "page_plan.json read; output 14 maps to source slide 16, the THANKS closing page."
+  },
+  "batches_reviewed_in_order": [
+    [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    [
+      11,
+      12,
+      13,
+      14
+    ]
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "source_slide": 1,
+      "svg": "authoring-svg-flat/chatgpt_tech_01.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "封面名称、两行副标题居中完整，副标题位于较暗背景内，白色正文与背景对比清楚。",
+        "标志和全幅图正常，文本未触边，主标题与副标题留白充足。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 2,
+      "source_slide": 2,
+      "svg": "authoring-svg-flat/chatgpt_tech_02.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "RS485汇合线从左侧两框接到网关；标签约x452,y385，在连线上方。MQTT标签约x930,y383，与箭头保持间隔。",
+        "下方控制系统说明与分隔线、页脚有清楚间距，三组设备框正文均完整。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 3,
+      "source_slide": 3,
+      "svg": "authoring-svg-flat/chatgpt_tech_03.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "截图未拉伸，右侧分叉连线约x745–844,y329–605，止于两张卡片左侧，未穿过标签。",
+        "红色36.2℃与35.0℃数值完整清楚；截图说明、数据强调和页脚彼此独立。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 4,
+      "source_slide": 5,
+      "svg": "authoring-svg-flat/chatgpt_tech_04.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已查看r4实际PowerPoint第4页PNG：MiMo紫色竖线在交叉处约x1154,y550–569有清楚断口，MQTT蓝线约y559–560连续通过；两条路径没有连接点歧义。",
+        "新增断口未改变各箭头端点；快照至MQTT、Agent至MiMo与eMMC各自可追踪，框内文字、报告落盘标签及页脚均完整。",
+        "无新碰撞、边界截断或可读性问题。其余页面沿用前两轮已完成的视觉检查记录。"
+      ],
+      "coordinate_suggestions": [],
+      "resolved_observation": "MQTT/eMMC数据来源已补充连线；MiMo与MQTT交叉处已采用紫线断口与蓝线连续通过的表达，观察项关闭。",
+      "verified_revision": "r4"
+    },
+    {
+      "page": 5,
+      "source_slide": 6,
+      "svg": "authoring-svg-flat/chatgpt_tech_05.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "三层数据流在横向分隔线内分区，规则到业务工具的连接线约x881,y400–554，不经过正文。",
+        "上排三框及中排两框内文字完整，底部Agent任务与解耦说明分为两列，页脚留白正常。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 6,
+      "source_slide": 11,
+      "svg": "authoring-svg-flat/chatgpt_tech_06.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "r2三组计数38/274、88/131、649/649分别在柱形中心约x1013、1195、1377下方居中，上一轮对齐问题未复现。",
+        "13.9%、67.2%、100.0%柱顶数据完整；左侧修复前后时序条、DIR窗口和TC说明彼此分开，标签未压在线条上。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 7,
+      "source_slide": 8,
+      "svg": "authoring-svg-flat/chatgpt_tech_07.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "四条生命线、调用与返回箭头顺序明确，消息标签置于水平箭头上方，均无边界截断。",
+        "r2右侧末行板端解析并加载到页面位于约x1244–1488,y693–715，完整留在画布内，距离右边缘约112px；上一轮截断问题未复现。",
+        "底部单样本时间说明与时序图区之间留白充足。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 8,
+      "source_slide": 4,
+      "svg": "authoring-svg-flat/chatgpt_tech_08.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "上排快照、业务工具、输出三框的箭头处于框间空隙，框内标题与正文均完整。",
+        "下排两个输出检查路径等重，左侧长流程文字未侵入右侧区域，脚注与主内容保持间隔。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 9,
+      "source_slide": 10,
+      "svg": "authoring-svg-flat/chatgpt_tech_09.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "五个阶段的编号、标题及说明共享水平网格，四支连接箭头位于列间空隙，未碰到标题。",
+        "下方协作说明浅色区域约y563–738，正文完整且与页脚分开；长句保持一行且留有右侧空白。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 10,
+      "source_slide": 11,
+      "svg": "authoring-svg-flat/chatgpt_tech_10.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "438、24、454、46数值位于各柱形上方，短柱数据仍与轴线、图例分离，数值和组别均清楚。",
+        "右侧重复设置到按变化更新的箭头位于空白区，未碰撞两组说明；FIFO结果与上方说明留白正常。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 11,
+      "source_slide": 13,
+      "svg": "authoring-svg-flat/chatgpt_tech_11.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "运行阶段和重启阶段标题分区清楚，五步编号、正文及箭头处于同一网格，没有长标题截断。",
+        "底部1,553,704 B及READY状态完整，指标与两行说明不重叠，信息条到脚注约38px。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 12,
+      "source_slide": 14,
+      "svg": "authoring-svg-flat/chatgpt_tech_12.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "真机照片显示比例自然，屏幕核心区域及主要读数完整，未严重变形。",
+        "两行说明位于连续深色底带内，白色演示标题清楚；没有把正文直接压在复杂照片上。"
+      ],
+      "coordinate_suggestions": []
+    },
+    {
+      "page": 13,
+      "source_slide": 15,
+      "svg": "authoring-svg-flat/chatgpt_tech_13.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "已重新查看r3实际PowerPoint第13页PNG；五步工程证据流程在约y228–393，编号、标题和说明沿同一网格排列，箭头处于列间空隙，未碰撞标题。",
+        "第五步AI日志/开发Skill说明右端约x1414，距离画布右边约186px；全部流程文字完整，无边界截断。",
+        "下方三条实证/验证/本轮检查分别位于约y501、597、691，左侧标签与右侧内容对齐，长说明与页脚均保持清楚间距。"
+      ],
+      "coordinate_suggestions": [],
+      "verified_revision": "r3"
+    },
+    {
+      "page": 14,
+      "source_slide": 16,
+      "svg": "authoring-svg-flat/chatgpt_tech_14.svg",
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": [
+        "THANKS确为14页文件最后一页；主标题、标语、团队名与仓库地址完整显示。",
+        "仓库地址为白字，位于约x485–1116,y788–812，深色遮罩下清楚可读；与团队名、页面底边间距充分，无新增重叠。"
+      ],
+      "coordinate_suggestions": []
+    }
+  ],
+  "summary": {
+    "reviewed_pages": 14,
+    "ok_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "needs_fix_pages": [],
+    "hard_hit_count": 0,
+    "soft_hit_count": 0,
+    "verdict": "r4第4页复核通过：MiMo紫线在交叉处断开，MQTT蓝线连续通过，连线关系清楚且未引入新问题。结合前两轮结果，14页无未解决视觉问题，谢谢位于最后。",
+    "pending_pages": []
+  },
+  "operations": {
+    "office_started": false,
+    "browser_started": false,
+    "build_started": false,
+    "pptx_or_svg_modified": false,
+    "only_written_artifact": ".review/chatgpt-tech-review.json"
+  },
+  "review_history": [
+    {
+      "iteration": 1,
+      "revision": "r2",
+      "deck": "exports/chatgpt-defense-tech-20261105_20261105_151255_native_charts_tables.pptx",
+      "pages": [
+        {
+          "page": 1,
+          "source_slide": 1,
+          "svg": "authoring-svg-flat/chatgpt_tech_01.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "封面名称、两行副标题居中完整，副标题位于较暗背景内，白色正文与背景对比清楚。",
+            "标志和全幅图正常，文本未触边，主标题与副标题留白充足。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 2,
+          "source_slide": 2,
+          "svg": "authoring-svg-flat/chatgpt_tech_02.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "RS485汇合线从左侧两框接到网关；标签约x452,y385，在连线上方。MQTT标签约x930,y383，与箭头保持间隔。",
+            "下方控制系统说明与分隔线、页脚有清楚间距，三组设备框正文均完整。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 3,
+          "source_slide": 3,
+          "svg": "authoring-svg-flat/chatgpt_tech_03.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "截图未拉伸，右侧分叉连线约x745–844,y329–605，止于两张卡片左侧，未穿过标签。",
+            "红色36.2℃与35.0℃数值完整清楚；截图说明、数据强调和页脚彼此独立。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 4,
+          "source_slide": 5,
+          "svg": "authoring-svg-flat/chatgpt_tech_04.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "总线、采集线程、规则快照、LVGL和Agent模块的框线及分支关系可辨，箭头终点落于框外边缘。",
+            "右侧MiMo、MQTT、eMMC三框正文未越界，Agent到MiMo的折线在框外空隙通过，不压住正文。"
+          ],
+          "coordinate_suggestions": [],
+          "nonblocking_observation": "MQTT/eMMC独立能力框没有连线，因此当前图可读为架构能力概览，不能仅靠箭头辨认这两个节点的数据来源。按能力节点意图不列视觉缺陷；如果主讲将此页定位为完整数据路径，宜另行补明确来源的连线。"
+        },
+        {
+          "page": 5,
+          "source_slide": 6,
+          "svg": "authoring-svg-flat/chatgpt_tech_05.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "三层数据流在横向分隔线内分区，规则到业务工具的连接线约x881,y400–554，不经过正文。",
+            "上排三框及中排两框内文字完整，底部Agent任务与解耦说明分为两列，页脚留白正常。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 6,
+          "source_slide": 11,
+          "svg": "authoring-svg-flat/chatgpt_tech_06.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "r2三组计数38/274、88/131、649/649分别在柱形中心约x1013、1195、1377下方居中，上一轮对齐问题未复现。",
+            "13.9%、67.2%、100.0%柱顶数据完整；左侧修复前后时序条、DIR窗口和TC说明彼此分开，标签未压在线条上。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 7,
+          "source_slide": 8,
+          "svg": "authoring-svg-flat/chatgpt_tech_07.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "四条生命线、调用与返回箭头顺序明确，消息标签置于水平箭头上方，均无边界截断。",
+            "r2右侧末行板端解析并加载到页面位于约x1244–1488,y693–715，完整留在画布内，距离右边缘约112px；上一轮截断问题未复现。",
+            "底部单样本时间说明与时序图区之间留白充足。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 8,
+          "source_slide": 4,
+          "svg": "authoring-svg-flat/chatgpt_tech_08.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "上排快照、业务工具、输出三框的箭头处于框间空隙，框内标题与正文均完整。",
+            "下排两个输出检查路径等重，左侧长流程文字未侵入右侧区域，脚注与主内容保持间隔。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 9,
+          "source_slide": 10,
+          "svg": "authoring-svg-flat/chatgpt_tech_09.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "五个阶段的编号、标题及说明共享水平网格，四支连接箭头位于列间空隙，未碰到标题。",
+            "下方协作说明浅色区域约y563–738，正文完整且与页脚分开；长句保持一行且留有右侧空白。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 10,
+          "source_slide": 11,
+          "svg": "authoring-svg-flat/chatgpt_tech_10.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "438、24、454、46数值位于各柱形上方，短柱数据仍与轴线、图例分离，数值和组别均清楚。",
+            "右侧重复设置到按变化更新的箭头位于空白区，未碰撞两组说明；FIFO结果与上方说明留白正常。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 11,
+          "source_slide": 13,
+          "svg": "authoring-svg-flat/chatgpt_tech_11.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "运行阶段和重启阶段标题分区清楚，五步编号、正文及箭头处于同一网格，没有长标题截断。",
+            "底部1,553,704 B及READY状态完整，指标与两行说明不重叠，信息条到脚注约38px。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 12,
+          "source_slide": 14,
+          "svg": "authoring-svg-flat/chatgpt_tech_12.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "真机照片显示比例自然，屏幕核心区域及主要读数完整，未严重变形。",
+            "两行说明位于连续深色底带内，白色演示标题清楚；没有把正文直接压在复杂照片上。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 13,
+          "source_slide": 15,
+          "svg": "authoring-svg-flat/chatgpt_tech_13.svg",
+          "status": "pending_rerender",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "旧版三段清单已完成观察但本轮结论撤回：主代理将替换为工程证据流程，等待新的PowerPoint第13页PNG。"
+          ],
+          "coordinate_suggestions": [],
+          "review_scope_note": "新版第13页尚未提供，当前不计入已完成页数，不代表视觉缺陷。"
+        },
+        {
+          "page": 14,
+          "source_slide": 16,
+          "svg": "authoring-svg-flat/chatgpt_tech_14.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "THANKS确为14页文件最后一页；主标题、标语、团队名与仓库地址完整显示。",
+            "仓库地址为白字，位于约x485–1116,y788–812，深色遮罩下清楚可读；与团队名、页面底边间距充分，无新增重叠。"
+          ],
+          "coordinate_suggestions": []
+        }
+      ],
+      "summary": {
+        "reviewed_pages": 13,
+        "ok_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          14
+        ],
+        "needs_fix_pages": [],
+        "hard_hit_count": 0,
+        "soft_hit_count": 0,
+        "verdict": "第1–12、14页通过；第13页等待替换后的新PNG复核。第4页MQTT/eMMC数据来源为非阻断观察项。",
+        "pending_pages": [
+          13
+        ]
+      }
+    },
+    {
+      "iteration": 2,
+      "revision": "r3",
+      "deck": "exports/chatgpt-defense-tech-20261105_20261105_152138_native_charts_tables.pptx",
+      "reviewed_pages": [
+        4,
+        13
+      ],
+      "pages": [
+        {
+          "page": 1,
+          "source_slide": 1,
+          "svg": "authoring-svg-flat/chatgpt_tech_01.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "封面名称、两行副标题居中完整，副标题位于较暗背景内，白色正文与背景对比清楚。",
+            "标志和全幅图正常，文本未触边，主标题与副标题留白充足。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 2,
+          "source_slide": 2,
+          "svg": "authoring-svg-flat/chatgpt_tech_02.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "RS485汇合线从左侧两框接到网关；标签约x452,y385，在连线上方。MQTT标签约x930,y383，与箭头保持间隔。",
+            "下方控制系统说明与分隔线、页脚有清楚间距，三组设备框正文均完整。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 3,
+          "source_slide": 3,
+          "svg": "authoring-svg-flat/chatgpt_tech_03.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "截图未拉伸，右侧分叉连线约x745–844,y329–605，止于两张卡片左侧，未穿过标签。",
+            "红色36.2℃与35.0℃数值完整清楚；截图说明、数据强调和页脚彼此独立。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 4,
+          "source_slide": 5,
+          "svg": "authoring-svg-flat/chatgpt_tech_04.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "已重新查看r3实际PowerPoint第4页PNG；快照至MQTT的蓝色折线从约x1088,y400，经x1128,y560指向MQTT左边框，未穿过任何框内文字。",
+            "Agent报告至eMMC的折线从约x941,y695，经y750、x1175,y674指向eMMC框；报告落盘标签位于约x967–1049,y717–737，在线条上方且完整可读。",
+            "MiMo紫色连线与MQTT蓝色连线在框外空隙交叉，颜色与端点可辨，未遮挡标签；新增线条离底部脚注约38px，无页边截断。"
+          ],
+          "coordinate_suggestions": [],
+          "resolved_observation": "首轮MQTT/eMMC独立能力节点的数据来源不直观；r3已补两条来源连线及报告落盘标签，观察项关闭。",
+          "verified_revision": "r3"
+        },
+        {
+          "page": 5,
+          "source_slide": 6,
+          "svg": "authoring-svg-flat/chatgpt_tech_05.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "三层数据流在横向分隔线内分区，规则到业务工具的连接线约x881,y400–554，不经过正文。",
+            "上排三框及中排两框内文字完整，底部Agent任务与解耦说明分为两列，页脚留白正常。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 6,
+          "source_slide": 11,
+          "svg": "authoring-svg-flat/chatgpt_tech_06.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "r2三组计数38/274、88/131、649/649分别在柱形中心约x1013、1195、1377下方居中，上一轮对齐问题未复现。",
+            "13.9%、67.2%、100.0%柱顶数据完整；左侧修复前后时序条、DIR窗口和TC说明彼此分开，标签未压在线条上。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 7,
+          "source_slide": 8,
+          "svg": "authoring-svg-flat/chatgpt_tech_07.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "四条生命线、调用与返回箭头顺序明确，消息标签置于水平箭头上方，均无边界截断。",
+            "r2右侧末行板端解析并加载到页面位于约x1244–1488,y693–715，完整留在画布内，距离右边缘约112px；上一轮截断问题未复现。",
+            "底部单样本时间说明与时序图区之间留白充足。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 8,
+          "source_slide": 4,
+          "svg": "authoring-svg-flat/chatgpt_tech_08.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "上排快照、业务工具、输出三框的箭头处于框间空隙，框内标题与正文均完整。",
+            "下排两个输出检查路径等重，左侧长流程文字未侵入右侧区域，脚注与主内容保持间隔。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 9,
+          "source_slide": 10,
+          "svg": "authoring-svg-flat/chatgpt_tech_09.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "五个阶段的编号、标题及说明共享水平网格，四支连接箭头位于列间空隙，未碰到标题。",
+            "下方协作说明浅色区域约y563–738，正文完整且与页脚分开；长句保持一行且留有右侧空白。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 10,
+          "source_slide": 11,
+          "svg": "authoring-svg-flat/chatgpt_tech_10.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "438、24、454、46数值位于各柱形上方，短柱数据仍与轴线、图例分离，数值和组别均清楚。",
+            "右侧重复设置到按变化更新的箭头位于空白区，未碰撞两组说明；FIFO结果与上方说明留白正常。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 11,
+          "source_slide": 13,
+          "svg": "authoring-svg-flat/chatgpt_tech_11.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "运行阶段和重启阶段标题分区清楚，五步编号、正文及箭头处于同一网格，没有长标题截断。",
+            "底部1,553,704 B及READY状态完整，指标与两行说明不重叠，信息条到脚注约38px。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 12,
+          "source_slide": 14,
+          "svg": "authoring-svg-flat/chatgpt_tech_12.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "真机照片显示比例自然，屏幕核心区域及主要读数完整，未严重变形。",
+            "两行说明位于连续深色底带内，白色演示标题清楚；没有把正文直接压在复杂照片上。"
+          ],
+          "coordinate_suggestions": []
+        },
+        {
+          "page": 13,
+          "source_slide": 15,
+          "svg": "authoring-svg-flat/chatgpt_tech_13.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "已重新查看r3实际PowerPoint第13页PNG；五步工程证据流程在约y228–393，编号、标题和说明沿同一网格排列，箭头处于列间空隙，未碰撞标题。",
+            "第五步AI日志/开发Skill说明右端约x1414，距离画布右边约186px；全部流程文字完整，无边界截断。",
+            "下方三条实证/验证/本轮检查分别位于约y501、597、691，左侧标签与右侧内容对齐，长说明与页脚均保持清楚间距。"
+          ],
+          "coordinate_suggestions": [],
+          "verified_revision": "r3"
+        },
+        {
+          "page": 14,
+          "source_slide": 16,
+          "svg": "authoring-svg-flat/chatgpt_tech_14.svg",
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": [
+            "THANKS确为14页文件最后一页；主标题、标语、团队名与仓库地址完整显示。",
+            "仓库地址为白字，位于约x485–1116,y788–812，深色遮罩下清楚可读；与团队名、页面底边间距充分，无新增重叠。"
+          ],
+          "coordinate_suggestions": []
+        }
+      ],
+      "summary": {
+        "reviewed_pages": 14,
+        "ok_pages": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ],
+        "needs_fix_pages": [],
+        "hard_hit_count": 0,
+        "soft_hit_count": 0,
+        "verdict": "r3第4、13页复核通过；第4页两条新增连接与报告落盘标签清楚，第13页新工程证据流程完整。结合首轮其余页面结果，14页均无未解决视觉问题，谢谢位于最后。",
+        "pending_pages": []
+      }
+    }
+  ],
+  "iterations_run": 3,
+  "round2_reviewed_pages": [
+    4,
+    13
+  ],
+  "round3_reviewed_pages": [
+    4
+  ]
+}

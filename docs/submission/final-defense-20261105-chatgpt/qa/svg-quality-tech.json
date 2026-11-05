@@ -1,0 +1,592 @@
+{
+  "schema": "ppt-master.svg-quality-report.v1",
+  "stage": "final",
+  "target": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105",
+  "source_fingerprint": {
+    "algorithm": "sha256",
+    "digest": "3fbfefd6a3ec9572c7fe071942d2d1862f4780911ab4a51c3b46d897fe55813b",
+    "file_count": 31,
+    "files": [
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_01.svg",
+        "sha256": "b81b6521147230547ef5f2365ead2a30c076d761b2fd7c9a689774a5e27c2a30"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_02.svg",
+        "sha256": "3c757a30a4141f8173053f49553a48afbe4161f6e84ad8eef22c5fed114b6efd"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_03.svg",
+        "sha256": "0dc42f8d0837ee392edc28f2b51895f0d9c285c4e6e87bac00a9e149767e1b50"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_04.svg",
+        "sha256": "93a702d45ae304efffc94492b419cf920ec70c6b424058e02c37ab17b111dc18"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_05.svg",
+        "sha256": "5c6bb7f9f34fdee6a753fd718172d1266a0522864f54f118b53bcedbdb7131f0"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_06.svg",
+        "sha256": "668472aa75c481744151ed87f7505a7abd811a6e843edc5d57b78c9e90ef9a95"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_07.svg",
+        "sha256": "f7ff317bf422cab783131aa050e662381287f0587aa72ff37206a211e1407d3e"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_08.svg",
+        "sha256": "f10bad8ef8c15aec42f55ffdb40a66aee1b016e354f14f8982b387f36e7f497e"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_09.svg",
+        "sha256": "8c3f0c9b1cda1b26cd8a6f15b95313ad637acafec587d1d6d6efacaa182f0404"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_10.svg",
+        "sha256": "fe091e72cde0a769ec9cd7422e5306a32cb4e2e1a0cb173ebe7730dd49e1f42c"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_11.svg",
+        "sha256": "5feee58c580d51490202ee1b676fc975d78a5da2017ebb255d8655d89e02a3fb"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_12.svg",
+        "sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_13.svg",
+        "sha256": "ac49d9fa697d8e715a54c8fcfb458aaf69c1528927ba979b097e1f3254708595"
+      },
+      {
+        "file": "authoring-svg-flat/chatgpt_tech_14.svg",
+        "sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+      },
+      {
+        "file": "authoring-svg-flat/slide_01.svg",
+        "sha256": "76fa69e5a4be692df13bf3c1d33ccacfabdbf9c56888ed84d5b1eaeafae5b54d"
+      },
+      {
+        "file": "authoring-svg-flat/slide_02.svg",
+        "sha256": "7b3f68c3b4c38bf24be5db98ddaab4db1c7a71c8c9e32791ff82dc43c93ce556"
+      },
+      {
+        "file": "authoring-svg-flat/slide_03.svg",
+        "sha256": "3d3853322b797880342209431a07bbd26a0ed47ebdc86516b06d75aa77586780"
+      },
+      {
+        "file": "authoring-svg-flat/slide_04.svg",
+        "sha256": "c90a7eb27ab38ae0be9e713f401e2d9ad4357cfeda567a912a7714f9cfe90c8e"
+      },
+      {
+        "file": "authoring-svg-flat/slide_05.svg",
+        "sha256": "4b465cde42c63692c5c50de15a9fa8b64ee87835dcd6bfa9bd8878b9636c4977"
+      },
+      {
+        "file": "authoring-svg-flat/slide_06.svg",
+        "sha256": "adf8b4aa011ee819aa08e7baf7e62f974d6c662295f3259be3c5cdf4aec82047"
+      },
+      {
+        "file": "authoring-svg-flat/slide_07.svg",
+        "sha256": "e33708f987890cdc442f53b4f6b75be60e912872584247751a4b7cc9498efdf5"
+      },
+      {
+        "file": "authoring-svg-flat/slide_08.svg",
+        "sha256": "c6bef952521c4917c2b333fd3f2a4536ecaed2c511a0ae91b41f22e3840120f1"
+      },
+      {
+        "file": "authoring-svg-flat/slide_09.svg",
+        "sha256": "4939893555de446050d3c213dedaeb97ce746a714feeba632eee34e623be39de"
+      },
+      {
+        "file": "authoring-svg-flat/slide_10.svg",
+        "sha256": "9b1398455bc79bd6783688df2a8148e9341ece9bfc3fbcc33c96f737cb8edfa4"
+      },
+      {
+        "file": "authoring-svg-flat/slide_11.svg",
+        "sha256": "0b95c1b2743da4e72a147a8d2df54d7d84ad1c76c13963ca0d2dad03704e61d7"
+      },
+      {
+        "file": "authoring-svg-flat/slide_12.svg",
+        "sha256": "01a944c7a85053050fa3a5296432502df8d45da639770eb7cefe639703ad803a"
+      },
+      {
+        "file": "authoring-svg-flat/slide_13.svg",
+        "sha256": "2a92662812c145995bfa09aa4d2dab6a0e3d55d9640b659aa944b02deafb3bf8"
+      },
+      {
+        "file": "authoring-svg-flat/slide_14.svg",
+        "sha256": "88f0eaafd9e64de69fe4a50f61e851e049822f3d26de4210bdc21019d4e9095d"
+      },
+      {
+        "file": "authoring-svg-flat/slide_15.svg",
+        "sha256": "0cabcce403753e736876e5de0a19274166b80f915a3811d2b625f1d794549afa"
+      },
+      {
+        "file": "authoring-svg-flat/slide_16.svg",
+        "sha256": "1e8b789160c1ea8b6395e279dce9cc1f50778bb2fbf57747ac860c770406caaf"
+      },
+      {
+        "file": "page_plan.json",
+        "sha256": "168d6ba14f002bfd7d7a91890f32975c6298d493509438cc9b4e137f9bf37498"
+      }
+    ]
+  },
+  "summary": {
+    "total": 14,
+    "passed": 3,
+    "warnings": 11,
+    "errors": 0
+  },
+  "issue_types": {},
+  "categories": {
+    "blocking": {
+      "count": 0,
+      "issues": []
+    },
+    "introduced": {
+      "count": 11,
+      "issues": [
+        {
+          "file": "chatgpt_tech_02.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_03.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_04.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_05.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_06.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_07.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_08.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_09.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_10.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_11.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        },
+        {
+          "file": "chatgpt_tech_13.svg",
+          "message": "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+        }
+      ]
+    },
+    "inherited": {
+      "count": 0,
+      "issues": []
+    },
+    "source-import": {
+      "count": 0,
+      "summary": {
+        "warning_count": 0,
+        "by_code": {}
+      }
+    }
+  },
+  "drift": {
+    "colors": {},
+    "fonts": {},
+    "sizes": {}
+  },
+  "carrier_receipt": {
+    "scope": "informational-not-a-quota",
+    "pages": 0,
+    "totals": {
+      "text_elements": 0,
+      "image_placements": 0,
+      "icons": 0,
+      "svg_geometry_elements": 0,
+      "preset_shapes": 0,
+      "page_frame_elements": 0,
+      "marker_uses": 0,
+      "inline_emphasis_runs": 0,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "pages_with": {
+      "images": 0,
+      "icons": 0,
+      "presets": 0,
+      "charts": 0,
+      "tables": 0,
+      "formulas": 0,
+      "inline_emphasis_runs": 0,
+      "gradient_uses": 0,
+      "filter_uses": 0,
+      "text_effects": 0
+    },
+    "relationship_pages": null,
+    "geometry_elements": {},
+    "preset_names": {},
+    "native_objects": {},
+    "image_page_max_frame_share_range": []
+  },
+  "project_issues": {
+    "template": [],
+    "animation": [],
+    "illustration": [],
+    "communication_trace": [],
+    "pptx_structure": []
+  },
+  "files": [
+    {
+      "file": "chatgpt_tech_01.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_01.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 1,
+        "source_slide": 1,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "b81b6521147230547ef5f2365ead2a30c076d761b2fd7c9a689774a5e27c2a30"
+    },
+    {
+      "file": "chatgpt_tech_02.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_02.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 2,
+        "source_slide": 2,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 18,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "3c757a30a4141f8173053f49553a48afbe4161f6e84ad8eef22c5fed114b6efd"
+    },
+    {
+      "file": "chatgpt_tech_03.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_03.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 3,
+        "source_slide": 3,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 7,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 2,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "0dc42f8d0837ee392edc28f2b51895f0d9c285c4e6e87bac00a9e149767e1b50"
+    },
+    {
+      "file": "chatgpt_tech_04.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_04.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 4,
+        "source_slide": 5,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 21,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "93a702d45ae304efffc94492b419cf920ec70c6b424058e02c37ab17b111dc18"
+    },
+    {
+      "file": "chatgpt_tech_05.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_05.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 5,
+        "source_slide": 6,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 18,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "5c6bb7f9f34fdee6a753fd718172d1266a0522864f54f118b53bcedbdb7131f0"
+    },
+    {
+      "file": "chatgpt_tech_06.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_06.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 6,
+        "source_slide": 11,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 23,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "668472aa75c481744151ed87f7505a7abd811a6e843edc5d57b78c9e90ef9a95"
+    },
+    {
+      "file": "chatgpt_tech_07.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_07.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 7,
+        "source_slide": 8,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 13,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "f7ff317bf422cab783131aa050e662381287f0587aa72ff37206a211e1407d3e"
+    },
+    {
+      "file": "chatgpt_tech_08.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_08.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 8,
+        "source_slide": 4,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 17,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "f10bad8ef8c15aec42f55ffdb40a66aee1b016e354f14f8982b387f36e7f497e"
+    },
+    {
+      "file": "chatgpt_tech_09.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_09.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 9,
+        "source_slide": 10,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 25,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "8c3f0c9b1cda1b26cd8a6f15b95313ad637acafec587d1d6d6efacaa182f0404"
+    },
+    {
+      "file": "chatgpt_tech_10.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_10.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 10,
+        "source_slide": 11,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 17,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "fe091e72cde0a769ec9cd7422e5306a32cb4e2e1a0cb173ebe7730dd49e1f42c"
+    },
+    {
+      "file": "chatgpt_tech_11.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_11.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 11,
+        "source_slide": 13,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 28,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "5feee58c580d51490202ee1b676fc975d78a5da2017ebb255d8655d89e02a3fb"
+    },
+    {
+      "file": "chatgpt_tech_12.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_12.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 12,
+        "source_slide": 14,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+    },
+    {
+      "file": "chatgpt_tech_13.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_13.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [
+        "Font stack exports non-PPT-safe typeface(s) to PPTX (latin=MiSans): MiSans"
+      ],
+      "info": {
+        "output_page": 13,
+        "source_slide": 15,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 24,
+        "fonts": [
+          "MiSans"
+        ],
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 1,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "ac49d9fa697d8e715a54c8fcfb458aaf69c1528927ba979b097e1f3254708595"
+    },
+    {
+      "file": "chatgpt_tech_14.svg",
+      "path": "F:\\Documents\\velaguard作品提交\\build\\chatgpt-defense-tech-20261105\\authoring-svg-flat\\chatgpt_tech_14.svg",
+      "exists": true,
+      "errors": [],
+      "warnings": [],
+      "info": {
+        "output_page": 14,
+        "source_slide": 16,
+        "viewbox": "0 0 2560 1440",
+        "edited_text_elements": 1,
+        "roundtrip_text_calibration": {
+          "factor": 0.0,
+          "measured_unchanged": 3,
+          "positive_unchanged": 0
+        }
+      },
+      "passed": true,
+      "source_sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+    }
+  ]
+}

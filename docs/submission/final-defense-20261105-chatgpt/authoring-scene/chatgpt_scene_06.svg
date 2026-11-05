@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="2560" height="1440" viewBox="0 0 2560 1440" font-family="MiSans, &quot;Microsoft YaHei&quot;, sans-serif"><defs><linearGradient id="ggrad1" x1="0" y1="0.5" x2="1" y2="0.5"><stop offset="0" stop-color="#0891B2" /><stop offset="0.5" stop-color="#3B6EF6" /><stop offset="1" stop-color="#9333EA" /></linearGradient><marker id="marrow1" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="3.5" markerHeight="3.5" orient="auto" markerUnits="strokeWidth"><path d="M 0 0 L 10 5 L 0 10" fill="none" stroke="#64748B" /></marker><marker id="cg-arrow-526278" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#526278" /></marker><marker id="cg-arrow-0891B2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#0891B2" /></marker><marker id="cg-arrow-3D6BF5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#3D6BF5" /></marker><marker id="cg-arrow-9138DE" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#9138DE" /></marker><marker id="cg-arrow-D34B47" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#D34B47" /></marker><marker id="cg-arrow-23875F" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#23875F" /></marker></defs><rect x="0" y="0" width="2560" height="1440" fill="#FFFFFF" />
+<g id="layout-shape-4" data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" data-pptx-source-ref="layout:4">
+<image data-pptx-object="picture" data-pptx-frame="2342.47 61.45 96 96" href="../images/image1.png" x="2342.47" y="61.45" width="96" height="96" preserveAspectRatio="none" />
+</g>
+<g id="layout-shape-20" data-pptx-object="shape" data-pptx-frame="1638.47 1354.67 800 40" data-pptx-prst="rect" data-pptx-source-ref="layout:20" data-pptx-semantic-object="shape">
+<path d="M 1638.47 1354.67 L 2438.47 1354.67 L 2438.47 1394.67 L 1638.47 1394.67 Z" fill="none" stroke-width="2.66667" stroke-linecap="butt" stroke="none" stroke-linejoin="round" data-pptx-part="geometry" />
+
+
+<text x="2438.47" y="1382.33333333" text-anchor="end" xml:space="preserve" font-family="MiSans, sans-serif" font-size="20" fill="#64748B" data-pptx-text-baseline="metrics-v1">2026 首届 openvela AI 硬件开发者大赛</text>
+</g>
+<g id="layout-shape-21" data-pptx-object="connector" data-pptx-frame="92.33 1333.33 2346 0" data-pptx-prst="straightConnector1" data-pptx-source-ref="layout:21" data-pptx-semantic-object="shape">
+<path d="M 92.33 1333.33 L 2438.33 1333.33" fill="#DEE0E3" stroke-width="1.33333" stroke-linecap="butt" stroke="#0F172A" stroke-opacity="0.12" stroke-linejoin="round" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-3" data-pptx-object="shape" data-pptx-frame="180 126 2100 120" data-pptx-prst="rect" data-pptx-source-ref="slide:3" data-pptx-semantic-object="shape">
+<path d="M 180 126 L 2280 126 L 2280 246 L 180 246 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="180" y="205.8" text-anchor="start" xml:space="preserve" font-size="76" fill="#111827" font-weight="bold" data-pptx-text-baseline="metrics-v1">Agent 把告警与运行记录组织成解释</text>
+</g>
+<g id="shape-4" data-pptx-object="shape" data-pptx-frame="180 285 110 11" data-pptx-prst="roundRect" data-pptx-av-adj="val 50000" data-pptx-source-ref="slide:4" data-pptx-semantic-object="shape">
+<path d="M 180 290.5 A 5.5 5.5 0 0 1 185.5 285 L 284.5 285 A 5.5 5.5 0 0 1 290 290.5 L 290 290.5 A 5.5 5.5 0 0 1 284.5 296 L 185.5 296 A 5.5 5.5 0 0 1 180 290.5 Z" fill="url(#ggrad1)" stroke="none" data-pptx-part="geometry" />
+
+</g>
+<g id="shape-61" data-pptx-object="group" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-source-ref="slide:61">
+<g id="shape-60" data-pptx-object="shape" data-pptx-frame="94.08 1359.33 28.58 35.42" data-pptx-prst="rect" data-pptx-source-ref="slide:60" data-pptx-semantic-object="shape">
+<path d="M 94.08 1359.33 L 122.66 1359.33 L 122.66 1394.75 L 94.08 1394.75 Z" fill="none" stroke="none" data-pptx-part="geometry" />
+
+
+<text x="94.08" y="1382" text-anchor="start" xml:space="preserve" font-family="MiSans, sans-serif" font-size="22.93" fill="#64748B" data-pptx-text-baseline="metrics-v1">06</text>
+</g>
+</g><g id="chatgpt-content-6" font-family="MiSans"><image href="../images/chatgpt/06_alarm_advice.png" x="180" y="420" width="1235" height="700" preserveAspectRatio="xMidYMid meet" /><g data-pptx-bounds="1530 373.9 507.72 71.39999999999999"><text x="1530" y="430" font-size="51" fill="#0891B2" font-weight="bold" text-anchor="start">从规则结果继续核查</text></g><g data-pptx-bounds="1530 490.6 91.31520000000002 75.6"><text x="1530" y="550" font-size="54" fill="#9138DE" font-weight="bold" text-anchor="start">01</text></g><g data-pptx-bounds="1660 497.2 219.36 67.19999999999999"><text x="1660" y="550" font-size="48" fill="#142131" font-weight="bold" text-anchor="start">事件触发</text></g><g data-pptx-bounds="1660 583.1 264.72 54.599999999999994"><text x="1660" y="626" font-size="39" fill="#526278" font-weight="normal" text-anchor="start">告警集合变化</text></g><g data-pptx-bounds="1530 725.6 91.31520000000002 75.6"><text x="1530" y="785" font-size="54" fill="#9138DE" font-weight="bold" text-anchor="start">02</text></g><g data-pptx-bounds="1660 732.2 219.36 67.19999999999999"><text x="1660" y="785" font-size="48" fill="#142131" font-weight="bold" text-anchor="start">主动查数</text></g><g data-pptx-bounds="1660 818.1 493.85280000000006 54.599999999999994"><text x="1660" y="861" font-size="39" fill="#526278" font-weight="normal" text-anchor="start">Skill + 运行报告工具</text></g><g data-pptx-bounds="1530 960.6 91.31520000000002 75.6"><text x="1530" y="1020" font-size="54" fill="#9138DE" font-weight="bold" text-anchor="start">03</text></g><g data-pptx-bounds="1660 967.2 219.36 67.19999999999999"><text x="1660" y="1020" font-size="48" fill="#142131" font-weight="bold" text-anchor="start">显示解释</text></g><g data-pptx-bounds="1660 1053.1 433.20000000000005 54.599999999999994"><text x="1660" y="1096" font-size="39" fill="#526278" font-weight="normal" text-anchor="start">建议、依据、关注事项</text></g><g data-pptx-bounds="180 1253.2 1106.6880000000003 39.199999999999996"><text x="180" y="1284" font-size="28" fill="#526278" font-weight="normal" text-anchor="start">界面为场景模拟；10-25 真机单样本：8 条告警解释 41.83 秒完成并加载。</text></g></g></svg>

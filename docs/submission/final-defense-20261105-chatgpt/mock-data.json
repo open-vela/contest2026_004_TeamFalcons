@@ -1,0 +1,25 @@
+{
+  "author": "CHATGPT",
+  "purpose": "factory-equipment-room-defense-scene",
+  "kind": "synthetic",
+  "display": {"width": 480, "height": 272, "format": "RGB565", "capacity_profile": "board"},
+  "points": [
+    {"id":"temp_room","name":"设备间温度","unit":"C","initial":28.4,"warn":30,"crit":35,"cmp":"ge"},
+    {"id":"humidity_room","name":"设备间湿度","unit":"%","initial":54.7},
+    {"id":"volt_a","name":"A相电压","unit":"V","initial":224.6,"warn":200,"crit":180,"cmp":"le"},
+    {"id":"curr_a","name":"A相电流","unit":"A","initial":8.2},
+    {"id":"ups_load","name":"UPS负载","unit":"%","initial":42,"warn":80,"crit":90,"cmp":"ge"},
+    {"id":"leak","name":"水浸状态","unit":"","initial":0}
+  ],
+  "sequence": [
+    {"phase":"normal","temperature":28.4,"network":true,"online_points":6},
+    {"phase":"warning","temperature":32.6,"active_alarms":1},
+    {"phase":"critical","temperature":36.2,"active_alarms":1},
+    {"phase":"network_down","temperature":36.1,"network":false,"online_points":6},
+    {"phase":"instrument_offline","point":"volt_a","network":true,"online_points":5},
+    {"phase":"voice_answer","temperature":36.1,"voltage":224.6,"ups_load":42,"online_points":6},
+    {"phase":"recovered","temperature":29.0,"active_alarms":0,"online_points":6}
+  ],
+  "clock": "2026-11-05T08:00:00Z (fixed synthetic scene clock)",
+  "interpretation": "数值、AI回答、报告和连接状态为场景快照；截图不代表本次真机、模型执行或现场部署。工程测量使用独立历史证据。"
+}

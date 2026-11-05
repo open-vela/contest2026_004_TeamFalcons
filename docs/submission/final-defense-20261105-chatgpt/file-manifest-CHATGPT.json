@@ -1,0 +1,535 @@
+{
+  "author": "CHATGPT",
+  "date": "2026-11-05",
+  "input_commit": "a075560",
+  "files": [
+    {
+      "path": "80秒视频脚本-CHATGPT.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 2658,
+      "sha256": "39da819b1bcc401ce5a0850df33ac1058c7e5ab8ddd555bd54311b0e23952984"
+    },
+    {
+      "path": "asset-manifest.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 2891,
+      "sha256": "8fd87d3c62c8a43cab79dabe005d13b2aa610b4702b631800fc67416b4756cfa"
+    },
+    {
+      "path": "assets/01_home_normal.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 19870,
+      "sha256": "59873b0d927be5c0820a09f9af46d7982b70a4d2e33da1fbd14277c6309ec9d4"
+    },
+    {
+      "path": "assets/02_alarm_warning.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 26251,
+      "sha256": "bdbd7915ebc4c05f9acfaa007426c9b646d45353e94bc1db24481390095d5643"
+    },
+    {
+      "path": "assets/03_alarm_critical.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 25763,
+      "sha256": "924a96d5720796a555d589e494745d2d3c4e57d48dd5ff3559d75afa620cde8d"
+    },
+    {
+      "path": "assets/04_device_critical.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 20529,
+      "sha256": "9091998df5172d9265665378df46f5695c1c5ff3b7add90b3985ddac318e7e86"
+    },
+    {
+      "path": "assets/05_trend_peak.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 13214,
+      "sha256": "ed6f78a63887b204d426846df867ca345b9d97992fb58a7515e0b3edbb1811e4"
+    },
+    {
+      "path": "assets/06_alarm_advice.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 29291,
+      "sha256": "dc12d0f8a313677c2993ac57522a347ce603dfdebc85bb5b775e8399a889bd4d"
+    },
+    {
+      "path": "assets/07_network_down.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 21766,
+      "sha256": "732e7743c3e4f5e96c5cba3c6357e04a3996d6d611284e2cc76a2494786037d6"
+    },
+    {
+      "path": "assets/08_trend_network_down.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 13254,
+      "sha256": "c2cb789aeac524726f1fdaacd32d10d19b78d55b0403946bb3dfc30dc9c84d02"
+    },
+    {
+      "path": "assets/09_instrument_offline.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 21010,
+      "sha256": "b485cf3dcdd10514b3e99dc8c98e16bccbd3af299b203d0feb37477c37707d14"
+    },
+    {
+      "path": "assets/10_voice_answer.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 33142,
+      "sha256": "7892a6d9298b2214a424d9f5a4230e17fc09dc6a1948fd0982ce8c09b9fba299"
+    },
+    {
+      "path": "assets/11_home_recovered.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 20230,
+      "sha256": "630468de79ac667296a131b504ef412af1ab440b9a6135bf5035c66150d19fea"
+    },
+    {
+      "path": "assets/12_trend_recovery.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 13388,
+      "sha256": "633b3cd9adf9458543942f973cca87912caaafbe4c672a798e440b4a39ecf9ec"
+    },
+    {
+      "path": "assets/14_handover_report.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 23018,
+      "sha256": "427de995e167f8a3480a36d1f1b96e85333088cfdf7580b8e372af3ea679f138"
+    },
+    {
+      "path": "assets/raw-frames-CHATGPT.zip",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 185020,
+      "sha256": "0d071d7e07335887030de77849bc1b912d6965c67348078d89ff776a35021160"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_01.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 3479,
+      "sha256": "bd529fb21c73b24da8280578c8834aba2afd85077b229c26f8164f1a13b1254f"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_02.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 8882,
+      "sha256": "18999779f78141113d051576b7875098127acd8fbb164db93278269cf3ebde45"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_03.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6850,
+      "sha256": "5be6f18a8fac230766b06cf297d1fea4956e14d678168a29345e900535674735"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_04.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9053,
+      "sha256": "b23927d880a260d2cf2f2e7e1fff2c6a8834e57e1753b2a7464820833962166b"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_05.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6270,
+      "sha256": "e7eb1c26c128460cc8b975aaddc2db22a8a6ce83eda21316ebadcdbbf5ca156b"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_06.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6814,
+      "sha256": "a6b5a2d3e59af350f385afd3c18c5ce9b6adebe52556c08d8be6595f89163bac"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_07.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 5893,
+      "sha256": "53c4b9716bbf462ae03715cc9f7f9ea29f2aaba323acabce3264e7f3c720b9f7"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_08.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6039,
+      "sha256": "f27fa1d43959a4f4031cd40f8d93a07d53a892a13c2442d5ee31e46d964f29d6"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_09.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 11279,
+      "sha256": "3abcdefd70d44be176af9161e5fdfd2ff499329dd277a3c3d1ee2600d830b566"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_10.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 11584,
+      "sha256": "72ec4fc2f449339e8f7ecaf58547013afde3e1008ca2dab5e8cab9d5c6fa1b27"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_11.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9976,
+      "sha256": "0a9056e8dda6437761bb9a72b4a7afd7c1290cebeeacfe369bdfd59762a02c6d"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_12.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1736,
+      "sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_13.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6382,
+      "sha256": "54ca628fe43780d93117077714f2231b22b69e6df60ee01e9dffc1066238d08e"
+    },
+    {
+      "path": "authoring-scene/chatgpt_scene_14.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 3791,
+      "sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_01.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 3479,
+      "sha256": "b81b6521147230547ef5f2365ead2a30c076d761b2fd7c9a689774a5e27c2a30"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_02.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 8968,
+      "sha256": "3c757a30a4141f8173053f49553a48afbe4161f6e84ad8eef22c5fed114b6efd"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_03.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6727,
+      "sha256": "0dc42f8d0837ee392edc28f2b51895f0d9c285c4e6e87bac00a9e149767e1b50"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_04.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 11281,
+      "sha256": "93a702d45ae304efffc94492b419cf920ec70c6b424058e02c37ab17b111dc18"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_05.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9108,
+      "sha256": "5c6bb7f9f34fdee6a753fd718172d1266a0522864f54f118b53bcedbdb7131f0"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_06.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 10995,
+      "sha256": "668472aa75c481744151ed87f7505a7abd811a6e843edc5d57b78c9e90ef9a95"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_07.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 7814,
+      "sha256": "f7ff317bf422cab783131aa050e662381287f0587aa72ff37206a211e1407d3e"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_08.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 8294,
+      "sha256": "f10bad8ef8c15aec42f55ffdb40a66aee1b016e354f14f8982b387f36e7f497e"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_09.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9531,
+      "sha256": "8c3f0c9b1cda1b26cd8a6f15b95313ad637acafec587d1d6d6efacaa182f0404"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_10.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9469,
+      "sha256": "fe091e72cde0a769ec9cd7422e5306a32cb4e2e1a0cb173ebe7730dd49e1f42c"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_11.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9973,
+      "sha256": "5feee58c580d51490202ee1b676fc975d78a5da2017ebb255d8655d89e02a3fb"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_12.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1736,
+      "sha256": "eb11c0e56a42fabab425f101100fc6c95ee0074b823c39cd1880064b2050bdd3"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_13.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9025,
+      "sha256": "ac49d9fa697d8e715a54c8fcfb458aaf69c1528927ba979b097e1f3254708595"
+    },
+    {
+      "path": "authoring-tech/chatgpt_tech_14.svg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 3791,
+      "sha256": "0bdfcd728896454647f7787186e99b629a5d249c0a2d1ece392a92d9bbd999eb"
+    },
+    {
+      "path": "content-scene.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 15707,
+      "sha256": "0898457c086c932da7735671cf92827ff8a70cd39cf5c3055af38d805ceb5ef1"
+    },
+    {
+      "path": "content-tech.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 15163,
+      "sha256": "25a6c02f0894f3b4dc79b6e56bee7cba6aa9ec8a87b0199429953986bab4b329"
+    },
+    {
+      "path": "images/chatgpt/01_home_normal.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 19870,
+      "sha256": "59873b0d927be5c0820a09f9af46d7982b70a4d2e33da1fbd14277c6309ec9d4"
+    },
+    {
+      "path": "images/chatgpt/03_alarm_critical.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 25763,
+      "sha256": "924a96d5720796a555d589e494745d2d3c4e57d48dd5ff3559d75afa620cde8d"
+    },
+    {
+      "path": "images/chatgpt/06_alarm_advice.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 29291,
+      "sha256": "dc12d0f8a313677c2993ac57522a347ce603dfdebc85bb5b775e8399a889bd4d"
+    },
+    {
+      "path": "images/chatgpt/07_network_down.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 21766,
+      "sha256": "732e7743c3e4f5e96c5cba3c6357e04a3996d6d611284e2cc76a2494786037d6"
+    },
+    {
+      "path": "images/chatgpt/10_voice_answer.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 33142,
+      "sha256": "7892a6d9298b2214a424d9f5a4230e17fc09dc6a1948fd0982ce8c09b9fba299"
+    },
+    {
+      "path": "images/chatgpt/11_home_recovered.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 20230,
+      "sha256": "630468de79ac667296a131b504ef412af1ab440b9a6135bf5035c66150d19fea"
+    },
+    {
+      "path": "images/chatgpt/12_trend_recovery.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 13388,
+      "sha256": "633b3cd9adf9458543942f973cca87912caaafbe4c672a798e440b4a39ecf9ec"
+    },
+    {
+      "path": "images/chatgpt/14_handover_report.png",
+      "kind": "new-synthetic-ui-render",
+      "bytes": 23018,
+      "sha256": "427de995e167f8a3480a36d1f1b96e85333088cfdf7580b8e372af3ea679f138"
+    },
+    {
+      "path": "images/chatgpt/prototype.jpg",
+      "kind": "inherited-project-photo",
+      "bytes": 1134239,
+      "sha256": "4ed3da31383c9acca6de54791f4cd94deeebea7cf6656d1606834ab2fba482f8"
+    },
+    {
+      "path": "images/image1.png",
+      "kind": "inherited-template-or-project-media",
+      "bytes": 9139,
+      "sha256": "8fa0f95446f905f6a21c1647e1869b510b69b7472b95fc3427b4d95e72cbfda2"
+    },
+    {
+      "path": "images/image2.png",
+      "kind": "inherited-template-or-project-media",
+      "bytes": 584715,
+      "sha256": "8c9a2d7cad6652e7c103d6511a8da1363ee4e88ed8fdd3e93fc868dc50dc600b"
+    },
+    {
+      "path": "images/image3.jpeg",
+      "kind": "inherited-template-or-project-media",
+      "bytes": 232338,
+      "sha256": "cec802a59ea2df8b2274f6f9c41058d5a2b4aee65076070a9b235159ddb432f9"
+    },
+    {
+      "path": "images/image_4ed3da31383c9acc.jpg",
+      "kind": "inherited-template-or-project-media",
+      "bytes": 1134239,
+      "sha256": "4ed3da31383c9acca6de54791f4cd94deeebea7cf6656d1606834ab2fba482f8"
+    },
+    {
+      "path": "make_decks.py",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 38039,
+      "sha256": "2bcacc7c1c7a1fdac4c4027e4e8cb915f6a62bfff70b3d0c738a0dfa92b2295d"
+    },
+    {
+      "path": "mock-data.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1541,
+      "sha256": "dfb9fc60a08b7bead37b77c569d788217faea73e08dff48a2e920faf5f1e78be"
+    },
+    {
+      "path": "OWNERSHIP.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1715,
+      "sha256": "8d4e808122df1c2a55e85bf7fba883242f28d4c428a0931b8f7f101d3273d2d3"
+    },
+    {
+      "path": "package_decks.py",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 8095,
+      "sha256": "64315f34ddb5532a859fdb6ff3d9385e87419a7c1ab089c583ffddcfea96282d"
+    },
+    {
+      "path": "page_plan-scene.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1111,
+      "sha256": "1bf80a7379b70adebcb56ef06c8076c02d4a280fc3b3caf3f5a679c53d11098a"
+    },
+    {
+      "path": "page_plan-tech.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1098,
+      "sha256": "168d6ba14f002bfd7d7a91890f32975c6298d493509438cc9b4e137f9bf37498"
+    },
+    {
+      "path": "prepare_materials.py",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 7868,
+      "sha256": "8a7395e41e3d5cd75a62c00d333a7a6705c4bcaf9841e12d2707a7a4b3fa9a79"
+    },
+    {
+      "path": "qa/delivery-scene.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 12643,
+      "sha256": "a2f1d1474f4bb272bc7003493a8db70c7288a895e430df8e5a4cd66c60736069"
+    },
+    {
+      "path": "qa/delivery-tech.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 9102,
+      "sha256": "d1cca0369cb292349e78a17065cd05fc59695006c2cf80f04d055f4d8e32520b"
+    },
+    {
+      "path": "qa/final-summary.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 558,
+      "sha256": "4a9816553147bcb0f1db582a87cbb39cd025a1bc84d050e8a908470a11e9a2d3"
+    },
+    {
+      "path": "qa/headless-ctest.log",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 17412,
+      "sha256": "1fc077fae25aa3d8d48af7badf8ca80c4ef2d2000a95cf78d40821f13e0fb3fe"
+    },
+    {
+      "path": "qa/QA_REPORT.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1893,
+      "sha256": "3323e7af04ca54ee9a1b108a8cde274e6cd01a9d4a02c2da149dfd54fcdef32c"
+    },
+    {
+      "path": "qa/render_ppt.ps1",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 995,
+      "sha256": "bc5a50efbece22275e5744a5d98bfa086a42b3b9b307cb7552234bb112b5507b"
+    },
+    {
+      "path": "qa/svg-quality-scene.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 19191,
+      "sha256": "7cc21dcea6b148024e43ccc663eef5a50ec40de4f0c1342618f4cecee231623d"
+    },
+    {
+      "path": "qa/svg-quality-tech.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 19125,
+      "sha256": "88f0f9108a3a5ca034bdbdfde59b34c34a59ccf3c5614884ad3d4863e4e714a3"
+    },
+    {
+      "path": "qa/visual-review-scene.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 13874,
+      "sha256": "71049838af12fde653e256a0b4c5ac7661b94a09fc7edc60c3ffb70f8d8f5b96"
+    },
+    {
+      "path": "qa/visual-review-tech.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 27906,
+      "sha256": "e22a772e9b3efd1f1396218ff5af3e67a2fdce181d6e71ba6f2c4f6a19d1aa71"
+    },
+    {
+      "path": "qa/全稿预览-场景叙事版-CHATGPT.jpg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 470956,
+      "sha256": "ad8679f40d6b825e8bb1824a1637888e7cceba5dfa9702a54540efad382c2212"
+    },
+    {
+      "path": "qa/全稿预览-技术深度版-CHATGPT.jpg",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 438323,
+      "sha256": "953369afe1d59f845638d95e2085ad2ed287d70fd2eb2dfe8d033837d4f29f61"
+    },
+    {
+      "path": "README.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 2671,
+      "sha256": "a9791b25166b295674fe5afdfdc46116ff7605d3e39c0642a84733b2c95cf127"
+    },
+    {
+      "path": "render/CMakeLists.txt",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 957,
+      "sha256": "6335872f005151010e4531a69fb46fa75748c1f323450ec67191fa0141bc2fe8"
+    },
+    {
+      "path": "render/scene_backend.c",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 1477,
+      "sha256": "58f9e370151eda35bbffc0489c028b5ac1fbf4327899decc9beb6501bf019f99"
+    },
+    {
+      "path": "render/scene_main.c",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 4871,
+      "sha256": "1f1696f16b555bc155859cbdfd1e32c3b5d5bbd473a964779f5613a99eebb097"
+    },
+    {
+      "path": "render/scene_model.c",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 2012,
+      "sha256": "ee3574786c7e9bfe540eb2d424f99fc208352dfca2faa9be24ea490581a6d99c"
+    },
+    {
+      "path": "VelaGuard-决赛答辩-场景叙事版-CHATGPT.pptx",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 26627323,
+      "sha256": "7159d955ca702727b4597a98d3e162d778af928947ba2fb95c83fc635bf76c83"
+    },
+    {
+      "path": "VelaGuard-决赛答辩-技术深度版-CHATGPT.pptx",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 26471924,
+      "sha256": "5643184149ab2aea7a7b64085ca57fbc84e29196ec84324df9f647e783c746fb"
+    },
+    {
+      "path": "verification.json",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 3085,
+      "sha256": "9c39f48f92fe06088cac11fb7bb3fe964e08b8cee6c8f2eb81e5900badf0f15d"
+    },
+    {
+      "path": "逐页口播稿-场景叙事版-CHATGPT.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6431,
+      "sha256": "5295bbaa6afa6c867be58df531f0568679582f3a19e22f4680f96d4ca347c803"
+    },
+    {
+      "path": "逐页口播稿-技术深度版-CHATGPT.md",
+      "kind": "new-CHATGPT-presentation-work",
+      "bytes": 6816,
+      "sha256": "e9328373650316e11a082e775a07939c1bc7fec4c7997bec296ff09854a844c9"
+    }
+  ]
+}

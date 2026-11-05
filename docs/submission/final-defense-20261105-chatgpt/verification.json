@@ -1,0 +1,125 @@
+{
+  "author": "CHATGPT",
+  "date": "2026-11-05",
+  "input_commit": "a075560",
+  "input_sha256": "b76d4c5dc8c8609bdaa78a64d68151305667cff8f9fdd78dfe1dc61745b53fd7",
+  "route": "ppt-master Edit Native PPTX",
+  "outputs": {
+    "scene": {
+      "file": "VelaGuard-决赛答辩-场景叙事版-CHATGPT.pptx",
+      "sha256": "7159d955ca702727b4597a98d3e162d778af928947ba2fb95c83fc635bf76c83",
+      "bytes": 26627323,
+      "slides": 14,
+      "notes": 14,
+      "native_charts": 2,
+      "editable_shapes": 255,
+      "official_parts_preserved": 8,
+      "content_seconds": 440,
+      "video_seconds": 80,
+      "reserved_seconds": 40,
+      "delivery_errors": [],
+      "candidate": "chatgpt-defense-scene-20261105_20261105_152704_native_charts_tables.pptx",
+      "source_mapping": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        10,
+        7,
+        5,
+        11,
+        13,
+        14,
+        15,
+        16
+      ]
+    },
+    "tech": {
+      "file": "VelaGuard-决赛答辩-技术深度版-CHATGPT.pptx",
+      "sha256": "5643184149ab2aea7a7b64085ca57fbc84e29196ec84324df9f647e783c746fb",
+      "bytes": 26471924,
+      "slides": 14,
+      "notes": 14,
+      "native_charts": 2,
+      "editable_shapes": 349,
+      "official_parts_preserved": 8,
+      "content_seconds": 440,
+      "video_seconds": 80,
+      "reserved_seconds": 40,
+      "delivery_errors": [],
+      "candidate": "chatgpt-defense-tech-20261105_20261105_152722_native_charts_tables.pptx",
+      "source_mapping": [
+        1,
+        2,
+        3,
+        5,
+        6,
+        11,
+        8,
+        4,
+        10,
+        11,
+        13,
+        14,
+        15,
+        16
+      ]
+    }
+  },
+  "ui_render": {
+    "profile": "board",
+    "format": "RGB565",
+    "size": [
+      480,
+      272
+    ],
+    "frames": 13,
+    "ctest_passed": 7,
+    "independent_build_reproduced_frames_byte_identical": true,
+    "synthetic_data": "mock-data.json"
+  },
+  "new_board_tests": false,
+  "video_embedded": false,
+  "video_current_state": "prototype still",
+  "visual_qa": {
+    "author": "CHATGPT",
+    "date": "2026-11-05",
+    "rendered_pages": 28,
+    "reviewed_pages": 28,
+    "native_renderer": "Microsoft PowerPoint 16",
+    "png_size": [
+      1600,
+      900
+    ],
+    "render_iterations": 4,
+    "unresolved_hard_hits": 0,
+    "unresolved_soft_hits": 0,
+    "independent_reports": {
+      "scene": "qa/visual-review-scene.json",
+      "tech": "qa/visual-review-tech.json"
+    },
+    "final_recheck_pages": {
+      "scene": [
+        9,
+        13
+      ],
+      "tech": [
+        4,
+        13
+      ]
+    },
+    "visible_xml_other_pages_unchanged_in_last_revision": true
+  },
+  "font_advisory": "官方 MiSans 保留；文件检查提示非默认 Office 字体可移植性。",
+  "ownership": "OWNERSHIP.md",
+  "shared_logs_included_in_commit": false,
+  "log_validation": {
+    "files": 326,
+    "events": 77648,
+    "status": "passed-with-warnings",
+    "exit_code": 1,
+    "warning": "既有2026-09-16 Claude会话未列入manifest.sessions；未修改日志或清单。"
+  }
+}

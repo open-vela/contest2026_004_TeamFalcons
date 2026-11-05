@@ -1,0 +1,423 @@
+Start testing: Nov 05 15:15 CST
+----------------------------------------------------------
+1/7 Testing: defense_scenes
+1/7 Test: defense_scenes
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/defense_scenes" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/scenes"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105
+"defense_scenes" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[PASS] normal: no alarm
+dumped 01_home_normal
+[PASS] 01_home_normal
+[PASS] warning: exactly one alarm
+dumped 02_alarm_warning
+[PASS] 02_alarm_warning
+[PASS] critical: real evaluator
+dumped 03_alarm_critical
+[PASS] 03_alarm_critical
+dumped 04_device_critical
+[PASS] 04_device_critical
+dumped 05_trend_peak
+[PASS] 05_trend_peak
+dumped 06_alarm_advice
+[PASS] 06_alarm_advice
+[PASS] network down, acquisition stays up
+dumped 07_network_down
+[PASS] 07_network_down
+dumped 08_trend_network_down
+[PASS] 08_trend_network_down
+dumped 09_instrument_offline
+[PASS] 09_instrument_offline
+dumped 10_voice_answer
+[PASS] 10_voice_answer
+[PASS] recovery: alarm cleared
+dumped 11_home_recovered
+[PASS] 11_home_recovered
+dumped 12_trend_recovery
+[PASS] 12_trend_recovery
+dumped 14_handover_report
+[PASS] 14_handover_report
+scene: 6 points, warning=1, critical=1, recovered=0, failures=0
+<end of output>
+Test time =   0.24 sec
+----------------------------------------------------------
+Test Passed.
+"defense_scenes" end time: Nov 05 15:15 CST
+"defense_scenes" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/7 Testing: alarm_check
+2/7 Test: alarm_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/alarm_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/alarm_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"alarm_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+dumped 01_alarm_crit_multi
+alarms: total=3 quieted=0
+  [0] id=s_01 sev=2 acked=0 muted=0 dur=122
+  [1] id=s_10 sev=2 acked=0 muted=0 dur=92
+  [2] id=s_04 sev=1 acked=0 muted=0 dur=62
+[PASS] crit scenario yields 3 alarm rows
+[PASS] rows sorted: primary crit first
+[PASS] rows sorted: warn last
+[PASS] crit alarm page renders content
+dumped 02_alarm_row2_quieted
+alarms: total=3 quieted=0
+  [0] id=s_01 sev=2 acked=0 muted=0 dur=123
+  [1] id=s_10 sev=2 acked=1 muted=1 dur=93
+  [2] id=s_04 sev=1 acked=0 muted=0 dur=63
+[PASS] ack/mute keeps episodes alive
+[PASS] row2 acked+muted
+[PASS] row1 untouched
+[PASS] not all quieted (row3 active)
+dumped 03_alarm_all_quieted
+alarms: total=3 quieted=1
+  [0] id=s_01 sev=2 acked=0 muted=1 dur=124
+  [1] id=s_10 sev=2 acked=1 muted=1 dur=94
+  [2] id=s_04 sev=1 acked=1 muted=0 dur=64
+[PASS] all alarms quieted after per-row actions
+row-click point (63,169) for '标记处理' #1
+dumped 04_alarm_select_row2
+dumped 05_alarm_empty
+alarms: total=0 quieted=0
+[PASS] normal scenario clears all episodes
+dumped 06_alarm_warn_multi
+alarms: total=3 quieted=0
+  [0] id=s_01 sev=1 acked=0 muted=0 dur=46
+  [1] id=s_03 sev=1 acked=0 muted=0 dur=31
+  [2] id=s_09 sev=1 acked=0 muted=0 dur=21
+[PASS] warn scenario yields 3 alarm rows
+[PASS] crit scenario back for the advice check
+dumped 07_alarm_ai_advice
+[PASS] row shows the AI advice line
+[PASS] detail head attributes the advice to OPENVELACLAW
+dumped 08_alarm_ai_stale_epoch
+[PASS] stale epoch hides the advice line
+[PASS] detail head falls back to the rule summary
+dumped 09_alarm_ai_error_with_match
+[PASS] ERROR state still shows advice that matches the episode
+[PASS] ERROR state still attributes the advice to OPENVELACLAW
+[PASS] ERROR state does not print the fallback over a match
+dumped 10_alarm_ai_unavailable
+[PASS] an unmatched errored round reports advice unavailable
+dumped 11_alarm_ai_pending
+[PASS] a round in flight reports advice as generating
+dumped 12_alarm_ai_no_cred
+[PASS] missing credentials name the credentials, not the feature
+[PASS] missing credentials do not read as a failed round
+
+alarm_check: ALL PASS (0 failures)
+<end of output>
+Test time =   0.18 sec
+----------------------------------------------------------
+Test Passed.
+"alarm_check" end time: Nov 05 15:15 CST
+"alarm_check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/7 Testing: trend_check
+3/7 Test: trend_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/trend_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/trend_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"trend_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[PASS] sim model exposes several points
+[PASS] trend page reachable (no stage gate)
+[PASS] trend page has a point dropdown
+[PASS] dropdown lists points
+dumped 01_trend_initial
+[PASS] trend page renders content
+[PASS] dropdown list opens
+[PASS] list holds the options label
+[PASS] dropdown click switches selected point by id
+dumped 02_trend_switched
+[PASS] full window matches the profile history length
+[PASS] recent window shows 60 samples
+dumped 03_trend_recent60
+[PASS] offline point value label shows --
+dumped 04_trend_offline
+dumped 05_trend_no_threshold
+[PASS] no-threshold point rendered (auto Y range)
+[PASS] device page button opens trend
+dumped 06_trend_from_device
+
+trend_check: ALL PASS (0 failures)
+<end of output>
+Test time =   0.10 sec
+----------------------------------------------------------
+Test Passed.
+"trend_check" end time: Nov 05 15:15 CST
+"trend_check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/7 Testing: fixture_check
+4/7 Test: fixture_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/fixture_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/fixture_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"fixture_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[PASS] empty table yields zero points
+[PASS] empty table has no alarms
+dumped 01_fixture_home_empty
+[PASS] home renders an empty-state page
+[PASS] 32-point table imports fully
+[PASS] duplicate display names preserved
+[PASS] 23-char legal ID preserved
+dumped 02_fixture_home_32pt
+[PASS] home renders 32-point list
+[PASS] home shows the first fixture row
+[PASS] home row click opens device page
+dumped 03_fixture_device_from_row
+[PASS] back returns home
+[INFO] trend label: 阈值 预警40.0 / 严重80.0 · 当前 128 点
+[PASS] trend full window matches profile history depth
+dumped 04_fixture_trend_full_history
+[PASS] WARN scenario yields 3 episodes on fixture table
+dumped 05_fixture_alarm_warn3
+[PASS] alarm page renders rows
+[PASS] OFFLINE scenario yields 2 episodes on fixture table
+[PASS] NORMAL clears every episode
+[INFO] 1- and 8-alarm datasets need the board alarm path (vg_model_set_live board branch); covered by B4/D3, not here
+
+fixture_check: ALL PASS (0 failures)
+<end of output>
+Test time =   0.20 sec
+----------------------------------------------------------
+Test Passed.
+"fixture_check" end time: Nov 05 15:15 CST
+"fixture_check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/7 Testing: lifecycle_render_check
+5/7 Test: lifecycle_render_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/lifecycle_render_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/lifecycle_render_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"lifecycle_render_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[INFO] starting 200 navigation cycles, initial page generation = 1
+[INFO] completed 200 cycles, final page generation = 1201
+[PASS] page generation advances exactly with navigation count
+[PASS] shell content is valid
+[PASS] idle pump does not bump structure version
+[PASS] importing points bumps structure version
+[PASS] in-place live value update does not bump structure version
+[PASS] identical filter set does not bump structure version
+[PASS] sensor PT0 found
+[PASS] identical value live sample advances history version
+[PASS] report snapshot is available
+[PASS] report snapshot has valid initial status
+[PASS] returned to report page cleanly
+[RESULT] lifecycle_render_check PASSED
+<end of output>
+Test time =   6.89 sec
+----------------------------------------------------------
+Test Passed.
+"lifecycle_render_check" end time: Nov 05 15:15 CST
+"lifecycle_render_check" time elapsed: 00:00:06
+----------------------------------------------------------
+
+6/7 Testing: interaction_check
+6/7 Test: interaction_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/interaction_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/interaction_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"interaction_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[PASS] start on home
+[PASS] I01 click home tile
+[PASS] I01 opens device
+[PASS] back to home
+[PASS] I02 perform drag
+[PASS] I02 drag cancels tile navigation
+[PASS] click offline filter
+[PASS] I11 offline filter applied
+[PASS] I11 back to home
+[PASS] I11 filter preserved across navigation
+[PASS] restore all filter
+[PASS] I11 all filter restored
+[PASS] open trend
+[PASS] select full history window
+[PASS] I12 back restores trend page
+[PASS] I13 open device for PT00
+[PASS] I13 on device
+[PASS] I13 PT00 removed
+[PASS] I13 deleted point returns home, not another device
+[PASS] I16 queue hold
+[PASS] I16 stays on alarm after mid-press release
+[PASS] I17 back stays on a valid page
+[PASS] I18 on discover
+[PASS] I18 confirm is open
+[PASS] I18 back closes confirm first
+[PASS] I18 still on discover after closing confirm
+[PASS] I19 re-enter discover
+[PASS] tap scan without enabling switch
+[PASS] I19 scan without switch stays on page
+[PASS] I22 home shows 32 points
+[PASS] I22 alarm collect stays within 8-row display cap
+[PASS] I22 active count is at least displayed rows
+[PASS] I24 on trend with PT00
+[PASS] I24 history advances on same value
+[PASS] I24 trend page stays mounted
+interaction_check: ALL PASS (0 failures)
+<end of output>
+Test time =   0.41 sec
+----------------------------------------------------------
+Test Passed.
+"interaction_check" end time: Nov 05 15:15 CST
+"interaction_check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/7 Testing: voice_overlay_check
+7/7 Test: voice_overlay_check
+Command: "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/voice_overlay_check" "/home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless/frames/voice_overlay_check"
+Directory: /home/hello19y/openvela/contest2026_004_TeamFalcons/.debug/chatgpt-defense-20261105/headless
+"voice_overlay_check" start time: Nov 05 15:15 CST
+Output:
+----------------------------------------------------------
+[PASS] button 播报:关 inside screen
+[PASS] label 播报:关 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] close button present
+[PASS] close button ends the round
+[PASS] close hides the overlay
+[PASS] dismissed overlay stays hidden while the round winds down
+[PASS] button 播报:开 inside screen
+[PASS] label 播报:开 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] button 播报:关 inside screen
+[PASS] label 播报:关 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] close button present
+[PASS] close button ends the round
+[PASS] close hides the overlay
+[PASS] dismissed overlay stays hidden while the round winds down
+[PASS] button 播报:开 inside screen
+[PASS] label 播报:开 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] button 播报:关 inside screen
+[PASS] label 播报:关 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] button 播报:开 inside screen
+[PASS] label 播报:开 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] button 播报:关 inside screen
+[PASS] label 播报:关 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] button 播报:开 inside screen
+[PASS] label 播报:开 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] close button present
+[PASS] close button ends the round
+[PASS] close hides the overlay
+[PASS] dismissed overlay stays hidden while the round winds down
+[PASS] button 播报:关 inside screen
+[PASS] label 播报:关 inside button
+[PASS] button 重试播报 inside screen
+[PASS] label 重试播报 inside button
+[PASS] button × inside screen
+[PASS] label × inside button
+[PASS] close button present
+[PASS] close button ends the round
+[PASS] close hides the overlay
+[PASS] dismissed overlay stays hidden while the round winds down
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] page button under the hidden overlay is clickable
+[PASS] hidden overlay no longer blocks page navigation
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] unchanged voice snapshot does not redraw
+[PASS] changed voice answer is rendered
+[PASS] voice panel hides after the round
+[PASS] 180 voice states with maximum text rendered
+<end of output>
+Test time =   0.44 sec
+----------------------------------------------------------
+Test Passed.
+"voice_overlay_check" end time: Nov 05 15:15 CST
+"voice_overlay_check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 05 15:15 CST

@@ -1,0 +1,358 @@
+{
+  "schema": "velaguard.read-only-visual-review.v1",
+  "reviewed_deck": "exports/chatgpt-defense-scene-20261105_20261105_152704_native_charts_tables.pptx",
+  "route": "Edit Native PPTX",
+  "review_mode": "read_only_existing_powerpoint_renders",
+  "rubric": "C:/Users/19y/.config/magpie/library/skills/ppt-master/references/visual-review.md",
+  "prerequisites": "按主代理提供的静态检查结果继续；仅有MiSans官方字体可移植性提示。未因此替换字体。",
+  "batch_order": [
+    [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    [
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    [
+      11,
+      12,
+      13,
+      14
+    ]
+  ],
+  "canvas": {
+    "svg_view_box": [
+      0,
+      0,
+      2560,
+      1440
+    ],
+    "png_width": 1600,
+    "png_height": 900
+  },
+  "coordinate_system": "以下rect均为PNG像素[x,y,width,height]；SVG坐标为PNG坐标乘1.6。建议坐标仅用于主代理定位，未执行编辑。",
+  "summary": {
+    "pages_reviewed": 14,
+    "needs_fix_pages": [],
+    "hard_hits": 0,
+    "soft_hits": 0,
+    "closing_is_thanks": true,
+    "notes": "首轮逐张检查全部14页；r3复核第9、13页；r4按主代理说明仅第9页有视觉变化，已只读复核最新PowerPoint PNG。第9页悬空节点和交叉误读两项问题均已解决，第13页自然换行已通过。其余页面沿用首轮结论，汇总14页全通过，未解决项为0。未启动Office、浏览器、构建或额外渲染；未修改PPT/SVG。首轮及复核记录保留在review_history。",
+    "overall_status": "ok",
+    "pages_passed": 14
+  },
+  "screenshot_simulation_labels": [
+    {
+      "pages": [
+        3,
+        5,
+        7,
+        8,
+        13
+      ],
+      "visible_label": "本地界面渲染 · 场景模拟数据；界面与告警判定复用项目代码",
+      "location_png": [
+        110,
+        787,
+        650,
+        24
+      ],
+      "assessment": "标注可见，截图不应作为对应场景真机运行证据解读。"
+    },
+    {
+      "pages": [
+        6
+      ],
+      "visible_label": "界面为场景模拟；10-25真机单样本：8条告警解释41.83秒完成并加载。",
+      "location_png": [
+        110,
+        787,
+        750,
+        24
+      ],
+      "assessment": "模拟界面与另列的真机计时文字已区分，标注可见。"
+    },
+    {
+      "pages": [
+        2
+      ],
+      "visible_label": "真实原型与验证台架；部署方式示意；原型在台架验证。",
+      "assessment": "照片与部署示意分别标注。"
+    },
+    {
+      "pages": [
+        12
+      ],
+      "visible_label": "原型实拍",
+      "location_png": [
+        748,
+        862,
+        105,
+        29
+      ],
+      "assessment": "底部说明可见。"
+    }
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "封面产品名为视觉主体，副标题与团队行完整、可读；白字位于主要暗色区域，未与帆船或光带产生遮挡。",
+      "suggested_fix": []
+    },
+    {
+      "page": 2,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "左侧两组仪表经RS485汇入VelaGuard，MQTT向下连接运维平台，连接路径清楚。右侧原型照片比例正常，说明在照片下方；下方PLC说明与页脚分开，无碰撞或截断。",
+      "suggested_fix": []
+    },
+    {
+      "page": 3,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "两幅界面截图等高，主要点位与数值可辨；接班、交班说明与三节点时间线对应，28.4°C、36.2°C、29.0°C标签未碰撞。底部模拟数据说明保留。",
+      "suggested_fix": []
+    },
+    {
+      "page": 4,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "四个接入步骤的序号、标题及正文对齐，箭头均停在相邻步骤间隙。下方已确认点表到采集快照再到界面/查询的路径清楚；正文与注释无截断。",
+      "suggested_fix": []
+    },
+    {
+      "page": 5,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "告警详情与实时趋势截图并列且比例正常，截图外的大号数值补充了关键读数。36.2°C、35.0°C及29.0°C清楚，趋势阈值及曲线可辨，无图文覆盖；模拟说明可见。",
+      "suggested_fix": []
+    },
+    {
+      "page": 6,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "左侧解释界面尺寸充分，告警当前值、阈值及AI推测说明可读；右侧01–03纵向层级清楚。界面为场景模拟的底部说明明确，未与真机单样本计时混在截图内。",
+      "suggested_fix": []
+    },
+    {
+      "page": 7,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "截图中的回答浮层为原界面组成，主要问答可读，未被幻灯片文字额外遮挡。右侧问题与三项操作层次分开；底部模拟数据标注保留。",
+      "suggested_fix": []
+    },
+    {
+      "page": 8,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "左侧断网状态与采集读数截图完整，右侧NET、ACQ、新样本三组说明间距一致，标签和值可读。模拟说明可见；无截图变形或文字截断。",
+      "suggested_fix": []
+    },
+    {
+      "page": 9,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "r4最新PowerPoint PNG已目视复核：PNG约(1153,559)处的紫色MiMo竖线具有约19px断口，蓝色MQTT横线连续经过，交叉不连接的关系明确。三条外部路径来源、箭头方向及报告落盘标签清楚，无新增线条/文本碰撞、截断或关系误读。原有两项连接语义问题均已解决。",
+      "suggested_fix": []
+    },
+    {
+      "page": 10,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "左右图表的百分比、计数、类别标签与修复前后颜色说明均可读。条形高度与所显示数值一致，标签未贴住柱顶或基线；图下说明与底部历史板测注释分开。",
+      "suggested_fix": []
+    },
+    {
+      "page": 11,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "五步升级流程完整，前三步运行阶段与后两步重启阶段有清楚的上方分区，跨阶段箭头未穿过文字。底部1,553,704 B及测试状态文字可读，未与页脚或流程相碰。",
+      "suggested_fix": []
+    },
+    {
+      "page": 12,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "原型照片尺寸大、比例保持正常，左右空白来自完整展示；底部连续深色带承载80秒演示说明及原型实拍文字，未把说明叠在繁杂照片上。",
+      "suggested_fix": []
+    },
+    {
+      "page": 13,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "r3最新PowerPoint PNG中，下一轮整机验证下方为长时间运行 / eMMC 并发和完整 OTA 安装与恢复两行自然表述；PNG约(911,472)至(1194,538)区域完整可读，起始位置一致，无前导斜杠、文本重叠或截断。三项进度分组及模拟截图标注未受影响。",
+      "suggested_fix": []
+    },
+    {
+      "page": 14,
+      "status": "ok",
+      "hard_hits": [],
+      "soft_hits": [],
+      "evidence": "最后一页明确为THANKS谢谢页，标题居中突出。标语、团队和仓库地址均完整，在已压暗背景上可读；末尾没有额外内容页。",
+      "suggested_fix": []
+    }
+  ],
+  "review_history": [
+    {
+      "round": "initial",
+      "deck": "exports/chatgpt-defense-scene-20261105_20261105_151239_native_charts_tables.pptx",
+      "pages_reviewed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "summary": {
+        "pages_reviewed": 14,
+        "needs_fix_pages": [
+          9
+        ],
+        "hard_hits": 0,
+        "soft_hits": 1,
+        "closing_is_thanks": true,
+        "notes": "全部PNG存在、非空、尺寸1600×900并已逐张目视检查。未启动Office、浏览器、构建或额外渲染；未修改PPT/SVG。第9页为任务要求中连接语义的软性问题，不是文本溢出或原文件损坏。"
+      },
+      "page_records": [
+        {
+          "page": 9,
+          "status": "needs_fix",
+          "hard_hits": [],
+          "soft_hits": [
+            {
+              "rule": "CONNECTION_SEMANTICS",
+              "source": "本次任务重点：连接语义",
+              "evidence": "MiMo框有明确连线，右侧MQTT与eMMC框均无连线、共享边界或分组说明，视觉上成为两个悬空节点，无法从当前图看出它们与板端区域的关系。SVG中也未定义这两框的连接路径，非PNG漏绘。",
+              "rect_png": [
+                1218,
+                509,
+                270,
+                214
+              ],
+              "rect_svg": [
+                1950,
+                815,
+                430,
+                340
+              ],
+              "suggested_fix": "为两个辅助节点补充与板端区域的明确关系，或把它们纳入板端辅助能力的共同边界。若使用连接线，可利用PNG x=1188、y=557–700的右侧空白槽，从板端区域右下角附近(1125,700)接入，再分别终止于MQTT左边缘(1218,557)和eMMC左边缘(1218,674)；对应SVG槽x=1901、y=891–1120。该路由位于现有MiMo竖线右侧且从其下方接入，可避免与紫色MiMo线交叉。箭头方向和具体源节点由主代理按已有架构确认，不凭视觉QA新增产品关系。"
+            }
+          ],
+          "evidence": "其余采集到规则快照、快照到LVGL及ai_agent、ai_agent到MiMo的路径清楚，正文完整且可读，没有碰撞。",
+          "suggested_fix": [
+            "明确右侧MQTT/eMMC两个辅助节点与板端的关系；不需改变品牌字体或颜色。"
+          ]
+        },
+        {
+          "page": 13,
+          "status": "ok",
+          "hard_hits": [],
+          "soft_hits": [],
+          "evidence": "报告界面中当前/最高温度、在线数量和恢复记录可读，图下注释与底部模拟说明分开。右侧三项进度分组层级明确，换行未溢出，无相互遮挡。",
+          "suggested_fix": []
+        }
+      ]
+    },
+    {
+      "round": "r3_followup",
+      "deck": "exports/chatgpt-defense-scene-20261105_20261105_152107_native_charts_tables.pptx",
+      "pages_reviewed": [
+        9,
+        13
+      ],
+      "fixes_reported_by_lead": [
+        "第9页从本地规则与快照接至MQTT，从Agent报告接至eMMC，增加数据来源关系。",
+        "第13页将前导斜杠的机械换行改成两行自然表述。"
+      ],
+      "verified_fixes": [
+        "第9页原有悬空节点问题已解决。",
+        "第13页换行自然、完整，无新增重叠或截断。"
+      ],
+      "new_findings": [
+        "第9页新增MQTT蓝线与MiMo紫线交叉，缺少跳线或断口，保留为连接语义软性问题。"
+      ],
+      "page_records": [
+        {
+          "page": 9,
+          "status": "needs_fix",
+          "hard_hits": [],
+          "soft_hits": [
+            {
+              "rule": "CONNECTION_SEMANTICS",
+              "source": "r3复核：新增连线交叉",
+              "evidence": "本地规则与快照至MQTT的蓝色横线在PNG约(1153,559)、SVG(1845,895)处穿过Agent至MiMo的紫色竖线。两条独立数据路径没有跳线弧或可见断口，存在被读作共用连接节点的可能。原有MQTT/eMMC悬空问题已解决。",
+              "rect_png": [
+                1141,
+                547,
+                25,
+                25
+              ],
+              "rect_svg": [
+                1826,
+                876,
+                40,
+                40
+              ],
+              "suggested_fix": "仅在交叉处增加明确的不相连标记。建议将蓝线PNG x=1145–1161、y=559这一小段替换为半径约8px的跳线弧，弧顶约y=551；对应SVG x=1832–1858、y=895，半径约13，弧顶约y=882。也可在紫线对应交点上下各8px留白形成断口。不要增加连接圆点。保留本地规则与快照→MQTT、Agent报告→eMMC和Agent→MiMo的现有端点，不需要移动框或改文案。"
+            }
+          ],
+          "evidence": "已复核最新PowerPoint PNG和SVG：两条新增路径均具有明确来源和箭头；eMMC路径及报告落盘标签未碰撞框内文字、页下注释或页脚。新增MQTT路径与MiMo路径有一处交叉，仍待局部处理。其他文字完整、可读。",
+          "suggested_fix": [
+            "在PNG约(1153,559)处增加跳线弧或断口，明确MQTT蓝线与MiMo紫线不相连。"
+          ]
+        }
+      ]
+    },
+    {
+      "round": "r4_followup",
+      "deck": "exports/chatgpt-defense-scene-20261105_20261105_152704_native_charts_tables.pptx",
+      "pages_reviewed": [
+        9
+      ],
+      "fixes_reported_by_lead": [
+        "在MiMo紫色竖线SVG y=880–910处留断口，MQTT蓝线从y=895经过。"
+      ],
+      "verified_fixes": [
+        "最新第9页PNG在约(1153,559)处显示清楚的紫线断口，MQTT蓝线连续通过，两条路径不连接的关系明确。",
+        "新增断口未引入文字或框线碰撞；本地规则与快照→MQTT、Agent报告→eMMC及Agent→MiMo的来源和方向保持清楚。"
+      ],
+      "hard_hits": [],
+      "soft_hits": [],
+      "status": "ok"
+    }
+  ],
+  "latest_recheck_pages": [
+    9
+  ]
+}

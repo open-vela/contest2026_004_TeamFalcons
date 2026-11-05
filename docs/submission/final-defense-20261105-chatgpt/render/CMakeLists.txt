@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.13)
+project(defense_scenes C)
+enable_testing()
+get_filename_component(VG_REPO "${CMAKE_CURRENT_SOURCE_DIR}/../../../.." ABSOLUTE)
+set(VG_HEADLESS_PROFILE board CACHE STRING "" FORCE)
+set(VG_HEADLESS_COLOR_DEPTH 16 CACHE STRING "" FORCE)
+add_subdirectory("${VG_REPO}/gui/headless" headless)
+add_executable(defense_scenes scene_main.c scene_model.c scene_backend.c
+    "${VG_REPO}/gui/headless/harness_common.c"
+    "${VG_REPO}/app/velaguard/vg_alarm_eval.c")
+target_include_directories(defense_scenes PRIVATE "${VG_REPO}/gui/headless")
+target_compile_definitions(defense_scenes PRIVATE VG_VOICE_ROUND=1 VG_MODEL_BOARD_CAPACITY=1)
+target_link_libraries(defense_scenes PRIVATE vg_ui_voice lvgl lvgl::thorvg m pthread)
+target_compile_options(defense_scenes PRIVATE -Wall -Wextra)
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/scenes")
+add_test(NAME defense_scenes COMMAND defense_scenes "${CMAKE_CURRENT_BINARY_DIR}/scenes")

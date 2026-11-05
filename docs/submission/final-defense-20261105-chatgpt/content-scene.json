@@ -1,0 +1,199 @@
+{
+  "author": "CHATGPT",
+  "date": "2026-11-05",
+  "variant": "场景叙事版",
+  "input_commit": "a075560",
+  "timing": [
+    10,
+    30,
+    20,
+    30,
+    35,
+    40,
+    40,
+    25,
+    25,
+    35,
+    25,
+    80,
+    35,
+    10
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "title": "VelaGuard",
+      "source_slide": 1,
+      "svg": "chatgpt_scene_01.svg",
+      "seconds": 10,
+      "speech": "各位评委老师好，我是 Team Falcons 的叶培林。VelaGuard 是运行在 openvela 上的 AI 辅助巡检网关。今天从工厂设备间的一次温度异常展开。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "各位评委老师好，我是 Team Falcons 的叶培林。VelaGuard 是运行在 openvela 上的 AI 辅助巡检网关。今天从工厂设备间的一次温度异常展开。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    },
+    {
+      "page": 2,
+      "title": "把设备间监测接到独立支路",
+      "source_slide": 2,
+      "svg": "chatgpt_scene_02.svg",
+      "seconds": 30,
+      "speech": "设想一个需要轮班巡检的设备间。温湿度、电参量和水浸仪表接入独立监测支路，VelaGuard 在现场集中显示，上层平台接收 MQTT 数据。原有 PLC 继续负责控制。这里是部署方式示意，右侧是我们的真实验证台架。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "设想一个需要轮班巡检的设备间。温湿度、电参量和水浸仪表接入独立监测支路，VelaGuard 在现场集中显示，上层平台接收 MQTT 数据。原有 PLC 继续负责控制。这里是部署方式示意，右侧是我们的真实验证台架。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    },
+    {
+      "page": 3,
+      "title": "从接班到交班，沿着一次异常查下去",
+      "source_slide": 3,
+      "svg": "chatgpt_scene_03.svg",
+      "seconds": 20,
+      "speech": "值班人员接班时先看在线状态。模拟场景中，温度由二十八点四度升到三十六点二度，核查和处理后回到二十九度。后面几页跟随这次异常，分别看现场操作和系统如何响应。",
+      "source_keys": [
+        "scene_data"
+      ],
+      "notes": "值班人员接班时先看在线状态。模拟场景中，温度由二十八点四度升到三十六点二度，核查和处理后回到二十九度。后面几页跟随这次异常，分别看现场操作和系统如何响应。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 4,
+      "title": "接入仪表后，先核对读数再投入值守",
+      "source_slide": 4,
+      "svg": "chatgpt_scene_04.svg",
+      "seconds": 30,
+      "speech": "仪表接入时，要把通信地址、寄存器、倍率、单位和阈值对应起来。当前使用 NSH 编辑候选点表，试读后核对设备读数，再由人确认生效。进入周期采集以后，屏幕和 Agent 都读取同一份已确认点表与运行数据。",
+      "source_keys": [
+        "configuration"
+      ],
+      "notes": "仪表接入时，要把通信地址、寄存器、倍率、单位和阈值对应起来。当前使用 NSH 编辑候选点表，试读后核对设备读数，再由人确认生效。进入周期采集以后，屏幕和 Agent 都读取同一份已确认点表与运行数据。\n\n资料来源：\ndocs/velaguard-host-nsh-protocol.md\nAGENTS.md：人工确认流程"
+    },
+    {
+      "page": 5,
+      "title": "从告警详情核对阈值，再看变化过程",
+      "source_slide": 6,
+      "svg": "chatgpt_scene_05.svg",
+      "seconds": 35,
+      "speech": "温度达到三十二点六度时触发预警，三十六点二度时超过严重阈值。值班人员先看点名、当前值和触发阈值，再打开趋势确认变化过程。这里使用实际界面本地渲染，所有数值来自同一组模拟采样。",
+      "source_keys": [
+        "scene_data",
+        "local"
+      ],
+      "notes": "温度达到三十二点六度时触发预警，三十六点二度时超过严重阈值。值班人员先看点名、当前值和触发阈值，再打开趋势确认变化过程。这里使用实际界面本地渲染，所有数值来自同一组模拟采样。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 6,
+      "title": "Agent 把告警与运行记录组织成解释",
+      "source_slide": 8,
+      "svg": "chatgpt_scene_06.svg",
+      "seconds": 40,
+      "speech": "规则已经指出温度越限，Agent 继续整理相关运行信息。告警集合变化后，设备主动发起任务，读取告警 Skill，再调用运行报告工具，生成结构化建议文件，板端检查后加载到屏幕。图中的场景回答为模拟；历史真机样本完成八条告警解释，用时四十一点八三秒。",
+      "source_keys": [
+        "scene_data",
+        "agent"
+      ],
+      "notes": "规则已经指出温度越限，Agent 继续整理相关运行信息。告警集合变化后，设备主动发起任务，读取告警 Skill，再调用运行报告工具，生成结构化建议文件，板端检查后加载到屏幕。图中的场景回答为模拟；历史真机样本完成八条告警解释，用时四十一点八三秒。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\napp/velaguard/vg_agent_seed.c\napp/velaguard/vg_advice.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log\nlogs/Foleaf/2026-09-16/claude-code__dbd0eb98-6d13-4bdc-a758-a5c3605ffc49.jsonl：原始日报样本\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 7,
+      "title": "现场提问，关联查询电压和设备负载",
+      "source_slide": 10,
+      "svg": "chatgpt_scene_07.svg",
+      "seconds": 40,
+      "speech": "到现场后，人员可以询问温度异常时电压和负载是否正常。板端 Agent 理解原始问题，自主选择只读工具，屏幕显示完整回答，设备播报摘要。模拟界面中，电压二百二十四点六伏、UPS负载百分之四十二，均在线，人员据此继续核对通风和散热。十月二十五日已有真人按键到播放结束的真机样本。",
+      "source_keys": [
+        "scene_data",
+        "voice"
+      ],
+      "notes": "到现场后，人员可以询问温度异常时电压和负载是否正常。板端 Agent 理解原始问题，自主选择只读工具，屏幕显示完整回答，设备播报摘要。模拟界面中，电压二百二十四点六伏、UPS负载百分之四十二，均在线，人员据此继续核对通风和散热。十月二十五日已有真人按键到播放结束的真机样本。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\napp/velaguard/vg_voice_round.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/tts-continuity/manual.log\ndocs/voice-evidence/2026-10-25/tts-continuity/manual-tail.log\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 8,
+      "title": "外网中断，现场仍有读数和告警",
+      "source_slide": 7,
+      "svg": "chatgpt_scene_08.svg",
+      "seconds": 25,
+      "speech": "如果外网在这时中断，现场人员仍然能看到温度、阈值和告警。本地采集继续产生三十六点一度的新样本。图中网络标志变为断开，但采集标志和仪表在线状态保留；仪表通信失败是另一种状态，会显示缺失读数。",
+      "source_keys": [
+        "scene_data",
+        "local"
+      ],
+      "notes": "如果外网在这时中断，现场人员仍然能看到温度、阈值和告警。本地采集继续产生三十六点一度的新样本。图中网络标志变为断开，但采集标志和仪表在线状态保留；仪表通信失败是另一种状态，会显示缺失读数。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 9,
+      "title": "同一组运行数据，支撑屏幕与 Agent",
+      "source_slide": 5,
+      "svg": "chatgpt_scene_09.svg",
+      "seconds": 25,
+      "speech": "这条使用流程由三层协作：采集线程取得数据，LVGL组织读数和告警，板载 Agent 查询快照并组织解释。MiMo 通过 HTTPS 完成模型推理，MQTT负责监测数据上报，eMMC保存配置和运行产物。",
+      "source_keys": [
+        "architecture"
+      ],
+      "notes": "这条使用流程由三层协作：采集线程取得数据，LVGL组织读数和告警，板载 Agent 查询快照并组织解释。MiMo 通过 HTTPS 完成模型推理，MQTT负责监测数据上报，eMMC保存配置和运行产物。\n\n资料来源：\napp/velaguard/vg_ui_backend_board.c\napp/velaguard/vg_runtime.c\napp/velaguard/vg_agent_round.c\napp/velaguard/vg_agent_tools.c"
+    },
+    {
+      "page": 10,
+      "title": "从快速回复到显示并发，解决真实问题",
+      "source_slide": 11,
+      "svg": "chatgpt_scene_10.svg",
+      "seconds": 35,
+      "speech": "把功能放在同一台设备上，会遇到具体工程问题。快速从站的回复曾落在方向切换窗口中，改用发送完成中断释放方向后，零毫秒工况六百四十九次全部成功。语音浮层的重复重绘也造成额外显示负载，调整为内容变化时更新后，两组提交次数明显下降。",
+      "source_keys": [
+        "rs485",
+        "display"
+      ],
+      "notes": "把功能放在同一台设备上，会遇到具体工程问题。快速从站的回复曾落在方向切换窗口中，改用发送完成中断释放方向后，零毫秒工况六百四十九次全部成功。语音浮层的重复重绘也造成额外显示负载，调整为内容变化时更新后，两组提交次数明显下降。\n\n资料来源：\ndocs/maintenance-evidence/2026-10-18/defects.md：D-04\ndocs/maintenance-todo.md：BUS-03\ndocs/maintenance-evidence/2026-10-28/ltdc/README.md\n\n显示计数来自两组各60秒窗口；云侧时延与识别结果不同，一次识别失败。计数比较不等于完整语音链路成功率，也不等于长期可靠性结论。"
+    },
+    {
+      "page": 11,
+      "title": "升级维护从下载延伸到启动恢复",
+      "source_slide": 13,
+      "svg": "chatgpt_scene_11.svg",
+      "seconds": 25,
+      "speech": "现场维护还需要考虑升级失败后的恢复。网络侧用 MQTTS 通知，HTTPS将镜像暂存在现有 eMMC FAT；本机确认后，重启进入片内启动程序烧写 QSPI。下载、安装和回滚已有各自的分项证据，完整签名任务安装链路继续验证。",
+      "source_keys": [
+        "ota"
+      ],
+      "notes": "现场维护还需要考虑升级失败后的恢复。网络侧用 MQTTS 通知，HTTPS将镜像暂存在现有 eMMC FAT；本机确认后，重启进入片内启动程序烧写 QSPI。下载、安装和回滚已有各自的分项证据，完整签名任务安装链路继续验证。\n\n资料来源：\ndocs/adr/0008-ota-fat-staging-with-local-confirmation.md\ndocs/ota-evidence/2026-10-29/board-network.md\ndocs/ota-evidence/2026-10-28/t04-install.md\ndocs/ota-evidence/2026-10-28/t05-rollback.md\ndocs/issues/ota/acceptance-todo.md\n\nOTA：测试CA、测试签名与凭据；下载到待确认。安装/回滚为独立诊断夹具；完整签名任务本机确认、安装、自检及结果上报仍待串联。"
+    },
+    {
+      "page": 12,
+      "title": "80秒，走完一次现场巡检",
+      "source_slide": 14,
+      "svg": "chatgpt_scene_12.svg",
+      "seconds": 80,
+      "speech": "接下来用八十秒展示正常采集、越限告警、主动解释、语音查询和断网后的本地监测。当前页面为原型静帧，完成拍摄后嵌入同一份视频。",
+      "source_keys": [
+        "voice",
+        "local"
+      ],
+      "notes": "接下来用八十秒展示正常采集、越限告警、主动解释、语音查询和断网后的本地监测。当前页面为原型静帧，完成拍摄后嵌入同一份视频。\n\n资料来源：\napp/velaguard/vg_voice_round.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/tts-continuity/manual.log\ndocs/voice-evidence/2026-10-25/tts-continuity/manual-tail.log\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c"
+    },
+    {
+      "page": 13,
+      "title": "从台架验证走向现场试点",
+      "source_slide": 15,
+      "svg": "chatgpt_scene_13.svg",
+      "seconds": 35,
+      "speech": "模拟场景最后恢复到二十九度，交接记录保留这次越限。当前完成了采集、告警、主动解释及板端语音的关键路径，也有总线和显示问题的复验数据。下一步进入现场试点前，重点补齐整机长时间运行、并发存储异常和完整升级恢复验证。手机手册接入与手机语音仍按后续计划推进。",
+      "source_keys": [
+        "scene_data",
+        "delivery"
+      ],
+      "notes": "模拟场景最后恢复到二十九度，交接记录保留这次越限。当前完成了采集、告警、主动解释及板端语音的关键路径，也有总线和显示问题的复验数据。下一步进入现场试点前，重点补齐整机长时间运行、并发存储异常和完整升级恢复验证。手机手册接入与手机语音仍按后续计划推进。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\ndocs/maintenance-todo.md\ndocs/voice-evidence/2026-10-25/ops-assistant/README.md\ndocs/issues/ota/acceptance-todo.md\n.agents/skills/velaguard-board-inner-loop/SKILL.md\nlogs/：原始 AI Coding 日志\nrender/CMakeLists.txt\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 14,
+      "title": "谢谢",
+      "source_slide": 16,
+      "svg": "chatgpt_scene_14.svg",
+      "seconds": 10,
+      "speech": "VelaGuard 将持续监测、现场交互和基于真实数据的 AI 解释结合在一台 openvela 网关上。谢谢各位老师。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "VelaGuard 将持续监测、现场交互和基于真实数据的 AI 解释结合在一台 openvela 网关上。谢谢各位老师。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    }
+  ]
+}

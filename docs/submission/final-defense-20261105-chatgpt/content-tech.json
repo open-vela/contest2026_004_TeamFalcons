@@ -1,0 +1,194 @@
+{
+  "author": "CHATGPT",
+  "date": "2026-11-05",
+  "variant": "技术深度版",
+  "input_commit": "a075560",
+  "timing": [
+    10,
+    30,
+    20,
+    30,
+    35,
+    40,
+    40,
+    25,
+    25,
+    35,
+    25,
+    80,
+    35,
+    10
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "title": "VelaGuard",
+      "source_slide": 1,
+      "svg": "chatgpt_tech_01.svg",
+      "seconds": 10,
+      "speech": "各位评委老师好，我是 Team Falcons 的叶培林。接下来重点介绍 VelaGuard 的本地可靠性、板载 Agent 和工程验证。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "各位评委老师好，我是 Team Falcons 的叶培林。接下来重点介绍 VelaGuard 的本地可靠性、板载 Agent 和工程验证。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    },
+    {
+      "page": 2,
+      "title": "监测支路与控制系统各司其职",
+      "source_slide": 2,
+      "svg": "chatgpt_tech_02.svg",
+      "seconds": 30,
+      "speech": "面向工厂设备间，我们选择独立仪表支路。网关是这条 RS485总线的唯一主站，上层平台接收监测数据，原有 PLC 保留控制职责。这种接法把现场监测任务放到独立网关，后面的本地规则与 Agent 都围绕这份数据运行。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "面向工厂设备间，我们选择独立仪表支路。网关是这条 RS485总线的唯一主站，上层平台接收监测数据，原有 PLC 保留控制职责。这种接法把现场监测任务放到独立网关，后面的本地规则与 Agent 都围绕这份数据运行。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    },
+    {
+      "page": 3,
+      "title": "一次温度越限，触发两条处理路径",
+      "source_slide": 3,
+      "svg": "chatgpt_tech_03.svg",
+      "seconds": 20,
+      "speech": "温度超过阈值后有两条路径。规则路径直接形成告警并更新页面；Agent路径根据事件读取运行资料，随后生成解释。先完成本地判定，再组织解释，也让断网时的现场操作有明确的数据依据。",
+      "source_keys": [
+        "scene_data",
+        "local"
+      ],
+      "notes": "温度超过阈值后有两条路径。规则路径直接形成告警并更新页面；Agent路径根据事件读取运行资料，随后生成解释。先完成本地判定，再组织解释，也让断网时的现场操作有明确的数据依据。\n\n资料来源：\nrender/scene_main.c\nrender/scene_model.c\nrender/scene_backend.c\nmock-data.json\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c\n\n场景条件：本地 LVGL 渲染，固定模拟点表与采样。AI文本、报告和网络状态由演示快照注入；不是本次真机或模型执行记录。"
+    },
+    {
+      "page": 4,
+      "title": "采集、显示与 Agent 在 openvela 上协作",
+      "source_slide": 5,
+      "svg": "chatgpt_tech_04.svg",
+      "seconds": 30,
+      "speech": "架构上，采集工作线程负责总线访问，HMI组织本地规则、运行快照与 LVGL页面。Agent经本地客户端连接 openvela ai_agent，ReAct决定工具调用，模型请求通过 HTTPS到 MiMo。只读业务工具从快照取数，MQTT负责遥测与告警上报，存储操作由各自流程处理。",
+      "source_keys": [
+        "architecture"
+      ],
+      "notes": "架构上，采集工作线程负责总线访问，HMI组织本地规则、运行快照与 LVGL页面。Agent经本地客户端连接 openvela ai_agent，ReAct决定工具调用，模型请求通过 HTTPS到 MiMo。只读业务工具从快照取数，MQTT负责遥测与告警上报，存储操作由各自流程处理。\n\n资料来源：\napp/velaguard/vg_ui_backend_board.c\napp/velaguard/vg_runtime.c\napp/velaguard/vg_agent_round.c\napp/velaguard/vg_agent_tools.c"
+    },
+    {
+      "page": 5,
+      "title": "采样进入本地规则，AI 读取业务快照",
+      "source_slide": 6,
+      "svg": "chatgpt_tech_05.svg",
+      "seconds": 35,
+      "speech": "采样首先换算为工程值，再进入本地判定。阈值支持大于等于、小于等于和等值比较，严重等级优先；通信失败使用最近八次采样窗口与配置门限。运行快照与事件记录供界面和业务工具读取，工具不会为一次模型查询重新打开 RS485。网络不可用时，规则判定和现场显示继续运行。",
+      "source_keys": [
+        "local"
+      ],
+      "notes": "采样首先换算为工程值，再进入本地判定。阈值支持大于等于、小于等于和等值比较，严重等级优先；通信失败使用最近八次采样窗口与配置门限。运行快照与事件记录供界面和业务工具读取，工具不会为一次模型查询重新打开 RS485。网络不可用时，规则判定和现场显示继续运行。\n\n资料来源：\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c"
+    },
+    {
+      "page": 6,
+      "title": "从站回复越快，为何反而更容易丢帧",
+      "source_slide": 11,
+      "svg": "chatgpt_tech_06.svg",
+      "seconds": 40,
+      "speech": "一次典型故障是从站越快，成功率反而越低。测量发现，方向释放依赖 tcdrain轮询，系统十毫秒tick把实际间隔拉到约十三毫秒，快速回复落在发送方向保持的窗口中。修复将DIR切回接收放到TC完成中断，txempty恢复查询语义。零毫秒工况从两次不同的失败样本，改善到六百四十九次全部成功。",
+      "source_keys": [
+        "rs485"
+      ],
+      "notes": "一次典型故障是从站越快，成功率反而越低。测量发现，方向释放依赖 tcdrain轮询，系统十毫秒tick把实际间隔拉到约十三毫秒，快速回复落在发送方向保持的窗口中。修复将DIR切回接收放到TC完成中断，txempty恢复查询语义。零毫秒工况从两次不同的失败样本，改善到六百四十九次全部成功。\n\n资料来源：\ndocs/maintenance-evidence/2026-10-18/defects.md：D-04\ndocs/maintenance-todo.md：BUS-03"
+    },
+    {
+      "page": 7,
+      "title": "主动 Agent：取证、推理、写出与加载",
+      "source_slide": 8,
+      "svg": "chatgpt_tech_07.svg",
+      "seconds": 40,
+      "speech": "主动任务由告警集合变化触发，定时任务生成日报。板载Agent读取Markdown Skill，经ReAct发起运行报告工具调用，再将结构化产物写入指定报告文件。板端解析后按当前告警加载解释。历史真机中，一次八条解释用时四十一点八三秒；一份自主日报用时一百九十四秒。这些是两个不同日期的单样本。",
+      "source_keys": [
+        "agent"
+      ],
+      "notes": "主动任务由告警集合变化触发，定时任务生成日报。板载Agent读取Markdown Skill，经ReAct发起运行报告工具调用，再将结构化产物写入指定报告文件。板端解析后按当前告警加载解释。历史真机中，一次八条解释用时四十一点八三秒；一份自主日报用时一百九十四秒。这些是两个不同日期的单样本。\n\n资料来源：\napp/velaguard/vg_agent_seed.c\napp/velaguard/vg_advice.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log\nlogs/Foleaf/2026-09-16/claude-code__dbd0eb98-6d13-4bdc-a758-a5c3605ffc49.jsonl：原始日报样本"
+    },
+    {
+      "page": 8,
+      "title": "业务工具读快照，输出经过板端检查",
+      "source_slide": 4,
+      "svg": "chatgpt_tech_08.svg",
+      "seconds": 25,
+      "speech": "业务工具从内存快照读取点位、当前异常、恢复信息和运行概况。输出有两条检查路径：告警建议解析结构、启动标识及告警匹配；语音回答检查本轮工具依据、长度和UTF-8，再分成屏幕全文与播报摘要。权限和参数检查落实在C代码中，配置仍走独立人工流程。",
+      "source_keys": [
+        "guard"
+      ],
+      "notes": "业务工具从内存快照读取点位、当前异常、恢复信息和运行概况。输出有两条检查路径：告警建议解析结构、启动标识及告警匹配；语音回答检查本轮工具依据、长度和UTF-8，再分成屏幕全文与播报摘要。权限和参数检查落实在C代码中，配置仍走独立人工流程。\n\n资料来源：\napp/velaguard/vg_agent_tools.c\napp/velaguard/vg_ai_contract.c\napp/velaguard/vg_advice.c\ndocs/voice-evidence/2026-10-25/ops-assistant/README.md"
+    },
+    {
+      "page": 9,
+      "title": "一次语音查询，跨过五个执行阶段",
+      "source_slide": 10,
+      "svg": "chatgpt_tech_09.svg",
+      "seconds": 25,
+      "speech": "语音分为录音、云侧识别、Agent查数、云侧合成和板端播放。原始问题直接交给Agent，可组合多个业务工具，屏幕全文与语音摘要分别输出。前台语音还能挂起一条后台Agent任务，结束后恢复排队；慢网络操作不放进业务快照锁内。",
+      "source_keys": [
+        "voice"
+      ],
+      "notes": "语音分为录音、云侧识别、Agent查数、云侧合成和板端播放。原始问题直接交给Agent，可组合多个业务工具，屏幕全文与语音摘要分别输出。前台语音还能挂起一条后台Agent任务，结束后恢复排队；慢网络操作不放进业务快照锁内。\n\n资料来源：\napp/velaguard/vg_voice_round.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/tts-continuity/manual.log\ndocs/voice-evidence/2026-10-25/tts-continuity/manual-tail.log"
+    },
+    {
+      "page": 10,
+      "title": "减少重复重绘，降低显示访问竞争",
+      "source_slide": 11,
+      "svg": "chatgpt_tech_10.svg",
+      "seconds": 35,
+      "speech": "第二个工程问题是语音时偶发显示异常。增加LTDC错误计数后，两组六十秒窗口各观察到一次FIFO欠载，同时有四百多次显示提交。定位到浮层每一百毫秒重复设置相同标签和可见性。调整为内容变化时更新后，两组提交降到二十四和四十六次，窗口内欠载为零。两组云侧时延不同，因此这里比较显示计数。",
+      "source_keys": [
+        "display"
+      ],
+      "notes": "第二个工程问题是语音时偶发显示异常。增加LTDC错误计数后，两组六十秒窗口各观察到一次FIFO欠载，同时有四百多次显示提交。定位到浮层每一百毫秒重复设置相同标签和可见性。调整为内容变化时更新后，两组提交降到二十四和四十六次，窗口内欠载为零。两组云侧时延不同，因此这里比较显示计数。\n\n资料来源：\ndocs/maintenance-evidence/2026-10-28/ltdc/README.md\n\n显示计数来自两组各60秒窗口；云侧时延与识别结果不同，一次识别失败。计数比较不等于完整语音链路成功率，也不等于长期可靠性结论。"
+    },
+    {
+      "page": 11,
+      "title": "QSPI XIP 决定了升级的执行阶段",
+      "source_slide": 13,
+      "svg": "chatgpt_tech_11.svg",
+      "seconds": 25,
+      "speech": "固件从QSPI XIP执行，运行期不能擦写正在执行的区域。因此网络下载先落到现有eMMC FAT，本机确认后写入升级状态，重启由片内启动程序烧写QSPI，再进行新固件自检；失败恢复到出厂A槽。测试CA下已下载一百五十五万三千七百零四字节到待确认，安装与回滚是独立板测范围。",
+      "source_keys": [
+        "ota"
+      ],
+      "notes": "固件从QSPI XIP执行，运行期不能擦写正在执行的区域。因此网络下载先落到现有eMMC FAT，本机确认后写入升级状态，重启由片内启动程序烧写QSPI，再进行新固件自检；失败恢复到出厂A槽。测试CA下已下载一百五十五万三千七百零四字节到待确认，安装与回滚是独立板测范围。\n\n资料来源：\ndocs/adr/0008-ota-fat-staging-with-local-confirmation.md\ndocs/ota-evidence/2026-10-29/board-network.md\ndocs/ota-evidence/2026-10-28/t04-install.md\ndocs/ota-evidence/2026-10-28/t05-rollback.md\ndocs/issues/ota/acceptance-todo.md\n\nOTA：测试CA、测试签名与凭据；下载到待确认。安装/回滚为独立诊断夹具；完整签名任务本机确认、安装、自检及结果上报仍待串联。"
+    },
+    {
+      "page": 12,
+      "title": "80秒，验证关键用户路径",
+      "source_slide": 14,
+      "svg": "chatgpt_tech_12.svg",
+      "seconds": 80,
+      "speech": "接下来播放八十秒演示，验证采集、规则告警、主动解释、语音和断网监测的关键用户路径。当前为原型实拍占位。",
+      "source_keys": [
+        "voice",
+        "local"
+      ],
+      "notes": "接下来播放八十秒演示，验证采集、规则告警、主动解释、语音和断网监测的关键用户路径。当前为原型实拍占位。\n\n资料来源：\napp/velaguard/vg_voice_round.c\napp/velaguard/vg_agent_round.c\ndocs/voice-evidence/2026-10-25/tts-continuity/manual.log\ndocs/voice-evidence/2026-10-25/tts-continuity/manual-tail.log\napp/velaguard/vg_alarm_eval.c\ngui/main/ui/model/vg_model.c\napp/velaguard/vg_runtime.c"
+    },
+    {
+      "page": 13,
+      "title": "工程交付与下一轮验证重点",
+      "source_slide": 15,
+      "svg": "chatgpt_tech_13.svg",
+      "seconds": 35,
+      "speech": "工程证据沿着问题定位、代码修复和板端复验保存。总线有四档回复延迟工况，显示有前后计数，主动任务和真人语音有对应日志，本次界面渲染也运行了七项检查。整机长时间运行、并发eMMC异常以及完整签名OTA仍是下一轮验证重点，后续功能围绕现场试点推进。",
+      "source_keys": [
+        "delivery"
+      ],
+      "notes": "工程证据沿着问题定位、代码修复和板端复验保存。总线有四档回复延迟工况，显示有前后计数，主动任务和真人语音有对应日志，本次界面渲染也运行了七项检查。整机长时间运行、并发eMMC异常以及完整签名OTA仍是下一轮验证重点，后续功能围绕现场试点推进。\n\n资料来源：\ndocs/maintenance-todo.md\ndocs/voice-evidence/2026-10-25/ops-assistant/README.md\ndocs/issues/ota/acceptance-todo.md\n.agents/skills/velaguard-board-inner-loop/SKILL.md\nlogs/：原始 AI Coding 日志\nrender/CMakeLists.txt"
+    },
+    {
+      "page": 14,
+      "title": "谢谢",
+      "source_slide": 16,
+      "svg": "chatgpt_tech_14.svg",
+      "seconds": 10,
+      "speech": "VelaGuard 把本地确定性监测与板载 Agent协作落在真实openvela设备上。谢谢各位老师。",
+      "source_keys": [
+        "topology"
+      ],
+      "notes": "VelaGuard 把本地确定性监测与板载 Agent协作落在真实openvela设备上。谢谢各位老师。\n\n资料来源：\nVelaGuard_项目手册.md：独立网关及场景\nAGENTS.md：V1、V2及总线单主站"
+    }
+  ]
+}

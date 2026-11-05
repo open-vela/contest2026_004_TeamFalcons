@@ -1,0 +1,90 @@
+{
+  "author": "CHATGPT",
+  "mock_dataset": "mock-data.json",
+  "assets": [
+    {
+      "file": "assets/01_home_normal.png",
+      "bytes": 19870,
+      "sha256": "59873b0d927be5c0820a09f9af46d7982b70a4d2e33da1fbd14277c6309ec9d4",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/02_alarm_warning.png",
+      "bytes": 26251,
+      "sha256": "bdbd7915ebc4c05f9acfaa007426c9b646d45353e94bc1db24481390095d5643",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/03_alarm_critical.png",
+      "bytes": 25763,
+      "sha256": "924a96d5720796a555d589e494745d2d3c4e57d48dd5ff3559d75afa620cde8d",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/04_device_critical.png",
+      "bytes": 20529,
+      "sha256": "9091998df5172d9265665378df46f5695c1c5ff3b7add90b3985ddac318e7e86",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/05_trend_peak.png",
+      "bytes": 13214,
+      "sha256": "ed6f78a63887b204d426846df867ca345b9d97992fb58a7515e0b3edbb1811e4",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/06_alarm_advice.png",
+      "bytes": 29291,
+      "sha256": "dc12d0f8a313677c2993ac57522a347ce603dfdebc85bb5b775e8399a889bd4d",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/07_network_down.png",
+      "bytes": 21766,
+      "sha256": "732e7743c3e4f5e96c5cba3c6357e04a3996d6d611284e2cc76a2494786037d6",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/08_trend_network_down.png",
+      "bytes": 13254,
+      "sha256": "c2cb789aeac524726f1fdaacd32d10d19b78d55b0403946bb3dfc30dc9c84d02",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/09_instrument_offline.png",
+      "bytes": 21010,
+      "sha256": "b485cf3dcdd10514b3e99dc8c98e16bccbd3af299b203d0feb37477c37707d14",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/10_voice_answer.png",
+      "bytes": 33142,
+      "sha256": "7892a6d9298b2214a424d9f5a4230e17fc09dc6a1948fd0982ce8c09b9fba299",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/11_home_recovered.png",
+      "bytes": 20230,
+      "sha256": "630468de79ac667296a131b504ef412af1ab440b9a6135bf5035c66150d19fea",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/12_trend_recovery.png",
+      "bytes": 13388,
+      "sha256": "633b3cd9adf9458543942f973cca87912caaafbe4c672a798e440b4a39ecf9ec",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/14_handover_report.png",
+      "bytes": 23018,
+      "sha256": "427de995e167f8a3480a36d1f1b96e85333088cfdf7580b8e372af3ea679f138",
+      "kind": "synthetic-ui-render"
+    },
+    {
+      "file": "assets/raw-frames-CHATGPT.zip",
+      "bytes": 185020,
+      "sha256": "0d071d7e07335887030de77849bc1b912d6965c67348078d89ff776a35021160",
+      "kind": "raw-render-archive"
+    }
+  ]
+}
