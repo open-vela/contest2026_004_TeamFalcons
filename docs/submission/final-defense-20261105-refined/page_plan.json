@@ -1,0 +1,81 @@
+{
+  "schema": "ppt-master.roundtrip-page-plan.v1",
+  "pages": [
+    {
+      "source_slide": 1,
+      "svg": "slide_01.svg"
+    },
+    {
+      "source_slide": 2,
+      "svg": "slide_02.svg"
+    },
+    {
+      "source_slide": 3,
+      "svg": "slide_03.svg"
+    },
+    {
+      "source_slide": 4,
+      "svg": "slide_04.svg"
+    },
+    {
+      "source_slide": 5,
+      "svg": "slide_05.svg"
+    },
+    {
+      "source_slide": 6,
+      "svg": "slide_06.svg"
+    },
+    {
+      "source_slide": 7,
+      "svg": "slide_07.svg"
+    },
+    {
+      "source_slide": 9,
+      "svg": "slide_09.svg"
+    },
+    {
+      "source_slide": 10,
+      "svg": "slide_10.svg"
+    },
+    {
+      "source_slide": 11,
+      "svg": "slide_11.svg"
+    },
+    {
+      "source_slide": 13,
+      "svg": "slide_13.svg"
+    },
+    {
+      "source_slide": 14,
+      "svg": "slide_14.svg"
+    },
+    {
+      "source_slide": 15,
+      "svg": "slide_15.svg"
+    },
+    {
+      "source_slide": 16,
+      "svg": "slide_16.svg"
+    },
+    {
+      "source_slide": 3,
+      "svg": "appendix_a_tasks.svg"
+    },
+    {
+      "source_slide": 5,
+      "svg": "appendix_b_permissions.svg"
+    },
+    {
+      "source_slide": 8,
+      "svg": "slide_08.svg"
+    },
+    {
+      "source_slide": 10,
+      "svg": "appendix_d_bugs.svg"
+    },
+    {
+      "source_slide": 11,
+      "svg": "appendix_e_ota.svg"
+    }
+  ]
+}

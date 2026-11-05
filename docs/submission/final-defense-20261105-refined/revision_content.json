@@ -1,0 +1,265 @@
+{
+  "date": "2026-11-05",
+  "main_pages": 14,
+  "appendix_pages": 5,
+  "planned_seconds": 450,
+  "video_seconds": 80,
+  "pages": [
+    {
+      "page": 1,
+      "source_slide": 1,
+      "svg": "slide_01.svg",
+      "title": "VelaGuard",
+      "seconds": 12,
+      "speaker_notes": "评委好，我是叶培林。VelaGuard 是一台独立监测网关，本地采集告警，板载 Agent 解释真实数据。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c"
+      ],
+      "status": "referenced with notes"
+    },
+    {
+      "page": 2,
+      "source_slide": 2,
+      "svg": "slide_02.svg",
+      "title": "一个小机房的一天",
+      "seconds": 32,
+      "speaker_notes": "先看一个小机房的值守过程。交接班时，人员先核对点位在线状态和最近采样时间。接入新传感器时，在网页上传手册和从机地址，选择测点，再到设备屏幕确认。温度越限后，本地规则立即告警，Agent 联网读取证据给出解释，交班时再查看运行日报。这里用示例时间线组织场景，右侧是项目真实界面在模拟快照上的渲染。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491",
+        "原稿 images/image3.png、image5.png、image6.png、image7.png，真实 LVGL 页面在主机上以模拟快照渲染。来源：原稿制作归属-CLAUDE.md。"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 3,
+      "source_slide": 3,
+      "svg": "slide_03.svg",
+      "title": "一台网关上的本地与联网任务",
+      "seconds": 28,
+      "speaker_notes": "现场仪表通过 RS485 接到这台网关。openvela 在板上运行采集、规则和 LVGL，也运行 ai_agent 的 ReAct 循环。左侧这些任务持续在本地工作，网络服务提供告警解释、日报、看板和受控接入。两部分通过快照和有界任务交互，所以模型响应变慢或网络断开时，本地监测仍继续。具体任务栈与优先级放在备用页。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 4,
+      "source_slide": 4,
+      "svg": "slide_04.svg",
+      "title": "采集、规则与两种配置入口",
+      "seconds": 32,
+      "speaker_notes": "采集线程只使用已确认点表。Modbus 读数经过本地阈值和离线规则，再上屏并写事件记录。配置有两个入口：维护用 NSH 要先试读，人在查看结果后单独提交；新网页入口不试读，候选先经板端确定性校验，再由人在屏幕确认添加。未确认的候选不进入周期采集。固定 9600 的台架上，零延迟回复从站已完成六百四十九次连续成功请求。",
+      "evidence": [
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c",
+        "docs/maintenance-evidence/2026-10-18/defects.md：D-04；d04-fixed-0ms-slave.log；nuttx ff29d9b1a58"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 5,
+      "source_slide": 5,
+      "svg": "slide_05.svg",
+      "title": "手册辅助接入已完成真机联调",
+      "seconds": 40,
+      "speaker_notes": "这是本轮新增的闭环。用户在网页上传 PDF 和从机地址，云端给出带原文依据的候选，用户选择后主动下发。候选通过独立 MQTTS 通道到板端，C 代码校验字段、容量和版本，最后由真人在本机确认。十一月五日联调新增了一个湿度点，运行表从十四点变成十五点，板端和看板都读到百分之五十湿度，重启后配置仍保留。这次读数来自模拟从站，配置提交和实际采集分别核对。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491",
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 6,
+      "source_slide": 6,
+      "svg": "slide_06.svg",
+      "title": "Agent 主动取证并生成解释与日报",
+      "seconds": 40,
+      "speaker_notes": "Agent 有两种主动任务。告警集合变化会发起解释任务，当天缺少有效日报时会发起报告任务。板端把 Skill、上下文和请求标识交给 ai_agent，MiMo 规划后调用只读工具取证，工具读取同一份采集快照，不再占用总线。Agent 将结果写成受约束的文件，板端校验启动标识、请求、格式和有效期，再交给 LVGL 显示。它的执行产物是解释和报告，告警判定继续由本地规则负责。右侧为模拟问答界面。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log:33-56",
+        "原稿 images/image3.png、image5.png、image6.png、image7.png，真实 LVGL 页面在主机上以模拟快照渲染。来源：原稿制作归属-CLAUDE.md。"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 7,
+      "source_slide": 7,
+      "svg": "slide_07.svg",
+      "title": "C 代码落实权限与调用边界",
+      "seconds": 26,
+      "speaker_notes": "权限在 C 代码里落实。五个业务数据工具只读，报告写入另有路径限制；运行时检查参数、输出容量和调用频率，每次调用记录执行依据与脱敏审计。设备 Agent 没有配置提交、寄存器写入、清除告警和输出控制入口。网页新增点位与新版本安装都需要人在本机确认，语音和远程请求不能代替这个动作。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 8,
+      "source_slide": 9,
+      "svg": "slide_09.svg",
+      "title": "断网时，本地监测继续运行",
+      "seconds": 24,
+      "speaker_notes": "网络全部不可达时，采集、规则、显示与事件落盘继续，解释、日报和上报暂停。Broker 断开时，告警保留在八条 RAM 队列里，满了丢最旧，重连后补发，断电不保留。MiMo 超时就保留本地规则和真实读数。演示拔网线前要先核对 Wi-Fi 备链路，确保观察到的确实是离线运行。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 9,
+      "source_slide": 10,
+      "svg": "slide_10.svg",
+      "title": "两个影响真机运行的工程问题",
+      "seconds": 42,
+      "speaker_notes": "第一个问题在 RS485 时序。应用等发送完成后才释放方向引脚，轮询让接收切换晚了约十三毫秒，快速从站的回复已经到达。把 DIR 释放移进发送完成中断后，同为零延迟从站，成功请求从三十八比二百七十四提升到六百四十九次全部成功。第二个问题是 TLS 验签间歇失败，最终追到 ServerHello 随机数复制时的 SDRAM 非对齐读取。修复编译访问方式后，四轮一百五十五次探测未再出现这一错误。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-10-18/defects.md：D-04；d04-fixed-0ms-slave.log；nuttx ff29d9b1a58",
+        "docs/voice-evidence/2026-10-24/p1-p2-takeover/README.md；p1-p2-report.md；nuttx 45dd33ad936"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 10,
+      "source_slide": 11,
+      "svg": "slide_11.svg",
+      "title": "OTA 下载、安装与恢复的验证范围",
+      "seconds": 30,
+      "speaker_notes": "OTA 通过 MQTTS 接收通知，用 RJ45 上的 HTTPS 下载到 eMMC。校验后仍需本机确认，重启由片内 stub 安装 B，自检失败回出厂 A。当前网络下载已在测试信任下到达 READY，安装与回滚完成诊断夹具板验。完整生产签名任务、真实断电和并发长测继续分别验收。",
+      "evidence": [
+        "docs/ota-evidence/2026-10-29/board-network.md:29-61（测试信任）",
+        "docs/ota-evidence/2026-10-28/t04-install.md；t05-rollback.md:48-139（诊断夹具）",
+        "docs/ota-evidence/2026-10-29/t10-host-faults-release.md:48-50；docs/issues/ota/acceptance-todo.md",
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 11,
+      "source_slide": 13,
+      "svg": "slide_13.svg",
+      "title": "测试结果与各自的条件",
+      "seconds": 28,
+      "speaker_notes": "这四项数据按测试条件分别看。采集是零延迟回复下六百四十九次全部成功；告警解释是一个轮次批量生成八条，共四十一点八三秒；最新候选接入由真人确认，点表十四变十五并重启保留。右下是旧版语音固定问句矩阵，三十条里二十八条满足首播预算并完整播放。后续语音已经改为自然语言运维助手，这里保留它的历史测试口径。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-10-18/defects.md：D-04；d04-fixed-0ms-slave.log；nuttx ff29d9b1a58",
+        "docs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log:33-56",
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491",
+        "docs/voice-evidence/2026-10-23/bvo14-closeout/README.md:62-96；matrix-foreground3/；10-25 运维助手改造见 ops-assistant/README.md"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 12,
+      "source_slide": 14,
+      "svg": "slide_14.svg",
+      "title": "80 秒演示视频位：待录制",
+      "seconds": 84,
+      "speaker_notes": "下面通过八十秒录像展示真机采集、告警解释、本机确认和断网运行。",
+      "evidence": [
+        "原稿 images/image3.png、image5.png、image6.png、image7.png，真实 LVGL 页面在主机上以模拟快照渲染。来源：原稿制作归属-CLAUDE.md。",
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491",
+        "docs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log:33-56"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 13,
+      "source_slide": 15,
+      "svg": "slide_15.svg",
+      "title": "当前成果与现场验证计划",
+      "seconds": 26,
+      "speaker_notes": "目前已把本地采集告警、板端 Agent、按键语音和网页候选接入连接起来，最新接入已完成真人确认和重启保留。接下来的交付重点是真机视频、新固件二十四小时连续运行，以及完整签名 OTA 和断电恢复。手机侧语音巡检仍待实现。我们先以小机房作为现场验证点，再根据点表和实际运维需求扩展。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491",
+        "docs/voice-evidence/2026-10-23/bvo14-closeout/README.md:62-96；matrix-foreground3/；10-25 运维助手改造见 ops-assistant/README.md",
+        "docs/ota-evidence/2026-10-29/t10-host-faults-release.md:48-50；docs/issues/ota/acceptance-todo.md",
+        "docs/maintenance-evidence/2026-10-18/old-soak-verdict.md；docs/maintenance-todo.md：QA-01"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 14,
+      "source_slide": 16,
+      "svg": "slide_16.svg",
+      "title": "谢谢",
+      "seconds": 6,
+      "speaker_notes": "本地持续值守，AI 依据真实数据解释。我的汇报到这里，欢迎提问。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c"
+      ],
+      "status": "referenced with notes"
+    },
+    {
+      "page": 15,
+      "source_slide": 3,
+      "svg": "appendix_a_tasks.svg",
+      "title": "备用 A：关键任务与历史构建资源",
+      "seconds": 0,
+      "speaker_notes": "这张表列出主要已有任务的配置。这里的资源数据来自十月二十五日构建，静态 SRAM 只反映链接时占用，动态堆峰值需要另测。后续候选接入新增了服务线程，表中六项不是完整的系统任务清单。",
+      "evidence": [
+        "docs/voice-evidence/2026-10-25/stream-rebuffer/build-final.log:12-18；docs/maintenance-evidence/2026-11-05/config-mqtt-auto-apply.log:50-65"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 16,
+      "source_slide": 5,
+      "svg": "appendix_b_permissions.svg",
+      "title": "备用 B：配置与执行权限矩阵",
+      "seconds": 0,
+      "speaker_notes": "网页只发起候选下发，候选 MQTTS 不提供确认。运行表提交由本机人工确认，NSH 继续使用先试读后人工提交的维护流程。遥测与候选使用独立会话和权限，手机语音巡检仍待实现。Agent 的解释和报告文件写入有独立的受限路径。",
+      "evidence": [
+        "docs/velaguard-candidate-mqtt-protocol.md:11-35；app/velaguard/vg_config_confirmation.c",
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 17,
+      "source_slide": 8,
+      "svg": "slide_08.svg",
+      "title": "备用 C：Agent 时序与产物校验",
+      "seconds": 0,
+      "speaker_notes": "Agent 的网络工具调用消息和落盘文件格式分开。告警解释落盘采用 VGADV1 行式格式，由板端 C 代码校验后显示。历史轮次的工具阶段包括查询和文件写入，因此不能把一千九百六十毫秒全算成取数耗时，也不能把整轮时间除以八当成独立请求响应时间。",
+      "evidence": [
+        "app/velaguard/vg_agent_seed.c；vg_agent_tools.c；vg_ai_contract.c；vg_advice.c；vg_agent_round.c",
+        "docs/voice-evidence/2026-10-25/stream-rebuffer/final-accept.log:33-56"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 18,
+      "source_slide": 10,
+      "svg": "appendix_d_bugs.svg",
+      "title": "备用 D：根因、修复与复测记录",
+      "seconds": 0,
+      "speaker_notes": "三项修复分别位于串口时序、编译访问方式和录音状态机。按键录音问题中，正常停止与启动识别同时发生，旧代码提前清空 clip；修复后正常停止保留录音，取消时才清理，真人两次识别成功。每项证据均保留了测试条件和对应提交。",
+      "evidence": [
+        "docs/maintenance-evidence/2026-10-18/defects.md：D-04；d04-fixed-0ms-slave.log；nuttx ff29d9b1a58",
+        "docs/voice-evidence/2026-10-24/p1-p2-takeover/README.md；p1-p2-report.md；nuttx 45dd33ad936",
+        "docs/voice-evidence/2026-10-25/ptt-ram-fix/README.md；参赛仓 2120509"
+      ],
+      "status": "edited"
+    },
+    {
+      "page": 19,
+      "source_slide": 11,
+      "svg": "appendix_e_ota.svg",
+      "title": "备用 E：OTA 参数与恢复条件",
+      "seconds": 0,
+      "speaker_notes": "OTA 暂存使用现有 eMMC FAT。每个新版本均需本机确认，重启后才由 stub 安装 B。试用启动由看门狗保护，三次试用失败后，下一次启动返回出厂 A。网络下载、诊断夹具安装和生产完整签名任务的验证范围分别记录，生产凭据联调也不能代替完整 OTA 验收。",
+      "evidence": [
+        "docs/ota-evidence/2026-10-29/board-network.md:29-61（测试信任）",
+        "docs/ota-evidence/2026-10-28/t04-install.md；t05-rollback.md:48-139（诊断夹具）",
+        "docs/ota-evidence/2026-10-29/t10-host-faults-release.md:48-50；docs/issues/ota/acceptance-todo.md",
+        "docs/maintenance-evidence/2026-11-05/config-mqtt-production.log:36-63；提交 e6a3491"
+      ],
+      "status": "edited"
+    }
+  ]
+}
