@@ -76,6 +76,7 @@ struct vg_config_device_snapshot
   uint32_t lease_ms;
   uint16_t baud;
   bool remote_config;
+  bool recovery_blocked;
   enum vg_config_gate_owner_e active_gate;
   uint64_t uptime_ms;
   bool time_synced;
@@ -91,6 +92,7 @@ struct vg_config_service_ports
                       size_t target_len,
                       const struct vg_discover_summary *target_table);
   int (*notify_table)(void *ctx);
+  int (*recovery_blocked)(void *ctx, bool *blocked);
 };
 
 struct vg_config_open_request

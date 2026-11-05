@@ -62,6 +62,11 @@ int main(void)
   int a = 0, b = 1;
   pthread_t second;
   struct vg_discover_summary disk, ram;
+  char frozen[VG_POINT_TABLE_JSON_MAX];
+  char written[VG_POINT_TABLE_JSON_MAX];
+  size_t frozen_len;
+  size_t written_len;
+  FILE *fp;
   for (int i = 0; i < 2; i++)
     {
       tables[i].baud = 9600;
@@ -93,6 +98,21 @@ int main(void)
   tables[0].n_points = 0;
   assert(!vg_point_table_commit(&tables[0], "commit-test.json"));
   assert(vg_live_points_copy(&ram) == 0 && notifications == 3);
+  assert(vg_point_table_serialize(&tables[1], frozen, sizeof(frozen),
+                                  &frozen_len) == 0);
+  frozen[frozen_len++] = ' ';
+  frozen[frozen_len++] = '\n';
+  assert(vg_point_table_commit_json(frozen, frozen_len,
+                                    "commit-test.json") == 0);
+  assert(vg_live_points_copy(&ram) == 1 && ram.points[0].reg == 1);
+  assert(notifications == 4);
+  fp = fopen("commit-test.json", "rb");
+  assert(fp != NULL);
+  written_len = fread(written, 1, sizeof(written), fp);
+  assert(!ferror(fp));
+  assert(fclose(fp) == 0);
+  assert(written_len == frozen_len);
+  assert(memcmp(written, frozen, written_len) == 0);
   unlink("commit-test.json"); unlink("commit-test.json.bak");
   puts("test_point_commit: OK (concurrent commits, failed write, explicit empty table)");
   return 0;

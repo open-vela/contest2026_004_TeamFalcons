@@ -479,6 +479,47 @@ int vg_point_table_commit(FAR const struct vg_discover_summary *sum,
   return rc;
 }
 
+int vg_point_table_commit_json(FAR const void *json, size_t length,
+                               FAR const char *points_path)
+{
+  FAR struct vg_discover_summary *next;
+  int rc;
+
+  if (json == NULL || length == 0 ||
+      length >= VG_POINTS_JSON_MAX ||
+      points_path == NULL || points_path[0] == '\0')
+    {
+      return -EINVAL;
+    }
+
+  next = malloc(sizeof(*next));
+  if (next == NULL)
+    {
+      return -ENOMEM;
+    }
+
+  pthread_mutex_lock(&g_commit_mtx);
+  rc = vg_file_replace(points_path, json, length, 0644);
+  if (rc == 0)
+    {
+      rc = vg_point_table_read(next, points_path);
+    }
+
+  if (rc == 0)
+    {
+      rc = vg_live_points_replace(next);
+    }
+
+  if (rc == 0 && vg_mqtt_notify_point_table != NULL)
+    {
+      vg_mqtt_notify_point_table();
+    }
+
+  pthread_mutex_unlock(&g_commit_mtx);
+  free(next);
+  return rc;
+}
+
 int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *points_path,
                          FAR const char *config_basedir,

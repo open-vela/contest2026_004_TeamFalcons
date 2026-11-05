@@ -128,6 +128,10 @@ int vg_point_table_ensure_candidate(FAR struct vg_discover_summary *sum,
 int vg_point_table_commit(FAR const struct vg_discover_summary *sum,
                           FAR const char *points_path);
 
+/* Persist exact prevalidated table bytes and publish the parsed table. */
+int vg_point_table_commit_json(FAR const void *json, size_t length,
+                               FAR const char *points_path);
+
 int vg_point_table_apply(FAR const struct vg_discover_summary *sum,
                          FAR const char *points_path,
                          FAR const char *config_basedir,

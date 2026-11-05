@@ -394,6 +394,7 @@ int vg_config_service_snapshot(struct vg_config_service *service,
                                struct vg_config_device_snapshot *out)
 {
   struct vg_config_table_snapshot table;
+  bool recovery_blocked = false;
   uint64_t now;
   int ret;
 
@@ -406,6 +407,16 @@ int vg_config_service_snapshot(struct vg_config_service *service,
   if (ret != 0)
     {
       return ret;
+    }
+
+  if (service->ports.recovery_blocked != NULL)
+    {
+      ret = service->ports.recovery_blocked(service->ports.ctx,
+                                            &recovery_blocked);
+      if (ret != 0)
+        {
+          recovery_blocked = true;
+        }
     }
 
   memset(out, 0, sizeof(*out));
@@ -422,7 +433,9 @@ int vg_config_service_snapshot(struct vg_config_service *service,
   memcpy(out->link_id, service->link_id, sizeof(out->link_id));
   out->next_open_seq = service->open_seq_exhausted ?
                        0 : service->next_open_seq;
-  out->remote_config = service->link_id[0] != '\0';
+  out->remote_config =
+    service->link_id[0] != '\0' && !recovery_blocked;
+  out->recovery_blocked = recovery_blocked;
   out->uptime_ms = now >= service->started_ms ?
                    now - service->started_ms : 0;
   pthread_mutex_unlock(&service->lock);
@@ -473,6 +486,7 @@ int vg_config_service_open(struct vg_config_service *service,
   struct vg_config_table_snapshot table;
   struct vg_config_cached_request *cached;
   struct vg_config_task_status status;
+  bool recovery_blocked = false;
   char session_id[VG_CONFIG_HEX32_LEN];
   uint32_t gate_token = 0;
   uint64_t now;
@@ -494,6 +508,16 @@ int vg_config_service_open(struct vg_config_service *service,
   if (ret != 0)
     {
       return ret;
+    }
+
+  if (service->ports.recovery_blocked != NULL)
+    {
+      ret = service->ports.recovery_blocked(service->ports.ctx,
+                                            &recovery_blocked);
+      if (ret != 0 || recovery_blocked)
+        {
+          return -EACCES;
+        }
     }
 
   pthread_mutex_lock(&service->lock);
