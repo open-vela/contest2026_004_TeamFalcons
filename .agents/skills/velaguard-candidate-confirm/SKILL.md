@@ -7,7 +7,7 @@ description: "VelaGuard 点表闸门：候选表试读后人确认 apply，采�
 
 上位机经 ST-LINK NSH 写点表。编辑只动候选；人确认 `vgpoint apply --confirm` 之后，周期采集和告警才读已确认表。
 
-用户2026-10-18已选择新增MQTT候选入口，设计见 [候选接入协议](../../../docs/velaguard-candidate-mqtt-protocol.md)。该入口尚未实现，不可直接经当前MQTT下发配置。按用户最新更正，手机接入不试读，板端配置校验通过后弹出人工二次确认，确认后直接添加；所有远程配置状态仅在手机显示。实施时需独立候选、配置入口互斥与候选版本绑定。以下先试读再确认的步骤仅描述现行NSH流程，其固件仅检查 `--confirm`，尚不强制检查试读记录与版本。
+用户2026-10-18已选择新增MQTT候选入口，设计见 [候选接入协议](../../../docs/velaguard-candidate-mqtt-protocol.md)。板端专用 MQTTS、候选状态机、本地确认和持久化已实现；生产端点、正式 CA 和网页尚未就绪。手机接入不试读，板端配置校验通过后弹出人工二次确认，确认后直接添加；远程配置状态仅在手机显示。以下先试读再确认的步骤仅描述 NSH 流程，其固件仅检查 `--confirm`，不强制要求此前存在试读记录。
 
 命令口径只认 [docs/velaguard-host-nsh-protocol.md](../../../docs/velaguard-host-nsh-protocol.md)。不要在任务文档或本 Skill 再抄命令表。NSH 行长与 `too_long` 见 [references/gotchas.md](references/gotchas.md)。
 
@@ -45,6 +45,17 @@ description: "VelaGuard 点表闸门：候选表试读后人确认 apply，采�
 ```bash
 make -C app/velaguard/host_tests test
 ```
+
+无需外部 RS485 从站和人工触摸时，可用专用诊断镜像完成自动化板测：
+
+```bash
+VG_OTA_CA_FILE=<test-ca.pem> \
+VG_OTA_PUBLIC_KEY_FILE=<test-public-key.pem> \
+VG_OTA_SIGNING_KEY_ID=config-test \
+bash scripts/build.sh --config-fixture
+```
+
+该选项同时启用 `CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE`，只用于测试构建：确定性在线采样解除告警遮挡，并在正式确认界面显示 3 秒后调用同一本地 UI 确认事件。MQTT 和 Agent 仍无确认入口。发布检查会拒绝该符号；正式构建必须关闭它。
 
 灌表演示（会在 `test` 之后等人回车，再单独 `apply --confirm`）：
 

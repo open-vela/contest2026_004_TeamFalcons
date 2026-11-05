@@ -1,3 +1,7 @@
+#ifdef __NuttX__
+#include <nuttx/config.h>
+#endif
+
 #include "vg_config_confirmation_ui.h"
 
 #include "model/vg_model.h"
@@ -17,6 +21,9 @@ static struct vg_config_confirmation s_confirmation;
 static bool s_initialized;
 static lv_obj_t * s_modal;
 static char s_shown_confirmation_id[VG_CONFIG_HEX32_LEN];
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+static uint32_t s_fixture_visible_tick;
+#endif
 
 extern int vg_config_mqtt_runtime_bind_confirmation(
     struct vg_config_confirmation *confirmation,
@@ -28,6 +35,9 @@ static void delete_cb(lv_event_t *e)
     LV_UNUSED(e);
     s_modal = NULL;
     s_shown_confirmation_id[0] = '\0';
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+    s_fixture_visible_tick = 0;
+#endif
 }
 
 static void close_surface(void)
@@ -37,6 +47,9 @@ static void close_surface(void)
     }
     s_modal = NULL;
     s_shown_confirmation_id[0] = '\0';
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+    s_fixture_visible_tick = 0;
+#endif
 }
 
 static lv_obj_t * make_button(lv_obj_t *parent, const char *text,
@@ -285,6 +298,18 @@ void vg_config_confirmation_ui_poll(void)
        strcmp(s_shown_confirmation_id, pending->confirmation_id) != 0) {
         create_surface(pending);
     }
+
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+    if(s_modal != NULL && lv_obj_is_valid(s_modal)) {
+        if(s_fixture_visible_tick == 0) {
+            s_fixture_visible_tick = lv_tick_get();
+        }
+        else if(lv_tick_elaps(s_fixture_visible_tick) >= 3000) {
+            puts("vghmi: acceptance fixture local confirm");
+            submit_action(VG_CONFIG_CONFIRMATION_CONFIRM);
+        }
+    }
+#endif
 }
 
 static void poll_timer_cb(lv_timer_t *timer)

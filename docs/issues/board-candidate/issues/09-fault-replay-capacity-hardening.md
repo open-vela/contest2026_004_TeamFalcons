@@ -14,6 +14,7 @@
 验证记录：
 
 - 成功 open/put 的缓存结果只在本活动会话和原 state_seq 仍匹配时复用；断线、取消、新候选或状态推进后不会复活旧响应。
+- 并发 remote open 只有实际创建 gate 的线程可以继续；同 owner 的第二个 open 返回 busy，不能释放胜者 token。修复后并发测试连续 500 次通过。
 - 候选请求身份与摘要保存在活动会话中，32 项 request cache 被覆盖后仍能识别完全相同 put，并拒绝同 req_id 的异内容重放。
 - 主机测试覆盖等待确认断线、旧 open 重放、旧 put 重放、缓存回收、异内容冲突、双消息突发和超长消息。
 - 真机重复 put 后 `awaiting_local_confirm`、state_seq 和 confirmation_id 均不变，没有重复确认窗口或落盘。

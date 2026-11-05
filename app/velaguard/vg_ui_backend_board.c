@@ -1124,6 +1124,17 @@ static bool board_bus_busy(void)
          g_apply_thread_active || g_apply_status == VG_SCAN_RUNNING;
 }
 
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+static uint16_t acceptance_raw_value(
+    FAR const struct vg_point_entry *point)
+{
+  /* Keep every deterministic sample inside the non-alarm range. A high
+   * positive integer is safe for le rules; zero is safe for ge/eq rules in
+   * the committed acceptance table. */
+  return point != NULL && strcmp(point->cmp, "le") == 0 ? 32767 : 0;
+}
+#endif
+
 static void write_live_snapshot(FAR const struct vg_discover_summary *live,
                                 int n, uint32_t generation)
 {
@@ -1192,15 +1203,24 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
       continue;
     }
 
-    if(vg_bus_try_lock() != 0) {
-      usleep(200000);
-      continue;
-    }
-
     {
       uint16_t raws[VG_LIVE_MAX];
       uint8_t oks[VG_LIVE_MAX];
       int rc;
+
+#ifdef CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE
+      memset(raws, 0, sizeof(raws));
+      memset(oks, 0, sizeof(oks));
+      for(i = 0; i < n; i++) {
+        raws[i] = acceptance_raw_value(&live.points[i]);
+        oks[i] = 1;
+      }
+      rc = 0;
+#else
+      if(vg_bus_try_lock() != 0) {
+        usleep(200000);
+        continue;
+      }
 
       rc = vg_discover_poll_points(vg_hmi_rs485_devpath(),
                                    CONFIG_VG_HMI_DISCOVER_BAUD,
@@ -1208,6 +1228,7 @@ static FAR void *vg_hmi_acq_thread(FAR void *arg)
                                    raws, oks,
                                    CONFIG_VG_HMI_DISCOVER_INTER_MS);
       vg_bus_unlock();
+#endif
       if(rc != 0) {
         printf("vghmi: live open failed rc=%d\n", rc);
         pthread_mutex_lock(&g_live_lock);
@@ -1388,6 +1409,7 @@ bool vg_ui_backend_apply_live(void)
      * a different point/kind; clear only when the LAST alarm resolves so
      * a recovering point never wipes a still-active neighbor's record. */
     static char prev_tag[40];
+    static bool startup_presence_checked;
     const vg_alarm_t *a = vg_model_get_active_alarm();
     const uint16_t n_active = vg_model_active_alarm_count();
     char tag[40];
@@ -1419,15 +1441,28 @@ bool vg_ui_backend_apply_live(void)
         snprintf(prev_tag, sizeof(prev_tag), "%s", tag);
       }
     }
-    else if(prev_tag[0] != '\0') {
-      ensure_file_worker_started();
-      pthread_mutex_lock(&g_file_worker_lock);
-      g_alarm_req.op = VG_ASYNC_ALARM_CLEAR;
-      g_alarm_req.req_id = ++g_alarm_req_id;
-      g_alarm_req.buf[0] = '\0';
-      pthread_mutex_unlock(&g_file_worker_lock);
-      prev_tag[0] = '\0';
-    }
+    else
+      {
+        bool stale_at_start = false;
+
+        if (!startup_presence_checked)
+          {
+            startup_presence_checked = true;
+            stale_at_start =
+              access("/data/velaguard/pending_alarm.txt", F_OK) == 0;
+          }
+
+        if(prev_tag[0] != '\0' || stale_at_start)
+          {
+            ensure_file_worker_started();
+            pthread_mutex_lock(&g_file_worker_lock);
+            g_alarm_req.op = VG_ASYNC_ALARM_CLEAR;
+            g_alarm_req.req_id = ++g_alarm_req_id;
+            g_alarm_req.buf[0] = '\0';
+            pthread_mutex_unlock(&g_file_worker_lock);
+            prev_tag[0] = '\0';
+          }
+      }
   }
 #endif
 

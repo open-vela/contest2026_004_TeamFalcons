@@ -15,6 +15,8 @@ def main():
     enabled=lambda name: re.search(r'^'+re.escape(name)+r'=y$',config,re.M) is not None
     errors=[]
     if enabled('CONFIG_VG_OTA_TEST_FIXTURES'): errors.append('test fixtures enabled')
+    if enabled('CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE'):
+        errors.append('configuration acceptance fixture enabled')
     for name in ('CONFIG_VG_OTA_NETWORK','CONFIG_NETDEV_PHY_IOCTL','CONFIG_STM32H7_RNG','CONFIG_DEV_RANDOM','CONFIG_DEV_URANDOM_ARCH'):
         if not enabled(name): errors.append('missing '+name)
     if enabled('CONFIG_DEV_URANDOM_XORSHIFT128') or enabled('CONFIG_DEV_URANDOM_CONGRUENTIAL'):

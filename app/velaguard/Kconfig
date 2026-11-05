@@ -86,6 +86,17 @@ config VG_CONFIG_MQTT
 		Remote confirmation is rejected. Missing CA, credentials, verified
 		entropy, CONNACK, or SUBACK keeps the service closed.
 
+config VG_CONFIG_ACCEPTANCE_FIXTURE
+	bool "Automated Modbus and local-confirmation acceptance fixture"
+	default n
+	depends on VG_CONFIG_MQTT && VG_HMI
+	---help---
+		Diagnostic image only. Supplies deterministic online Modbus
+		samples so alarm priority does not suppress the local
+		confirmation surface, and activates the same local UI
+		confirmation action after that surface is visible. Production
+		builds must reject this symbol.
+
 config VG_OTA_TEST_FIXTURES
 	bool "VelaGuard OTA test fixtures (development only)"
 	default n

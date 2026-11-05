@@ -6,6 +6,9 @@ Host regression coverage
   released, pending bytes are cleared, and reconnect does not replay it
 - a delayed open after link loss returns request_error instead of resurrecting
   a cached opened response
+- concurrent remote open now requires creation of the remote gate; a second
+  same-owner opener cannot share and later release the winner's token
+- test_config_session repeated 500 times after the gate fix: PASS
 - a delayed put after session advancement returns request_error instead of
   resurrecting a cached awaiting_local_confirm response
 - an exact put replay after clearing the 32-entry request cache returns the

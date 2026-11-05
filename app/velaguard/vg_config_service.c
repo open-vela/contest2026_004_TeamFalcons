@@ -581,6 +581,13 @@ int vg_config_service_open(struct vg_config_service *service,
     {
       return ret;
     }
+  if (!created)
+    {
+      /* Same-owner acquisition is reentrant for NSH workflows, but only one
+       * remote open may create and own the remote gate. The losing opener
+       * must not release the winner's token. */
+      return -EBUSY;
+    }
 
   memset(&table, 0, sizeof(table));
   ret = service->ports.load_table(service->ports.ctx, &table);

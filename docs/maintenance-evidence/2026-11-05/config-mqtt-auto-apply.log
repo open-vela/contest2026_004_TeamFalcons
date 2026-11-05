@@ -1,0 +1,75 @@
+MQTT candidate automated board acceptance, 2026-11-05
+
+Purpose
+- complete the board path without an external RS485 slave or a human touch
+- keep every shortcut in a diagnostic-only Kconfig image
+- preserve the production path: real Modbus samples and local touch remain
+  required when CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE is disabled
+
+Diagnostic image
+- command: bash scripts/build.sh --config-fixture
+- temporary local TLS CA and synthetic device credentials were used
+- CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE=y
+- CONFIG_VG_OTA_TEST_FIXTURES=y
+- A/B image size: 1689856 bytes
+- check_fw_images: OK A=0x90000000 B=0x90800000
+- SRAM static use: 388624/524288 bytes (74.12%)
+
+Fixture behavior
+- normal acquisition still runs through vg_ui_backend_apply_live and
+  vg_model_set_live
+- deterministic raw values keep every configured point online and outside
+  alarm thresholds
+- the production confirmation surface is rendered first
+- only after the surface has remained visible for 3000 ms does the fixture
+  invoke the same local confirmation event used by the touch button
+- no MQTT or Agent request can invoke this action
+
+End-to-end result
+- TLS Broker authenticated the device and accepted its config subscription
+- foreign device, retained and wrong-direction messages were rejected
+- query returned the current table
+- open returned a session and lease
+- put reached awaiting_local_confirm
+- an exact duplicate put preserved state_seq and confirmation_id
+- the local UI action sent the frozen confirmation binding
+- result state: applied
+- committed table grew from 15 to 16 points
+- new point s9_f3_r0 was present in points.json
+- vgpoint get reported all 16 points online under the fixture
+- pending_alarm.txt was absent after the startup stale-file fix
+- SWD reset without reflashing retained all 16 points and resumed local
+  acquisition while the TLS Broker was offline
+
+Acceptance command result
+PASS config MQTT board apply: mode=local-tls
+device=vg-09001a800451383430303835 points=16
+query=ok open=ok put=awaiting_local_confirm
+local_confirm=applied persisted=ok
+
+Production gate
+- scripts/ota/check_release.py rejects images with
+  CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE enabled
+- release check also reports test fixtures and the local test CA
+- the final production build disables both fixture symbols and passes the
+  regular release check
+- production A/B size: 1681912 bytes
+- production SHA-256:
+  A=3cc6a70bd6f6ed111e275a0e04f824170c33b587bf2bcd2cd8e9a64b12abc761
+  B=89da43e65e874f0d8dd54e84e73d2a806a1f76d1df15d4eab15159b3a77ccce6
+- production smoke after flashing:
+  n=14 canonical scene table restored
+  CONFIG_VG_CONFIG_ACCEPTANCE_FIXTURE is not set
+  CONFIG_VG_OTA_TEST_FIXTURES is not set
+  vgconfig-mqtt initialized=0 error=trust_unconfigured
+  local firmware booted normally with no test CA
+- synthetic MQTT credentials were wiped after acceptance:
+  vgconfigmqtt: wiped
+  ls /data/velaguard/provision/config_mqtt_secrets.v1 -> stat failed: 2
+
+Scope note
+- this is automated acceptance through the real HMI confirmation path, not a
+  claim that a person touched the screen
+- production firmware keeps the touch-only confirmation requirement
+- an external physical sensor and a wall-power interruption are separate
+  hardware procedures, not prerequisites for the software acceptance fixture

@@ -38,6 +38,8 @@ function Send-Command {
 Send-Command "vgconfigmqtt status"
 Send-Command "vgpoint list"
 Send-Command "vgpoint get"
+Send-Command "ls -l /data/velaguard/pending_alarm.txt"
+Send-Command "cat /data/velaguard/pending_alarm.txt"
 Send-Command "ps"
 Send-Command "free"
 $port.Close()
