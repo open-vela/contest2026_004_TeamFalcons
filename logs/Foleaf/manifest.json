@@ -3,7 +3,7 @@
   "team_id": "contest2026_004_TeamFalcons",
   "github_login": "Foleaf",
   "generator": "claude-code-collector@1.4.0",
-  "updated_at": "2026-11-05T10:05:44.912Z",
+  "updated_at": "2026-11-05T13:48:19.839Z",
   "sessions": [
     {
       "session_id": "ses_11810bbcfffe563TbgE0tykfVz",
@@ -3844,10 +3844,22 @@
       "session_id": "77a07bc8-e4d0-4dbe-99da-134cf513ba37",
       "tool": "claude-code",
       "started_at": "2026-11-05T08:09:25.929Z",
-      "last_event_at": "2026-11-05T10:05:44.247Z",
-      "event_count": 1430,
-      "raw_event_count": 2516,
+      "last_event_at": "2026-11-05T13:48:19.056Z",
+      "event_count": 2153,
+      "raw_event_count": 3983,
       "file_path": "logs/Foleaf/2026-11-05/claude-code__77a07bc8-e4d0-4dbe-99da-134cf513ba37.jsonl",
+      "collection_mode": "cli",
+      "health": "ok",
+      "model": "deepseek-v4.1-flash"
+    },
+    {
+      "session_id": "aaa75ecb-3be7-4abe-abfa-2c1a01442c68",
+      "tool": "claude-code",
+      "started_at": "2026-11-05T12:10:46.764Z",
+      "last_event_at": "2026-11-05T12:35:03.089Z",
+      "event_count": 360,
+      "raw_event_count": 682,
+      "file_path": "logs/Foleaf/2026-11-05/claude-code__aaa75ecb-3be7-4abe-abfa-2c1a01442c68.jsonl",
       "collection_mode": "cli",
       "health": "ok",
       "model": "deepseek-v4.1-flash"
