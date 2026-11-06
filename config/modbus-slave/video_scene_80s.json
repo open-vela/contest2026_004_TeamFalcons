@@ -1,0 +1,56 @@
+{
+  "schema": 1,
+  "name": "velaguard-80s-video",
+  "baud": 9600,
+  "notes": "80 秒答辩视频用的 14 点台架场景。从站只回应板端 FC03/FC04 读请求。回风温度严重阈值按视频口径为 80.0 C，phase rise 把它从 26.0 推到 83.2。基线 4 条告警：湿度 88.0、水浸 1、烟雾 10.0、UPS 负载 102.3；越限后 5 条。",
+  "points": [
+    {"id": "temp",       "name": "温度",     "addr": 1, "reg": 0, "dtype": "int16",  "scale": 0.1, "start": 24.0,   "jitter": 0.15},
+    {"id": "humid",      "name": "湿度",     "addr": 1, "reg": 1, "dtype": "uint16", "scale": 0.1, "start": 88.0,   "jitter": 0.0},
+    {"id": "flood",      "name": "水浸",     "addr": 2, "reg": 2, "dtype": "uint16", "scale": 1.0, "start": 1.0,    "jitter": 0.0},
+    {"id": "smoke",      "name": "烟雾",     "addr": 3, "reg": 0, "dtype": "uint16", "scale": 0.1, "start": 10.0,   "jitter": 0.0},
+    {"id": "acu_ret",    "name": "回风温度", "addr": 4, "reg": 0, "dtype": "int16",  "scale": 0.1, "start": 26.0,   "jitter": 0.15},
+    {"id": "acu_set",    "name": "设定温度", "addr": 4, "reg": 1, "dtype": "int16",  "scale": 0.1, "start": 24.0,   "jitter": 0.0},
+    {"id": "acu_run",    "name": "空调运行", "addr": 4, "reg": 2, "dtype": "uint16", "scale": 1.0, "start": 1.0,    "jitter": 0.0},
+    {"id": "ups_load",   "name": "UPS负载",  "addr": 5, "reg": 0, "dtype": "uint16", "scale": 0.1, "start": 102.3,  "jitter": 0.3},
+    {"id": "ups_soc",    "name": "UPS电池",  "addr": 5, "reg": 1, "dtype": "uint16", "scale": 1.0, "start": 88.0,   "jitter": 0.0},
+    {"id": "ups_bypass", "name": "UPS旁路",  "addr": 5, "reg": 2, "dtype": "uint16", "scale": 1.0, "start": 0.0,    "jitter": 0.0},
+    {"id": "volt_a",     "name": "A相电压",  "addr": 6, "reg": 0, "dtype": "uint16", "scale": 0.1, "start": 279.5,  "jitter": 0.5},
+    {"id": "pwr_kw",     "name": "有功功率", "addr": 6, "reg": 1, "dtype": "uint16", "scale": 0.01, "start": 3.50, "jitter": 0.02},
+    {"id": "energy_kwh", "name": "正向电能", "addr": 6, "reg": 2, "dtype": "uint16", "scale": 0.1, "start": 1234.5, "jitter": 0.0, "step_per_s": 0.02},
+    {"id": "door",       "name": "门磁",     "addr": 7, "reg": 0, "dtype": "uint16", "scale": 1.0, "start": 0.0,    "jitter": 0.0}
+  ],
+  "phases": [
+    {
+      "id": "baseline",
+      "label": "基线：14 在线 / 4 告警 / 0 离线",
+      "ramp_sec": 0,
+      "values": {"acu_ret": 26.0},
+      "jitter": {"acu_ret": 0.15}
+    },
+    {
+      "id": "rise",
+      "label": "回风温度 26.0 升到 83.2，跨过 80.0 严重阈值",
+      "ramp_sec": 6,
+      "values": {"acu_ret": 83.2},
+      "jitter": {"acu_ret": 0.0}
+    },
+    {
+      "id": "hold",
+      "label": "保持 83.2，拍 AI 建议、日报和问答",
+      "ramp_sec": 0,
+      "values": {"acu_ret": 83.2}
+    },
+    {
+      "id": "recover",
+      "label": "回风温度复位到 26.0，准备重拍",
+      "ramp_sec": 5,
+      "values": {"acu_ret": 26.0},
+      "jitter": {"acu_ret": 0.15}
+    }
+  ],
+  "auto": [
+    {"phase": "baseline", "sec": 16},
+    {"phase": "rise", "sec": 8},
+    {"phase": "hold", "sec": 56}
+  ]
+}
