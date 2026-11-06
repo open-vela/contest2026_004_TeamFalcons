@@ -1068,7 +1068,7 @@ void vg_model_ota_demo_poll(void)
         s_ota.state = VG_OTA_OFFER;
         lv_snprintf(s_ota.task_id, sizeof(s_ota.task_id), "DEMO-OFFER-%lu",
                     (unsigned long)++s_ota_demo_seq);
-        lv_snprintf(s_ota.version, sizeof(s_ota.version), "%s", "9.2.0-demo");
+        lv_snprintf(s_ota.version, sizeof(s_ota.version), "%s", "9.2.0");
         lv_snprintf(s_ota.note, sizeof(s_ota.note), "%s",
                     "稳定性与连接优化");
         s_ota.size_bytes = 0;
