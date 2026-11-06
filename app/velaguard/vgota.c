@@ -41,6 +41,9 @@
 #include "vg_ota_https.h"
 #endif
 #include "vg_device_id.h"
+#ifdef CONFIG_VG_HMI
+#include "model/vg_model.h"
+#endif
 
 #define VG_EMMC_DEV   "/dev/mmcsd0"
 #define VG_EMMC_MOUNT "/mnt/emmc"
@@ -65,6 +68,9 @@ static void usage(void)
   printf("  vgota rollback [reason]\n");
 #ifdef CONFIG_VG_OTA_TEST_FIXTURES
   printf("  vgota interlock <alarm|storage|digest|idle|rj45|clear|status>\n");
+#ifdef CONFIG_VG_HMI
+  printf("  vgota demo <on|off|status>   (UI only, no download or install)\n");
+#endif
 #endif
   printf("  vgota probe\n");
   printf("  vgota qspiprobe\n");
@@ -1435,6 +1441,40 @@ static int cmd_interlock(int argc, char *argv[])
   return 1;
 }
 
+#ifdef CONFIG_VG_HMI
+static int cmd_demo(int argc, char *argv[])
+{
+  if (argc != 3)
+    {
+      printf("Usage: vgota demo <on|off|status>\n");
+      return 1;
+    }
+
+  if (strcmp(argv[2], "on") == 0)
+    {
+      vg_model_ota_demo_set(true);
+      printf("vgota: OTA demo offer requested; OTA page shows demo data only\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "off") == 0)
+    {
+      vg_model_ota_demo_set(false);
+      printf("vgota: OTA demo offer cleared\n");
+      return 0;
+    }
+
+  if (strcmp(argv[2], "status") == 0)
+    {
+      printf("vgota: OTA demo %s\n", vg_model_ota_demo_get() ? "on" : "off");
+      return 0;
+    }
+
+  printf("vgota: unknown demo command: %s\n", argv[2]);
+  return 1;
+}
+#endif
+
 #endif
 
 static int cmd_rollback(int argc, char *argv[])
@@ -1550,6 +1590,13 @@ int main(int argc, char *argv[])
     {
       return cmd_interlock(argc, argv);
     }
+
+#ifdef CONFIG_VG_HMI
+  if (strcmp(argv[1], "demo") == 0)
+    {
+      return cmd_demo(argc, argv);
+    }
+#endif
 #endif
 
   if (strcmp(argv[1], "rollback") == 0)

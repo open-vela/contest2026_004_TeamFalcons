@@ -62,8 +62,10 @@ static void ota_offer_poll(lv_timer_t *t)
 {
     static char shown_task[41];
     static bool shown_result;
-    const vg_ota_t *o = vg_model_get_ota();
+    const vg_ota_t *o;
     LV_UNUSED(t);
+    vg_model_ota_demo_poll();
+    o = vg_model_get_ota();
     if(o->state == VG_OTA_OFFER && strcmp(shown_task, o->task_id) != 0) {
         snprintf(shown_task, sizeof(shown_task), "%s", o->task_id);
         vg_nav_goto(VG_PAGE_OTA, NULL);

@@ -300,6 +300,12 @@ void vg_model_ota_accept(void);
 void vg_model_ota_cancel(void);
 void vg_model_ota_expire(void);
 void vg_model_ota_retry(void);
+/* Demo-only OTA offer shown on the OTA page. No download, no staging,
+ * no install; the UI labels it as demo data. Requested from NSH and
+ * applied on the HMI thread by vg_model_ota_demo_poll(). */
+void vg_model_ota_demo_set(bool on);
+bool vg_model_ota_demo_get(void);
+void vg_model_ota_demo_poll(void);
 
 /* Discover / backend sync (Phase B) */
 void vg_model_import_discover_slaves(const vg_ui_slave_t * slaves, int n);

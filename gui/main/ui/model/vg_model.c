@@ -53,6 +53,9 @@ static int32_t s_add_test_quality;
 static lv_timer_t * s_add_tmr;
 static vg_ota_t s_ota;
 static lv_timer_t * s_ota_tmr;
+static volatile bool s_ota_demo; /* written by NSH, read by HMI thread */
+static bool s_ota_demo_applied;
+static uint32_t s_ota_demo_seq;
 static vg_sys_status_t s_sys;
 static vg_home_filter_t s_home_filter = VG_HOME_FILTER_ALL;
 static char s_selected_id[VG_SENSOR_ID_MAX];
@@ -934,6 +937,12 @@ void vg_model_ota_accept(void)
 {
     if(s_ota.state != VG_OTA_OFFER) return;
 
+    if(s_ota_demo) {
+        snprintf(s_ota.error, sizeof(s_ota.error), "演示模式：不执行安装");
+        notify_all();
+        return;
+    }
+
 #ifdef VG_HMI_BOARD
     char err[64] = {0};
     int ret = vg_ota_confirm_install(VG_OTA_CONFIRM_SRC_TOUCH,
@@ -977,6 +986,17 @@ void vg_model_ota_accept(void)
 void vg_model_ota_cancel(void)
 {
     if(s_ota.state != VG_OTA_OFFER) return;
+
+    if(s_ota_demo) {
+        s_ota_demo = false;
+        s_ota_demo_applied = false;
+        s_ota.state = VG_OTA_IDLE;
+        s_net.ota_active = false;
+        vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, "OTA 演示已取消");
+        notify_all();
+        return;
+    }
+
 #ifdef VG_HMI_BOARD
     struct vg_ota_staging_info info;
     if(vg_ota_staging_get_info(&info) == 0 && info.task_id[0]) {
@@ -996,6 +1016,17 @@ void vg_model_ota_cancel(void)
 void vg_model_ota_expire(void)
 {
     if(s_ota.state != VG_OTA_OFFER) return;
+
+    if(s_ota_demo) {
+        s_ota_demo = false;
+        s_ota_demo_applied = false;
+        s_ota.state = VG_OTA_IDLE;
+        s_net.ota_active = false;
+        vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, "OTA 演示已结束");
+        notify_all();
+        return;
+    }
+
 #ifdef VG_HMI_BOARD
     struct vg_ota_staging_info info;
     if(vg_ota_staging_get_info(&info) == 0 && info.task_id[0]) {
@@ -1015,6 +1046,46 @@ void vg_model_ota_retry(void)
     s_ota.progress_pct = 0;
     s_ota.error[0] = '\0';
     s_net.ota_active = true;
+    notify_all();
+}
+
+void vg_model_ota_demo_set(bool on)
+{
+    s_ota_demo = on;
+}
+
+bool vg_model_ota_demo_get(void)
+{
+    return s_ota_demo;
+}
+
+void vg_model_ota_demo_poll(void)
+{
+    if(s_ota_demo == s_ota_demo_applied) return;
+    s_ota_demo_applied = s_ota_demo;
+
+    if(s_ota_demo) {
+        s_ota.state = VG_OTA_OFFER;
+        lv_snprintf(s_ota.task_id, sizeof(s_ota.task_id), "DEMO-OFFER-%lu",
+                    (unsigned long)++s_ota_demo_seq);
+        lv_snprintf(s_ota.version, sizeof(s_ota.version), "%s", "9.2.0-demo");
+        lv_snprintf(s_ota.note, sizeof(s_ota.note), "%s",
+                    "演示数据，不下载、不安装");
+        s_ota.size_bytes = 0;
+        s_ota.size_mb = 24;
+        s_ota.progress_pct = 0;
+        s_ota.error[0] = '\0';
+        s_net.ota_active = true;
+        vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, "OTA 页面演示：显示模拟新版本");
+    }
+    else {
+        s_ota.state = VG_OTA_IDLE;
+        s_ota.progress_pct = 0;
+        s_ota.error[0] = '\0';
+        s_net.ota_active = false;
+        vg_model_append_log(VG_LOG_OTA, VG_SEV_INFO, "OTA 页面演示已关闭");
+    }
+
     notify_all();
 }
 
@@ -1088,6 +1159,9 @@ const vg_ota_t * vg_model_get_ota(void)
 #ifdef VG_HMI_BOARD
     struct vg_ota_staging_info info;
     vg_ota_staging_tick();
+    if(s_ota_demo) {
+        return &s_ota;
+    }
     if(vg_ota_staging_get_info(&info) == 0) {
         if(info.state == VG_OTA_STATE_READY_AWAITING_CONFIRM) {
             if(strcmp(s_ota.task_id, info.task_id) != 0) s_ota.error[0] = '\0';

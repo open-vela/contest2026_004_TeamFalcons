@@ -10,6 +10,7 @@ typedef struct {
     lv_obj_t * root;
     lv_obj_t * idle_box;
     lv_obj_t * offer_box;
+    lv_obj_t * of_title;
     lv_obj_t * of_ver;
     lv_obj_t * of_size;
     lv_obj_t * of_note;
@@ -62,6 +63,11 @@ static void on_install_btn_event(lv_event_t * e)
         const vg_ota_t *o = vg_model_get_ota();
         s_pressed = false;
         if(strcmp(s_press_task, o->task_id) != 0) return;
+        if(vg_model_ota_demo_get()) {
+            if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint,
+                                                   "演示数据：不执行安装");
+            return;
+        }
         if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint, "正在检查安装条件...");
         vg_model_ota_accept();
     }
@@ -110,6 +116,12 @@ static void refresh_ota(void * user)
 
     switch(o->state) {
         case VG_OTA_OFFER:
+            if(s_ota_ui.of_title) {
+                lv_label_set_text(s_ota_ui.of_title,
+                                  vg_model_ota_demo_get() ?
+                                  "发现新固件 (演示数据)" :
+                                  "发现新固件 (待本地确认)");
+            }
             lv_label_set_text(s_ota_ui.of_ver, o->version[0] ? o->version : "--");
             if(o->size_bytes) lv_snprintf(buf, sizeof(buf), "%lu B", (unsigned long)o->size_bytes);
             else lv_snprintf(buf, sizeof(buf), "%d MB", (int)o->size_mb);
@@ -224,9 +236,9 @@ static void build_offer_step(lv_obj_t * parent)
     lv_obj_t * btn_install;
     s_ota_ui.offer_box = box;
 
-    lab = lv_label_create(box);
-    lv_label_set_text(lab, "发现新固件 (待本地确认)");
-    vg_style_apply_label(lab, false);
+    s_ota_ui.of_title = lv_label_create(box);
+    lv_label_set_text(s_ota_ui.of_title, "发现新固件 (待本地确认)");
+    vg_style_apply_label(s_ota_ui.of_title, false);
 
     /* vg_metric_row_create returns the row; child 1 is the value label. */
     s_ota_ui.of_ver = lv_obj_get_child(vg_metric_row_create(box, "版本", "--"), 1);
