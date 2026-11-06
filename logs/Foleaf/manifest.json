@@ -3,7 +3,7 @@
   "team_id": "contest2026_004_TeamFalcons",
   "github_login": "Foleaf",
   "generator": "claude-code-collector@1.4.0",
-  "updated_at": "2026-11-06T03:06:05.552Z",
+  "updated_at": "2026-11-06T04:13:42.969Z",
   "sessions": [
     {
       "session_id": "ses_11810bbcfffe563TbgE0tykfVz",
@@ -3844,9 +3844,9 @@
       "session_id": "77a07bc8-e4d0-4dbe-99da-134cf513ba37",
       "tool": "claude-code",
       "started_at": "2026-11-05T08:09:25.929Z",
-      "last_event_at": "2026-11-06T02:32:01.742Z",
-      "event_count": 482,
-      "raw_event_count": 5007,
+      "last_event_at": "2026-11-06T04:13:42.938Z",
+      "event_count": 675,
+      "raw_event_count": 5402,
       "file_path": "logs/Foleaf/2026-11-06/claude-code__77a07bc8-e4d0-4dbe-99da-134cf513ba37.jsonl",
       "collection_mode": "cli",
       "health": "ok",
@@ -3910,19 +3910,21 @@
       "file_path": "logs/Foleaf/2026-11-06/claude-code__e85b3df8-b39e-4e87-8eed-f0ade59805b7.jsonl",
       "collection_mode": "cli",
       "health": "ok",
-      "model": "gemini-3.8-flash-n"
+      "model": "gemini-3.8-flash-n",
+      "redacted_count_total": 2
     },
     {
       "session_id": "c213222b-b0ed-4c3e-9df7-8eb25c86d89a",
       "tool": "claude-code",
       "started_at": "2026-11-06T03:05:02.831Z",
-      "last_event_at": "2026-11-06T03:05:02.831Z",
-      "event_count": 453,
-      "raw_event_count": 607,
+      "last_event_at": "2026-11-06T03:13:01.896Z",
+      "event_count": 514,
+      "raw_event_count": 726,
       "file_path": "logs/Foleaf/2026-11-06/claude-code__c213222b-b0ed-4c3e-9df7-8eb25c86d89a.jsonl",
       "collection_mode": "cli",
       "health": "ok",
-      "model": "deepseek-v4.1-flash"
+      "model": "deepseek-v4.1-flash",
+      "redacted_count_total": 64
     },
     {
       "session_id": "5962f9ff-8920-4f7c-9941-1a29611ac2cb",
@@ -3934,7 +3936,8 @@
       "file_path": "logs/Foleaf/2026-11-06/claude-code__5962f9ff-8920-4f7c-9941-1a29611ac2cb.jsonl",
       "collection_mode": "cli",
       "health": "ok",
-      "model": "deepseek-v4.1-flash"
+      "model": "deepseek-v4.1-flash",
+      "redacted_count_total": 1
     },
     {
       "session_id": "b3bed1bf-1e72-44cc-b0e3-d119994f7e59",
@@ -3946,7 +3949,8 @@
       "file_path": "logs/Foleaf/2026-11-06/claude-code__b3bed1bf-1e72-44cc-b0e3-d119994f7e59.jsonl",
       "collection_mode": "cli",
       "health": "ok",
-      "model": "deepseek-v4.1-flash"
+      "model": "deepseek-v4.1-flash",
+      "redacted_count_total": 10
     }
   ]
 }
