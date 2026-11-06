@@ -1,3 +1,3 @@
-（本页约 22 秒）
+（本页约 34 秒）
 
-这台网关不只服务一间机房。小型数据中心、连锁网点、基站、园区配电间，共同点是设备少、无人值守、网络不稳、告警要能解释。同一套固件换一份点表：本地规则、AI 解释、权限矩阵、OTA。单网关 32 点上限，台架 14 点、7 个从站。
+OTA 从一条 offer 开始。MQTTS 8883 订阅 offer，发布 status、result、confirm，九字段不超过 1536 字节。镜像走 HTTPS，Range 续传，先取 512 字节 manifest，再流式下载到 eMMC。校验是 TLS、清单 CRC、ECDSA、流式 SHA-256 和回读。READY 后必须本机长按 2 秒，5 项联锁通过才写 pending BCB。重启后只有 boot stub 擦写 B 槽，BCB 两份 4096 字节。B 自检失败 trial 加一，三次后回 A。

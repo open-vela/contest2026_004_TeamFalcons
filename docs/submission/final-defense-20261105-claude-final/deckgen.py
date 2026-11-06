@@ -275,7 +275,47 @@ def p01_cover():
     return page_shell("".join(body), chrome=False)
 
 
-# ---------- P2 一个机房的一天 ----------
+# ---------- P2 开场视频 ----------
+
+VIDEO_BEATS = [
+    ("01", "首页与上电", "网关、从站、RJ45 同框"),
+    ("02", "在线点位刷新", "14 点在线，4 条告警"),
+    ("03", "越限与告警", "83.2 ℃ 跨过 80.0 ℃"),
+    ("04", "Agent 解释", "只读工具，规则与推测分开"),
+    ("05", "运行日报", "当天统计与数据来源"),
+    ("06", "按键问答", "录音、识别、设备播报"),
+    ("07", "手册解析下发", "云端解析，板端确认"),
+]
+
+
+def p02_video():
+    body = [header("01 / 演示", "先看它怎么工作", None)]
+    body.append(group("video-sub", [
+        text(180, 340, "从首页到云端手册接入，7 个片段，78 秒", 30, MUTED),
+    ], bounds="180 300 980 60"))
+    body.append(group("video-rule", [
+        line(1200, 392, 1200, 1130, "#E2E8F0", 2),
+    ], bounds="1200 392 2 738"))
+    for i, (num, head, desc) in enumerate(VIDEO_BEATS):
+        y = 400 + i * 112
+        body.append(group(f"video-beat-{i}", [
+            text(180, y + 30, num, 22, CYAN, weight="bold", font=MONO),
+            text(240, y + 30, head, 28, INK, weight="bold"),
+            text(520, y + 30, desc, 21, MUTED),
+        ], bounds=f"180 {y} 980 76"))
+    body.append(group("video-poster", [
+        image_rounded(1240, 360, 1140, 642, "../images/board-run.jpg", 18, "clipvideo"),
+        rect(1240, 360, 1140, 642, fill="none", stroke="#CBD5E1", rx=18),
+        f'<circle cx="1810" cy="681" r="64" fill="none" stroke="#FFFFFF" stroke-opacity="0.55" stroke-width="2" />',
+        f'<circle cx="1810" cy="681" r="56" fill="#0F172A" fill-opacity="0.82" />',
+        f'<path d="M 1788 651 L 1846 681 L 1788 711 Z" fill="#FFFFFF" />',
+        text(1810, 1040, "播放 78 秒视频", 24, BODY, weight="bold", anchor="middle"),
+        text(1810, 1080, "台架实拍，视频单独播放", 20, MUTED, anchor="middle"),
+    ], bounds="1240 360 1140 740"))
+    return page_shell("".join(body), number=2)
+
+
+# ---------- P3 一个机房的一天 ----------
 
 BEATS = [
     ("07:40", "交接班", ["逐台核对点位的在线状态", "和最近一次采样时间"],
@@ -292,7 +332,7 @@ BEATS = [
 
 
 def p02_day():
-    body = [header("01 / 现场", "一个小机房的一天", None)]
+    body = [header("02 / 现场", "一个小机房的一天", None)]
     x0, x1 = 180, 1540
     rail_x = 330
     top = 392
@@ -319,7 +359,7 @@ def p02_day():
         text(1672, 1014, "UPS 负载 102.3% · 烟雾 10.0%", 23, BODY, font=MONO),
         text(1672, 1054, "水浸 1.0 · 其余 10 个点位正常", 23, BODY, font=MONO),
     ], bounds="1640 392 740 700"))
-    return page_shell("".join(body), number=2)
+    return page_shell("".join(body), number=3)
 
 
 def stat(x, y, value, unit, label, color=INK, vsize=64):
@@ -372,7 +412,7 @@ TASKS = [
 
 
 def p03_arch():
-    body = [header("02 / 架构", "一台设备上的四层与六个任务", None)]
+    body = [header("03 / 架构", "一台设备上的四层与六个任务", None)]
     x, y0 = 180, 380
     w = 1290
     for i, (name, items, color) in enumerate(LAYERS):
@@ -406,7 +446,7 @@ def p03_arch():
             for i, (name, prio, stack, role) in enumerate(TASKS)
         ),
     ], bounds=f"{tx} 380 {tw} 830"))
-    return page_shell("".join(body), number=3)
+    return page_shell("".join(body), number=4)
 
 
 # ---------- P4 采集到告警 ----------
@@ -426,7 +466,7 @@ BANDS = [("0 ms", "649 / 649", "修复前丢帧的同一工况"),
 
 
 def p04_pipeline():
-    body = [header("03 / 采集", "从一帧 RS485 到一条告警", None)]
+    body = [header("04 / 采集", "从一帧 RS485 到一条告警", None)]
     y, h = 384, 270
     x0, gap, bw = 180, 62, 390
     stages = [
@@ -494,7 +534,7 @@ def p04_pipeline():
             for i, (value, label) in enumerate(chips)
         ),
     ], bounds="180 990 2200 130"))
-    return page_shell("".join(body), number=4)
+    return page_shell("".join(body), number=5)
 
 
 # ---------- P5 对外开放的接口 ----------
@@ -522,7 +562,7 @@ IFACES = [
 
 
 def p05_interfaces():
-    body = [header("04 / 接口", "谁能改这台设备", None)]
+    body = [header("05 / 接口", "谁能改这台设备", None)]
     cols = ["上位机 NSH", "看板 MQTT", "候选 MQTT", "OTA MQTTS", "手机", "Agent", "本机屏幕/按键"]
     rows = [
         ("读实时值", [
@@ -603,7 +643,7 @@ def p05_interfaces():
         text(750, 1222, "订阅 / 只读 仅读取", 19, BLUE, weight="bold"),
         text(1090, 1222, "— 无入口", 19, MUTED, weight="bold"),
     ], bounds="180 1196 1200 40"))
-    return page_shell("".join(body), number=5)
+    return page_shell("".join(body), number=6)
 
 
 TOOLS = [
@@ -616,7 +656,7 @@ TOOLS = [
 
 
 def p06_agent():
-    body = [header("05 / Agent", "告警进来，Agent 怎么跑完一轮", None)]
+    body = [header("06 / Agent", "告警进来，Agent 怎么跑完一轮", None)]
     steps = [("触发", "告警变化 / 定时日报"), ("载入 Skill", "alarm_interpretation.md"),
              ("LLM 规划", "MiMo over HTTPS"), ("工具调用", "只读取值，结果回填")]
     bw, gap, y = 280, 53, 520
@@ -669,13 +709,13 @@ def p06_agent():
     body.append(group("contract", [
         text(180, 1160, "VGADV1 · boot/req 匹配 · 8 条上限 · 任一项不合格整份丢弃", 21, MUTED, font=MONO),
     ], bounds="180 1136 1280 40"))
-    return page_shell("".join(body), number=6)
+    return page_shell("".join(body), number=7)
 
 
 # ---------- P7 只读权限 ----------
 
 def p07_guard():
-    body = [header("06 / 边界", "只读不是提示词，是 C 代码", None)]
+    body = [header("07 / 边界", "只读不是提示词，是 C 代码", None)]
     layers = [
         ("注册层", "只注册 5 个 VelaGuard 只读工具", ["产品 allowlist 是硬上限，运行配置只能关不能加", "vgpoint / vgcfg / vgdiscover apply 不注册"], CYAN),
         ("运行层", "参数、条数与频率在 C 里强制", ["点位查询超过 48 字节直接拒绝，不截断", "单次输出上限 2048 字节，列表 12 条", "20 次 / 60 秒，窗口外返回 rate_limited"], BLUE),
@@ -705,7 +745,7 @@ def p07_guard():
         text(1596, 1134, "主机测试可直接驱动。", 22, MUTED),
         text(1596, 1196, "vg_agent_tools.c", 22, PURPLE, font=MONO),
     ], bounds="1560 890 820 360"))
-    return page_shell("".join(body), number=7)
+    return page_shell("".join(body), number=8)
 
 
 def tw(s, size):
@@ -725,7 +765,7 @@ def msg(x1, x2, y, label, color="#64748B", dashed=False, size=22):
 
 
 def p08_sequence():
-    body = [header("07 / 时序", "一条告警解释的端到端路径", None)]
+    body = [header("08 / 时序", "一条告警解释的端到端路径", None)]
     lanes = [(310, "规则引擎", AMBER, 700), (730, "任务队列", CYAN, 700),
              (1190, "ai_agent", PURPLE, 1150), (1700, "MiMo", BLUE, 1150),
              (2210, "屏幕 / 存储", GREEN, 1150)]
@@ -771,11 +811,11 @@ def p08_sequence():
         rect(180, 1190, 2200, 100, fill=PANEL, stroke=LINE, rx=16),
         text(212, 1250, "8 条共 41.83 s，单条 5.23 s；模型推理占 95%，工具取数 1.96 s 读的是快照，不占 RS485。", 26, BODY),
     ], bounds="180 1190 2200 100"))
-    return page_shell("".join(body), number=8)
+    return page_shell("".join(body), number=9)
 
 
 def p09_offline():
-    body = [header("08 / 断网", "网线拔掉，值守不中断", None)]
+    body = [header("09 / 断网", "网线拔掉，值守不中断", None)]
     rows = [
         ("RJ45 拔掉", "采集、判定、上屏、事件落盘照常", "MQTT 与 MiMo 不可达", "插回后按主题补发", GREEN),
         ("MQTT Broker 断开", "告警进 8 条 RAM 队列，满则丢最旧", "云看板停更", "重连补发，断电不补", AMBER),
@@ -803,11 +843,11 @@ def p09_offline():
         text(216, 1116, "规则与显示跑在本地任务里，网络失败只影响解释、日报和上报。", 28, "#E2E8F0"),
         text(216, 1176, "演示：拔掉 RJ45，观察采样时间继续前进；插回后 status 主题恢复在线。", 24, "#64748B"),
     ], bounds="180 990 2200 240"))
-    return page_shell("".join(body), number=9)
+    return page_shell("".join(body), number=10)
 
 
 def p11_ota():
-    body = [header("10 / OTA", "一次 OTA 从 offer 到回滚", None)]
+    body = [header("11 / OTA", "一次 OTA 从 offer 到回滚", None)]
     stages = [
         ("控制面 · MQTTS 8883", "Offer", PURPLE, [
             "ota/offer 订阅",
@@ -895,11 +935,11 @@ def p11_ota():
             text(px + 28, 842, title, 26, color, weight="bold"),
             tblock(px + 28, 900, lines, 20, 42, BODY),
         ], bounds=f"{px} 790 700 380"))
-    return page_shell("".join(body), number=11)
+    return page_shell("".join(body), number=12)
 
 
 def p10_hard():
-    body = [header("09 / 攻坚", "三个难住我们的问题", None)]
+    body = [header("10 / 攻坚", "三个难住我们的问题", None)]
     stories = [
         ("01", "TLS 握手 -0x4380", "网络 / TLS", RED, [
             ["critical 告警态 15 次探测 12 次失败，", "13 次 -0x4380；静屏 30/30 通过。"],
@@ -940,11 +980,11 @@ def p10_hard():
     body.append(group("hard-close", [
         text(180, 1240, "三次根因分别在驱动、时序和状态机，业务层没有改。", 21, FAINT),
     ], bounds="180 1216 1400 34"))
-    return page_shell("".join(body), number=10)
+    return page_shell("".join(body), number=11)
 
 
 def p12_industry():
-    body = [header("11 / 行业", "从一间机房到一个行业", None)]
+    body = [header("12 / 行业", "从一间机房到一个行业", None)]
     segments = [
         ("01", "小型数据中心 / 边缘机房", CYAN,
          "精密空调、UPS、配电柜、温湿度、烟感、水浸",
@@ -986,11 +1026,11 @@ def p12_industry():
         text(1540, 1024, "同一套固件", 30, "#FFFFFF", weight="bold"),
         text(1540, 1064, "换一份点表", 30, "#FFFFFF", weight="bold"),
     ], bounds="180 960 2200 160"))
-    return page_shell("".join(body), number=12)
+    return page_shell("".join(body), number=13)
 
 
 def p13_perf():
-    body = [header("12 / 数据", "把耗时和资源摊开", None)]
+    body = [header("13 / 数据", "把耗时和资源摊开", None)]
     # 左上：告警解释分解（单条堆叠条）
     body.append(group("p-alarm", [
         rect(180, 384, 1060, 340, fill=PANEL, stroke=LINE, rx=18),
@@ -1048,51 +1088,6 @@ def p13_perf():
         text(1640, 1076, "60 秒窗口内的显示提交次数", 22, "#94A3B8"),
         text(1312, 1160, "2026-10-25 构建值；显示提交来自 2026-10-28 板测", 20, "#64748B"),
     ], bounds="1280 760 1100 460"))
-    return page_shell("".join(body), number=13)
-
-
-DEMO_SHOTS = [
-    ("00–06", "全景与上电", "网关、从站、RJ45 同框"),
-    ("06–16", "在线点位刷新", "回风温度与 UPS 负载两次读数"),
-    ("16–28", "越限与告警", "83.2 ℃ 跨过阈值，告警页指出点位"),
-    ("28–45", "Agent 解释", "任务触发、工具调用、屏幕解释"),
-    ("45–57", "打开日报", "当天统计与数据来源"),
-    ("57–70", "按键提问", "录音、回答、设备播报"),
-    ("70–80", "手册解析下发", "云端解析 PDF，板端校验确认"),
-]
-
-
-def p14_demo():
-    body = [header("13 / 演示", "80 秒真机演示", None)]
-    for i, (span, head, desc) in enumerate(DEMO_SHOTS):
-        y = 372 + i * 96
-        body.append(group(f"shot-{i}", [
-            text(180, y + 30, span, 24, AMBER, weight="bold", font=MONO),
-            text(330, y + 30, head, 27, INK, weight="bold"),
-            text(330, y + 68, desc, 21, MUTED),
-        ], bounds=f"180 {y} 1260 92"))
-    body.append(group("watch", [
-        text(180, 1136, "可以对着屏幕核对", 22, MUTED, weight="bold", ls=1),
-        text(180, 1196, "4.7–5.7 s", 38, INK, weight="bold", font=MONO),
-        text(180, 1232, "云端识别返回", 21, MUTED),
-        text(560, 1196, "18.4 s", 38, INK, weight="bold", font=MONO),
-        text(560, 1232, "异常类首播中位", 21, MUTED),
-        text(940, 1196, "41.83 s", 38, INK, weight="bold", font=MONO),
-        text(940, 1232, "8 条解释合计", 21, MUTED),
-    ], bounds="180 1110 1260 140"))
-    screens = [
-        ("home_14_alarm.png", "首页"),
-        ("advice_ret.png", "告警详情 · AI 建议"),
-        ("chat_temp.png", "自然语言问答"),
-        ("report_14.png", "运行报告"),
-    ]
-    for i, (img, cap) in enumerate(screens):
-        x = 1520 + (i % 2) * 440
-        y = 384 + (i // 2) * 300
-        body.append(group(f"demo-screen-{i}", [
-            image_rounded(x, y, 420, 238, f"../images/{img}", 12, f"clipdemo{i}"),
-            text(x, y + 272, cap, 20, BODY, weight="bold"),
-        ], bounds=f"{x} {y} 420 280"))
     return page_shell("".join(body), number=14)
 
 
@@ -1163,8 +1158,8 @@ def page_shell_closing(body):
     return page_shell(body, number=None)
 
 
-PAGES = [p01_cover, p02_day, p03_arch, p04_pipeline, p05_interfaces, p06_agent, p07_guard,
-         p08_sequence, p09_offline, p10_hard, p11_ota, p12_industry, p13_perf, p14_demo,
+PAGES = [p01_cover, p02_video, p02_day, p03_arch, p04_pipeline, p05_interfaces, p06_agent,
+         p07_guard, p08_sequence, p09_offline, p10_hard, p11_ota, p12_industry, p13_perf,
          p15_next, p16_thanks]
 
 

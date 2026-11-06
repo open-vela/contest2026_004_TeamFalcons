@@ -1,3 +1,3 @@
-（本页约 26 秒）
+（本页约 28 秒）
 
-这是同一条告警的端到端时序。规则引擎写事件、投递任务，ai_agent 带上 Skill 和工具表请求 MiMo，模型回 tool_call，板端执行只读工具读采集快照，结果回填，最终 JSON 经 schema 校验后上屏并写 alarm_advice.txt。8 条合计 41.83 秒，工具取数只占 1.96 秒，而且读的是快照，不占 RS485。
+只读不是提示词，是 C 代码。注册层只放 5 个只读工具，vgpoint、vgcfg、vgdiscover apply 根本不注册。运行层在 C 里强制参数和频率：点位查询超过 48 字节直接拒绝，输出上限 2048 字节，列表最多 12 条。审计层每次执行都计数，写 /data/velaguard/logs/agent_tools.log，单文件 64 KiB 轮转。

@@ -1,3 +1,3 @@
-（本页约 34 秒）
+（本页约 28 秒）
 
-OTA 从一条 offer 开始。MQTTS 8883 订阅 offer，发布 status、result、confirm，九字段不超过 1536 字节。镜像走 HTTPS，Range 续传，先取 512 字节 manifest，再流式下载到 eMMC。校验是 TLS、清单 CRC、ECDSA、流式 SHA-256 和回读。READY 后必须本机长按 2 秒，5 项联锁通过才写 pending BCB。重启后只有 boot stub 擦写 B 槽，BCB 两份 4096 字节。B 自检失败 trial 加一，三次后回 A。
+三个问题。TLS -0x4380，根因是 SDRAM 奇地址复制被编译成非对齐 LDR，H750 FMC 不支持；nuttx 禁用非对齐访问后 155 次探测零错误。RS485 DIR 晚释放 13 毫秒，0 ms 从站 274 次只成功 38 次；改到 TX 中断后 649/649。按键 ASR 在 STOP_RECORD 清掉 clip，改成只取消路径清理后 3 秒录音 HTTP 200。
