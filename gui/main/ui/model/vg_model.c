@@ -1070,7 +1070,7 @@ void vg_model_ota_demo_poll(void)
                     (unsigned long)++s_ota_demo_seq);
         lv_snprintf(s_ota.version, sizeof(s_ota.version), "%s", "9.2.0-demo");
         lv_snprintf(s_ota.note, sizeof(s_ota.note), "%s",
-                    "演示数据，不下载、不安装");
+                    "稳定性与连接优化");
         s_ota.size_bytes = 0;
         s_ota.size_mb = 24;
         s_ota.progress_pct = 0;

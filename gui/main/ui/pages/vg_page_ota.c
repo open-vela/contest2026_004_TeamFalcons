@@ -13,7 +13,7 @@ typedef struct {
     lv_obj_t * root;
     lv_obj_t * idle_box;
     lv_obj_t * offer_box;
-    lv_obj_t * of_title;
+    lv_obj_t * btn_install;
     lv_obj_t * of_ver;
     lv_obj_t * of_size;
     lv_obj_t * of_note;
@@ -66,11 +66,7 @@ static void on_install_btn_event(lv_event_t * e)
         const vg_ota_t *o = vg_model_get_ota();
         s_pressed = false;
         if(strcmp(s_press_task, o->task_id) != 0) return;
-        if(vg_model_ota_demo_get()) {
-            if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint,
-                                                   "演示数据：不执行安装");
-            return;
-        }
+        if(vg_model_ota_demo_get()) return;
         if(s_ota_ui.of_hint) lv_label_set_text(s_ota_ui.of_hint, "正在检查安装条件...");
         vg_model_ota_accept();
     }
@@ -124,11 +120,13 @@ static void refresh_ota(void * user)
 
     switch(o->state) {
         case VG_OTA_OFFER:
-            if(s_ota_ui.of_title) {
-                lv_label_set_text(s_ota_ui.of_title,
-                                  vg_model_ota_demo_get() ?
-                                  "发现新固件 (演示数据)" :
-                                  "发现新固件 (待本地确认)");
+            if(s_ota_ui.btn_install) {
+                if(vg_model_ota_demo_get()) {
+                    lv_obj_add_state(s_ota_ui.btn_install, LV_STATE_DISABLED);
+                }
+                else {
+                    lv_obj_remove_state(s_ota_ui.btn_install, LV_STATE_DISABLED);
+                }
             }
             lv_label_set_text(s_ota_ui.of_ver, o->version[0] ? o->version : "--");
             if(o->size_bytes) lv_snprintf(buf, sizeof(buf), "%lu B", (unsigned long)o->size_bytes);
@@ -240,12 +238,13 @@ static void build_offer_step(lv_obj_t * parent)
 {
     lv_obj_t * box = make_step_card(parent);
     lv_obj_t * btn_row;
-    lv_obj_t * btn_install;
+    lv_obj_t * title;
+
     s_ota_ui.offer_box = box;
 
-    s_ota_ui.of_title = lv_label_create(box);
-    lv_label_set_text(s_ota_ui.of_title, "发现新固件 (待本地确认)");
-    vg_style_apply_label(s_ota_ui.of_title, false);
+    title = lv_label_create(box);
+    lv_label_set_text(title, "发现新固件");
+    vg_style_apply_label(title, false);
 
     /* vg_metric_row_create returns the row; child 1 is the value label. */
     s_ota_ui.of_ver = lv_obj_get_child(vg_metric_row_create(box, "版本", "--"), 1);
@@ -272,8 +271,9 @@ static void build_offer_step(lv_obj_t * parent)
                           LV_FLEX_ALIGN_CENTER);
     lv_obj_set_style_pad_column(btn_row, 8, 0);
 
-    btn_install = make_btn(btn_row, "长按安装", true, NULL);
-    lv_obj_add_event_cb(btn_install, on_install_btn_event, LV_EVENT_ALL, NULL);
+    s_ota_ui.btn_install = make_btn(btn_row, "长按安装", true, NULL);
+    lv_obj_add_event_cb(s_ota_ui.btn_install, on_install_btn_event, LV_EVENT_ALL,
+                        NULL);
 
     make_btn(btn_row, "取消升级", false, on_cancel_offer);
 }
