@@ -5,6 +5,9 @@
 #include "vg_display.h"
 #include <stdio.h>
 #include <string.h>
+#ifdef __NuttX__
+#include <nuttx/config.h>
+#endif
 
 typedef struct {
     lv_obj_t * root;
@@ -113,6 +116,11 @@ static void refresh_ota(void * user)
 
     o = vg_model_get_ota();
     if(o == NULL) return;
+
+#ifdef CONFIG_VG_OTA_TEST_FIXTURES
+    printf("vgota-page: state=%d demo=%d ver=%s\n",
+           (int)o->state, vg_model_ota_demo_get() ? 1 : 0, o->version);
+#endif
 
     switch(o->state) {
         case VG_OTA_OFFER:
@@ -232,7 +240,6 @@ static void build_offer_step(lv_obj_t * parent)
 {
     lv_obj_t * box = make_step_card(parent);
     lv_obj_t * btn_row;
-    lv_obj_t * lab;
     lv_obj_t * btn_install;
     s_ota_ui.offer_box = box;
 
